@@ -195,3 +195,15 @@ Check:
 ```bat
 tools\run_patch_checks.bat 67
 ```
+
+## Patch 67.1 — Dutch Stress Test Lexicon + Threshold Receipt Enforcement
+
+Status: Ready for local verification.
+
+Dutch Stress Test calibration added. Dutch stress scenarios now trigger Threshold / Needs Safeguards for missing appeal, no sunset, biometric basic-service access, forced consent, fallback-data confusion, founder control, no audit trail, surveillance, and human review without power.
+
+Check command:
+
+```bat
+tools\run_patch_checks.bat 67_1
+```

@@ -244,3 +244,5 @@ PATCH_66_STRESS_TEST_RISK_SENSITIVITY_NOTE = "Patch 66 raises Stress Test sensit
 
 
 # Patch 67 note: Stress Test THRESHOLD / Needs Safeguards outputs now include repair prompts and light metric softening while preserving the mirror-only authority boundary.
+
+PATCH_67_1_NOTE = "Patch 67.1 adds Dutch Stress Test lexicon calibration so Dutch governance stress scenarios route to Needs Safeguards instead of being washed into Sanctuary."

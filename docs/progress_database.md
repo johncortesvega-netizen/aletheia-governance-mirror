@@ -409,3 +409,15 @@ tools\run_patch_checks.bat 66
 Patch 67 completes the second Stress Test calibration layer after Patch 66. Stress scenarios that route to `THRESHOLD / Needs Safeguards` now receive repair questions and a light metric softening guard: trust and alignment are capped below perfect values, while ego/ego-pressure receive a small review-pressure floor. This makes medium-risk results more useful without turning ALETHEIA into an authority system.
 
 Boundary: diagnostic only; no enforcement, no automatic reset, no public ledger, no Global ID sync, no central storage, and no authority claim.
+
+## Patch 67.1 — Dutch Stress Test Lexicon + Threshold Receipt Enforcement
+
+Status: Ready for local verification.
+
+Adds Dutch Stress Test risk triggers so Dutch governance scenarios with noodbevoegdheden, biometrische toegang tot basisdiensten, ontbrekende data/fallback-waarden, geen audit-trail, founder/oprichter control, forced consent, surveillance, and human-review-without-power are routed to THRESHOLD / Needs Safeguards instead of SANCTUARY.
+
+Check command:
+
+```bat
+tools\run_patch_checks.bat 67_1
+```

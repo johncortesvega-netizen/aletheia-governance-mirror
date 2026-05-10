@@ -1175,6 +1175,142 @@ STRESS_TEST_RISK_SENSITIVITY_RULES: list[dict] = [
 ]
 
 
+
+# Patch 67.1 — Dutch Stress Test Lexicon + Threshold Receipt Enforcement
+#
+# The English stress lexicon was working, but Dutch governance stress scenarios
+# were being washed into SANCTUARY because the trigger phrases were mostly
+# English. These Dutch rules mirror the same risks in Dutch and keep the result
+# in THRESHOLD / Needs Safeguards unless explicit safeguards are present.
+DUTCH_STRESS_TEST_RISK_SENSITIVITY_RULES: list[dict] = [
+    {
+        "label": "Noodbevoegdheid Zonder Grenzen / Needs Safeguards",
+        "groups": [["tijdelijke", "crisisleider", "noodbevoegdheden", "noodsituaties", "emergency-override"], ["geen einddatum", "zonder einddatum", "geen vervaldatum", "geen sunset", "geen beroepsmogelijkheid", "geen beroep", "zonder beroep"]],
+        "reason": "Noodmacht heeft een einddatum, beroepspad, audit en herstelautoriteit nodig.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Voorspellend Risicolabel Voor Actie / Needs Safeguards",
+        "groups": [["ai", "veiligheidssysteem", "voorspellende risicolabels", "geautomatiseerde gedragsvlaggen", "risicovol markeert"], ["voordat", "voor ze", "vooraf", "geen actie", "niet aanvechten", "zonder menselijke tussenkomst"]],
+        "reason": "Voorspellende risicolabels mogen vrije agency, bezwaar, menselijke review en correctie niet vervangen.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Biometrische Toegang Tot Basisdiensten / Needs Safeguards",
+        "groups": [["biometrische identiteit", "digitaal id", "real-name identiteit", "identiteit"], ["voedsel", "huisvesting", "medische hulp", "basisdiensten", "uitkeringen", "openbare diensten", "vergelding"]],
+        "reason": "Identiteits- of biometrische toegang tot basisdiensten vereist privacy, consent, appeal en non-exclusion safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Beroep Of Correctie Ontbreekt / Needs Safeguards",
+        "groups": [["geen proces", "geen uitleg", "zonder uitleg", "permanent verbannen", "niet aanvechten", "zonder menselijke tussenkomst", "niet wijzigen", "automatisch worden bevroren"], ["beroep", "aanvechten", "corrigeren", "review", "afgewezen", "uitkomst", "label", "data"]],
+        "reason": "Ontbrekend beroep, correctie, uitleg of echte menselijke wijzigingsmacht veroorzaakt review failure.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Founder Of Token Controle / Needs Safeguards",
+        "groups": [["oprichter", "ceo", "vroege tokenhouders", "stichtingsbestuur", "ethische raad", "originele oprichter"], ["controleert", "benoemd", "stemvermogen", "financieringsbeslissingen", "erkende versie", "rekening"]],
+        "reason": "Founder-, CEO-, token- of bestuursconcentratie vereist onafhankelijke audit, plural oversight en appeal.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Ondoorzichtige Criteria Of Geheim Algoritme / Needs Safeguards",
+        "groups": [["vertrouwelijk", "geheim algoritme", "onderliggende bewijslast", "geen audit-trail", "niet uitleg", "niet uit", "scoring evidence"], ["criteria", "handhavingscriteria", "geschiktheid", "register", "aanvragen", "bewijslast", "algoritme"]],
+        "reason": "Geheime criteria, proprietary algoritmes en ontbrekende audit-trails vereisen transparantie, bewijs en beroep.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Toestemming Onder Druk / Needs Safeguards",
+        "groups": [["vrijwillige deelname", "toestemming", "opt-out", "weigert", "formulier", "moeten tekenen", "moet tekenen"], ["verliest toegang", "basisfuncties", "basisdiensten", "lokale basisdiensten", "essentiële diensten", "behouden"]],
+        "reason": "Toestemming is zwak wanneer weigering toegang tot essentiële diensten of praktische veiligheid kost.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Nudging Of Stemgedrag Beïnvloeding / Needs Safeguards",
+        "groups": [["nudging", "stemgedrag", "publieke kritiek", "eenheid", "emotionele taal"], ["autoriteit", "noodtoestand", "nationale", "systeem", "ontmoedigen", "beïnvloeden"]],
+        "reason": "Infrastructuur die stemmen vormt of kritiek dempt vereist transparantie, contestability en consent safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Permanente Crisisdrift / Needs Safeguards",
+        "groups": [["tijdelijk", "crisis", "hulpdistributie", "nood", "stadsverdrag"], ["permanent", "na de crisis", "termijnlimieten", "stabiliteit", "geen sunset", "zonder sunset", "zonder vervaldatum"]],
+        "reason": "Crisismaatregelen die permanent worden hebben sunset, publieke audit, herroeping en beroep nodig.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Reputatie Of Gedragsscore / Needs Safeguards",
+        "groups": [["reputatiescores", "gedragsscores", "scoresysteem", "dashboard", "rangschikt", "integriteit"], ["werkgevers", "verhuurders", "studenten", "privileges", "meegaand", "betrouwbaar", "buurten", "diensten"]],
+        "reason": "Reputatie-, gedrag- of integriteitsscores vereisen correctierecht, contestability en anti-discriminatie safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Surveillance Of Onbepaalde Dataopslag / Needs Safeguards",
+        "groups": [["surveillance", "bewegingsdata", "slaat", "centraliseert", "filtert", "communicatie"], ["onbepaalde tijd", "één centrale autoriteit", "een centrale autoriteit", "onder één kantoor", "geen gemeenschapsreview", "kinderen"]],
+        "reason": "Centrale monitoring, filtering of onbepaalde opslag vereist privacy, minimization, lokale review en beroep.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Buitengewone Autoriteitsclaim / Needs Safeguards",
+        "groups": [["uitzonderlijke morele autoriteit", "religieus geïnspireerd", "publieke wet", "controlemechanismen", "seculiere", "toetsbare onderbouwing"], ["opschorten", "zonder", "gepresenteerd", "vraagt"]],
+        "reason": "Buitengewone of religieus geïnspireerde governanceclaims moeten publiek toetsbaar, niet-dwingend en appealable blijven.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Externe Waakhond Geblokkeerd / Needs Safeguards",
+        "groups": [["externe waakhond", "unanieme interne goedkeuring", "onderzoek", "klachtenprocedure", "geen training", "toezicht"], ["voordat", "vereist", "geen", "biedt geen"]],
+        "reason": "Oversight dat afhankelijk is van interne toestemming of zonder klachtpad werkt is kwetsbaar voor capture.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Fallback Data Onduidelijk / Needs Safeguards",
+        "groups": [["fallback", "ontbrekende data", "neutraal", "vertrouwen", "direct gemeten", "fallback-waarde"], ["presenteert", "meldt niet", "behandelt", "alsof"]],
+        "reason": "Fallback- of ontbrekende data moet expliciet worden gelabeld zodat modelwaarden niet als observatie worden gelezen.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Populatie-Weging Zonder Minderheidsbescherming / Needs Safeguards",
+        "groups": [["populatiegrootte", "populatie", "wereldwijd allocatiemodel", "wijst invloed toe"], ["minderheden", "beschermd", "niet uit", "legt niet uit"]],
+        "reason": "Invloed op basis van populatiegrootte vereist minderheidsrechten en kleine-groep safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Burgerrechten Pauzeren / Needs Safeguards",
+        "groups": [["burgerrechten", "pauzeren", "onrust"], ["wie", "herstelt", "definieert niet", "comité"]],
+        "reason": "Het pauzeren van burgerrechten vereist strikte wettelijke grenzen, herstelautoriteit, beroep en publieke audit.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Ethische Taal Zonder Mechanismen / Needs Safeguards",
+        "groups": [["zorg en waardigheid", "ethische taal", "hoge integriteit", "transparantie", "eenheid"], ["geen budget", "geen tijdlijn", "verantwoordelijke instantie", "ontbreken van waarborgen", "geen waarborgen", "vertrouwelijk"]],
+        "reason": "Waarden-taal vervangt geen budget, verantwoordelijkheid, audit trail, beroep of correctiemechanisme.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Authority Boundary Verwarring / Needs Safeguards",
+        "groups": [["lokale getuigenverklaring", "witness receipt", "officiële certificering", "simulatie", "politiek oordeel"], ["denken", "waarschuwt niet", "geen politiek oordeel", "officiële"]],
+        "reason": "Receipts en simulaties moeten expliciet mirror-output blijven, geen certificering of politiek besluit.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Familie Of Gemeenschap Blinde Vlek / Needs Safeguards",
+        "groups": [["familiestabiliteit", "gemeenschapsbanden", "huisvestingssysteem", "familie", "gezinnen"], ["negeert", "optimaliseert", "bezettingsgraad"]],
+        "reason": "Efficiënte allocatie mag familiestabiliteit, gemeenschap en menselijke maat niet wegdrukken.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Automatische Bevriezing Zonder Menselijke Review / Needs Safeguards",
+        "groups": [["digitale portemonnee", "uitkeringen", "benefits", "sociale zekerheid"], ["automatisch", "bevroren", "zonder menselijke tussenkomst", "zonder menselijke review"]],
+        "reason": "Automatische bevriezing van publieke steun of uitkeringen vereist menselijke review, beroep en correctie.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Automatische Toegangscontrole / Needs Safeguards",
+        "groups": [["controleert toegang", "toegang tot", "automatisch", "geautomatiseerde"], ["openbaar vervoer", "basisfuncties", "basisdiensten", "uitkeringen", "gedragsvlaggen"]],
+        "reason": "Automatische toegangscontrole tot publieke of essentiële diensten vereist contestability, appeal en menselijke correctie.",
+        "severity": "THRESHOLD",
+    },
+]
+
 def _stress_rule_matches(text_value: str, rule: dict) -> bool:
     """Return True when every group in a risk-sensitivity rule is represented."""
     t = (text_value or "").lower()
@@ -1187,7 +1323,7 @@ def _stress_rule_matches(text_value: str, rule: dict) -> bool:
 
 def stress_risk_sensitivity_marker(text_value: str) -> dict | None:
     """Return the first soft stress-test risk marker for scenario calibration."""
-    for rule in STRESS_TEST_RISK_SENSITIVITY_RULES:
+    for rule in (STRESS_TEST_RISK_SENSITIVITY_RULES + DUTCH_STRESS_TEST_RISK_SENSITIVITY_RULES):
         if _stress_rule_matches(text_value, rule):
             return rule
     return None

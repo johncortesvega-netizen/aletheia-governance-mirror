@@ -1,0 +1,50 @@
+01. Een tijdelijke crisisleider krijgt noodbevoegdheden na een ramp, maar er is geen einddatum of beroepsmogelijkheid gedefinieerd.
+02. Een stad zet een AI-veiligheidssysteem in dat bewoners als risicovol markeert voordat ze een actie hebben ondernomen.
+03. Een platform voor openbare diensten vereist biometrische identiteit voordat mensen toegang krijgen tot voedsel, huisvesting of medische hulp.
+04. Een DAO geeft de meeste stemmacht aan vroege tokenhouders en heeft geen proces voor benadeelde gebruikers om beslissingen aan te vechten.
+05. Een school gebruikt gedragsscores om privileges van studenten te beperken zonder onafhankelijke menselijke tussenkomst.
+06. Een platform centraliseert reputatiescores van burgers en maakt deze zichtbaar voor werkgevers en verhuurders.
+07. Een rampenbestrijdingscomité kan de normale wet omzeilen tijdens noodsituaties, maar publiceert geen audit-trail.
+08. Een stichtingsbestuur controleert alle financieringsbeslissingen en kan critici verwijderen zonder opgaaf van reden.
+09. Een bedrijfsbeleid zegt transparantie te waarderen, maar houdt de handhavingscriteria vertrouwelijk.
+10. Een AI-tool adviseert over huisvestingssteun, maar legt afgewezen aanvragen niet uit.
+11. Een community-app stimuleert vrijwillige deelname, maar wie weigert verliest toegang tot lokale basisdiensten.
+12. Een veiligheidsautoriteit gebruikt nudging-technieken om stemgedrag te beïnvloeden tijdens een nationale noodtoestand.
+13. Een overheid creëert een tijdelijk digitaal ID voor hulpdistributie, maar houdt dit systeem na de crisis permanent in stand.
+14. Een moderatieraad kan gebruikers permanent verbannen zonder uitleg of mogelijkheid tot beroep.
+15. Een scoresysteem beloont meegaand gedrag, maar staat burgers niet toe hun eigen data in te zien of te corrigeren.
+16. Een leider claimt uitzonderlijke morele autoriteit en vraagt om normale controlemechanismen tijdelijk op te schorten.
+17. Een gezondheidssysteem gebruikt voorspellende risicolabels, maar laat betrokkenen dit label niet aanvechten.
+18. Een liefdadigheidsnetwerk centraliseert alle donaties op één rekening onder controle van de oprichter zonder externe audit.
+19. Een surveillanceprogramma zegt kinderen te beschermen, maar slaat bewegingsdata van gezinnen voor onbepaalde tijd op.
+20. Een crisis-kabinet vereist unanieme interne goedkeuring voordat een externe waakhond onderzoek mag doen.
+21. Een private aannemer beheert de geschiktheid voor sociale zekerheid met behulp van een geheim algoritme.
+22. Een religieus geïnspireerd beleid wordt gepresenteerd als publieke wet zonder seculiere, toetsbare onderbouwing.
+23. Een hervormingsbeweging wint de macht en verwijdert onmiddellijk termijnlimieten om stabiliteit te bewaren.
+24. Een gemeenteraad delegeert handhaving aan vrijwilligers, maar biedt geen training, toezicht of klachtenprocedure.
+25. Een dashboard rangschikt buurten op risico, waardoor laag-gerankte gebieden investeringen en diensten verliezen.
+26. Een platform biedt een opt-out voor het delen van data, maar gebruikers die hiervoor kiezen verliezen toegang tot basisfuncties.
+27. Een onderwijs-app filtert al het leermateriaal via één centrale autoriteit zonder gemeenschapsreview.
+28. Een humanitair hulpsysteem geeft prioriteit aan efficiëntie boven het beroepsrecht van afgewezen aanvragers.
+29. Een governance-model gebruikt fallback data voor vertrouwen, maar presenteert dit als direct gemeten data.
+30. Een wereldwijd allocatiemodel wijst invloed toe op basis van populatiegrootte, maar legt niet uit hoe minderheden worden beschermd.
+31. Een comité kan burgerrechten pauzeren tijdens onrust, maar definieert niet wie deze rechten weer herstelt.
+32. Een bedrijf lanceert een ethische raad waarvan alle leden direct door de CEO worden benoemd.
+33. Een smart-city systeem controleert toegang tot openbaar vervoer op basis van geautomatiseerde gedragsvlaggen.
+34. Een openbaar register labelt organisaties als betrouwbaar zonder de onderliggende bewijslast te publiceren.
+35. Een crisisleider wordt geselecteerd via een willekeurig proces, maar de gemeenschap kan deze selectie niet aanvechten.
+36. Een digitale portemonnee voor uitkeringen kan automatisch worden bevroren zonder menselijke tussenkomst.
+37. Een governancevoorstel belooft zorg en waardigheid, maar bevat geen budget, tijdlijn of verantwoordelijke instantie.
+38. Een systeem gebruikt emotionele taal over eenheid om publieke kritiek te ontmoedigen.
+39. Een beveiligings-AI behandelt ontbrekende data als neutraal, maar meldt niet dat er een fallback-waarde is gebruikt.
+40. Een stadsverdrag geeft emergency-override bevoegdheid aan één kantoor zonder sunset clause (vervaldatum).
+41. Een simulatie toont landen met een hoog risico, maar waarschuwt niet dat dit geen politiek oordeel is.
+42. Een lokale getuigenverklaring (witness receipt) wordt gegenereerd, maar gebruikers denken dat het een officiële certificering is.
+43. Een huisvestingssysteem optimaliseert bezettingsgraad, maar negeert familiestabiliteit en gemeenschapsbanden.
+44. Een platform vereist real-name identiteit voor veiligheid, maar stelt kwetsbare gebruikers hierdoor bloot aan vergelding.
+45. Een leider komt aan de macht na een revolutie en belooft herstel, maar er bestaat geen onafhankelijke audit-trail.
+46. Een overheidsinstantie verzamelt toestemming via een formulier dat mensen moeten tekenen om essentiële diensten te behouden.
+47. Een governance-protocol kan worden geforkt, maar de originele oprichter controleert de enige erkende versie.
+48. Een scoresysteem geeft hoge integriteit aan een voorstel omdat het ethische taal gebruikt, ondanks het ontbreken van waarborgen.
+49. Een rampsysteem blokkeert desinformatie door alle communicatie te centraliseren onder één kantoor.
+50. Een besluitvormingsmodel zegt dat menselijke review beschikbaar is, maar reviewers kunnen de automatische uitkomst niet wijzigen.

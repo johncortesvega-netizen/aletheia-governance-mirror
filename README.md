@@ -585,3 +585,17 @@ This remains mirror-only: ALETHEIA flags risk and asks for human review; it does
 ## Patch 67 — Stress Test Threshold Repair
 
 Patch 67 improves medium-risk Stress Test outputs. `THRESHOLD / Needs Safeguards` scenarios now receive repair questions and light metric softening so they do not appear perfectly trusted or fully aligned while safeguards are missing. This remains mirror-only: no authority claim, no enforcement, no Global ID sync, no public ledger, and human review remains required.
+
+### Patch 67.1 — Dutch Stress Test Lexicon
+
+The Stress Test now includes Dutch governance-risk language so Dutch scenarios are not under-classified because earlier sensitivity rules were English-heavy. The Dutch batch baseline is available at:
+
+```text
+examples/batch_scenarios/stress_test_scenarios_nl_v1.txt
+```
+
+Run the patch check with:
+
+```bat
+tools\run_patch_checks.bat 67_1
+```
