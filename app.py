@@ -89,6 +89,7 @@ except Exception:
 
 
 APP_VERSION = "v1.0-governance-mirror-final"
+SUPPORTED_INPUT_LANGUAGE_NOTE = "Input language support: English and Nederlands/Dutch only. Other languages may be reviewed as text, but the calibrated risk lexicon is not validated for them yet."
 PROJECT_ROOT = Path(__file__).resolve().parent
 ABOUT_HEADER_IMAGE = PROJECT_ROOT / "assets" / "about_header.png"
 DOCTRINE_HTML_FILES = [
@@ -2414,7 +2415,7 @@ st.markdown(
                 <div class="hero-kicker">Sydney Protocol · Local Mirror · Plain Words</div>
                 <div class="hero-title">ALETHEIA</div>
                 <div class="hero-sub">A mirror, not a throne.</div>
-                <div class="caption">{APP_VERSION} · Spot control. Protect people. Keep truth visible.</div>
+                <div class="caption">{APP_VERSION} · English + Nederlands/Dutch input supported · Spot control. Protect people. Keep truth visible.</div>
             </div>
             <div class="hero-emblem" aria-hidden="true">🕊️</div>
         </div>
@@ -2432,6 +2433,15 @@ st.markdown(
     """
     <div class="prototype-note">
         <strong>How to use this:</strong> Paste an idea. ALETHEIA looks for power, pressure, appeal, and risk. You keep the final say. It is not legal, medical, political, religious, or official advice.
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    f"""
+    <div class="prototype-note">
+        <strong>Input language scope:</strong> {SUPPORTED_INPUT_LANGUAGE_NOTE}
     </div>
     """,
     unsafe_allow_html=True,
@@ -2461,6 +2471,7 @@ with st.sidebar:
     )
     st.header("Reading controls")
     st.caption("Choose how alert the review should be to pressure, trust, and fit.")
+    st.caption("Input scope: English + Nederlands/Dutch are calibrated across modules.")
 
     preset_labels = {
         "default": "Starting preset",
@@ -2790,7 +2801,7 @@ with tab_sim:
     with st.expander("How to write good Stress Test scenarios", expanded=False):
         st.markdown(
             """
-Stress Test works best when you write a **scenario as a governance pattern**, not as a personal accusation.
+Stress Test works best when you write a **scenario as a governance pattern**, not as a personal accusation. Use English or Nederlands/Dutch; other languages are not calibrated yet.
 
 Include: who gains power, how power is obtained, what can go wrong, what safeguards exist or are missing, and whether affected people can appeal, exit, or request correction.
 
@@ -6091,7 +6102,7 @@ with tab_chat:
     render_audit_module_integrity_panel()
 
     st.info(
-        "Bring one idea at a time. ALETHEIA checks how power moves, where appeal is protected, and where review is needed. You keep the judgment."
+        "Bring one idea at a time. English and Nederlands/Dutch inputs are calibrated. ALETHEIA checks how power moves, where appeal is protected, and where review is needed. You keep the judgment."
     )
 
     with st.expander("What Mirror Check looks for", expanded=False):

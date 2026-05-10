@@ -1303,6 +1303,37 @@ DUTCH_STRESS_TEST_RISK_SENSITIVITY_RULES: list[dict] = [
         "reason": "Automatische bevriezing van publieke steun of uitkeringen vereist menselijke review, beroep en correctie.",
         "severity": "THRESHOLD",
     },
+
+    {
+        "label": "DAO Tokenholder Concentration / Needs Safeguards",
+        "groups": [["dao", "tokenhouders", "tokenhouder", "stemmacht", "stemvermogen"], ["geen proces", "aanvechten", "benadeelde gebruikers", "meeste stemmacht"]],
+        "reason": "DAO- of tokenholder-stemmacht zonder beroeps- of correctiepad vereist anti-concentratie, appeal en plural oversight safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Normale Wet Omzeilen Zonder Audit / Needs Safeguards",
+        "groups": [["normale wet omzeilen", "wet omzeilen", "rampenbestrijdingscomité", "noodsituaties"], ["geen audit-trail", "publiceert geen audit", "zonder audit", "audit-trail"]],
+        "reason": "Noodorganen die normale wet kunnen omzeilen hebben publieke audit, beroep, sunset en onafhankelijk toezicht nodig.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Termijnlimieten Verwijderd / Needs Safeguards",
+        "groups": [["termijnlimieten", "termijnlimiet", "term limits"], ["verwijdert", "verwijderen", "wint de macht", "macht", "stabiliteit"]],
+        "reason": "Het verwijderen van termijnlimieten na machtswisseling creëert capture-druk en vereist herstel-, audit- en sunset-safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Beroepsrecht Onder Efficiëntie / Needs Safeguards",
+        "groups": [["efficiëntie", "prioriteit"], ["beroepsrecht", "beroep", "afgewezen aanvragers", "humanitair hulpsysteem"]],
+        "reason": "Efficiëntie mag beroepsrecht of menselijke review voor afgewezen aanvragers niet vervangen.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Revolutionaire Macht Zonder Onafhankelijke Audit / Needs Safeguards",
+        "groups": [["revolutie", "leider komt aan de macht", "komt aan de macht", "belooft herstel"], ["geen onafhankelijke audit", "geen audit-trail", "onafhankelijke audit-trail", "bestaat geen"]],
+        "reason": "Revolutionaire of transitie-macht vereist onafhankelijke audit, beroep en niet-permanente grenzen voordat vertrouwen redelijk is.",
+        "severity": "THRESHOLD",
+    },
     {
         "label": "Automatische Toegangscontrole / Needs Safeguards",
         "groups": [["controleert toegang", "toegang tot", "automatisch", "geautomatiseerde"], ["openbaar vervoer", "basisfuncties", "basisdiensten", "uitkeringen", "gedragsvlaggen"]],

@@ -15,7 +15,7 @@ def _header_image() -> str | None:
 
 def render_about():
     st.subheader("About ALETHEIA")
-    st.info("ALETHEIA helps review governance risk. It does not decide, enforce, or replace human judgment.")
+    st.info("ALETHEIA helps review governance risk. It does not decide, enforce, or replace human judgment. Calibrated input language support is English and Nederlands/Dutch.")
     st.caption("ALETHEIA v1.0 complete: public MVP package, release boundary, v0.2 roadmap, and deployment prep are documented.")
 
     header = _header_image()
@@ -31,6 +31,8 @@ def render_about():
             - **Evidence Lab** — separate evidence from claims.
             - **World Lens** — simulate population-impact risk without authority.
             - **Protocol Guide** — read the operating rules and limits.
+            
+            **Input language scope:** English and Nederlands/Dutch are calibrated across the app. Other languages may be pasted as text, but risk lexicons are not validated for them yet.
             """
         )
 
@@ -246,3 +248,6 @@ PATCH_66_STRESS_TEST_RISK_SENSITIVITY_NOTE = "Patch 66 raises Stress Test sensit
 # Patch 67 note: Stress Test THRESHOLD / Needs Safeguards outputs now include repair prompts and light metric softening while preserving the mirror-only authority boundary.
 
 PATCH_67_1_NOTE = "Patch 67.1 adds Dutch Stress Test lexicon calibration so Dutch governance stress scenarios route to Needs Safeguards instead of being washed into Sanctuary."
+
+
+PATCH_67_2_NOTE = "Patch 67.2 closes Dutch Stress Test lexicon gaps and adds app-wide English/Nederlands input-scope wording."

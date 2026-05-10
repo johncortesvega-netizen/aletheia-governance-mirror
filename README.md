@@ -599,3 +599,15 @@ Run the patch check with:
 ```bat
 tools\run_patch_checks.bat 67_1
 ```
+
+### Patch 67.2 — Dutch Stress Lexicon Gap Fix + App-Wide Input Scope
+
+Patch 67.2 closes the remaining Dutch Stress Test lexicon gaps after Patch 67.1. DAO tokenholder concentration, emergency-law bypass without audit trail, term-limit removal, efficiency over appeal rights, and revolutionary power without independent audit now route to `THRESHOLD / Needs Safeguards` instead of `SANCTUARY`.
+
+The app also now states globally that calibrated input support is **English and Nederlands/Dutch**. Other languages may be pasted as text, but the risk lexicons are not validated for them yet.
+
+Run:
+
+```bat
+tools\run_patch_checks.bat 67_2
+```

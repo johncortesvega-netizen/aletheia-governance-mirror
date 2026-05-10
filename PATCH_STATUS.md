@@ -207,3 +207,15 @@ Check command:
 ```bat
 tools\run_patch_checks.bat 67_1
 ```
+
+## Patch 67.2 — Dutch Stress Lexicon Gap Fix + App-Wide Input Scope
+
+Status: Ready for local verification.
+
+Closes five remaining Dutch Stress Test false-SANCTUARY patterns and adds app-wide English/Nederlands input-scope wording in the header/control surface. This patch remains diagnostic only: no enforcement, no authority claim, no Global ID sync, no public ledger, and no central storage.
+
+Check command:
+
+```bat
+tools\run_patch_checks.bat 67_2
+```
