@@ -660,3 +660,8 @@ Check:
 ```bat
 tools\run_patch_checks.bat 69_1
 ```
+
+
+### Patch 68.1 calibration note
+
+Stress Test receipts now keep ASYLUM labels and metrics consistent: ASYLUM / High outputs cannot retain THRESHOLD-style `Needs Safeguards` labels or perfect-looking trust/alignment metrics.

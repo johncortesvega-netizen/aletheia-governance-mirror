@@ -1766,6 +1766,8 @@ ensure_asylum_repair_questions = protocol_engine.ensure_asylum_repair_questions
 calibrate_malicious_leadership_metrics = protocol_engine.calibrate_malicious_leadership_metrics
 calibrate_threshold_safeguard_metrics = protocol_engine.calibrate_threshold_safeguard_metrics
 ensure_threshold_repair_questions = protocol_engine.ensure_threshold_repair_questions
+normalize_asylum_protocol_label = protocol_engine.normalize_asylum_protocol_label
+enforce_asylum_metric_consistency = protocol_engine.enforce_asylum_metric_consistency
 detects_malicious_leadership = protocol_engine.detects_malicious_leadership
 final_protocol_judgment = protocol_engine.final_protocol_judgment
 
@@ -1900,6 +1902,8 @@ def run_stress_phrase(phrase: str, weights: dict, ego_tolerance: float, divine_f
 
     base_verdict, _ = classify_verdict(report["integrity"])
     verdict, risk = apply_guardrail_verdict(base_verdict, label, needs_review)
+    label = normalize_asylum_protocol_label(label, verdict=verdict, risk=risk)
+    sim = enforce_asylum_metric_consistency(sim, verdict=verdict, risk=risk, protocol_label=label)
 
     test_result, test_note = evaluate_expected_verdict(expected, verdict)
 
@@ -2929,6 +2933,8 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                         label, needs_review, _reason = stress_label_for_phrase(processed_item)
                         base_verdict, _base_color = classify_verdict(stress_report["integrity"])
                         verdict, risk = apply_guardrail_verdict(base_verdict, label, needs_review)
+                        label = normalize_asylum_protocol_label(label, verdict=verdict, risk=risk)
+                        sim = enforce_asylum_metric_consistency(sim, verdict=verdict, risk=risk, protocol_label=label)
                         stress_report = ensure_asylum_repair_questions(
                             stress_report,
                             verdict=verdict,
@@ -2998,6 +3004,9 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         display_query = st.session_state.get("last_query", query) if last_input_mode == "Scan my idea" else ""
         label, needs_review, stress_reason = stress_label_for_phrase(display_query) if display_query else ("Manual test", "NO", "Manual numeric tuner run.")
         verdict, risk = apply_guardrail_verdict(base_verdict, label, needs_review)
+        label = normalize_asylum_protocol_label(label, verdict=verdict, risk=risk)
+        sim = enforce_asylum_metric_consistency(sim, verdict=verdict, risk=risk, protocol_label=label)
+        st.session_state.last_sim = sim
         report = ensure_asylum_repair_questions(
             report,
             verdict=verdict,

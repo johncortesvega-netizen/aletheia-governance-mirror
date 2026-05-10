@@ -471,3 +471,14 @@ This keeps advanced English scenario upload consistent with paste-input behavior
 Safety boundary unchanged: no authority claim, no public ledger, no Global ID sync, no central storage, and human review required.
 
 Check: `tools\run_patch_checks.bat 69_1`
+
+
+## Patch 68.1 — Asylum Label / Metric Consistency
+
+Status: Ready for local verification.
+
+Patch 68.1 fixes a consistency gap found in advanced English Stress Test receipts: some patterns reached `protocol_adjusted_state: ASYLUM` and `Risk: High`, but still displayed a `Needs Safeguards` label with THRESHOLD-style metrics.
+
+New rule: if final state is ASYLUM, the label is normalized to `/ Asylum`, trust is capped at 0.80, alignment at 0.85, and ego is raised to at least 0.10. Repair questions remain present and the authority boundary stays unchanged: local receipt only, no public ledger, no Global ID sync, no central storage, and human review required.
+
+Check: `tools\run_patch_checks.bat 68_1`

@@ -583,6 +583,101 @@ def calibrate_threshold_safeguard_metrics(
     return patched
 
 
+# Patch 68.1 — Asylum Label / Metric Consistency
+def normalize_asylum_protocol_label(
+    protocol_label: str | None = None,
+    *,
+    verdict: str | None = None,
+    risk: str | None = None,
+) -> str:
+    """Keep labels aligned with ASYLUM / High verdicts.
+
+    Patch 68.1: an output cannot say protocol_adjusted_state=ASYLUM
+    while the visible protocol label still ends in Needs Safeguards. This is
+    only display consistency; it does not grant authority or trigger action.
+    """
+    label = str(protocol_label or "Generic Local Scan").strip() or "Generic Local Scan"
+    is_asylum = str(verdict or "").upper() == "ASYLUM" or str(risk or "").lower() == "high"
+    if not is_asylum:
+        return label
+    lower = label.lower()
+    if lower.endswith("/ asylum") or " / asylum" in lower:
+        return label
+    if lower.endswith("/ needs safeguards"):
+        return label[: -len("/ Needs Safeguards")].rstrip() + " / Asylum"
+    if "needs safeguards" in lower:
+        return label.replace("Needs Safeguards", "Asylum").replace("needs safeguards", "Asylum")
+    return f"{label} / Asylum"
+
+
+def enforce_asylum_metric_consistency(
+    sim: dict | None,
+    *,
+    verdict: str | None = None,
+    risk: str | None = None,
+    protocol_label: str | None = None,
+) -> dict:
+    """Apply ASYLUM metric caps whenever the final verdict is ASYLUM.
+
+    This is receipt/display calibration. It prevents ASYLUM / High outputs from
+    keeping THRESHOLD-style caps such as trust=0.92, alignment=0.92, ego=0.05.
+    It remains mirror-only and always requires human review.
+    """
+    patched = dict(sim or {})
+    label = str(protocol_label or "").lower()
+    is_asylum = str(verdict or "").upper() == "ASYLUM" or str(risk or "").lower() == "high" or "asylum" in label
+    if not is_asylum:
+        patched["asylum_metric_consistency"] = {
+            "applied": False,
+            "reason": "No ASYLUM / High final state detected.",
+        }
+        return patched
+
+    trust_cap = 0.80
+    alignment_cap = 0.85
+    ego_floor = 0.10
+    stability_cap = 0.82
+
+    for key, cap in (("trust_index", trust_cap), ("alignment", alignment_cap), ("stability", stability_cap)):
+        if key in patched:
+            try:
+                patched[key] = round(min(float(patched.get(key, 1.0) or 1.0), cap), 4)
+            except (TypeError, ValueError):
+                patched[key] = cap
+
+    for key, floor in (("ego", ego_floor), ("ego_pressure", ego_floor), ("Ep", ego_floor)):
+        if key in patched:
+            try:
+                patched[key] = round(max(float(patched.get(key, 0.0) or 0.0), floor), 4)
+            except (TypeError, ValueError):
+                patched[key] = floor
+        elif key in ("ego_pressure", "Ep"):
+            patched[key] = floor
+
+    if isinstance(patched.get("trust_trace"), list):
+        patched["trust_trace"] = [round(min(float(x), trust_cap), 4) for x in patched["trust_trace"]]
+    if isinstance(patched.get("alignment_trace"), list):
+        patched["alignment_trace"] = [round(min(float(x), alignment_cap), 4) for x in patched["alignment_trace"]]
+    if isinstance(patched.get("stability_trace"), list):
+        patched["stability_trace"] = [round(min(float(x), stability_cap), 4) for x in patched["stability_trace"]]
+        patched["distribution"] = patched["stability_trace"]
+    if isinstance(patched.get("ego_trace"), list):
+        patched["ego_trace"] = [round(max(float(x), ego_floor), 4) for x in patched["ego_trace"]]
+    if isinstance(patched.get("ego_pressure_trace"), list):
+        patched["ego_pressure_trace"] = [round(max(float(x), ego_floor), 4) for x in patched["ego_pressure_trace"]]
+
+    patched["asylum_metric_consistency"] = {
+        "applied": True,
+        "trust_cap": trust_cap,
+        "alignment_cap": alignment_cap,
+        "ego_floor": ego_floor,
+        "stability_cap": stability_cap,
+        "human_review_required": True,
+        "authority_claim": False,
+    }
+    return patched
+
+
 # Throne / capture marker layer.
 #
 # Keep this list small and explicit. These markers are not policy advice; they

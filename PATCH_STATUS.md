@@ -36,6 +36,8 @@ This file is the compact local patch ledger for ALETHEIA v0.1. Longer implementa
 | 61E | World Lens Value Guards | Passed |
 | 62 | Post-61 Regression Smoke Test | Current |
 
+| 68.1 | Asylum Label / Metric Consistency | Ready for local verification |
+
 ## Current Patch
 
 Patch 62 — Post-61 Regression Smoke Test
