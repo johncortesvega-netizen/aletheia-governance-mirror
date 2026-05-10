@@ -227,3 +227,15 @@ Adds advanced English Stress Test calibration for predictive sentencing, biometr
 ## Patch 69 — Stress Test Question Prompt Detection — completed
 
 Stress Test batch mode now recognizes formal audit / repair-question banks as `QUESTION_PROMPT` review tools instead of scoring them as ordinary governance scenarios. The regression baseline file is `examples/batch_questions/formal_doctrine_repair_questions_nl.txt`, copied from the user-used `formal doctrine repair-question baseline.txt`.
+
+## Patch 69.1 — Stress Batch Scenario-vs-Question Detection
+
+Status: Ready for local verification.
+
+Fixes the Stress Test `.txt` upload path so uploaded declarative scenario batches remain Simulation `USER_INPUT` items instead of being suppressed as `QUESTION_PROMPT`. Formal audit/repair-question banks still become `QUESTION_PROMPT / Review Tool` receipts.
+
+Check command:
+
+```bat
+tools\run_patch_checks.bat 69_1
+```

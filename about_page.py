@@ -258,3 +258,5 @@ PATCH_68_ADVANCED_ENGLISH_STRESS_NOTE = "Patch 68 adds advanced English Stress T
 # Patch 69 note for maintainers:
 # Stress Test batch mode now recognizes formal audit/repair question banks as
 # QUESTION_PROMPT review tools. Baseline: examples/batch_questions/formal_doctrine_repair_questions_nl.txt
+
+PATCH_69_1_STRESS_BATCH_CLASSIFIER_NOTE = "Patch 69.1 separates Stress Test .txt scenario batches from audit-question batches so declarative advanced scenarios remain Simulation USER_INPUT while formal question banks remain QUESTION_PROMPT review tools."

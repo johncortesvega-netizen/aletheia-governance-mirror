@@ -456,3 +456,18 @@ Fix: Stress Test batch mode now checks whether the batch is a question set. If s
 
 Reminder file used by the user: `formal doctrine repair-question baseline.txt`.
 Repo baseline copy: `examples/batch_questions/formal_doctrine_repair_questions_nl.txt`.
+
+## Patch 69.1 — Stress Batch Scenario-vs-Question Detection
+
+Status: Ready for local verification.
+
+After Patch 69, uploaded Stress Test `.txt` scenario batches could be classified too broadly as question-prompt review tools. Patch 69.1 separates two batch types:
+
+- Declarative scenario batches remain Simulation `USER_INPUT` and receive normal Stress Test verdicts.
+- Formal audit/repair-question banks become `QUESTION_PROMPT / Review Tool` receipts with metrics suppressed.
+
+This keeps advanced English scenario upload consistent with paste-input behavior while preserving formal doctrine question-bank handling.
+
+Safety boundary unchanged: no authority claim, no public ledger, no Global ID sync, no central storage, and human review required.
+
+Check: `tools\run_patch_checks.bat 69_1`

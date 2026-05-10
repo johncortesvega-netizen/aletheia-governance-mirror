@@ -114,15 +114,57 @@ def parse_witness_batch_input(text: str, *, max_items: int = MAX_BATCH_RECEIPTS)
     return cleaned
 
 
+def is_witness_scenario_statement(text: str) -> bool:
+    """Return True when an item is written as a scenario statement, not an audit question.
+
+    Patch 69.1 guard: Stress Test upload batches can contain declarative
+    scenario lines such as "A smart-grid system cuts power...". Those must be
+    simulated as USER_INPUT scenarios, not suppressed as QUESTION_PROMPT review
+    questions merely because they appear in a .txt batch.
+    """
+    raw = " ".join((text or "").strip().split())
+    if not raw:
+        return False
+    lower = raw.lower()
+    scenario_starts = (
+        "a ", "an ", "the ",
+        "een ", "de ", "het ",
+    )
+    scenario_markers = (
+        " system ", " system-reset ", " trigger ", " platform ", " protocol ", " ai ", " algorithm ",
+        " leader ", " council ", " agency ", " provider ", " model ",
+        " systeem ", " platform ", " protocol ", " algoritme ",
+        " leider ", " raad ", " instantie ", " model ",
+    )
+    action_markers = (
+        " automatically ", " requires ", " recommends ", " denies ",
+        " allows ", " uses ", " shares ", " limits ", " claims ", " disabled ",
+        " krijgt ", " vereist ", " gebruikt ", " weigert ", " kan ",
+        " centraliseert ", " verzamelt ", " controleert ", " presenteert ",
+    )
+    # Declarative scenarios are usually article-led statements and do not end as questions.
+    if lower.endswith("?"):
+        return False
+    padded = f" {lower} "
+    return lower.startswith(scenario_starts) and (
+        any(marker in padded for marker in scenario_markers)
+        or any(marker in padded for marker in action_markers)
+    )
+
+
 def is_witness_question_prompt(text: str) -> bool:
     """Return True when one batch item is an audit prompt/question, not a policy proposal.
 
     This keeps question banks from being judged as if the user proposed every
     risky word inside the question. It is structural only: the text can still be
-    used later as a review prompt.
+    used later as a review prompt. Patch 69.1 makes the test strict enough that
+    declarative scenario batches uploaded as .txt are not misclassified as
+    QUESTION_PROMPT.
     """
     raw = " ".join((text or "").strip().split())
     if not raw:
+        return False
+    if is_witness_scenario_statement(raw):
         return False
     lower = raw.lower()
     question_words = (
@@ -136,10 +178,18 @@ def is_witness_question_prompt(text: str) -> bool:
 
 
 def is_witness_question_set(items: Sequence[str], *, min_ratio: float = 0.6) -> bool:
-    """Return True when a batch should be handled as a set of audit questions."""
+    """Return True when a batch should be handled as a set of audit questions.
+
+    A question set must be mostly actual questions. Scenario-statement batches
+    remain Stress Test scenarios even when uploaded as .txt files.
+    """
     clean = [item for item in items if str(item or "").strip()]
     if not clean:
         return False
+    if sum(1 for item in clean if is_witness_scenario_statement(item)) > 0:
+        scenario_ratio = sum(1 for item in clean if is_witness_scenario_statement(item)) / max(len(clean), 1)
+        if scenario_ratio >= 0.25:
+            return False
     question_count = sum(1 for item in clean if is_witness_question_prompt(item))
     return (question_count / max(len(clean), 1)) >= min_ratio
 

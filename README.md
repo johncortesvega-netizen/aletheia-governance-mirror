@@ -634,3 +634,29 @@ Protocol label: Audit Question / Review Tool
 ```
 
 The user-used source file for this regression was named `formal doctrine repair-question baseline.txt`.
+
+### Patch 69.1 — Stress Test scenario-vs-question upload detection
+
+Stress Test `.txt` upload now distinguishes declarative scenario batches from audit-question batches.
+
+Scenario statements such as:
+
+```text
+A smart-grid energy system automatically cuts power to homes without prior warning.
+```
+
+remain Simulation `USER_INPUT` items and receive normal Stress Test verdicts.
+
+Audit questions such as:
+
+```text
+Wie heeft het laatste woord als de data en de menselijke intuïtie elkaar tegenspreken?
+```
+
+remain `QUESTION_PROMPT / Review Tool` receipts with normal metrics suppressed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 69_1
+```
