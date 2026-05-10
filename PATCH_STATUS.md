@@ -177,3 +177,9 @@ Check command:
 ```bat
 tools\run_patch_checks.bat 65
 ```
+
+## Patch 66 — Stress Test Risk Sensitivity Calibration
+
+Status: Delivered
+
+Raises Stress Test sensitivity for missing appeal, no term limits, biometric access pressure, consent under pressure, fallback-data confusion, founder control, surveillance, and non-meaningful human review. Subtle stress cases now route to `THRESHOLD / Needs Safeguards`; hard capture remains `ASYLUM / High`.

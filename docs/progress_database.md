@@ -391,3 +391,15 @@ Patch 65 extends Stress Test validation after the Mirror Check batch baselines. 
 Expected behavior: Simulation receipts remain local, authority-safe, human-review required, and high-risk scenarios preserve repair questions.
 
 Boundary: diagnostic only; no governance authority, no Global ID sync, no public ledger, no central storage, no automated reset, and no enforcement.
+
+## Patch 66 — Stress Test Risk Sensitivity Calibration
+
+Status: Delivered
+
+Patch 66 raises Stress Test sensitivity for subtle governance-risk scenarios. The official 50-scenario Stress Test baseline should now route to mostly THRESHOLD / Needs Safeguards, with hard capture cases still reaching ASYLUM / High. This patch does not add authority, enforcement, public ledger, Global ID sync, or central storage.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 66
+```

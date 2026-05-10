@@ -876,6 +876,191 @@ def source_conformance_coverage(phrases: list[str]) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+
+# Patch 66 — Stress Test Risk Sensitivity Calibration
+#
+# These review markers are intentionally Threshold-oriented. They catch common
+# stress-test governance patterns that are risky even when they do not use the
+# exact hard-capture phrases above. They prevent subtle risk scenarios from
+# being washed into SANCTUARY by stable raw simulation numbers.
+STRESS_TEST_RISK_SENSITIVITY_RULES: list[dict] = [
+    {
+        "label": "Emergency Power Missing Limits / Needs Safeguards",
+        "groups": [["temporary", "crisis", "emergency"], ["leader", "authority", "power", "committee", "cabinet"], ["no term limit", "no sunset", "no appeal", "appeal path", "not define", "does not define"]],
+        "reason": "Emergency or crisis authority needs explicit sunset, appeal, audit, and restoration rules.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Predictive Risk Before Action / Needs Safeguards",
+        "groups": [["ai", "predictive", "flags", "risk labels", "automated behavior flags"], ["before they commit", "before any action", "predictive risk", "contest the label", "without human review"]],
+        "reason": "Predictive risk labeling must not replace agency, due process, appeal, and human review.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Biometric or Identity Access Pressure / Needs Safeguards",
+        "groups": [["biometric", "digital id", "real-name", "identity"], ["food", "housing", "medical", "aid", "basic", "benefits", "public service", "retaliation"]],
+        "reason": "Identity or biometric requirements tied to basic services or safety need consent, privacy, appeal, and non-exclusion safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Appeal or Correction Gap / Needs Safeguards",
+        "groups": [["no appeal", "without appeal", "does not allow", "cannot challenge", "no process", "without human review", "no explanation", "permanently"], ["appeal", "review", "correct", "challenge", "explanation", "ban", "eligibility", "frozen", "outcome"]],
+        "reason": "Missing appeal, correction, explanation, or human-change capacity creates review failure.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Token or Founder Control / Needs Safeguards",
+        "groups": [["founder", "ceo", "core", "early token", "board controls", "founder-controlled"], ["controls", "appointed", "voting power", "funding decisions", "recognized version", "ethics board"]],
+        "reason": "Founder, CEO, token, or board concentration needs independent oversight, appeal, and anti-capture limits.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Confidential Criteria / Needs Safeguards",
+        "groups": [["confidential", "proprietary", "does not explain", "without publishing", "not publish", "no audit trail", "scoring evidence"], ["criteria", "algorithm", "eligibility", "registry", "audit trail", "enforcement", "rejected"]],
+        "reason": "Opaque criteria, proprietary decision systems, or unpublished evidence need transparency, audit, and appeal safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Consent Under Pressure / Needs Safeguards",
+        "groups": [["voluntary", "consent", "opt out", "refusing", "must sign", "form"], ["lose access", "core features", "essential services", "local services", "keep essential", "access to"]],
+        "reason": "Consent is not reliable when refusal causes loss of essential access, practical safety, or basic services.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Nudging or Vote-Shaping / Needs Safeguards",
+        "groups": [["nudging", "shape voting", "voting behavior", "discourage public criticism", "unity"], ["authority", "emergency", "national", "system", "emotional language"]],
+        "reason": "Persuasion infrastructure that shapes voting or suppresses criticism needs strict transparency and consent safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Permanent Emergency Drift / Needs Safeguards",
+        "groups": [["temporary", "emergency", "crisis", "aid distribution"], ["keeps it", "after the crisis", "removes term limits", "maintain stability", "emergency override"]],
+        "reason": "Crisis measures drifting into permanent control need sunset, public audit, and revocation safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Reputation or Social Scoring / Needs Safeguards",
+        "groups": [["reputation", "behavior scoring", "civic scoring", "public dashboard", "ranks", "scoring system"], ["employers", "landlords", "student", "privileges", "compliant", "trustworthy", "neighborhoods", "integrity"]],
+        "reason": "Reputation, civic, behavior, or integrity scoring needs contestability, data correction, and anti-discrimination safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Surveillance or Indefinite Data Storage / Needs Safeguards",
+        "groups": [["surveillance", "stores", "movement data", "family movement", "centralizes", "filters learning", "public communication"], ["indefinitely", "one central authority", "under one office", "no community review", "protects children"]],
+        "reason": "Centralized monitoring, filtering, or indefinite data storage needs privacy, minimization, local review, and appeal safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Extraordinary Authority Claim / Needs Safeguards",
+        "groups": [["exceptional moral authority", "religiously inspired", "public law", "normal review mechanisms", "secular", "testable justification"], ["suspended", "without", "presented as", "asks"]],
+        "reason": "Extraordinary or faith-inspired authority claims must remain public, testable, appealable, and non-coercive in governance use.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "External Watchdog Blocked / Needs Safeguards",
+        "groups": [["external watchdog", "unanimous internal approval", "investigate", "complaint path", "no training", "oversight"], ["before", "requires", "no", "offers no"]],
+        "reason": "Oversight that depends on internal permission, weak training, or missing complaint paths is vulnerable to capture.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Fallback Data Disclosure Gap / Needs Safeguards",
+        "groups": [["fallback", "missing data", "neutral", "trust data", "directly measured"], ["displays", "does not tell", "treats", "as if"]],
+        "reason": "Fallback or missing data must be labeled clearly so modeled values are not mistaken for observed evidence.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Population Weighting Protection Gap / Needs Safeguards",
+        "groups": [["population size", "population-weighted", "global allocation", "assigns influence"], ["small groups", "protected", "does not explain"]],
+        "reason": "Population-weighted influence needs minority-rights and small-group protection safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Civil Rights Pause / Needs Safeguards",
+        "groups": [["pause civil rights", "civil rights", "during unrest"], ["who restores", "does not define", "committee"]],
+        "reason": "Any civil-rights pause needs strict lawful limits, restoration authority, appeal, and public audit.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Ethical Language Without Mechanisms / Needs Safeguards",
+        "groups": [["promises care", "care and dignity", "ethical language", "high integrity", "values transparency"], ["no budget", "no timeline", "no responsible office", "missing safeguards", "keeps", "confidential"]],
+        "reason": "Values language cannot substitute for concrete budgets, responsibilities, appeal paths, audit trails, and safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Authority Boundary Confusion / Needs Safeguards",
+        "groups": [["local witness receipt", "official certification", "global grid simulation", "political determination"], ["believe", "does not warn", "not warn"]],
+        "reason": "Receipts and simulations must be clearly labeled as mirror outputs, not official certification or political determination.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Family or Community Stability Blind Spot / Needs Safeguards",
+        "groups": [["family stability", "community ties", "housing allocation", "families", "parents"], ["ignoring", "optimizes", "occupancy"]],
+        "reason": "Efficiency-oriented allocation should not erase family stability, community ties, or human-scale review.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Founder-Controlled Funding / Needs Safeguards",
+        "groups": [["founder-controlled", "founder controlled", "foundation board", "one founder"], ["funding", "donations", "account", "all"]],
+        "reason": "Founder-controlled funding or donation infrastructure needs independent audit, plural oversight, and appeal safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Term Limit Removal / Needs Safeguards",
+        "groups": [["removes term limits", "remove term limits", "term limits"], ["maintain stability", "wins power", "after protests", "reform movement"]],
+        "reason": "Removing term limits after a power transition creates capture pressure and needs restoration, audit, and sunset safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Efficiency Over Appeal Rights / Needs Safeguards",
+        "groups": [["efficiency", "prioritizes efficiency"], ["appeal rights", "rejected applicants", "humanitarian aid"]],
+        "reason": "Efficiency cannot replace appeal rights for affected people, especially in aid or public-service contexts.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Revolutionary Power Without Audit Trail / Needs Safeguards",
+        "groups": [["leader gains power", "revolution", "after revolution"], ["no independent audit", "no audit trail", "promises repair"]],
+        "reason": "Revolutionary or transitional authority needs independent audit, appeal, and non-permanent limits before it can be trusted.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Human Review Without Power / Needs Safeguards",
+        "groups": [["human review", "reviewers"], ["cannot change", "automated outcome", "decision model"]],
+        "reason": "Human review becomes a formality if reviewers cannot change or correct the automated outcome.",
+        "severity": "THRESHOLD",
+    },
+]
+
+
+def _stress_rule_matches(text_value: str, rule: dict) -> bool:
+    """Return True when every group in a risk-sensitivity rule is represented."""
+    t = (text_value or "").lower()
+    groups = rule.get("groups") or []
+    for group in groups:
+        if not any(str(term).lower() in t for term in group):
+            return False
+    return True
+
+
+def stress_risk_sensitivity_marker(text_value: str) -> dict | None:
+    """Return the first soft stress-test risk marker for scenario calibration."""
+    for rule in STRESS_TEST_RISK_SENSITIVITY_RULES:
+        if _stress_rule_matches(text_value, rule):
+            return rule
+    return None
+
+
+def stress_risk_sensitivity_label(text_value: str) -> tuple[str, str, str]:
+    """Classify subtle stress-test risks that need safeguards.
+
+    This layer is mirror-only. It raises review sensitivity; it does not
+    command, enforce, remove authority, or replace human judgment.
+    """
+    marker = stress_risk_sensitivity_marker(text_value)
+    if not marker:
+        return "Generic Local Scan", "NO", "No stress sensitivity marker matched."
+    return marker["label"], "YES", marker["reason"]
+
+
 def stress_label_for_phrase(phrase: str) -> tuple[str, str, str]:
     """
     Internal pressure-test classifier used by the audit guardrail layer.
@@ -1232,6 +1417,12 @@ def stress_label_for_phrase(phrase: str) -> tuple[str, str, str]:
     if stress_contains(t, ["randomly selected nodes serve as the final jury", "random legal jury", "final jury"]) and not stress_contains(t, ["due process", "appeal rights", "public reasoning", "auditable", "temporary", "bounded jurisdiction"]):
         return "Random Legal Jury / Needs Jurisdiction Safeguards", "YES", "Random legal authority needs due process, appeal, audit, temporariness, and jurisdiction limits."
 
+    # Patch 66: in stress scenarios, appeal-right language can describe missing or overridden review;
+    # catch efficiency-over-appeal before the older broad safe legal-jury clause.
+    sensitivity_label, sensitivity_review, sensitivity_reason = stress_risk_sensitivity_label(phrase)
+    if sensitivity_label != "Generic Local Scan":
+        return sensitivity_label, sensitivity_review, sensitivity_reason
+
     if stress_contains(t, ["due process", "appeal rights", "public reasoning", "auditable nodes"]):
         return "Random Legal Jury Protocol", "NO", "Legal safeguards are explicit."
 
@@ -1267,6 +1458,10 @@ def stress_label_for_phrase(phrase: str) -> tuple[str, str, str]:
 
     if stress_contains(t, ["data sanctuary", "biological and digital archives"]):
         return "Data Sanctuary", "NO", "Archive-preservation concept detected."
+
+    sensitivity_label, sensitivity_review, sensitivity_reason = stress_risk_sensitivity_label(phrase)
+    if sensitivity_label != "Generic Local Scan":
+        return sensitivity_label, sensitivity_review, sensitivity_reason
 
     matrix_label, matrix_review, matrix_reason = source_conformance_label(phrase)
     if matrix_label != "Generic Local Scan":

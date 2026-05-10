@@ -574,3 +574,9 @@ Check:
 ```bat
 tools\run_patch_checks.bat 65
 ```
+
+### Patch 66 — Stress Test Risk Sensitivity Calibration
+
+Patch 66 hardens Stress Test scoring so subtle governance-risk scenarios do not wash into `SANCTUARY` solely because raw simulation metrics are stable. Missing appeal paths, no term limits, biometric access pressure, consent under pressure, fallback-data confusion, founder control, surveillance, and non-meaningful human review now route to at least `THRESHOLD / Needs Safeguards` unless explicit safeguards are present. Hard capture patterns still route to `ASYLUM / High`.
+
+This remains mirror-only: ALETHEIA flags risk and asks for human review; it does not command, enforce, reset, remove leaders, sync Global ID, or create authority.
