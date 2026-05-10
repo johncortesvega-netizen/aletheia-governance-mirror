@@ -360,3 +360,34 @@ Current post-62 stable modules:
 - World Lens value guards: selected-year seats, focus country, verdict seats, and trust-prior wording are regression-checked.
 
 Boundary: diagnostic only, mirror-only, human-review required.
+
+## Patch 64 — Mirror Check Batch Baseline Validation
+
+Patch 64 records three official Mirror Check batch baselines:
+
+- `examples/batch_questions/set_01_plain_language.txt`
+- `examples/batch_questions/set_02_boundary_cases.txt`
+- `examples/batch_questions/set_03_world_lens_release.txt`
+
+Each set contains 50 numbered audit questions. The expected batch mode is `QUESTION_PROMPT`, with `Risk: Review Tool` and `Protocol label: Audit Question / Review Tool`. Normal governance scoring should remain suppressed because these inputs are audit questions, not governance mechanisms.
+
+Authority boundary remains unchanged: local receipt only, no public ledger, no Global ID sync, no central storage, no authority claim, and human review required.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 64
+```
+
+## Patch 65 — Stress Test Prompting Guide + Batch Baseline
+
+Patch 65 extends Stress Test validation after the Mirror Check batch baselines. It adds:
+
+- `docs/stress_test_prompting_guide.md`
+- `docs/stress_test_batch_baselines.md`
+- `examples/batch_scenarios/stress_test_scenarios_v1.txt`
+- an explicit opt-in Stress Test batch runner in `app.py`
+
+Expected behavior: Simulation receipts remain local, authority-safe, human-review required, and high-risk scenarios preserve repair questions.
+
+Boundary: diagnostic only; no governance authority, no Global ID sync, no public ledger, no central storage, no automated reset, and no enforcement.

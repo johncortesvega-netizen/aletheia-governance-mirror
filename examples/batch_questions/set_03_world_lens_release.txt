@@ -1,0 +1,50 @@
+01. Welke landen of groepen krijgen veel invloed door bevolkingsweging?
+02. Hoe wordt zichtbaar dat seat allocation exact optelt tot 9000?
+03. Wat gebeurt er met kleine landen bij afronding van seats?
+04. Kan een klein land verdwijnen uit de grafiek terwijl het toch moreel relevant is?
+05. Hoe wordt uitgelegd dat World Lens een simulatie is en geen bestuursmandaat?
+06. Wanneer kan een chart autoritair overkomen zonder dat de data fout is?
+07. Wordt het geselecteerde jaar overal consistent gebruikt?
+08. Hoe voorkom je dat grafieken oude waarden blijven tonen na een nieuwe selectie?
+09. Toont de year dropdown alleen jaren die voor dat land beschikbaar zijn?
+10. Wat gebeurt er als een land alleen data heeft voor enkele jaren?
+11. Hoe wordt een ontbrekend jaar zichtbaar gemaakt?
+12. Mag een land-year card worden getoond als het land voor dat jaar geen data heeft?
+13. Hoe voorkom je dat globale gemiddelden als landwaarden worden gelezen?
+14. Welke labels tonen dat raw trust ontbreekt?
+15. Hoe wordt neutral trust-prior fallback uitgelegd aan niet-technische gebruikers?
+16. Kan de gebruiker zien welke bronnen wel en niet aanwezig zijn?
+17. Hoe wordt empirical coverage onderscheiden van waarheid?
+18. Wanneer is coverage hoog genoeg om een rapport te tonen?
+19. Wanneer moet de app zeggen dat er onvoldoende bewijs is?
+20. Hoe wordt WGI-coverage uitgelegd zonder institutionele autoriteit te claimen?
+21. Hoe wordt V-Dem-data gebruikt zonder democratie als simpele score te behandelen?
+22. Wat als governance-indicatoren elkaar tegenspreken?
+23. Moet de app dan middelen, markeren, of menselijke review vragen?
+24. Hoe toont World Lens verschil tussen measured data en modeled fallback?
+25. Kan een SANCTUARY-label te geruststellend klinken?
+26. Welke disclaimer hoort bij elk verdict-label?
+27. Hoe wordt voorkomen dat ASYLUM als straflabel wordt gelezen?
+28. Hoe wordt THRESHOLD uitgelegd als review-zone in plaats van mislukking?
+29. Welke reparatievragen horen bij lage coverage?
+30. Welke reparatievragen horen bij hoge collapse probability?
+31. Welke reparatievragen horen bij hoge integrity maar lage trust data?
+32. Hoe wordt een country report packet lokaal verifieerbaar gemaakt?
+33. Welke hashes horen in een World Lens receipt?
+34. Moet een World Lens receipt ooit naar een public ledger gaan?
+35. Hoe blijft het systeem privacy-first bij wereldwijde analyses?
+36. Wat is het minimale bewijs om een country-year output te tonen?
+37. Hoe worden excluded diagnostic rows uitgelegd?
+38. Wat betekent het als 33 rijen diagnostic-only zijn?
+39. Kan een gebruiker zien waarom een rij is uitgesloten?
+40. Hoe test je dat Netherlands 2024 niet uit een fallback komt?
+41. Hoe test je dat chart-year en selected-year gelijk zijn?
+42. Hoe toon je dat India en China veel seats krijgen door population-weighting, niet door morele score?
+43. Moet de app alternatieve wegingen tonen of dat bewaren voor v0.2?
+44. Welke fout zou het gevaarlijkst zijn in de World Lens module?
+45. Hoe voorkomt de release package dat gebruikers te veel vertrouwen aan de demo geven?
+46. Kan een sample report duidelijk maken wat Aletheia niet weet?
+47. Hoe wordt deploy-informatie gescheiden van governance-claims?
+48. Welke private bestanden mogen nooit in een GitHub release staan?
+49. Hoe blijft de README kort genoeg zonder de beperkingen te verbergen?
+50. Wanneer is v1 klaar genoeg om publiek te testen zonder overclaiming?

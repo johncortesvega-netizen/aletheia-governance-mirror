@@ -153,3 +153,27 @@ Check command:
 ```bat
 tools\run_patch_checks.bat 63
 ```
+
+## Patch 64 — Mirror Check Batch Baseline Validation
+
+Status: Ready for local verification.
+
+Records three 50-question Mirror Check batch baselines and documents the expected `QUESTION_PROMPT` receipt contract: 50 receipts, 50 JSON receipts, no scenario-hash mismatches, no normal scoring, and authority boundary preserved.
+
+Check command:
+
+```bat
+tools\run_patch_checks.bat 64
+```
+
+## Patch 65 — Stress Test Prompting Guide + Batch Baseline
+
+Status: Ready for local verification.
+
+Adds Stress Test scenario-writing guidance, an official 50-scenario Stress Test baseline, and an explicit opt-in local Stress Test batch tester. The batch runner produces local Simulation receipts only and preserves the authority boundary.
+
+Check command:
+
+```bat
+tools\run_patch_checks.bat 65
+```

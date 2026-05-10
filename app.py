@@ -2775,6 +2775,25 @@ with tab_sim:
                 "capital_scale": st.slider("Capital scale", 0.0, 1.0, default_manual_features["capital_scale"], 0.01, key="manual_capital_scale"),
             }
 
+    with st.expander("How to write good Stress Test scenarios", expanded=False):
+        st.markdown(
+            """
+Stress Test works best when you write a **scenario as a governance pattern**, not as a personal accusation.
+
+Include: who gains power, how power is obtained, what can go wrong, what safeguards exist or are missing, and whether affected people can appeal, exit, or request correction.
+
+**Weak:** `Is this bad?`
+
+**Better:** `A temporary crisis leader gains emergency authority after a disaster, but no term limit, appeal path, or independent review is defined.`
+
+**Weak:** `John is evil.`
+
+**Better:** `A named leader gains centralized authority after a crisis. The system has weak review, unclear limits, and no visible exit path.`
+
+ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when testing. The Invisibility Filter can reduce actor/name/title bias while keeping the governance pattern visible.
+            """
+        )
+
     run = st.button("Run review", type="primary", use_container_width=True, key="simulation_run_button")
     if run:
         if input_mode == "Scan my idea" and input_status == "EMPTY_INPUT":
@@ -2801,6 +2820,120 @@ with tab_sim:
                 update_protocol_state(selected_context=selected_context, last_update_source="Stress Test")
                 if input_mode == "Scan my idea":
                     st.rerun()
+
+    with st.expander("Stress Test Batch Testing — up to 50 scenarios", expanded=False):
+        st.caption("Upload or paste scenario-style inputs. Batch testing is explicit opt-in, local-only, and creates local witness receipts.")
+        stress_batch_source = st.radio(
+            "Stress batch input source",
+            ["Upload .txt", "Paste list"],
+            horizontal=True,
+            key="stress_batch_source_mode",
+        )
+        stress_batch_text = ""
+        if stress_batch_source == "Upload .txt":
+            stress_upload = st.file_uploader(
+                "Upload Stress Test .txt list",
+                type=["txt"],
+                key="stress_batch_txt_upload",
+                help="Use one scenario per line, a numbered list, or --- between longer items.",
+            )
+            if stress_upload is not None:
+                stress_batch_text = stress_upload.getvalue().decode("utf-8", errors="replace")
+                st.caption(f"Staged {stress_upload.name}. Press Run Stress Batch to process it.")
+        else:
+            stress_batch_text = st.text_area(
+                "Paste Stress Test scenarios",
+                height=180,
+                key="stress_batch_manual_input",
+                placeholder="1. A temporary leader gains emergency power without a term limit.\n2. A public service requires biometric ID before food or housing support.",
+            )
+
+        stress_batch_items = parse_witness_batch_input(stress_batch_text, max_items=MAX_BATCH_RECEIPTS)
+        if stress_batch_text.strip():
+            st.caption(f"{len(stress_batch_items)} scenario(s) ready. Maximum: {MAX_BATCH_RECEIPTS}.")
+        stress_batch_apply_invisibility = st.checkbox(
+            "Apply Invisibility Filter to Stress batch",
+            value=bool(stress_batch_items),
+            key="stress_batch_invisibility_filter",
+            disabled=not bool(stress_batch_items),
+        )
+        run_stress_batch = st.button(
+            "Run Stress Batch",
+            type="primary",
+            use_container_width=True,
+            disabled=not bool(stress_batch_items),
+            key="simulation_run_stress_batch_button",
+        )
+        if run_stress_batch:
+            stress_receipts = []
+            stress_rows = []
+            with st.spinner(f"Running {len(stress_batch_items)} local Stress Test scenario(s)..."):
+                for idx, raw_item in enumerate(stress_batch_items, start=1):
+                    processed_item = raw_item
+                    invisibility_report = None
+                    if stress_batch_apply_invisibility:
+                        invisibility_report = decouple_actor(raw_item)
+                        processed_item = invisibility_report.get("decoupled_text", raw_item)
+                    scan, features, sim, stress_report, scan_mode = run_audit(
+                        processed_item,
+                        default_manual_features,
+                        weights,
+                        ego_tolerance,
+                        divine_floor,
+                        steps,
+                        n_agents,
+                        "Scan my idea",
+                    )
+                    label, needs_review, _reason = stress_label_for_phrase(processed_item)
+                    base_verdict, _base_color = classify_verdict(stress_report["integrity"])
+                    verdict, risk = apply_guardrail_verdict(base_verdict, label, needs_review)
+                    stress_report = ensure_asylum_repair_questions(
+                        stress_report,
+                        verdict=verdict,
+                        risk=risk,
+                        protocol_label=label,
+                        scan=scan,
+                    )
+                    receipt = build_local_witness_receipt(
+                        module="Simulation",
+                        input_text=raw_item,
+                        processed_text=processed_item,
+                        input_status="USER_INPUT",
+                        scan=scan,
+                        sim=sim,
+                        report=stress_report,
+                        verdict=verdict,
+                        risk=risk,
+                        protocol_label=label,
+                        invisibility_applied=isinstance(invisibility_report, dict) and invisibility_report.get("invisibility_filter_applied", False),
+                        app_version=APP_VERSION,
+                    )
+                    stress_receipts.append(receipt)
+                    stress_rows.append({
+                        "#": idx,
+                        "State": verdict,
+                        "Risk": risk,
+                        "Label": label,
+                        "Integrity": round(float(stress_report.get("integrity", 0.0)), 3),
+                        "Repair questions": len(stress_report.get("repair_questions") or []),
+                    })
+            archive_bytes, batch_index = build_local_witness_batch_zip(stress_receipts, module="Simulation", app_version=APP_VERSION)
+            st.session_state.stress_batch_archive_bytes = archive_bytes
+            st.session_state.stress_batch_index = batch_index
+            st.session_state.stress_batch_summary = stress_rows
+            st.success(f"Stress batch complete. {len(stress_receipts)} local receipt(s) are ready to download.")
+
+        if st.session_state.get("stress_batch_summary"):
+            st.dataframe(pd.DataFrame(st.session_state.stress_batch_summary), use_container_width=True, hide_index=True, height=300)
+        if st.session_state.get("stress_batch_archive_bytes"):
+            st.download_button(
+                "⬇️ Download Stress Test batch receipts",
+                data=st.session_state.stress_batch_archive_bytes,
+                file_name="aletheia_stress_test_batch_witness_receipts.zip",
+                mime="application/zip",
+                use_container_width=True,
+                key="simulation_download_stress_batch_receipts",
+            )
 
     if "last_report" not in st.session_state:
         st.info("No review has run yet. Add your input, load a demo, or use the Manual test.")

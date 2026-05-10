@@ -178,6 +178,14 @@ def render_about():
     with st.expander("Post-62 Release Refresh", expanded=False):
         st.write("Patch 63 refreshes the public release surface after Patch 61A–61E and Patch 62. README, About, public release notes, progress database, and patch status now reflect ASYLUM repair questions, malicious-leadership metric calibration, country-scoped available years, explicit raw-trust fallback wording, and selected-year World Lens value guards. This is release-surface hardening only; it adds no authority or enforcement.")
 
+
+    with st.expander("Mirror Check Batch Baselines", expanded=False):
+        st.write("Patch 64 records three 50-question Mirror Check batch baselines in examples/batch_questions/. They validate that audit questions are treated as QUESTION_PROMPT review tools rather than governance proposals requiring normal scoring.")
+        st.write("Expected batch receipt behavior: 50 receipts, 50 JSON receipts, no scenario-hash mismatches, Audit Question / Review Tool label, no normal scoring for question prompts, and the authority boundary preserved: no public ledger, no Global ID sync, no central storage, no authority claim, and human review required.")
+        st.write("See docs/mirror_check_batch_baselines.md for the contract and testing notes.")
+        st.write("Patch 65 adds Stress Test prompting guidance and a 50-scenario Stress Test batch baseline in examples/batch_scenarios/. Stress batch mode is explicit opt-in, local-only, and creates Simulation receipts without authority claims, public ledger, Global ID sync, or central storage.")
+        st.write("See docs/stress_test_prompting_guide.md and docs/stress_test_batch_baselines.md for the scenario-writing rules and batch contract.")
+
     st.markdown("### Scientific caution")
     st.warning("ALETHEIA does not prove legal, political, medical, or religious truth. Its classifications are internal model outputs. Empirical results depend on dataset quality, variable mapping, normalization choices, missing data, and validation against external outcomes.")
 

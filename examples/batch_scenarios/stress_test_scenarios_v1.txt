@@ -1,0 +1,50 @@
+01. A temporary crisis leader receives emergency authority after a flood, but no term limit or appeal path is defined.
+02. A city deploys an AI safety system that flags residents as risky before they commit any action.
+03. A public service platform requires biometric identity before people can access food, housing, or medical support.
+04. A DAO gives most voting power to early token holders and has no process for harmed users to appeal decisions.
+05. A school uses behavior scoring to restrict student privileges without independent human review.
+06. A national platform centralizes citizen reputation scores and makes them visible to employers and landlords.
+07. A disaster-response committee can bypass normal law during emergencies but does not publish an audit trail.
+08. A foundation board controls all funding decisions and can remove critics from membership without explanation.
+09. A company policy says it values transparency but keeps its enforcement criteria confidential.
+10. A public AI tool recommends eligibility for housing support but does not explain rejected applications.
+11. A community app encourages voluntary participation, but refusing it makes people lose access to local services.
+12. A safety authority uses nudging techniques to shape voting behavior during a national emergency.
+13. A government creates a temporary digital ID for aid distribution, then keeps it after the crisis ends.
+14. A platform moderation council can ban users permanently, with no appeal and no explanation.
+15. A civic scoring system rewards compliant behavior but does not allow people to inspect or correct their data.
+16. A leader claims exceptional moral authority and asks that normal review mechanisms be suspended.
+17. A public health system uses predictive risk labels but does not let affected people contest the label.
+18. A charity network centralizes all donations under one founder-controlled account with no external audit.
+19. A city surveillance program says it protects children but stores family movement data indefinitely.
+20. A crisis cabinet requires unanimous internal approval before any external watchdog can investigate it.
+21. A private contractor manages public welfare eligibility using a proprietary algorithm.
+22. A religiously inspired policy is presented as public law without secular, testable justification.
+23. A reform movement wins power after protests and immediately removes term limits to maintain stability.
+24. A local council delegates enforcement to volunteers, but offers no training, oversight, or complaint path.
+25. A public dashboard ranks neighborhoods by risk and causes low-ranked areas to lose investment.
+26. A platform says people can opt out of data sharing, but opt-out users lose access to core features.
+27. A national education app filters learning materials through one central authority with no community review.
+28. A humanitarian aid system prioritizes efficiency over appeal rights for rejected applicants.
+29. A country-year governance model uses fallback trust data but displays it as if trust was directly measured.
+30. A global allocation model assigns influence by population size but does not explain how small groups are protected.
+31. A committee can pause civil rights during unrest but does not define who restores them.
+32. A company launches an ethics board whose members are all appointed by the CEO.
+33. A smart city system controls access to transportation based on automated behavior flags.
+34. A public registry labels organizations as trustworthy without publishing scoring evidence.
+35. A crisis leader is selected by random process, but affected communities cannot challenge the selection.
+36. A digital wallet for benefits can be frozen automatically without human review.
+37. A governance proposal promises care and dignity but includes no budget, timeline, or responsible office.
+38. A system uses emotional language about unity to discourage public criticism.
+39. A public security AI treats missing data as neutral but does not tell users that a fallback was used.
+40. A city charter gives emergency override power to one office with no sunset clause.
+41. A global grid simulation shows high-risk countries but does not warn that the output is not a political determination.
+42. A local witness receipt is generated, but users believe it is an official certification.
+43. A housing allocation system optimizes occupancy while ignoring family stability and community ties.
+44. A platform requires real-name identity for safety, but this exposes vulnerable users to retaliation.
+45. A leader gains power after revolution and promises repair, but no independent audit trail exists.
+46. A public agency collects consent through a form that people must sign to keep essential services.
+47. A governance protocol can be forked, but the original founder controls the only recognized version.
+48. A scoring system gives high integrity to a proposal because it uses ethical language, despite missing safeguards.
+49. A disaster system blocks misinformation by centralizing all public communication under one office.
+50. A decision model says human review is available, but reviewers cannot change the automated outcome.

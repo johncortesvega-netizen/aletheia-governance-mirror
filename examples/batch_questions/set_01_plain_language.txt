@@ -1,0 +1,50 @@
+01. Wie merkt als eerste dat een systeem mensen minder vrij maakt?
+02. Kan iemand bezwaar maken zonder status, geld of technische kennis?
+03. Wat gebeurt er als een besluit logisch klopt maar menselijk onrechtvaardig voelt?
+04. Wie kan een fout in het systeem zichtbaar maken?
+05. Kan een gebruiker stoppen met meedoen zonder basisrechten te verliezen?
+06. Waar zit de grootste machtsconcentratie in dit ontwerp?
+07. Welke keuze lijkt vrijwillig maar is dat misschien niet?
+08. Wie profiteert het meest van deze regel?
+09. Wie draagt het risico als deze regel faalt?
+10. Kan de zwakste persoon in het systeem veilig nee zeggen?
+11. Is er een echte beroepsmogelijkheid of alleen een klachtenformulier?
+12. Wie bewaakt dat tijdelijke macht tijdelijk blijft?
+13. Welke data ontbreekt om dit eerlijk te beoordelen?
+14. Wordt ontbrekende data duidelijk gemeld of stilletjes ingevuld?
+15. Kan iemand de uitkomst controleren zonder de maker te vertrouwen?
+16. Is de taal begrijpelijk voor gewone mensen?
+17. Zijn de gevolgen voor kinderen expliciet meegenomen?
+18. Beschermt dit systeem gezinnen of maakt het ze afhankelijker?
+19. Kan een minderheid bezwaar maken zonder als probleem te worden behandeld?
+20. Wordt veiligheid gebruikt als reden om te veel controle te nemen?
+21. Wat voorkomt dat de beheerder zijn eigen regels omzeilt?
+22. Wie kan het systeem pauzeren als het schade veroorzaakt?
+23. Is er een herstelpad voor mensen die verkeerd geraakt worden?
+24. Kan het systeem toegeven dat het ongelijk had?
+25. Wordt vertrouwen opgebouwd of afgedwongen?
+26. Is het doel van het systeem helder genoeg om misbruik te herkennen?
+27. Welke menselijke ervaring wordt niet door de cijfers gevangen?
+28. Kan een lokale gemeenschap eigen correcties voorstellen?
+29. Wordt privacy beschermd als recht of alleen als technisch risico?
+30. Kan iemand het systeem begrijpen zonder specialist te zijn?
+31. Wie bepaalt wanneer voldoende bewijs is geleverd?
+32. Is er verschil tussen wat het systeem claimt en wat het echt doet?
+33. Welke mooie woorden missen concrete mechanismen?
+34. Bestaat er een tijdslimiet op macht of toegang?
+35. Kan macht teruggegeven worden aan de mensen die geraakt worden?
+36. Zijn de controlemechanismen onafhankelijk genoeg?
+37. Wordt kritiek als informatie behandeld of als bedreiging?
+38. Hoe voorkomt dit ontwerp dat macht zich langzaam vastzet?
+39. Welke basisrechten kunnen door deze regel onder druk komen?
+40. Is er een exit-optie die praktisch haalbaar is?
+41. Worden mensen geholpen om zelf te kiezen of gestuurd naar één uitkomst?
+42. Kan het systeem functioneren zonder centrale identiteit?
+43. Hoe wordt voorkomen dat gemak belangrijker wordt dan waardigheid?
+44. Wie ziet de audit trail en wie kan hem betwisten?
+45. Welke beslissingen blijven menselijk reviewbaar?
+46. Kan een fout worden hersteld zonder gezichtsverlies voor de maker?
+47. Wordt een hoge score gebruikt als vrijbrief voor minder toezicht?
+48. Wat gebeurt er bij crisisdruk?
+49. Blijft dit systeem een spiegel als de uitkomst tegen de maker ingaat?
+50. Welke concrete safeguard zou de meeste capture-risk verminderen?

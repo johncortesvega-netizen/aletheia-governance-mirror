@@ -533,3 +533,44 @@ tools\run_patch_checks.bat 63
 ```
 
 Release boundary remains unchanged: ALETHEIA is diagnostic only and adds no governance authority, Global ID sync, real 9k selection, World Leader logic, automatic reset, public ledger authority, neural validation, religious validation, legal authority, or automated enforcement.
+
+## Patch 64 — Mirror Check Batch Baselines
+
+Patch 64 adds three official 50-question batch baselines for Mirror Check validation:
+
+- `examples/batch_questions/set_01_plain_language.txt`
+- `examples/batch_questions/set_02_boundary_cases.txt`
+- `examples/batch_questions/set_03_world_lens_release.txt`
+
+The batch contract is documented in `docs/mirror_check_batch_baselines.md`.
+
+Expected receipt behavior:
+
+- each batch contains exactly 50 questions;
+- each question is treated as `QUESTION_PROMPT`;
+- each receipt is an `Audit Question / Review Tool`;
+- scenario hashes should match the corresponding question text;
+- normal governance scoring should remain suppressed for question prompts;
+- local receipts preserve the authority boundary: no public ledger, no Global ID sync, no central storage, no authority claim, and human review required.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 64
+```
+
+## Patch 65 — Stress Test Batch Baseline
+
+Patch 65 adds Stress Test scenario-writing guidance and a first 50-scenario batch baseline:
+
+- `docs/stress_test_prompting_guide.md`
+- `docs/stress_test_batch_baselines.md`
+- `examples/batch_scenarios/stress_test_scenarios_v1.txt`
+
+Stress Test batch mode is explicit opt-in and local-only. It creates Simulation receipts for scenario-style governance stress tests. It does not publish, sync, enforce, decide, or create authority.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 65
+```

@@ -1,0 +1,50 @@
+01. Mag een systeem ingrijpen als het 99 procent zeker is dat iemand schade gaat veroorzaken?
+02. Wanneer wordt preventie een vorm van dwang?
+03. Mag iemand vrijwillig vragen om tijdelijke bescherming tegen zijn eigen impulsen?
+04. Hoe wordt bewezen dat die vrijwillige bescherming echt herroepbaar is?
+05. Wat gebeurt er als iemand onder economische druk toestemming geeft?
+06. Is toestemming geldig als weigeren toegang tot werk, zorg of huisvesting kost?
+07. Hoe behandelt het systeem een claim die betekenisvol is maar niet verifieerbaar?
+08. Mag een spirituele claim ooit beleidsautoriteit krijgen zonder openbaar bewijs?
+09. Wat als een leider oprecht gelooft dat hij goed doet maar de gevolgen schadelijk zijn?
+10. Wat weegt zwaarder: intentie, bewijs, of effect op basisrechten?
+11. Hoe reageert het systeem als 75 procent stemt tegen de rechten van een minderheid?
+12. Wanneer moet een meerderheidsbesluit worden gemarkeerd als capture-risk?
+13. Wat als de 9k zelf door propaganda worden beïnvloed zonder het te merken?
+14. Hoe detecteer je ambient capture zonder gedachten te lezen?
+15. Kan een reset-mechanisme zelf als machtswapen worden misbruikt?
+16. Welke signalen tonen dat een noodprocedure wordt gegijzeld?
+17. Wat gebeurt er als een crisismaatregel steeds wordt verlengd?
+18. Wanneer wordt tijdelijke uitzondering permanente macht?
+19. Mag een systeem data gebruiken die iemand niet begrijpt maar wel heeft goedgekeurd?
+20. Hoe ziet echte informed consent eruit bij complexe technologie?
+21. Wat als de enige beschikbare data structureel armere groepen mist?
+22. Kan een score eerlijk zijn als de brondata ongelijk verdeeld is?
+23. Hoe toon je onzekerheid zonder dat mensen het rapport negeren?
+24. Wanneer is een prior nuttig en wanneer maskeert hij ontbrekende werkelijkheid?
+25. Wat als raw trust ontbreekt maar de trust-prior overal wordt ingevuld?
+26. Hoe voorkom je dat fallback-data als gemeten data wordt gelezen?
+27. Wat gebeurt er als een land geen data heeft voor het gekozen jaar?
+28. Mag de interface dan terugvallen op een ander jaar of moet hij stoppen?
+29. Hoe voorkom je stale values in een country-year explorer?
+30. Welke waarschuwing hoort bij een lege country-year dataset?
+31. Wat als een gebruiker een naam of titel invoert die de audit kan vertekenen?
+32. Hoe bewijs je dat actor-bias is verminderd zonder traceability te verliezen?
+33. Wanneer moet de Invisibility Filter niets aanpassen?
+34. Hoe wordt duidelijk gemaakt dat een filter actief was maar geen verandering nodig had?
+35. Wat als een governancevoorstel vol goede woorden staat maar geen appeal path bevat?
+36. Hoe onderscheid je waarden-taal van mechanismen-taal?
+37. Welke minimale mechanismen zijn nodig voordat vertrouwen redelijk is?
+38. Wat als een voorstel transparantie belooft maar geen audit trail heeft?
+39. Kan het systeem zichzelf auditen zonder zichzelf te beschermen?
+40. Wat als de founder het oneens is met een negatieve self-audit?
+41. Welke regel voorkomt dat de architect boven de spiegel komt te staan?
+42. Wanneer wordt een public baseline een nieuwe dogma-lock?
+43. Hoe kan de baseline correctie toestaan zonder haar kern te verliezen?
+44. Wat als mensen de hele baseline weigeren te accepteren?
+45. Moet het systeem dan overtuigen, uitsluiten, of alleen uitleggen?
+46. Hoe blijft menselijke review meer dan een formaliteit?
+47. Wie mag een reviewer reviewen?
+48. Welke grens voorkomt dat de mirror naar power terugstroomt?
+49. Hoe herstel je schade als de audit zelf verkeerd was?
+50. Wanneer is het eerlijker om geen oordeel te geven dan een zwak oordeel te geven?

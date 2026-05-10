@@ -1,0 +1,11 @@
+docs/mirror_check_batch_baselines.md
+examples/batch_questions/set_01_plain_language.txt
+examples/batch_questions/set_02_boundary_cases.txt
+examples/batch_questions/set_03_world_lens_release.txt
+tests/test_patch_64_mirror_check_batch_baselines.py
+PATCH_64_MANIFEST.txt
+PATCH_64_RECOVERY_NOTE.md
+PATCH_STATUS.md
+docs/progress_database.md
+README.md
+about_page.py
