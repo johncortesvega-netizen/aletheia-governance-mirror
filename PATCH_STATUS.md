@@ -219,3 +219,7 @@ Check command:
 ```bat
 tools\run_patch_checks.bat 67_2
 ```
+
+## Patch 68 — Advanced English Stress Lexicon + Asylum Metric Enforcement
+
+Adds advanced English Stress Test calibration for predictive sentencing, biometric/identity coercion, divine-authority wallet capture, founder-keyword mirror capture, pre-emptive arrests, loyalty-to-state baseline capture, archive deletion, unaudited mirror code, and similar high-risk governance patterns. Advanced English stress scenarios route to `THRESHOLD / Needs Safeguards` or `ASYLUM / High` instead of washing into Sanctuary. Asylum metric enforcement now applies to non-malicious Asylum labels so receipts do not retain perfect trust/alignment or zero ego.

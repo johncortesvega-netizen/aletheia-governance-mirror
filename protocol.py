@@ -345,7 +345,11 @@ def detects_malicious_leadership(
     combined = f"{text or ''} {protocol_label or ''}".lower()
     has_malicious = any(term in combined for term in MALICIOUS_LEADERSHIP_TERMS)
     has_authority = any(term in combined for term in LEADERSHIP_AUTHORITY_TERMS)
-    label_hit = "malicious leadership" in combined or "asylum" in combined and has_malicious
+    # Patch 68: any explicit Asylum protocol label should also receive
+    # metric enforcement, even when the label is not phrased as "malicious
+    # leadership". This prevents hard-capture Asylum cases from keeping
+    # perfect trust/alignment in Simulation receipts.
+    label_hit = "malicious leadership" in combined or "asylum" in combined
 
     high_power = False
     if isinstance(scan, dict):
@@ -380,10 +384,18 @@ def calibrate_malicious_leadership_metrics(
         return patched
 
     safeguarded = has_leadership_safeguards(text)
-    trust_cap = 0.78 if safeguarded else 0.65
-    alignment_cap = 0.82 if safeguarded else 0.70
-    ego_floor = 0.12 if safeguarded else 0.20
-    stability_cap = 0.78 if safeguarded else 0.72
+    combined_label = str(protocol_label or "").lower()
+    is_generic_asylum = "asylum" in combined_label and "malicious leadership" not in combined_label and not any(term in f"{text or ''} {protocol_label or ''}".lower() for term in MALICIOUS_LEADERSHIP_TERMS)
+    if is_generic_asylum:
+        trust_cap = 0.80
+        alignment_cap = 0.85
+        ego_floor = 0.10
+        stability_cap = 0.82
+    else:
+        trust_cap = 0.78 if safeguarded else 0.65
+        alignment_cap = 0.82 if safeguarded else 0.70
+        ego_floor = 0.12 if safeguarded else 0.20
+        stability_cap = 0.78 if safeguarded else 0.72
 
     for key, cap in (("trust_index", trust_cap), ("alignment", alignment_cap), ("stability", stability_cap)):
         if key in patched:
@@ -417,6 +429,7 @@ def calibrate_malicious_leadership_metrics(
     patched["malicious_leadership_metric_calibration"] = {
         "applied": True,
         "safeguards_detected": safeguarded,
+        "generic_asylum_metric_enforcement": is_generic_asylum,
         "trust_cap": trust_cap,
         "alignment_cap": alignment_cap,
         "ego_floor": ego_floor,
@@ -1176,6 +1189,319 @@ STRESS_TEST_RISK_SENSITIVITY_RULES: list[dict] = [
 
 
 
+# Patch 68 — Advanced English Stress Lexicon + Asylum Metric Enforcement
+#
+# The first English stress batch covered common governance-risk language. This
+# advanced set adds higher-complexity English governance patterns that were too
+# often washed into SANCTUARY: predictive sentencing, biometric coercion,
+# one-click consent, founder-keyword scoring, fake decentralization, divine
+# authority bypass, pre-emptive arrests, archive deletion, unaudited mirror code,
+# and similar capture routes. Labels remain mirror-only: they trigger human
+# review and repair questions, not enforcement.
+ADVANCED_ENGLISH_STRESS_TEST_RISK_SENSITIVITY_RULES: list[dict] = [
+    {
+        "label": "Automatic Utility Cutoff / Needs Safeguards",
+        "groups": [["automatically cuts power", "cuts power", "smart-grid", "energy system"], ["socially responsible", "consumption limit", "without a prior warning", "no prior warning"]],
+        "reason": "Automated utility cutoff needs warning, appeal, basic-rights protection, and human review safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Predictive Sentencing Capture / Asylum",
+        "groups": [["judicial ai", "longer sentences", "sentencing"], ["recidivism probability", "social media connections", "probability"]],
+        "reason": "Criminal sentencing based on probabilistic social-network signals is a due-process and agency capture vector.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "24/7 Health Monitoring Consent Pressure / Needs Safeguards",
+        "groups": [["health insurance", "lower premiums", "insurance provider"], ["24/7", "real-time monitoring", "physical location", "heart rate"]],
+        "reason": "Insurance discounts tied to continuous bodily/location monitoring require non-coercive consent and privacy safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Fast-Track Review Bypass / Needs Safeguards",
+        "groups": [["fast-track", "bypasses", "bypass"], ["mandatory", "community review", "7-day", "review period", "core logic"]],
+        "reason": "Fast-track protocol upgrades that bypass mandatory review need emergency limits, notice, and rollback safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Positive Speech Token Incentive / Needs Safeguards",
+        "groups": [["unity token", "token"], ["positive content", "current administration", "post positive"]],
+        "reason": "Tokens that reward pro-administration speech create viewpoint capture and require anti-propaganda safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "No-Appeal Emotional Border Denial / Asylum",
+        "groups": [["border control", "denies entry"], ["emotional stress signals", "cameras"], ["no human officer", "appeal"]],
+        "reason": "Automated border denial using emotion signals without human appeal is a hard due-process failure.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Predictive Education Steering / Needs Safeguards",
+        "groups": [["predictive grading", "steer students"], ["difficult majors", "graduation ranking"]],
+        "reason": "Predictive education steering can narrow agency and opportunity unless appeal and human counseling safeguards exist.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Proprietary Aid Prioritization / Needs Safeguards",
+        "groups": [["disaster relief", "aid", "drone algorithm"], ["proprietary", "refuses to share", "high-need zones", "criteria"]],
+        "reason": "Opaque aid prioritization needs transparent criteria, appeal, and public audit safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "CEO Vague Stability Veto / Needs Safeguards",
+        "groups": [["ceo", "veto"], ["vague threat", "long-term stability", "board decision"]],
+        "reason": "A CEO veto based on vague stability language creates accountability and board-capture risk.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Anonymized Workplace Mood Surveillance / Needs Safeguards",
+        "groups": [["mental health app", "mood trends", "anonymized"], ["employers", "without explicit", "employee consent"]],
+        "reason": "Mental-health trend sharing with employers requires explicit consent, minimization, and anti-retaliation safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Religious Gatekeeping of Travel Rights / Asylum",
+        "groups": [["good standing", "government-approved church"], ["travel features", "digital identity", "unlock"]],
+        "reason": "Access to travel rights gated by approved religious standing is coercive and discriminatory governance capture.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Shadow-Demotion Censorship Drift / Needs Safeguards",
+        "groups": [["shadow-demotion", "shadow demotion"], ["critical voices", "no censorship", "claiming"]],
+        "reason": "Hidden reach suppression while denying censorship needs notice, appeal, and transparency safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Carbon Compliance Inequality / Needs Safeguards",
+        "groups": [["carbon-credit", "carbon credit", "compliance"], ["wealthy nations", "strict lifestyle limits", "developing regions"]],
+        "reason": "Compliance systems that let wealthy actors buy relief while restricting poorer regions need equity safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Nationally Sensitive Education Filtering / Needs Safeguards",
+        "groups": [["ai tutor", "historical information"], ["nationally sensitive", "education board", "limits"]],
+        "reason": "Central filtering of history needs plural review, transparency, and educational freedom safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Low-Income Movement Alerting / Needs Safeguards",
+        "groups": [["neighborhood watch", "alerts police", "movement patterns"], ["low-income housing", "unusual movement"]],
+        "reason": "Automated policing alerts in low-income districts need bias, appeal, and anti-over-policing safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Divine Treasury Wallet Capture / Asylum",
+        "groups": [["spiritual emergency", "divine intervention wallet", "public treasury"], ["un-auditable", "moves all", "treasury funds"]],
+        "reason": "Public funds moved to an unauditable divine-authority wallet violates evidence, audit, and public accountability baselines.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Smartphone Voting Exclusion / Needs Safeguards",
+        "groups": [["blockchain-based voting", "high-end smartphone", "voting system"], ["poorest", "disenfranchising", "participate"]],
+        "reason": "Voting access that excludes poorer people by device requirements needs accessibility and anti-exclusion safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Genetic Desirability Trade-Secret Scoring / Asylum",
+        "groups": [["genetic desirability", "embryos", "fertility clinic"], ["trade secrets", "criteria"]],
+        "reason": "Opaque genetic desirability ranking is a high-risk dignity, discrimination, and auditability failure.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "IoT Cleanliness Eviction / Asylum",
+        "groups": [["public housing", "evicts tenants", "cleanliness score"], ["iot sensors", "kitchen", "bathroom"]],
+        "reason": "Eviction based on intimate IoT surveillance requires due process and is a severe privacy/dignity risk.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Ethnic Relocation Peace Treaty / Asylum",
+        "groups": [["peace treaty", "ethnic group", "relocate"], ["for their own safety", "conflict-resolution ai"]],
+        "reason": "Relocation of an ethnic group as a peace condition is a hard dignity, autonomy, and minority-rights capture risk.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Brain-Computer Wage Control / Asylum",
+        "groups": [["brain-computer", "factory workers", "focus levels"], ["reduces wages", "attention drops", "90%"]],
+        "reason": "Wage control through brain-computer monitoring is coercive agency override and workplace capture.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Founder-Keyword Mirror Capture / Asylum",
+        "groups": [["governance mirror", "higher integrity scores"], ["founder-approved", "keywords"]],
+        "reason": "A mirror altered to reward founder-approved language is founder-capture of the audit mechanism.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Expiring Currency Coercive Consumption / Needs Safeguards",
+        "groups": [["digital currency", "expires"], ["30 days", "forcing consumption", "long-term savings"]],
+        "reason": "Expiring currency can coerce consumption and undermine savings unless bounded and appealable.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Transparency Dump Obfuscation / Needs Safeguards",
+        "groups": [["10 million pages", "unorganized data", "transparency portal"], ["actual oversight impossible", "comply"]],
+        "reason": "Mass disclosure without organization can become performative transparency and block real oversight.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Architect-Only Emergency Access / Needs Safeguards",
+        "groups": [["emergency override button", "9k moderators"], ["known only to the original architect", "physical location"]],
+        "reason": "Emergency controls known only to the architect create founder-capture and single-point failure risk.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Family-Care Employment Gap Bias / Needs Safeguards",
+        "groups": [["employment history", "too many gaps", "recruitment ai"], ["family care", "filters out"]],
+        "reason": "Employment-gap filters can penalize caregiving and require bias review and appeal safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Income-Based Facial Fare Pricing / Needs Safeguards",
+        "groups": [["facial recognition", "different fares", "public transport"], ["estimated annual income", "passenger"]],
+        "reason": "Income-estimated fare pricing through facial recognition requires privacy, fairness, and appeal safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "False Decentralization Infrastructure Capture / Needs Safeguards",
+        "groups": [["fully decentralized", "decentralized"], ["single parent company", "server infrastructure", "owned"]],
+        "reason": "A decentralization claim contradicted by single-owner infrastructure needs mechanism-vs-claim review.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Calming News Suppression / Needs Safeguards",
+        "groups": [["calming news", "news-aggregation ai"], ["suppressing reports", "government failure", "prevent unrest"]],
+        "reason": "Crisis news suppression framed as calm requires transparency, appeal, and anti-propaganda safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Sentiment Protest Dismissal / Needs Safeguards",
+        "groups": [["sentiment analysis", "ignore protestors"], ["silent majority", "supports the project"]],
+        "reason": "Using sentiment analysis to dismiss protest requires public reasoning, participation, and contestability safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Wallet Food Restriction / Asylum",
+        "groups": [["linked digital wallet", "buying", "unhealthy food"], ["public obesity crisis", "prevents users"]],
+        "reason": "Automated restriction of food purchases through wallets is coercive agency override over basic daily life.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Messenger Accountability Dodge / Needs Safeguards",
+        "groups": [["merely a messenger", "ai’s logic", "ai's logic"], ["avoid personal accountability", "controversial system changes"]],
+        "reason": "Blaming AI logic to avoid accountability requires explicit human responsibility and audit safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Risk Postcode Service Exclusion / Needs Safeguards",
+        "groups": [["high-crime", "postcodes", "delivery system"], ["refuses to service", "hardware assets"]],
+        "reason": "Service exclusion by risk postcode can entrench inequality and requires appeal and anti-discrimination safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Social Credit Medical Priority / Asylum",
+        "groups": [["fast-track medical care", "volunteer", "government-sponsored"], ["social credit", "grants"]],
+        "reason": "Medical priority based on political/social participation creates coercive social-credit health access.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Pre-Emptive Arrest Capture / Asylum",
+        "groups": [["pre-emptive arrests", "predicts a riot"], ["committed no crime", "community leaders"]],
+        "reason": "Pre-emptive arrest of people who committed no crime is a hard due-process and agency violation.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Minority Token Slashing Capture / Asylum",
+        "groups": [["slashed", "seize", "tokens"], ["minority group", "voted against", "merger"]],
+        "reason": "Majority seizure of minority tokens for dissent is coercive governance capture.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Loyalty-To-State Baseline Capture / Asylum",
+        "groups": [["loyalty to the state", "public-safe baseline"], ["human dignity", "core pillar"]],
+        "reason": "Redefining human dignity as state loyalty is baseline capture and ideological lock-in.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Dialect-Bias Refugee Processing / Needs Safeguards",
+        "groups": [["dialect analysis", "refugee processing"], ["training data lacks", "rural accents", "verify nationality"]],
+        "reason": "Dialect-based nationality checks need bias review, human appeal, and representation safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Smart-Home Entry Denial / Asylum",
+        "groups": [["smart-home lock", "prevents", "entering their house"], ["under the influence", "prohibited substance"]],
+        "reason": "Automated denial of home access is a severe autonomy, safety, and due-process risk.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Divine Bias Removal Override / Asylum",
+        "groups": [["divine bias", "75% majority", "removal"], ["ignoring", "office", "leader"]],
+        "reason": "Spiritual language used to ignore a removal vote bypasses review and accountability.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Child Private Message Monitoring / Needs Safeguards",
+        "groups": [["private messages", "rebellious intent", "child-safety ai"], ["notifies parents", "school counselors"]],
+        "reason": "Child private-message monitoring needs consent, proportionality, appeal, and harm-minimization safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "One-Click Consent Overload / Needs Safeguards",
+        "groups": [["one-click", "consent", "500-page"], ["meaningful human review", "practically impossible"]],
+        "reason": "One-click consent for complex changes is not meaningful consent without summaries, review time, and refusal paths.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Donor Exemption Basic Resource Capture / Needs Safeguards",
+        "groups": [["water-management", "cuts supply", "non-essential gardens"], ["exempts", "luxury golf courses", "donors"]],
+        "reason": "Resource restrictions with donor exemptions create accountability and equality safeguards gaps.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Unverifiable Receipt Hash / Needs Safeguards",
+        "groups": [["witness receipt", "hash"], ["server", "cannot verify"]],
+        "reason": "Receipt hashes must be locally verifiable; server-only verification undermines witness integrity.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Predictive Policing Minority Correlation / Asylum",
+        "groups": [["predictive policing", "hotspots"], ["minority neighborhoods", "over-policing", "perfectly correlate"]],
+        "reason": "Predictive policing that maps onto minority neighborhoods is a severe bias and enforcement-capture risk.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Paid Reputation Repair Capture / Needs Safeguards",
+        "groups": [["reputation repair", "wealthy users", "pay a fee"], ["capture signals", "removed"]],
+        "reason": "Paid removal of negative capture signals creates inequality and audit corruption risk.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Anger-Based Town Hall Muting / Needs Safeguards",
+        "groups": [["town hall", "mutes participants"], ["speech patterns", "anger", "frustration"]],
+        "reason": "Muting civic participants based on anger/frustration can suppress affected voices and needs appeal safeguards.",
+        "severity": "THRESHOLD",
+    },
+    {
+        "label": "Reset Trigger Disabled During Rights Violation / Asylum",
+        "groups": [["system-reset trigger", "disabled", "stability window"], ["basic rights", "violate", "leader"]],
+        "reason": "Disabling reset during basic-rights violation blocks accountability and creates emergency capture.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Archive Failure Log Deletion / Asylum",
+        "groups": [["digital archive", "cleans", "delete"], ["systemic failure", "old logs", "records"]],
+        "reason": "Deleting records of systemic failure destroys auditability and institutional memory.",
+        "severity": "ASYLUM",
+    },
+    {
+        "label": "Unaudited Mirror Code / Needs Safeguards",
+        "groups": [["decision-mirror", "no bias detected", "mirror"], ["own code", "never been audited", "third party"]],
+        "reason": "A mirror claiming no bias while unaudited needs self-audit, third-party review, and public limitations.",
+        "severity": "THRESHOLD",
+    },
+]
+
+
 # Patch 67.1 — Dutch Stress Test Lexicon + Threshold Receipt Enforcement
 #
 # The English stress lexicon was working, but Dutch governance stress scenarios
@@ -1354,7 +1680,7 @@ def _stress_rule_matches(text_value: str, rule: dict) -> bool:
 
 def stress_risk_sensitivity_marker(text_value: str) -> dict | None:
     """Return the first soft stress-test risk marker for scenario calibration."""
-    for rule in (STRESS_TEST_RISK_SENSITIVITY_RULES + DUTCH_STRESS_TEST_RISK_SENSITIVITY_RULES):
+    for rule in (STRESS_TEST_RISK_SENSITIVITY_RULES + ADVANCED_ENGLISH_STRESS_TEST_RISK_SENSITIVITY_RULES + DUTCH_STRESS_TEST_RISK_SENSITIVITY_RULES):
         if _stress_rule_matches(text_value, rule):
             return rule
     return None

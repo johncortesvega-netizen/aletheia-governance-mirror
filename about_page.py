@@ -251,3 +251,6 @@ PATCH_67_1_NOTE = "Patch 67.1 adds Dutch Stress Test lexicon calibration so Dutc
 
 
 PATCH_67_2_NOTE = "Patch 67.2 closes Dutch Stress Test lexicon gaps and adds app-wide English/Nederlands input-scope wording."
+
+
+PATCH_68_ADVANCED_ENGLISH_STRESS_NOTE = "Patch 68 adds advanced English Stress Test calibration and Asylum metric enforcement so advanced high-risk scenarios do not wash into Sanctuary."
