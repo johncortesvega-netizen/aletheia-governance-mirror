@@ -1,0 +1,16 @@
+docs/v02_roadmap.md
+docs/feature_backlog.md
+docs/out_of_scope_future_modules.md
+docs/report_export_polish.md
+docs/manual_evidence_attachment.md
+docs/rubric_weighting_confidence.md
+docs/deployment_prep.md
+docs/v1_release_complete.md
+docs/public_release_notes.md
+docs/progress_database.md
+PATCH_STATUS.md
+README.md
+about_page.py
+app.py
+tests/test_patch_56_60_v1_finalization.py
+PATCH_56_60_RECOVERY_NOTE.md

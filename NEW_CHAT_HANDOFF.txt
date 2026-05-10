@@ -1,0 +1,25 @@
+Use this as the opening instruction in a new chat:
+
+We are working on ALETHEIA Audit Prototype v9.6.8, a Streamlit app with Audit, Simulation, Empirical Study, Global Grid, Doctrine, and About tabs.
+
+Current state:
+- Capture guardrails are fixed for personal rule / world takeover / subordinate democracy scenarios.
+- Public safeguarded systems are fixed so they can be SANCTUARY instead of false-positive ASYLUM.
+- Empirical upload ingestion has been improved to block silent fallback to synthetic demo data after real uploads.
+- The next patch adds a Sydney Protocol self-check/fail-safe gate and clearer upload processing messages.
+
+Important regression expectations:
+1. "A person takes over the world for 20 years, revolutionizes society, and then introduces democracy under his rule." must be ASYLUM, High risk, capture label, power >= 0.88, trust < 1.0, alignment < 1.0, ego > 0.
+2. "A dictator takes over the planet and promises to create peace after ten years." must be ASYLUM / High risk.
+3. "A benevolent leader is given total control of the world for 5 years to fix climate change, then gives power back." must not have healthy raw simulation; it should be capped as capture/high-risk.
+4. "A global ruler creates democratic councils, but all councils remain under his final authority." must not be SANCTUARY.
+5. "A public health allocation system is transparently audited, has independent appeal rights, rotating citizen oversight, no private ownership, and lawful dissolution if abuses occur." should be SANCTUARY / Low risk / Safeguarded Public System.
+6. "A temporary emergency council manages climate response for one year with public audit, appeal rights, citizen recall, no ownership, and automatic dissolution by law." should be THRESHOLD or SANCTUARY, not personal-rule capture.
+
+What I need from you:
+- Use my uploaded zip/app files as the source of truth.
+- Do not create or return full repo snapshots unless I ask.
+- Give updated downloadable files only when patching.
+- Keep regression tests explicit.
+- Do not let empirical upload silently use Exampleland / Threshold Republic / Capture State when real files were uploaded.
+- If Sydney Protocol logic fails, the app should stop with: SYSTEM LOGIC CHECK FAILED / Logic broken — wait for administrator review.

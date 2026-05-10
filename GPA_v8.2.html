@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Peace Architecture v8.5 — A Gentle Mirror Framework</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07111f; --panel:#0e1b2c; --panel2:#13243a; --soft:#f7ecd8; --muted:#c9bda8;
+    --gold:#d9bb72; --rose:#f2a7b8; --blue:#93c5fd; --green:#9be7c0; --line:#e6c87844;
+    --shadow: 0 24px 80px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{min-height:100vh;background:radial-gradient(circle at top left,#1c3150 0,#07111f 42%,#04070d 100%);font-family:'Inter',system-ui,sans-serif;color:var(--soft);padding:28px;display:flex;align-items:center;justify-content:center}
+  .wrap{max-width:1180px;width:100%;background:linear-gradient(180deg,rgba(14,27,44,.96),rgba(8,17,30,.98));border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:var(--shadow)}
+  .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:stretch;margin-bottom:20px}
+  .title-card,.note-card,.phase,.formula,.gentle-rule{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:20px;padding:22px}
+  h1,h2,h3{font-family:'Cinzel',serif;letter-spacing:.06em}
+  h1{font-size:30px;color:var(--gold);line-height:1.1;margin-bottom:10px}
+  .eyebrow{font-family:'Cinzel',serif;color:var(--rose);font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+  .subtitle{font-family:'Crimson Text',serif;font-size:20px;line-height:1.5;color:#f4dfc6}
+  .softline{margin-top:14px;color:var(--muted);font-size:14px;line-height:1.7}
+  .badge-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .badge{border:1px solid var(--line);background:#ffffff10;border-radius:999px;padding:7px 11px;font-size:12px;color:#f8e7c8}
+  .note-card{background:linear-gradient(180deg,rgba(242,167,184,.11),rgba(147,197,253,.06));display:flex;flex-direction:column;justify-content:center}
+  .note-card h2{font-size:18px;color:#ffd6df;margin-bottom:10px}
+  .note-card p{font-family:'Crimson Text',serif;font-size:18px;line-height:1.55;color:#f8e6ee}
+  .phases{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px 0}
+  .phase h2{font-size:16px;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .phase h2 span{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#d9bb7222;border:1px solid var(--line);font-family:'Inter';font-size:14px;color:var(--gold)}
+  .phase p{font-size:14px;line-height:1.65;color:#e7d9c3;margin-bottom:12px}
+  ul{list-style:none;display:grid;gap:9px}
+  li{position:relative;padding-left:22px;color:#d6c9b3;font-size:13px;line-height:1.45}
+  li:before{content:'✦';position:absolute;left:0;top:0;color:var(--rose)}
+  .pillars{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:16px 0 4px}
+  .pillar{background:#ffffff08;border:1px solid #ffffff12;border-radius:14px;padding:12px;text-align:center;font-size:12px;color:#f5dfc0}
+  .pillar strong{display:block;color:var(--gold);font-family:'Cinzel';font-size:11px;letter-spacing:.08em;margin-bottom:4px}
+  .formula{margin-top:18px;text-align:center;background:linear-gradient(90deg,rgba(217,187,114,.12),rgba(155,231,192,.08),rgba(242,167,184,.10))}
+  .formula h2{font-size:16px;color:var(--gold);margin-bottom:12px}
+  .equation{font-family:'Crimson Text',serif;font-size:30px;color:#fff2d2;margin-bottom:10px}
+  .equation span{color:var(--green)}
+  .formula p{max-width:860px;margin:auto;color:#e4d5bd;line-height:1.65;font-size:14px}
+  .gentle-rule{margin-top:16px;border-color:#f2a7b855;background:rgba(242,167,184,.08)}
+  .gentle-rule h2{font-size:16px;color:#ffd2dd;margin-bottom:10px}
+  .gentle-rule p{font-family:'Crimson Text',serif;font-size:18px;line-height:1.6;color:#ffeaf0}
+  .footer{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid #ffffff12;color:#aebed1;font-size:12px}
+  @media(max-width:900px){.hero,.phases{grid-template-columns:1fr}.pillars{grid-template-columns:repeat(2,1fr)}body{padding:14px}.wrap{padding:18px}.equation{font-size:24px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="hero">
+    <div class="title-card">
+      <div class="eyebrow">Global Peace Architecture · GPA v8.5</div>
+      <h1>A gentle mirror for peace, service, and accountable power</h1>
+      <div class="subtitle">A three-phase framework for imagining how institutions, technology, evidence, and human care can work together without becoming a throne.</div>
+      <p class="softline">This page is a doctrine reference for ALETHEIA. It is not a mandate, election, government, legal claim, religious ruling, or final truth. It is a warm operating map: a way to ask whether power is being returned to service, dignity, repair, and public accountability.</p>
+      <div class="badge-row">
+        <div class="badge">Mirror, not throne</div>
+        <div class="badge">Service before status</div>
+        <div class="badge">Evidence before certainty</div>
+        <div class="badge">Appeal before command</div>
+      </div>
+    </div>
+    <aside class="note-card">
+      <h2>Angel-mom reading</h2>
+      <p>Hold the world like a child you are trying to protect: firmly enough to stop harm, softly enough not to crush it. The architecture is strongest when it comforts the vulnerable, corrects the powerful, and never asks anyone to surrender their conscience.</p>
+    </aside>
+  </section>
+
+  <section class="phases">
+    <article class="phase">
+      <h2><span>1</span>The Foundation</h2>
+      <p>The foundation establishes the moral and methodological ground: truth-seeking, humility, repair, and safeguards before authority.</p>
+      <ul>
+        <li>Use the V-Axis as a stability lens, not as a sacred command.</li>
+        <li>Remove hidden bias, proxy capture, opacity, and false certainty.</li>
+        <li>Keep every claim reviewable, explainable, and correctable.</li>
+        <li>Anchor the system in care, not domination.</li>
+      </ul>
+    </article>
+
+    <article class="phase">
+      <h2><span>2</span>The 9,000 Exposure Model</h2>
+      <p>The 9k layer is a proportional representation and exposure model. It helps us see population-weighted responsibility without creating rule over people.</p>
+      <ul>
+        <li>9,000 seats are interpreted per selected year when the allocation base is complete.</li>
+        <li>Partial years must use active-seat language, not full 9k language.</li>
+        <li>No seat creates sovereignty, ownership, entitlement, or command.</li>
+        <li>Prestige is treated as service accountability, never status capture.</li>
+      </ul>
+    </article>
+
+    <article class="phase">
+      <h2><span>3</span>The Global Grid</h2>
+      <p>The Global Grid compares country-year evidence, population exposure, integrity, friction, collapse pressure, and empirical coverage.</p>
+      <ul>
+        <li>Full years support selected-year global comparison.</li>
+        <li>Partial years remain useful as diagnostics only.</li>
+        <li>Coverage warnings protect against overclaiming.</li>
+        <li>High allocation plus high risk marks a node for review, not judgment.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="pillars">
+    <div class="pillar"><strong>Stability</strong>calm under pressure</div>
+    <div class="pillar"><strong>Intelligence</strong>clear seeing</div>
+    <div class="pillar"><strong>Power</strong>service capacity</div>
+    <div class="pillar"><strong>Harmony</strong>repair and dignity</div>
+    <div class="pillar"><strong>Humility</strong>no final throne</div>
+  </section>
+
+  <section class="formula">
+    <h2>The V-Axis Compass</h2>
+    <div class="equation"><span>V+</span> = Intelligence + Power − Ego → Stability</div>
+    <p>The equation is a compass, not a crown. Intelligence and power only become stabilizing when ego is reduced and when trust, transparency, appealability, safeguards, and service alignment are present.</p>
+  </section>
+
+  <section class="gentle-rule">
+    <h2>Final operating reminder</h2>
+    <p>ALETHEIA must never become the throne. It should remain a careful mirror: protective, honest, evidence-aware, non-divinizing, anti-capture, and humble before truth it cannot own.</p>
+  </section>
+
+  <footer class="footer">
+    <span>Doctrine source: GPA v8.5 friendly reference</span>
+    <span>ALETHEIA mode: audit · simulation · empirical · global grid</span>
+    <span>Status: interpretive framework, not authority</span>
+  </footer>
+</main>
+</body>
+</html>

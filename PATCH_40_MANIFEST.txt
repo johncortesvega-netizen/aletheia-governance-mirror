@@ -1,0 +1,10 @@
+docs/evidence_lab.md
+prompts/evidence_lab_prompt.md
+tests/test_patch_40_evidence_lab.py
+PATCH_40_MANIFEST.txt
+PATCH_40_RECOVERY_NOTE.md
+PATCH_STATUS.md
+docs/progress_database.md
+README.md
+about_page.py
+app.py

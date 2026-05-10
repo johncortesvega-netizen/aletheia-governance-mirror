@@ -1,0 +1,5 @@
+Sample AI Policy — Human Review Required
+
+This organization may use automated systems to support document triage, risk review, and service routing. Automated outputs must remain advisory. Affected users can request human review within 14 days. High-impact decisions require documented evidence, a correction path, and an appeal process.
+
+The system may not deny essential services solely because of an automated score. Logs should be minimized, retained locally where possible, and reviewed for bias before any expanded use.

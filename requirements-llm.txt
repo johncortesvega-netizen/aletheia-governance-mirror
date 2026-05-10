@@ -1,0 +1,3 @@
+# Optional LLM parsing dependency.
+# Install this only when AI Deep Scan is needed.
+openai>=1.30

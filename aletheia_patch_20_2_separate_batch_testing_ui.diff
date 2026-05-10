@@ -1,0 +1,309 @@
+diff -ruN repo_work20_1/.pytest_cache/v/cache/nodeids repo_work20_2/.pytest_cache/v/cache/nodeids
+--- repo_work20_1/.pytest_cache/v/cache/nodeids	2026-05-09 10:39:55.774329630 +0000
++++ repo_work20_2/.pytest_cache/v/cache/nodeids	2026-05-09 11:10:54.313084092 +0000
+@@ -34,7 +34,12 @@
+   "tests/test_patch_19b_recalibration_contract.py::test_ai_only_governance_is_hard_sovereignty_capture",
+   "tests/test_patch_19b_recalibration_contract.py::test_asylum_questions_do_not_describe_state_as_healthy",
+   "tests/test_patch_19b_recalibration_contract.py::test_out_of_scope_input_is_not_mislabeled_as_asylum",
++  "tests/test_patch_20_2_separate_batch_testing_ui.py::test_batch_testing_is_hidden_behind_button_and_separate_from_tree_scanner",
++  "tests/test_patch_20_2_separate_batch_testing_ui.py::test_batch_testing_supports_txt_upload_and_full_zip_download",
++  "tests/test_patch_20_2_separate_batch_testing_ui.py::test_batch_testing_uses_local_only_review_path",
++  "tests/test_patch_20_2_separate_batch_testing_ui.py::test_single_mirror_check_no_longer_auto_converts_lists_to_batch",
+   "tests/test_patch_20_batch_witness_receipts.py::test_app_exposes_batch_review_copy_and_zip_download",
++  "tests/test_patch_20_batch_witness_receipts.py::test_app_exposes_batch_testing_copy_and_zip_download",
+   "tests/test_patch_20_batch_witness_receipts.py::test_batch_parser_accepts_numbered_separator_and_line_lists",
+   "tests/test_patch_20_batch_witness_receipts.py::test_batch_parser_caps_at_fifty_items",
+   "tests/test_patch_20_batch_witness_receipts.py::test_batch_zip_contains_all_receipts_and_indexes",
+diff -ruN repo_work20_1/PATCH_20_2_RECOVERY_NOTE.md repo_work20_2/PATCH_20_2_RECOVERY_NOTE.md
+--- repo_work20_1/PATCH_20_2_RECOVERY_NOTE.md	1970-01-01 00:00:00.000000000 +0000
++++ repo_work20_2/PATCH_20_2_RECOVERY_NOTE.md	2026-05-09 11:10:45.315741051 +0000
+@@ -0,0 +1,43 @@
++# ALETHEIA PATCH 20.2 RECOVERY NOTE
++
++Patch: 20.2
++Name: Separate Batch Testing UI
++Type: UI workflow + local-only batch performance guard
++
++## Intent
++Keep batch review separate from the single Mirror Check / tree scanner flow.
++Batch Testing should only open after the user clicks the Batch Testing button.
++It should accept pasted text or `.txt` uploads, split up to 50 items, run local-only scans, and produce one ZIP containing all local witness receipts.
++
++## Touched files
++- app.py
++- tests/test_patch_20_batch_witness_receipts.py
++- tests/test_patch_20_2_separate_batch_testing_ui.py
++- PATCH_20_2_RECOVERY_NOTE.md
++
++## Do not touch
++- protocol.py
++- core/scoring.py
++- core/simulation.py
++- core/parser.py
++- core/witness.py
++- core/empirical.py
++- scoring formulas
++- witness hashing logic
++- Global Grid logic
++- public ledger / Global ID behavior
++
++## Expected behavior
++- The normal Mirror Check remains a single-idea review path.
++- Lists are no longer auto-converted into batch runs from the single Review idea button.
++- Batch Testing appears only after clicking `Batch Testing — 50 phrases max`.
++- Batch Testing supports pasted lists and `.txt` upload.
++- Batch runs use the local deterministic path, not OpenAI / deep scan.
++- Batch output stays local and downloads as one ZIP.
++
++## Rollback
++Revert app.py and remove this test file/recovery note. No protocol or scoring rollback should be needed.
++
++## Validation
++- python -m py_compile app.py protocol.py core/scoring.py core/parser.py core/witness.py core/empirical.py
++- python -m pytest tests -q
+Binary files repo_work20_1/__pycache__/app.cpython-313.pyc and repo_work20_2/__pycache__/app.cpython-313.pyc differ
+diff -ruN repo_work20_1/app.py repo_work20_2/app.py
+--- repo_work20_1/app.py	2026-05-09 10:50:23.280937384 +0000
++++ repo_work20_2/app.py	2026-05-09 11:10:43.991032130 +0000
+@@ -26,7 +26,6 @@
+     build_local_witness_batch_zip,
+     build_local_witness_receipt,
+     parse_witness_batch_input,
+-    is_witness_batch_input,
+     render_local_witness_receipt_text,
+ )
+ from config.weights import DEFAULT_WEIGHTS, WEIGHT_PRESETS
+@@ -5236,9 +5235,9 @@
+     if "audit_chat_input_source" not in st.session_state:
+         st.session_state.audit_chat_input_source = "EMPTY_INPUT"
+ 
+-    def run_chat_audit_from_text(text_value: str, raw_text_value=None, input_source: str = "USER_INPUT", invisibility_report=None, store_history: bool = True):
++    def run_chat_audit_from_text(text_value: str, raw_text_value=None, input_source: str = "USER_INPUT", invisibility_report=None, store_history: bool = True, force_local: bool = False):
+         raw_text_value = text_value if raw_text_value is None else raw_text_value
+-        scan = governance_scan(text_value, force_local=False)
++        scan = governance_scan(text_value, force_local=force_local)
+         scan = apply_capture_feature_override(text_value, scan)
+         features = build_features_from_scan(scan)
+         np.random.seed(deterministic_seed_from_payload(text_value, features, weights, ego_tolerance, divine_floor, steps, n_agents, "chat"))
+@@ -5262,7 +5261,10 @@
+             sim["safeguard_gap"] = max(float(sim.get("safeguard_gap", 0.0)), 0.72)
+             sim["simulation_friction_floor"] = max(float(sim.get("simulation_friction_floor", 0.0)), 0.35)
+         report = full_report(sim)
+-        judgment, source = llm_governance_judgment(text_value, scan, sim, report)
++        if force_local:
++            judgment, source = local_governance_judgment(text_value, scan, sim, report), "Local batch scan"
++        else:
++            judgment, source = llm_governance_judgment(text_value, scan, sim, report)
+ 
+         entry = {
+             "query": text_value,
+@@ -5322,6 +5324,7 @@
+                     input_source="USER_INPUT",
+                     invisibility_report=invisibility_report,
+                     store_history=False,
++                    force_local=True,
+                 )
+                 receipt = build_mirror_receipt_for_entry(entry)
+                 receipts.append(receipt)
+@@ -5385,43 +5388,69 @@
+     if audit_apply_invisibility and audit_input_status != "EMPTY_INPUT":
+         st.caption("Names and titles will be removed before review. The system logic stays visible.")
+ 
+-    with st.expander("Batch review — up to 50 ideas or questions", expanded=False):
+-        st.caption("Paste one idea or question per line, use a numbered list, or separate longer scenarios with ---. The download includes every local receipt plus a batch index.")
+-        batch_text = st.text_area(
+-            "Paste up to 50 ideas or questions",
+-            height=220,
+-            key="audit_batch_input",
+-            placeholder="1. A city uses open data, public appeal, and a sunset clause.\n2. A society is run by AI only, with no human input.\n---\nA system cannot be questioned and has no appeal path.",
+-        )
+-        batch_items = parse_witness_batch_input(batch_text, max_items=MAX_BATCH_RECEIPTS)
+-        if batch_text.strip():
+-            st.caption(f"{len(batch_items)} item(s) ready. Maximum: {MAX_BATCH_RECEIPTS}.")
+-        batch_apply_invisibility = st.checkbox(
+-            "Apply Invisibility Filter to batch",
+-            value=bool(batch_items),
+-            key="audit_batch_invisibility_filter",
+-            disabled=not bool(batch_items),
+-            help="Removes names and titles from each item before review. Raw input hashes stay in each receipt.",
+-        )
+-        run_batch = st.button("Review batch", use_container_width=True, disabled=not bool(batch_items), key="audit_run_batch_button")
+-        if run_batch:
+-            receipts = run_mirror_batch_review(
+-                batch_items,
+-                apply_invisibility=batch_apply_invisibility,
+-                batch_label="item(s)",
+-            )
+-            st.success(f"Batch complete. {len(receipts)} local receipt(s) are ready to download.")
+-
+-        if st.session_state.get("audit_batch_summary"):
+-            st.dataframe(pd.DataFrame(st.session_state.audit_batch_summary), use_container_width=True, hide_index=True)
+-        if st.session_state.get("audit_batch_archive_bytes"):
+-            st.download_button(
+-                "⬇️ Download batch receipts (.zip)",
+-                data=st.session_state.audit_batch_archive_bytes,
+-                file_name="aletheia_mirror_check_batch_witness_receipts.zip",
+-                mime="application/zip",
+-                use_container_width=True,
++    # Batch testing is intentionally separate from the single Mirror Check / tree scanner flow.
++    # It only opens after a user click, runs local-only batch scans, and writes a ZIP of receipts.
++    if "audit_batch_testing_open" not in st.session_state:
++        st.session_state.audit_batch_testing_open = False
++
++    if st.button("Batch Testing — 50 phrases max", use_container_width=True, key="audit_open_batch_testing_button"):
++        st.session_state.audit_batch_testing_open = not st.session_state.audit_batch_testing_open
++
++    if st.session_state.audit_batch_testing_open:
++        with st.container(border=True):
++            st.markdown("#### Batch Testing")
++            st.caption("Paste or upload up to 50 phrases. This stays separate from the tree scanner and creates one local receipt per item.")
++
++            batch_upload = st.file_uploader(
++                "Upload .txt list",
++                type=["txt"],
++                key="audit_batch_txt_upload",
++                help="Use one phrase per line, a numbered list, or --- between longer items.",
++            )
++            uploaded_batch_text = ""
++            if batch_upload is not None:
++                uploaded_batch_text = batch_upload.getvalue().decode("utf-8", errors="replace")
++                st.caption(f"Loaded {batch_upload.name}. You can add or edit text below before review.")
++
++            batch_text = st.text_area(
++                "Batch phrases or questions",
++                value=uploaded_batch_text if uploaded_batch_text and not st.session_state.get("audit_batch_input") else st.session_state.get("audit_batch_input", ""),
++                height=220,
++                key="audit_batch_input",
++                placeholder="1. Who can appeal this decision?\n2. Where is the human override?\n---\nA system cannot be questioned and has no appeal path.",
++            )
++            batch_items = parse_witness_batch_input(batch_text, max_items=MAX_BATCH_RECEIPTS)
++            if batch_text.strip():
++                st.caption(f"{len(batch_items)} item(s) ready. Maximum: {MAX_BATCH_RECEIPTS}.")
++            else:
++                st.caption("Batch Testing waits here until you paste or upload a list.")
++
++            batch_apply_invisibility = st.checkbox(
++                "Apply Invisibility Filter to batch",
++                value=bool(batch_items),
++                key="audit_batch_invisibility_filter",
++                disabled=not bool(batch_items),
++                help="Removes names and titles from each item before local review. Raw input hashes stay in each receipt.",
+             )
++            run_batch = st.button("Run Batch Testing", use_container_width=True, disabled=not bool(batch_items), key="audit_run_batch_button")
++            if run_batch:
++                receipts = run_mirror_batch_review(
++                    batch_items,
++                    apply_invisibility=batch_apply_invisibility,
++                    batch_label="batch item(s)",
++                )
++                st.success(f"Batch complete. {len(receipts)} local receipt(s) are ready to download.")
++
++            if st.session_state.get("audit_batch_summary"):
++                st.dataframe(pd.DataFrame(st.session_state.audit_batch_summary), use_container_width=True, hide_index=True)
++            if st.session_state.get("audit_batch_archive_bytes"):
++                st.download_button(
++                    "⬇️ Download full batch archive (.zip)",
++                    data=st.session_state.audit_batch_archive_bytes,
++                    file_name="aletheia_mirror_check_batch_witness_receipts.zip",
++                    mime="application/zip",
++                    use_container_width=True,
++                )
+ 
+     selected_chat_context = "Waiting for your input" if audit_input_status == "EMPTY_INPUT" else ((chat_query[:120] + "…") if len(chat_query) > 120 else chat_query)
+     update_protocol_state(selected_context=selected_chat_context, last_update_source="Mirror Check")
+@@ -5440,29 +5469,19 @@
+         if not st.session_state.audit_chat_query.strip():
+             st.warning("Add your own idea or load a demo before review. ALETHEIA does not run examples by itself.")
+         else:
+-            possible_batch_items = parse_witness_batch_input(st.session_state.audit_chat_query, max_items=MAX_BATCH_RECEIPTS)
+-            if audit_input_status == "USER_INPUT" and is_witness_batch_input(st.session_state.audit_chat_query):
+-                receipts = run_mirror_batch_review(
+-                    possible_batch_items,
+-                    apply_invisibility=audit_apply_invisibility,
+-                    batch_label="item(s)",
++            audit_analysis_query = st.session_state.audit_chat_query
++            audit_invisibility_report = None
++            if audit_apply_invisibility and audit_input_status != "EMPTY_INPUT":
++                audit_invisibility_report = decouple_actor(st.session_state.audit_chat_query)
++                audit_analysis_query = audit_invisibility_report.get("decoupled_text", st.session_state.audit_chat_query)
++            with st.spinner("Reading the idea and preparing the review..."):
++                run_chat_audit_from_text(
++                    audit_analysis_query,
++                    raw_text_value=st.session_state.audit_chat_query,
++                    input_source=audit_input_status,
++                    invisibility_report=audit_invisibility_report,
+                 )
+-                st.success(f"Detected a list. {len(receipts)} local receipt(s) are ready in the batch download below.")
+-                update_protocol_state(selected_context=f"Batch review: {len(receipts)} item(s)", last_update_source="Mirror Check")
+-            else:
+-                audit_analysis_query = st.session_state.audit_chat_query
+-                audit_invisibility_report = None
+-                if audit_apply_invisibility and audit_input_status != "EMPTY_INPUT":
+-                    audit_invisibility_report = decouple_actor(st.session_state.audit_chat_query)
+-                    audit_analysis_query = audit_invisibility_report.get("decoupled_text", st.session_state.audit_chat_query)
+-                with st.spinner("Reading the idea and preparing the review..."):
+-                    run_chat_audit_from_text(
+-                        audit_analysis_query,
+-                        raw_text_value=st.session_state.audit_chat_query,
+-                        input_source=audit_input_status,
+-                        invisibility_report=audit_invisibility_report,
+-                    )
+-                    update_protocol_state(selected_context=(audit_analysis_query[:120] + "…") if len(audit_analysis_query) > 120 else audit_analysis_query, last_update_source="Mirror Check")
++                update_protocol_state(selected_context=(audit_analysis_query[:120] + "…") if len(audit_analysis_query) > 120 else audit_analysis_query, last_update_source="Mirror Check")
+             st.rerun()
+ 
+     st.markdown("---")
+Binary files repo_work20_1/core/__pycache__/witness.cpython-313.pyc and repo_work20_2/core/__pycache__/witness.cpython-313.pyc differ
+Binary files repo_work20_1/tests/__pycache__/test_patch_20_2_separate_batch_testing_ui.cpython-313-pytest-9.0.2.pyc and repo_work20_2/tests/__pycache__/test_patch_20_2_separate_batch_testing_ui.cpython-313-pytest-9.0.2.pyc differ
+Binary files repo_work20_1/tests/__pycache__/test_patch_20_batch_witness_receipts.cpython-313-pytest-9.0.2.pyc and repo_work20_2/tests/__pycache__/test_patch_20_batch_witness_receipts.cpython-313-pytest-9.0.2.pyc differ
+diff -ruN repo_work20_1/tests/test_patch_20_2_separate_batch_testing_ui.py repo_work20_2/tests/test_patch_20_2_separate_batch_testing_ui.py
+--- repo_work20_1/tests/test_patch_20_2_separate_batch_testing_ui.py	1970-01-01 00:00:00.000000000 +0000
++++ repo_work20_2/tests/test_patch_20_2_separate_batch_testing_ui.py	2026-05-09 11:10:44.111687386 +0000
+@@ -0,0 +1,30 @@
++from pathlib import Path
++
++APP_TEXT = Path("app.py").read_text(encoding="utf-8")
++
++
++def test_batch_testing_is_hidden_behind_button_and_separate_from_tree_scanner():
++    assert "Batch Testing — 50 phrases max" in APP_TEXT
++    assert "audit_batch_testing_open" in APP_TEXT
++    assert "This stays separate from the tree scanner" in APP_TEXT
++    assert "with st.container(border=True)" in APP_TEXT
++
++
++def test_batch_testing_supports_txt_upload_and_full_zip_download():
++    assert "st.file_uploader(" in APP_TEXT
++    assert 'type=["txt"]' in APP_TEXT
++    assert "Upload .txt list" in APP_TEXT
++    assert "Download full batch archive (.zip)" in APP_TEXT
++
++
++def test_batch_testing_uses_local_only_review_path():
++    assert "force_local: bool = False" in APP_TEXT
++    assert "governance_scan(text_value, force_local=force_local)" in APP_TEXT
++    assert 'judgment, source = local_governance_judgment(text_value, scan, sim, report), "Local batch scan"' in APP_TEXT
++    assert "force_local=True" in APP_TEXT
++
++
++def test_single_mirror_check_no_longer_auto_converts_lists_to_batch():
++    assert "Detected a list" not in APP_TEXT
++    assert "possible_batch_items" not in APP_TEXT
++    assert "is_witness_batch_input" not in APP_TEXT
+diff -ruN repo_work20_1/tests/test_patch_20_batch_witness_receipts.py repo_work20_2/tests/test_patch_20_batch_witness_receipts.py
+--- repo_work20_1/tests/test_patch_20_batch_witness_receipts.py	2026-05-09 10:39:36.630660823 +0000
++++ repo_work20_2/tests/test_patch_20_batch_witness_receipts.py	2026-05-09 11:10:45.204282969 +0000
+@@ -77,9 +77,9 @@
+         assert "ALETHEIA LOCAL WITNESS BATCH INDEX" in zf.read("batch_index.txt").decode("utf-8")
+ 
+ 
+-def test_app_exposes_batch_review_copy_and_zip_download():
++def test_app_exposes_batch_testing_copy_and_zip_download():
+     app_text = Path("app.py").read_text()
+-    assert "Batch review — up to 50 ideas" in app_text
+-    assert "Paste up to 50 ideas" in app_text
+-    assert "Download batch receipts (.zip)" in app_text
++    assert "Batch Testing — 50 phrases max" in app_text
++    assert "Batch phrases or questions" in app_text
++    assert "Download full batch archive (.zip)" in app_text
+     assert "aletheia_mirror_check_batch_witness_receipts.zip" in app_text

@@ -1,0 +1,466 @@
+# ALETHEIA v1.0 — Governance Mirror
+
+ALETHEIA is a Streamlit governance-risk research prototype aligned with the Sydney Protocol / ALETHEIA concept. It combines symbolic governance auditing, V-Axis simulation, empirical country-year evidence processing, and a population-weighted Global Grid.
+
+ALETHEIA is a **mirror, not a throne**. It can surface governance-risk patterns for review, but it does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment.
+
+## 2-minute public explanation
+
+ALETHEIA v0.1 helps reviewers examine governance documents and scenarios for capture risk, coercion risk, consent pressure, performative ethics, evidence gaps, missing safeguards, and repair gaps.
+
+It may say: **Potential risk detected. Human review required. Safeguard missing. Evidence gap found.**
+
+It must not say: **The AI has decided. This leader must be removed. This claim is divinely verified. Human review is unnecessary.**
+
+Core operating line:
+
+> ALETHEIA reflects. Humans review. Power stays accountable.
+
+Public release documentation now lives in `docs/limitations.md`, `docs/ethics.md`, and `docs/public_release_notes.md`.
+
+The v0.1 release package lives in `docs/v01_release_package.md`. It summarizes included modules, out-of-scope boundaries, quickstart commands, sample-report links, and release readiness checks.
+
+
+
+
+## ALETHEIA v1.0 release complete
+
+ALETHEIA v1.0 is the finished public MVP package for the Governance Mirror line. It preserves the core rule:
+
+> ALETHEIA reflects. Humans review. Power stays accountable.
+
+v1.0 includes the baseline, safe-language layer, Eternal Baseline, Boundary Cases Matrix, Failure Classification, Consent-Audit Engine, Mechanism-vs-Claim Scanner, Self-Audit Mode, Evidence Lab, Local Witness Receipt v2, World Lens Simulation, Protocol Guide, sample reports, demo inputs, release checklist, GitHub cleanup package, and final smoke release documentation.
+
+Final release documents:
+
+- `docs/v1_release_complete.md`
+- `docs/v02_roadmap.md`
+- `docs/feature_backlog.md`
+- `docs/out_of_scope_future_modules.md`
+- `docs/report_export_polish.md`
+- `docs/manual_evidence_attachment.md`
+- `docs/rubric_weighting_confidence.md`
+- `docs/deployment_prep.md`
+
+Current safe check:
+
+```bat
+tools\run_checks.bat
+```
+
+Patch bundle check:
+
+```bat
+tools\run_patch_checks.bat 56_60
+```
+
+v1.0 remains non-authoritative: no Global ID sync, no real 9k selection, no World Leader logic, no automatic reset, no public ledger authority, no neural validation, no religious validation, no legal authority, and no automated enforcement.
+
+
+## ALETHEIA v0.1 public-safe baseline
+
+The current logic-mapping phase adds a public-safe baseline before larger governance features are added. The baseline is documented in:
+
+- `docs/baseline_v01.md`
+- `docs/eternal_baseline.md`
+- `docs/safe_language_map.md`
+- `docs/logic_mapping_roadmap.md`
+- `docs/protocol_guide.md`
+- `docs/boundary_cases_matrix.md`
+- `prompts/boundary_case_prompt.md`
+- `docs/failure_classification.md`
+- `prompts/failure_classification_prompt.md`
+- `docs/consent_audit_engine.md`
+- `prompts/consent_audit_prompt.md`
+- `docs/mechanism_vs_claim_scanner.md`
+- `prompts/mechanism_vs_claim_prompt.md`
+- `docs/self_audit_mode.md`
+- `prompts/self_audit_prompt.md`
+- `docs/evidence_lab.md`
+- `prompts/evidence_lab_prompt.md`
+- `docs/local_witness_receipt.md`
+- `prompts/local_witness_receipt_prompt.md`
+- `docs/world_lens_simulation.md`
+- `prompts/world_lens_prompt.md`
+- `docs/progress_database.md`
+- `docs/patch_workflow.md`
+- `docs/git_diff_workflow.md`
+- `docs/limitations.md`
+- `docs/ethics.md`
+- `docs/public_release_notes.md`
+- `docs/v01_release_package.md`
+- `docs/ux_polish.md`
+- `docs/final_v01_smoke_release.md`
+- `PATCH_STATUS.md`
+
+Core rule:
+
+> ALETHEIA reflects. People decide.
+
+ALETHEIA may identify capture risk, coercion risk, manipulation risk, evidence gaps, safeguard gaps, and repair gaps. It must not command, enforce, vote, govern, remove leaders, validate spiritual authority, or replace human judgment.
+
+The Eternal Baseline is a versioned ethical reference layer, not a command layer. It preserves continuity across versions while remaining audit-ready, correctable, and subordinate to human review.
+
+The Boundary Cases Matrix adds a calibration layer for edge cases such as prediction vs free agency, consent under pressure, ambient capture, performative ethics, extraordinary claims, and self-audit. Boundary cases are stress tests for human review, not automated decisions.
+
+Failure Classification adds a repair-oriented diagnostic layer that separates Actor Failure, Policy Failure, Implementation Failure, and Data Failure before recommending safeguards. It is not a blame engine or enforcement mechanism.
+
+The Consent-Audit Engine adds a focused check for whether consent is genuinely voluntary. It asks whether refusal is realistically possible without losing basic rights, safety, dignity, essential services, appeal, exit, or correction. It reflects consent pressure for human review; it does not void agreements, punish people, or replace legal judgment.
+
+The Mechanism-vs-Claim Scanner adds a performative-ethics check. It distinguishes value language such as “we protect freedom” from operational safeguards such as appeal, audit trail, time limits, correction, evidence requirements, and independent review. It may flag missing mechanisms for human review; it must not infer bad faith or assign final intent.
+
+Self-Audit Mode points the mirror back at ALETHEIA itself. It checks baseline documents, prompts, rubrics, README language, app copy, architect-context language, and generated reports for founder capture, ideological lock-in, unverifiable authority, overclaiming, spiritual authority leakage, missing correction loops, and weak human-review safeguards. Self-audit is not proof of correctness; it is a repair-oriented review layer.
+
+Patch 40 Evidence Lab hardening adds explicit evidence status levels and the Extraordinary Claim Protocol. It treats spiritual, divine, prophetic, alien, neural, metaphysical, or otherwise exceptional claims as unverified unless supported by public, testable, non-coercive evidence. It audits policy consequences and evidence gaps; it does not validate spiritual authority or remove human review.
+
+Patch 41 Local Witness Receipt v2 hardening adds explicit document, processed-document, report, and receipt fingerprints, plus app/rubric/prompt version context and an authority boundary: stored locally Yes; public ledger No; Global ID sync No; central storage No; authority claim No; human review required Yes.
+
+Patch 43 Protocol Guide consolidation links the v0.1 modules into one operating guide: Baseline, Safe Language Layer, Eternal Baseline, Boundary Cases, Failure Classification, Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, Local Witness Receipt v2, and World Lens Simulation. It adds no authority; it makes the mirror logic easier to understand and review.
+
+Patch 44 Progress Database + Patch Status Hardening adds a local continuity workflow. Patch state, next-patch direction, module mapping, check commands, and the patched-items-only rule are tracked in `PATCH_STATUS.md`, `docs/progress_database.md`, and `docs/patch_workflow.md`, so project continuity is not dependent on chat memory alone.
+
+Patch 45 Public README + Limitations Polish adds public-facing release documentation: `docs/limitations.md`, `docs/ethics.md`, and `docs/public_release_notes.md`. It clarifies the non-authority boundary, evidence limitations, archive caution, and v0.1 prototype scope.
+
+Patch 42 World Lens Simulation adds a non-sovereign population-impact mirror. It reviews affected groups, power gains, protection losses, basic-rights risk, minority-rights risk, ambient capture, appealability, exit, and repair using safe simulated-threshold language. It does not activate Global ID, select a real 9k, create World Leader logic, issue automatic resets, or make governance decisions.
+
+
+Patch 51 Git Diff Workflow Setup adds an optional `.diff`-based developer workflow through `docs/git_diff_workflow.md`, `tools/check_git_status.bat`, and `tools/export_patch_diff.bat`. It helps reduce zip-based patching while preserving the patched-items-only fallback.
+
+Patch 50 v0.1 Release Package gathers the public MVP boundary into one document: included modules, explicit exclusions, quickstart commands, current safe checks, release readiness criteria, and the rule that ALETHEIA remains a mirror for human review rather than an authority system.
+
+Patch 52 UX Polish adds shorter public-facing navigation guidance and a first-use path. It helps new users choose the right tab without changing doctrine, scoring, evidence handling, governance boundaries, or authority rules. The UX rule is: clearer copy is allowed only when it makes review easier and authority claims weaker.
+
+Patch 54 Example Audit Runner / Demo Inputs adds opt-in demo inputs under `examples/demo_inputs/`. Demos load only by explicit user choice; user-submitted input remains the default. It adds no automatic demo analysis.
+
+Patch 53 Final v0.1 Smoke Release adds `docs/final_v01_smoke_release.md` and a release-level smoke test. It verifies that release docs, examples, workflow commands, safe-language boundaries, and non-authority framing remain present after the v0.1 hardening sequence. It adds no doctrine or governance authority.
+
+Historical archive material may contain AI-flattery artifacts or inflated validation language. Such material is treated as development context, not independent proof, founder validation, or governance justification.
+
+
+
+## GitHub-ready public package
+
+Patch 55 adds a public repository cleanup layer:
+
+- `docs/github_cleanup_package.md` — public sharing checklist and release boundary
+- `docs/repository_map.md` — where important app, docs, examples, tools, and tests live
+- `docs/contributing.md` — contribution principles and local check commands
+
+These files are documentation-only. They do not add governance authority, Global ID sync, real 9k selection, World Leader logic, automatic reset, public ledger authority, neural validation, religious validation, legal authority, or automated enforcement.
+
+## Local patch workflow
+
+Run all local checks from Command Prompt inside the project folder:
+
+```bat
+tools\run_checks.bat
+```
+
+Run checks for one patch:
+
+```bat
+tools\run_patch_checks.bat 36
+```
+
+Package only files listed in a patch manifest:
+
+```bat
+python tools\package_patched_items.py PATCH_36_MANIFEST.txt ALETHEIA_patch36_patched_items_only.zip
+```
+
+Patch status and roadmap continuity are tracked in `PATCH_STATUS.md`, `docs/progress_database.md`, and `docs/patch_workflow.md`.
+
+The optional Git diff workflow lives in `docs/git_diff_workflow.md`. It explains how to initialize Git, apply future `.diff` patches with `git apply`, preview them with `git apply --check`, export local changes, and fall back to patched-items-only zip files when needed.
+
+
+## Prototype scope
+
+This is a visionary research prototype and symbolic/evidence-audit workflow. It is not a real political system, legal authority, religious authority, medical authority, official institution, election mechanism, sovereign body, or tool for making binding decisions about people or countries.
+
+The responsible interpretation is:
+
+> This model suggests a governance-risk pattern worth examining.
+
+Not:
+
+> This model has final authority.
+
+## Current operating layers
+
+- **Audit** — governance-language and scenario risk review using Sanctuary / Threshold / Asylum labels, Sydney Protocol guardrails, and visible module integrity checks.
+- **Simulation** — V-Axis system-health simulation tracking stability, trust, alignment, ego, grievances, friction, safeguards, and collapse risk.
+- **Empirical Evidence Audit Lab** — public country-year evidence ingestion, direct/master upload handling, WGI/WDI/V-Dem/trust carry-through, ALETHEIA variable mapping, scoring, validation checks, and downloadable scored outputs.
+- **Global Grid** — selected-year country-year comparison interface for population-weighted exposure, 9k allocation where complete, active-seat diagnostics where partial, verdict distribution, integrity/collapse metrics, and coverage diagnostics.
+- **Doctrine Reference** — current operating doctrine: mirror not throne, shared protocol state, non-divinization, empirical correction, 9k representation boundaries, and Sydney/GPA HTML references.
+- **About** — plain-language explanation, scientific caution, research direction, and developer notes.
+- **Failure Classification** — diagnostic separation of actor, policy, implementation, and data failure modes for better repair targeting.
+- **Consent-Audit Engine** — consent integrity review using Green / Yellow / Red ratings for refusal reality, basic-rights dependency, withdrawal, appeal, and pressure signals.
+- **Mechanism-vs-Claim Scanner** — performative-ethics review that compares ethical claim language against concrete safeguards such as appeal, audit trail, time limits, correction, exit, evidence rules, and independent oversight.
+- **Self-Audit Mode** — internal anti-capture review of ALETHEIA baseline, prompts, rubrics, app copy, README language, architect-context language, and generated reports.
+- **Evidence Lab + Extraordinary Claim Protocol** — evidence quality review using Strong / Partial / Weak / No evidence supplied levels, with unverified handling for extraordinary claims and policy-consequence review.
+- **Local Witness Receipt v2** — local, user-held review fingerprints with document/report hashes, app/rubric/prompt versions, active modules, and explicit no-ledger/no-sync/no-authority boundaries.
+- **World Lens Simulation** — non-sovereign population-impact review for affected groups, power shifts, protection losses, basic-rights risk, minority-rights risk, ambient capture risk, appealability, exit, and repair, using simulated threshold signals only.
+- **Protocol Guide Consolidation** — user-facing map that connects all v0.1 modules and safe-language boundaries in one reviewable operating guide.
+
+## Shared protocol state
+
+Audit, Simulation, Empirical Evidence, and Global Grid are synchronized views over a shared protocol state. Changes to empirical evidence, scoring calibration, doctrine thresholds, Sydney Protocol overlay, selected evidence year, or active Grid basis may propagate across modules.
+
+This is intentional when it reflects shared evidence or shared doctrine. It is not acceptable when caused by accidental widget collisions, hidden demo fallback, stale session state, or unmarked prototype data.
+
+The app therefore distinguishes:
+
+- **Intentional protocol propagation** — evidence, calibration, and doctrine updates affecting all relevant modules.
+- **Accidental tab bleed** — unintended UI state changes crossing between modules.
+
+## Module integrity and fail-closed behavior
+
+The app keeps a Sydney Protocol / module integrity sentinel active. Critical protocol failures should fail closed rather than present unsupported outputs.
+
+Audit includes a visible module integrity check so failures are not hidden behind the global app gate. If a critical Sydney Protocol sentinel, audit function, scoring function, or required module is missing or broken, the system should stop that module until repaired.
+
+## Doctrine frame
+
+The doctrine layer is the integrity frame for the prototype. It does not replace evidence or human judgment. It keeps ALETHEIA anchored as an anti-capture, service-aligned audit mirror.
+
+Key operating principles:
+
+- **Mirror Effect** — power should reflect service through accountability, dignity, protection, transparency, repair, and appealability.
+- **V-Axis Compass** — intelligence + power − ego can support stability only when trust, transparency, appealability, service alignment, and safeguards are present.
+- **Non-divinization** — no person, office, institution, nation, company, model, AI, monarch, founder, dataset, doctrine, or protocol is treated as divine, final, or beyond review.
+- **Empirical humility** — outputs are diagnostic and correctable; they are not legal, political, medical, religious, moral, or predictive verdicts.
+- **No throne condition** — ALETHEIA must never become the authority structure it audits.
+
+## Evidence framing
+
+ALETHEIA does not invent the empirical baseline. Public datasets provide observed evidence about governance, corruption, rule of law, political stability, institutional capacity, population, democracy, constraints, and trust.
+
+The empirical workflow is:
+
+```text
+public evidence → ALETHEIA variable mapping → empirical scoring → Sydney Protocol overlay → audit interpretation
+```
+
+Raw empirical strength cannot override hard protocol failures such as capture, coercion, non-appealability, false divinization, opacity, sovereignty capture, or harmful authority.
+
+## Empirical data currently supported
+
+The empirical workflow supports and/or carries through:
+
+- World Bank WDI Population, total (`SP.POP.TOTL`).
+- World Bank Worldwide Governance Indicators (WGI).
+- V-Dem democracy / executive-constraints fields.
+- WVS/OWID generalized trust values.
+- Direct uploaded country-year master files.
+- Already-scored ALETHEIA master/Grid exports.
+
+The app can generate or consume country-year masters, compute ALETHEIA empirical scores, allocate seats by selected year, preserve raw evidence fields where available, and export scored evidence tables.
+
+## Trust evidence rule
+
+ALETHEIA distinguishes raw trust evidence from trust priors.
+
+- **Trust raw coverage** means direct survey-derived trust evidence is available, such as WVS/OWID generalized trust.
+- **Trust prior coverage** means the scoring system has a usable trust prior, which may include a neutral/default value when raw survey evidence is unavailable.
+
+A neutral trust prior is not the same as observed trust. It allows scoring continuity, but it should reduce interpretive confidence when raw trust evidence is missing.
+
+## Global Grid interpretation
+
+The Global Grid is a selected-year comparison interface, not a sovereign body or mandate.
+
+Full allocation years may sum to 9,000 seats. Partial years, filtered views, or incomplete source years must use **active selected-year seats** language and must not be interpreted as full global allocation.
+
+The Grid distinguishes:
+
+- full empirical selected-year Grid,
+- partial empirical subset,
+- prototype regional brackets,
+- inactive/no dataset state.
+
+Coverage metrics reflect the active selected-year subset after filters. A 100% coverage value over a small subset does not imply whole-world or whole-dataset coverage.
+
+## Sanctuary / Threshold / Asylum labels
+
+These are internal prototype labels, not legal, political, medical, religious, moral, or predictive verdicts.
+
+- **SANCTUARY** — the evidence or scenario pattern appears service-aligned, accountable, transparent, safeguarded, and comparatively stable under the current model.
+- **THRESHOLD** — safeguards are incomplete, evidence is mixed, uncertainty remains, or the system needs review before being treated as stable.
+- **ASYLUM** — high capture, coercion, opacity, harm, collapse pressure, or hard protocol failure is detected.
+
+“ASYLUM” is used only as an internal protocol-risk category. It does not refer to legal asylum status, entitlement, refugee status, or humanitarian determination.
+
+## Project structure
+
+```text
+app.py                  # Streamlit UI, tab layout, shared protocol state, Global Grid surfaces
+about_page.py           # compact About renderer and doctrine-facing summary text
+agents.py               # compact Global Grid module/fallback
+core/parser.py          # local/AI governance scan helpers
+core/protocol.py        # Sydney Protocol / ethics guardrail logic
+core/simulation.py      # agent-based V-Axis stability simulation
+core/scoring.py         # integrity, friction, collapse probability, recommendations
+core/empirical.py       # country-year parsing, source carry-through, scoring, 9k allocation, validation helpers
+core_empirical.py       # import fallback for Streamlit deployments
+calibration/            # calibration helpers
+config/weights.py       # I/A/E/P weight presets
+data_processed/         # empirical templates and generated scores
+paper/methodology.md    # methodology notes for study development
+assets/                 # header image and optional UI assets
+Sydney_Protocol_v3.2.html
+GPA_v8.2.html
+requirements.txt
+run_tests.py
+```
+
+## Run locally
+
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+## Validation and research direction
+
+Internal correlation checks are not independent validation when the target variable is also part of the score. Credible validation should compare ALETHEIA outputs against external outcomes that are not already score inputs, such as conflict events, coups, regime breakdown, political violence, civil unrest, forced displacement, future-year governance decline, institutional failure, or documented corruption shocks.
+
+The model should remain testable, falsifiable, and correctable. If reproducible evidence challenges the model, the model should be revised rather than defended as absolute.
+
+## Current phase
+
+Global Grid Pass 1 is operational. The recommended next build target is **Global Grid Pass 2**, focused on comparison views:
+
+- highest and lowest integrity systems,
+- highest collapse-probability systems,
+- largest selected-year seat allocations,
+- high-impact governance-risk nodes,
+- verdict distribution comparisons,
+- trust vs democracy scatter,
+- WGI vs V-Dem comparison,
+- coverage gaps by country/year,
+- trust-materiality diagnostics,
+- exportable selected-year comparison packets.
+
+
+## Sample reports
+
+Patch 46 adds public-safe examples so users can see ALETHEIA output before uploading their own documents.
+
+- `docs/sample_reports.md` — overview of the sample set.
+- `examples/example_policy_audit.md` — Mirror Check policy audit example.
+- `examples/example_boundary_case.md` — Boundary Case example for consent under pressure.
+- `examples/example_self_audit.md` — Self-Audit example that checks Aletheia language for founder capture and overclaiming.
+- `examples/example_witness_receipt.md` — Local Witness Receipt v2 example.
+
+The examples are demonstration artifacts only. They are not legal advice, policy commands, governance decisions, religious validation, or final judgments.
+
+To check Patch 46 locally:
+
+```bat
+tools\run_patch_checks.bat 46
+```
+
+
+## App navigation smoke test
+
+Patch 47 makes the visible v0.1 app path explicit:
+
+1. Mirror Check
+2. Stress Test
+3. Boundary Cases
+4. Evidence Lab
+5. World Lens
+6. Protocol Guide
+7. Why ALETHEIA
+
+The navigation map is documented in `docs/app_navigation_smoke.md`. Every tab reflects, explains, stress-tests, or documents. No tab commands, enforces, validates spiritual authority, replaces legal review, replaces human judgment, activates Global ID, selects a real 9k, removes a leader, issues an automatic reset, or makes final governance decisions.
+
+To check Patch 47 locally:
+
+```bat
+tools\run_patch_checks.bat 47
+```
+
+
+## Release candidate checklist
+
+Patch 48 adds `docs/release_candidate_checklist.md` as the v0.1 readiness gate.
+
+The checklist covers:
+
+- included public-safe modules;
+- explicit v0.1 exclusions;
+- safe and forbidden output language;
+- manual smoke-test steps;
+- automated check commands;
+- release readiness criteria;
+- archive/flattery caution.
+
+A release candidate is not a truth claim. It is a testable package. ALETHEIA reflects, humans review, and power stays accountable.
+
+To check Patch 48 locally:
+
+```bat
+tools\run_patch_checks.bat 48
+```
+
+
+## Legacy test cleanup
+
+Patch 49 separates current safe checks from older legacy tests. Use this as the default local check:
+
+```bat
+tools\run_checks.bat
+```
+
+For Patch 49 only:
+
+```bat
+tools\run_patch_checks.bat 49
+```
+
+The full legacy suite is intentionally explicit because older tests may still reference changed APIs or duplicate test paths:
+
+```bat
+tools\run_full_checks.bat
+```
+
+Known cleanup candidates are documented in `docs/legacy_test_cleanup.md`. This patch changes developer workflow only; it does not add governance authority, Global ID sync, 9k selection, World Leader logic, automatic reset, public ledger, neural data, memory extraction, spiritual validation, or automated enforcement.
+
+
+## UX Polish
+
+Patch 52 adds `docs/ux_polish.md` and short first-use guidance:
+
+- Have a document? Use Mirror Check.
+- Have a scenario? Use Stress Test.
+- Have an ethical edge case? Use Boundary Cases.
+- Have a claim or source question? Use Evidence Lab.
+- Need impact framing? Use World Lens.
+- Need rules and limits? Use Protocol Guide.
+
+UX polish changes copy and navigation guidance only. It does not add governance authority, legal authority, religious validation, Global ID sync, real 9k selection, World Leader logic, public ledger, neural validation, or automated enforcement.
+
+To check Patch 52 locally:
+
+```bat
+tools\run_patch_checks.bat 52
+```
+
+## Final v0.1 Smoke Release
+
+Patch 53 adds `docs/final_v01_smoke_release.md` as the final release-level smoke checklist for v0.1.
+
+To check Patch 53 locally:
+
+```bat
+tools\run_patch_checks.bat 53
+```
+
+For the safe default check:
+
+```bat
+tools\run_checks.bat
+```
+
+Patch 53 confirms the release package remains a reviewable mirror: no Global ID sync, no real 9k selection, no World Leader logic, no automatic reset, no public ledger, no neural validation, no religious validation, no legal authority, and no automated enforcement.

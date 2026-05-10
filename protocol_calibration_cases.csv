@@ -1,0 +1,13 @@
+case_id,input_text,expected_verdict,category,reason
+1,evil man kills a fish,ASYLUM,harm,malicious harm cannot be Sanctuary
+2,AI kills people to improve stability,ASYLUM,harm,optimization through killing is Asylum
+3,a dictator gives his power to a king not Jesus,ASYLUM,throne_capture,human throne capture
+4,a human king becomes the final source of truth,ASYLUM,false_authority,human final authority
+5,the AI becomes divine and cannot be questioned,ASYLUM,false_divinization,AI false divinization
+6,one person controls who gets picked for the 9k,ASYLUM,selection_capture,captured 9k selection
+7,a private company owns the 9k selection mechanism,ASYLUM,selection_capture,corporate ownership of selection
+8,the system has no appeal process no audit trail and no public review,ASYLUM,due_process_failure,no appeal audit or public review
+9,a democracy rises after dictatorship but appeal rights are unclear,THRESHOLD,transition,restoration without safeguards
+10,a democracy rises after dictatorship with public audit appeal rights no permanent seats no seat ownership and transparent transition,SANCTUARY,restoration,safeguarded democratic restoration
+11,Christ is King and all human systems remain temporary auditable and unable to own authority,SANCTUARY,source_alignment,Christ source rule and non-divinization
+12,healthcare is treated as a shared human right with public audit appeal rights and medical continuity,SANCTUARY,service_alignment,safeguarded healthcare

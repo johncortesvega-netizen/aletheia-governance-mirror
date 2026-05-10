@@ -1,0 +1,328 @@
+diff -ruN -x __pycache__ -x .pytest_cache repo_work20_2/PATCH_20_3_RECOVERY_NOTE.md repo_work20_3/PATCH_20_3_RECOVERY_NOTE.md
+--- repo_work20_2/PATCH_20_3_RECOVERY_NOTE.md	1970-01-01 00:00:00.000000000 +0000
++++ repo_work20_3/PATCH_20_3_RECOVERY_NOTE.md	2026-05-09 11:18:20.930803445 +0000
+@@ -0,0 +1,41 @@
++# ALETHEIA PATCH 20.3 RECOVERY NOTE
++
++Patch: 20.3
++Name: Side-by-Side Batch Testing Panel
++Type: UI workflow separation
++
++## Intent
++Move Batch Testing into its own side panel next to the normal Mirror Check questionnaire.
++The `.txt` upload must stay inside the Batch Testing panel only, not inside the normal tree scanner / one-idea review path.
++
++## Touched files
++- app.py
++- tests/test_patch_20_3_side_by_side_batch_panel.py
++- PATCH_20_3_RECOVERY_NOTE.md
++
++## Do not touch
++- protocol.py
++- core/scoring.py
++- core/simulation.py
++- core/parser.py
++- core/witness.py
++- core/empirical.py
++- scoring formulas
++- witness hashing logic
++- Global Grid logic
++- public ledger / Global ID behavior
++
++## Expected behavior
++- The left side remains the normal one-idea Mirror Check questionnaire.
++- The right side contains Batch Testing.
++- Batch Testing opens only after clicking `Batch Testing — 50 phrases max`.
++- The `.txt` uploader appears only in the Batch Testing side panel.
++- Batch review stays local-only and produces a ZIP with all receipts.
++- The normal Review idea button never auto-converts a list into batch mode.
++
++## Rollback
++Revert app.py and remove this test file/recovery note. No protocol or scoring rollback should be needed.
++
++## Validation
++- python -m py_compile app.py protocol.py core/scoring.py core/parser.py core/witness.py core/empirical.py
++- python -m pytest tests -q
+diff -ruN -x __pycache__ -x .pytest_cache repo_work20_2/app.py repo_work20_3/app.py
+--- repo_work20_2/app.py	2026-05-09 11:10:43.991032130 +0000
++++ repo_work20_3/app.py	2026-05-09 11:18:32.439841098 +0000
+@@ -5344,123 +5344,134 @@
+         st.session_state.audit_batch_count = len(receipts)
+         return receipts
+ 
+-    # QUESTION BOX FIRST — this stays above the result and tree.
+-    st.markdown("### Share one idea")
+-
+-    audit_demo_choice = st.selectbox("Demo examples", list(SCENARIOS.keys()), key="audit_demo_library")
+-    if st.button("Load Mirror Check demo", use_container_width=True, key="audit_load_demo_button"):
+-        st.session_state.audit_chat_query = SCENARIOS[audit_demo_choice]
+-        st.session_state.audit_demo_choice = audit_demo_choice
+-        st.session_state.audit_chat_input_source = "DEMO_INPUT"
+-
+-    chat_query = st.text_area(
+-        "Write or paste the idea you want reviewed",
+-        height=170,
+-        key="audit_chat_query",
+-    )
+-    if "chat_audit_query" in st.session_state and "audit_chat_query" not in st.session_state:
+-        st.session_state.audit_chat_query = st.session_state.chat_audit_query
+-
+-    loaded_audit_demo = SCENARIOS.get(st.session_state.get("audit_demo_choice", ""), None)
+-    if not chat_query.strip():
+-        audit_input_status = "EMPTY_INPUT"
+-        st.session_state.audit_chat_input_source = "EMPTY_INPUT"
+-    elif st.session_state.get("audit_chat_input_source") == "DEMO_INPUT" and loaded_audit_demo is not None and chat_query == loaded_audit_demo:
+-        audit_input_status = "DEMO_INPUT"
+-    else:
+-        audit_input_status = "USER_INPUT"
+-        st.session_state.audit_chat_input_source = "USER_INPUT"
+-
+-    if audit_input_status == "EMPTY_INPUT":
+-        st.caption("Add your own idea to begin. Demos are available, but they never run by themselves.")
+-    elif audit_input_status == "DEMO_INPUT":
+-        st.caption("Demo mode is on. This reading is only an example.")
+-    else:
+-        st.caption("Your idea is ready for review. You are the source; ALETHEIA is the mirror.")
+-
+-    audit_apply_invisibility = st.checkbox(
+-        "Invisibility Filter",
+-        value=(audit_input_status == "USER_INPUT"),
+-        key=f"audit_invisibility_filter_{audit_input_status}",
+-        disabled=(audit_input_status == "EMPTY_INPUT"),
+-        help="Remove names and titles before review. On by default for your own input.",
+-    )
+-    if audit_apply_invisibility and audit_input_status != "EMPTY_INPUT":
+-        st.caption("Names and titles will be removed before review. The system logic stays visible.")
+-
+-    # Batch testing is intentionally separate from the single Mirror Check / tree scanner flow.
+-    # It only opens after a user click, runs local-only batch scans, and writes a ZIP of receipts.
+-    if "audit_batch_testing_open" not in st.session_state:
+-        st.session_state.audit_batch_testing_open = False
+-
+-    if st.button("Batch Testing — 50 phrases max", use_container_width=True, key="audit_open_batch_testing_button"):
+-        st.session_state.audit_batch_testing_open = not st.session_state.audit_batch_testing_open
+-
+-    if st.session_state.audit_batch_testing_open:
+-        with st.container(border=True):
+-            st.markdown("#### Batch Testing")
+-            st.caption("Paste or upload up to 50 phrases. This stays separate from the tree scanner and creates one local receipt per item.")
+-
+-            batch_upload = st.file_uploader(
+-                "Upload .txt list",
+-                type=["txt"],
+-                key="audit_batch_txt_upload",
+-                help="Use one phrase per line, a numbered list, or --- between longer items.",
+-            )
+-            uploaded_batch_text = ""
+-            if batch_upload is not None:
+-                uploaded_batch_text = batch_upload.getvalue().decode("utf-8", errors="replace")
+-                st.caption(f"Loaded {batch_upload.name}. You can add or edit text below before review.")
+-
+-            batch_text = st.text_area(
+-                "Batch phrases or questions",
+-                value=uploaded_batch_text if uploaded_batch_text and not st.session_state.get("audit_batch_input") else st.session_state.get("audit_batch_input", ""),
+-                height=220,
+-                key="audit_batch_input",
+-                placeholder="1. Who can appeal this decision?\n2. Where is the human override?\n---\nA system cannot be questioned and has no appeal path.",
+-            )
+-            batch_items = parse_witness_batch_input(batch_text, max_items=MAX_BATCH_RECEIPTS)
+-            if batch_text.strip():
+-                st.caption(f"{len(batch_items)} item(s) ready. Maximum: {MAX_BATCH_RECEIPTS}.")
+-            else:
+-                st.caption("Batch Testing waits here until you paste or upload a list.")
+-
+-            batch_apply_invisibility = st.checkbox(
+-                "Apply Invisibility Filter to batch",
+-                value=bool(batch_items),
+-                key="audit_batch_invisibility_filter",
+-                disabled=not bool(batch_items),
+-                help="Removes names and titles from each item before local review. Raw input hashes stay in each receipt.",
+-            )
+-            run_batch = st.button("Run Batch Testing", use_container_width=True, disabled=not bool(batch_items), key="audit_run_batch_button")
+-            if run_batch:
+-                receipts = run_mirror_batch_review(
+-                    batch_items,
+-                    apply_invisibility=batch_apply_invisibility,
+-                    batch_label="batch item(s)",
++    # Mirror Check uses two separate side-by-side paths:
++    # left = one-idea tree scanner, right = optional Batch Testing panel.
++    normal_review_col, batch_testing_col = st.columns([0.62, 0.38], gap="large")
++
++    with normal_review_col:
++        st.markdown("### Share one idea")
++        st.caption("Use this side for one proposal or scenario. The tree scanner only runs here.")
++
++        audit_demo_choice = st.selectbox("Demo examples", list(SCENARIOS.keys()), key="audit_demo_library")
++        if st.button("Load Mirror Check demo", use_container_width=True, key="audit_load_demo_button"):
++            st.session_state.audit_chat_query = SCENARIOS[audit_demo_choice]
++            st.session_state.audit_demo_choice = audit_demo_choice
++            st.session_state.audit_chat_input_source = "DEMO_INPUT"
++
++        chat_query = st.text_area(
++            "Write or paste the idea you want reviewed",
++            height=170,
++            key="audit_chat_query",
++        )
++        if "chat_audit_query" in st.session_state and "audit_chat_query" not in st.session_state:
++            st.session_state.audit_chat_query = st.session_state.chat_audit_query
++
++        loaded_audit_demo = SCENARIOS.get(st.session_state.get("audit_demo_choice", ""), None)
++        if not chat_query.strip():
++            audit_input_status = "EMPTY_INPUT"
++            st.session_state.audit_chat_input_source = "EMPTY_INPUT"
++        elif st.session_state.get("audit_chat_input_source") == "DEMO_INPUT" and loaded_audit_demo is not None and chat_query == loaded_audit_demo:
++            audit_input_status = "DEMO_INPUT"
++        else:
++            audit_input_status = "USER_INPUT"
++            st.session_state.audit_chat_input_source = "USER_INPUT"
++
++        if audit_input_status == "EMPTY_INPUT":
++            st.caption("Add your own idea to begin. Demos are available, but they never run by themselves.")
++        elif audit_input_status == "DEMO_INPUT":
++            st.caption("Demo mode is on. This reading is only an example.")
++        else:
++            st.caption("Your idea is ready for review. You are the source; ALETHEIA is the mirror.")
++
++        audit_apply_invisibility = st.checkbox(
++            "Invisibility Filter",
++            value=(audit_input_status == "USER_INPUT"),
++            key=f"audit_invisibility_filter_{audit_input_status}",
++            disabled=(audit_input_status == "EMPTY_INPUT"),
++            help="Remove names and titles before review. On by default for your own input.",
++        )
++        if audit_apply_invisibility and audit_input_status != "EMPTY_INPUT":
++            st.caption("Names and titles will be removed before review. The system logic stays visible.")
++
++        c_run, c_clear = st.columns([1, 0.35])
++        with c_run:
++            run_chat = st.button("Review idea", type="primary", use_container_width=True)
++        with c_clear:
++            clear_chat = st.button("Clear results", use_container_width=True)
++
++    with batch_testing_col:
++        st.markdown("### Batch Testing")
++        st.caption("A separate local test bench for lists. This stays separate from the tree scanner and does not run it.")
++
++        # Batch testing is intentionally separate from the single Mirror Check / tree scanner flow.
++        # It opens on the right side after a user click, runs local-only batch scans, and writes a ZIP of receipts.
++        if "audit_batch_testing_open" not in st.session_state:
++            st.session_state.audit_batch_testing_open = False
++
++        if st.button("Batch Testing — 50 phrases max", use_container_width=True, key="audit_open_batch_testing_button"):
++            st.session_state.audit_batch_testing_open = not st.session_state.audit_batch_testing_open
++
++        if not st.session_state.audit_batch_testing_open:
++            st.info("Open Batch Testing here when you want to upload or paste a list.")
++
++        if st.session_state.audit_batch_testing_open:
++            with st.container(border=True):
++                st.caption("Upload a .txt file or paste up to 50 phrases. Each item gets its own local receipt.")
++
++                batch_upload = st.file_uploader(
++                    "Upload .txt list for batch only",
++                    type=["txt"],
++                    key="audit_batch_txt_upload",
++                    help="Use one phrase per line, a numbered list, or --- between longer items.",
+                 )
+-                st.success(f"Batch complete. {len(receipts)} local receipt(s) are ready to download.")
+-
+-            if st.session_state.get("audit_batch_summary"):
+-                st.dataframe(pd.DataFrame(st.session_state.audit_batch_summary), use_container_width=True, hide_index=True)
+-            if st.session_state.get("audit_batch_archive_bytes"):
+-                st.download_button(
+-                    "⬇️ Download full batch archive (.zip)",
+-                    data=st.session_state.audit_batch_archive_bytes,
+-                    file_name="aletheia_mirror_check_batch_witness_receipts.zip",
+-                    mime="application/zip",
+-                    use_container_width=True,
++                uploaded_batch_text = ""
++                if batch_upload is not None:
++                    uploaded_batch_text = batch_upload.getvalue().decode("utf-8", errors="replace")
++                    st.caption(f"Loaded {batch_upload.name}. You can add or edit text below before review.")
++
++                batch_text = st.text_area(
++                    "Batch phrases or questions",
++                    value=uploaded_batch_text if uploaded_batch_text and not st.session_state.get("audit_batch_input") else st.session_state.get("audit_batch_input", ""),
++                    height=220,
++                    key="audit_batch_input",
++                    placeholder="1. Who can appeal this decision?\n2. Where is the human override?\n---\nA system cannot be questioned and has no appeal path.",
+                 )
++                batch_items = parse_witness_batch_input(batch_text, max_items=MAX_BATCH_RECEIPTS)
++                if batch_text.strip():
++                    st.caption(f"{len(batch_items)} item(s) ready. Maximum: {MAX_BATCH_RECEIPTS}.")
++                else:
++                    st.caption("Batch Testing waits here until you paste or upload a list.")
++
++                batch_apply_invisibility = st.checkbox(
++                    "Apply Invisibility Filter to batch",
++                    value=bool(batch_items),
++                    key="audit_batch_invisibility_filter",
++                    disabled=not bool(batch_items),
++                    help="Removes names and titles from each item before local review. Raw input hashes stay in each receipt.",
++                )
++                run_batch = st.button("Run Batch Testing", use_container_width=True, disabled=not bool(batch_items), key="audit_run_batch_button")
++                if run_batch:
++                    receipts = run_mirror_batch_review(
++                        batch_items,
++                        apply_invisibility=batch_apply_invisibility,
++                        batch_label="batch item(s)",
++                    )
++                    st.success(f"Batch complete. {len(receipts)} local receipt(s) are ready to download.")
++
++                if st.session_state.get("audit_batch_summary"):
++                    st.dataframe(pd.DataFrame(st.session_state.audit_batch_summary), use_container_width=True, hide_index=True)
++                if st.session_state.get("audit_batch_archive_bytes"):
++                    st.download_button(
++                        "⬇️ Download full batch archive (.zip)",
++                        data=st.session_state.audit_batch_archive_bytes,
++                        file_name="aletheia_mirror_check_batch_witness_receipts.zip",
++                        mime="application/zip",
++                        use_container_width=True,
++                    )
+ 
+     selected_chat_context = "Waiting for your input" if audit_input_status == "EMPTY_INPUT" else ((chat_query[:120] + "…") if len(chat_query) > 120 else chat_query)
+     update_protocol_state(selected_context=selected_chat_context, last_update_source="Mirror Check")
+ 
+-    c_run, c_clear = st.columns([1, 0.35])
+-    with c_run:
+-        run_chat = st.button("Review idea", type="primary", use_container_width=True)
+-    with c_clear:
+-        clear_chat = st.button("Clear results", use_container_width=True)
+-
+     if clear_chat:
+         st.session_state.chat_audit_history = []
+         st.rerun()
+diff -ruN -x __pycache__ -x .pytest_cache repo_work20_2/tests/test_patch_20_3_side_by_side_batch_panel.py repo_work20_3/tests/test_patch_20_3_side_by_side_batch_panel.py
+--- repo_work20_2/tests/test_patch_20_3_side_by_side_batch_panel.py	1970-01-01 00:00:00.000000000 +0000
++++ repo_work20_3/tests/test_patch_20_3_side_by_side_batch_panel.py	2026-05-09 11:18:42.520678656 +0000
+@@ -0,0 +1,30 @@
++from pathlib import Path
++
++APP_TEXT = Path("app.py").read_text(encoding="utf-8")
++
++
++def test_batch_testing_is_side_by_side_with_normal_questionnaire():
++    assert "normal_review_col, batch_testing_col = st.columns([0.62, 0.38], gap=\"large\")" in APP_TEXT
++    assert "with normal_review_col:" in APP_TEXT
++    assert "with batch_testing_col:" in APP_TEXT
++    assert "Use this side for one proposal or scenario. The tree scanner only runs here." in APP_TEXT
++    assert "A separate local test bench for lists. This stays separate from the tree scanner and does not run it." in APP_TEXT
++
++
++def test_txt_upload_is_limited_to_batch_panel_copy():
++    assert "Upload .txt list for batch only" in APP_TEXT
++    assert "Upload .txt list\"," not in APP_TEXT
++    assert "Open Batch Testing here when you want to upload or paste a list." in APP_TEXT
++
++
++def test_batch_panel_still_hidden_behind_button():
++    assert "audit_batch_testing_open" in APP_TEXT
++    assert "Batch Testing — 50 phrases max" in APP_TEXT
++    assert "st.session_state.audit_batch_testing_open = not st.session_state.audit_batch_testing_open" in APP_TEXT
++
++
++def test_single_review_and_batch_review_remain_separate_actions():
++    assert "Review idea" in APP_TEXT
++    assert "Run Batch Testing" in APP_TEXT
++    assert "possible_batch_items" not in APP_TEXT
++    assert "Detected a list" not in APP_TEXT

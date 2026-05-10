@@ -1,0 +1,10 @@
+docs/mechanism_vs_claim_scanner.md
+prompts/mechanism_vs_claim_prompt.md
+tests/test_patch_38_mechanism_vs_claim.py
+PATCH_38_MANIFEST.txt
+PATCH_38_RECOVERY_NOTE.md
+PATCH_STATUS.md
+docs/progress_database.md
+README.md
+about_page.py
+app.py

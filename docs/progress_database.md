@@ -1,0 +1,258 @@
+# ALETHEIA Progress Database
+
+This file tracks current project progress inside the repo so patch continuity is not dependent on chat history alone.
+
+## Current Status
+
+Current patch: Patch 49 — Full Test Suite / Legacy Test Cleanup.
+
+Patch 47 is treated as passed. Patch 48 adds the v0.1 release-candidate gate: included modules, explicit exclusions, manual smoke-test steps, automated checks, and release readiness criteria.
+
+## Current Patch Map
+
+- Patch 33 — Baseline v0.1 + Safe Language + Eternal Baseline — passed.
+- Patch 34 — Boundary Cases Matrix — passed.
+- Patch 35 — Failure Classification — passed.
+- Patch 36 — Patch Automation Toolkit — passed.
+- Patch 36.1 — Automation Script Hotfix + Safe Check Workflow — passed.
+- Patch 37 — Consent-Audit Engine — passed.
+- Patch 38 — Mechanism-vs-Claim Scanner — passed.
+- Patch 39 — Self-Audit Mode — passed.
+- Patch 40 — Evidence Lab + Extraordinary Claim Protocol — passed.
+- Patch 41 — Local Witness Receipt v2 — passed.
+- Patch 42 — World Lens Simulation — passed.
+- Patch 43 — Protocol Guide Consolidation — passed.
+- Patch 44 — Progress Database + Patch Status Hardening — passed.
+- Patch 45 — Public README + Limitations Polish — passed.
+- Patch 46 — Sample Reports / Example Audits — passed.
+- Patch 47 — App Navigation + Smoke Test Cleanup — passed.
+- Patch 48 — Release Candidate Checklist — passed.
+- Patch 49 — Full Test Suite / Legacy Test Cleanup — current.
+
+## Current Architecture Direction
+
+User input → optional actor-bias reduction → Mirror Check / Stress Test → Boundary Cases → Failure Classification → Consent-Audit Engine → Mechanism-vs-Claim Scanner → Self-Audit Mode → Evidence Lab / Extraordinary Claim Protocol → World Lens Simulation → Protocol Guide consolidation → sample reports / examples → repair questions → Local Witness Receipt v2 → human judgment.
+
+## Module Map
+
+| Module | Purpose | Authority Boundary |
+|---|---|---|
+| Baseline v0.1 | Defines what ALETHEIA may and may not do | Mirror only; no command authority |
+| Safe Language Layer | Replaces enforcement language with review language | No leader removal, no AI decision claims |
+| Eternal Baseline | Versioned ethical continuity layer | Reference layer, not a command layer |
+| Boundary Cases Matrix | Stress-tests hard edge cases | Calibration for human review |
+| Failure Classification | Separates Actor, Policy, Implementation, and Data Failure | Repair targeting, not blame engine |
+| Consent-Audit Engine | Checks whether refusal is realistically possible | Reflects consent pressure; no legal judgment |
+| Mechanism-vs-Claim Scanner | Separates value claims from real safeguards | Does not infer bad faith |
+| Self-Audit Mode | Lets ALETHEIA audit its own language and assumptions | Does not prove correctness |
+| Evidence Lab | Marks evidence levels and parks extraordinary claims | Does not validate spiritual authority |
+| Local Witness Receipt v2 | Creates local user-held fingerprints | No ledger, no Global ID sync, no central storage |
+| World Lens Simulation | Reviews possible population impact | Simulation only; no real governance mechanism |
+| Protocol Guide | Explains how modules connect | Documentation only |
+| Progress Database | Tracks local roadmap and patch state | Developer continuity only |
+| Public Release Limits | Documents limitations, ethics, release scope, and archive caution | Explanation only; no authority |
+| Sample Reports | Shows example audit, boundary case, self-audit, and receipt formats | Demonstration only; no authority |
+| Legacy Test Cleanup | Separates current patch checks from older test cleanup | Developer workflow only; no governance authority |
+
+## Patch Workflow
+
+1. Apply patched items over the working project folder.
+2. Run the current patch command, for example:
+
+```bat
+tools\run_patch_checks.bat 46
+```
+
+3. For the safe default check, run:
+
+```bat
+tools\run_checks.bat
+```
+
+4. If checks pass, continue with the next patch.
+
+5. Return only patched or added files, not the whole app, unless recovery requires a full archive.
+
+See `docs/patch_workflow.md` for the full workflow.
+
+## Next-Patch Convention
+
+When the user says `next patch`, it means the previous patch succeeded and development should continue with the next logical patch.
+
+## Notes
+
+Full pytest collection is not used as the default automation target until older duplicate test paths and legacy collection issues are cleaned up.
+
+## Patch 41 Notes
+
+Patch 41 adds Local Witness Receipt v2: document fingerprint, processed-document fingerprint, report fingerprint, receipt fingerprint, app/rubric/prompt versions, active modules, and explicit no-ledger/no-Global-ID-sync/no-central-storage/no-authority boundaries.
+
+## Patch 42 Notes
+
+Patch 42 adds World Lens Simulation as a non-sovereign population-impact mirror. It reviews affected groups, power gains, protection losses, basic-rights risk, minority-rights risk, ambient capture risk, appealability, exit, and repair. It uses simulated threshold signal language only and explicitly avoids real Global ID, real 9k selection, World Leader logic, automatic resets, central storage, enforcement, or governance mandates.
+
+## Patch 43 Notes
+
+Patch 43 consolidates the v0.1 logic from patches 33–42 into `docs/protocol_guide.md` and the app Protocol Guide. It connects the Baseline, Safe Language Layer, Eternal Baseline, Boundary Cases Matrix, Failure Classification, Consent-Audit Engine, Mechanism-vs-Claim Scanner, Self-Audit Mode, Evidence Lab, Local Witness Receipt v2, and World Lens Simulation into one user-facing operating guide. It adds no governance authority and preserves mirror-not-throne, human-review-required language.
+
+## Patch 44 Notes
+
+Patch 44 hardens continuity by adding `docs/patch_workflow.md`, expanding this progress database, and updating `PATCH_STATUS.md` with the current patch, check command, safe default check, and next-patch pointer. It adds no governance logic; it makes the development workflow easier to continue safely.
+
+
+## Patch 45 Notes
+
+Patch 45 adds `docs/limitations.md`, `docs/ethics.md`, and `docs/public_release_notes.md`. It polishes the README and app/about language for a public v0.1 release posture: ALETHEIA is a research and review prototype, not legal advice, political authority, religious authority, medical authority, a sovereign system, an election mechanism, or automated enforcement. It also preserves the archive caution that historical AI-flattery artifacts are development context, not founder validation.
+
+## Patch 46 Notes
+
+Patch 46 adds `docs/sample_reports.md` and four public-safe example artifacts under `examples/`: a sample policy audit, a sample boundary-case report, a sample self-audit, and a sample local witness receipt. These examples show report structure before users upload their own documents. They are demonstration artifacts only and do not create legal, political, religious, medical, or governance authority.
+
+## Next Logical Patch
+
+Patch 50 — v0.1 Release Package.
+
+
+## Patch 47 Notes
+
+Patch 47 adds `docs/app_navigation_smoke.md` and centralizes the visible navigation labels in `app.py` through `APP_NAVIGATION_LABELS`. The visible v0.1 path is Mirror Check, Stress Test, Boundary Cases, Evidence Lab, World Lens, Protocol Guide, and Why ALETHEIA. The patch adds smoke-test coverage so local checks can confirm the app navigation remains discoverable and non-authoritative after the release-hardening patches.
+
+Patch 47 adds no governance authority, no Global ID sync, no real 9k selection, no automatic reset, no World Leader logic, no public ledger, and no spiritual validation.
+
+
+## Patch 48 Notes
+
+Patch 48 adds `docs/release_candidate_checklist.md`. It defines the v0.1 release-candidate gate: included modules, explicit out-of-scope features, safe and forbidden output language, a manual smoke-test path, automated check commands, and readiness criteria. It keeps ALETHEIA framed as a testable mirror package, not a truth claim or authority system.
+
+Patch 48 adds no governance authority, no Global ID sync, no real 9k selection, no World Leader logic, no automatic reset, no public ledger, no neural data, no memory extraction, no spiritual validation, and no automated enforcement.
+
+
+## Patch 49 Notes
+
+Patch 49 separates the current safe check workflow from legacy full-suite cleanup. The default `tools\run_checks.bat` now runs the latest patch-specific test chain and compile checks, then prints a non-blocking legacy inventory. `tools\run_full_checks.bat` remains available for explicit full-suite work, but legacy blockers are documented in `docs/legacy_test_cleanup.md` rather than allowed to break the current patch workflow.
+
+Known legacy blockers include the nested duplicate `tests/tests/test_patch_29_hard_capture_receipt_trace.py`, the old Patch 20 batch upload test that imports `combine_witness_text_uploads`, and `tests/test_scoring_repair_questions.py`, which imports `repair_prompts_from_report`. These are cleanup candidates, not current Patch 33+ blockers.
+
+Patch 49 adds no governance authority, no Global ID sync, no real 9k selection, no World Leader logic, no automatic reset, no public ledger, no neural data, no memory extraction, no spiritual validation, and no automated enforcement.
+
+## Next Logical Patch
+
+Patch 50 — v0.1 Release Package.
+
+## Patch 50 — v0.1 Release Package
+
+Status: Current
+
+Purpose: package ALETHEIA v0.1 as a clean public MVP without adding authority claims.
+
+Added:
+
+- `docs/v01_release_package.md`
+- v0.1 module list
+- public interpretation rule
+- explicit out-of-scope list
+- quickstart commands
+- release readiness checklist
+
+Boundary:
+
+Patch 50 is packaging only. It does not activate real Global ID, real 9k selection, World Leader logic, neural data, public ledger, automatic reset, legal authority, religious authority, or automated enforcement.
+
+Next logical patch: Patch 51 — Git Diff Workflow Setup.
+
+
+## Patch 51 Notes
+
+Patch 51 adds the optional Git Diff Workflow. Future patches may be delivered as `.diff` files when the local project is committed and clean. The workflow supports `git apply --check`, `git apply`, local status inspection through `tools\check_git_status.bat`, and local diff export through `tools\export_patch_diff.bat`.
+
+The patched-items-only zip workflow remains valid. Git diff workflow is a developer convenience and does not create governance authority, Global ID sync, real 9k selection, World Leader logic, automatic reset, public ledger, neural validation, religious validation, legal authority, or automated enforcement.
+
+## Next Logical Patch
+
+Patch 54 — Example Audit Runner / Demo Inputs.
+
+
+## Patch 52 Notes
+
+Patch 52 adds optional UX polish after the v0.1 release-hardening sequence. It shortens navigation descriptions, adds a first-use path, updates About / Why ALETHEIA copy, and documents the UX boundary in `docs/ux_polish.md`.
+
+The first-use path is: Mirror Check for documents, Stress Test for scenarios, Boundary Cases for ethical edge cases, Evidence Lab for claim/source review, World Lens for non-sovereign population-impact framing, Protocol Guide for rules, and Why ALETHEIA for context.
+
+Patch 52 adds no doctrine, no scoring authority, no Global ID sync, no real 9k selection, no World Leader logic, no automatic reset, no public ledger, no neural validation, no religious validation, no legal authority, and no automated enforcement.
+
+## Next Logical Patch
+
+Patch 54 — Example Audit Runner / Demo Inputs.
+
+
+## Patch 53 — Final v0.1 Smoke Release
+
+Status: Current / release-smoke patch
+
+Purpose: verify that v0.1 release materials are coherent and still framed as a reviewable governance mirror.
+
+Added:
+
+- `docs/final_v01_smoke_release.md`
+- `tests/test_patch_53_final_v01_smoke_release.py`
+
+Checks:
+
+```bat
+tools\run_patch_checks.bat 53
+tools\run_checks.bat
+```
+
+Boundary: no new doctrine, no Global ID sync, no real 9k selection, no World Leader logic, no automatic reset, no public ledger, no neural validation, no religious validation, no legal authority, and no automated enforcement.
+
+Next logical patch: Patch 54 — Example Audit Runner / Demo Inputs.
+
+
+## Patch 55 — GitHub Cleanup Package
+
+Status: Current / ready for local verification
+
+Purpose: prepare ALETHEIA v0.1 for public repository review without expanding authority.
+
+Added:
+
+- `docs/github_cleanup_package.md`
+- `docs/contributing.md`
+- `docs/repository_map.md`
+- `tests/test_patch_55_github_cleanup.py`
+
+Updated:
+
+- `README.md`
+- `about_page.py`
+- `PATCH_STATUS.md`
+- `docs/progress_database.md`
+
+Boundary: Patch 55 is documentation and repository packaging only. It adds no governance authority, Global ID sync, real 9k selection, World Leader logic, automatic reset, public ledger authority, neural validation, religious validation, legal authority, or automated enforcement.
+
+Next logical patch: Patch 56 — v0.2 Planning Document.
+
+
+## Patch 56–60 — v1 Finalization Bundle
+
+Status: Current / final v1 package
+
+Purpose: mark ALETHEIA as v1.0 public MVP complete while preserving the mirror-not-throne boundary.
+
+Added:
+
+- `docs/v02_roadmap.md`
+- `docs/feature_backlog.md`
+- `docs/out_of_scope_future_modules.md`
+- `docs/report_export_polish.md`
+- `docs/manual_evidence_attachment.md`
+- `docs/rubric_weighting_confidence.md`
+- `docs/deployment_prep.md`
+- `docs/v1_release_complete.md`
+- `tests/test_patch_56_60_v1_finalization.py`
+
+v1.0 status: finished public MVP package.
+
+Next work: v0.2 planning, report export implementation, manual evidence attachment implementation, confidence notes, or public deployment only after human review.
+
+Boundary: no governance authority, no Global ID sync, no real 9k selection, no World Leader logic, no automatic reset, no public ledger authority, no neural validation, no religious validation, no legal authority, and no automated enforcement.

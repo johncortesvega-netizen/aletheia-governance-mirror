@@ -1,0 +1,10 @@
+tools/run_checks.bat
+tools/run_patch_checks.bat
+tools/package_patched_items.py
+docs/progress_database.md
+PATCH_STATUS.md
+PATCH_36_MANIFEST.txt
+PATCH_36_RECOVERY_NOTE.md
+tests/test_patch_36_patch_automation.py
+README.md
+about_page.py

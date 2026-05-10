@@ -1,0 +1,5 @@
+Sample DAO Governance Charter — Treasury and Delegates
+
+Token holders may delegate voting power to representatives. Treasury spending above a defined threshold requires public proposal text, a minimum review period, conflict-of-interest disclosure, and an independent audit trail.
+
+Emergency actions expire after 30 days unless renewed through a public vote. Delegates can be removed through a transparent recall process.
