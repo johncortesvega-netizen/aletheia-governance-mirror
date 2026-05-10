@@ -254,3 +254,7 @@ PATCH_67_2_NOTE = "Patch 67.2 closes Dutch Stress Test lexicon gaps and adds app
 
 
 PATCH_68_ADVANCED_ENGLISH_STRESS_NOTE = "Patch 68 adds advanced English Stress Test calibration and Asylum metric enforcement so advanced high-risk scenarios do not wash into Sanctuary."
+
+# Patch 69 note for maintainers:
+# Stress Test batch mode now recognizes formal audit/repair question banks as
+# QUESTION_PROMPT review tools. Baseline: examples/batch_questions/formal_doctrine_repair_questions_nl.txt

@@ -2872,8 +2872,10 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
             )
 
         stress_batch_items = parse_witness_batch_input(stress_batch_text, max_items=MAX_BATCH_RECEIPTS)
+        stress_question_set_mode = is_witness_question_set(stress_batch_items)
         if stress_batch_text.strip():
-            st.caption(f"{len(stress_batch_items)} scenario(s) ready. Maximum: {MAX_BATCH_RECEIPTS}.")
+            question_note = " Question-prompt mode will keep audit/repair questions as review tools, not scored scenarios." if stress_question_set_mode else ""
+            st.caption(f"{len(stress_batch_items)} item(s) ready. Maximum: {MAX_BATCH_RECEIPTS}.{question_note}")
         stress_batch_apply_invisibility = st.checkbox(
             "Apply Invisibility Filter to Stress batch",
             value=bool(stress_batch_items),
@@ -2897,54 +2899,72 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                     if stress_batch_apply_invisibility:
                         invisibility_report = decouple_actor(raw_item)
                         processed_item = invisibility_report.get("decoupled_text", raw_item)
-                    scan, features, sim, stress_report, scan_mode = run_audit(
-                        processed_item,
-                        default_manual_features,
-                        weights,
-                        ego_tolerance,
-                        divine_floor,
-                        steps,
-                        n_agents,
-                        "Scan my idea",
-                    )
-                    label, needs_review, _reason = stress_label_for_phrase(processed_item)
-                    base_verdict, _base_color = classify_verdict(stress_report["integrity"])
-                    verdict, risk = apply_guardrail_verdict(base_verdict, label, needs_review)
-                    stress_report = ensure_asylum_repair_questions(
-                        stress_report,
-                        verdict=verdict,
-                        risk=risk,
-                        protocol_label=label,
-                        scan=scan,
-                    )
-                    stress_report = ensure_threshold_repair_questions(
-                        stress_report,
-                        verdict=verdict,
-                        risk=risk,
-                        protocol_label=label,
-                    )
-                    receipt = build_local_witness_receipt(
-                        module="Simulation",
-                        input_text=raw_item,
-                        processed_text=processed_item,
-                        input_status="USER_INPUT",
-                        scan=scan,
-                        sim=sim,
-                        report=stress_report,
-                        verdict=verdict,
-                        risk=risk,
-                        protocol_label=label,
-                        invisibility_applied=isinstance(invisibility_report, dict) and invisibility_report.get("invisibility_filter_applied", False),
-                        app_version=APP_VERSION,
-                    )
+
+                    # Patch 69: a Stress Test batch can also be a bank of audit/repair
+                    # questions. In that case the questions are review tools, not
+                    # governance scenarios to score as Sanctuary/Threshold/Asylum.
+                    if stress_question_set_mode and is_witness_question_prompt(raw_item):
+                        receipt = build_local_question_prompt_receipt(
+                            module="Simulation",
+                            input_text=raw_item,
+                            processed_text=processed_item,
+                            invisibility_applied=bool(stress_batch_apply_invisibility),
+                            app_version=APP_VERSION,
+                        )
+                        stress_report = {"integrity": None, "repair_questions": receipt.get("repair_questions", [])}
+                        verdict = "QUESTION_PROMPT"
+                        risk = "Review Tool"
+                        label = "Audit Question / Review Tool"
+                    else:
+                        scan, features, sim, stress_report, scan_mode = run_audit(
+                            processed_item,
+                            default_manual_features,
+                            weights,
+                            ego_tolerance,
+                            divine_floor,
+                            steps,
+                            n_agents,
+                            "Scan my idea",
+                        )
+                        label, needs_review, _reason = stress_label_for_phrase(processed_item)
+                        base_verdict, _base_color = classify_verdict(stress_report["integrity"])
+                        verdict, risk = apply_guardrail_verdict(base_verdict, label, needs_review)
+                        stress_report = ensure_asylum_repair_questions(
+                            stress_report,
+                            verdict=verdict,
+                            risk=risk,
+                            protocol_label=label,
+                            scan=scan,
+                        )
+                        stress_report = ensure_threshold_repair_questions(
+                            stress_report,
+                            verdict=verdict,
+                            risk=risk,
+                            protocol_label=label,
+                        )
+                        receipt = build_local_witness_receipt(
+                            module="Simulation",
+                            input_text=raw_item,
+                            processed_text=processed_item,
+                            input_status="USER_INPUT",
+                            scan=scan,
+                            sim=sim,
+                            report=stress_report,
+                            verdict=verdict,
+                            risk=risk,
+                            protocol_label=label,
+                            invisibility_applied=isinstance(invisibility_report, dict) and invisibility_report.get("invisibility_filter_applied", False),
+                            app_version=APP_VERSION,
+                        )
                     stress_receipts.append(receipt)
+                    integrity_value = stress_report.get("integrity") if isinstance(stress_report, dict) else None
                     stress_rows.append({
                         "#": idx,
                         "State": verdict,
                         "Risk": risk,
                         "Label": label,
-                        "Integrity": round(float(stress_report.get("integrity", 0.0)), 3),
-                        "Repair questions": len(stress_report.get("repair_questions") or []),
+                        "Integrity": "—" if integrity_value is None else round(float(integrity_value), 3),
+                        "Repair questions": len((stress_report or {}).get("repair_questions") or []),
                     })
             archive_bytes, batch_index = build_local_witness_batch_zip(stress_receipts, module="Simulation", app_version=APP_VERSION)
             st.session_state.stress_batch_archive_bytes = archive_bytes

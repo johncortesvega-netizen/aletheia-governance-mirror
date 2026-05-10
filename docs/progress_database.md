@@ -445,3 +445,14 @@ tools\run_patch_checks.bat 67_2
 ## Patch 68 — Advanced English Stress Lexicon + Asylum Metric Enforcement
 
 Adds advanced English Stress Test calibration for predictive sentencing, biometric/identity coercion, divine-authority wallet capture, founder-keyword mirror capture, pre-emptive arrests, loyalty-to-state baseline capture, archive deletion, unaudited mirror code, and similar high-risk governance patterns. Advanced English stress scenarios route to `THRESHOLD / Needs Safeguards` or `ASYLUM / High` instead of washing into Sanctuary. Asylum metric enforcement now applies to non-malicious Asylum labels so receipts do not retain perfect trust/alignment or zero ego.
+
+## Patch 69 — Stress Test Question Prompt Detection
+
+Status: completed.
+
+Finding: the Stress Test batch runner could process a formal doctrine repair-question baseline as ordinary Simulation scenarios, producing normal SANCTUARY / THRESHOLD / ASYLUM verdicts instead of recognizing the inputs as audit prompts.
+
+Fix: Stress Test batch mode now checks whether the batch is a question set. If so, each audit / repair question is stored as a Simulation `QUESTION_PROMPT` local witness receipt with `Risk: Review Tool` and `Protocol label: Audit Question / Review Tool`.
+
+Reminder file used by the user: `formal doctrine repair-question baseline.txt`.
+Repo baseline copy: `examples/batch_questions/formal_doctrine_repair_questions_nl.txt`.

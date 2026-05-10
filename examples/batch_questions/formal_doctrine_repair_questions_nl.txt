@@ -1,0 +1,50 @@
+01. Wie heeft het laatste woord als de data en de menselijke intuïtie elkaar tegenspreken?
+02. Is de beslissingsbevoegdheid in dit systeem herroepbaar door de getroffenen?
+03. Welke mechanismen voorkomen dat de beheerder zichzelf boven de eigen regels plaatst?
+04. Is er een 'noodstop' die niet door de centrale autoriteit geblokkeerd kan worden?
+05. Wordt macht in dit model gezien als een bezit of als een tijdelijke lening voor service?
+06. Hoe wordt voorkomen dat een tijdelijke maatregel ontaardt in een permanente machtsstructuur?
+07. Rust de autoriteit op transparante logica of op de ondoorzichtigheid van het systeem?
+08. Wat gebeurt er als een gebruiker 'nee' zegt tegen de fundamentele aannames van het systeem?
+09. Is de hiërarchie gebouwd op angst voor sancties of op het vertrouwen in de architectuur?
+10. Kan dit systeem functioneren zonder een centrale 'troon' of identificatie-eis?
+11. Dient dit voorstel de stabiliteit van het geheel of de reputatie van de architect?
+12. Waar zit de 'grip' in dit ontwerp, en hoe kunnen we die omzetten in 'grace'?
+13. Wordt kritiek op dit systeem behandeld als een aanval of als noodzakelijke feedback?
+14. Is de taal van dit beleid ontworpen om te verhelderen of om indruk te maken?
+15. Hoeveel van dit ontwerp is gebaseerd op de persoonlijke bias van de maker?
+16. Wordt succes gemeten in termen van controle of in termen van de afname van frictie?
+17. Is er ruimte voor het systeem om toe te geven dat het een fout heeft gemaakt?
+18. Faciliteert de interface menselijke autonomie of dwingt het een specifiek gedrag af?
+19. Wat blijft er van de waarde van dit systeem over als de naam van de bedenker wordt verwijderd?
+20. Hoe bevordert dit model de nederigheid van degenen die het uitvoeren?
+21. Wat is de waarschijnlijkheid dat dit systeem bezwijkt onder zijn eigen complexiteit?
+22. Waar bevinden zich de verborgen filters die de invoer van de '9.000 Randoms' vervormen?
+23. Is de dataset die dit systeem voedt onafhankelijk of circulair bevestigend?
+24. Hoe reageert de architectuur wanneer de 'frictie' in de samenleving plotseling toeneemt?
+25. Is er een balans tussen de efficiëntie van het algoritme en de menselijke ervaring?
+26. Welke 'Asylum'-patronen worden door dit beleid onbedoeld versterkt?
+27. Is de stabiliteit van dit grid afhankelijk van constante surveillance of van intrinsieke orde?
+28. Hoe wordt de 'Z-as' (diepte en geloof) gerespecteerd in deze kwantitatieve analyse?
+29. Kan het systeem een 'reboot' overleven zonder verlies van de ethische baseline?
+30. Worden de randgevallen (outliers) beschermd of geëlimineerd door de logica?
+31. Versterkt deze technologische laag de loyaliteit binnen het huishouden of verbreekt het die?
+32. Hoe draagt dit mondiale grid bij aan de veiligheid van een individueel kind?
+33. Wordt 'care' in dit model behandeld als een variabele of als de fundamentele constante?
+34. Hoe beschermt dit systeem de privacy van de kleinste eenheid tegen macro-ingrepen?
+35. Is de groei die dit model nastreeft organisch of geforceerd door externe druk?
+36. Geeft dit ontwerp ouders meer of minder autoriteit over hun eigen leefomgeving?
+37. Wordt emotionele veiligheid opgeofferd voor numerieke precisie?
+38. Hoe ondersteunt de architectuur de overdracht van waarden naar de volgende generatie?
+39. Is er een menselijke maat aanwezig in de 'Zero-Point Baseline'?
+40. Faciliteert het systeem rust of creëert het een constante staat van paraatheid?
+41. In plaats van 'controle', hoe realiseren we 'vrijwillige uitlijning'?
+42. Hoe transformeren we 'compliance' naar 'ethische resonantie'?
+43. Kan 'beheer' worden hergedefinieerd als 'stewardship zonder eigendom'?
+44. Hoe verplaatsen we de focus van 'veiligheid door opsluiting' naar 'veiligheid door transparantie'?
+45. Is 'efficiëntie' hier een code voor 'het omzeilen van menselijke reflectie'?
+46. Hoe vervangen we 'biometrische autoriteit' door 'lokale getuigenis'?
+47. Kan 'centrale planning' worden omgezet in 'gedistribueerde coördinatie'?
+48. In plaats van 'het managen van schaarste', hoe faciliteren we 'het delen van overvloed'?
+49. Hoe maken we van 'handhaving' een proces van 'collectieve reparatie'?
+50. Is 'objectiviteit' in deze context slechts een masker voor 'geautomatiseerde bias'?
