@@ -403,3 +403,9 @@ Check:
 ```bat
 tools\run_patch_checks.bat 66
 ```
+
+## Patch 67 — Stress Test Threshold Repair + Metric Softening
+
+Patch 67 completes the second Stress Test calibration layer after Patch 66. Stress scenarios that route to `THRESHOLD / Needs Safeguards` now receive repair questions and a light metric softening guard: trust and alignment are capped below perfect values, while ego/ego-pressure receive a small review-pressure floor. This makes medium-risk results more useful without turning ALETHEIA into an authority system.
+
+Boundary: diagnostic only; no enforcement, no automatic reset, no public ledger, no Global ID sync, no central storage, and no authority claim.

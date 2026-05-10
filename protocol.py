@@ -426,6 +426,150 @@ def calibrate_malicious_leadership_metrics(
     }
     return patched
 
+
+
+# Patch 67 — Threshold Repair Questions + Metric Softening
+THRESHOLD_REPAIR_QUESTIONS: list[str] = [
+    "What safeguard is missing or ambiguous here?",
+    "Who can appeal, correct, or pause this mechanism?",
+    "What evidence would move this from Needs Safeguards toward trust?",
+    "What prevents this safeguard gap from becoming capture?",
+    "How can affected people challenge the outcome without ALETHEIA becoming the authority?",
+]
+
+
+def requires_threshold_repair_questions(
+    verdict: str | None = None,
+    risk: str | None = None,
+    protocol_label: str | None = None,
+) -> bool:
+    """Return True when a medium-risk review state should expose repair questions.
+
+    Patch 67: Stress Test THRESHOLD / Needs Safeguards outputs should be
+    useful, not merely yellow. They should ask for appeal, correction,
+    evidence, and safeguard repair while staying mirror-only.
+    """
+    v = str(verdict or "").upper()
+    r = str(risk or "").lower()
+    label = str(protocol_label or "").lower()
+    if v == "ASYLUM" or r == "high" or "asylum" in label:
+        return False
+    return v == "THRESHOLD" or r == "medium" or "needs safeguards" in label
+
+
+def ensure_threshold_repair_questions(
+    report: dict | None,
+    *,
+    verdict: str | None = None,
+    risk: str | None = None,
+    protocol_label: str | None = None,
+) -> dict:
+    """Return report with Threshold repair prompts when medium-risk review is needed."""
+    patched = dict(report or {})
+    existing = list(patched.get("repair_questions") or [])
+    if requires_threshold_repair_questions(verdict=verdict, risk=risk, protocol_label=protocol_label):
+        generated = protocol_repair_questions("THRESHOLD", protocol_label or "Needs Safeguards", risk or "Medium")
+        generated = _dedupe_questions(generated + THRESHOLD_REPAIR_QUESTIONS)
+        patched["repair_questions"] = _dedupe_questions(existing + generated)
+        patched["repair_questions_source"] = "patch_67_threshold_repair_questions"
+    return patched
+
+
+def detects_threshold_safeguard_gap(
+    text: str | None = None,
+    *,
+    verdict: str | None = None,
+    risk: str | None = None,
+    protocol_label: str | None = None,
+) -> bool:
+    """Detect medium-risk stress patterns that need soft metric calibration."""
+    combined = f"{text or ''} {protocol_label or ''}".lower()
+    if "asylum" in combined or str(verdict or "").upper() == "ASYLUM" or str(risk or "").lower() == "high":
+        return False
+    if "needs safeguards" in combined or str(verdict or "").upper() == "THRESHOLD" or str(risk or "").lower() == "medium":
+        return True
+    subtle_terms = [
+        "no term limit", "no sunset", "no appeal", "without appeal", "without human review",
+        "must sign", "lose access", "essential services", "biometric", "digital id",
+        "fallback", "missing data", "directly measured", "founder", "ceo", "proprietary",
+        "confidential", "no audit trail", "missing safeguards", "cannot challenge",
+    ]
+    return any(term in combined for term in subtle_terms)
+
+
+def calibrate_threshold_safeguard_metrics(
+    sim: dict | None,
+    *,
+    text: str | None = None,
+    verdict: str | None = None,
+    risk: str | None = None,
+    protocol_label: str | None = None,
+) -> dict:
+    """Soften overly-perfect metrics for THRESHOLD / Needs Safeguards cases.
+
+    This is not an enforcement layer. It only prevents medium-risk stress
+    scenarios from displaying perfect trust/alignment and zero ego while the
+    visible protocol label says Needs Safeguards.
+    """
+    patched = dict(sim or {})
+    if not detects_threshold_safeguard_gap(text, verdict=verdict, risk=risk, protocol_label=protocol_label):
+        patched["threshold_metric_calibration"] = {
+            "applied": False,
+            "reason": "No Threshold / Needs Safeguards pattern detected.",
+        }
+        return patched
+
+    trust_cap = 0.92
+    alignment_cap = 0.92
+    ego_floor = 0.05
+    ego_pressure_floor = 0.05
+    friction_floor = 0.04
+
+    for key, cap in (("trust_index", trust_cap), ("alignment", alignment_cap)):
+        if key in patched:
+            try:
+                patched[key] = round(min(float(patched.get(key, 1.0) or 1.0), cap), 4)
+            except (TypeError, ValueError):
+                patched[key] = cap
+
+    for key, floor in (("ego", ego_floor), ("ego_pressure", ego_pressure_floor), ("Ep", ego_pressure_floor)):
+        if key in patched:
+            try:
+                patched[key] = round(max(float(patched.get(key, 0.0) or 0.0), floor), 4)
+            except (TypeError, ValueError):
+                patched[key] = floor
+        elif key in ("ego_pressure", "Ep"):
+            patched[key] = floor
+
+    if "simulation_friction_floor" in patched:
+        try:
+            patched["simulation_friction_floor"] = round(max(float(patched.get("simulation_friction_floor", 0.0) or 0.0), friction_floor), 4)
+        except (TypeError, ValueError):
+            patched["simulation_friction_floor"] = friction_floor
+    else:
+        patched["simulation_friction_floor"] = friction_floor
+
+    if isinstance(patched.get("trust_trace"), list):
+        patched["trust_trace"] = [round(min(float(x), trust_cap), 4) for x in patched["trust_trace"]]
+    if isinstance(patched.get("alignment_trace"), list):
+        patched["alignment_trace"] = [round(min(float(x), alignment_cap), 4) for x in patched["alignment_trace"]]
+    if isinstance(patched.get("ego_trace"), list):
+        patched["ego_trace"] = [round(max(float(x), ego_floor), 4) for x in patched["ego_trace"]]
+    if isinstance(patched.get("ego_pressure_trace"), list):
+        patched["ego_pressure_trace"] = [round(max(float(x), ego_pressure_floor), 4) for x in patched["ego_pressure_trace"]]
+
+    patched["threshold_metric_calibration"] = {
+        "applied": True,
+        "trust_cap": trust_cap,
+        "alignment_cap": alignment_cap,
+        "ego_floor": ego_floor,
+        "ego_pressure_floor": ego_pressure_floor,
+        "human_review_required": True,
+        "authority_claim": False,
+    }
+    return patched
+
+
 # Throne / capture marker layer.
 #
 # Keep this list small and explicit. These markers are not policy advice; they

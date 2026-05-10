@@ -183,3 +183,15 @@ tools\run_patch_checks.bat 65
 Status: Delivered
 
 Raises Stress Test sensitivity for missing appeal, no term limits, biometric access pressure, consent under pressure, fallback-data confusion, founder control, surveillance, and non-meaningful human review. Subtle stress cases now route to `THRESHOLD / Needs Safeguards`; hard capture remains `ASYLUM / High`.
+
+## Patch 67 — Stress Test Threshold Repair + Metric Softening
+
+Status: Delivered
+
+Adds repair questions and light metric softening for `THRESHOLD / Needs Safeguards` Stress Test outputs. Medium-risk scenarios no longer display perfect trust/alignment and zero ego while still requiring safeguards. ASYLUM behavior remains unchanged.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 67
+```

@@ -580,3 +580,8 @@ tools\run_patch_checks.bat 65
 Patch 66 hardens Stress Test scoring so subtle governance-risk scenarios do not wash into `SANCTUARY` solely because raw simulation metrics are stable. Missing appeal paths, no term limits, biometric access pressure, consent under pressure, fallback-data confusion, founder control, surveillance, and non-meaningful human review now route to at least `THRESHOLD / Needs Safeguards` unless explicit safeguards are present. Hard capture patterns still route to `ASYLUM / High`.
 
 This remains mirror-only: ALETHEIA flags risk and asks for human review; it does not command, enforce, reset, remove leaders, sync Global ID, or create authority.
+
+
+## Patch 67 — Stress Test Threshold Repair
+
+Patch 67 improves medium-risk Stress Test outputs. `THRESHOLD / Needs Safeguards` scenarios now receive repair questions and light metric softening so they do not appear perfectly trusted or fully aligned while safeguards are missing. This remains mirror-only: no authority claim, no enforcement, no Global ID sync, no public ledger, and human review remains required.

@@ -1153,6 +1153,11 @@ def run_audit(query: str, manual_features: dict, weights: dict, ego_tolerance: f
         protocol_label=label_for_calibration,
         scan=scan,
     )
+    sim = calibrate_threshold_safeguard_metrics(
+        sim,
+        text=query,
+        protocol_label=label_for_calibration,
+    )
 
     report = full_report(sim)
     report["cognitive_resilience_diagnostics"] = evaluate_cognitive_resilience(
@@ -1758,6 +1763,8 @@ protocol_reasons = protocol_engine.protocol_reasons
 protocol_safeguards = protocol_engine.protocol_safeguards
 ensure_asylum_repair_questions = protocol_engine.ensure_asylum_repair_questions
 calibrate_malicious_leadership_metrics = protocol_engine.calibrate_malicious_leadership_metrics
+calibrate_threshold_safeguard_metrics = protocol_engine.calibrate_threshold_safeguard_metrics
+ensure_threshold_repair_questions = protocol_engine.ensure_threshold_repair_questions
 detects_malicious_leadership = protocol_engine.detects_malicious_leadership
 final_protocol_judgment = protocol_engine.final_protocol_judgment
 
@@ -1882,6 +1889,11 @@ def run_stress_phrase(phrase: str, weights: dict, ego_tolerance: float, divine_f
         text=phrase,
         protocol_label=label,
         scan=scan,
+    )
+    sim = calibrate_threshold_safeguard_metrics(
+        sim,
+        text=phrase,
+        protocol_label=label,
     )
     report = full_report(sim)
 
@@ -2894,6 +2906,12 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                         protocol_label=label,
                         scan=scan,
                     )
+                    stress_report = ensure_threshold_repair_questions(
+                        stress_report,
+                        verdict=verdict,
+                        risk=risk,
+                        protocol_label=label,
+                    )
                     receipt = build_local_witness_receipt(
                         module="Simulation",
                         input_text=raw_item,
@@ -2955,6 +2973,12 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
             risk=risk,
             protocol_label=label,
             scan=scan,
+        )
+        report = ensure_threshold_repair_questions(
+            report,
+            verdict=verdict,
+            risk=risk,
+            protocol_label=label,
         )
         st.session_state.last_report = report
         verdict_color = {"SANCTUARY": "#8fbc8f", "THRESHOLD": "#e5c36b", "ASYLUM": "#db7777"}.get(verdict, base_color)

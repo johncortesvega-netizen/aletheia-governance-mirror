@@ -241,3 +241,6 @@ PATCH_61E_WORLD_LENS_VALUE_GUARD_NOTE = "World Lens selected-year diagnostics no
 
 # Patch 66 documentation anchor
 PATCH_66_STRESS_TEST_RISK_SENSITIVITY_NOTE = "Patch 66 raises Stress Test sensitivity so subtle governance-risk scenarios route to Needs Safeguards instead of being washed into Sanctuary by stable raw metrics."
+
+
+# Patch 67 note: Stress Test THRESHOLD / Needs Safeguards outputs now include repair prompts and light metric softening while preserving the mirror-only authority boundary.
