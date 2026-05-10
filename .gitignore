@@ -1,34 +1,13 @@
-# Secrets and local credentials
-.env
-.env.*
-!.env.example
-*.jks
-*.keystore
-.streamlit/secrets.toml
-
-# Python/runtime cache
 __pycache__/
-*.py[cod]
+*.pyc
 .pytest_cache/
-.mypy_cache/
-.ruff_cache/
-
-# OS/editor noise
-.DS_Store
-.vscode/
-.idea/
-
-# Build/export artifacts
-dist/
-build/
-*.egg-info/
-
-# GitHub upload cleanup
+.env
+.venv/
+venv/
 *.zip
 node_modules/
-android/.gradle/
-android/.idea/
-android/app/build/
-android/app/release/
-android/local.properties
-*.pyc
+dist/
+android/
+*.apk
+*.aab
+.DS_Store

@@ -256,3 +256,107 @@ v1.0 status: finished public MVP package.
 Next work: v0.2 planning, report export implementation, manual evidence attachment implementation, confidence notes, or public deployment only after human review.
 
 Boundary: no governance authority, no Global ID sync, no real 9k selection, no World Leader logic, no automatic reset, no public ledger authority, no neural validation, no religious validation, no legal authority, and no automated enforcement.
+
+## Patch 61A — Asylum Repair Questions
+
+Status: ready for local verification.
+
+Adds a high-risk repair-question guard so ASYLUM / High / Malicious Leadership outputs include Silent Operator repair questions instead of an empty repair path. This remains mirror-only and human-review-only.
+
+Check command:
+
+```bat
+tools\run_patch_checks.bat 61A
+```
+
+
+
+## Patch 61B — Malicious Leadership Metric Calibration
+
+Status: Current / ready for local verification
+
+Purpose: align visible metrics with malicious leadership / ASYLUM signals so hostile leadership prompts do not display perfect trust, perfect alignment, or near-zero ego without concrete safeguards.
+
+Added:
+
+- `docs/malicious_leadership_metric_calibration.md`
+- `tests/test_patch_61b_malicious_leadership_metrics.py`
+
+Updated:
+
+- `protocol.py`
+- `app.py`
+- `README.md`
+- `about_page.py`
+- `PATCH_STATUS.md`
+
+Boundary: mirror-only calibration. No governance authority, no leader removal, no AI command, no legal/political authority, no Global ID sync, no public ledger, and no automated enforcement.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 61B
+```
+
+
+## Patch 61C Notes — Country-Year Available-Year Filter
+
+Patch 61C hardens World Lens / Evidence Lab country-year selection. The Country-Year Explorer now computes available years for the selected country/ISO3 only, displays country-specific availability wording, and documents that ALETHEIA must not silently fall back to a stale previous country, global/default year, or invented country-year row.
+
+
+## Patch 61D — Missing Raw Trust Display
+
+Patch 61D clarifies World Lens trust interpretation by separating observed raw trust evidence from neutral trust-prior fallback values. Missing raw trust is displayed as `not available`, and neutral priors are labeled as `0.500 neutral default`.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 61D
+```
+
+## Patch 61E — World Lens Value Guards
+
+Patch 61E adds a deterministic selected-year guard for World Lens. It verifies selected-year seat totals, focus-country values, no-stale-year behavior, verdict-seat derivation, and clear trust-prior interpretation.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 61E
+```
+
+Boundary: diagnostic only; no governance authority, no Global ID sync, no public ledger, no automatic reset, and no enforcement.
+
+
+## Patch 62 — Post-61 Regression Smoke Test
+
+Status: ready for local verification.
+
+Patch 62 is a consolidation smoke/regression patch after the split Patch 61 calibration series. It checks that Simulation and World Lens still work together after Asylum repair questions, malicious leadership metric calibration, country-scoped available years, explicit raw-trust fallback wording, and selected-year value guards.
+
+Files added:
+
+- `docs/post_61_regression_smoke.md`
+- `tests/test_patch_62_post_61_regression_smoke.py`
+
+Boundary: diagnostic only; no governance authority, no Global ID sync, no public ledger, no automatic reset, and no enforcement.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 62
+```
+
+
+## Patch 63 — Post-62 Release Refresh
+
+Patch 63 records the post-62 release state in project documentation. It ties the completed Patch 61A–61E calibration series and Patch 62 smoke regression back into the public README, About page, release notes, and status files.
+
+Current post-62 stable modules:
+
+- Simulation repair path: ASYLUM / High-risk outputs include repair questions.
+- Simulation metric calibration: malicious-leadership prompts cannot display perfect trust/alignment without safeguards.
+- World Lens country-year filtering: years are selected per country with no silent fallback.
+- World Lens trust interpretation: observed raw trust and neutral trust-prior fallback are visibly separate.
+- World Lens value guards: selected-year seats, focus country, verdict seats, and trust-prior wording are regression-checked.
+
+Boundary: diagnostic only, mirror-only, human-review required.

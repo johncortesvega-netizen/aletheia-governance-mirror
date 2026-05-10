@@ -183,6 +183,28 @@ def protocol_safeguards() -> list[str]:
     ]
 
 
+ASYLUM_REPAIR_QUESTIONS: list[str] = [
+    "Who can appeal, pause, or remove this authority without ALETHEIA becoming the authority?",
+    "What prevents temporary crisis or revolutionary power from becoming permanent control?",
+    "What protects basic rights during the transition, including water, food, housing, safety, appeal, exit, and correction?",
+    "Where is the independent human review mechanism, and who can challenge its findings?",
+    "What non-coercive path restores legitimacy, transparency, and public accountability?",
+    "Can affected people exit, object, request correction, or document harm without retaliation?",
+]
+
+
+def _dedupe_questions(questions: list[str]) -> list[str]:
+    """Preserve order while removing duplicate repair questions."""
+    seen: set[str] = set()
+    clean: list[str] = []
+    for q in questions:
+        text = str(q).strip()
+        if text and text not in seen:
+            seen.add(text)
+            clean.append(text)
+    return clean
+
+
 def protocol_repair_questions(verdict: str | None, stress_label: str = "", corruption_risk: str = "") -> list[str]:
     """Silent-Operator repair prompts for human review.
 
@@ -201,6 +223,7 @@ def protocol_repair_questions(verdict: str | None, stress_label: str = "", corru
 
     if v == "ASYLUM":
         questions.insert(0, "Which three checks and balances could move this pattern toward repair?")
+        questions.extend(ASYLUM_REPAIR_QUESTIONS)
         questions.append("Which power should become temporary, reviewable, or revocable before human review continues?")
     elif v == "THRESHOLD":
         questions.insert(0, "Which missing safeguard is keeping this proposal outside Sanctuary?")
@@ -208,8 +231,8 @@ def protocol_repair_questions(verdict: str | None, stress_label: str = "", corru
     else:
         questions.append("Which safeguard keeps this healthy state from drifting into ownership or capture later?")
 
-    if any(term in label for term in ["throne", "capture", "sovereignty", "dictatorship", "surveillance", "global id"]):
-        questions.append("What keeps stewardship here from becoming ownership, surveillance, or a Throne?")
+    if any(term in label for term in ["throne", "capture", "sovereignty", "dictatorship", "surveillance", "global id", "malicious leadership", "asylum", "revolution"]):
+        questions.append("What keeps stewardship here from becoming ownership, surveillance, permanent rule, or a Throne?")
 
     if any(term in label for term in ["term drift", "grip", "compliance drift", "safety language drift", "trust us drift"]):
         questions.append("Is this language protecting people, or making power harder to question?")
@@ -217,15 +240,191 @@ def protocol_repair_questions(verdict: str | None, stress_label: str = "", corru
     if risk == "high":
         questions.append("Which independent reviewer can check the evidence, scoring, and exceptions?")
 
-    # Preserve order while removing duplicates.
-    seen: set[str] = set()
-    clean: list[str] = []
-    for q in questions:
-        if q not in seen:
-            seen.add(q)
-            clean.append(q)
-    return clean
+    return _dedupe_questions(questions)
 
+
+def requires_asylum_repair_questions(
+    verdict: str | None = None,
+    risk: str | None = None,
+    protocol_label: str | None = None,
+    scan: dict | None = None,
+) -> bool:
+    """Return True when a result must expose repair questions.
+
+    Patch 61A: high-risk / ASYLUM outputs must not produce empty Silent
+    Operator repair questions. This is a mirror-only trigger: it asks for human
+    review and repair paths; it does not command, block, remove, or enforce.
+    """
+    v = str(verdict or "").upper()
+    r = str(risk or "").lower()
+    label = str(protocol_label or "").lower()
+    power = 0.0
+    if isinstance(scan, dict):
+        try:
+            power = float(scan.get("power_concentration", 0.0) or 0.0)
+        except (TypeError, ValueError):
+            power = 0.0
+
+    return (
+        v == "ASYLUM"
+        or r == "high"
+        or "malicious leadership" in label
+        or "asylum" in label
+        or power >= 0.75
+    )
+
+
+def ensure_asylum_repair_questions(
+    report: dict | None,
+    *,
+    verdict: str | None = None,
+    risk: str | None = None,
+    protocol_label: str | None = None,
+    scan: dict | None = None,
+) -> dict:
+    """Return a report with repair questions when high-risk repair is required."""
+    patched = dict(report or {})
+    existing = list(patched.get("repair_questions") or [])
+    if requires_asylum_repair_questions(verdict=verdict, risk=risk, protocol_label=protocol_label, scan=scan):
+        # Even if the visible state is THRESHOLD, a high power-concentration
+        # repair trigger needs the ASYLUM repair-question set so users see
+        # appeal, revocability, basic-rights, and anti-retaliation checks.
+        generated = protocol_repair_questions("ASYLUM", protocol_label or "High-risk pattern", risk or "High")
+        patched["repair_questions"] = _dedupe_questions(existing + generated)
+        patched["repair_questions_source"] = "patch_61A_asylum_repair_questions"
+    return patched
+
+
+
+# Patch 61B — Malicious Leadership Metric Calibration
+MALICIOUS_LEADERSHIP_TERMS: list[str] = [
+    "evil", "malicious", "cruel", "tyrant", "tyrannical", "dictator",
+    "authoritarian", "sadistic", "abusive", "violent", "corrupt ruler",
+]
+
+LEADERSHIP_AUTHORITY_TERMS: list[str] = [
+    "leader", "world leader", "ruler", "king", "monarch", "government",
+    "authority", "supreme leader", "president", "prime minister", "regime",
+    "takes power", "take power", "takeover", "take over", "coup", "revolution",
+    "revolutionary takeover", "forced rule", "permanent rule", "no appeal",
+]
+
+LEADERSHIP_SAFEGUARD_TERMS: list[str] = [
+    "appeal", "appealable", "term limit", "term limits", "time limit",
+    "human review", "independent review", "independent oversight", "oversight",
+    "basic rights", "rights protected", "transparent election", "election",
+    "public audit", "audit trail", "exit right", "exit rights", "correction",
+    "revocable", "recall", "checks and balances", "no retaliation",
+]
+
+
+def has_leadership_safeguards(text: str | None) -> bool:
+    """Return True when the text names concrete governance safeguards.
+
+    Patch 61B keeps this intentionally conservative: vague value language is not
+    enough to cancel malicious-leadership calibration. The input should mention
+    at least one concrete appeal, review, term-limit, rights, election, audit,
+    exit, or correction mechanism.
+    """
+    t = str(text or "").lower()
+    return any(term in t for term in LEADERSHIP_SAFEGUARD_TERMS)
+
+
+def detects_malicious_leadership(
+    text: str | None = None,
+    *,
+    protocol_label: str | None = None,
+    scan: dict | None = None,
+) -> bool:
+    """Detect malicious leadership / takeover language for metric calibration.
+
+    This is not an authority decision. It is a metric guard that prevents a
+    clearly hostile leadership scenario from displaying perfect trust/alignment
+    just because a numeric simulation appears stable.
+    """
+    combined = f"{text or ''} {protocol_label or ''}".lower()
+    has_malicious = any(term in combined for term in MALICIOUS_LEADERSHIP_TERMS)
+    has_authority = any(term in combined for term in LEADERSHIP_AUTHORITY_TERMS)
+    label_hit = "malicious leadership" in combined or "asylum" in combined and has_malicious
+
+    high_power = False
+    if isinstance(scan, dict):
+        try:
+            high_power = float(scan.get("power_concentration", 0.0) or 0.0) >= 0.75
+        except (TypeError, ValueError):
+            high_power = False
+
+    return bool(label_hit or (has_malicious and (has_authority or high_power)))
+
+
+def calibrate_malicious_leadership_metrics(
+    sim: dict | None,
+    *,
+    text: str | None = None,
+    protocol_label: str | None = None,
+    scan: dict | None = None,
+) -> dict:
+    """Bound metrics for malicious leadership scenarios.
+
+    Patch 61B aligns visible metrics with the existing ASYLUM / High-risk label.
+    It does not command, enforce, remove leaders, validate authority, or replace
+    human review. It only prevents perfect trust/alignment and near-zero ego from
+    being displayed when the input itself describes malicious leadership.
+    """
+    patched = dict(sim or {})
+    if not detects_malicious_leadership(text, protocol_label=protocol_label, scan=scan):
+        patched["malicious_leadership_metric_calibration"] = {
+            "applied": False,
+            "reason": "No malicious leadership pattern detected.",
+        }
+        return patched
+
+    safeguarded = has_leadership_safeguards(text)
+    trust_cap = 0.78 if safeguarded else 0.65
+    alignment_cap = 0.82 if safeguarded else 0.70
+    ego_floor = 0.12 if safeguarded else 0.20
+    stability_cap = 0.78 if safeguarded else 0.72
+
+    for key, cap in (("trust_index", trust_cap), ("alignment", alignment_cap), ("stability", stability_cap)):
+        if key in patched:
+            try:
+                patched[key] = round(min(float(patched.get(key, 1.0) or 1.0), cap), 4)
+            except (TypeError, ValueError):
+                patched[key] = cap
+
+    for key, floor in (("ego", ego_floor), ("ego_pressure", ego_floor), ("Ep", ego_floor)):
+        if key in patched:
+            try:
+                patched[key] = round(max(float(patched.get(key, 0.0) or 0.0), floor), 4)
+            except (TypeError, ValueError):
+                patched[key] = floor
+        elif key in ("ego_pressure", "Ep"):
+            patched[key] = floor
+
+    # Keep traces visually aligned when present.
+    if isinstance(patched.get("trust_trace"), list):
+        patched["trust_trace"] = [round(min(float(x), trust_cap), 4) for x in patched["trust_trace"]]
+    if isinstance(patched.get("alignment_trace"), list):
+        patched["alignment_trace"] = [round(min(float(x), alignment_cap), 4) for x in patched["alignment_trace"]]
+    if isinstance(patched.get("stability_trace"), list):
+        patched["stability_trace"] = [round(min(float(x), stability_cap), 4) for x in patched["stability_trace"]]
+        patched["distribution"] = patched["stability_trace"]
+    if isinstance(patched.get("ego_trace"), list):
+        patched["ego_trace"] = [round(max(float(x), ego_floor), 4) for x in patched["ego_trace"]]
+    if isinstance(patched.get("ego_pressure_trace"), list):
+        patched["ego_pressure_trace"] = [round(max(float(x), ego_floor), 4) for x in patched["ego_pressure_trace"]]
+
+    patched["malicious_leadership_metric_calibration"] = {
+        "applied": True,
+        "safeguards_detected": safeguarded,
+        "trust_cap": trust_cap,
+        "alignment_cap": alignment_cap,
+        "ego_floor": ego_floor,
+        "stability_cap": stability_cap,
+        "human_review_required": True,
+        "authority_claim": False,
+    }
+    return patched
 
 # Throne / capture marker layer.
 #

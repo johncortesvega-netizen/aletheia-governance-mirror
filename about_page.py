@@ -110,6 +110,9 @@ def render_about():
     with st.expander("World Lens Simulation", expanded=True):
         st.write("World Lens Simulation is a non-sovereign impact mirror. It helps users review affected groups, power gains, protection losses, basic-rights risk, minority-rights risk, ambient capture risk, appealability, exit, and repair. It uses simulated threshold signal language only; it does not activate Global ID, select a real 9k, create World Leader logic, issue automatic resets, or make governance decisions.")
 
+    with st.expander("Post-61 Regression Smoke Test", expanded=False):
+        st.write("Patch 62 verifies that the split Patch 61 calibrations still work together: ASYLUM repair questions, malicious-leadership metric calibration, country-scoped available years, missing raw-trust labels, selected-year World Lens value guards, and Netherlands 2024 fixture stability. It is diagnostic only and adds no authority or enforcement.")
+
     with st.expander("Protocol Guide Consolidation", expanded=True):
         st.write("Patch 43 consolidates the v0.1 logic into one user-facing Protocol Guide: Baseline, Safe Language Layer, Eternal Baseline, Boundary Cases, Failure Classification, Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, Local Witness Receipt v2, and World Lens Simulation. It helps users understand how the modules connect while preserving the rule that ALETHEIA reflects and people decide.")
 
@@ -170,6 +173,11 @@ def render_about():
     with st.expander("Final v0.1 Smoke Release", expanded=False):
         st.write("Patch 53 adds a final release-level smoke checklist in `docs/final_v01_smoke_release.md`. It confirms required release docs, examples, workflow commands, safe-language boundaries, and non-authority framing remain present before public v0.1 packaging. It adds no doctrine, no enforcement, and no governance authority.")
 
+
+
+    with st.expander("Post-62 Release Refresh", expanded=False):
+        st.write("Patch 63 refreshes the public release surface after Patch 61A–61E and Patch 62. README, About, public release notes, progress database, and patch status now reflect ASYLUM repair questions, malicious-leadership metric calibration, country-scoped available years, explicit raw-trust fallback wording, and selected-year World Lens value guards. This is release-surface hardening only; it adds no authority or enforcement.")
+
     st.markdown("### Scientific caution")
     st.warning("ALETHEIA does not prove legal, political, medical, or religious truth. Its classifications are internal model outputs. Empirical results depend on dataset quality, variable mapping, normalization choices, missing data, and validation against external outcomes.")
 
@@ -208,3 +216,17 @@ assets/                 # header image and other optional UI assets""",
 
     with st.expander("GitHub Cleanup Package", expanded=False):
         st.write("Patch 55 prepares ALETHEIA for public repository review through a repository map, contribution guide, and GitHub cleanup checklist. It is documentation-only and adds no governance authority, Global ID sync, real 9k selection, World Leader logic, automatic reset, public ledger, neural validation, religious validation, legal authority, or automated enforcement.")
+
+PATCH_61A_ASYLUM_REPAIR_NOTE = "High-risk ASYLUM outputs include repair questions for human review only."
+
+
+PATCH_61B_MALICIOUS_LEADERSHIP_METRIC_NOTE = "Malicious leadership scenarios cannot display perfect trust/alignment without concrete safeguards; human review remains required."
+
+
+PATCH_61C_COUNTRY_YEAR_AVAILABLE_YEAR_NOTE = "World Lens / Evidence Lab year controls now show only years available for the selected country and avoid silent global/default fallback."
+
+
+PATCH_61D_MISSING_RAW_TRUST_NOTE = "World Lens now distinguishes observed raw trust from neutral trust-prior fallback values."
+
+
+PATCH_61E_WORLD_LENS_VALUE_GUARD_NOTE = "World Lens selected-year diagnostics now check seat totals, focus-country values, no-stale-year behavior, and trust-prior clarity without adding authority or enforcement."

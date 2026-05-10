@@ -27,15 +27,13 @@ It does not command, enforce, vote, govern, remove leaders, validate spiritual a
 From Command Prompt inside the project folder:
 
 ```bat
-tools
-un_checks.bat
+tools\run_checks.bat
 ```
 
 For this release-polish patch:
 
 ```bat
-tools
-un_patch_checks.bat 45
+tools\run_patch_checks.bat 45
 ```
 
 ## Public message
@@ -64,3 +62,22 @@ Patch 56–60 marks ALETHEIA as v1.0 public MVP complete.
 The final bundle adds v0.2 planning, feature backlog, out-of-scope future modules, report export polish notes, manual evidence attachment notes, rubric weighting/confidence notes, deployment prep, and `docs/v1_release_complete.md`.
 
 This finalization does not add governance authority, Global ID sync, real 9k selection, World Leader logic, automatic reset, public ledger authority, neural validation, religious validation, legal authority, or automated enforcement.
+
+
+## Patch 63 — Post-62 Release Refresh
+
+Patch 63 updates the public release notes after the Simulation and World Lens calibration series. The current release surface now reflects:
+
+- ASYLUM / High-risk repair questions.
+- Malicious-leadership metric calibration.
+- Country-scoped available-year filtering.
+- Explicit raw-trust missing-data labels and neutral trust-prior fallback wording.
+- Selected-year World Lens value guards and post-61 regression smoke testing.
+
+This refresh is documentation and release-surface hardening only. It does not add governance authority, Global ID sync, real 9k selection, World Leader logic, automatic reset, public ledger authority, neural validation, religious validation, legal authority, or automated enforcement.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 63
+```

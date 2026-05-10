@@ -464,3 +464,72 @@ tools\run_checks.bat
 ```
 
 Patch 53 confirms the release package remains a reviewable mirror: no Global ID sync, no real 9k selection, no World Leader logic, no automatic reset, no public ledger, no neural validation, no religious validation, no legal authority, and no automated enforcement.
+
+### Patch 61A — Asylum Repair Questions
+
+High-risk, ASYLUM, or Malicious Leadership outputs now attach Silent Operator repair questions so the mirror does not end on an empty repair path. These questions are for human review only; they do not create enforcement or authority.
+
+
+
+### Patch 61B — Malicious Leadership Metric Calibration
+
+Patch 61B keeps ASYLUM / malicious leadership outputs numerically coherent. If a scenario describes malicious, authoritarian, coup, takeover, or no-appeal leadership language, ALETHEIA prevents perfect trust/alignment and near-zero ego from being displayed unless concrete safeguards are present.
+
+This remains a mirror-only calibration: it does not command, enforce, remove leaders, validate authority, or replace human review.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 61B
+```
+
+
+Patch 61C adds a Country-Year Available-Year Filter so World Lens / Evidence Lab year controls show only years available for the selected country and avoid silent global/default fallback.
+
+
+## Patch 61D — Missing Raw Trust Display
+
+Patch 61D clarifies World Lens trust interpretation by separating observed raw trust evidence from neutral trust-prior fallback values. Missing raw trust is displayed as `not available`, and neutral priors are labeled as `0.500 neutral default`.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 61D
+```
+
+### Patch 61E — World Lens Value Guards
+
+Patch 61E adds selected-year value guards for World Lens. It verifies that seat totals, focus-country cards, verdict-seat totals, and trust-prior interpretation remain tied to the active selected year and do not silently fall back to stale/global values.
+
+
+### Patch 62 — Post-61 Regression Smoke Test
+
+Patch 62 adds a consolidation smoke test after the 61A–61E calibration series. It verifies ASYLUM repair questions, malicious-leadership metric calibration, country-year available-year filtering, missing raw-trust labels, selected-year 9k value guards, and Netherlands 2024 fixture stability. It is diagnostic only and adds no authority or enforcement.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 62
+```
+
+
+## Patch 63 — Post-62 Release Refresh
+
+Patch 63 refreshes the public release surface after the Patch 61A–61E calibration series and Patch 62 regression smoke test.
+
+It documents the current post-62 state:
+
+- ASYLUM / High-risk outputs include repair questions for human review.
+- Malicious leadership prompts cannot display perfect trust/alignment without concrete safeguards.
+- Country-Year Explorer year choices are scoped to the selected country.
+- Missing raw trust is labeled as unavailable, with neutral trust-prior fallback shown separately.
+- World Lens selected-year values are guarded against stale/default fallback.
+
+Current checks:
+
+```bat
+tools\run_checks.bat
+tools\run_patch_checks.bat 63
+```
+
+Release boundary remains unchanged: ALETHEIA is diagnostic only and adds no governance authority, Global ID sync, real 9k selection, World Leader logic, automatic reset, public ledger authority, neural validation, religious validation, legal authority, or automated enforcement.

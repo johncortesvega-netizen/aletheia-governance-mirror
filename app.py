@@ -22,6 +22,16 @@ try:
 except Exception:
     _local_governance_scan = None
 from core.simulation import simulate
+
+from core.world_lens import (
+    country_available_years,
+    country_year_status_message,
+    format_raw_trust_label,
+    format_trust_prior_label,
+    safe_country_year_index,
+    selected_year_value_guard,
+    trust_coverage_label,
+)
 from core.scoring import full_report
 from core.witness import (
     MAX_BATCH_RECEIPTS,
@@ -1136,6 +1146,14 @@ def run_audit(query: str, manual_features: dict, weights: dict, ego_tolerance: f
         if "ego_trace" in sim:
             sim["ego_trace"] = [max(float(x), 0.28) for x in sim["ego_trace"]]
 
+    label_for_calibration, _, _ = stress_label_for_phrase(query) if query else ("Manual test", "NO", "")
+    sim = calibrate_malicious_leadership_metrics(
+        sim,
+        text=query,
+        protocol_label=label_for_calibration,
+        scan=scan,
+    )
+
     report = full_report(sim)
     report["cognitive_resilience_diagnostics"] = evaluate_cognitive_resilience(
         query, governance_result=scan, features=features
@@ -1738,6 +1756,9 @@ protocol_corruption_score = protocol_engine.protocol_corruption_score
 protocol_risk_label = protocol_engine.protocol_risk_label
 protocol_reasons = protocol_engine.protocol_reasons
 protocol_safeguards = protocol_engine.protocol_safeguards
+ensure_asylum_repair_questions = protocol_engine.ensure_asylum_repair_questions
+calibrate_malicious_leadership_metrics = protocol_engine.calibrate_malicious_leadership_metrics
+detects_malicious_leadership = protocol_engine.detects_malicious_leadership
 final_protocol_judgment = protocol_engine.final_protocol_judgment
 
 
@@ -1856,6 +1877,12 @@ def run_stress_phrase(phrase: str, weights: dict, ego_tolerance: float, divine_f
         sim["grievance_pressure"] = max(float(sim.get("grievance_pressure", 0.0)), 0.35)
         sim["safeguard_gap"] = max(float(sim.get("safeguard_gap", 0.0)), 0.72)
         sim["simulation_friction_floor"] = max(float(sim.get("simulation_friction_floor", 0.0)), 0.35)
+    sim = calibrate_malicious_leadership_metrics(
+        sim,
+        text=phrase,
+        protocol_label=label,
+        scan=scan,
+    )
     report = full_report(sim)
 
     base_verdict, _ = classify_verdict(report["integrity"])
@@ -2789,6 +2816,14 @@ with tab_sim:
         display_query = st.session_state.get("last_query", query) if last_input_mode == "Scan my idea" else ""
         label, needs_review, stress_reason = stress_label_for_phrase(display_query) if display_query else ("Manual test", "NO", "Manual numeric tuner run.")
         verdict, risk = apply_guardrail_verdict(base_verdict, label, needs_review)
+        report = ensure_asylum_repair_questions(
+            report,
+            verdict=verdict,
+            risk=risk,
+            protocol_label=label,
+            scan=scan,
+        )
+        st.session_state.last_report = report
         verdict_color = {"SANCTUARY": "#8fbc8f", "THRESHOLD": "#e5c36b", "ASYLUM": "#db7777"}.get(verdict, base_color)
         input_status_label = st.session_state.get("last_input_status", "MANUAL_INPUT" if last_input_mode == "Manual test" else "USER_INPUT")
         invisibility_report = st.session_state.get("last_invisibility_report")
@@ -4022,20 +4057,31 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                     st.caption(f"Focus country set for Grid/report context: {selected_country_name} · {str(selected_iso).upper()}")
 
                     country_rows_all_years = valid_rows[valid_rows["_iso3_label"] == selected_iso].copy()
-                    country_years = sorted(country_rows_all_years["_year_int"].dropna().astype(int).unique().tolist(), reverse=True)
+                    country_years = country_available_years(valid_rows, selected_iso)
+
+                    st.caption(
+                        country_year_status_message(selected_country_name, selected_iso, country_years)
+                        + " The year dropdown is scoped to this selected country only; ALETHEIA does not silently fall back to a global/default year."
+                    )
+                    if not country_years:
+                        st.warning(
+                            f"No available country-year data for {selected_country_name} · {str(selected_iso).upper()}. "
+                            "Choose another country or rebuild the country-year master."
+                        )
+                        st.stop()
 
                     synced_evidence_year = st.session_state.get("aletheia_synced_evidence_year")
                     country_year_widget_key = f"empirical_country_year_explorer_year_{selected_iso}"
                     if synced_evidence_year in country_years and st.session_state.get(country_year_widget_key) != int(synced_evidence_year):
                         st.session_state[country_year_widget_key] = int(synced_evidence_year)
-                    country_year_index = country_years.index(int(st.session_state.get(country_year_widget_key, country_years[0]))) if st.session_state.get(country_year_widget_key, country_years[0]) in country_years else 0
+                    country_year_index = safe_country_year_index(st.session_state.get(country_year_widget_key), country_years)
                     with year_col:
                         selected_explorer_year = st.selectbox(
                             "Year for country",
                             options=country_years,
                             index=country_year_index,
                             key=country_year_widget_key,
-                            help="All Empirical and Global Grid year selectors should point to the same year before producing a final receipt.",
+                            help="Only years present for the selected country are shown. No global/default fallback is used.",
                         )
                     st.session_state["aletheia_synced_evidence_year"] = int(selected_explorer_year)
                     st.session_state["aletheia_empirical_country_year"] = int(selected_explorer_year)
@@ -4057,8 +4103,8 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                         )
 
                     st.caption(
-                        f"Explorer source: active scored table · available years {min_explorer_year}–{max_explorer_year}. "
-                        "Search country first, then choose one of that country’s available years. This year is shared with the allocation and Grid outputs when available."
+                        "Explorer source: active scored table. Search country first, then choose one of that country’s available years. "
+                        "This avoids stale global-year fallback and shares the confirmed year with allocation and Grid outputs when available."
                     )
 
                     if len(explorer_rows) == 1:
@@ -4140,8 +4186,12 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
 
                     col_e, col_f, col_g, col_h = st.columns(4)
                     col_e.metric("Empirical coverage", _fmt_num(coverage_value, digits=1) if pd.to_numeric(pd.Series([coverage_value]), errors="coerce").iloc[0] > 1 else ("—" if pd.isna(pd.to_numeric(pd.Series([coverage_value]), errors="coerce").iloc[0]) else f"{pd.to_numeric(pd.Series([coverage_value]), errors='coerce').iloc[0]:.1%}"))
-                    col_f.metric("Raw trust", _fmt_num(_first_value(selected, ["wvs_generalized_trust"], None)))
-                    col_g.metric("Trust prior", _fmt_num(_first_value(selected, ["empirical_trust_prior"], None)))
+                    raw_trust_value = _first_value(selected, ["wvs_generalized_trust"], None)
+                    trust_prior_value = _first_value(selected, ["empirical_trust_prior"], None)
+                    col_f.metric("Raw trust", format_raw_trust_label(raw_trust_value))
+                    col_g.metric("Trust prior used", format_trust_prior_label(trust_prior_value))
+                    if format_raw_trust_label(raw_trust_value) == "not available" and format_trust_prior_label(trust_prior_value).startswith("0.500"):
+                        st.caption("Raw trust is not available for this country-year; ALETHEIA is showing a neutral trust-prior fallback, not observed survey trust.")
                     col_h.metric("Identity valid", str(_first_value(selected, ["empirical_identity_valid", "identity_valid"], True)))
 
                     st.markdown("#### Sydney Protocol overlay")
@@ -4767,11 +4817,34 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
 
         m5, m6, m7, m8, m9 = st.columns(5)
         m5.metric("Average empirical coverage", "—" if pd.isna(avg_coverage) else f"{avg_coverage:.1%}")
-        m6.metric("Trust raw coverage", "—" if pd.isna(trust_coverage) else f"{trust_coverage:.1%}")
-        m7.metric("Trust prior coverage", "—" if pd.isna(trust_prior_coverage) else f"{trust_prior_coverage:.1%}")
+        raw_trust_coverage_label, trust_prior_coverage_label, trust_coverage_note = trust_coverage_label(trust_coverage, trust_prior_coverage)
+        m6.metric("Raw trust survey coverage", raw_trust_coverage_label)
+        m7.metric("Neutral trust-prior fallback coverage", trust_prior_coverage_label)
         m8.metric("WGI coverage", "—" if pd.isna(wgi_coverage) else f"{wgi_coverage:.1%}")
         m9.metric("V-Dem coverage", "—" if pd.isna(vdem_coverage) else f"{vdem_coverage:.1%}")
-        st.caption("Coverage cards show only the active selected-year rows after filters. Raw trust means direct WVS/OWID survey data. Trust prior can use neutral defaults when raw survey data is missing. So 100% trust-prior coverage does not mean 100% raw trust coverage.")
+        st.caption("Coverage cards show only the active selected-year rows after filters. " + trust_coverage_note)
+
+        value_guard = selected_year_value_guard(grid_source, int(selected_year), total_9k=TOTAL_9K, min_allocated_countries=MIN_FULL_GRID_COUNTRIES, focus_iso3=focus_iso3 or "NLD")
+        with st.expander("World Lens value guard", expanded=False):
+            st.write(
+                "This guard verifies that the selected-year rows, seats, verdict signals, and focus country stay tied to the active year. "
+                "It is diagnostic only and does not create authority."
+            )
+            g1, g2, g3, g4 = st.columns(4)
+            g1.metric("Guard year", str(value_guard.get("selected_year", selected_year)))
+            g2.metric("Guard seats", f'{int(value_guard.get("total_seats", 0)):,}')
+            g3.metric("Seat total OK", "Yes" if value_guard.get("seat_total_ok") else "No")
+            g4.metric("No stale year rows", "Yes" if value_guard.get("no_stale_year_rows") else "No")
+            if value_guard.get("focus_row_available"):
+                focus_guard = value_guard.get("focus", {})
+                st.caption(
+                    f"Focus guard: {focus_guard.get('country', focus_iso3 or 'NLD')} · {focus_guard.get('iso3', focus_iso3 or 'NLD')} · "
+                    f"{focus_guard.get('year', selected_year)} · seats {focus_guard.get('seats', '—')} · "
+                    f"verdict {focus_guard.get('verdict', '—')} · raw trust {focus_guard.get('raw_trust_label', 'not available')} · "
+                    f"trust prior {focus_guard.get('trust_prior_label', 'not available')}."
+                )
+            else:
+                st.caption("No focus country row is available for this selected-year guard.")
 
         verdict_seats = pd.Series(dtype="float64")
         if verdict_col in grid_source.columns:
@@ -6668,7 +6741,7 @@ with tab_doctrine:
 
             **Raw trust coverage** means direct survey-derived trust evidence is available, such as WVS/OWID generalized trust.
 
-            **Trust prior coverage** means the scoring system has a usable trust prior, which may include a neutral/default value when raw survey evidence is unavailable.
+            **Neutral trust-prior fallback coverage** means the scoring system has a usable trust prior, which may include a neutral/default value when raw survey evidence is unavailable. It is not observed survey trust coverage.
 
             A neutral trust prior is not the same as observed trust. It allows scoring continuity, but it should reduce interpretive confidence when raw trust evidence is missing.
             """
