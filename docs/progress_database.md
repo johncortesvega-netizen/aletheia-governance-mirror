@@ -1217,3 +1217,27 @@ Check:
 ```bat
 tools\run_patch_checks.bat 72_10
 ```
+
+## Patch 72.11 - Mascot Logo Replacement
+
+Date: 2026-05-11
+
+Patch 72.11 replaces the dove corner logos with the new Aletheia cardboard robot mascot wearing a green leaf/laurel crown.
+
+Implemented:
+- Added `assets/aletheia_robot_laurel_logo.png`.
+- Added a small data-URI asset helper for HTML-embedded image badges.
+- Replaced the header right circular dove emblem with the mascot logo.
+- Replaced the sidebar top circular dove emblem with the mascot logo.
+- Preserved the existing visual frame, copy, layout, and authority boundary.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No Evidence Lab, Stress Test, Mirror Check, Boundary Cases, World Lens, receipt schema, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_11
+```

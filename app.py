@@ -1,4 +1,5 @@
 import os
+import base64
 import json
 import zipfile
 import hashlib
@@ -238,6 +239,7 @@ APP_VERSION = "v1.0-governance-mirror-final"
 SUPPORTED_INPUT_LANGUAGE_NOTE = "Input language support: English and Nederlands/Dutch only. Other languages may be reviewed as text, but the calibrated risk lexicon is not validated for them yet."
 PROJECT_ROOT = Path(__file__).resolve().parent
 ABOUT_HEADER_IMAGE = PROJECT_ROOT / "assets" / "about_header.png"
+MASCOT_LOGO_IMAGE = PROJECT_ROOT / "assets" / "aletheia_robot_laurel_logo.png"
 DOCTRINE_HTML_FILES = [
     ("Sydney Protocol v3.2", PROJECT_ROOT / "Sydney_Protocol_v3.2.html"),
     ("GPA v8.2", PROJECT_ROOT / "GPA_v8.2.html"),
@@ -812,6 +814,14 @@ st.markdown(
         border: 1px solid rgba(199,170,114,0.55);
         box-shadow: inset 0 0 0 8px rgba(255,255,255,0.38), 0 10px 24px rgba(93,78,89,0.10);
         font-size: 3.4rem;
+        overflow: hidden;
+    }
+    .aletheia-mascot-logo {
+        width: 92%;
+        height: 92%;
+        object-fit: cover;
+        border-radius: 999px;
+        display: block;
     }
 
     .civic-ribbon {
@@ -879,6 +889,7 @@ st.markdown(
         border: 1px solid rgba(199,170,114,0.58);
         box-shadow: inset 0 0 0 10px rgba(255,255,255,0.34);
         font-size: 3.35rem;
+        overflow: hidden;
     }
     .sidebar-brand {
         font-family: 'Cinzel', serif;
@@ -1561,6 +1572,17 @@ def resolve_about_header_image() -> Path | None:
         if path.exists():
             return path
     return None
+
+
+def asset_image_data_uri(path: Path) -> str:
+    """Return a PNG data URI for small UI assets used inside HTML markdown."""
+    try:
+        if path.exists():
+            encoded = base64.b64encode(path.read_bytes()).decode("ascii")
+            return f"data:image/png;base64,{encoded}"
+    except Exception:
+        pass
+    return ""
 
 
 def deterministic_signal_summary(grid_df: pd.DataFrame) -> dict:
@@ -2960,6 +2982,7 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
 
 
 # Header
+mascot_logo_uri = asset_image_data_uri(MASCOT_LOGO_IMAGE)
 header_path = Path("assets/header.jpg")
 if header_path.exists():
     st.image(str(header_path), use_container_width=True)
@@ -2974,7 +2997,7 @@ st.markdown(
                 <div class="hero-sub">A mirror, not a throne.</div>
                 <div class="caption">{APP_VERSION} · English + Nederlands/Dutch input supported · Spot control. Protect people. Keep truth visible.</div>
             </div>
-            <div class="hero-emblem" aria-hidden="true">🕊️</div>
+            <div class="hero-emblem" aria-hidden="true"><img class="aletheia-mascot-logo" src="{mascot_logo_uri}" alt="" /></div>
         </div>
         <div class="civic-ribbon">
             <div class="ribbon-item"><span class="ribbon-icon">🛡️</span><div><div class="ribbon-label">Purpose</div><div class="ribbon-body">People first. Scores second.</div></div></div>
@@ -3017,9 +3040,9 @@ st.markdown(
 # Sidebar controls
 with st.sidebar:
     st.markdown(
-        """
+        f"""
         <div class="sidebar-emblem-card">
-            <div class="sidebar-emblem-mark">🕊️</div>
+            <div class="sidebar-emblem-mark"><img class="aletheia-mascot-logo" src="{mascot_logo_uri}" alt="" /></div>
             <div class="sidebar-brand">ALETHEIA</div>
             <div class="sidebar-tagline">A mirror, not a throne.</div>
         </div>
