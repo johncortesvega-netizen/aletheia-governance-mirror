@@ -313,3 +313,20 @@ Check:
 ```bat
 tools\run_patch_checks.bat 71_2
 ```
+
+
+## Patch 71.3 — Stress Test Missing-Safeguard Negation + Tree Canopy Tune
+
+Status: Ready for local verification.
+
+Patch 71.3 fixes a Stress Test calibration gap found in the `Algorithmic welfare triage under pressure` demo. Phrases such as `lacks explainability`, `lacks independent challenge`, and `lacks human override` are now treated as missing-safeguard review signals, not as positive transparency/accountability features. The bridge guardrail prevents these cases from displaying perfect Sanctuary-like trust/alignment metrics.
+
+Patch 71.3 also tunes the explanatory tree canopy placement so the crown sits lower, connects more naturally to the trunk/branches, and leaves the caption outside the SVG visual.
+
+No receipt storage, authority-boundary, batch-catalog, public-ledger, Global ID sync, or central-storage behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 71_3
+```

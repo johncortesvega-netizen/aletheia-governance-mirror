@@ -1,0 +1,29 @@
+PATCH 71.3 — STRESS TEST MISSING-SAFEGUARD NEGATION + TREE CANOPY TUNE
+
+Purpose:
+- Treat missing/negated safeguards in Stress Test as review signals rather than positive safeguards.
+- Prevent automated-triage cases that lack explainability, independent challenge, or human override from displaying perfect Sanctuary-like metrics.
+- Tune the explanatory tree canopy placement so the crown connects more naturally to the trunk/branches.
+
+Files included:
+- app.py
+- protocol.py
+- core/parser.py
+- data_processed/core/parser.py
+- tests/test_patch_71_3_missing_safeguard_negation_and_tree.py
+- PATCH_71_3_MANIFEST.txt
+- PATCH_71_3_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Verification:
+- tools\run_patch_checks.bat 71_3
+
+Boundary:
+- No authority claim.
+- Human review remains required.
+- No public ledger.
+- No Global ID sync.
+- No central storage.
+- No scoring authority or enforcement behavior.
+- Tree visual remains explanatory; receipt metrics remain canonical.

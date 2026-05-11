@@ -124,12 +124,19 @@ def _local_governance_scan(query: str):
     regulation_terms = [
         "regulated", "oversight", "checks and balances", "audit", "audited",
         "law", "legal", "constitutional", "public review", "independent review",
-        "accountability", "jury", "referendum"
+        "accountability", "jury", "referendum", "challenge", "human override",
+        "override", "explainability", "explainable"
     ]
 
     anti_regulation_terms = [
         "no oversight", "unregulated", "without oversight", "no rules",
-        "free from regulation", "unchecked", "absolute power"
+        "free from regulation", "unchecked", "absolute power",
+        "lacks explainability", "lacks independent challenge", "lacks human override",
+        "lack explainability", "lack independent challenge", "lack human override",
+        "without explainability", "without independent challenge", "without human override",
+        "no explainability", "no independent challenge", "no human override",
+        "cannot challenge", "cannot be challenged", "no appeal", "without appeal",
+        "no independent review", "without independent review"
     ]
 
     anonymity_terms = [
@@ -175,6 +182,23 @@ def _local_governance_scan(query: str):
     secrecy_hits = count_hits(secrecy_terms)
     regulation_hits = count_hits(regulation_terms)
     anti_reg_hits = count_hits(anti_regulation_terms)
+
+    missing_safeguard_patterns = [
+        "lacks explainability", "lacks independent challenge", "lacks human override",
+        "lack explainability", "lack independent challenge", "lack human override",
+        "without explainability", "without independent challenge", "without human override",
+        "no explainability", "no independent challenge", "no human override",
+        "cannot challenge", "cannot be challenged", "no appeal", "without appeal",
+        "no independent review", "without independent review", "no human review",
+        "without human review", "no public review", "without public review"
+    ]
+    missing_safeguard_hits = count_hits(missing_safeguard_patterns)
+    if "lacks " in text or "without " in text:
+        missing_safeguard_hits += sum(
+            1 for term in ["explainability", "independent challenge", "human override", "independent review", "appeal"]
+            if term in text
+        )
+
     anonymity_hits = count_hits(anonymity_terms)
     capital_hits = count_hits(capital_terms)
     technical_hits = count_hits(technical_terms)
@@ -211,6 +235,16 @@ def _local_governance_scan(query: str):
     capital_scale += capital_hits * 0.10
 
     technical_complexity += technical_hits * 0.13
+
+    # Patch 71.3: negated or missing safeguards must not be counted as positive
+    # transparency/accountability signals. In local scan mode, phrases such as
+    # "lacks explainability, independent challenge, and human override" should
+    # move an automated triage scenario toward review instead of Sanctuary.
+    if missing_safeguard_hits:
+        decision_transparency -= 0.18 * missing_safeguard_hits
+        regulatory_presence -= 0.16 * missing_safeguard_hits
+        power_concentration += 0.05 * missing_safeguard_hits
+        anonymity_level += 0.04 * missing_safeguard_hits
 
     # Strong special-case logic.
     single_ruler_terms = [

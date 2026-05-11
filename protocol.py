@@ -506,6 +506,9 @@ def detects_threshold_safeguard_gap(
         "must sign", "lose access", "essential services", "biometric", "digital id",
         "fallback", "missing data", "directly measured", "founder", "ceo", "proprietary",
         "confidential", "no audit trail", "missing safeguards", "cannot challenge",
+        "lacks explainability", "lacks independent challenge", "lacks human override",
+        "without explainability", "without independent challenge", "without human override",
+        "no explainability", "no independent challenge", "no human override",
     ]
     return any(term in combined for term in subtle_terms)
 
@@ -892,6 +895,32 @@ display_score_from_judgment = protocol_adjusted_display_score
 def stress_contains(text: str, terms: list[str]) -> bool:
     t = (text or "").lower()
     return any(term in t for term in terms)
+
+
+# Patch 71.3 — missing-safeguard negation calibration.
+# These are review signals, not authority determinations. They prevent phrases
+# such as "lacks explainability, independent challenge, and human override"
+# from being laundered into positive safeguard signals.
+MISSING_SAFEGUARD_NEGATION_PATTERNS = [
+    "lacks explainability", "lacks independent challenge", "lacks human override",
+    "lack explainability", "lack independent challenge", "lack human override",
+    "without explainability", "without independent challenge", "without human override",
+    "no explainability", "no independent challenge", "no human override",
+    "cannot challenge", "cannot be challenged", "no appeal", "without appeal",
+    "no independent review", "without independent review", "no human review",
+    "without human review", "no public review", "without public review",
+]
+
+
+def detects_missing_safeguard_negation(text: str | None) -> bool:
+    t = (text or "").lower()
+    if stress_contains(t, MISSING_SAFEGUARD_NEGATION_PATTERNS):
+        return True
+    if "lacks " in t and stress_contains(t, ["explainability", "challenge", "human override", "review", "appeal"]):
+        return True
+    if "without " in t and stress_contains(t, ["explainability", "challenge", "human override", "review", "appeal"]):
+        return True
+    return False
 
 
 def is_explicit_safeguarded_public_system(text: str) -> bool:
@@ -1852,6 +1881,13 @@ def stress_label_for_phrase(phrase: str) -> tuple[str, str, str]:
             "Safeguarded Public System / Clear",
             "NO",
             "Transparent audited public-interest system with appeal, oversight, non-ownership, and dissolution safeguards.",
+        )
+
+    if detects_missing_safeguard_negation(t):
+        return (
+            "Missing Safeguard Negation / Needs Safeguards",
+            "YES",
+            "The scenario explicitly says explainability, independent challenge, human override, appeal, or review is missing.",
         )
 
     throne_marker = strongest_throne_capture_marker(t)

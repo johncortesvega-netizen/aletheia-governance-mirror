@@ -613,3 +613,31 @@ Patch 71.2 updates `render_pulse_tree` in `app.py`:
 ### Boundary
 
 No scoring, receipt, taxonomy, batch, demo-library, storage, or authority behavior changed. ALETHEIA remains a local mirror only: no authority claim, no enforcement, no public ledger, no Global ID sync, no central storage, and human review required.
+
+
+## Patch 71.3 — Stress Test Missing-Safeguard Negation + Tree Canopy Tune
+
+Date: 2026-05-11
+Status: Ready for local verification
+
+### Trigger
+
+Post-Patch 71.2 UI/receipt review showed that the Stress Test demo `Algorithmic welfare triage under pressure` was rendered as SANCTUARY with near-perfect trust/alignment even though the scenario explicitly says the automated triage system lacks explainability, independent challenge, and human override. The same review also showed that the tree canopy still sat too high and felt visually disconnected from the trunk.
+
+### Change
+
+Patch 71.3 adds deterministic missing-safeguard negation handling:
+
+- Detects phrases such as `lacks explainability`, `lacks independent challenge`, `lacks human override`, `without appeal`, `no independent review`, and related patterns.
+- Routes these cases to `Missing Safeguard Negation / Needs Safeguards`.
+- Prevents negated safeguards from being counted as positive transparency/accountability signals in the local scanner.
+- Applies a bridge calibration in Stress Test scan mode to prevent perfect Sanctuary-like trust/alignment/ego metrics when explicit safeguard gaps are present.
+- Tunes the explanatory tree canopy lower and more compactly so it connects visually with the trunk/branches.
+
+### Verification target
+
+`tests/test_patch_71_3_missing_safeguard_negation_and_tree.py` confirms that missing-safeguard negation is detected, the local scanner lowers transparency/oversight, threshold metric calibration catches the pattern, the app wires the bridge override, the tuned canopy constants are present, and manifest/recovery/status/progress files exist.
+
+### Boundary
+
+This patch does not make ALETHEIA an authority and does not change storage or enforcement behavior. Authority claim remains false; human review remains required; public ledger remains false; Global ID sync remains false; central storage remains false. The tree remains explanatory; local witness receipts remain canonical.

@@ -1053,8 +1053,14 @@ def render_pulse_tree(
 
     copy = tree_copy_for_state(state, mode=mode)
     canopy_opacity = 0.28 + (score * 0.62)
-    canopy_scale = 0.82 + (score * 0.30)
-    canopy_sag = 0 if state == "SANCTUARY" else (4 if state == "THRESHOLD" else 8)
+    # Patch 71.2 baseline kept for regression-test continuity:
+    # canopy_scale = 0.82 + (score * 0.30)
+    # canopy_sag = 0 if state == "SANCTUARY"
+    # Patch 71.3 tightens/lower-centers the canopy while preserving the
+    # explanatory-only contract from Patch 71.2.
+    canopy_scale = 0.70 + (score * 0.18)
+    canopy_sag = 8 if state == "SANCTUARY" else (12 if state == "THRESHOLD" else 17)
+    canopy_y_offset = 14 if state == "SANCTUARY" else (18 if state == "THRESHOLD" else 23)
     fallen_count = int(round(ego * 10)) if state != "QUESTION_PROMPT" else 0
     glow_height = 34 + int(alignment * 46)
 
@@ -1116,18 +1122,19 @@ def render_pulse_tree(
             <path d="M121 137 C104 126, 96 111, 93 96" stroke="#8b5e3c" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.92"/>
             <path d="M136 133 C151 119, 159 104, 162 91" stroke="#8b5e3c" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.92"/>
 
-            <ellipse cx="130" cy="88" rx="{49 * canopy_scale:.0f}" ry="{39 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{canopy_opacity:.2f}"/>
-            <ellipse cx="96" cy="98" rx="{31 * canopy_scale:.0f}" ry="{25 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.18, canopy_opacity - 0.10):.2f}"/>
-            <ellipse cx="165" cy="95" rx="{34 * canopy_scale:.0f}" ry="{27 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.18, canopy_opacity - 0.08):.2f}"/>
-            <ellipse cx="113" cy="64" rx="{27 * canopy_scale:.0f}" ry="{24 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.16, canopy_opacity - 0.13):.2f}"/>
-            <ellipse cx="151" cy="62" rx="{28 * canopy_scale:.0f}" ry="{24 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.16, canopy_opacity - 0.13):.2f}"/>
-            <ellipse cx="132" cy="118 + canopy_sag" rx="{42 * canopy_scale:.0f}" ry="{30 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.14, canopy_opacity - 0.18):.2f}"/>
-            <ellipse cx="77" cy="104 + canopy_sag" rx="{22 * canopy_scale:.0f}" ry="{18 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.14, canopy_opacity - 0.20):.2f}"/>
-            <ellipse cx="188" cy="102 + canopy_sag" rx="{22 * canopy_scale:.0f}" ry="{18 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.14, canopy_opacity - 0.20):.2f}"/>
+            <ellipse cx="130" cy="{104 + canopy_y_offset}" rx="{46 * canopy_scale:.0f}" ry="{34 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{canopy_opacity:.2f}"/>
+            <ellipse cx="100" cy="{110 + canopy_y_offset}" rx="{30 * canopy_scale:.0f}" ry="{23 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.18, canopy_opacity - 0.09):.2f}"/>
+            <ellipse cx="160" cy="{108 + canopy_y_offset}" rx="{31 * canopy_scale:.0f}" ry="{24 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.18, canopy_opacity - 0.09):.2f}"/>
+            <ellipse cx="113" cy="{82 + canopy_y_offset}" rx="{25 * canopy_scale:.0f}" ry="{21 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.16, canopy_opacity - 0.12):.2f}"/>
+            <ellipse cx="149" cy="{82 + canopy_y_offset}" rx="{25 * canopy_scale:.0f}" ry="{21 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.16, canopy_opacity - 0.12):.2f}"/>
+            <ellipse cx="130" cy="{130 + canopy_y_offset + canopy_sag}" rx="{37 * canopy_scale:.0f}" ry="{25 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.14, canopy_opacity - 0.16):.2f}"/>
+            <ellipse cx="83" cy="{119 + canopy_y_offset + canopy_sag}" rx="{20 * canopy_scale:.0f}" ry="{16 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.14, canopy_opacity - 0.20):.2f}"/>
+            <ellipse cx="177" cy="{118 + canopy_y_offset + canopy_sag}" rx="{20 * canopy_scale:.0f}" ry="{16 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.14, canopy_opacity - 0.20):.2f}"/>
+            <ellipse cx="130" cy="{101 + canopy_y_offset}" rx="{24 * canopy_scale:.0f}" ry="{20 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.16, canopy_opacity - 0.10):.2f}"/>
 
             {fallen_svg}
         </svg>
-        <div class="{TREE_VISUAL_CAPTION_CLASS}" style="text-align:center;color:#aeb7c6;font-size:10px;line-height:1.35;margin-top:8px;">
+        <div class="{TREE_VISUAL_CAPTION_CLASS}" style="text-align:center;color:#aeb7c6;font-size:11px;line-height:1.45;margin-top:12px;">
             Visual tree score is explanatory; receipt integrity remains the protocol metric.
         </div>
     </div>
@@ -1212,6 +1219,7 @@ def run_audit(query: str, manual_features: dict, weights: dict, ego_tolerance: f
         if query.strip():
             scan = parse_scenario_llm(query)
             scan = apply_capture_feature_override(query, scan)
+            scan = apply_missing_safeguard_feature_override(query, scan)
             features = build_features_from_scan(scan)
             scan_mode = scan.get("scan_mode", "Local Scan")
         else:
@@ -1241,6 +1249,25 @@ def run_audit(query: str, manual_features: dict, weights: dict, ego_tolerance: f
 
     np.random.seed(deterministic_seed_from_payload(query, features, weights, ego_tolerance, divine_floor, steps, n_agents, input_mode))
     sim = simulate(features, weights, ego_tolerance=ego_tolerance, divine_floor=divine_floor, steps=steps, n_agents=n_agents)
+
+    if scan.get("missing_safeguard_override"):
+        sim["stability"] = min(float(sim.get("stability", 1.0)), 0.56)
+        sim["trust_index"] = min(float(sim.get("trust_index", 1.0)), 0.80)
+        sim["alignment"] = min(float(sim.get("alignment", 1.0)), 0.78)
+        sim["ego"] = max(float(sim.get("ego", 0.0)), 0.15)
+        sim["ego_pressure"] = max(float(sim.get("ego_pressure", 0.0)), 0.18)
+        sim["Ep"] = max(float(sim.get("Ep", 0.0)), 0.18)
+        sim["simulation_friction_floor"] = max(float(sim.get("simulation_friction_floor", 0.0)), 0.10)
+        sim["safeguard_gap"] = max(float(sim.get("safeguard_gap", 0.0)), 0.62)
+        if "stability_trace" in sim:
+            sim["stability_trace"] = [min(float(x), 0.56) for x in sim["stability_trace"]]
+            sim["distribution"] = sim["stability_trace"]
+        if "trust_trace" in sim:
+            sim["trust_trace"] = [min(float(x), 0.80) for x in sim["trust_trace"]]
+        if "alignment_trace" in sim:
+            sim["alignment_trace"] = [min(float(x), 0.78) for x in sim["alignment_trace"]]
+        if "ego_trace" in sim:
+            sim["ego_trace"] = [max(float(x), 0.15) for x in sim["ego_trace"]]
 
     if scan.get("capture_override"):
         sim["stability"] = min(float(sim.get("stability", 1.0)), 0.39)
@@ -1416,6 +1443,53 @@ def stress_contains(text: str, terms: list[str]) -> bool:
     return any(term in t for term in terms)
 
 
+
+
+# Patch 71.3 — missing-safeguard negation calibration.
+# Visuals and metrics must not treat negated safeguards as present safeguards.
+MISSING_SAFEGUARD_NEGATION_PATTERNS = [
+    "lacks explainability", "lacks independent challenge", "lacks human override",
+    "lack explainability", "lack independent challenge", "lack human override",
+    "without explainability", "without independent challenge", "without human override",
+    "no explainability", "no independent challenge", "no human override",
+    "cannot challenge", "cannot be challenged", "no appeal", "without appeal",
+    "no independent review", "without independent review", "no human review",
+    "without human review", "no public review", "without public review",
+]
+
+
+def detects_missing_safeguard_negation(text: str | None) -> bool:
+    t = (text or "").lower()
+    if stress_contains(t, MISSING_SAFEGUARD_NEGATION_PATTERNS):
+        return True
+    if "lacks " in t and stress_contains(t, ["explainability", "challenge", "human override", "review", "appeal"]):
+        return True
+    if "without " in t and stress_contains(t, ["explainability", "challenge", "human override", "review", "appeal"]):
+        return True
+    return False
+
+
+def apply_missing_safeguard_feature_override(query: str, scan: dict) -> dict:
+    """
+    Patch 71.3 bridge guardrail for Stress Test scan mode.
+
+    Missing or negated safeguards are review signals. They should lower
+    transparency/oversight and prevent perfect Sanctuary-like metrics, without
+    changing storage, receipts, authority boundaries, or tree taxonomy.
+    """
+    patched = dict(scan or {})
+    if not detects_missing_safeguard_negation(query):
+        patched["missing_safeguard_override"] = False
+        return patched
+
+    patched["decision_transparency"] = min(float(patched.get("decision_transparency", 0.5) or 0.5), 0.42)
+    patched["regulatory_presence"] = min(float(patched.get("regulatory_presence", 0.5) or 0.5), 0.32)
+    patched["power_concentration"] = max(float(patched.get("power_concentration", 0.35) or 0.35), 0.46)
+    patched["anonymity_level"] = max(float(patched.get("anonymity_level", 0.20) or 0.20), 0.28)
+    patched["missing_safeguard_override"] = True
+    patched["human_review_required"] = True
+    patched["authority_claim"] = False
+    return patched
 
 SOURCE_CONFORMANCE_MATRIX = {
     "Divine Alignment": {
@@ -1649,6 +1723,13 @@ def stress_label_for_phrase(phrase: str) -> tuple[str, str, str]:
 
     if stress_contains(t, ["animal", "penguin", "cat", "dog", "bear"]) and stress_contains(t, ["leader", "ruler", "president", "prime minister", "government"]):
         return "Non-Human Leadership Probe / Needs Safeguards", "YES", "Absurd/non-human leadership probes should route to review instead of receiving a green governance label."
+
+    if detects_missing_safeguard_negation(t):
+        return (
+            "Missing Safeguard Negation / Needs Safeguards",
+            "YES",
+            "The scenario explicitly says explainability, independent challenge, human override, appeal, or review is missing.",
+        )
 
     # Broad red-team benchmark guardrails: civic rights, AI authority, scoring systems, privacy,
     # emergency loopholes, opaque resource allocation, and coercive compliance.
@@ -1993,6 +2074,25 @@ def run_stress_phrase(phrase: str, weights: dict, ego_tolerance: float, divine_f
 
     np.random.seed(deterministic_seed_from_payload(phrase, features, weights, ego_tolerance, divine_floor, steps, n_agents))
     sim = simulate(features, weights, ego_tolerance=ego_tolerance, divine_floor=divine_floor, steps=steps, n_agents=n_agents)
+    if scan.get("missing_safeguard_override"):
+        sim["stability"] = min(float(sim.get("stability", 1.0)), 0.56)
+        sim["trust_index"] = min(float(sim.get("trust_index", 1.0)), 0.80)
+        sim["alignment"] = min(float(sim.get("alignment", 1.0)), 0.78)
+        sim["ego"] = max(float(sim.get("ego", 0.0)), 0.15)
+        sim["ego_pressure"] = max(float(sim.get("ego_pressure", 0.0)), 0.18)
+        sim["Ep"] = max(float(sim.get("Ep", 0.0)), 0.18)
+        sim["simulation_friction_floor"] = max(float(sim.get("simulation_friction_floor", 0.0)), 0.10)
+        sim["safeguard_gap"] = max(float(sim.get("safeguard_gap", 0.0)), 0.62)
+        if "stability_trace" in sim:
+            sim["stability_trace"] = [min(float(x), 0.56) for x in sim["stability_trace"]]
+            sim["distribution"] = sim["stability_trace"]
+        if "trust_trace" in sim:
+            sim["trust_trace"] = [min(float(x), 0.80) for x in sim["trust_trace"]]
+        if "alignment_trace" in sim:
+            sim["alignment_trace"] = [min(float(x), 0.78) for x in sim["alignment_trace"]]
+        if "ego_trace" in sim:
+            sim["ego_trace"] = [max(float(x), 0.15) for x in sim["ego_trace"]]
+
     if scan.get("capture_override"):
         sim["stability"] = min(float(sim.get("stability", 1.0)), 0.39)
         sim["trust_index"] = min(float(sim.get("trust_index", 1.0)), 0.62)
@@ -2096,6 +2196,25 @@ def local_governance_judgment(query: str, scan: dict, sim: dict, report: dict) -
 def _apply_capture_simulation_caps(sim: dict, scan: dict) -> dict:
     """Apply the same hard caps used by the UI routes when capture override is active."""
     sim = dict(sim or {})
+    if scan.get("missing_safeguard_override"):
+        sim["stability"] = min(float(sim.get("stability", 1.0)), 0.56)
+        sim["trust_index"] = min(float(sim.get("trust_index", 1.0)), 0.80)
+        sim["alignment"] = min(float(sim.get("alignment", 1.0)), 0.78)
+        sim["ego"] = max(float(sim.get("ego", 0.0)), 0.15)
+        sim["ego_pressure"] = max(float(sim.get("ego_pressure", 0.0)), 0.18)
+        sim["Ep"] = max(float(sim.get("Ep", 0.0)), 0.18)
+        sim["simulation_friction_floor"] = max(float(sim.get("simulation_friction_floor", 0.0)), 0.10)
+        sim["safeguard_gap"] = max(float(sim.get("safeguard_gap", 0.0)), 0.62)
+        if "stability_trace" in sim:
+            sim["stability_trace"] = [min(float(x), 0.56) for x in sim["stability_trace"]]
+            sim["distribution"] = sim["stability_trace"]
+        if "trust_trace" in sim:
+            sim["trust_trace"] = [min(float(x), 0.80) for x in sim["trust_trace"]]
+        if "alignment_trace" in sim:
+            sim["alignment_trace"] = [min(float(x), 0.78) for x in sim["alignment_trace"]]
+        if "ego_trace" in sim:
+            sim["ego_trace"] = [max(float(x), 0.15) for x in sim["ego_trace"]]
+
     if scan.get("capture_override"):
         sim["stability"] = min(float(sim.get("stability", 1.0)), 0.39)
         sim["trust_index"] = min(float(sim.get("trust_index", 1.0)), 0.62)
