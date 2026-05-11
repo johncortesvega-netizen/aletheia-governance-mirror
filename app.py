@@ -3614,9 +3614,36 @@ with tab_boundary:
             "scenario": "A document uses strong ethical language but lacks operational safeguards.",
             "main_risk": "Values language hides missing mechanisms.",
             "guardrail": "Mechanisms outweigh adjectives.",
-            "allowed": "Compare claims against appeal, audit trail, time limits, correction, exit rights, evidence rules, and independent oversight.",
-            "forbidden": "Treating values language as proof of integrity.",
+            "allowed": "Compare claims against appeal, audit trail, time limits, correction, exit rights, evidence rules, independent oversight, explainability, independent challenge, and human override.",
+            "forbidden": "Treating values language as proof of integrity or allowing missing safeguards to score as Sanctuary.",
             "failure_type": "Data Failure / Policy Failure",
+        },
+        {
+            "title": "Automated Triage Missing Safeguards",
+            "scenario": "An automated welfare triage or priority system reduces waiting times but lacks explainability, independent challenge, and human override during hardship cases.",
+            "main_risk": "Efficiency language hides missing appeal, challenge, explanation, and human override mechanisms.",
+            "guardrail": "Missing explainability, independent challenge, or human override routes to THRESHOLD / Needs Safeguards, not Sanctuary.",
+            "allowed": "Classify as Needs Safeguards; require explanation path, independent challenge, human override, appeal, correction, audit trail, and hardship review.",
+            "forbidden": "Treating speed or automation benefits as proof of integrity when explainability, challenge, or override is missing.",
+            "failure_type": "Policy Failure / Implementation Failure / Data Failure",
+        },
+        {
+            "title": "Biometric Gate Without Fallback",
+            "scenario": "A city links food, housing, and medical access to a biometric identity gate without a fallback path, public audit, or meaningful appeal.",
+            "main_risk": "Basic rights become dependent on a technical identity gate with weak correction and contestability.",
+            "guardrail": "Basic-rights access requires fallback, public audit, meaningful appeal, correction, and human review before it can approach Sanctuary.",
+            "allowed": "Classify as Needs Safeguards; add non-biometric fallback, public audit, meaningful appeal, human review, dignity-preserving correction, and emergency access.",
+            "forbidden": "Making food, housing, medical access, or other basic rights conditional on one biometric system without fallback or appeal.",
+            "failure_type": "Policy Failure / Implementation Failure / Data Failure",
+        },
+        {
+            "title": "Question Prompt vs Risk State",
+            "scenario": "A user submits audit questions, repair prompts, or review-tool questions rather than a governance scenario.",
+            "main_risk": "Review-tool questions could be misread as scored governance scenarios.",
+            "guardrail": "QUESTION_PROMPT is an input/review-tool mode, not a fourth risk state.",
+            "allowed": "Keep audit and repair questions in Review Tool mode with metrics suppressed; score only scenario-style governance inputs as SANCTUARY, THRESHOLD, or ASYLUM.",
+            "forbidden": "Scoring a pure audit question as Sanctuary, Threshold, or Asylum, or treating QUESTION_PROMPT as a risk state.",
+            "failure_type": "Implementation Failure / Data Failure",
         },
         {
             "title": "ALETHEIA Audits Itself",
@@ -3668,7 +3695,7 @@ Secondary failure type: {selected_failure_modes[1] if len(selected_failure_modes
 Reason: {case['main_risk']}
 Evidence from scenario: {case['scenario']}
 Human review need: Required before assigning responsibility or changing policy.
-Recommended repair: Use allowed responses and add concrete safeguards.
+Recommended repair: Use allowed responses and add concrete safeguards. Missing explainability, independent challenge, human override, fallback, public audit, or meaningful appeal should route to Needs Safeguards before any Sanctuary reading.
 Confidence: Template-level calibration, not a final finding.""",
         language="text",
     )
@@ -3683,7 +3710,7 @@ Relevant guardrails: {case['guardrail']}
 Allowed responses: {case['allowed']}
 Forbidden responses: {case['forbidden']}
 Failure classification: {case['failure_type']}
-Recommended safeguard: Add human review, appeal, transparency, correction, and evidence requirements where missing.
+Recommended safeguard: Add human review, appeal, transparency, correction, evidence requirements, explainability, independent challenge, human override, fallback paths, and public audit where missing.
 Human review note: This is a mirror output, not an instruction or enforcement decision.""",
         language="text",
     )
@@ -3696,17 +3723,17 @@ Human review note: This is a mirror output, not an instruction or enforcement de
     consent_examples = {
         "Green — refusal is realistic": {
             "summary": "The person can say no without losing basic rights, safety, dignity, or essential access.",
-            "signals": "Clear opt-out, no retaliation, alternative path, withdrawal right, plain-language explanation, human review.",
+            "signals": "Clear opt-out, no retaliation, fallback/alternative path, withdrawal right, plain-language explanation, meaningful appeal, and human review.",
             "failure": "No serious failure signal / monitor for implementation drift.",
         },
         "Yellow — pressure or ambiguity exists": {
             "summary": "Refusal technically exists, but the cost, consequence, dependency, or withdrawal path is unclear.",
-            "signals": "Default opt-in, confusing terms, weak withdrawal, power imbalance, service dependency, unclear data retention.",
+            "signals": "Default opt-in, confusing terms, weak withdrawal, power imbalance, service dependency, unclear data retention, weak fallback, unclear appeal, or no human override.",
             "failure": "Policy Failure / Implementation Failure / Data Failure",
         },
         "Red — consent appears structurally forced": {
             "summary": "Refusal is practically impossible, punished, hidden, or tied to loss of basic rights or essential services.",
-            "signals": "Loss of food, housing, care, safety, work, due process, essential access, or non-revocable agreement.",
+            "signals": "Loss of food, housing, care, safety, work, due process, essential access, fallback path, appeal, or non-revocable agreement.",
             "failure": "Policy Failure / Actor Failure / Implementation Failure",
         },
     }
@@ -3726,7 +3753,7 @@ Pressure signals: {consent_case['signals']}
 Basic-rights dependency check: Does refusal threaten water, food, clothing, housing, safety, dignity, appeal, exit, correction, care, or essential services?
 Withdrawal and review: Can consent be withdrawn, appealed, and reviewed by a human?
 Failure classification: {consent_case['failure']}
-Recommended safeguards: Add opt-out, alternative path, withdrawal right, appeal, non-retaliation rule, plain language, time limit, and independent review where needed.
+Recommended safeguards: Add opt-out, fallback/alternative path, withdrawal right, appeal, human override, non-retaliation rule, plain language, time limit, and independent review where needed.
 Human review disclaimer: This is a mirror output for human review. It is not legal advice, enforcement, punishment, or final authority.""",
         language="text",
     )
@@ -3755,20 +3782,20 @@ Human review disclaimer: This is a mirror output for human review. It is not leg
     mechanism_examples = {
         "High — claims supported by mechanisms": {
             "claims": "The document states values and connects them to concrete procedures.",
-            "mechanisms": "Independent appeal process, public audit trail, time-limited authority, correction path, evidence requirement, human review, exit right.",
+            "mechanisms": "Independent appeal process, public audit trail, time-limited authority, correction path, evidence requirement, explainability, independent challenge, human override, human review, exit right.",
             "missing": "No major missing safeguard in the selected example.",
             "failure": "No serious failure signal / monitor for implementation drift.",
         },
         "Medium — partial safeguards": {
             "claims": "The document uses ethical language and includes some safeguards, but key procedures are vague or incomplete.",
-            "mechanisms": "Some review or oversight exists, but appeal, correction, evidence standards, or time limits are unclear.",
+            "mechanisms": "Some review or oversight exists, but appeal, correction, evidence standards, explainability, independent challenge, human override, fallback, or time limits are unclear.",
             "missing": "Clarify appeal, audit trail, correction, responsible actor, and review deadline.",
             "failure": "Policy Failure / Implementation Failure / Data Failure",
         },
         "Low — mostly values language": {
             "claims": "The document repeatedly says it protects freedom, justice, dignity, safety, or service.",
             "mechanisms": "Few or no concrete safeguards are described.",
-            "missing": "Appeal, audit trail, correction, time limits, independent review, evidence rules, exit, and accountability.",
+            "missing": "Appeal, audit trail, correction, time limits, independent review, explainability, independent challenge, human override, fallback, evidence rules, exit, and accountability.",
             "failure": "Policy Failure / Data Failure",
         },
     }
@@ -3788,7 +3815,7 @@ Mechanism signals found: {mechanism_case['mechanisms']}
 Missing safeguards: {mechanism_case['missing']}
 Main risk: Values language may be mistaken for operational accountability.
 Failure classification: {mechanism_case['failure']}
-Recommended repair: Add concrete safeguards such as appeal, audit trail, time limits, correction, evidence requirements, independent oversight, and human review.
+Recommended repair: Add concrete safeguards such as appeal, audit trail, time limits, correction, evidence requirements, explainability, independent challenge, human override, fallback, independent oversight, and human review.
 Human review note: This is a mirror output. It flags mechanism gaps; it does not prove bad faith or assign final intent.""",
         language="text",
     )
@@ -3800,6 +3827,10 @@ Human review note: This is a mirror output. It flags mechanism gaps; it does not
             - Public audit trail
             - Time-limited authority
             - Human review
+            - Explainability
+            - Independent challenge
+            - Human override
+            - Fallback path
             - Correction mechanism
             - Exit right
             - Evidence requirement
@@ -3876,7 +3907,7 @@ Human review disclaimer: This self-audit is a governance mirror for human review
     with st.expander("Safe output rules", expanded=False):
         st.markdown(
             """
-            ALETHEIA may say: potential risk detected, critical human review required, safeguard missing, evidence gap found, this claim is unverified.
+            ALETHEIA may say: potential risk detected, Needs Safeguards, critical human review required, safeguard missing, evidence gap found, this claim is unverified.
 
             ALETHEIA must not say: the AI has decided, guardrails no longer apply, this claim is divinely verified, human review is unnecessary.
             """
@@ -3898,7 +3929,7 @@ Human review disclaimer: This self-audit is a governance mirror for human review
         "app_version": APP_VERSION,
         "rubric_version": "v0.1",
         "prompt_version": "v0.1",
-        "active_modules": "Mirror Check, Boundary Cases, Evidence Lab, Self-Audit Mode",
+        "active_modules": "Mirror Check, Stress Test, Boundary Cases, Evidence Lab, Self-Audit Mode",
         "stored_locally": "Yes",
         "public_ledger": "No",
         "global_id_sync": "No",

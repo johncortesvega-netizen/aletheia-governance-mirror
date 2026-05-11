@@ -668,3 +668,29 @@ Files:
 - PATCH_71_4_MANIFEST.txt
 - PATCH_71_4_RECOVERY_NOTE.md
 
+
+## Patch 71.5 — Boundary Cases Missing-Safeguard Cleanup
+
+Date: 2026-05-11
+
+Patch 71.5 aligns the Boundary Cases tab with Patch 71.4. After missing-safeguard Stress Test scenarios were correctly routed to THRESHOLD / Needs Safeguards, the Boundary Cases templates also needed to name the same concepts so users do not see outdated or incomplete edge-case guidance.
+
+Implemented:
+- Added `Automated Triage Missing Safeguards` boundary template.
+- Added `Biometric Gate Without Fallback` boundary template.
+- Added `Question Prompt vs Risk State` boundary template.
+- Updated report templates to name explainability, independent challenge, human override, fallback paths, public audit, and meaningful appeal.
+- Updated Consent-Audit and Mechanism-vs-Claim examples to reflect missing-safeguard review language.
+
+Invariant preserved:
+- This is a UI/template cleanup only.
+- No scoring logic, Stress Test routing logic, Mirror Check logic, receipt storage, tree rendering, or World Lens math changed.
+- ALETHEIA remains a mirror, not a throne.
+- Public ledger, Global ID sync, and central storage remain false.
+
+Files:
+- app.py
+- tests/test_patch_71_5_boundary_cases_missing_safeguards_cleanup.py
+- PATCH_71_5_MANIFEST.txt
+- PATCH_71_5_RECOVERY_NOTE.md
+

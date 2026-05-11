@@ -1,5 +1,19 @@
 # ALETHEIA Patch Status
 
+## Patch 71.5 — Boundary Cases Missing-Safeguard Cleanup
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Boundary Cases now reflects Patch 71.4 missing-safeguard behavior.
+- Added templates for automated triage missing explainability/challenge/override, biometric gates without fallback/audit/appeal, and QUESTION_PROMPT as review-tool mode.
+- Consent-Audit and Mechanism-vs-Claim templates now include explainability, independent challenge, human override, fallback paths, public audit, and meaningful appeal.
+- No scoring, Stress Test, Mirror Check, tree, World Lens, storage, or authority-boundary changes.
+
+Validation:
+- `tools\run_patch_checks.bat 71_5`
+
+
 ## Patch 71.4 — Missing-Safeguard Verdict Enforcement
 
 Status: READY FOR LOCAL TESTING
