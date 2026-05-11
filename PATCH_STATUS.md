@@ -1062,3 +1062,30 @@ Check:
 tools\run_patch_checks.bat 72_20
 ```
 
+## Patch 72.24 - World Lens Public Display Taxonomy Guard
+
+Date: 2026-05-11
+
+Patch 72.24 centralizes World Lens public taxonomy display.
+
+Implemented:
+- Added `_world_lens_public_display_df(...)`.
+- Added `_world_lens_taxonomy_label(...)`.
+- World Lens comparison tables now display `empirical_pattern_display`, `internal_taxonomy_label`, and `humility_note`.
+- Renamed public result distribution views to internal taxonomy distribution.
+- Changed selected-year CSV public naming from Global Grid to World Lens.
+- Updated receipt-readiness wording from Global Grid to World Lens.
+- Display-guarded receipt verdict summaries and all-rows output.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No 9k allocation formula change.
+- No Evidence Lab or World Lens data model, authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_24
+```
+

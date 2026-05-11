@@ -404,7 +404,7 @@ SCENARIOS = MIRROR_CHECK_DEMO_SCENARIOS
 
 
 def _empirical_humility_display_df(df: pd.DataFrame) -> pd.DataFrame:
-    """Patch 72.19: add humble display labels for empirical tables.
+    """Patch 72.24: public display guard for empirical/World Lens tables.
 
     Raw/internal taxonomy columns remain available for compatibility.
     Display tables should not present SANCTUARY as a final state.
@@ -412,36 +412,86 @@ def _empirical_humility_display_df(df: pd.DataFrame) -> pd.DataFrame:
     if not isinstance(df, pd.DataFrame) or df.empty:
         return df
     out = df.copy()
-    verdict_col_name = None
-    for candidate in ["aletheia_verdict", "verdict", "result"]:
-        if candidate in out.columns:
-            verdict_col_name = candidate
-            break
-    if verdict_col_name:
-        mapping = {
+
+    def _taxonomy_series(frame: pd.DataFrame):
+        for candidate in ["aletheia_verdict", "verdict", "Verdict", "result"]:
+            if candidate in frame.columns:
+                return candidate, frame[candidate].astype(str).str.upper().str.strip()
+        return None, None
+
+    verdict_col_name, taxonomy = _taxonomy_series(out)
+    if taxonomy is not None:
+        pattern = taxonomy.map({
             "SANCTUARY": "Low-risk internal reading",
             "THRESHOLD": "Review / threshold reading",
             "ASYLUM": "High-risk internal reading",
-        }
-        out["empirical_pattern_display"] = out[verdict_col_name].astype(str).str.upper().map(mapping).fillna(out[verdict_col_name])
-        out["internal_taxonomy_label"] = out[verdict_col_name]
-        out["humility_note"] = out[verdict_col_name].astype(str).str.upper().map({
+        }).fillna(out[verdict_col_name])
+        note = taxonomy.map({
             "SANCTUARY": "Internal taxonomy label only; not a final safety, final Sanctuary, or authority claim.",
             "THRESHOLD": "Review-state taxonomy label; requires human interpretation and safeguard review.",
             "ASYLUM": "High-risk taxonomy label; requires human review and does not enforce action.",
         }).fillna("Internal taxonomy label only; human review remains required.")
+
+        if "empirical_pattern_display" not in out.columns:
+            insert_at = out.columns.get_loc(verdict_col_name) if verdict_col_name in out.columns else 0
+            out.insert(insert_at, "empirical_pattern_display", pattern)
+        if "internal_taxonomy_label" not in out.columns:
+            out["internal_taxonomy_label"] = out[verdict_col_name]
+        if "humility_note" not in out.columns:
+            out["humility_note"] = note
+
+        if verdict_col_name in ["verdict", "Verdict", "aletheia_verdict"]:
+            out = out.rename(columns={verdict_col_name: f"raw_{verdict_col_name}"})
+
+    def _sanitize_empirical_text_value(value):
+        if not isinstance(value, str):
+            return value
+        text_value = value.strip()
+        sanctuary_overlay = (
+            "Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. "
+            "Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority."
+        )
+        sanctuary_interpretation = (
+            "Low-risk internal reading · Internal taxonomy label: SANCTUARY; "
+            "not a final safety, final Sanctuary, or authority claim."
+        )
+        replacements = {
+            "SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": sanctuary_overlay,
+            "SANCTUARY · SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": sanctuary_interpretation,
+            "SANCTUARY · Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails": sanctuary_interpretation,
+            "SANCTUARY · Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority.": sanctuary_interpretation,
+        }
+        if text_value in replacements:
+            return replacements[text_value]
+        if text_value.startswith("SANCTUARY · Low-risk evidence pattern"):
+            return sanctuary_interpretation
+        if text_value.startswith("SANCTUARY: Low-risk evidence pattern"):
+            return sanctuary_interpretation
+        if text_value.startswith("SANCTUARY · SANCTUARY evidence pattern"):
+            return sanctuary_interpretation
+        if text_value.startswith("SANCTUARY: SANCTUARY evidence pattern"):
+            return sanctuary_interpretation
+        return value
+
     for col in out.columns:
         if out[col].dtype == object or pd.api.types.is_string_dtype(out[col]):
-            out[col] = out[col].replace({
-                "SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
-                    "Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. "
-                    "Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority."
-                ),
-                "SANCTUARY · SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
-                    "Low-risk internal reading · Internal taxonomy label: SANCTUARY; not a final safety, final Sanctuary, or authority claim."
-                ),
-            })
+            out[col] = out[col].apply(_sanitize_empirical_text_value)
     return out
+
+
+def _world_lens_public_display_df(df: pd.DataFrame) -> pd.DataFrame:
+    """Patch 72.24: apply public taxonomy display labels to World Lens tables."""
+    return _empirical_humility_display_df(df)
+
+
+def _world_lens_taxonomy_label(value: object) -> str:
+    label = str(value).upper().strip()
+    return {
+        "SANCTUARY": "Low-risk internal reading",
+        "THRESHOLD": "Review / threshold reading",
+        "ASYLUM": "High-risk internal reading",
+    }.get(label, str(value))
+
 
 st.set_page_config(page_title="ALETHEIA", page_icon="🌿", layout="wide")
 
@@ -6028,7 +6078,7 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
             out = df[base_cols].copy()
             out = out.rename(columns={
                 "_country_name": "country",
-                verdict_col: "verdict",
+                verdict_col: "internal_taxonomy_label",
                 "_seats": "seats",
                 "_seat_rank": "seat_rank",
                 "_integrity": "integrity",
@@ -6053,7 +6103,7 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
             for c in ["seats", "seat_rank"]:
                 if c in out.columns:
                     out[c] = pd.to_numeric(out[c], errors="coerce").fillna(0).astype(int)
-            return out
+            return _world_lens_public_display_df(out)
 
         def _safe_receipt_table(df: pd.DataFrame, limit: int | None = None) -> pd.DataFrame:
             out = df.copy()
@@ -6144,7 +6194,7 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
                 ),
             }
 
-            verdict_receipt = verdict_summary_df.copy() if isinstance(verdict_summary_df, pd.DataFrame) else pd.DataFrame()
+            verdict_receipt = _world_lens_public_display_df(verdict_summary_df.copy()) if isinstance(verdict_summary_df, pd.DataFrame) else pd.DataFrame()
             coverage_receipt = pd.DataFrame([
                 {"source": "Trust raw survey", "rows_present": int(trust_mask.sum()), "rows_missing": int(missing_trust), "coverage": trust_coverage},
                 {"source": "Trust prior", "rows_present": int(trust_prior_mask.sum()), "rows_missing": int(missing_trust_prior), "coverage": trust_prior_coverage},
@@ -6203,7 +6253,7 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
                 "_seats": "seats",
             })
 
-            all_rows_receipt = comparison_export.copy()
+            all_rows_receipt = _world_lens_public_display_df(comparison_export.copy())
             if "_country_name" in all_rows_receipt.columns:
                 all_rows_receipt = all_rows_receipt.rename(columns={"_country_name": "friendly_country_name"})
             if "_allocation_role" in all_rows_receipt.columns:
@@ -6422,12 +6472,14 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             st.caption("Showing the top 25 countries by seats. The full table is in Country-Year Detail. Partial years may not add to 9,000.")
 
         with view_tabs[2]:
-            st.markdown("### Result distribution")
+            st.markdown("### Internal taxonomy distribution")
             if not verdict_seats.empty:
                 verdict_df = verdict_seats.reset_index()
-                verdict_df.columns = ["Verdict", "Seats"]
-                fig = go.Figure(go.Bar(x=verdict_df["Verdict"], y=verdict_df["Seats"]))
-                fig.update_layout(template="plotly_white", title="Seat distribution by verdict", height=430, margin=dict(l=10, r=10, t=55, b=10))
+                verdict_df.columns = ["internal_taxonomy_label", "Seats"]
+                verdict_df["empirical_pattern_display"] = verdict_df["internal_taxonomy_label"].apply(_world_lens_taxonomy_label)
+                verdict_df = verdict_df[["empirical_pattern_display", "internal_taxonomy_label", "Seats"]]
+                fig = go.Figure(go.Bar(x=verdict_df["empirical_pattern_display"], y=verdict_df["Seats"]))
+                fig.update_layout(template="plotly_white", title="Seat distribution by internal taxonomy", height=430, margin=dict(l=10, r=10, t=55, b=10))
                 st.plotly_chart(fig, use_container_width=True)
                 st.dataframe(verdict_df, use_container_width=True, hide_index=True)
             else:
@@ -6692,12 +6744,12 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                     display_df = pd.concat([display_df.loc[_focus_mask], display_df.loc[~_focus_mask]], ignore_index=True)
                 else:
                     st.warning(f"Focus country **{focus_country_name or focus_iso3} · {focus_iso3}** is not present in this selected-year detail table.")
-            st.dataframe(display_df, use_container_width=True, hide_index=True, height=480)
+            st.dataframe(_world_lens_public_display_df(display_df), use_container_width=True, hide_index=True, height=480)
             csv_grid = grid_source.to_csv(index=False)
             st.download_button(
-                "⬇️ Download selected-year Global Grid CSV",
+                "⬇️ Download selected-year World Lens CSV",
                 data=csv_grid,
-                file_name=f"aletheia_global_grid_{selected_year}.csv",
+                file_name=f"aletheia_world_lens_{selected_year}.csv",
                 mime="text/csv",
             )
 
@@ -6765,14 +6817,14 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
         receipt_year_values = [int(v) for v in receipt_year_values if v is not None and str(v).strip() not in ["", "None"]]
         receipt_years_aligned = bool(receipt_year_values) and len(set(receipt_year_values)) == 1 and int(selected_year) in set(receipt_year_values)
         _receipt_check(
-            "Empirical and Global Grid year controls match",
+            "Evidence Lab and World Lens year controls match",
             receipt_years_aligned,
-            "Select the same evidence year in Empirical Country-Year Explorer, Empirical Allocation, and Global Grid.",
+            "Select the same evidence year in Empirical Country-Year Explorer, Empirical Allocation, and World Lens.",
         )
         _receipt_check(
-            "Focus country is available in Global Grid year",
+            "Focus country is available in World Lens year",
             (not focus_iso3) or focus_country_available,
-            "Choose a Global Grid year where the selected Empirical country exists, or choose another country in Empirical Explorer.",
+            "Choose a World Lens year where the selected Evidence Lab country exists, or choose another country in Evidence Lab Explorer.",
         )
 
         receipt_ready = all(row["Status"] == "OK" for row in empirical_grid_receipt_checks)
@@ -6780,17 +6832,17 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
         with view_tabs[8]:
             st.markdown("### Report packet setup")
             st.write(
-                "This tab prepares selected-year Grid outputs for the later report generator. "
+                "This tab prepares selected-year World Lens outputs for the later report generator. "
                 "It does not issue final legal, political, or moral determinations."
             )
 
             rp1, rp2, rp3, rp4 = st.columns(4)
             rp1.metric("Selected year", f"{selected_year}")
-            rp2.metric("Grid state", "Full 9k" if is_full_grid else "Partial / active-seat")
+            rp2.metric("World Lens state", "Full 9k" if is_full_grid else "Partial / active-seat")
             rp3.metric("Weighted integrity", "—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
             rp4.metric("Weighted collapse", "—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
 
-            st.markdown("#### Result distribution for reports")
+            st.markdown("#### Internal taxonomy distribution for reports")
             if not verdict_summary_df.empty:
                 verdict_report = verdict_summary_df.copy()
                 for col in ["avg_integrity", "avg_collapse_probability", "avg_empirical_coverage", "seat_share"]:
@@ -6798,6 +6850,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                         verdict_report[col] = pd.to_numeric(verdict_report[col], errors="coerce").round(3)
                 if "seats" in verdict_report.columns:
                     verdict_report["seats"] = pd.to_numeric(verdict_report["seats"], errors="coerce").fillna(0).astype(int)
+                verdict_report = _world_lens_public_display_df(verdict_report)
                 st.dataframe(verdict_report, use_container_width=True, hide_index=True)
             else:
                 st.info("No verdict distribution is available for the active selected-year rows.")
@@ -6986,7 +7039,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             st.dataframe(grid_display, use_container_width=True, hide_index=True, height=320)
 
         with fallback_tabs[2]:
-            st.markdown("### Result distribution")
+            st.markdown("### Internal taxonomy distribution")
             st.info("Result distribution is unavailable in prototype-bracket mode because no empirical country-year verdict table is active.")
 
         with fallback_tabs[3]:
