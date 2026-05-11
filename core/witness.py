@@ -719,6 +719,30 @@ def _threshold_mapping_layer(
     })
 
 
+
+def build_threshold_mapping_layer(
+    *,
+    verdict: str,
+    scan: Mapping[str, Any] | None = None,
+    sim: Mapping[str, Any] | None = None,
+    report: Mapping[str, Any] | None = None,
+    protocol_label: str = "",
+) -> dict[str, Any]:
+    """Public Patch 72 threshold mapping helper for receipt/UI previews.
+
+    This is descriptive only. It does not change scoring, verdict routing,
+    storage, authority boundaries, or enforcement behavior.
+    """
+    return _threshold_mapping_layer(
+        verdict=verdict,
+        scan=dict(scan or {}),
+        sim=dict(sim or {}),
+        report=dict(report or {}),
+        protocol_label=protocol_label,
+    )
+
+
+
 def _display_threshold_mapping_layer_block(mapping: Mapping[str, Any]) -> str:
     """Render Patch 72 Threshold Mapping Layer in plain-text receipts."""
     if not isinstance(mapping, Mapping) or not mapping:

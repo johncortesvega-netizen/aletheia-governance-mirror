@@ -40,6 +40,7 @@ from core.witness import (
     build_local_question_prompt_receipt,
     build_local_witness_batch_zip,
     build_local_witness_receipt,
+    build_threshold_mapping_layer,
     is_witness_question_prompt,
     is_witness_question_set,
     parse_witness_batch_input,
@@ -2814,7 +2815,7 @@ def silent_operator_question(item, *, context: str = "this pattern") -> str:
         return text
     return f"Which safeguard or appeal path would address this concern: {text}?"
 
-def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | None = None):
+def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | None = None, scan: dict | None = None):
     verdict = str(judgment.get("verdict", "THRESHOLD")).upper()
     if verdict == "SANCTUARY":
         color = "#8fbc8f"
@@ -2841,6 +2842,17 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     safe_risk = html.escape(str(judgment.get("corruption_risk", "Medium")))
     safe_stress_label = html.escape(str(judgment.get("stress_label", "Unclassified")))
 
+    threshold_mapping = build_threshold_mapping_layer(
+        verdict=verdict,
+        scan=scan or {},
+        sim=sim or {},
+        report=report,
+        protocol_label=str(judgment.get("stress_label", judgment.get("verdict", ""))),
+    )
+    safe_threshold_direction = html.escape(str(threshold_mapping.get("threshold_direction", "Not recorded")))
+    threshold_z_axis = float(threshold_mapping.get("z_axis_position", 0.0) or 0.0)
+    threshold_repair_index = float(threshold_mapping.get("repair_index", 0.0) or 0.0)
+
     detail_rows = [
         f'<div><strong>Safety risk:</strong> {safe_risk}</div>',
     ]
@@ -2851,6 +2863,11 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     detail_rows.append(
         f'<div style="margin-top:0.15rem;"><strong>Stress label:</strong> {safe_stress_label}</div>'
     )
+    if threshold_mapping:
+        detail_rows.append(
+            '<div style="margin-top:0.15rem;"><strong>Threshold mapping:</strong> '
+            f'{safe_threshold_direction} · Z-axis {threshold_z_axis:.3f} · Repair index {threshold_repair_index:.3f}</div>'
+        )
     detail_rows_html = "".join(detail_rows)
 
     judgment_card_html = f"""
@@ -2875,6 +2892,40 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     cols[2].metric("Collapse probability", f"{report['collapse_probability']:.3f}")
     if report.get("raw_metrics_before_ethics") or report.get("ethics_adjustment_applied") is not None:
         st.caption("These are ethics-calibrated reading metrics. Raw pre-ethics values stay in the local witness receipt.")
+
+    if threshold_mapping:
+        with st.expander("Threshold mapping preview", expanded=(verdict == "THRESHOLD")):
+            tcols = st.columns(3)
+            tcols[0].metric("Threshold direction", str(threshold_mapping.get("threshold_direction", "Not recorded")))
+            tcols[1].metric("Z-axis", f"{float(threshold_mapping.get('z_axis_position', 0.0)):.3f}")
+            tcols[2].metric("Repair index", f"{float(threshold_mapping.get('repair_index', 0.0)):.3f}")
+            st.caption(
+                "Receipt preview only: this maps THRESHOLD direction between captured logic and distributed resilience. "
+                "It does not create a new verdict or enforcement path."
+            )
+            component_rows = []
+            for component in threshold_mapping.get("component_readings", []) or []:
+                if isinstance(component, dict):
+                    component_rows.append({
+                        "Component": component.get("component"),
+                        "Reading": component.get("reading"),
+                        "Threshold - pressure": component.get("threshold_minus_pressure"),
+                        "Threshold + growth": component.get("threshold_plus_growth"),
+                        "Pressure": component.get("pressure_score"),
+                        "Growth": component.get("growth_score"),
+                    })
+            if component_rows:
+                st.dataframe(pd.DataFrame(component_rows), use_container_width=True, hide_index=True)
+            st.write(f"**Dominant pressure:** {threshold_mapping.get('dominant_pressure')}")
+            signals = threshold_mapping.get("asylum_pressure_signals", []) or []
+            growth = threshold_mapping.get("sanctuary_growth_signals", []) or []
+            scol1, scol2 = st.columns(2)
+            scol1.markdown("**Threshold - pressure signals**")
+            for signal in signals:
+                scol1.write(f"- {signal}")
+            scol2.markdown("**Threshold + growth signals**")
+            for signal in growth:
+                scol2.write(f"- {signal}")
 
     with st.expander("Observed reasons", expanded=True):
         for item in judgment.get("reasons", []):
@@ -7113,7 +7164,7 @@ with tab_chat:
             state_override=str(latest.get("judgment", {}).get("verdict", "THRESHOLD")).upper(),
             mode="Mirror Check",
         )
-        render_chat_judgment(latest["judgment"], latest["source"], latest["report"], latest.get("sim"))
+        render_chat_judgment(latest["judgment"], latest["source"], latest["report"], latest.get("sim"), latest.get("scan"))
 
         source_hits = latest.get("source_hits", source_conformance_hits(latest["query"]))
         if source_hits:

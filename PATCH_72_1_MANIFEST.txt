@@ -1,0 +1,44 @@
+PATCH 72.1 MANIFEST - Threshold Mapping UI Preview
+
+Patch ID: 72.1
+Patch name: Threshold Mapping UI Preview
+Owner/User: Johnny Cortes Vega
+Project: ALETHEIA v1.0 - Governance Mirror
+
+Purpose:
+- Surface Patch 72's Threshold Mapping Layer in the Mirror Check live UI.
+- Keep the receipt as the canonical local record while showing a compact preview under the metrics.
+- Preserve the canonical taxonomy and authority boundary.
+
+Files changed:
+- app.py
+- core/witness.py
+- tests/test_patch_72_1_threshold_mapping_ui_preview.py
+- PATCH_72_1_MANIFEST.txt
+- PATCH_72_1_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Behavioral changes:
+- Added public `build_threshold_mapping_layer(...)` wrapper in `core/witness.py`.
+- `render_chat_judgment(...)` now accepts optional scanner features.
+- Mirror Check latest-reading UI now shows an expandable `Threshold mapping preview`.
+- The preview displays:
+  - Threshold direction
+  - Z-axis
+  - Repair index
+  - component readings for Power balance, Correction, and Access
+  - Threshold - pressure signals
+  - Threshold + growth signals
+
+Non-goals:
+- No new canonical taxonomy state.
+- No scoring logic change.
+- No verdict-routing change.
+- No receipt schema change beyond Patch 72.
+- No tree visual change.
+- No Stress Test logic change.
+- No Boundary Cases change.
+- No World Lens change.
+- No authority-boundary change.
+- No public ledger, Global ID sync, central storage, or automated authority behavior.

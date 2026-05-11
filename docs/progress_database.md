@@ -897,3 +897,54 @@ Check:
 ```bat
 tools\run_patch_checks.bat 72
 ```
+
+## Patch 72.1 - Threshold Mapping UI Preview
+
+Date: 2026-05-11
+
+Patch 72.1 surfaces the Patch 72 Threshold Mapping Layer in the live Mirror Check latest-reading UI.
+
+Implemented:
+- Added public `build_threshold_mapping_layer(...)` wrapper in `core/witness.py`.
+- Passed scanner features into `render_chat_judgment(...)`.
+- Added expandable `Threshold mapping preview` below the core metrics.
+- Displayed Threshold direction, Z-axis, Repair index, component readings, pressure signals, and growth signals.
+- Marked the preview as receipt-only and not a new verdict/enforcement path.
+
+Invariant preserved:
+- Canonical taxonomy remains SANCTUARY / THRESHOLD / ASYLUM.
+- No scoring logic change.
+- No verdict-routing change.
+- No receipt authority change beyond Patch 72's receipt mapping.
+- No tree visual, Stress Test, Boundary Cases, World Lens, storage, public ledger, Global ID sync, central storage, or authority-boundary logic changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_1
+```
+
+## Patch 72.1 Hotfix - Threshold Mapping Card Summary
+
+Date: 2026-05-11
+
+Patch 72.1 Hotfix makes the Threshold Mapping UI visibly confirmable in the main Mirror Check judgment card.
+
+Implemented:
+- Added a compact `Threshold mapping` line to the card itself.
+- Displayed threshold direction, Z-axis, and repair index before the metrics.
+- Reused the same mapping object for the expandable Threshold mapping preview below the metrics.
+- Kept the full Patch 72.1 preview intact.
+
+Invariant preserved:
+- Canonical taxonomy remains SANCTUARY / THRESHOLD / ASYLUM.
+- No scoring logic change.
+- No verdict-routing change.
+- No receipt schema change.
+- No tree visual, Stress Test, Boundary Cases, World Lens, storage, public ledger, Global ID sync, central storage, or authority-boundary logic changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_1_hotfix
+```
