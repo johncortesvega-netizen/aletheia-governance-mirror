@@ -498,7 +498,7 @@ def evidence_source_frame() -> pd.DataFrame:
             {
                 "Evidence source": "World Bank Worldwide Governance Indicators",
                 "What it contributes": "Voice/accountability, stability, government effectiveness, regulatory quality, rule of law, corruption control",
-                "ALETHEIA use": "transparency, regulation, institutional capacity, corruption/capture risk",
+                "ALETHEIA use": "transparency, regulation, institutional capacity, corruption / capture risk",
                 "Protocol overlay": "anti-capture, auditability, rule-bound accountability",
             },
             {
@@ -514,9 +514,9 @@ def evidence_source_frame() -> pd.DataFrame:
                 "Protocol overlay": "service alignment and social trust under non-coercion",
             },
             {
-                "Evidence source": "Transparency International / corruption indices",
+                "Evidence source": "Transparency International / CPI-style corruption indices",
                 "What it contributes": "Corruption perception and capture-risk proxy",
-                "ALETHEIA use": "corruption/capture pressure and friction calibration",
+                "ALETHEIA use": "corruption / capture pressure and friction calibration",
                 "Protocol overlay": "power must reflect service, not private capture",
             },
             {
@@ -558,7 +558,7 @@ def variable_mapping_frame() -> pd.DataFrame:
                 "Interpretation": "Does authority concentrate into a person, office, company, AI, or closed group?",
             },
             {
-                "ALETHEIA variable": "corruption/capture",
+                "ALETHEIA variable": "corruption / capture",
                 "Evidence proxy": "WGI control of corruption, CPI-style corruption proxies",
                 "Interpretation": "Is the system absorbing power for private or unaccountable interests?",
             },
@@ -575,7 +575,7 @@ def variable_mapping_frame() -> pd.DataFrame:
             {
                 "ALETHEIA variable": "dignity/non-harm",
                 "Evidence proxy": "rights, civil-liberty, conflict, displacement, violence outcomes",
-                "Interpretation": "Does the system protect humans and vulnerable beings from instrumental harm?",
+                "Interpretation": "Does the system protect people and vulnerable groups from instrumental harm?",
             },
         ]
     )
@@ -1856,9 +1856,9 @@ def methodology_markdown() -> str:
 
 ## Purpose
 
-This layer converts ALETHEIA from a purely symbolic governance-risk prototype into an empirical evidence-audit workflow.
+This layer adds an empirical evidence-audit workflow to ALETHEIA's symbolic and protocol-guided governance-risk mirror.
 
-It does not prove the Sydney Protocol. It tests whether a V-Axis-inspired model can be calibrated with public datasets and whether its classifications correspond to observed governance-stability indicators.
+It does not prove the Sydney Protocol. It tests whether ALETHEIA's internal authority-boundary review model can be calibrated with public datasets and whether its internal readings correspond to observed governance-stability indicators.
 
 ## Core public datasets
 
@@ -1869,6 +1869,8 @@ It does not prove the Sydney Protocol. It tests whether a V-Axis-inspired model 
 - Transparency International / CPI-style sources: corruption and capture-risk proxy.
 - Freedom House / rights datasets: political rights, civil liberties, dignity and appealability proxy.
 - ACLED or comparable event datasets: external validation against political violence, conflict, and instability outcomes.
+
+These datasets are optional empirical sources. ALETHEIA does not claim that any single dataset proves governance quality. Source coverage, missing years, and measurement limits must remain visible.
 
 ## Current CSV schema
 

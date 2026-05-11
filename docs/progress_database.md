@@ -1561,3 +1561,30 @@ Check:
 tools\run_patch_checks.bat 72_27
 ```
 
+## Patch 72.28 - Shared Copy Humility Polish
+
+Date: 2026-05-12
+
+Patch 72.28 applies the small copy-polish backlog from Mirror Check, Stress Test, Boundary Cases, and Evidence Lab screenshot review.
+
+Implemented:
+- Shared state labels now use `Selected case / scenario` and `Evidence basis`.
+- Mirror Check review-band copy now uses `Near low-risk boundary`.
+- Mirror Check question expander now says `Questions before relying on this reading`.
+- Evidence Lab schema help uses `Helpful empirical columns`, hides duplicate `population` from the helpful list, and adds `Scale expectations`.
+- Evidence Lab disclaimer now says `enforcement authority`.
+- Evidence Lab method note now uses empirical evidence-audit / internal authority-boundary review wording.
+- Evidence source and field mapping copy now uses CPI-style/corruption-capture wording and `vulnerable groups`.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model, authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_28
+```
+

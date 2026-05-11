@@ -1261,7 +1261,7 @@ REVIEW_BAND_LABELS = {
     "ASYLUM": "Asylum",
     "THRESHOLD_MINUS": "Needs Repair",
     "THRESHOLD": "Needs Review",
-    "THRESHOLD_PLUS": "Near Sanctuary",
+    "THRESHOLD_PLUS": "Near low-risk boundary",
     "SANCTUARY": "Sanctuary",
 }
 
@@ -1274,7 +1274,7 @@ def review_band_for_state(verdict: str, report: dict | None = None, sim: dict | 
     state receives a display-only review band:
     - Needs Repair: closer to Asylum, but still repairable.
     - Needs Review: mixed/incomplete safeguards.
-    - Near Sanctuary: mostly stable, but not fully safe yet.
+    - Near low-risk boundary: mostly stable, but not a final safety or authority claim.
     """
     state = str(verdict or "THRESHOLD").upper()
     report = report or {}
@@ -3184,7 +3184,7 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
         for item in judgment.get("safeguards", []):
             st.write(f"- {silent_operator_question(item, context='this safeguard gap')}")
 
-    with st.expander("Questions before trusting this model"):
+    with st.expander("Questions before relying on this reading"):
         for item in judgment.get("questions", []):
             st.write(f"- {silent_operator_question(item, context='this model')}")
 
@@ -3406,8 +3406,8 @@ def render_shared_protocol_state_notice(current_mode: str, *, expanded: bool = F
             ("Demo data active", "Yes" if state.get("synthetic_demo_active") else "No"),
             ("Sydney Protocol overlay active", "Yes" if state.get("sydney_protocol_overlay_active") else "No"),
             ("Selected evidence year", state.get("selected_evidence_year", "—")),
-            ("Selected country / scenario", state.get("selected_context", "—")),
-            ("Grid basis", state.get("grid_basis", "—")),
+            ("Selected case / scenario", state.get("selected_context", "—")),
+            ("Evidence basis", state.get("grid_basis", "—")),
             ("Last protocol update source", state.get("last_update_source", "—")),
         ]
         st.dataframe(pd.DataFrame(rows, columns=["State field", "Value"]), use_container_width=True, hide_index=True)
@@ -4449,7 +4449,7 @@ Reason: {evidence_examples[selected_evidence_level]}
 Evidence gaps: identify unsupported assertions, missing sources, stale data, self-referential sources, or unreviewable claims.
 Extraordinary claim handling: treat as unverified unless supported by public, testable, non-coercive evidence.
 Policy consequence audit: review effects on basic rights, free agency, coercion, transparency, appeal, accountability, and repair.
-Human review disclaimer: Evidence Lab is a mirror for human review. It is not a proof engine, oracle, legal judgment, religious authority, or enforcement mechanism.""",
+Human review disclaimer: Evidence Lab is a mirror for human review. It is not a proof engine, oracle, legal judgment, religious authority, or enforcement authority.""",
         language="text",
     )
 
@@ -4479,9 +4479,10 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
         st.code("country, iso3, year", language="text")
         st.markdown("**Needed for real 9k allocation**")
         st.code("population", language="text")
-        st.markdown("**Helpful data columns**")
-        st.code("\n".join(EMPIRICAL_COLUMNS), language="text")
-        st.caption("WGI fields can use their normal -2.5 to +2.5 scale. V-Dem and trust fields should already be 0–1.")
+        st.markdown("**Helpful empirical columns**")
+        helpful_empirical_columns = [c for c in EMPIRICAL_COLUMNS if c != "population"]
+        st.code("\n".join(helpful_empirical_columns), language="text")
+        st.caption("Scale expectations: WGI fields can use their normal -2.5 to +2.5 scale. V-Dem and trust fields should already be 0–1.")
 
 
     st.markdown("### Build a country-year table from public data")
@@ -7803,7 +7804,7 @@ with tab_doctrine:
             """
             ALETHEIA modules are not fully isolated. They share a common protocol substrate.
 
-            Shared state may include empirical master data, scored country-year evidence, selected evidence year, scoring calibration, trust calibration, Sydney Protocol overlay, doctrine thresholds, prototype/demo state, and Global Grid basis.
+            Shared state may include empirical master data, scored country-year evidence, selected evidence year, scoring calibration, trust calibration, Sydney Protocol overlay, doctrine thresholds, prototype/demo state, and World Lens basis.
 
             This means a change in one module may affect another when both depend on the same protocol state.
 
@@ -8074,7 +8075,7 @@ with tab_doctrine:
             """
             Coverage reflects available evidence for the active view.
 
-            Coverage can differ by selected year, selected country, active filters, uploaded source file, full vs partial Grid basis, raw evidence availability, and prior/default substitution.
+            Coverage can differ by selected year, selected country, active filters, uploaded source file, full vs partial evidence basis, raw evidence availability, and prior/default substitution.
 
             A 100% coverage value over a small selected subset does not imply whole-world or whole-dataset coverage.
 
