@@ -367,7 +367,7 @@ def prepare_empirical_frame(df: pd.DataFrame) -> pd.DataFrame:
 
     Also accepts common public-download aliases used by OWID/IVS trust exports:
     Entity -> country, Code -> iso3, Year -> year, and long trust indicator
-    labels containing "most people can be trusted" -> wvs_generalized_trust.
+    labels containing "most people can be trusted" or "trust in others" -> wvs_generalized_trust, with 0-100 percentage values normalized to 0-1.
     """
     out = df.copy()
     out.columns = [str(c).strip().lower().replace(" ", "_") for c in out.columns]
@@ -396,6 +396,9 @@ def prepare_empirical_frame(df: pd.DataFrame) -> pd.DataFrame:
                 or "generalized_trust" in norm
                 or "self_reported_trust" in norm
                 or "trust_attitudes" in norm
+                or "trust_in_others" in norm
+                or "trust_others" in norm
+                or "trust_in_other_people" in norm
                 or "most_people_can_be_trusted" in norm
                 or ("people_can_be_trusted" in norm and "share" in norm)
             ):
@@ -403,7 +406,17 @@ def prepare_empirical_frame(df: pd.DataFrame) -> pd.DataFrame:
         for col in trust_candidates:
             vals = pd.to_numeric(out[col], errors="coerce")
             if vals.notna().any():
-                out["wvs_generalized_trust"] = vals
+                max_value = vals.dropna().max()
+                # Patch 72.10: public trust exports such as OWID self-reported
+                # trust attitudes often use a 0-100 percentage scale. ALETHEIA
+                # stores generalized trust on 0-1, so normalize percentages while
+                # preserving already-normalized 0-1 uploads.
+                if pd.notna(max_value) and max_value > 1.0 and max_value <= 100.0:
+                    vals = vals / 100.0
+                out["wvs_generalized_trust"] = vals.clip(lower=0.0, upper=1.0)
+                if "_aletheia_trust_upload_note" not in out.columns:
+                    scale_note = "0-100 normalized to 0-1" if pd.notna(max_value) and max_value > 1.0 and max_value <= 100.0 else "0-1 preserved"
+                    out["_aletheia_trust_upload_note"] = f"{col} -> wvs_generalized_trust ({scale_note})"
                 break
 
     for col in REQUIRED_ID_COLUMNS:
@@ -1756,6 +1769,10 @@ def public_upload_diagnostics(
                 for col in cols:
                     mask = mask | pd.to_numeric(standardized[col], errors="coerce").notna()
                 signal_rows = int(mask.sum())
+        transform_note = ""
+        if standardized is not None and not standardized.empty and "_aletheia_trust_upload_note" in standardized.columns:
+            notes = standardized["_aletheia_trust_upload_note"].dropna().astype(str).unique().tolist()
+            transform_note = "; ".join(notes[:3])
         rows.append(
             {
                 "upload": name,
@@ -1764,6 +1781,7 @@ def public_upload_diagnostics(
                 "standardized_country_year_rows": standardized_rows,
                 "valid_country_year_rows": valid_rows,
                 "rows_with_signal": signal_rows,
+                "transform_note": transform_note,
                 "status": "not uploaded" if raw_df is None else ("ok" if standardized_rows else "no usable rows extracted"),
             }
         )
@@ -1826,7 +1844,7 @@ The WGI layer supports the six dimensions ALETHEIA needs most directly:
 
 1. Upload a WGI CSV/XLS/XLSX file.
 2. Optionally upload a population file with `country`, `iso3`, `year`, and `population`.
-3. Build the master table.
+3. Build the master table. Trust uploads such as OWID self-reported trust attitudes are auto-mapped when possible (`Entity`, `Code`, `Year`, `Trust in others`), and 0-100 percentage values are normalized to 0-1.
 4. Use the generated table in the empirical scorer.
 
 **Important:** WGI alone can produce governance scores, but 9k seat allocation requires population data. Independent validation requires external outcome columns such as conflict events, coups, regime breakdown, political violence, civil unrest, refugee flows, or future-year decline.

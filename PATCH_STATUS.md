@@ -792,3 +792,31 @@ Check:
 ```bat
 tools\run_patch_checks.bat 72_9
 ```
+
+## Patch 72.10 - Trust Upload Auto-Normalizer
+
+Date: 2026-05-11
+
+Patch 72.10 lets Evidence Lab accept common public trust uploads without requiring manual ALETHEIA-ready CSV conversion.
+
+Implemented:
+- Auto-maps `Entity`, `Code`, and `Year` identity columns already supported by the empirical frame.
+- Added trust aliases including `Trust in others`, `trust_in_others`, `trust_others`, and `trust_in_other_people`.
+- Normalizes 0-100 trust percentages to 0-1 `wvs_generalized_trust`.
+- Preserves already-normalized 0-1 trust values.
+- Adds `_aletheia_trust_upload_note` for transparent diagnostics.
+- Exposes the trust transform note through `public_upload_diagnostics`.
+- Applies the same behavior to the Streamlit fallback module `core_empirical.py`.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No 9k allocation formula change.
+- No World Lens logic change.
+- No receipt schema, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_10
+```
