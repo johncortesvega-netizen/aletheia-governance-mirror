@@ -4344,6 +4344,8 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                 "raw_rows_read = rows actually read from the uploaded file; "
                 "standardized_country_year_rows = rows ALETHEIA could map to country/iso3/year; "
                 "rows_with_signal = rows carrying WGI, population, V-Dem, or trust values. "
+                "Individual source files may show 0 valid country-year rows before merge if they do not contain "
+                "the full identity/population basis. The merged master is the source of truth for scoring. "
                 "The generated/scored master uses the default modern empirical window, year >= 1996."
             )
 
@@ -4424,7 +4426,9 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
             file_name="aletheia_country_year_master.csv",
             mime="text/csv",
             use_container_width=True,
+            key="download_generated_country_year_master_csv",
         )
+        st.caption("Downloading this master CSV does not rebuild the four source uploads; it exports the active generated table held in session state.")
         if "use_generated_master_for_scoring" not in st.session_state:
             st.session_state["use_generated_master_for_scoring"] = True
 
@@ -4496,6 +4500,35 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
     else:
         empirical_raw = template_df.copy()
 
+    def _empirical_active_input_signature(
+        df: pd.DataFrame | None,
+        *,
+        source_label: str,
+        use_template_flag: bool,
+        active_direct_scored_master_flag: bool,
+    ) -> str:
+        """Stable Evidence Lab signature for active input tables.
+
+        Patch 72.9: widgets and downloads rerun Streamlit, but they should not
+        re-score the same active master. This signature changes when the active
+        source table, source type, or scored-master mode changes.
+        """
+        hasher = hashlib.sha256()
+        hasher.update(str(source_label).encode("utf-8"))
+        hasher.update(str(bool(use_template_flag)).encode("utf-8"))
+        hasher.update(str(bool(active_direct_scored_master_flag)).encode("utf-8"))
+        if not isinstance(df, pd.DataFrame):
+            hasher.update(b"<none>")
+            return hasher.hexdigest()
+        hasher.update(str(df.shape).encode("utf-8"))
+        hasher.update("|".join(map(str, df.columns)).encode("utf-8"))
+        try:
+            content_hash = pd.util.hash_pandas_object(df.reset_index(drop=True), index=True).values
+            hasher.update(content_hash.tobytes())
+        except Exception:
+            hasher.update(df.to_csv(index=False).encode("utf-8", errors="replace"))
+        return hasher.hexdigest()
+
     if empirical_raw is not None:
         if use_template:
             source_label = "synthetic demo template"
@@ -4506,33 +4539,57 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
         else:
             source_label = "uploaded merged evidence CSV"
 
-        with st.spinner(f"Processing {source_label} through ALETHEIA variable mapping and Sydney Protocol overlay..."):
-            prepared = prepare_empirical_frame(empirical_raw).reset_index(drop=True)
-            if active_direct_scored_master:
-                # A previously exported ALETHEIA master should be accepted as an
-                # already-scored protocol state rather than neutralized by a second
-                # scoring pass when raw source columns are sparse. Identity and
-                # modern-year guards still apply below.
-                scored_all = prepared.copy().reset_index(drop=True)
-                for _score_col in [
-                    "aletheia_empirical_integrity",
-                    "aletheia_empirical_friction",
-                    "aletheia_empirical_collapse_probability",
-                    "empirical_completeness",
-                    "empirical_trust_prior",
-                ]:
-                    if _score_col in scored_all.columns:
-                        scored_all[_score_col] = pd.to_numeric(scored_all[_score_col], errors="coerce")
-                if "evidence_variables_used" not in scored_all.columns and "evidence_used" in scored_all.columns:
-                    scored_all["evidence_variables_used"] = scored_all["evidence_used"]
-                if "evidence_used" not in scored_all.columns and "evidence_variables_used" in scored_all.columns:
-                    scored_all["evidence_used"] = scored_all["evidence_variables_used"]
-                if "protocol_overlay_status" not in scored_all.columns:
-                    scored_all["protocol_overlay_status"] = "preserved uploaded scored master"
-                if "final_audit_interpretation" not in scored_all.columns:
-                    scored_all["final_audit_interpretation"] = scored_all.get("aletheia_verdict", pd.Series([""] * len(scored_all))).astype(str)
-            else:
-                scored_all = score_empirical_frame(prepared).reset_index(drop=True)
+        empirical_active_signature = _empirical_active_input_signature(
+            empirical_raw,
+            source_label=source_label,
+            use_template_flag=bool(use_template),
+            active_direct_scored_master_flag=bool(active_direct_scored_master),
+        )
+        cached_signature = st.session_state.get("empirical_active_scoring_signature")
+        cached_prepared = st.session_state.get("empirical_active_prepared_df")
+        cached_scored_all = st.session_state.get("empirical_active_scored_all_df")
+        if (
+            cached_signature == empirical_active_signature
+            and isinstance(cached_prepared, pd.DataFrame)
+            and isinstance(cached_scored_all, pd.DataFrame)
+        ):
+            prepared = cached_prepared.copy().reset_index(drop=True)
+            scored_all = cached_scored_all.copy().reset_index(drop=True)
+            st.caption(
+                "Using the active Evidence Lab scored table from session state. "
+                "Country/year selection and downloads do not rebuild or rescore the uploaded master."
+            )
+        else:
+            with st.spinner(f"Processing {source_label} through ALETHEIA variable mapping and Sydney Protocol overlay..."):
+                prepared = prepare_empirical_frame(empirical_raw).reset_index(drop=True)
+                if active_direct_scored_master:
+                    # A previously exported ALETHEIA master should be accepted as an
+                    # already-scored protocol state rather than neutralized by a second
+                    # scoring pass when raw source columns are sparse. Identity and
+                    # modern-year guards still apply below.
+                    scored_all = prepared.copy().reset_index(drop=True)
+                    for _score_col in [
+                        "aletheia_empirical_integrity",
+                        "aletheia_empirical_friction",
+                        "aletheia_empirical_collapse_probability",
+                        "empirical_completeness",
+                        "empirical_trust_prior",
+                    ]:
+                        if _score_col in scored_all.columns:
+                            scored_all[_score_col] = pd.to_numeric(scored_all[_score_col], errors="coerce")
+                    if "evidence_variables_used" not in scored_all.columns and "evidence_used" in scored_all.columns:
+                        scored_all["evidence_variables_used"] = scored_all["evidence_used"]
+                    if "evidence_used" not in scored_all.columns and "evidence_variables_used" in scored_all.columns:
+                        scored_all["evidence_used"] = scored_all["evidence_variables_used"]
+                    if "protocol_overlay_status" not in scored_all.columns:
+                        scored_all["protocol_overlay_status"] = "preserved uploaded scored master"
+                    if "final_audit_interpretation" not in scored_all.columns:
+                        scored_all["final_audit_interpretation"] = scored_all.get("aletheia_verdict", pd.Series([""] * len(scored_all))).astype(str)
+                else:
+                    scored_all = score_empirical_frame(prepared).reset_index(drop=True)
+            st.session_state["empirical_active_scoring_signature"] = empirical_active_signature
+            st.session_state["empirical_active_prepared_df"] = prepared.copy()
+            st.session_state["empirical_active_scored_all_df"] = scored_all.copy()
 
         if active_direct_scored_master and not scored_all.empty:
             _direct_identity = scored_all.get("empirical_identity_valid", pd.Series([False] * len(scored_all)))

@@ -1162,3 +1162,30 @@ Check:
 ```bat
 tools\run_patch_checks.bat 72_8
 ```
+
+## Patch 72.9 - Evidence Lab Build/Explorer State Guard
+
+Date: 2026-05-11
+
+Patch 72.9 prevents Evidence Lab country/year selection and CSV downloads from re-scoring the same active uploaded/generated master.
+
+Implemented:
+- Added stable active-input signature for Evidence Lab scoring.
+- Cached prepared and scored Evidence Lab tables in session state.
+- Reused cached active scored table when source signature matches.
+- Added explicit generated-master download key and explanatory caption.
+- Clarified upload diagnostics: individual source files may show 0 valid country-year rows before merge; the merged master is the scoring source of truth.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No 9k allocation formula change.
+- No World Lens logic change.
+- No receipt schema change.
+- No Evidence Lab data model, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_9
+```
