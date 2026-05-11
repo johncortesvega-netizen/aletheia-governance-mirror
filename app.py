@@ -6225,11 +6225,31 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
         comparison_export["grid_selected_year"] = int(selected_year)
         comparison_export["grid_source_state"] = grid_state_label
         comparison_export["grid_is_full_9k_allocation"] = bool(is_full_grid)
+        comparison_export["countries_scored_selected_year"] = int(countries_scored)
+        comparison_export["displayed_rows_selected_year"] = int(row_count)
+        comparison_export["zero_seat_diagnostic_rows_selected_year"] = int(displayed_zero_seat_rows + hidden_zero_seat_rows)
         comparison_export["weighted_integrity_selected_year"] = weighted_integrity
         comparison_export["weighted_collapse_probability_selected_year"] = weighted_collapse
         comparison_export["weighted_friction_selected_year"] = weighted_friction
         comparison_export["average_empirical_coverage_selected_year"] = avg_coverage
+        comparison_export["raw_trust_survey_coverage_selected_year"] = trust_coverage
+        comparison_export["trust_prior_fallback_coverage_selected_year"] = trust_prior_coverage
+        comparison_export["wgi_coverage_selected_year"] = wgi_coverage
+        comparison_export["vdem_coverage_selected_year"] = vdem_coverage
+        comparison_export["missing_raw_trust_rows_selected_year"] = int(missing_trust)
+        comparison_export["missing_wgi_rows_selected_year"] = int(missing_wgi)
+        comparison_export["missing_vdem_rows_selected_year"] = int(missing_vdem)
+        comparison_export["trust_prior_rows_selected_year"] = int(trust_prior_mask.sum())
+        comparison_export["missing_trust_prior_rows_selected_year"] = int(missing_trust_prior)
         comparison_export["seat_total_selected_year"] = int(total_seats)
+        _verdict_seat_totals = verdict_seats.to_dict() if isinstance(verdict_seats, pd.Series) else {}
+        comparison_export["verdict_seats_sanctuary_selected_year"] = int(_verdict_seat_totals.get("SANCTUARY", 0) or 0)
+        comparison_export["verdict_seats_threshold_selected_year"] = int(_verdict_seat_totals.get("THRESHOLD", 0) or 0)
+        comparison_export["verdict_seats_asylum_selected_year"] = int(_verdict_seat_totals.get("ASYLUM", 0) or 0)
+        comparison_export["trust_prior_interpretation_note"] = (
+            "Trust prior coverage is fallback/model continuity coverage, not observed survey coverage. "
+            "Use raw_trust_survey_coverage_selected_year for observed survey availability."
+        )
         comparison_export["coverage_warning"] = (
             "Full selected-year 9k allocation." if is_full_grid
             else "Partial or filtered selected-year subset; use active-seat interpretation."
@@ -6798,8 +6818,17 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                 "_wgi_composite", "_wgi_source_count", "_wgi_fields_used", "_vdem_democracy", "_missing_raw_trust", "_missing_wgi", "_missing_vdem",
                 "_large_allocation", "_low_integrity", "_high_collapse", "_high_impact_node",
                 "grid_selected_year", "grid_source_state", "grid_is_full_9k_allocation",
-                "weighted_integrity_selected_year", "weighted_collapse_probability_selected_year",
-                "seat_total_selected_year", "coverage_warning", "sydney_protocol_overlay", "recommended_interpretation",
+                "countries_scored_selected_year", "displayed_rows_selected_year", "zero_seat_diagnostic_rows_selected_year",
+                "seat_total_selected_year",
+                "weighted_integrity_selected_year", "weighted_friction_selected_year", "weighted_collapse_probability_selected_year",
+                "average_empirical_coverage_selected_year",
+                "raw_trust_survey_coverage_selected_year", "trust_prior_fallback_coverage_selected_year",
+                "wgi_coverage_selected_year", "vdem_coverage_selected_year",
+                "missing_raw_trust_rows_selected_year", "missing_wgi_rows_selected_year", "missing_vdem_rows_selected_year",
+                "trust_prior_rows_selected_year", "missing_trust_prior_rows_selected_year",
+                "verdict_seats_sanctuary_selected_year", "verdict_seats_threshold_selected_year", "verdict_seats_asylum_selected_year",
+                "trust_prior_interpretation_note",
+                "coverage_warning", "sydney_protocol_overlay", "recommended_interpretation",
             ]
             export_cols = [c for c in export_cols if c in comparison_export.columns]
             st.download_button(
@@ -6810,7 +6839,9 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             )
             st.caption(
                 "This export is the bridge to Global Grid Pass 3 reports: selected year, weighted metrics, verdict context, "
-                "rank/share, evidence fields, coverage warnings, Sydney Protocol overlay, and recommended interpretation."
+                "rank/share, evidence fields, coverage warnings, Sydney Protocol overlay, and recommended interpretation. "
+                "Patch 72.16 adds the visible overview/coverage card values as explicit summary columns. "
+                "Trust prior coverage is fallback/model continuity coverage, not observed raw survey coverage."
             )
 
         with st.expander("Method and interpretation note", expanded=False):

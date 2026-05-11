@@ -939,3 +939,27 @@ Check:
 tools\run_patch_checks.bat 72_15
 ```
 
+## Patch 72.16 - World Lens Comparison Packet Summary Columns
+
+Date: 2026-05-11
+
+Patch 72.16 adds explicit selected-year summary columns to the World Lens comparison packet export.
+
+Implemented:
+- Added visible overview/coverage card values to `comparison_export`.
+- Added selected-year countries, displayed rows, zero-seat diagnostics, weighted friction, average empirical coverage, raw trust coverage, trust-prior fallback coverage, WGI coverage, V-Dem coverage, missing-source counts, trust-prior counts, and verdict seat totals.
+- Added `trust_prior_interpretation_note` to distinguish fallback/model continuity coverage from observed raw survey coverage.
+- Included the new fields in the selected-year comparison packet CSV download.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No 9k allocation formula change.
+- No Evidence Lab data model, receipt schema, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_16
+```
+
