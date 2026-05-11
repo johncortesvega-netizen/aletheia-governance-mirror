@@ -844,3 +844,26 @@ Check:
 ```bat
 tools\run_patch_checks.bat 72_11
 ```
+
+## Patch 72.12 - Mascot Asset Refresh
+
+Date: 2026-05-11
+
+Patch 72.12 refreshes the app mascot asset with the updated Aletheia robot image while preserving the Patch 72.11 header/sidebar mascot wiring.
+
+Implemented:
+- Replaced `assets/aletheia_robot_laurel_logo.png` with the updated mascot artwork.
+- Preserved the existing mascot embedding path in `app.py`.
+- Added a patch test to verify the refreshed asset file, size, and hash.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No Evidence Lab, Stress Test, Mirror Check, Boundary Cases, World Lens, receipt schema, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_12
+```
+
