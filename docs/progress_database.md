@@ -770,3 +770,29 @@ Files:
 - PATCH_71_8_MANIFEST.txt
 - PATCH_71_8_RECOVERY_NOTE.md
 
+
+## Patch 71.9 — Mirror Check Review Band Display
+
+Date: 2026-05-11
+
+Patch 71.9 extends the display-only Threshold review band from Stress Test to Mirror Check latest-reading cards.
+
+Implemented:
+- `render_chat_judgment` now accepts optional simulation metrics.
+- Mirror Check latest-reading cards pass `latest.get("sim")` into `render_chat_judgment`.
+- THRESHOLD Mirror Check outputs can display Needs Repair, Needs Review, or Near Sanctuary.
+
+Invariant preserved:
+- Canonical taxonomy remains ASYLUM / THRESHOLD / SANCTUARY.
+- No receipt schema change.
+- No scoring logic change.
+- No verdict-routing change.
+- No tree visual change.
+- No Stress Test, Boundary Cases, World Lens, storage, or authority-boundary logic changed.
+
+Files:
+- app.py
+- tests/test_patch_71_9_mirror_check_review_band_display.py
+- PATCH_71_9_MANIFEST.txt
+- PATCH_71_9_RECOVERY_NOTE.md
+

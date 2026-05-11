@@ -1,5 +1,18 @@
 # ALETHEIA Patch Status
 
+## Patch 71.9 — Mirror Check Review Band Display
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Mirror Check latest-reading cards now use the same display-only Threshold review band helper as Stress Test.
+- THRESHOLD Mirror Check outputs can show Needs Repair, Needs Review, or Near Sanctuary.
+- No receipt schema, scoring, verdict-routing, taxonomy, tree, Stress Test, Boundary Cases, World Lens, storage, or authority-boundary changes.
+
+Validation:
+- `tools\run_patch_checks.bat 71_9`
+
+
 ## Patch 71.8 — Stress Test Review Band Card Polish
 
 Status: READY FOR LOCAL TESTING

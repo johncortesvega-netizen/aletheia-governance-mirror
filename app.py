@@ -2812,7 +2812,7 @@ def silent_operator_question(item, *, context: str = "this pattern") -> str:
         return text
     return f"Which safeguard or appeal path would address this concern: {text}?"
 
-def render_chat_judgment(judgment: dict, source: str, report: dict):
+def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | None = None):
     verdict = str(judgment.get("verdict", "THRESHOLD")).upper()
     if verdict == "SANCTUARY":
         color = "#8fbc8f"
@@ -2820,6 +2820,16 @@ def render_chat_judgment(judgment: dict, source: str, report: dict):
         color = "#db7777"
     else:
         color = "#e5c36b"
+
+    review_band = review_band_for_state(verdict, report, sim or {})
+    review_band_label = review_band.get("label", verdict.title())
+    review_band_line = ""
+    if verdict == "THRESHOLD":
+        review_band_line = f"""
+            <div style="color:#d4b88a;font-size:1.05rem;font-weight:800;margin-top:0.2rem;">
+                {review_band_label}
+            </div>
+        """
 
     st.markdown(
         f"""
@@ -2830,8 +2840,10 @@ def render_chat_judgment(judgment: dict, source: str, report: dict):
             <div style="color:{color};font-size:2rem;font-weight:900;margin-top:0.25rem;">
                 {verdict}
             </div>
+            {review_band_line}
             <div style="color:#e8e0d0;margin-top:0.5rem;">
                 <strong>Safety risk:</strong> {judgment.get("corruption_risk", "Medium")}<br>
+                {f"<strong>Review band:</strong> {review_band_label}<br>" if verdict == "THRESHOLD" else ""}
                 <strong>Stress label:</strong> {judgment.get("stress_label", "Unclassified")}
             </div>
         </div>
@@ -7085,7 +7097,7 @@ with tab_chat:
             state_override=str(latest.get("judgment", {}).get("verdict", "THRESHOLD")).upper(),
             mode="Mirror Check",
         )
-        render_chat_judgment(latest["judgment"], latest["source"], latest["report"])
+        render_chat_judgment(latest["judgment"], latest["source"], latest["report"], latest.get("sim"))
 
         source_hits = latest.get("source_hits", source_conformance_hits(latest["query"]))
         if source_hits:
