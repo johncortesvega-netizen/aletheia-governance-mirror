@@ -4409,7 +4409,6 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
             ("WGI", wgi_cols),
             ("V-Dem", vdem_cols),
             ("Trust raw survey", trust_raw_cols),
-            ("Trust prior", trust_prior_cols),
         ]:
             present, missing, detail, status = _count_present(cols)
             rows.append({
@@ -4419,6 +4418,24 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                 "Status": status,
                 "Detected columns": detail,
             })
+
+        # Patch 72.13: `empirical_trust_prior` is a derived/scoring field, not a
+        # required upload source. Direct merged-upload diagnostics should not
+        # report it as a missing source error when raw trust is active.
+        prior_present, prior_missing, prior_detail, prior_status = _count_present(trust_prior_cols)
+        if prior_detail == "Columns absent":
+            prior_status = "computed after scoring"
+            prior_detail = "Not an upload requirement; derived during scoring from raw trust or neutral fallback."
+            prior_missing = 0
+        else:
+            prior_status = "derived field active" if prior_present > 0 else "derived field present; no usable values yet"
+        rows.append({
+            "Source": "Trust prior (derived)",
+            "Rows with usable values": prior_present,
+            "Rows missing / neutral fallback": prior_missing,
+            "Status": prior_status,
+            "Detected columns": prior_detail,
+        })
         return pd.DataFrame(rows)
 
     def _is_aletheia_scored_master(df: pd.DataFrame | None) -> bool:
@@ -4492,7 +4509,9 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                 else:
                     st.info(
                         "This file looks like an unscored merged evidence table. ALETHEIA will score it after variable mapping. "
-                        "If a source column is present but has no usable values, Grid coverage for that source will correctly remain 0%."
+                        "Raw trust is read from `wvs_generalized_trust` when available. Trust prior is derived during scoring, "
+                        "so it is not a required upload column. If a true source column is present but has no usable values, "
+                        "Grid coverage for that source will correctly remain 0%."
                     )
         except Exception as exc:
             st.error(f"Could not read uploaded CSV: {exc}")
@@ -4999,7 +5018,11 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
 
                     synced_evidence_year = st.session_state.get("aletheia_synced_evidence_year")
                     country_year_widget_key = f"empirical_country_year_explorer_year_{selected_iso}"
-                    if synced_evidence_year in country_years and st.session_state.get(country_year_widget_key) != int(synced_evidence_year):
+                    # Patch 72.13: a synced Grid/World Lens year may seed the widget
+                    # once, but must not overwrite a user's manual year choice on
+                    # every Streamlit rerun. This keeps the dropdown from snapping
+                    # back to 2024 after the user selects another available year.
+                    if country_year_widget_key not in st.session_state and synced_evidence_year in country_years:
                         st.session_state[country_year_widget_key] = int(synced_evidence_year)
                     country_year_index = safe_country_year_index(st.session_state.get(country_year_widget_key), country_years)
                     with year_col:

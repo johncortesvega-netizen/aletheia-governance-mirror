@@ -867,3 +867,28 @@ Check:
 tools\run_patch_checks.bat 72_12
 ```
 
+## Patch 72.13 - Evidence Lab Year Selector and Trust Diagnostic Guard
+
+Date: 2026-05-11
+
+Patch 72.13 fixes two Evidence Lab UI/diagnostic issues.
+
+Implemented:
+- Country-Year Explorer uses the synced evidence year only as an initial seed for a country-specific year widget.
+- Manual year selections are no longer overwritten on every Streamlit rerun.
+- Direct merged-upload diagnostics now label `empirical_trust_prior` as `Trust prior (derived)` instead of a missing upload source.
+- The unscored merged evidence-table message now explains that raw trust is read from `wvs_generalized_trust` and trust prior is derived during scoring.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No 9k allocation formula change.
+- No World Lens logic change.
+- No Evidence Lab data model, receipt schema, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_13
+```
+
