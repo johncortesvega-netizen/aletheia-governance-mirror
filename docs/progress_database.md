@@ -495,3 +495,29 @@ Patch 70 updates the tree visual used by Mirror Check and Stress Test. It keeps 
 - Visual tree score is labeled separately from protocol-adjusted integrity in the receipt.
 
 Boundary unchanged: no authority claim, no enforcement, no public ledger, no Global ID sync, no central storage, and human review required.
+
+## Patch 70.1 — Negated Safeguard Strength Calibration
+
+Date: 2026-05-11
+Status: Ready for local verification
+
+### Trigger
+
+Patch 70 tree visual review showed that the tree and final ASYLUM receipt were correct for a high-risk single-ruler scenario, but the ethics diagnostics could still display positive strengths when safeguard words appeared inside negated phrases such as `no oversight` or `no public review`.
+
+### Change
+
+Patch 70.1 adds a narrow positive-credit negation filter in `core/ethics.py`. Positive safeguard terms near English or Dutch negation prefixes are no longer counted as transparency, accountability, fairness, or dignity strengths. Risk and grip-marker detection are not weakened.
+
+### Verification target
+
+`tests/test_patch_70_1_negated_safeguard_strengths.py` confirms:
+
+- `no oversight` and `no public review` do not become strengths.
+- normal positive safeguard wording still receives strength credit.
+- Dutch negated safeguard wording does not become strength credit.
+- Patch manifest, recovery note, status, and progress notes are present.
+
+### Boundary
+
+No authority expansion. ALETHEIA remains local, non-enforcing, human-review-only, and does not claim legal, political, institutional, religious, medical, or automated authority.

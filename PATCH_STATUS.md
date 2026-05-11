@@ -253,3 +253,17 @@ Check command:
 ```bat
 tools\run_patch_checks.bat 70
 ```
+
+## Patch 70.1 — Negated Safeguard Strength Calibration
+
+Status: Ready for local verification.
+
+Patch 70.1 fixes a diagnostic false positive found during Patch 70 tree review: phrases such as `no oversight` and `no public review` must not be reported as transparency or accountability strengths. The change filters positive-credit safeguard terms when they are locally negated, including English and Dutch negation forms.
+
+Scoring boundary unchanged: ASYLUM, grip-marker, local witness receipt, repair-question, and authority-boundary behavior remain intact. ALETHEIA remains a mirror only: no authority claim, no enforcement, no public ledger, no Global ID sync, no central storage, and human review required.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 70_1
+```

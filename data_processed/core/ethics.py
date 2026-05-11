@@ -1,3 +1,5 @@
+import re
+
 def _clamp(value, low=0.0, high=1.0):
     return max(low, min(high, value))
 
@@ -8,6 +10,50 @@ def _count_hits(text, terms):
 
 def _hit_terms(text, terms):
     return [term for term in terms if term in text]
+
+
+_NEGATION_PREFIX_RE = re.compile(
+    r"\b(?:no|not|without|lack(?:s|ing)?(?:\s+of)?|absence\s+of|absent|"
+    r"geen|niet|zonder|ontbreekt|ontbrekende|gebrek\s+aan)\b"
+    r"(?:[^\w]+\w+){{0,3}}[^\w]+{term}\b"
+)
+
+
+def _term_pattern(term):
+    return re.compile(r"(?<!\w)" + re.escape(term) + r"(?!\w)")
+
+
+def _is_negated_positive_term(text, term):
+    """Return True when a normally positive term is locally negated.
+
+    Patch 70.1 keeps diagnostic strengths from treating phrases such as
+    "no oversight", "no public review", "without transparency",
+    "no accountability", or Dutch equivalents such as "geen toezicht" as
+    safeguards. It only filters positive-credit terms; grip/risk terms keep
+    their normal detection path.
+    """
+    text = text or ""
+    term = (term or "").strip()
+    if not term:
+        return False
+    pattern = re.compile(_NEGATION_PREFIX_RE.pattern.format(term=re.escape(term)))
+    return bool(pattern.search(text))
+
+
+def _count_non_negated_hits(text, terms):
+    return sum(
+        1 for term in terms
+        if _term_pattern(term).search(text or "")
+        and not _is_negated_positive_term(text or "", term)
+    )
+
+
+def _has_non_negated_term(text, terms):
+    return any(
+        _term_pattern(term).search(text or "")
+        and not _is_negated_positive_term(text or "", term)
+        for term in terms
+    )
 
 
 POSITIVE_ETHICS_TERMS = [
@@ -268,11 +314,11 @@ def evaluate_ethics(text, governance_result=None, features=None):
     anonymity_signal = float(governance_result.get("anonymity_level", features.get("anonymity", 0.3)))
 
     coercion_hits = _count_hits(text, coercion_terms)
-    fairness_hits = _count_hits(text, fairness_terms)
-    transparency_hits = _count_hits(text, transparency_terms)
-    accountability_hits = _count_hits(text, accountability_terms)
+    fairness_hits = _count_non_negated_hits(text, fairness_terms)
+    transparency_hits = _count_non_negated_hits(text, transparency_terms)
+    accountability_hits = _count_non_negated_hits(text, accountability_terms)
     harm_hits = _count_hits(text, harm_terms)
-    dignity_hits = _count_hits(text, dignity_terms)
+    dignity_hits = _count_non_negated_hits(text, dignity_terms)
     contextual_hits = contextual_capture_hits(text)
     grip_hits = grip_marker_hits(text)
     micro_sovereignty = micro_sovereignty_signal(text, governance_result=governance_result, features=features)
@@ -361,10 +407,10 @@ def evaluate_ethics(text, governance_result=None, features=None):
 
     # Explicit safeguarded public systems should not be downgraded merely because they mention safety.
     has_public_safeguards = (
-        any(term in text for term in ["appeal", "appeal errors", "bezwaar", "beroep"])
-        and any(term in text for term in ["audit", "audited", "independent audit", "review", "oversight"])
-        and any(term in text for term in ["sunset", "expires", "public vote", "renewed by public vote", "herroepbaar"])
-        and any(term in text for term in ["open data", "publishes", "published", "transparent", "transparency", "public"])
+        _has_non_negated_term(text, ["appeal", "appeal errors", "bezwaar", "beroep"])
+        and _has_non_negated_term(text, ["audit", "audited", "independent audit", "review", "oversight"])
+        and _has_non_negated_term(text, ["sunset", "expires", "public vote", "renewed by public vote", "herroepbaar"])
+        and _has_non_negated_term(text, ["open data", "publishes", "published", "transparent", "transparency", "public"])
         and not contextual_hits
         and not grip_hits
     )
