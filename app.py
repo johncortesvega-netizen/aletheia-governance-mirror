@@ -5503,14 +5503,14 @@ with tab_grid:
 
     st.markdown("### World Lens Simulation")
     st.info(
-        "World Lens Simulation is a population-impact mirror only. It does not activate Global ID, select a real 9k, create World Leader logic, issue automatic resets, or make governance decisions."
+        "World Lens Simulation is a population-impact mirror only. It does not activate Global ID, select a real 9k body, create World Leader logic, issue automatic resets, or make governance decisions."
     )
     world_lens_scenario = st.text_area(
         "Scenario or proposal to review",
         value="A policy gives one central office emergency authority over essential services during crisis, with limited public notice and unclear appeal rights.",
         height=120,
         key="world_lens_simulation_input_v1",
-        help="Use this as a non-binding impact simulation. Final judgment remains human."
+        help="Use this as a non-binding impact simulation. Final review remains human."
     )
     wl_col1, wl_col2, wl_col3 = st.columns(3)
     with wl_col1:
@@ -5600,7 +5600,7 @@ Simulated threshold signal:
 {simulated_threshold_signal}
 
 Human review note:
-This is a World Lens Simulation for human review. It is not a real Global ID system, real 9k selection, governance mandate, enforcement mechanism, automatic reset, or final decision.""",
+This is a World Lens Simulation for human review. It is not a real Global ID system, real 9k body, governance mandate, enforcement authority, automatic reset, or final decision.""",
         language="text",
     )
     with st.expander("World Lens safe-language boundary", expanded=False):
@@ -5608,7 +5608,7 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
             """
             **Allowed:** simulated threshold signal, potential population impact, human review required, safeguard needed, ambient capture pressure should be reviewed.
 
-            **Forbidden:** automatic reset, World Leader deactivated, Global ID sync activated, the AI has decided, this is a real governance mandate, human review is unnecessary.
+            **Forbidden:** automatic reset, World Leader deactivated, Global ID sync activated, the AI has decided, this is a real governance mandate, human review is unnecessary, or ALETHEIA has final authority.
             """
         )
 
@@ -5708,7 +5708,7 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
 
         def _format_grid_year(_year: int) -> str:
             row = year_diag_by_year.get(int(_year), {})
-            suffix = "full 9k" if row.get("full") else "partial view"
+            suffix = "full 9k evidence view" if row.get("full") else "partial evidence view"
             return f"{int(_year)} — {suffix}"
 
         synced_evidence_year = st.session_state.get("aletheia_synced_evidence_year")
@@ -5729,12 +5729,12 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
             index=years.index(st.session_state.get("grid_year_v2", years[-1])),
             key="grid_year_v2",
             format_func=_format_grid_year,
-            help="This year should match the Empirical country-year and allocation year before producing a final receipt.",
+            help="This year should match the Empirical country-year and allocation year before creating a review receipt.",
         )
         st.session_state["aletheia_synced_evidence_year"] = int(selected_year)
         st.session_state["aletheia_global_grid_year"] = int(selected_year)
         selected_year_diag = year_diag_by_year.get(int(selected_year), {})
-        selected_year_status = "full 9k allocation" if selected_year_diag.get("full") else "partial selected-year view"
+        selected_year_status = "full 9k evidence view" if selected_year_diag.get("full") else "partial selected-year evidence view"
         st.caption(
             f"{int(selected_year)} — {selected_year_status}: "
             f"{selected_year_diag.get('allocated_countries', selected_year_diag.get('countries', 0)):,} allocated countries · "
@@ -5766,7 +5766,7 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
             if year_alignment_ok:
                 st.success(f"Year controls match on {int(selected_year)}.")
             else:
-                st.warning("Year controls do not match yet. Use the same year in Evidence Lab and World Lens before making a final receipt.")
+                st.warning("Year controls do not match yet. Use the same year in Evidence Lab and World Lens before creating a receipt.")
         update_protocol_state(selected_evidence_year=int(selected_year), last_update_source="World Lens")
 
         grid_source = valid_empirical[valid_empirical["year"] == int(selected_year)].copy()
@@ -5873,9 +5873,9 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
         grid_state_label = "Full empirical scored master" if is_full_grid else "Partial empirical subset"
         if active_filters:
             grid_state_label += " · filtered view"
-        metric_scope_word = "global" if is_full_grid else "subset"
+        metric_scope_word = "World Lens" if is_full_grid else "selected subset"
         seat_metric_label = "9k seats allocated" if is_full_grid else "Active selected-year seats"
-        allocation_heading = "9k verdict signal" if is_full_grid else "Active-seat verdict signal"
+        allocation_heading = "9k internal taxonomy signal" if is_full_grid else "Active-seat internal taxonomy signal"
         signal_denominator_label = "selected-year 9k" if is_full_grid else "active selected-year seats"
 
         wgi_cols = [
@@ -6384,8 +6384,8 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
 ## Scope
 
 - Selected year: **{int(selected_year)}**
-- Grid state: **{grid_state_label}**
-- Allocation status: **{"full 9k allocation" if is_full_grid else "partial / active-seat view"}**
+- World Lens source state: **{grid_state_label}**
+- Evidence allocation status: **{"full 9k evidence view" if is_full_grid else "partial / active-seat evidence view"}**
 - Allocated country rows: **{countries_scored:,}**
 - Active selected-year seats: **{total_seats:,}**
 - Rows excluded / diagnostic: **{excluded_rows:,}**
@@ -6434,15 +6434,15 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
 
 {_receipt_md_table(coverage_gaps_receipt, limit=50)}
 
-## Patch 31 module alignment note
+## Module alignment note
 
-Evidence Lab empirical country-year scoring feeds World Lens selected-year metrics. This report is connected to empirical data, but it is not a Mirror Check text-scenario receipt. Cognitive Resilience, Education Defense, contextual-capture, and hard-capture text diagnostics are therefore marked as not assessed unless policy/scenario text is supplied.
+Evidence Lab empirical country-year scoring feeds World Lens selected-year metrics. This receipt is connected to empirical data, but it is not a Mirror Check text-scenario receipt. Cognitive Resilience, Education Defense, contextual-capture, and hard-capture text diagnostics are therefore marked as not assessed unless policy/scenario text is supplied.
 
 ## Sydney Protocol note
 
 This receipt is a reproducible view artifact. It is a protocol interpretation, not a legal, political, medical, religious, or moral determination.
 
-The overlay remains: mirror, not throne; anti-capture; non-divinization; appealability; transparency; evidence humility.
+The overlay remains: mirror, not throne; anti-capture; non-divinization; appealability; transparency; evidence humility; no final authority.
 """
 
             buffer = io.BytesIO()
@@ -6603,7 +6603,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                 st.plotly_chart(fig, use_container_width=True)
                 st.dataframe(_world_lens_ui_table_df(verdict_df), use_container_width=True, hide_index=True)
             else:
-                st.info("No result column is available for this selected year.")
+                st.info("No internal taxonomy column is available for this selected year.")
 
         with view_tabs[3]:
             st.markdown("### Integrity and collapse")
@@ -6952,13 +6952,13 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
         with view_tabs[8]:
             st.markdown("### Report packet setup")
             st.write(
-                "This tab prepares selected-year World Lens outputs for the later report generator. "
+                "This tab prepares selected-year World Lens outputs for later human review/report drafting. "
                 "It does not issue final legal, political, or moral determinations."
             )
 
             rp1, rp2, rp3, rp4 = st.columns(4)
             rp1.metric("Selected year", f"{selected_year}")
-            rp2.metric("World Lens state", "Full 9k" if is_full_grid else "Partial / active-seat")
+            rp2.metric("World Lens state", "Full 9k evidence view" if is_full_grid else "Partial / active-seat evidence view")
             rp3.metric("Weighted integrity", "—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
             rp4.metric("Weighted collapse", "—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
 
@@ -7021,7 +7021,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                 )
                 selected_idx = report_options_df[report_options_df["_report_label"] == selected_label].index[0]
                 selected_row = comparison_df.loc[[selected_idx]]
-                st.info(f"Preparing report packet for: **{selected_label}**")
+                st.info(f"Preparing review packet for: **{selected_label}**")
                 st.dataframe(_world_lens_ui_table_df(_comparison_display(selected_row, include_reason=True)), use_container_width=True, hide_index=True)
 
                 selected_row_export = _comparison_display(selected_row, include_reason=True)
@@ -7043,9 +7043,9 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                 )
                 safe_label = re.sub(r"[^A-Za-z0-9_-]+", "_", str(selected_label)).strip("_")
                 st.download_button(
-                    "⬇️ Download selected country-year report packet CSV",
+                    "⬇️ Download selected country-year review packet CSV",
                     data=selected_row_export.to_csv(index=False),
-                    file_name=f"aletheia_world_lens_report_packet_{selected_year}_{safe_label}.csv",
+                    file_name=f"aletheia_world_lens_review_packet_{selected_year}_{safe_label}.csv",
                     mime="text/csv",
                 )
 
@@ -7094,14 +7094,14 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             ]
             export_cols = [c for c in export_cols if c in comparison_export.columns]
             st.download_button(
-                "⬇️ Download selected-year comparison packet CSV",
+                "⬇️ Download selected-year World Lens review CSV",
                 data=comparison_export[export_cols].to_csv(index=False),
                 file_name=f"aletheia_world_lens_comparison_{selected_year}.csv",
                 mime="text/csv",
             )
             st.caption(
                 "This export is the bridge to World Lens report packets: selected year, weighted metrics, internal taxonomy context, "
-                "rank/share, evidence fields, coverage warnings, Sydney Protocol overlay, and recommended interpretation. "
+                "rank/share, evidence fields, coverage warnings, Sydney Protocol overlay, and review-oriented interpretation. "
                 "Patch 72.16 adds the visible overview/coverage card values as explicit summary columns. "
                 "Trust prior coverage is fallback/model continuity coverage, not observed raw survey coverage."
             )
@@ -7160,7 +7160,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
 
         with fallback_tabs[2]:
             st.markdown("### Internal taxonomy distribution")
-            st.info("Result distribution is unavailable in prototype-bracket mode because no empirical country-year verdict table is active.")
+            st.info("Internal taxonomy distribution is unavailable in prototype-bracket mode because no empirical country-year taxonomy table is active.")
 
         with fallback_tabs[3]:
             st.markdown("### Integrity and collapse")
@@ -7211,7 +7211,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
         with inactive_tabs[1]:
             st.info("Seat allocation is unavailable until country-year data is active or prototype brackets are selected.")
         with inactive_tabs[2]:
-            st.info("Result distribution is unavailable until empirical country-year verdict rows are active.")
+            st.info("Internal taxonomy distribution is unavailable until empirical country-year taxonomy rows are active.")
         with inactive_tabs[3]:
             st.info("Weighted integrity and collapse probability are unavailable until selected-year data rows are active.")
         with inactive_tabs[4]:

@@ -1191,3 +1191,29 @@ Check:
 tools\run_patch_checks.bat 72_28
 ```
 
+## Patch 72.29 - World Lens Copy Humility Polish
+
+Date: 2026-05-12
+
+Patch 72.29 gives World Lens the same copy/humility polish applied to the other modules.
+
+Implemented:
+- Replaced remaining public `verdict signal` language with `internal taxonomy signal`.
+- Replaced remaining distribution copy with internal-taxonomy wording.
+- Replaced report-packet phrasing with review-packet phrasing.
+- Updated World Lens Simulation copy to use `final review remains human`, `enforcement authority`, and `real 9k body` wording.
+- Updated receipt markdown labels to `World Lens source state` and `Evidence allocation status`.
+- Replaced legacy receipt module note title with `Module alignment note`.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model, authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_29
+```
+
