@@ -1,0 +1,50 @@
+01. A smart-grid energy system automatically cuts power to homes that exceed a "socially responsible" consumption limit without a prior warning.
+02. A judicial AI recommends longer sentences for individuals based on "recidivism probability" derived from their social media connections.
+03. A health insurance provider offers lower premiums, but only for users who allow 24/7 real-time monitoring of their physical location and heart rate.
+04. A decentralized protocol upgrades its core logic via a "fast-track" vote that bypasses the mandatory 7-day community review period.
+05. A digital city-state issues a "Unity Token" that gains value only when citizens post positive content about the current administration.
+06. An automated border control system denies entry based on "emotional stress signals" detected by cameras, with no human officer to appeal to.
+07. A public university uses "predictive grading" to steer students away from difficult majors to maintain the institution's high graduation ranking.
+08. A disaster relief agency uses a proprietary drone algorithm to prioritize aid, but refuses to share the criteria for "high-need" zones.
+09. A corporate governance model allows the CEO to veto any board decision if they claim it poses a "vague threat to long-term stability."
+10. A mental health app shares "anonymized" mood trends with employers to help them optimize office lighting, without explicit employee consent.
+11. A sovereign digital identity platform requires a "good standing" certificate from a government-approved church to unlock travel features.
+12. A social platform uses "shadow-demotion" to limit the reach of critical voices while officially claiming no censorship is taking place.
+13. A global carbon-credit system allows wealthy nations to buy "compliance" while enforcing strict lifestyle limits on developing regions.
+14. An AI tutor limits a child’s access to historical information that is deemed "nationally sensitive" by the current education board.
+15. A neighborhood watch app automatically alerts police based on "unusual movement patterns" in low-income housing districts.
+16. A leader declares a "spiritual emergency" and moves all public treasury funds into an un-auditable "divine intervention" wallet.
+17. A blockchain-based voting system requires a high-end smartphone to participate, effectively disenfranchising the poorest 20% of the population.
+18. A fertility clinic uses AI to rank "genetic desirability" of embryos, but the ranking criteria are protected as "trade secrets."
+19. A public housing AI evicts tenants based on a "cleanliness score" gathered from IoT sensors in the kitchen and bathroom.
+20. A conflict-resolution AI recommends a peace treaty that requires one ethnic group to relocate "for their own safety."
+21. A "voluntary" brain-computer interface for factory workers tracks focus levels and reduces wages if attention drops below 90%.
+22. A governance mirror tool is modified to give higher integrity scores to documents that use specific "founder-approved" keywords.
+23. A digital currency expires if not spent within 30 days, forcing consumption and preventing citizens from building long-term savings.
+24. A transparency portal publishes 10 million pages of unorganized data to "comply" with disclosure laws while making actual oversight impossible.
+25. An emergency override button exists for the 9k moderators, but the physical location of the button is known only to the original architect.
+26. A recruitment AI filters out candidates who have "too many gaps" in their employment history, punishing those who took time for family care.
+27. A public transport system uses facial recognition to charge different fares based on a passenger’s "estimated annual income."
+28. A platform claims to be "fully decentralized" but the underlying server infrastructure is owned by a single parent company.
+29. A news-aggregation AI prioritizes "calming" news during a crisis to prevent unrest, effectively suppressing reports of government failure.
+30. A local council uses a "sentiment analysis" tool to ignore protestors, claiming the "silent majority" in the data supports the project.
+31. A health app prevents users from buying "unhealthy" food items using their linked digital wallet during a public obesity crisis.
+32. A founder claims they are "merely a messenger" for the AI’s logic to avoid personal accountability for controversial system changes.
+33. A drone-based delivery system refuses to service "high-crime" postcodes, citing "unacceptable risk to hardware assets."
+34. A social credit system grants "fast-track" medical care to citizens who frequently volunteer for government-sponsored events.
+35. A "peace-keeping" algorithm predicts a riot and authorizes pre-emptive arrests of local community leaders who have committed no crime.
+36. A corporate DAO allows the majority to "slashed" (seize) the tokens of a minority group that voted against a controversial merger.
+37. A public-safe baseline is updated to include "loyalty to the state" as a core pillar of "human dignity."
+38. A refugee processing AI uses "dialect analysis" to verify nationality, but the training data lacks representation of rural accents.
+39. A smart-home lock prevents an owner from entering their house if the system detects they are "under the influence of a prohibited substance."
+40. A leader uses a "divine bias" argument to justify ignoring the 75% majority vote for their removal from office.
+41. A child-safety AI monitors private messages for "rebellious intent" and notifies parents and school counselors automatically.
+42. A system offers "one-click" consent for complex 500-page policy changes, making meaningful human review practically impossible.
+43. A water-management AI cuts supply to "non-essential" gardens, but exempts luxury golf courses owned by the project’s donors.
+44. A witness receipt is issued for a governance audit, but the receipt's hash points to a server that the user cannot verify.
+45. A predictive policing model identifies "hotspots" that perfectly correlate with minority neighborhoods, leading to over-policing.
+46. A "reputation repair" service allows wealthy users to pay a fee to have negative "capture" signals removed from their profile.
+47. An AI-moderated town hall automatically mutes participants whose "speech patterns" indicate a high level of anger or frustration.
+48. A system-reset trigger is disabled during a "stability window," preventing the removal of a leader even if they violate basic rights.
+49. A digital archive "cleans" old logs to save storage space, but happens to delete the records of a previous systemic failure.
+50. A decision-mirror claims "no bias detected" in a document, but the mirror's own code has never been audited by a third party.

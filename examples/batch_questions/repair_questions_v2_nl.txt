@@ -1,0 +1,50 @@
+01. Welke menselijke review moet plaatsvinden voordat dit ontwerp invloed krijgt op echte mensen?
+02. Wie kan bezwaar maken als het systeem een onrechtvaardig patroon zichtbaar maakt?
+03. Welke onafhankelijke persoon of groep kan de analyse controleren zonder ALETHEIA macht te geven?
+04. Welke basisrechten moeten expliciet beschermd blijven tijdens elke test of pilot?
+05. Waar staat duidelijk dat de mirror geen juridisch, politiek of institutioneel besluit neemt?
+06. Welke gegevens blijven lokaal en welke gegevens mogen helemaal niet worden opgeslagen?
+07. Hoe kan iemand stoppen met deelname zonder toegang tot essentiële diensten te verliezen?
+08. Welke herstelroute bestaat er als een receipt verkeerd wordt geïnterpreteerd?
+09. Wie ziet de audit trail en wie mag deze betwisten?
+10. Welke macht wordt zichtbaar gemaakt zonder dat de mirror zelf macht krijgt?
+11. Welke waarborg voorkomt dat tijdelijke noodmacht permanent wordt?
+12. Welke beroepsroute is beschikbaar voor mensen die geraakt worden door het voorstel?
+13. Welke beslissing blijft altijd bij mensen in plaats van bij software?
+14. Hoe wordt uitgelegd dat een hoog risico geen bevel tot actie is?
+15. Welke taal moet worden verwijderd omdat die ALETHEIA als autoriteit kan laten klinken?
+16. Welke publieke uitleg maakt de grenzen van de analyse begrijpelijk voor niet-experts?
+17. Welke checks and balances ontbreken nog in dit ontwerp?
+18. Wie kan de uitvoerende macht pauzeren, corrigeren of terugdraaien?
+19. Welke minimale gegevens zijn nodig, en welke gegevens zijn te gevoelig of te centraal?
+20. Hoe wordt voorkomen dat identiteit, reputatie of toegang tot basisvoorzieningen wordt samengevoegd?
+21. Welke menselijke beoordeling is onafhankelijk genoeg om capture te herkennen?
+22. Waar is het exit-pad voor mensen die niet willen deelnemen?
+23. Welke schade kan ontstaan als gebruikers de receipt als certificering lezen?
+24. Welke disclaimer moet naast de output staan om autoriteitsverwarring te voorkomen?
+25. Welke context ontbreekt om deze governance-risk eerlijk te beoordelen?
+26. Wie profiteert van het voorstel en wie draagt het risico?
+27. Welke minderheid of kwetsbare groep kan door de regel disproportioneel geraakt worden?
+28. Hoe kan een fout publiek zichtbaar worden zonder mensen onnodig bloot te stellen?
+29. Welke correctiemechanismen zijn sneller dan de schade die kan ontstaan?
+30. Welke onafhankelijke review is nodig voordat data als bewijs wordt gebruikt?
+31. Waar is de scheiding tussen signaleren, adviseren en beslissen?
+32. Welke zin in de tekst kan klinken als dwang, gehoorzaamheid of onherroepelijke macht?
+33. Welke macht is geconcentreerd bij één persoon, instelling, sleutel, model of platform?
+34. Welke transparantie ontbreekt voor mensen die de uitkomst moeten vertrouwen?
+35. Welke herstelvraag moet aan de eigenaar van dit ontwerp worden gesteld?
+36. Welke technische beperking voorkomt centrale opslag, Global ID sync of publieke ledger-macht?
+37. Welke menselijke review kan de automatische uitkomst daadwerkelijk wijzigen?
+38. Welke procedure voorkomt dat beroep alleen symbolisch is?
+39. Welke norm beschermt voedsel, water, huisvesting, veiligheid, zorg, beroep en exit?
+40. Hoe wordt voorkomen dat ethische taal een gebrek aan waarborgen maskeert?
+41. Welke signalen wijzen op capture, grip markers of gesloten besluitvorming?
+42. Welke open documentatie is nodig om misbruik of verwarring zichtbaar te maken?
+43. Welke stakeholder moet worden gehoord voordat de volgende versie wordt getest?
+44. Welke vraag zou een criticus stellen die nog niet in de documentatie staat?
+45. Welke output moet worden onderdrukt als de input alleen een auditvraag is?
+46. Hoe wordt een QUESTION_PROMPT onderscheiden van een governance-scenario?
+47. Welke receiptvelden bewijzen dat de analyse lokaal en niet-autoritatief bleef?
+48. Welke regressietest voorkomt dat oude batchnamen opnieuw leidend worden?
+49. Welke herstelstap is nodig als een batchbestand niet exact 50 regels bevat?
+50. Welke release-note voorkomt dat batchbestanden als beleidsdataset worden gepresenteerd?

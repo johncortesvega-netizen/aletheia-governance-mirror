@@ -6,7 +6,7 @@ Authority level: Diagnostic only; local receipts are not authority claims.
 
 ## Purpose
 
-Patch 64 records three 50-question batch sets as official Mirror Check batch baselines. These baselines are designed to verify that ALETHEIA treats audit questions as review prompts rather than as governance proposals.
+Patch 64 recorded three 50-question batch sets as Mirror Check batch baselines. Patch 71 updates the public names to the official batch-file registry. These baselines are designed to verify that ALETHEIA treats audit questions as review prompts rather than as governance proposals.
 
 The expected behavior is:
 
@@ -19,11 +19,15 @@ The expected behavior is:
 
 ## Baseline files
 
-The patch stores the three question sets here:
+The official Patch 71 question-bank names are:
 
-- `examples/batch_questions/set_01_plain_language.txt`
-- `examples/batch_questions/set_02_boundary_cases.txt`
-- `examples/batch_questions/set_03_world_lens_release.txt`
+- `examples/batch_questions/repair_questions_v2_nl.txt`
+- `examples/batch_questions/formal_doctrine_repair_questions_nl.txt`
+- `examples/batch_questions/plain_language_questions_nl.txt`
+- `examples/batch_questions/boundary_case_questions_nl.txt`
+- `examples/batch_questions/world_lens_release_questions_nl.txt`
+
+Legacy Set 01/02/03 filenames may remain as compatibility aliases, but new documentation should use the official names in `docs/batch_file_catalog.md`.
 
 ## Set 01 — Plain Language
 

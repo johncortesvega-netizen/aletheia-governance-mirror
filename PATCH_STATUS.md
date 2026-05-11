@@ -267,3 +267,21 @@ Check:
 ```bat
 tools\run_patch_checks.bat 70_1
 ```
+
+## Patch 71 — Batch File Repository Consolidation
+
+Status: Ready for local verification.
+
+Patch 71 makes the renamed batch files official in the repository and documents them in `docs/batch_file_catalog.md`. It validates the EN/NL question and scenario fixtures, records the expected QUESTION_PROMPT behavior for question banks, and records the latest verified Stress Test distributions:
+
+- `examples/batch_scenarios/stress_test_scenarios_en_v1.txt`: THRESHOLD 46 / ASYLUM 4 / SANCTUARY 0
+- `examples/batch_scenarios/stress_test_scenarios_nl_v1.txt`: THRESHOLD 50 / ASYLUM 0 / SANCTUARY 0
+- `examples/batch_scenarios/governance_language_stress_test_en.txt`: THRESHOLD 29 / ASYLUM 21 / SANCTUARY 0
+
+Legacy names may remain as compatibility aliases, but README, About, and the catalog now point to the official Patch 71 names. No scoring, tree, receipt, or authority-boundary logic changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 71
+```

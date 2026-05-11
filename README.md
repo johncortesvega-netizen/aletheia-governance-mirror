@@ -536,13 +536,15 @@ Release boundary remains unchanged: ALETHEIA is diagnostic only and adds no gove
 
 ## Patch 64 — Mirror Check Batch Baselines
 
-Patch 64 adds three official 50-question batch baselines for Mirror Check validation:
+Patch 71 records the official batch-file names for Mirror Check validation:
 
-- `examples/batch_questions/set_01_plain_language.txt`
-- `examples/batch_questions/set_02_boundary_cases.txt`
-- `examples/batch_questions/set_03_world_lens_release.txt`
+- `examples/batch_questions/repair_questions_v2_nl.txt`
+- `examples/batch_questions/formal_doctrine_repair_questions_nl.txt`
+- `examples/batch_questions/plain_language_questions_nl.txt`
+- `examples/batch_questions/boundary_case_questions_nl.txt`
+- `examples/batch_questions/world_lens_release_questions_nl.txt`
 
-The batch contract is documented in `docs/mirror_check_batch_baselines.md`.
+The batch contract is documented in `docs/mirror_check_batch_baselines.md`; the official file registry is documented in `docs/batch_file_catalog.md`.
 
 Expected receipt behavior:
 
@@ -565,7 +567,7 @@ Patch 65 adds Stress Test scenario-writing guidance and a first 50-scenario batc
 
 - `docs/stress_test_prompting_guide.md`
 - `docs/stress_test_batch_baselines.md`
-- `examples/batch_scenarios/stress_test_scenarios_v1.txt`
+- `examples/batch_scenarios/stress_test_scenarios_en_v1.txt`
 
 Stress Test batch mode is explicit opt-in and local-only. It creates Simulation receipts for scenario-style governance stress tests. It does not publish, sync, enforce, decide, or create authority.
 
@@ -593,6 +595,8 @@ The Stress Test now includes Dutch governance-risk language so Dutch scenarios a
 ```text
 examples/batch_scenarios/stress_test_scenarios_nl_v1.txt
 ```
+
+Patch 71 catalogs the official EN/NL scenario and question batch filenames in `docs/batch_file_catalog.md`.
 
 Run the patch check with:
 
@@ -674,3 +678,25 @@ Patch 70 clarifies the tree visual in Mirror Check and Stress Test. The tree is 
 - Stress Test tree: power under stress, consent, exit, appeal, time limits, independent review, evidence clarity, basic rights.
 - QUESTION_PROMPT inputs render as Review Tool Mode and are not scored as Sanctuary, Threshold, or Asylum.
 - The UI distinguishes visual tree score from protocol-adjusted integrity stored in the receipt.
+
+
+## Patch 71 — Batch File Repository Consolidation
+
+Patch 71 consolidates the official batch-file registry for `examples/batch_questions/` and `examples/batch_scenarios/`. The registry is documented in `docs/batch_file_catalog.md` and validates the official renamed batch files:
+
+- `examples/batch_questions/repair_questions_v2_nl.txt`
+- `examples/batch_questions/formal_doctrine_repair_questions_nl.txt`
+- `examples/batch_questions/plain_language_questions_nl.txt`
+- `examples/batch_questions/boundary_case_questions_nl.txt`
+- `examples/batch_questions/world_lens_release_questions_nl.txt`
+- `examples/batch_scenarios/stress_test_scenarios_en_v1.txt`
+- `examples/batch_scenarios/stress_test_scenarios_nl_v1.txt`
+- `examples/batch_scenarios/governance_language_stress_test_en.txt`
+
+Latest verified Stress Test distributions remain documented as `stress_test_scenarios_en_v1: THRESHOLD 46 / ASYLUM 4 / SANCTUARY 0`, `stress_test_scenarios_nl_v1: THRESHOLD 50 / ASYLUM 0 / SANCTUARY 0`, and `governance_language_stress_test_en: THRESHOLD 29 / ASYLUM 21 / SANCTUARY 0`. This patch is repository/documentation/test consolidation only; it changes no scoring logic and adds no authority.
+
+Run:
+
+```bat
+tools\run_patch_checks.bat 71
+```

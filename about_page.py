@@ -182,10 +182,10 @@ def render_about():
 
 
     with st.expander("Mirror Check Batch Baselines", expanded=False):
-        st.write("Patch 64 records three 50-question Mirror Check batch baselines in examples/batch_questions/. They validate that audit questions are treated as QUESTION_PROMPT review tools rather than governance proposals requiring normal scoring.")
+        st.write("Patch 71 records the official EN/NL batch-file catalog for examples/batch_questions/ and examples/batch_scenarios/. Mirror Check question banks validate that audit questions are treated as QUESTION_PROMPT review tools rather than governance proposals requiring normal scoring.")
         st.write("Expected batch receipt behavior: 50 receipts, 50 JSON receipts, no scenario-hash mismatches, Audit Question / Review Tool label, no normal scoring for question prompts, and the authority boundary preserved: no public ledger, no Global ID sync, no central storage, no authority claim, and human review required.")
-        st.write("See docs/mirror_check_batch_baselines.md for the contract and testing notes.")
-        st.write("Patch 65 adds Stress Test prompting guidance and a 50-scenario Stress Test batch baseline in examples/batch_scenarios/. Stress batch mode is explicit opt-in, local-only, and creates Simulation receipts without authority claims, public ledger, Global ID sync, or central storage.")
+        st.write("See docs/batch_file_catalog.md and docs/mirror_check_batch_baselines.md for the official filenames, contract, and testing notes.")
+        st.write("Patch 65 adds Stress Test prompting guidance. Patch 71 catalogs the official scenario batches: stress_test_scenarios_en_v1.txt, stress_test_scenarios_nl_v1.txt, and governance_language_stress_test_en.txt. Stress batch mode is explicit opt-in, local-only, and creates Simulation receipts without authority claims, public ledger, Global ID sync, or central storage.")
         st.write("See docs/stress_test_prompting_guide.md and docs/stress_test_batch_baselines.md for the scenario-writing rules and batch contract.")
 
     st.markdown("### Scientific caution")
@@ -268,3 +268,7 @@ PATCH_69_1_STRESS_BATCH_CLASSIFIER_NOTE = "Patch 69.1 separates Stress Test .txt
 # The tree is a visual state explainer for Mirror Check and Stress Test, not a second protocol metric.
 # QUESTION_PROMPT is an input/review-tool mode, not a fourth risk state.
 PATCH_70_TREE_VISUAL_CALIBRATION_NOTE = "Patch 70 separates visual tree score from receipt integrity and clarifies Mirror Check, Stress Test, and QUESTION_PROMPT tree modes."
+
+
+# Patch 71: Batch file repository consolidation.
+PATCH_71_BATCH_FILE_CATALOG_NOTE = "Patch 71 catalogs official EN/NL batch filenames, expected question-prompt behavior, and latest Stress Test distributions without changing scoring or authority boundaries."

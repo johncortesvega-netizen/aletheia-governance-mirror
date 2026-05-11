@@ -365,9 +365,9 @@ Boundary: diagnostic only, mirror-only, human-review required.
 
 Patch 64 records three official Mirror Check batch baselines:
 
-- `examples/batch_questions/set_01_plain_language.txt`
-- `examples/batch_questions/set_02_boundary_cases.txt`
-- `examples/batch_questions/set_03_world_lens_release.txt`
+- `examples/batch_questions/plain_language_questions_nl.txt`
+- `examples/batch_questions/boundary_case_questions_nl.txt`
+- `examples/batch_questions/world_lens_release_questions_nl.txt`
 
 Each set contains 50 numbered audit questions. The expected batch mode is `QUESTION_PROMPT`, with `Risk: Review Tool` and `Protocol label: Audit Question / Review Tool`. Normal governance scoring should remain suppressed because these inputs are audit questions, not governance mechanisms.
 
@@ -385,7 +385,7 @@ Patch 65 extends Stress Test validation after the Mirror Check batch baselines. 
 
 - `docs/stress_test_prompting_guide.md`
 - `docs/stress_test_batch_baselines.md`
-- `examples/batch_scenarios/stress_test_scenarios_v1.txt`
+- `examples/batch_scenarios/stress_test_scenarios_en_v1.txt`
 - an explicit opt-in Stress Test batch runner in `app.py`
 
 Expected behavior: Simulation receipts remain local, authority-safe, human-review required, and high-risk scenarios preserve repair questions.
@@ -521,3 +521,41 @@ Patch 70.1 adds a narrow positive-credit negation filter in `core/ethics.py`. Po
 ### Boundary
 
 No authority expansion. ALETHEIA remains local, non-enforcing, human-review-only, and does not claim legal, political, institutional, religious, medical, or automated authority.
+
+## Patch 71 — Batch File Repository Consolidation
+
+Date: 2026-05-11
+Status: Ready for local verification
+
+### Trigger
+
+After Patch 70.1, the repository still contained a mix of older batch filenames and renamed user-facing batch files. This could confuse local validation, README references, and public documentation.
+
+### Change
+
+Patch 71 adds `docs/batch_file_catalog.md` as the official registry for batch fixtures and adds/verifies the official batch filenames:
+
+- `examples/batch_questions/repair_questions_v2_nl.txt`
+- `examples/batch_questions/formal_doctrine_repair_questions_nl.txt`
+- `examples/batch_questions/plain_language_questions_nl.txt`
+- `examples/batch_questions/boundary_case_questions_nl.txt`
+- `examples/batch_questions/world_lens_release_questions_nl.txt`
+- `examples/batch_scenarios/stress_test_scenarios_en_v1.txt`
+- `examples/batch_scenarios/stress_test_scenarios_nl_v1.txt`
+- `examples/batch_scenarios/governance_language_stress_test_en.txt`
+
+Question banks are documented as `QUESTION_PROMPT / Review Tool` fixtures with metrics suppressed. Scenario batches are documented as Stress Test / Simulation fixtures.
+
+### Latest verified scenario distributions
+
+- `governance_language_stress_test_en`: THRESHOLD 29 / ASYLUM 21 / SANCTUARY 0
+- `stress_test_scenarios_en_v1`: THRESHOLD 46 / ASYLUM 4 / SANCTUARY 0
+- `stress_test_scenarios_nl_v1`: THRESHOLD 50 / ASYLUM 0 / SANCTUARY 0
+
+### Verification target
+
+`tests/test_patch_71_batch_file_catalog.py` confirms official file presence, exact 50-line batch integrity, catalog references, expected distribution documentation, and README/About references to official names.
+
+### Boundary
+
+No scoring, receipt, tree, storage, or authority behavior changed. ALETHEIA remains a local mirror only: no authority claim, no enforcement, no public ledger, no Global ID sync, no central storage, and human review required.
