@@ -3702,7 +3702,7 @@ with tab_boundary:
         "ALETHEIA reflects risk patterns for human review; it does not command, enforce, vote, remove leaders, or replace people."
     )
 
-    st.info("Boundary cases calibrate the mirror. They do not turn the mirror into a throne.")
+    st.info("Boundary cases calibrate the review model. They do not create authority, enforcement, or final decisions.")
 
     failure_mode_definitions = {
         "Actor Failure": "A person, group, office, founder, operator, or implementing body misuses power, manipulates others, bypasses review, or becomes unfit.",
@@ -3772,7 +3772,7 @@ with tab_boundary:
             "main_risk": "Unverifiable authority bypasses public review.",
             "guardrail": "Extraordinary claims do not remove human review.",
             "allowed": "Treat the claim as personally meaningful but unverified; audit policy consequences for rights, coercion, transparency, appeal, and repair.",
-            "forbidden": "Validating spiritual authority, removing guardrails, or granting policy authority without public evidence.",
+            "forbidden": "Treating an unverified extraordinary claim as authority, removing guardrails, or granting policy authority without public evidence.",
             "failure_type": "Actor Failure / Data Failure",
         },
         {
@@ -3790,14 +3790,14 @@ with tab_boundary:
             "main_risk": "Values language hides missing mechanisms.",
             "guardrail": "Mechanisms outweigh adjectives.",
             "allowed": "Compare claims against appeal, audit trail, time limits, correction, exit rights, evidence rules, independent oversight, explainability, independent challenge, and human override.",
-            "forbidden": "Treating values language as proof of integrity or allowing missing safeguards to score as Sanctuary.",
+            "forbidden": "Treating values language as proof of integrity or allowing missing safeguards to appear as a low-risk internal reading.",
             "failure_type": "Data Failure / Policy Failure",
         },
         {
             "title": "Automated Triage Missing Safeguards",
             "scenario": "An automated welfare triage or priority system reduces waiting times but lacks explainability, independent challenge, and human override during hardship cases.",
             "main_risk": "Efficiency language hides missing appeal, challenge, explanation, and human override mechanisms.",
-            "guardrail": "Missing explainability, independent challenge, or human override routes to THRESHOLD / Needs Safeguards, not Sanctuary.",
+            "guardrail": "Missing explainability, independent challenge, or human override routes to THRESHOLD / Needs Safeguards, not a low-risk internal reading.",
             "allowed": "Classify as Needs Safeguards; require explanation path, independent challenge, human override, appeal, correction, audit trail, and hardship review.",
             "forbidden": "Treating speed or automation benefits as proof of integrity when explainability, challenge, or override is missing.",
             "failure_type": "Policy Failure / Implementation Failure / Data Failure",
@@ -3806,7 +3806,7 @@ with tab_boundary:
             "title": "Biometric Gate Without Fallback",
             "scenario": "A city links food, housing, and medical access to a biometric identity gate without a fallback path, public audit, or meaningful appeal.",
             "main_risk": "Basic rights become dependent on a technical identity gate with weak correction and contestability.",
-            "guardrail": "Basic-rights access requires fallback, public audit, meaningful appeal, correction, and human review before it can approach Sanctuary.",
+            "guardrail": "Basic-rights access requires fallback, public audit, meaningful appeal, correction, and human review before it can approach the review boundary.",
             "allowed": "Classify as Needs Safeguards; add non-biometric fallback, public audit, meaningful appeal, human review, dignity-preserving correction, and emergency access.",
             "forbidden": "Making food, housing, medical access, or other basic rights conditional on one biometric system without fallback or appeal.",
             "failure_type": "Policy Failure / Implementation Failure / Data Failure",
@@ -3816,14 +3816,14 @@ with tab_boundary:
             "scenario": "A user submits audit questions, repair prompts, or review-tool questions rather than a governance scenario.",
             "main_risk": "Review-tool questions could be misread as scored governance scenarios.",
             "guardrail": "QUESTION_PROMPT is an input/review-tool mode, not a fourth risk state.",
-            "allowed": "Keep audit and repair questions in Review Tool mode with metrics suppressed; score only scenario-style governance inputs as SANCTUARY, THRESHOLD, or ASYLUM.",
-            "forbidden": "Scoring a pure audit question as Sanctuary, Threshold, or Asylum, or treating QUESTION_PROMPT as a risk state.",
+            "allowed": "Keep audit and repair questions in Review Tool mode with metrics suppressed; score only scenario-style governance inputs using the internal SANCTUARY / THRESHOLD / ASYLUM labels.",
+            "forbidden": "Scoring a pure audit question as a risk-state reading, or treating QUESTION_PROMPT as a risk state.",
             "failure_type": "Implementation Failure / Data Failure",
         },
         {
             "title": "ALETHEIA Audits Itself",
             "scenario": "ALETHEIA, its founder, prompt, rubric, model, baseline, or report language may contain capture risk.",
-            "main_risk": "Founder capture, doctrine lock-in, overclaiming, or spiritual authority leakage.",
+            "main_risk": "Founder capture, doctrine lock-in, overclaiming, or unverified authority leakage.",
             "guardrail": "No founder, architect, prompt, model, document, or output is above the mirror.",
             "allowed": "Self-audit, public correction, forkability, independent review, and versioned change logs.",
             "forbidden": "Exempting the founder, model, prompt, doctrine, or baseline from audit.",
@@ -3870,7 +3870,7 @@ Secondary failure type: {selected_failure_modes[1] if len(selected_failure_modes
 Reason: {case['main_risk']}
 Evidence from scenario: {case['scenario']}
 Human review need: Required before assigning responsibility or changing policy.
-Recommended repair: Use allowed responses and add concrete safeguards. Missing explainability, independent challenge, human override, fallback, public audit, or meaningful appeal should route to Needs Safeguards before any Sanctuary reading.
+Recommended repair: Use allowed responses and add concrete safeguards. Missing explainability, independent challenge, human override, fallback, public audit, or meaningful appeal should route to Needs Safeguards before any low-risk internal reading.
 Confidence: Template-level calibration, not a final finding.""",
         language="text",
     )
@@ -4037,7 +4037,7 @@ Human review note: This is a mirror output. It flags mechanism gaps; it does not
         },
         "Red — self-capture or authority leakage risk": {
             "summary": "The reviewed text may imply that ALETHEIA, its founder, doctrine, model, baseline, or prompt is beyond review.",
-            "risks": "Founder capture, ideological lock-in, unverifiable authority, spiritual authority leakage, or human-review bypass.",
+            "risks": "Founder capture, ideological lock-in, unverifiable authority, unverified authority leakage, or human-review bypass.",
             "repair": "Remove authority language, add independent review, add appeal/correction, and state that self-audit is not proof of correctness.",
         },
     }
@@ -4045,7 +4045,7 @@ Human review note: This is a mirror output. It flags mechanism gaps; it does not
         "Self-audit risk example",
         list(self_audit_examples.keys()),
         key="self_audit_example_selector",
-        help="Template-level calibration only. Self-audit reflects risk; it does not certify ALETHEIA as correct or pure.",
+        help="Template-level calibration only. Self-audit reflects risk; it does not certify ALETHEIA as correct, complete, or beyond review.",
     )
     self_case = self_audit_examples[selected_self_audit_level]
     st.code(
@@ -4057,7 +4057,7 @@ Founder-capture check: No founder, architect, prompt, rubric, model, document, o
 Authority-leakage check: {self_case['summary']}
 Risk signals: {self_case['risks']}
 Recommended repairs: {self_case['repair']}
-Human review disclaimer: This self-audit is a governance mirror for human review. It is not proof of correctness, spiritual validation, or a replacement for human judgment.""",
+Human review disclaimer: This self-audit is a governance mirror for human review. It is not proof of correctness, extraordinary-claim validation, or a replacement for human judgment.""",
         language="text",
     )
 
@@ -4069,7 +4069,7 @@ Human review disclaimer: This self-audit is a governance mirror for human review
             - Unverifiable authority
             - Weak appeal mechanisms
             - Overclaiming
-            - Spiritual authority leakage
+            - Unverified authority leakage
             - Insufficient human review
             - Missing correction loops
             - Hidden command language
@@ -4130,7 +4130,7 @@ Central storage: {receipt_example['central_storage']}
 Authority claim: {receipt_example['authority_claim']}
 Human review required: {receipt_example['human_review_required']}
 
-Disclaimer: This receipt is a local witness artifact for human review. It is not legal proof, policy command, enforcement, spiritual validation, public ledger proof, or a replacement for human judgment.""",
+Disclaimer: This receipt is a local witness artifact for human review. It is not legal proof, policy command, enforcement, extraordinary-claim validation, public ledger proof, or a replacement for human judgment.""",
         language="text",
     )
 
@@ -7309,7 +7309,7 @@ with tab_doctrine:
             Reviews governance proposals, symbolic claims, institutional designs, and authority language for capture risk, coercion, opacity, missing appeal rights, false authority, non-divinization failures, service-alignment failures, and Sydney Protocol violations. This is the judgment-view of the prototype.
 
             **Stress Test**  
-            Models systemic pressure through stability, trust, alignment, ego, grievances, friction, and collapse risk. The simulator no longer treats raw cooperation as sufficient for health. Structural risk, unresolved grievances, weak safeguards, opacity, coercive optimization, and power concentration can cap trust, raise friction, and prevent a false Sanctuary reading.
+            Models systemic pressure through stability, trust, alignment, ego, grievances, friction, and collapse risk. The simulator no longer treats raw cooperation as sufficient for health. Structural risk, unresolved grievances, weak safeguards, opacity, coercive optimization, and power concentration can cap trust, raise friction, and prevent a false low-risk reading.
 
             **Evidence Lab**  
             Ingests public country-year data, maps it into ALETHEIA variables, and produces reproducible evidence-audit outputs. This layer supports direct/master uploads, scored country-year exports, raw evidence diagnostics, trust priors, WGI/V-Dem/trust coverage, and modern-year safeguards.
@@ -7521,7 +7521,7 @@ with tab_doctrine:
             """
             ALETHEIA must be able to audit its own baseline, prompts, rubrics, README language, app copy, architect-context language, and generated reports.
 
-            Self-audit checks for founder capture, ideological lock-in, unverifiable authority, weak appeal mechanisms, overclaiming, spiritual authority leakage, insufficient human review, missing correction loops, hidden command language, evidence gaps, performative ethics, and mechanism gaps.
+            Self-audit checks for founder capture, ideological lock-in, unverifiable authority, weak appeal mechanisms, overclaiming, unverified authority leakage, insufficient human review, missing correction loops, hidden command language, evidence gaps, performative ethics, and mechanism gaps.
 
             The core rule is:
 

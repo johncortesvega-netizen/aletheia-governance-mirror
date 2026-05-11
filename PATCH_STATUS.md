@@ -659,3 +659,29 @@ Check:
 ```bat
 tools\run_patch_checks.bat 72_4
 ```
+
+## Patch 72.5 - Boundary Cases Neutral Text Refresh
+
+Date: 2026-05-11
+
+Patch 72.5 refreshes Boundary Cases copy so it is neutral, friendly, and current with Patch 72.4.
+
+Implemented:
+- Replaced older metaphorical authority wording with direct calibration-only language.
+- Replaced "before any Sanctuary reading" with "before any low-risk internal reading".
+- Replaced "approach Sanctuary" with "approach the review boundary".
+- Replaced spiritual-validation wording with extraordinary-claim / unverified-authority wording.
+- Kept Boundary Cases as human-review calibration only.
+
+Invariant preserved:
+- No scoring logic change.
+- No verdict-routing change.
+- No receipt schema change.
+- No Threshold Mapping math change.
+- No tree visual, Stress Test, Evidence Lab, World Lens, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_5
+```
