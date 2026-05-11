@@ -5774,7 +5774,50 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
         m9.metric("V-Dem coverage", "—" if pd.isna(vdem_coverage) else f"{vdem_coverage:.1%}")
         st.caption("Coverage cards show only the active selected-year rows after filters. " + trust_coverage_note)
 
-        value_guard = selected_year_value_guard(grid_source, int(selected_year), total_9k=TOTAL_9K, min_allocated_countries=MIN_FULL_GRID_COUNTRIES, focus_iso3=focus_iso3 or "NLD")
+        # Patch 72.14: keep World Lens resilient if an older deployment or
+        # partial patch has app.py calling selected_year_value_guard before the
+        # helper import is available. The fallback is diagnostic-only and mirrors
+        # the core helper's essential selected-year/seat checks.
+        _selected_year_value_guard_fn = globals().get("selected_year_value_guard")
+        if not callable(_selected_year_value_guard_fn):
+            def _selected_year_value_guard_fn(df, selected_year, *, total_9k=TOTAL_9K, min_allocated_countries=MIN_FULL_GRID_COUNTRIES, focus_iso3="NLD"):
+                if not isinstance(df, pd.DataFrame) or df.empty:
+                    return {
+                        "selected_year": int(selected_year),
+                        "total_seats": 0,
+                        "seat_total_ok": False,
+                        "no_stale_year_rows": True,
+                        "focus_row_available": False,
+                        "focus": {},
+                        "diagnostic_note": "Local fallback guard used; core world_lens helper was unavailable.",
+                    }
+                years = pd.to_numeric(df.get("year"), errors="coerce")
+                seats = pd.to_numeric(df.get("seats_9k"), errors="coerce").fillna(0)
+                total_seats_guard = int(seats.sum()) if not seats.empty else 0
+                iso_series = df.get("iso3", pd.Series("", index=df.index)).astype(str).str.upper().str.strip()
+                focus_rows = df[iso_series == str(focus_iso3).upper().strip()] if "iso3" in df.columns else pd.DataFrame()
+                focus = {}
+                if not focus_rows.empty:
+                    focus_row = focus_rows.iloc[0]
+                    focus = {
+                        "country": focus_row.get("country", focus_iso3),
+                        "iso3": focus_row.get("iso3", focus_iso3),
+                        "year": focus_row.get("year", selected_year),
+                        "seats": focus_row.get("seats_9k", "—"),
+                        "verdict": focus_row.get("aletheia_verdict", focus_row.get("verdict", "—")),
+                        "raw_trust_label": format_raw_trust_label(focus_row.get("wvs_generalized_trust")),
+                        "trust_prior_label": format_trust_prior_label(focus_row.get("empirical_trust_prior")),
+                    }
+                return {
+                    "selected_year": int(selected_year),
+                    "total_seats": total_seats_guard,
+                    "seat_total_ok": total_seats_guard == int(total_9k),
+                    "no_stale_year_rows": bool((years.dropna().astype(int) == int(selected_year)).all()) if years.notna().any() else True,
+                    "focus_row_available": not focus_rows.empty,
+                    "focus": focus,
+                    "diagnostic_note": "Local fallback guard used; core world_lens helper was unavailable.",
+                }
+        value_guard = _selected_year_value_guard_fn(grid_source, int(selected_year), total_9k=TOTAL_9K, min_allocated_countries=MIN_FULL_GRID_COUNTRIES, focus_iso3=focus_iso3 or "NLD")
         with st.expander("World Lens value guard", expanded=False):
             st.write(
                 "This guard verifies that the selected-year rows, seats, verdict signals, and focus country stay tied to the active year. "

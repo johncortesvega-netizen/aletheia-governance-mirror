@@ -1289,3 +1289,26 @@ Check:
 tools\run_patch_checks.bat 72_13
 ```
 
+## Patch 72.14 - World Lens Value Guard Fallback
+
+Date: 2026-05-11
+
+Patch 72.14 prevents World Lens from crashing when `selected_year_value_guard` is unavailable in an older/partial deployment.
+
+Implemented:
+- Replaced the direct value-guard call with a safe callable lookup.
+- Added a local diagnostic-only fallback for selected-year, total-seat, stale-year-row, and focus-row checks.
+- Preserved selected-year wording and full/partial 9k view behavior.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No 9k allocation formula change.
+- No Evidence Lab data model, receipt schema, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_14
+```
+
