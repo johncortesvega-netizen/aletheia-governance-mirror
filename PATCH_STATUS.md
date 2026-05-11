@@ -1,5 +1,19 @@
 # ALETHEIA Patch Status
 
+## Patch 71.10 - Mirror Check HTML Rendering Fix
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Fixed Mirror Check result card rendering where HTML appeared as literal code.
+- The judgment card now uses dedented HTML before `st.markdown(..., unsafe_allow_html=True)`.
+- Review-band card line is precomputed outside the HTML template.
+- Display-only fix: no receipt schema, scoring, verdict-routing, taxonomy, tree, Stress Test, Boundary Cases, World Lens, storage, or authority-boundary changes.
+
+Validation:
+- `tools\run_patch_checks.bat 71_10`
+
+
 ## Patch 71.9 — Mirror Check Review Band Display
 
 Status: READY FOR LOCAL TESTING

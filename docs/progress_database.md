@@ -796,3 +796,29 @@ Files:
 - PATCH_71_9_MANIFEST.txt
 - PATCH_71_9_RECOVERY_NOTE.md
 
+
+## Patch 71.10 - Mirror Check HTML Rendering Fix
+
+Date: 2026-05-11
+
+Patch 71.10 fixes a Mirror Check UI regression introduced during review-band display work. The local fallback/result card was showing raw HTML code because the Streamlit Markdown block could interpret indented HTML as literal code.
+
+Implemented:
+- Added `textwrap` import.
+- Built the Mirror Check judgment card as `judgment_card_html`.
+- Rendered the card with `textwrap.dedent(judgment_card_html).strip()` and `unsafe_allow_html=True`.
+- Precomputed the review-band detail line outside the HTML template.
+
+Invariant preserved:
+- No receipt schema change.
+- No scoring logic change.
+- No verdict-routing change.
+- No taxonomy expansion.
+- No tree visual, Stress Test, Boundary Cases, World Lens, storage, or authority-boundary logic changed.
+
+Files:
+- app.py
+- tests/test_patch_71_10_mirror_check_html_rendering.py
+- PATCH_71_10_MANIFEST.txt
+- PATCH_71_10_RECOVERY_NOTE.md
+

@@ -2,6 +2,7 @@ import os
 import json
 import zipfile
 import hashlib
+import textwrap
 import random
 import re
 import io
@@ -2831,25 +2832,27 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
             </div>
         """
 
-    st.markdown(
-        f"""
-        <div class="soft-card">
-            <div style="color:#aeb7c6;font-size:0.78rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;">
-                {source} · Protocol-adjusted internal label
-            </div>
-            <div style="color:{color};font-size:2rem;font-weight:900;margin-top:0.25rem;">
-                {verdict}
-            </div>
-            {review_band_line}
-            <div style="color:#e8e0d0;margin-top:0.5rem;">
-                <strong>Safety risk:</strong> {judgment.get("corruption_risk", "Medium")}<br>
-                {f"<strong>Review band:</strong> {review_band_label}<br>" if verdict == "THRESHOLD" else ""}
-                <strong>Stress label:</strong> {judgment.get("stress_label", "Unclassified")}
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    review_band_detail_line = ""
+    if verdict == "THRESHOLD":
+        review_band_detail_line = f"<strong>Review band:</strong> {review_band_label}<br>"
+
+    judgment_card_html = f"""
+<div class="soft-card">
+  <div style="color:#aeb7c6;font-size:0.78rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;">
+    {source} · Protocol-adjusted internal label
+  </div>
+  <div style="color:{color};font-size:2rem;font-weight:900;margin-top:0.25rem;">
+    {verdict}
+  </div>
+  {review_band_line}
+  <div style="color:#e8e0d0;margin-top:0.5rem;">
+    <strong>Safety risk:</strong> {judgment.get("corruption_risk", "Medium")}<br>
+    {review_band_detail_line}
+    <strong>Stress label:</strong> {judgment.get("stress_label", "Unclassified")}
+  </div>
+</div>
+"""
+    st.markdown(textwrap.dedent(judgment_card_html).strip(), unsafe_allow_html=True)
 
     st.write(sanitize_public_message(judgment.get("summary", "")))
 

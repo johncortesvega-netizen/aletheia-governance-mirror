@@ -1,0 +1,34 @@
+PATCH 71.10 MANIFEST - Mirror Check HTML Rendering Fix
+
+Patch ID: 71.10
+Patch name: Mirror Check HTML Rendering Fix
+Owner/User: Johnny Cortes Vega
+Project: ALETHEIA v1.0 - Governance Mirror
+
+Purpose:
+- Fix Mirror Check result card rendering where HTML was displayed as literal code.
+- Preserve Patch 71.9 review-band behavior while preventing indented Markdown HTML from becoming a code block.
+
+Files changed:
+- app.py
+- tests/test_patch_71_10_mirror_check_html_rendering.py
+- PATCH_71_10_MANIFEST.txt
+- PATCH_71_10_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Behavioral changes:
+- Mirror Check judgment-card HTML is now prebuilt and passed through textwrap.dedent(...).strip() before st.markdown(..., unsafe_allow_html=True).
+- Review-band HTML is precomputed before the card template rather than nested as an f-string expression inside the HTML block.
+
+Non-goals:
+- No receipt schema change.
+- No scoring logic change.
+- No verdict-routing change.
+- No taxonomy expansion.
+- No tree visual change.
+- No Stress Test logic change.
+- No Boundary Cases change.
+- No World Lens change.
+- No authority-boundary change.
+- No public ledger, Global ID sync, central storage, or automated authority behavior.
