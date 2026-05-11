@@ -15,7 +15,7 @@ def _header_image() -> str | None:
 
 def render_about():
     st.subheader("About ALETHEIA")
-    st.info("ALETHEIA helps review governance risk. It does not decide, enforce, or replace human judgment. Calibrated input language support is English and Nederlands/Dutch.")
+    st.info("ALETHEIA helps people review governance risk, evidence gaps, and safeguard needs. It does not decide, enforce, validate final truth, or replace human judgment. Calibrated input language support is English and Nederlands/Dutch.")
     st.caption("ALETHEIA v1.0 complete: public MVP package, release boundary, v0.2 roadmap, and deployment prep are documented.")
 
     header = _header_image()
@@ -38,13 +38,13 @@ def render_about():
 
     st.markdown(
         """
-        **ALETHEIA is a governance-risk research prototype with a gentle guardian tone.** It helps users examine governance ideas, simulate systemic pressure, and study how population-weighted representation may interact with trust, stability, alignment, and capture risk.
+        **ALETHEIA is a governance-risk research prototype with a gentle, practical tone.** It helps users examine governance ideas, simulate systemic pressure, and study how population-weighted exposure may interact with trust, stability, alignment, safeguards, and capture risk.
 
         It is not designed to rule, command, or replace human judgment. **ALETHEIA is a mirror, not a throne:** a careful way to ask whether a proposal strengthens service, transparency, dignity, accountability, repair, and stability — or whether it concentrates power, hides decisions, weakens appeal rights, or creates systemic capture.
 
-        The v0.1 public-safe baseline adds explicit limits: ALETHEIA may identify risk, evidence gaps, safeguard gaps, and repair gaps, but it must not command, enforce, vote, govern, remove leaders, validate spiritual authority, or replace human judgment.
+        The public-safe baseline is explicit: ALETHEIA may identify risk patterns, evidence gaps, safeguard gaps, and repair questions, but it must not command, enforce, vote, govern, remove leaders, validate extraordinary authority claims, or replace human judgment.
 
-        The updated doctrine style is warmer and more descriptive: soft voice, firm safeguards, evidence before certainty, and no final human or machine authority. Patch 72.4 keeps the Humility Protocol neutral: the Z-axis is a boundary marker, not a perfection score.
+        The current doctrine style is neutral and friendly: soft voice, firm safeguards, evidence before certainty, and no final human or machine authority. The Humility Protocol keeps the Z-axis bounded: it marks the edge of what human and system tools may responsibly claim, not a perfection score.
         """
     )
 
@@ -60,7 +60,7 @@ def render_about():
 
             > **Intelligence + Power - Ego = Stability**
 
-            This is treated as an ethical design rule, not mathematical proof. Intelligence and power become unstable when detached from humility, accountability, transparency, and repair.
+            This is treated as a design caution, not mathematical proof. Intelligence and power become unstable when detached from accountability, transparency, appeal, and repair.
 
             Historical archive material may contain AI-flattery artifacts or inflated validation language. Those materials are treated as development context, not independent proof or founder authority.
             """
@@ -72,7 +72,7 @@ def render_about():
     with st.expander("Humility Protocol / Z-axis boundary", expanded=True):
         st.write("The Z-axis now describes how close a reading is to the boundary of what human and system tools may responsibly claim. It is not a perfection score and it never grants final safety or final authority.")
         st.write("Z=0.9999 is the highest human/system review boundary shown by ALETHEIA. Z=1.0000 remains outside ALETHEIA's claim: beyond code, metrics, receipts, hashes, trees, 9k structures, and institutional power.")
-        st.write("9k is framed as a human anti-tyranny scaffold / threshold steward. It is not a final safety claim, not a source of final legitimacy, and not an authority claim.")
+        st.write("9k is framed as a human anti-tyranny scaffold / threshold steward. It can help examine representation and exposure, but it is not a final safety claim, not a source of final legitimacy, and not an authority claim.")
 
     with st.expander("ALETHEIA v1.0 release complete", expanded=True):
         st.write("ALETHEIA v1.0 is the finished public MVP package for the Governance Mirror line. It includes the baseline, safe-language layer, Eternal Baseline, Boundary Cases, Failure Classification, Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, Local Witness Receipt v2, World Lens Simulation, Protocol Guide, sample reports, demo inputs, GitHub cleanup, and release documentation.")
@@ -82,7 +82,7 @@ def render_about():
     st.markdown("### What ALETHEIA does")
 
     with st.expander("Audit", expanded=True):
-        st.write("Users can submit governance proposals and receive an internal prototype classification: SANCTUARY, THRESHOLD, or ASYLUM. The audit layer scans for capture risk, opacity, coercion, missing appeal rights, weak transparency, and other governance-risk patterns.")
+        st.write("Users can submit governance proposals and receive an internal review label: SANCTUARY, THRESHOLD, or ASYLUM. These labels are model signals for human review, not final verdicts. The audit layer scans for capture risk, opacity, coercion, missing appeal rights, weak transparency, and other governance-risk patterns.")
 
     with st.expander("Simulation", expanded=True):
         st.write("The system models governance pressure through archetype agents with intelligence, power, ego, alignment, trust, grievances, alliances, and memory. It tracks Stability, Trust, Alignment, and Ego over time.")
@@ -91,10 +91,10 @@ def render_about():
         st.write("Users can upload country-year datasets and map them into ALETHEIA variables for empirical scoring, schema checks, 9k allocation, and internal correlation checks. This layer is the bridge from symbolic prototype to reproducible research workflow.")
 
     with st.expander("Global Grid", expanded=True):
-        st.write("The Grid shows selected-year, population-weighted governance-risk exposure across country-year rows. Full years may sum to 9,000 seats; partial or filtered years must use active-seat language. The Grid is a comparison and exposure model, not a real election, government, sovereign body, authority mechanism, or political mandate.")
+        st.write("The Grid shows selected-year, population-weighted governance-risk exposure across country-year rows. Full years may sum to 9,000 seats; partial or filtered years must use active-seat language. The Grid is a comparison and exposure model, not a real election, government, authority mechanism, or political mandate.")
 
     with st.expander("Boundary Cases", expanded=True):
-        st.write("The Boundary Cases layer stress-tests difficult edge cases before they become app logic or public claims. It covers prediction vs free agency, consent under pressure, basic-rights scarcity, ambient capture, extraordinary claims, neural-data consent, performative ethics, and ALETHEIA self-audit. These cases calibrate the mirror; they do not create automated authority.")
+        st.write("The Boundary Cases layer stress-tests difficult edge cases before they become app logic or public claims. It covers prediction vs free agency, consent under pressure, basic-rights scarcity, ambient capture, extraordinary claims, neural-data consent, performative ethics, and ALETHEIA self-audit. These cases calibrate the review model; they do not create authority, enforcement, or final decisions.")
 
     with st.expander("Failure Classification", expanded=True):
         st.write("Failure Classification separates governance-risk findings into Actor Failure, Policy Failure, Implementation Failure, and Data Failure. The goal is better repair targeting, not blame, enforcement, or automated authority.")
@@ -110,13 +110,13 @@ def render_about():
 
 
     with st.expander("Evidence Lab + Extraordinary Claim Protocol", expanded=True):
-        st.write("Evidence Lab marks whether claims have strong, partial, weak, or no supplied evidence. Extraordinary claims — including spiritual, prophetic, alien, neural, metaphysical, or otherwise exceptional claims — are treated as unverified unless supported by public, testable, non-coercive evidence. ALETHEIA may audit the consequences of a claim for rights, coercion, transparency, accountability, and repair; it must not validate spiritual authority or remove human review.")
+        st.write("Evidence Lab marks whether claims have strong, partial, weak, or no supplied evidence. Extraordinary claims — including spiritual, prophetic, alien, neural, metaphysical, or otherwise exceptional claims — are treated as unverified unless supported by public, testable, non-coercive evidence. ALETHEIA may audit the consequences of a claim for rights, coercion, transparency, accountability, and repair; it must not validate extraordinary authority claims or remove human review.")
 
     with st.expander("Local Witness Receipt v2", expanded=True):
         st.write("Local Witness Receipt v2 records a local, user-held fingerprint of a review: document fingerprint, processed document fingerprint, report fingerprint, timestamp, app/rubric/prompt version, active modules, and authority boundary. It explicitly states public ledger: No, Global ID sync: No, central storage: No, authority claim: No, and human review required: Yes.")
 
     with st.expander("World Lens Simulation", expanded=True):
-        st.write("World Lens Simulation is a non-sovereign impact mirror. It helps users review affected groups, power gains, protection losses, basic-rights risk, minority-rights risk, ambient capture risk, appealability, exit, and repair. It uses simulated threshold signal language only; it does not activate Global ID, select a real 9k, create World Leader logic, issue automatic resets, or make governance decisions.")
+        st.write("World Lens Simulation is a non-authority impact mirror. It helps users review affected groups, power gains, protection losses, basic-rights risk, minority-rights risk, ambient capture risk, appealability, exit, and repair. It uses simulated threshold signal language only; it does not activate Global ID, select a real 9k, create World Leader logic, issue automatic resets, or make governance decisions.")
 
     with st.expander("Post-61 Regression Smoke Test", expanded=False):
         st.write("Patch 62 verifies that the split Patch 61 calibrations still work together: ASYLUM repair questions, malicious-leadership metric calibration, country-scoped available years, missing raw-trust labels, selected-year World Lens value guards, and Netherlands 2024 fixture stability. It is diagnostic only and adds no authority or enforcement.")
@@ -131,13 +131,13 @@ def render_about():
         st.write("The Progress Database keeps the roadmap, module map, current patch state, next-patch convention, and check commands inside the repo. It preserves development continuity without giving ALETHEIA any governance authority.")
 
     with st.expander("Public Release Limits", expanded=False):
-        st.write("Patch 45 adds public-facing limitations, ethics, and release notes. The release boundary is explicit: ALETHEIA is a research and review prototype. It is not legal advice, political authority, religious authority, medical authority, a sovereign system, an election mechanism, or an automated enforcement tool. Outputs are diagnostic and correctable, not final verdicts.")
+        st.write("Patch 45 adds public-facing limitations, ethics, and release notes. The release boundary is explicit: ALETHEIA is a research and review prototype. It is not legal advice, political authority, religious authority, medical authority, an election mechanism, or an automated enforcement tool. Outputs are diagnostic and correctable, not final verdicts.")
 
     with st.expander("Sample Reports", expanded=False):
-        st.write("Patch 46 adds sample reports so users can inspect ALETHEIA output before uploading their own documents: a policy audit, boundary-case report, self-audit report, and local witness receipt. These examples demonstrate structure only; they are not legal advice, policy commands, governance decisions, religious validation, or final judgments.")
+        st.write("Patch 46 adds sample reports so users can inspect ALETHEIA output before uploading their own documents: a policy audit, boundary-case report, self-audit report, and local witness receipt. These examples demonstrate structure only; they are not legal advice, policy commands, governance decisions, extraordinary-claim validation, or final judgments.")
 
     with st.expander("App Navigation + Smoke Test Cleanup", expanded=False):
-        st.write("Patch 47 makes the visible app path explicit: Mirror Check, Stress Test, Boundary Cases, Evidence Lab, World Lens, Protocol Guide, and Why ALETHEIA. The navigation map helps users find the right module while preserving the rule that every tab reflects or explains; no tab commands, enforces, validates spiritual authority, or replaces human judgment.")
+        st.write("Patch 47 makes the visible app path explicit: Mirror Check, Stress Test, Boundary Cases, Evidence Lab, World Lens, Protocol Guide, and Why ALETHEIA. The navigation map helps users find the right module while preserving the rule that every tab reflects or explains; no tab commands, enforces, validates extraordinary authority claims, or replaces human judgment.")
 
     with st.expander("Doctrine Reference", expanded=True):
         st.markdown(
@@ -153,7 +153,7 @@ def render_about():
             - **Empirical evidence rule** — public datasets provide the observed baseline; ALETHEIA maps that evidence into governance-risk variables and applies the Sydney Protocol overlay.
             - **Trust evidence rule** — raw survey trust and trust priors are distinct; neutral/default priors are not observed trust.
             - **Coverage and confidence** — coverage applies to the active selected view and does not imply whole-world completeness.
-            - **9k representation doctrine** — population-weighted seats show proportional exposure by selected year; partial views use active-seat language and never create sovereign authority, a political mandate, or a real governance body.
+            - **9k representation doctrine** — population-weighted seats show proportional exposure by selected year; partial views use active-seat language and never create authority, a political mandate, or a real governance body.
             """
         )
 
@@ -195,7 +195,7 @@ def render_about():
         st.write("See docs/stress_test_prompting_guide.md and docs/stress_test_batch_baselines.md for the scenario-writing rules and batch contract.")
 
     st.markdown("### Scientific caution")
-    st.warning("ALETHEIA does not prove legal, political, medical, or religious truth. Its classifications are internal model outputs. Empirical results depend on dataset quality, variable mapping, normalization choices, missing data, and validation against external outcomes.")
+    st.warning("ALETHEIA does not prove legal, political, medical, religious, or final truth. Its classifications are internal model outputs. Empirical results depend on dataset quality, variable mapping, normalization choices, missing data, and validation against external outcomes.")
 
     st.markdown(
         """

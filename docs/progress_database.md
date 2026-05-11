@@ -1082,3 +1082,28 @@ Check:
 ```bat
 tools\run_patch_checks.bat 72_5
 ```
+
+## Patch 72.6 - Why ALETHEIA Neutral Text Refresh
+
+Date: 2026-05-11
+
+Patch 72.6 refreshes the Why ALETHEIA / About page so it is neutral, friendly, and current with Patches 72-72.5.
+
+Implemented:
+- Updated About intro to say ALETHEIA reviews risk, evidence gaps, and safeguard needs without deciding, enforcing, validating final truth, or replacing human judgment.
+- Updated Humility Protocol copy to frame the Z-axis as the boundary of what human/system tools may responsibly claim.
+- Updated 9k copy as representation/exposure review support, not final safety, final legitimacy, or authority.
+- Updated Audit, Boundary Cases, Evidence Lab, sample-report, navigation, World Lens, and caution copy to match the neutral text standard.
+
+Invariant preserved:
+- No scoring logic change.
+- No verdict-routing change.
+- No receipt schema change.
+- No Threshold Mapping math change.
+- No tree visual, Stress Test, Boundary Cases, Evidence Lab, World Lens, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_6
+```
