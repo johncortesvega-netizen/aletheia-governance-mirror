@@ -915,3 +915,27 @@ Check:
 tools\run_patch_checks.bat 72_14
 ```
 
+## Patch 72.15 - World Lens Year and Focus Guard
+
+Date: 2026-05-11
+
+Patch 72.15 fixes World Lens year-selection and value-guard runtime issues.
+
+Implemented:
+- World Lens uses the Evidence Lab synced year only as the initial seed for the year widget.
+- Manual World Lens evidence-year selections are no longer overwritten on every rerun.
+- Defined `focus_iso3` safely before the selected-year value guard call.
+- Added a prototype-branch allocation heading so prototype mode does not depend on empirical-branch variables.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No 9k allocation formula change.
+- No Evidence Lab data model, receipt schema, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_15
+```
+

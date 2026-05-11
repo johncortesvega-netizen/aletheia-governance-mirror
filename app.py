@@ -5483,7 +5483,10 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
             synced_evidence_year_int = int(synced_evidence_year) if synced_evidence_year is not None else None
         except Exception:
             synced_evidence_year_int = None
-        if synced_evidence_year_int in years and st.session_state.get("grid_year_v2") != synced_evidence_year_int:
+        # Patch 72.15: seed the World Lens year from the Evidence Lab synced
+        # year only before the widget exists. Do not force it back on every
+        # Streamlit rerun after the user manually selects another available year.
+        if "grid_year_v2" not in st.session_state and synced_evidence_year_int in years:
             st.session_state["grid_year_v2"] = synced_evidence_year_int
         elif st.session_state.get("grid_year_v2") not in years:
             st.session_state["grid_year_v2"] = years[-1]
@@ -5774,7 +5777,8 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
         m9.metric("V-Dem coverage", "—" if pd.isna(vdem_coverage) else f"{vdem_coverage:.1%}")
         st.caption("Coverage cards show only the active selected-year rows after filters. " + trust_coverage_note)
 
-        # Patch 72.14: keep World Lens resilient if an older deployment or
+        focus_iso3 = str(st.session_state.get("aletheia_synced_iso3") or "NLD").upper().strip()
+        # Patch 72.14/72.15: keep World Lens resilient if an older deployment or
         # partial patch has app.py calling selected_year_value_guard before the
         # helper import is available. The fallback is diagnostic-only and mirrors
         # the core helper's essential selected-year/seat checks.
@@ -6819,6 +6823,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             )
 
     elif grid_mode == "Prototype region brackets":
+        allocation_heading = "Prototype verdict signal"
         update_protocol_state(grid_basis="Prototype region brackets", last_update_source="World Lens", synthetic_demo_active=True)
         st.caption("World Lens source state: **Prototype region brackets**. This is a concept fallback, not empirical country-year evidence.")
         st.info(
