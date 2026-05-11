@@ -1142,6 +1142,7 @@ def action_chart(sim: dict):
 # The tree remains an explanatory UI element; receipt metrics stay canonical.
 TREE_VISUAL_CANOPY_LAYER_COUNT = 8
 TREE_VISUAL_CAPTION_CLASS = "aletheia-tree-caption-below-visual"
+TREE_VISUAL_CENTRAL_GLOW_REMOVED = True
 
 def render_pulse_tree(
     score: float,
@@ -1162,6 +1163,9 @@ def render_pulse_tree(
     Patch 71.2: the canopy and caption are visual-only polish. The caption is
     rendered below the SVG visual so it does not sit inside the tree canopy or
     trunk area.
+
+    Patch 71.6: removes the large central glow/blob behind the canopy. The
+    tree state still follows the protocol-adjusted verdict; this is visual-only.
     """
     score = max(0.0, min(1.0, float(score)))
     ego = max(0.0, min(1.0, float(ego)))
@@ -1205,7 +1209,6 @@ def render_pulse_tree(
     canopy_sag = 8 if state == "SANCTUARY" else (12 if state == "THRESHOLD" else 17)
     canopy_y_offset = 14 if state == "SANCTUARY" else (18 if state == "THRESHOLD" else 23)
     fallen_count = int(round(ego * 10)) if state != "QUESTION_PROMPT" else 0
-    glow_height = 34 + int(alignment * 46)
 
     fallen_svg = ""
     for i in range(fallen_count):
@@ -1256,7 +1259,7 @@ def render_pulse_tree(
         <svg width="100%" height="250" viewBox="0 0 260 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ALETHEIA explanatory tree visual">
             <rect x="0" y="0" width="260" height="250" rx="18" fill="#0b1020"/>
             <ellipse cx="130" cy="221" rx="92" ry="14" fill="rgba(212,184,138,0.16)"/>
-            <ellipse cx="130" cy="{175 - glow_height / 2}" rx="{38 + alignment * 30:.0f}" ry="{glow_height}" fill="{glow_color}"/>
+            <!-- Patch 71.6: central glow/blob intentionally removed; canopy leaves provide the visual state. -->
 
             <path d="M124 214 C126 178, 123 145, 118 116 C132 144, 139 176, 137 214 Z" fill="#8b5e3c"/>
             <path d="M128 148 C110 129, 94 105, 80 79" stroke="#8b5e3c" stroke-width="9" stroke-linecap="round" fill="none"/>

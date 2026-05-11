@@ -694,3 +694,27 @@ Files:
 - PATCH_71_5_MANIFEST.txt
 - PATCH_71_5_RECOVERY_NOTE.md
 
+
+## Patch 71.6 — Tree Central Glow Removal
+
+Date: 2026-05-11
+
+Patch 71.6 is a visual-only tree cleanup following user review of the Stress Test / Mirror Check tree. The large central glow/blob behind the canopy made the tree read like it had a big circle in the center instead of a clean layered canopy.
+
+Implemented:
+- Removed the central alignment glow ellipse from `render_pulse_tree`.
+- Kept canopy leaves, trunk, branches, ground shadow, fallen leaves, caption, and state color behavior.
+- Added a patch-specific regression test confirming the central glow is removed while core tree elements remain.
+
+Invariant preserved:
+- No scoring logic changed.
+- No receipt logic changed.
+- No Stress Test, Mirror Check, Boundary Cases, World Lens, storage, or authority-boundary logic changed.
+- ALETHEIA remains a mirror, not a throne.
+
+Files:
+- app.py
+- tests/test_patch_71_6_tree_central_glow_removal.py
+- PATCH_71_6_MANIFEST.txt
+- PATCH_71_6_RECOVERY_NOTE.md
+

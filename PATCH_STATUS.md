@@ -1,5 +1,18 @@
 # ALETHEIA Patch Status
 
+## Patch 71.6 — Tree Central Glow Removal
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Removed the large central glow/blob from the explanatory tree visual.
+- Preserved canopy leaves, trunk, branches, fallen leaves, state color, and caption placement.
+- This is visual-only; no scoring, receipt, Stress Test, Mirror Check, Boundary Cases, World Lens, storage, or authority-boundary logic changed.
+
+Validation:
+- `tools\run_patch_checks.bat 71_6`
+
+
 ## Patch 71.5 — Boundary Cases Missing-Safeguard Cleanup
 
 Status: READY FOR LOCAL TESTING
