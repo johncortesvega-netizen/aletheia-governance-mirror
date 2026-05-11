@@ -1,5 +1,17 @@
 # ALETHEIA Patch Status
 
+## Patch 71.8 — Stress Test Review Band Card Polish
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Stress Test result card now shows the review band on its own line for THRESHOLD outputs.
+- Display-only polish: no receipt schema, scoring, verdict-routing, taxonomy, Mirror Check, tree, Boundary Cases, World Lens, storage, or authority-boundary changes.
+
+Validation:
+- `tools\run_patch_checks.bat 71_8`
+
+
 ## Patch 71.7 — Threshold Review Band Display
 
 Status: READY FOR LOCAL TESTING

@@ -746,3 +746,27 @@ Files:
 - PATCH_71_7_MANIFEST.txt
 - PATCH_71_7_RECOVERY_NOTE.md
 
+
+## Patch 71.8 — Stress Test Review Band Card Polish
+
+Date: 2026-05-11
+
+Patch 71.8 is a small display-only follow-up to Patch 71.7. The Stress Test result card now displays the review band on its own line so `Safety risk` and `Review band` do not wrap awkwardly.
+
+Implemented:
+- Replaced the one-line helper text with a two-line HTML helper in `app.py`.
+- Added a patch-specific regression test.
+
+Invariant preserved:
+- No receipt schema change.
+- No scoring logic change.
+- No verdict-routing change.
+- No taxonomy expansion.
+- No Mirror Check, tree visual, Boundary Cases, World Lens, storage, or authority-boundary logic changed.
+
+Files:
+- app.py
+- tests/test_patch_71_8_stress_review_band_card_polish.py
+- PATCH_71_8_MANIFEST.txt
+- PATCH_71_8_RECOVERY_NOTE.md
+

@@ -3513,8 +3513,12 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         if verdict == "THRESHOLD":
             result_display += f"<br><span style='font-size:1.05rem;color:#d4b88a;'>{review_band_label}</span>"
 
+        result_helper = f"Safety risk: {risk}"
+        if verdict == "THRESHOLD":
+            result_helper += f"<br>Review band: {review_band_label}"
+
         with c1:
-            metric_card("Result state", result_display, f"Safety risk: {risk} · Review band: {review_band_label}")
+            metric_card("Result state", result_display, result_helper)
         with c2:
             metric_card("Integrity", f"{report['integrity']:.3f}", "Current reading. Raw values stay in the local receipt.")
         with c3:
