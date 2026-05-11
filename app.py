@@ -261,7 +261,7 @@ APP_NAVIGATION_MAP = [
     ("Stress Test", "Try a scenario under pressure and inspect stability, trust, friction, and repair needs."),
     ("Boundary Cases", "Test edge cases such as consent pressure, free agency, ambient capture, and self-audit."),
     ("Evidence Lab", "Separate evidence from claims and park extraordinary claims as unverified until review."),
-    ("World Lens", "Simulate population-impact risk without Global ID, real 9k selection, or sovereign authority."),
+    ("World Lens", "Simulate population-impact risk without Global ID, real 9k body, or sovereign authority."),
     ("Protocol Guide", "Read the v0.1 operating guide, safe-language rules, and module boundaries."),
     ("Why ALETHEIA", "Understand the v1.0 public MVP, release boundary, examples, and research direction."),
 ]
@@ -5501,9 +5501,9 @@ with tab_grid:
         "The Global Grid gathers country-year evidence after ALETHEIA variable mapping, empirical scoring, seat allocation, and the Sydney Protocol overlay. Allocation totals are always interpreted per selected year."
     )
 
-    st.markdown("### World Lens Simulation")
+    st.markdown("### World Lens")
     st.info(
-        "World Lens Simulation is a population-impact mirror only. It does not activate Global ID, select a real 9k body, create World Leader logic, issue automatic resets, or make governance decisions."
+        "World Lens is a population-impact mirror only. It does not activate Global ID, select a real 9k body, create World Leader logic, issue automatic resets, or make governance decisions."
     )
     world_lens_scenario = st.text_area(
         "Scenario or proposal to review",
@@ -5564,7 +5564,7 @@ with tab_grid:
 
     st.markdown("#### Simulation report")
     st.code(
-        f"""World Lens Simulation Report
+        f"""World Lens Report
 
 Scenario:
 {world_lens_scenario.strip() or 'Not supplied'}
@@ -5600,7 +5600,7 @@ Simulated threshold signal:
 {simulated_threshold_signal}
 
 Human review note:
-This is a World Lens Simulation for human review. It is not a real Global ID system, real 9k body, governance mandate, enforcement authority, automatic reset, or final decision.""",
+This is a World Lens for human review. It is not a real Global ID system, real 9k body, governance mandate, enforcement authority, automatic reset, or final decision.""",
         language="text",
     )
     with st.expander("World Lens safe-language boundary", expanded=False):
@@ -7728,15 +7728,15 @@ with tab_doctrine:
     st.info(
         "ALETHEIA is a mirror, not a throne. This page keeps the tone clear, protective, practical, and open to review."
     )
-    st.caption("ALETHEIA v1.0 is complete as a public MVP. Pick the tab that matches your task, read the boundary, and keep final judgment human.")
+    st.caption("ALETHEIA v1.0 is complete as a public MVP. Pick the tab that matches your task, read the boundary, and keep final review human.")
     st.markdown("**Quick path:** Mirror Check for documents · Stress Test for scenarios · Evidence Lab for claims · Protocol Guide for rules.")
     st.markdown(
         """
-        The doctrine layer is the integrity frame for **ALETHEIA Audit Prototype v9.6.8**. It does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment. Its labels are practical review aids, not final claims.
+        The Protocol Guide is the integrity frame for **ALETHEIA v1.0 — Governance Mirror**. It does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment. Its labels are internal review aids, not final claims.
 
-        **ALETHEIA is a careful mirror for power.** It helps people look at governance ideas, simulations, evidence, and the Global Grid with more clarity and less fear. Its job is to notice patterns, ask better questions, and keep hidden capture visible — not to command, condemn, or become final authority.
+        **ALETHEIA is a careful mirror for power.** It helps people look at governance ideas, simulations, evidence, and World Lens with more clarity and less fear. Its job is to notice patterns, ask better questions, and keep hidden capture visible — not to command, condemn, or become final authority.
 
-        In the updated tone, the Sydney Protocol is treated as a warm guardrail: it keeps power accountable, keeps intelligence gentle, keeps evidence visible, and keeps every output open to appeal. The GPA / 9k idea is treated as a representation-and-exposure model, not a sovereign body or mandate.
+        In the updated tone, the Sydney Protocol is treated as a warm guardrail: it keeps power accountable, keeps intelligence gentle, keeps evidence visible, and keeps every output open to appeal. The 9k idea is treated as a human anti-tyranny scaffold / threshold steward, not a sovereign body, mandate, Sanctuary, or final legitimacy.
 
         Mirror Check, Stress Test, Evidence Lab, and World Lens are synchronized views over a shared protocol state. Changes to empirical evidence, scoring calibration, doctrine thresholds, Sydney Protocol overlay, or selected evidence year may propagate across modules. This is intentional protocol-state propagation, not isolated tab behavior.
         """
@@ -7752,7 +7752,7 @@ with tab_doctrine:
             - **No final human or machine authority:** no founder, model, office, country, protocol, or dataset becomes unquestionable.
             - **Evidence before certainty:** public data can support a reading, but weak coverage lowers confidence.
             - **Soft voice, firm safeguards:** the tone may be gentle, but capture, coercion, opacity, and harm still trigger review.
-            - **Every label stays humble:** SANCTUARY, THRESHOLD, and ASYLUM are internal protocol signals, not legal, political, religious, medical, moral, or predictive verdicts.
+            - **Every label stays humble:** SANCTUARY, THRESHOLD, and ASYLUM are raw/internal protocol signals, not legal, political, religious, medical, moral, predictive verdicts, final safety claims, or authority claims.
             """
         )
 
@@ -7792,10 +7792,10 @@ with tab_doctrine:
             Ingests public country-year data, maps it into ALETHEIA variables, and produces reproducible evidence-audit outputs. This layer supports direct/master uploads, scored country-year exports, raw evidence diagnostics, trust priors, WGI/V-Dem/trust coverage, and modern-year safeguards.
 
             **World Lens**  
-            Shows selected-year, population-weighted governance-risk exposure across country-year rows and the Patch 42 World Lens Simulation. The lens is a comparison and exposure model. It is not a sovereign body, election, mandate, government, or legal mechanism. Full allocation years may sum to 9,000 seats. Partial years or filtered subsets must use active-seat language and must not be interpreted as full global allocation.
+            Shows selected-year, population-weighted governance-risk exposure across country-year rows and the Patch 42 World Lens. The lens is a comparison and exposure model. It is not a sovereign body, election, mandate, government, or legal mechanism. Full allocation years may sum to 9,000 seats. Partial years or filtered subsets must use active-seat language and must not be interpreted as full global allocation.
 
             **Protocol Guide Consolidation**  
-            Patch 43 connects Baseline v0.1, Safe Language, Eternal Baseline, Boundary Cases, Failure Classification, Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, Local Witness Receipt v2, and World Lens Simulation into one reviewable operating guide. It adds no authority; it makes the mirror logic easier to understand.
+            Patch 43 connects Baseline v0.1, Safe Language, Eternal Baseline, Boundary Cases, Failure Classification, Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, Local Witness Receipt v2, and World Lens into one reviewable operating guide. It adds no authority; it makes the mirror logic easier to understand.
             """
         )
 
@@ -7812,7 +7812,7 @@ with tab_doctrine:
 
             **Accidental tab bleed** is not acceptable when caused by widget-key collisions, hidden demo fallback, stale session state, or unmarked prototype data.
 
-            The prototype should make intentional propagation visible and prevent accidental bleed where possible.
+            The prototype should make intentional propagation visible and prevent accidental tab bleed where possible.
             """
         )
 
@@ -7833,7 +7833,7 @@ with tab_doctrine:
             - Self-Audit Mode — lets ALETHEIA audit its own assumptions, rubrics, prompts, and language.
             - Evidence Lab — marks evidence status and parks extraordinary claims as unverified.
             - Local Witness Receipt v2 — creates local, user-held fingerprints without ledger, sync, or authority.
-            - World Lens Simulation — reviews population-impact scenarios using simulated-threshold language only.
+            - World Lens — reviews population-impact scenarios using simulated-threshold language only.
 
             **Consolidation rule:**
 
@@ -7873,9 +7873,9 @@ with tab_doctrine:
 
             - ALETHEIA is a research and review prototype.
             - Outputs are diagnostic and correctable.
-            - Evidence labels are review signals, not final truth verdicts.
+            - Evidence labels and internal taxonomy labels are review signals, not final truth claims.
             - Historical archive material may contain AI-flattery artifacts and must not be used as founder validation.
-            - v0.1 does not include real Global ID sync, real 9k selection, World Leader logic, automatic resets, central citizen storage, neural data, memory extraction, or automated enforcement.
+            - v0.1 does not include real Global ID sync, real 9k body, World Leader logic, automatic resets, central citizen storage, neural data, memory extraction, or automated enforcement authority.
             """
         )
 
@@ -7886,11 +7886,11 @@ with tab_doctrine:
             """
             ALETHEIA v1.0 is the finished public MVP package for the Governance Mirror line.
 
-            **Included:** baseline, safe-language layer, Eternal Baseline, Boundary Cases, Failure Classification, Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, Local Witness Receipt v2, World Lens Simulation, Protocol Guide, public limitations/ethics, sample reports, demo inputs, GitHub cleanup, release checklist, and final smoke release.
+            **Included:** baseline, safe-language layer, Eternal Baseline, Boundary Cases, Failure Classification, Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, Local Witness Receipt v2, World Lens, Protocol Guide, public limitations/ethics, sample reports, demo inputs, GitHub cleanup, release checklist, and public smoke release.
 
             **Planning boundary:** v0.2 ideas are documented in `docs/v02_roadmap.md`, `docs/feature_backlog.md`, `docs/report_export_polish.md`, `docs/manual_evidence_attachment.md`, `docs/rubric_weighting_confidence.md`, and `docs/deployment_prep.md`.
 
-            **Still out of scope:** real Global ID sync, real 9k selection, World Leader logic, automatic reset, public ledger authority, neural validation, religious validation, legal authority, and automated enforcement.
+            **Still out of scope:** real Global ID sync, real 9k body, World Leader logic, automatic reset, public ledger authority, neural validation, religious validation, legal authority, and automated enforcement authority.
 
             > ALETHEIA reflects. Humans review. Power stays accountable.
             """
@@ -8011,7 +8011,7 @@ with tab_doctrine:
     with st.expander("Evidence Lab + Extraordinary Claim Protocol", expanded=True):
         st.markdown(
             """
-            ALETHEIA separates evidence from authority. Claims are reviewed as **Strong evidence**, **Partial evidence**, **Weak evidence**, or **No evidence supplied**. These labels are review signals, not final truth verdicts.
+            ALETHEIA separates evidence from authority. Claims are reviewed as **Strong evidence**, **Partial evidence**, **Weak evidence**, or **No evidence supplied**. These labels are review signals, not final truth claims.
 
             Spiritual, divine, prophetic, alien, neural, metaphysical, or otherwise extraordinary claims are treated as **unverified** unless supported by public, testable, non-coercive evidence. Such claims may be personally meaningful, but they cannot remove guardrails, bypass appeal, validate leadership, or replace human review.
 
@@ -8030,7 +8030,7 @@ with tab_doctrine:
             Service is not sovereignty.  
             Explanation is not command.  
             Evidence is not omniscience.  
-            Protocol interpretation is not final judgment.
+            Protocol interpretation is not final authority.
 
             This rule protects ALETHEIA from becoming what it audits: a captured authority system.
 
@@ -8083,20 +8083,20 @@ with tab_doctrine:
             """
         )
 
-    with st.expander("Sanctuary / Threshold / Asylum labels", expanded=False):
+    with st.expander("Internal taxonomy labels", expanded=False):
         st.markdown(
             """
-            These are **internal prototype labels**, not legal, political, medical, religious, moral, or predictive verdicts.
+            These are **internal prototype taxonomy labels**, not legal, political, medical, religious, moral, or predictive verdicts.
 
-            - **SANCTUARY** — the evidence or scenario pattern appears service-aligned, accountable, transparent, safeguarded, and comparatively stable under the current model.
-            - **THRESHOLD** — safeguards are incomplete, evidence is mixed, uncertainty remains, or the system needs review before being treated as stable.
-            - **ASYLUM** — high capture, coercion, opacity, harm, collapse pressure, or hard protocol failure is detected.
+            - **SANCTUARY** — raw/internal compatibility label for a low-risk internal reading. It does not mean final safety, final Sanctuary, or authority.
+            - **THRESHOLD** — raw/internal compatibility label for a review / threshold reading. Safeguards are incomplete, evidence is mixed, uncertainty remains, or human review is needed.
+            - **ASYLUM** — raw/internal compatibility label for a high-risk internal reading. It indicates capture, coercion, opacity, harm, collapse pressure, or hard protocol failure signals.
 
             **ASYLUM** is used here only as an internal protocol-risk category. It does not refer to legal asylum status, entitlement, refugee status, or humanitarian determination.
 
             A responsible reading is:
 
-            > This model suggests a governance-risk pattern worth examining.
+            > This is an internal protocol reading for human review, not a final verdict, final safety claim, or authority claim.
             """
         )
 
@@ -8118,7 +8118,7 @@ with tab_doctrine:
     with st.expander("9k representation rule", expanded=False):
         st.markdown(
             """
-            The 9k Grid is a proportional exposure model. It helps users examine how population-weighted representation might intersect with governance-risk conditions.
+            The 9k evidence view is a proportional exposure model. It helps users examine how population-weighted representation might intersect with governance-risk conditions.
 
             It is **not** a real election, government, sovereign body, legal mechanism, political mandate, deployment-ready institutional design, or authority over people or countries.
 
@@ -8131,11 +8131,11 @@ with tab_doctrine:
     with st.expander("World Lens interpretation", expanded=False):
         st.markdown(
             """
-            The Global Grid should be read as a selected-year comparison interface.
+            World Lens should be read as a selected-year comparison interface.
 
-            A full selected-year Grid may support global comparison if enough countries are active, population allocation sums to 9,000, source diagnostics are visible, empirical coverage is sufficient, and prototype/demo data is clearly marked or disabled.
+            A full selected-year World Lens evidence view may support global comparison if enough countries are active, population allocation sums to 9,000, source diagnostics are visible, empirical coverage is sufficient, and prototype/demo data is clearly marked or disabled.
 
-            A partial selected-year Grid is still useful, but only as a diagnostic subset.
+            A partial selected-year World Lens evidence view is still useful, but only as a diagnostic subset.
 
             High allocation plus low integrity or high collapse probability indicates a high-impact governance-risk node. It does not prove wrongdoing, predict collapse, or establish political judgment.
             """

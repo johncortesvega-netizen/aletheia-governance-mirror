@@ -1614,3 +1614,30 @@ Check:
 tools\run_patch_checks.bat 72_29
 ```
 
+## Patch 72.30 - Protocol Guide Copy Humility Polish
+
+Date: 2026-05-12
+
+Patch 72.30 gives Protocol Guide the same copy/humility treatment applied to the rest of the app.
+
+Implemented:
+- Protocol Guide identity now says ALETHEIA v1.0 — Governance Mirror.
+- `keep final judgment human` changed to `keep final review human`.
+- Old Protocol Guide `Global Grid` public copy changed to World Lens.
+- 9k copy now says human anti-tyranny scaffold / threshold steward.
+- `Sanctuary / Threshold / Asylum labels` changed to `Internal taxonomy labels`.
+- Internal taxonomy descriptions now explicitly state that SANCTUARY is not final safety, final Sanctuary, or authority.
+- Release/history copy avoids `final smoke release`, real 9k selection, and old final-truth wording where it could sound too absolute.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model, authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_30
+```
+
