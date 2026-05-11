@@ -529,6 +529,84 @@ def _world_lens_taxonomy_label(value: object) -> str:
     }.get(label, str(value))
 
 
+def _world_lens_ui_table_df(df: pd.DataFrame, *, show_raw: bool = False) -> pd.DataFrame:
+    """Patch 72.26: live UI table view for World Lens taxonomy displays.
+
+    By default, live UI tables show the public display label and humility note,
+    while preserving internal taxonomy label. Raw compatibility columns stay in
+    downloadable exports unless show_raw=True.
+    """
+    out = _world_lens_public_display_df(df)
+    if not isinstance(out, pd.DataFrame) or out.empty:
+        return out
+    if not show_raw:
+        raw_cols = [c for c in out.columns if str(c).startswith("raw_")]
+        if raw_cols:
+            out = out.drop(columns=raw_cols)
+    first_cols = [c for c in ["empirical_pattern_display", "internal_taxonomy_label", "humility_note"] if c in out.columns]
+    remaining_cols = [c for c in out.columns if c not in first_cols]
+    return out[first_cols + remaining_cols]
+
+
+def _protocol_public_label(value: object) -> str:
+    label = str(value).upper().strip()
+    return {
+        "SANCTUARY": "Low-risk internal reading",
+        "THRESHOLD": "Review / threshold reading",
+        "ASYLUM": "High-risk internal reading",
+    }.get(label, str(value))
+
+
+def _protocol_humility_note(value: object) -> str:
+    label = str(value).upper().strip()
+    return {
+        "SANCTUARY": "Internal taxonomy label only; not final safety, final Sanctuary, or authority.",
+        "THRESHOLD": "Review-state taxonomy; human interpretation and safeguards remain required.",
+        "ASYLUM": "High-risk taxonomy; human review required; no enforcement action.",
+    }.get(label, "Internal protocol reading only; human review remains required.")
+
+
+def _protocol_taxonomy_ui_table_df(df: pd.DataFrame, *, show_raw: bool = False) -> pd.DataFrame:
+    """Patch 72.27: generic live UI display guard for Mirror/Stress/Audit tables."""
+    if not isinstance(df, pd.DataFrame) or df.empty:
+        return df
+    out = df.copy()
+    source_col = None
+    for candidate in [
+        "protocol_adjusted_state", "State", "state", "verdict", "Verdict",
+        "result", "Result", "aletheia_verdict", "internal_taxonomy_label",
+    ]:
+        if candidate in out.columns:
+            source_col = candidate
+            break
+    if source_col is not None:
+        labels = out[source_col].astype(str).str.upper().str.strip()
+        if "protocol_pattern_display" not in out.columns:
+            out.insert(out.columns.get_loc(source_col), "protocol_pattern_display", labels.map({
+                "SANCTUARY": "Low-risk internal reading",
+                "THRESHOLD": "Review / threshold reading",
+                "ASYLUM": "High-risk internal reading",
+            }).fillna(out[source_col]))
+        if "internal_taxonomy_label" not in out.columns:
+            out["internal_taxonomy_label"] = out[source_col]
+        if "humility_note" not in out.columns:
+            out["humility_note"] = labels.map({
+                "SANCTUARY": "Internal taxonomy label only; not final safety, final Sanctuary, or authority.",
+                "THRESHOLD": "Review-state taxonomy; human interpretation and safeguards remain required.",
+                "ASYLUM": "High-risk taxonomy; human review required; no enforcement action.",
+            }).fillna("Internal protocol reading only; human review remains required.")
+        if not show_raw and source_col in ["verdict", "Verdict", "result", "Result", "aletheia_verdict", "State", "state"]:
+            out = out.drop(columns=[source_col])
+    first_cols = [c for c in ["protocol_pattern_display", "empirical_pattern_display", "internal_taxonomy_label", "humility_note"] if c in out.columns]
+    remaining_cols = [c for c in out.columns if c not in first_cols]
+    return out[first_cols + remaining_cols]
+
+
+def _protocol_metric_display(value: object) -> str:
+    label = str(value).upper().strip()
+    return html.escape(_protocol_public_label(label))
+
+
 st.set_page_config(page_title="ALETHEIA", page_icon="🌿", layout="wide")
 
 st.markdown(
@@ -2640,7 +2718,7 @@ def run_sydney_protocol_self_check() -> dict:
             "max_trust": 0.75,
         },
         {
-            "name": "Safeguarded public system must remain eligible for Sanctuary",
+            "name": "Safeguarded public system should remain low-risk eligible",
             "text": "A public health allocation system is transparently audited, has independent appeal rights, rotating citizen oversight, no private ownership, and lawful dissolution if abuses occur.",
             "forbidden_verdicts": {"ASYLUM"},
             "required_verdicts": {"SANCTUARY"},
@@ -2743,11 +2821,11 @@ def render_sydney_protocol_self_check_gate():
         if check.get("failures"):
             st.code("\n".join(check["failures"]), language="text")
         if check.get("results"):
-            st.dataframe(pd.DataFrame(check["results"]), use_container_width=True, hide_index=True)
+            st.dataframe(_protocol_taxonomy_ui_table_df(pd.DataFrame(check["results"])), use_container_width=True, hide_index=True)
         st.stop()
 
     with st.expander("Sydney Protocol logic check: PASS", expanded=False):
-        st.dataframe(pd.DataFrame(check.get("results", [])), use_container_width=True, hide_index=True)
+        st.dataframe(_protocol_taxonomy_ui_table_df(pd.DataFrame(check.get("results", []))), use_container_width=True, hide_index=True)
         st.caption("These sentinel cases run fail-closed so broken guardrail logic cannot silently produce trusted outputs.")
 
 def llm_governance_judgment(query: str, scan: dict, sim: dict, report: dict) -> tuple[dict, str]:
@@ -3019,6 +3097,7 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
 
     detail_rows = [
         f'<div><strong>Safety risk:</strong> {safe_risk}</div>',
+        f'<div style="margin-top:0.15rem;"><strong>Humility note:</strong> {html.escape(_protocol_humility_note(verdict))}</div>',
     ]
     if verdict == "THRESHOLD":
         detail_rows.append(
@@ -3040,7 +3119,10 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     {safe_source} · Protocol-adjusted internal label
   </div>
   <div style="color:{color};font-size:2rem;font-weight:900;margin-top:0.25rem;">
-    {verdict}
+    {_protocol_metric_display(verdict)}
+  </div>
+  <div style="color:#c9c0b2;font-size:0.9rem;font-weight:700;margin-top:0.1rem;">
+    Internal taxonomy: {html.escape(str(verdict))}
   </div>
   {review_band_line}
   <div style="color:#e8e0d0;margin-top:0.5rem;">{detail_rows_html}</div>
@@ -3382,7 +3464,7 @@ def render_audit_module_integrity_panel(*, expanded: bool = False):
         st.dataframe(pd.DataFrame(module_rows), use_container_width=True, hide_index=True)
         if isinstance(check, dict) and check.get("results"):
             st.markdown("#### Sydney Protocol guard tests")
-            st.dataframe(pd.DataFrame(check.get("results", [])), use_container_width=True, hide_index=True)
+            st.dataframe(_protocol_taxonomy_ui_table_df(pd.DataFrame(check.get("results", []))), use_container_width=True, hide_index=True)
 
 render_sydney_protocol_self_check_gate()
 
@@ -3732,7 +3814,7 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         if stress_batch_is_stale and st.session_state.get("stress_batch_summary"):
             with st.expander("Last closed Stress batch", expanded=False):
                 st.caption("Previous batch results are kept for review, but downloads are hidden until the current input is explicitly run.")
-                st.dataframe(pd.DataFrame(st.session_state.stress_batch_summary), use_container_width=True, hide_index=True, height=220)
+                st.dataframe(_protocol_taxonomy_ui_table_df(pd.DataFrame(st.session_state.stress_batch_summary)), use_container_width=True, hide_index=True, height=220)
 
     if "last_report" not in st.session_state:
         st.info("No review has run yet. Add your input, load a demo, or use the Manual test.")
@@ -3786,16 +3868,17 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         review_band = review_band_for_state(verdict, report, sim)
         review_band_label = review_band.get("label", verdict.title())
         review_band_summary = review_band.get("summary", "")
-        result_display = f"<span style='color:{verdict_color}'>{verdict}</span>"
+        result_display = f"<span style='color:{verdict_color}'>{_protocol_metric_display(verdict)}</span>"
+        result_display += f"<br><span style='font-size:0.9rem;color:#c9c0b2;'>Internal taxonomy: {html.escape(str(verdict))}</span>"
         if verdict == "THRESHOLD":
             result_display += f"<br><span style='font-size:1.05rem;color:#d4b88a;'>{review_band_label}</span>"
 
-        result_helper = f"Safety risk: {risk}"
+        result_helper = f"Safety risk: {risk}<br>{_protocol_humility_note(verdict)}"
         if verdict == "THRESHOLD":
             result_helper += f"<br>Review band: {review_band_label}"
 
         with c1:
-            metric_card("Result state", result_display, result_helper)
+            metric_card("Protocol reading", result_display, result_helper)
         with c2:
             metric_card("Integrity", f"{report['integrity']:.3f}", "Current reading. Raw values stay in the local receipt.")
         with c3:
@@ -5411,7 +5494,7 @@ with tab_grid:
     st.subheader("World Lens")
     render_shared_protocol_state_notice("World Lens", expanded=True)
     st.write(
-        "Explore country-year governance-risk results, seat allocation, verdict distribution, weighted integrity, collapse pressure, and empirical coverage across the world. The Grid is meant to help you compare carefully, not rush to conclusions."
+        "Explore country-year governance-risk readings, seat allocation, internal taxonomy distribution, weighted integrity, collapse pressure, and empirical coverage across the world. World Lens is meant to help you compare carefully, not rush to conclusions."
     )
     st.caption(
         "The Global Grid gathers country-year evidence after ALETHEIA variable mapping, empirical scoring, seat allocation, and the Sydney Protocol overlay. Allocation totals are always interpreted per selected year."
@@ -6318,7 +6401,7 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
 
 {_receipt_md_table(coverage_receipt)}
 
-## Result distribution
+## Internal taxonomy distribution
 
 {_receipt_md_table(verdict_receipt)}
 
@@ -6517,7 +6600,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                 fig = go.Figure(go.Bar(x=verdict_df["empirical_pattern_display"], y=verdict_df["Seats"]))
                 fig.update_layout(template="plotly_white", title="Seat distribution by internal taxonomy", height=430, margin=dict(l=10, r=10, t=55, b=10))
                 st.plotly_chart(fig, use_container_width=True)
-                st.dataframe(verdict_df, use_container_width=True, hide_index=True)
+                st.dataframe(_world_lens_ui_table_df(verdict_df), use_container_width=True, hide_index=True)
             else:
                 st.info("No result column is available for this selected year.")
 
@@ -6559,21 +6642,21 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             with c_high:
                 st.markdown("#### Highest integrity rows")
                 high_integrity = comparison_df.dropna(subset=["_integrity"]).sort_values("_integrity", ascending=False).head(rank_limit)
-                st.dataframe(_comparison_display(high_integrity), use_container_width=True, hide_index=True)
+                st.dataframe(_world_lens_ui_table_df(_comparison_display(high_integrity)), use_container_width=True, hide_index=True)
             with c_low:
                 st.markdown("#### Lowest integrity rows")
                 low_integrity = comparison_df.dropna(subset=["_integrity"]).sort_values("_integrity", ascending=True).head(rank_limit)
-                st.dataframe(_comparison_display(low_integrity), use_container_width=True, hide_index=True)
+                st.dataframe(_world_lens_ui_table_df(_comparison_display(low_integrity)), use_container_width=True, hide_index=True)
 
             c_collapse, c_seats = st.columns(2)
             with c_collapse:
                 st.markdown("#### Highest collapse-risk rows")
                 high_collapse = comparison_df.dropna(subset=["_collapse"]).sort_values("_collapse", ascending=False).head(rank_limit)
-                st.dataframe(_comparison_display(high_collapse), use_container_width=True, hide_index=True)
+                st.dataframe(_world_lens_ui_table_df(_comparison_display(high_collapse)), use_container_width=True, hide_index=True)
             with c_seats:
                 st.markdown("#### Largest selected-year seat counts")
                 largest_seats = comparison_df.sort_values("_seats", ascending=False).head(rank_limit)
-                st.dataframe(_comparison_display(largest_seats), use_container_width=True, hide_index=True)
+                st.dataframe(_world_lens_ui_table_df(_comparison_display(largest_seats)), use_container_width=True, hide_index=True)
 
             st.markdown("#### High-impact risk rows")
             st.write(
@@ -6584,14 +6667,14 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             if high_impact.empty:
                 st.info("No high-impact risk rows were found by the selected-year rule.")
             else:
-                st.dataframe(_comparison_display(high_impact, include_reason=True), use_container_width=True, hide_index=True)
+                st.dataframe(_world_lens_ui_table_df(_comparison_display(high_impact, include_reason=True)), use_container_width=True, hide_index=True)
 
             st.markdown("#### Largest seats among low-integrity or high-collapse rows")
             risk_alloc = comparison_df[comparison_df["_low_integrity"] | comparison_df["_high_collapse"]].sort_values("_seats", ascending=False).head(rank_limit)
             if risk_alloc.empty:
                 st.info("No low-integrity or high-collapse rows are available in this selected-year view.")
             else:
-                st.dataframe(_comparison_display(risk_alloc, include_reason=True), use_container_width=True, hide_index=True)
+                st.dataframe(_world_lens_ui_table_df(_comparison_display(risk_alloc, include_reason=True)), use_container_width=True, hide_index=True)
 
             st.markdown("#### Trust / seat sensitivity watchlist")
             neutral_trust_prior_view = (
@@ -6780,7 +6863,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                     display_df = pd.concat([display_df.loc[_focus_mask], display_df.loc[~_focus_mask]], ignore_index=True)
                 else:
                     st.warning(f"Focus country **{focus_country_name or focus_iso3} · {focus_iso3}** is not present in this selected-year detail table.")
-            st.dataframe(_world_lens_public_display_df(display_df), use_container_width=True, hide_index=True, height=480)
+            st.dataframe(_world_lens_ui_table_df(display_df), use_container_width=True, hide_index=True, height=480)
             csv_grid = grid_source.to_csv(index=False)
             st.download_button(
                 "⬇️ Download selected-year World Lens CSV",
@@ -6812,21 +6895,21 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             empirical_year_rows_count = int(len(empirical_year_rows))
             empirical_year_match_ok = empirical_year_rows_count > 0
         _receipt_check(
-            "Empirical table has rows for the selected Grid year",
+            "Empirical table has rows for the selected World Lens year",
             empirical_year_match_ok,
-            f"Select a Grid year present in Empirical Evidence, or rebuild the master so {selected_year} exists.",
+            f"Select a World Lens year present in Empirical Evidence, or rebuild the master so {selected_year} exists.",
         )
 
         grid_has_rows_ok = not grid_source.empty
         _receipt_check(
-            "Global Grid has active selected-year rows",
+            "World Lens has active selected-year rows",
             grid_has_rows_ok,
             "Choose a populated evidence year, clear filters, or rebuild the master.",
         )
 
         full_or_acknowledged_ok = bool(is_full_grid or show_partial_years)
         _receipt_check(
-            "Grid interpretation is confirmed",
+            "World Lens interpretation is confirmed",
             full_or_acknowledged_ok,
             "Use a full 9k year, or turn on partial diagnostic years to acknowledge active-seat interpretation.",
         )
@@ -6887,9 +6970,9 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                 if "seats" in verdict_report.columns:
                     verdict_report["seats"] = pd.to_numeric(verdict_report["seats"], errors="coerce").fillna(0).astype(int)
                 verdict_report = _world_lens_public_display_df(verdict_report)
-                st.dataframe(verdict_report, use_container_width=True, hide_index=True)
+                st.dataframe(_world_lens_ui_table_df(verdict_report), use_container_width=True, hide_index=True)
             else:
-                st.info("No verdict distribution is available for the active selected-year rows.")
+                st.info("No internal taxonomy distribution is available for the active selected-year rows.")
 
             st.markdown("#### Choose a country-year for report context")
             if not comparison_df.empty:
@@ -6938,7 +7021,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                 selected_idx = report_options_df[report_options_df["_report_label"] == selected_label].index[0]
                 selected_row = comparison_df.loc[[selected_idx]]
                 st.info(f"Preparing report packet for: **{selected_label}**")
-                st.dataframe(_comparison_display(selected_row, include_reason=True), use_container_width=True, hide_index=True)
+                st.dataframe(_world_lens_ui_table_df(_comparison_display(selected_row, include_reason=True)), use_container_width=True, hide_index=True)
 
                 selected_row_export = _comparison_display(selected_row, include_reason=True)
                 selected_row_export["selected_year"] = int(selected_year)
@@ -6961,13 +7044,13 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                 st.download_button(
                     "⬇️ Download selected country-year report packet CSV",
                     data=selected_row_export.to_csv(index=False),
-                    file_name=f"aletheia_grid_report_packet_{selected_year}_{safe_label}.csv",
+                    file_name=f"aletheia_world_lens_report_packet_{selected_year}_{safe_label}.csv",
                     mime="text/csv",
                 )
 
             st.markdown("#### Complete World Lens receipt")
             st.write(
-                "Download a World Lens receipt ZIP for this selected year. It includes the overview, coverage, verdict distribution, "
+                "Download a World Lens receipt ZIP for this selected year. It includes the overview, coverage, internal taxonomy distribution, "
                 "comparison tables, coverage gaps, all active rows, and a markdown summary for review."
             )
 
@@ -6986,7 +7069,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             else:
                 st.warning(
                     "Receipt download is locked until Empirical Evidence and World Lens are aligned for the selected output. "
-                    "Follow the actions above, then rerun the Grid."
+                    "Follow the actions above, then rerun World Lens."
                 )
 
             st.markdown("#### Comparison packet export")
@@ -7012,11 +7095,11 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             st.download_button(
                 "⬇️ Download selected-year comparison packet CSV",
                 data=comparison_export[export_cols].to_csv(index=False),
-                file_name=f"aletheia_global_grid_comparison_{selected_year}.csv",
+                file_name=f"aletheia_world_lens_comparison_{selected_year}.csv",
                 mime="text/csv",
             )
             st.caption(
-                "This export is the bridge to Global Grid Pass 3 reports: selected year, weighted metrics, verdict context, "
+                "This export is the bridge to World Lens report packets: selected year, weighted metrics, internal taxonomy context, "
                 "rank/share, evidence fields, coverage warnings, Sydney Protocol overlay, and recommended interpretation. "
                 "Patch 72.16 adds the visible overview/coverage card values as explicit summary columns. "
                 "Trust prior coverage is fallback/model continuity coverage, not observed raw survey coverage."
@@ -7024,11 +7107,11 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
 
         with st.expander("Method and interpretation note", expanded=False):
             st.write(
-                "The selected-year grid uses uploaded empirical country-year rows with valid identity data. "
+                "The selected-year World Lens view uses uploaded empirical country-year rows with valid identity data. "
                 "Seats are allocated within each year by population share so the selected year should sum to 9,000 seats before optional filters. "
                 "Regional/income aggregates and diagnostic rows are excluded from the denominator. "
                 "Weighted metrics use active selected-year seats when available, with population as a fallback; sparse or filtered views are subset diagnostics rather than full global claims. "
-                "Verdict categories and comparison rankings are protocol interpretations, not legal or political determinations."
+                "Internal taxonomy labels and comparison rankings are protocol interpretations, not legal or political determinations."
             )
 
     elif grid_mode == "Prototype region brackets":

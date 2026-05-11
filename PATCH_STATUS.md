@@ -1113,3 +1113,54 @@ Check:
 tools\run_patch_checks.bat 72_25
 ```
 
+## Patch 72.26 - World Lens Live UI Table Guard
+
+Date: 2026-05-12
+
+Patch 72.26 aligns live World Lens UI tables with the Humility Protocol display guideline.
+
+Implemented:
+- Added `_world_lens_ui_table_df(...)`.
+- Live UI tables now show `empirical_pattern_display`, `internal_taxonomy_label`, and `humility_note` first.
+- Live UI tables hide raw compatibility columns by default while preserving raw/internal fields in downloads.
+- Applied the UI helper to World Lens comparison/detail/report tables.
+- Removed remaining old public World Lens copy using Global Grid / Grid year / verdict distribution language.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No 9k allocation formula change.
+- No Evidence Lab or World Lens data model, authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_26
+```
+
+## Patch 72.27 - Mirror Stress Live UI Taxonomy Guard
+
+Date: 2026-05-12
+
+Patch 72.27 extends live UI taxonomy/humility display alignment to Mirror Check, Stress Test, and Audit self-check views.
+
+Implemented:
+- Added generic protocol display helpers for Mirror/Stress/Audit tables and metric cards.
+- Guarded Sydney Protocol self-check result tables.
+- Guarded Mirror and Stress batch summary tables.
+- Stress Test main result card now displays a public protocol reading first and the raw internal taxonomy underneath.
+- Mirror Check judgment card now displays a public protocol reading first, the raw internal taxonomy underneath, and a humility note.
+- Reworded the guarded public-system self-check label from final-Sanctuary language to low-risk eligibility language.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model, authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_27
+```
+
