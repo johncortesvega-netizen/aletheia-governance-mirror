@@ -1897,9 +1897,13 @@ Recommended empirical columns:
 
 ## Score interpretation
 
-- SANCTUARY: integrity >= 0.62.
-- THRESHOLD: 0.42 <= integrity < 0.62.
-- ASYLUM: integrity < 0.42.
+ALETHEIA uses the raw internal taxonomy labels `SANCTUARY`, `THRESHOLD`, and `ASYLUM` for compatibility with older receipts, CSVs, and aggregation code. These are internal model labels, not final claims.
+
+- SANCTUARY: low-risk internal reading; integrity >= 0.62. This does not mean final safety, final Sanctuary, or authority.
+- THRESHOLD: review / threshold reading; 0.42 <= integrity < 0.62.
+- ASYLUM: high-risk internal reading; integrity < 0.42.
+
+Display layers should describe SANCTUARY as a low-risk internal pattern or near-boundary evidence pattern, while preserving the raw taxonomy label for traceability.
 
 ## Sydney Protocol overlay
 

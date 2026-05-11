@@ -1014,3 +1014,28 @@ Check:
 tools\run_patch_checks.bat 72_18
 ```
 
+## Patch 72.19 - Evidence Lab Humility Alignment
+
+Date: 2026-05-11
+
+Patch 72.19 aligns Evidence Lab technical displays and methodology copy with the Humility Protocol / Sanctuary-as-Asymptote standard.
+
+Implemented:
+- Renamed `Group averages by result` to `Group averages by internal taxonomy`.
+- Added humble display fields to Evidence Lab UI tables: `empirical_pattern_display`, `internal_taxonomy_label`, and `humility_note`.
+- Sanitized old SANCTUARY narrative text in protocol-detail and full empirical UI tables.
+- Updated methodology copy so SANCTUARY is described as a low-risk internal reading, not final safety, final Sanctuary, or authority.
+- Applied the same methodology update to `core_empirical.py` fallback.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No 9k allocation formula change.
+- No Evidence Lab or World Lens data model, authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_19
+```
+

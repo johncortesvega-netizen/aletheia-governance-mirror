@@ -5262,17 +5262,22 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
             st.markdown("#### Correlation checks")
             st.dataframe(corr_df, use_container_width=True, hide_index=True, height=260)
         with vc2:
-            st.markdown("#### Group averages by result")
-            st.caption("Interface/schema inspection only when groups are small; do not infer real effects from N=1 demo classes." if use_template else "Read group averages only after checking group size and outside validation targets.")
-            st.dataframe(group_df, use_container_width=True, hide_index=True, height=260)
+            st.markdown("#### Group averages by internal taxonomy")
+            st.caption(
+                "These are internal taxonomy groupings for model diagnostics, not final Sanctuary or authority claims. "
+                + ("Interface/schema inspection only when groups are small; do not infer real effects from N=1 demo classes." if use_template else "Read group averages only after checking group size and outside validation targets.")
+            )
+            display_group_df = _empirical_humility_display_df(group_df)
+            st.dataframe(display_group_df, use_container_width=True, hide_index=True, height=260)
 
         st.markdown("### Technical details")
-        overlay_cols = [c for c in ["country", "iso3", "year", "aletheia_verdict", "protocol_overlay_status", "evidence_variables_used"] if c in scored.columns]
+        st.caption("Technical tables preserve raw/internal taxonomy fields for traceability and add display labels so SANCTUARY is read as a low-risk internal pattern, not a final claim.")
+        overlay_cols = [c for c in ["country", "iso3", "year", "aletheia_verdict", "protocol_overlay_status", "final_audit_interpretation", "evidence_variables_used"] if c in scored.columns]
         if overlay_cols:
             with st.expander("Protocol detail by country-year", expanded=False):
-                st.dataframe(scored[overlay_cols], use_container_width=True, hide_index=True, height=300)
+                st.dataframe(_empirical_humility_display_df(scored[overlay_cols]), use_container_width=True, hide_index=True, height=300)
         with st.expander("Full empirical output table", expanded=False):
-            st.dataframe(scored, use_container_width=True, hide_index=True, height=420)
+            st.dataframe(_empirical_humility_display_df(scored), use_container_width=True, hide_index=True, height=420)
         with st.expander("Method note", expanded=False):
             st.markdown(methodology_markdown())
 
@@ -6042,6 +6047,46 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
                 for _, row in out.iterrows()
             ]
             return "\n".join([header, divider] + rows)
+
+        def _empirical_humility_display_df(df: pd.DataFrame) -> pd.DataFrame:
+            """Patch 72.19: add humble display labels for empirical tables.
+
+            Raw/internal taxonomy columns remain available for compatibility.
+            Display tables should not present SANCTUARY as a final state.
+            """
+            if not isinstance(df, pd.DataFrame) or df.empty:
+                return df
+            out = df.copy()
+            verdict_col_name = None
+            for candidate in ["aletheia_verdict", "verdict", "result"]:
+                if candidate in out.columns:
+                    verdict_col_name = candidate
+                    break
+            if verdict_col_name:
+                mapping = {
+                    "SANCTUARY": "Low-risk internal reading",
+                    "THRESHOLD": "Review / threshold reading",
+                    "ASYLUM": "High-risk internal reading",
+                }
+                out["empirical_pattern_display"] = out[verdict_col_name].astype(str).str.upper().map(mapping).fillna(out[verdict_col_name])
+                out["internal_taxonomy_label"] = out[verdict_col_name]
+                out["humility_note"] = out[verdict_col_name].astype(str).str.upper().map({
+                    "SANCTUARY": "Internal taxonomy label only; not a final safety, final Sanctuary, or authority claim.",
+                    "THRESHOLD": "Review-state taxonomy label; requires human interpretation and safeguard review.",
+                    "ASYLUM": "High-risk taxonomy label; requires human review and does not enforce action.",
+                }).fillna("Internal taxonomy label only; human review remains required.")
+            for col in out.columns:
+                if out[col].dtype == object or pd.api.types.is_string_dtype(out[col]):
+                    out[col] = out[col].replace({
+                        "SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
+                            "Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. "
+                            "Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority."
+                        ),
+                        "SANCTUARY · SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
+                            "Low-risk internal reading · Internal taxonomy label: SANCTUARY; not a final safety, final Sanctuary, or authority claim."
+                        ),
+                    })
+            return out
 
         def _sanitize_world_lens_receipt_text(df: pd.DataFrame) -> pd.DataFrame:
             """Patch 72.18: neutralize SANCTUARY display text in World Lens exports.
