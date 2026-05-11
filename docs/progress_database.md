@@ -718,3 +718,31 @@ Files:
 - PATCH_71_6_MANIFEST.txt
 - PATCH_71_6_RECOVERY_NOTE.md
 
+
+## Patch 71.7 — Threshold Review Band Display
+
+Date: 2026-05-11
+
+Patch 71.7 adds user-friendly nuance inside the canonical THRESHOLD state without expanding the receipt or protocol taxonomy.
+
+Display labels:
+- Needs Repair: closer to Asylum, but still repairable.
+- Needs Review: mixed or incomplete safeguards.
+- Near Sanctuary: mostly stable, but not fully safe yet.
+
+Implementation:
+- Added `review_band_for_state(...)` in `app.py`.
+- Stress Test result card shows the review band for THRESHOLD outputs.
+- Stress Test batch summary includes a Review band column.
+
+Invariant preserved:
+- Canonical taxonomy remains ASYLUM / THRESHOLD / SANCTUARY.
+- No receipt schema change.
+- No scoring, verdict-routing, tree visual, Boundary Cases, World Lens, storage, or authority-boundary logic changed.
+
+Files:
+- app.py
+- tests/test_patch_71_7_threshold_review_band_display.py
+- PATCH_71_7_MANIFEST.txt
+- PATCH_71_7_RECOVERY_NOTE.md
+

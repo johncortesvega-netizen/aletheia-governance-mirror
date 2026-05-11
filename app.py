@@ -1039,6 +1039,69 @@ def apply_guardrail_verdict(base_verdict: str, stress_label: str, needs_review: 
     return "SANCTUARY", "Low"
 
 
+REVIEW_BAND_LABELS = {
+    "ASYLUM": "Asylum",
+    "THRESHOLD_MINUS": "Needs Repair",
+    "THRESHOLD": "Needs Review",
+    "THRESHOLD_PLUS": "Near Sanctuary",
+    "SANCTUARY": "Sanctuary",
+}
+
+
+def review_band_for_state(verdict: str, report: dict | None = None, sim: dict | None = None) -> dict:
+    """
+    User-facing five-band display helper.
+
+    Canonical taxonomy remains ASYLUM / THRESHOLD / SANCTUARY. The middle
+    state receives a display-only review band:
+    - Needs Repair: closer to Asylum, but still repairable.
+    - Needs Review: mixed/incomplete safeguards.
+    - Near Sanctuary: mostly stable, but not fully safe yet.
+    """
+    state = str(verdict or "THRESHOLD").upper()
+    report = report or {}
+    sim = sim or {}
+
+    if state == "ASYLUM":
+        return {
+            "band": "ASYLUM",
+            "label": REVIEW_BAND_LABELS["ASYLUM"],
+            "summary": "High capture or coercion signal.",
+        }
+    if state == "SANCTUARY":
+        return {
+            "band": "SANCTUARY",
+            "label": REVIEW_BAND_LABELS["SANCTUARY"],
+            "summary": "Strong safeguards and low capture signal.",
+        }
+
+    integrity = float(report.get("integrity", 0.5) or 0.5)
+    collapse = float(report.get("collapse_probability", 0.5) or 0.5)
+    trust = float(sim.get("trust_index", 0.5) or 0.5)
+    alignment = float(sim.get("alignment", 0.5) or 0.5)
+    ego = float(sim.get("ego", 0.0) or 0.0)
+
+    if integrity < 0.50 or collapse >= 0.45 or trust <= 0.72 or alignment <= 0.72 or ego >= 0.28:
+        return {
+            "band": "THRESHOLD_MINUS",
+            "label": REVIEW_BAND_LABELS["THRESHOLD_MINUS"],
+            "summary": "Closer to Asylum, but still repairable.",
+        }
+
+    if integrity >= 0.62 and collapse <= 0.18 and trust >= 0.86 and alignment >= 0.86 and ego <= 0.08:
+        return {
+            "band": "THRESHOLD_PLUS",
+            "label": REVIEW_BAND_LABELS["THRESHOLD_PLUS"],
+            "summary": "Mostly stable, but not fully safe yet.",
+        }
+
+    return {
+        "band": "THRESHOLD",
+        "label": REVIEW_BAND_LABELS["THRESHOLD"],
+        "summary": "Mixed or incomplete safeguards require human review.",
+    }
+
+
 def display_score_from_judgment(report: dict, judgment: dict | None) -> float:
     """
     Visual tree score.
@@ -3366,9 +3429,11 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                         )
                     stress_receipts.append(receipt)
                     integrity_value = stress_report.get("integrity") if isinstance(stress_report, dict) else None
+                    stress_review_band = review_band_for_state(verdict, stress_report, sim)
                     stress_rows.append({
                         "#": idx,
                         "State": verdict,
+                        "Review band": stress_review_band.get("label"),
                         "Risk": risk,
                         "Label": label,
                         "Integrity": "—" if integrity_value is None else round(float(integrity_value), 3),
@@ -3437,11 +3502,19 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         input_status_label = st.session_state.get("last_input_status", "MANUAL_INPUT" if last_input_mode == "Manual test" else "USER_INPUT")
         invisibility_report = st.session_state.get("last_invisibility_report")
         invisibility_note = " · Invisibility Filter: on" if isinstance(invisibility_report, dict) and invisibility_report.get("invisibility_filter_applied") else ""
-        st.caption(f"Feature source: {last_input_mode} · Input status: {input_status_label} · Scan mode: {scan_mode} · Protocol label: {label}{invisibility_note}")
+        current_review_band = review_band_for_state(verdict, report, sim)
+        st.caption(f"Feature source: {last_input_mode} · Input status: {input_status_label} · Scan mode: {scan_mode} · Protocol label: {label} · Review band: {current_review_band.get('label')}{invisibility_note}")
 
         c1, c2, c3, c4 = st.columns(4)
+        review_band = review_band_for_state(verdict, report, sim)
+        review_band_label = review_band.get("label", verdict.title())
+        review_band_summary = review_band.get("summary", "")
+        result_display = f"<span style='color:{verdict_color}'>{verdict}</span>"
+        if verdict == "THRESHOLD":
+            result_display += f"<br><span style='font-size:1.05rem;color:#d4b88a;'>{review_band_label}</span>"
+
         with c1:
-            metric_card("Result state", f"<span style='color:{verdict_color}'>{verdict}</span>", f"Safety risk: {risk}")
+            metric_card("Result state", result_display, f"Safety risk: {risk} · Review band: {review_band_label}")
         with c2:
             metric_card("Integrity", f"{report['integrity']:.3f}", "Current reading. Raw values stay in the local receipt.")
         with c3:
@@ -3480,7 +3553,7 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         with reason_cols[1]:
             soft_card("Pattern over time", f"Trust {sim['trust_index']:.0%}, alignment {sim['alignment']:.0%}, ego {sim['ego']:.0%}.")
         with reason_cols[2]:
-            soft_card("Risk picture", f"Collapse risk: {'yes' if sim.get('collapse_risk') else 'no'}. Trust friction: {report['trust_friction']:.3f}. Grievance pressure: {sim.get('grievance_pressure', 0):.2f}. Safeguard gap: {sim.get('safeguard_gap', 0):.2f}.")
+            soft_card("Risk picture", f"Review band: {review_band_label}. {review_band_summary} Collapse risk: {'yes' if sim.get('collapse_risk') else 'no'}. Trust friction: {report['trust_friction']:.3f}. Grievance pressure: {sim.get('grievance_pressure', 0):.2f}. Safeguard gap: {sim.get('safeguard_gap', 0):.2f}.")
 
         st.markdown("### Repair questions")
         st.caption("ALETHEIA asks questions here. It gives no orders and no final judgment.")

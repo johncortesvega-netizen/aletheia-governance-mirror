@@ -1,5 +1,19 @@
 # ALETHEIA Patch Status
 
+## Patch 71.7 — Threshold Review Band Display
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Added a display-only Review band for THRESHOLD outputs: Needs Repair, Needs Review, Near Sanctuary.
+- Canonical taxonomy remains ASYLUM / THRESHOLD / SANCTUARY.
+- Stress Test result card and batch summary can show the user-friendly band.
+- No receipt schema, scoring, verdict-routing, tree, Boundary Cases, World Lens, storage, or authority-boundary logic changed.
+
+Validation:
+- `tools\run_patch_checks.bat 71_7`
+
+
 ## Patch 71.6 — Tree Central Glow Removal
 
 Status: READY FOR LOCAL TESTING
