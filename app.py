@@ -885,21 +885,70 @@ def apply_guardrail_verdict(base_verdict: str, stress_label: str, needs_review: 
 
 def display_score_from_judgment(report: dict, judgment: dict | None) -> float:
     """
-    Score shown by the Pulse Tree.
-    The raw simulation score remains available in Scanner features / reports, but the
-    visible tree should respect the pressure-test guardrail verdict so hazardous
-    language cannot still render as a green Sanctuary tree.
+    Visual tree score.
+
+    This is not the same as the protocol-adjusted integrity stored in the
+    local witness receipt. The tree score is a display signal that follows the
+    final risk state so the tree does not render a green canopy for a result
+    that was escalated to THRESHOLD or ASYLUM by the guardrail layer.
     """
-    raw = float((report or {}).get("integrity", 0.5))
+    raw_value = (report or {}).get("integrity", 0.5)
+    try:
+        raw = float(raw_value if raw_value is not None else 0.5)
+    except (TypeError, ValueError):
+        raw = 0.5
+
     verdict = ((judgment or {}).get("verdict") or "").upper()
 
+    if verdict == "QUESTION_PROMPT":
+        return 0.50
     if verdict == "ASYLUM":
         return min(raw, 0.39)
     if verdict == "THRESHOLD":
         return min(max(raw, 0.42), 0.61)
     if verdict == "SANCTUARY":
         return max(raw, 0.62)
-    return raw
+    return max(0.0, min(1.0, raw))
+
+
+def tree_copy_for_state(state: str, mode: str = "Mirror Check") -> dict:
+    """Return display copy for the Mirror/Stress tree without changing metrics."""
+    state_key = (state or "THRESHOLD").upper()
+    mode_key = (mode or "Mirror Check").strip()
+
+    if state_key == "QUESTION_PROMPT":
+        return {
+            "state": "QUESTION_PROMPT",
+            "headline": "Review Tool Mode",
+            "score_label": "Visual review-tool signal",
+            "caption": "Audit question detected. This input is a review prompt, not a scored governance scenario.",
+            "root": "Human review",
+            "trunk": "Question → reflection → repair",
+            "branches": ["Clarity", "Appeal", "Bias check", "Repair", "Human review"],
+        }
+
+    if mode_key.lower().startswith("stress"):
+        base = {
+            "root": "Human dignity",
+            "trunk": "Power under stress",
+            "branches": ["Consent", "Exit", "Appeal", "Time limits", "Independent review", "Evidence clarity", "Basic rights"],
+        }
+        if state_key == "SANCTUARY":
+            return {**base, "state": "SANCTUARY", "headline": "Stable under pressure", "score_label": "Visual stability signal", "caption": "Low capture signal under this scenario. Still requires human review."}
+        if state_key == "ASYLUM":
+            return {**base, "state": "ASYLUM", "headline": "Protective review signal", "score_label": "Visual pressure signal", "caption": "Protective review required. This is not enforcement and not an automated decision."}
+        return {**base, "state": "THRESHOLD", "headline": "Needs safeguards", "score_label": "Visual safeguard-gap signal", "caption": "Boundary condition detected. Add appeal, exit, evidence, and repair before trust can increase."}
+
+    base = {
+        "root": "Human review",
+        "trunk": "Evidence + accountability",
+        "branches": ["Safeguards", "Appeal", "Transparency", "Repair", "Basic rights", "Non-coercion"],
+    }
+    if state_key == "SANCTUARY":
+        return {**base, "state": "SANCTUARY", "headline": "Low capture signal", "score_label": "Visual stability signal", "caption": "The pattern appears relatively reviewable and repairable. This is not approval."}
+    if state_key == "ASYLUM":
+        return {**base, "state": "ASYLUM", "headline": "Protective review signal", "score_label": "Visual pressure signal", "caption": "High capture or coercion signal. Human repair review is required; ALETHEIA does not enforce action."}
+    return {**base, "state": "THRESHOLD", "headline": "Needs safeguards", "score_label": "Visual safeguard-gap signal", "caption": "The pattern sits at a review boundary. Clarify safeguards, appeal, evidence, and correction loops."}
 
 
 def verdict_color(verdict: str) -> str:
@@ -932,31 +981,56 @@ def action_chart(sim: dict):
 
 
 
-def render_pulse_tree(score: float, ego: float, alignment: float, title: str = "Live Pulse Tree"):
+def render_pulse_tree(
+    score: float,
+    ego: float,
+    alignment: float,
+    title: str = "Live Pulse Tree",
+    *,
+    state_override: str | None = None,
+    mode: str = "Mirror Check",
+):
     """
-    Streamlit HTML/SVG pulse tree.
-    Uses components.html instead of st.markdown because Streamlit/Markdown can
-    display raw SVG fragments as text in some themes.
+    Streamlit HTML/SVG state tree.
+
+    Patch 70: the tree is a visual state explainer, not a second protocol
+    metric. The receipt's protocol-adjusted integrity remains the canonical
+    numeric reading; the tree score is a visual stability/pressure signal.
     """
     score = max(0.0, min(1.0, float(score)))
     ego = max(0.0, min(1.0, float(ego)))
     alignment = max(0.0, min(1.0, float(alignment)))
 
     if score >= 0.62:
-        state = "SANCTUARY"
+        inferred_state = "SANCTUARY"
         leaf_color = "#8fbc8f"
         glow_color = "rgba(143,188,143,0.35)"
     elif score >= 0.42:
-        state = "THRESHOLD"
+        inferred_state = "THRESHOLD"
         leaf_color = "#e5c36b"
         glow_color = "rgba(229,195,107,0.30)"
     else:
-        state = "ASYLUM"
+        inferred_state = "ASYLUM"
         leaf_color = "#db7777"
         glow_color = "rgba(219,119,119,0.28)"
 
+    state = (state_override or inferred_state or "THRESHOLD").upper()
+    if state == "QUESTION_PROMPT":
+        leaf_color = "#8ab4f8"
+        glow_color = "rgba(138,180,248,0.30)"
+    elif state == "SANCTUARY":
+        leaf_color = "#8fbc8f"
+        glow_color = "rgba(143,188,143,0.35)"
+    elif state == "THRESHOLD":
+        leaf_color = "#e5c36b"
+        glow_color = "rgba(229,195,107,0.30)"
+    elif state == "ASYLUM":
+        leaf_color = "#db7777"
+        glow_color = "rgba(219,119,119,0.28)"
+
+    copy = tree_copy_for_state(state, mode=mode)
     canopy_opacity = 0.25 + (score * 0.75)
-    fallen_count = int(round(ego * 10))
+    fallen_count = int(round(ego * 10)) if state != "QUESTION_PROMPT" else 0
     glow_height = 34 + int(alignment * 46)
 
     fallen_svg = ""
@@ -968,6 +1042,12 @@ def render_pulse_tree(score: float, ego: float, alignment: float, title: str = "
             f'fill="#db7777" opacity="0.70" '
             f'transform="rotate({i * 17} {x} {y})" />'
         )
+
+    branch_labels = copy.get("branches", [])[:7]
+    branch_html = "".join(
+        f'<span style="display:inline-block;margin:3px 5px 0 0;padding:3px 7px;border-radius:999px;background:rgba(255,255,255,0.08);color:#e8e0d0;font-size:11px;">{b}</span>'
+        for b in branch_labels
+    )
 
     svg_html = f"""
     <div style="
@@ -984,11 +1064,19 @@ def render_pulse_tree(score: float, ego: float, alignment: float, title: str = "
         <div style="font-family:Georgia,serif;color:#d4b88a;font-size:22px;font-weight:700;margin-bottom:6px;">
             🌳 {title}
         </div>
-        <div style="color:#aeb7c6;font-size:13px;margin-bottom:10px;">
-            State: <strong style="color:{leaf_color};">{state}</strong>
-            · Score {score:.2f}
+        <div style="color:#aeb7c6;font-size:13px;margin-bottom:8px;">
+            Mode: <strong>{mode}</strong>
+            · State: <strong style="color:{leaf_color};">{state}</strong>
+            · {copy.get('score_label', 'Visual tree score')} {score:.2f}
             · Alignment {alignment:.2f}
             · Ego {ego:.2f}
+        </div>
+        <div style="color:#e8e0d0;font-size:13px;line-height:1.45;margin-bottom:10px;">
+            <strong>{copy.get('headline', state)}</strong> — {copy.get('caption', '')}
+        </div>
+        <div style="color:#aeb7c6;font-size:12px;line-height:1.5;margin-bottom:10px;">
+            Root: <strong>{copy.get('root', 'Human review')}</strong> · Trunk: <strong>{copy.get('trunk', 'Evidence + accountability')}</strong><br/>
+            {branch_html}
         </div>
 
         <svg width="100%" height="260" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg" role="img">
@@ -1010,13 +1098,13 @@ def render_pulse_tree(score: float, ego: float, alignment: float, title: str = "
             {fallen_svg}
 
             <text x="130" y="244" text-anchor="middle" fill="#aeb7c6" font-size="10">
-                More canopy = Sanctuary alignment · Fallen leaves = ego/static pressure
+                Visual tree score is explanatory; receipt integrity remains the protocol metric.
             </text>
         </svg>
     </div>
     """
 
-    components.html(svg_html, height=360, scrolling=False)
+    components.html(svg_html, height=430, scrolling=False)
 
 def build_features_from_scan(scan: dict) -> dict:
     return {
@@ -3047,7 +3135,9 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
             display_score_from_judgment(report, {"verdict": verdict}),
             sim["ego"],
             sim["alignment"],
-            title="Review tree",
+            title="Stress Test Tree",
+            state_override=verdict,
+            mode="Stress Test",
         )
 
         st.plotly_chart(plot_trace(sim), use_container_width=True)
@@ -6560,6 +6650,8 @@ with tab_chat:
             latest["sim"]["ego"],
             latest["sim"]["alignment"],
             title="Mirror Reading Tree",
+            state_override=str(latest.get("judgment", {}).get("verdict", "THRESHOLD")).upper(),
+            mode="Mirror Check",
         )
         render_chat_judgment(latest["judgment"], latest["source"], latest["report"])
 

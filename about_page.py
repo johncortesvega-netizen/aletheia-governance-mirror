@@ -263,3 +263,8 @@ PATCH_69_1_STRESS_BATCH_CLASSIFIER_NOTE = "Patch 69.1 separates Stress Test .txt
 
 
 # Patch 68.1: ASYLUM / High receipts keep label and metric presentation consistent.
+
+# Patch 70: Tree visual calibration.
+# The tree is a visual state explainer for Mirror Check and Stress Test, not a second protocol metric.
+# QUESTION_PROMPT is an input/review-tool mode, not a fourth risk state.
+PATCH_70_TREE_VISUAL_CALIBRATION_NOTE = "Patch 70 separates visual tree score from receipt integrity and clarifies Mirror Check, Stress Test, and QUESTION_PROMPT tree modes."

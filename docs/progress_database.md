@@ -482,3 +482,16 @@ Patch 68.1 fixes a consistency gap found in advanced English Stress Test receipt
 New rule: if final state is ASYLUM, the label is normalized to `/ Asylum`, trust is capped at 0.80, alignment at 0.85, and ego is raised to at least 0.10. Repair questions remain present and the authority boundary stays unchanged: local receipt only, no public ledger, no Global ID sync, no central storage, and human review required.
 
 Check: `tools\run_patch_checks.bat 68_1`
+
+## Patch 70 — Mirror + Stress Tree Visual Calibration
+
+Status: Ready for local verification.
+
+Patch 70 updates the tree visual used by Mirror Check and Stress Test. It keeps scoring logic unchanged while making the UI clearer:
+
+- Mirror Check tree: audit/review mirror with human review, evidence, accountability, safeguards, appeal, transparency, repair, basic rights, and non-coercion.
+- Stress Test tree: scenario-pressure mirror with human dignity, consent, exit, appeal, time limits, independent review, evidence clarity, and basic rights.
+- QUESTION_PROMPT: Review Tool Mode, not a Sanctuary/Threshold/Asylum score.
+- Visual tree score is labeled separately from protocol-adjusted integrity in the receipt.
+
+Boundary unchanged: no authority claim, no enforcement, no public ledger, no Global ID sync, no central storage, and human review required.

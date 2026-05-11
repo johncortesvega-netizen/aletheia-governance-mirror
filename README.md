@@ -665,3 +665,12 @@ tools\run_patch_checks.bat 69_1
 ### Patch 68.1 calibration note
 
 Stress Test receipts now keep ASYLUM labels and metrics consistent: ASYLUM / High outputs cannot retain THRESHOLD-style `Needs Safeguards` labels or perfect-looking trust/alignment metrics.
+
+### Patch 70 — Tree visual calibration
+
+Patch 70 clarifies the tree visual in Mirror Check and Stress Test. The tree is now framed as a visual state explainer, not a second authority layer and not a replacement for the local witness receipt.
+
+- Mirror Check tree: evidence, accountability, safeguards, appeal, transparency, repair, basic rights, non-coercion.
+- Stress Test tree: power under stress, consent, exit, appeal, time limits, independent review, evidence clarity, basic rights.
+- QUESTION_PROMPT inputs render as Review Tool Mode and are not scored as Sanctuary, Threshold, or Asylum.
+- The UI distinguishes visual tree score from protocol-adjusted integrity stored in the receipt.

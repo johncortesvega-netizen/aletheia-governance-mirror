@@ -241,3 +241,15 @@ Check command:
 ```bat
 tools\run_patch_checks.bat 69_1
 ```
+
+## Patch 70 — Mirror + Stress Tree Visual Calibration
+
+Status: Ready for local verification.
+
+Clarifies the tree visual in both Mirror Check and Stress Test. The tree now presents itself as a visual state explainer rather than a second protocol metric. It distinguishes `Visual tree score` from receipt `protocol-adjusted integrity`, adds separate Mirror Check and Stress Test tree language, and treats `QUESTION_PROMPT` as Review Tool Mode rather than a fourth risk state.
+
+Check command:
+
+```bat
+tools\run_patch_checks.bat 70
+```
