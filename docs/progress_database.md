@@ -587,3 +587,29 @@ The old `SCENARIOS` name remains as a compatibility alias to the Mirror Check de
 ### Boundary
 
 No scoring, receipt, tree, batch-catalog, storage, or authority behavior changed. ALETHEIA remains a local mirror only: no authority claim, no enforcement, no public ledger, no Global ID sync, no central storage, and human review required.
+
+## Patch 71.2 — Tree Canopy + Caption Visual Polish
+
+Date: 2026-05-11
+Status: Ready for local verification
+
+### Trigger
+
+Post-Patch 71.1 UI review showed that the tree canopy looked like disconnected circles and the explanatory caption appeared inside/over the dark tree visual instead of below it.
+
+### Change
+
+Patch 71.2 updates `render_pulse_tree` in `app.py`:
+
+- Replaces the old loose circle canopy stack with a layered ellipse canopy.
+- Keeps the branches visually connected to the canopy and trunk.
+- Adds a small state-aware canopy sag for visual pressure only.
+- Moves the explanatory caption below the SVG visual using a dedicated caption class.
+
+### Verification target
+
+`tests/test_patch_71_2_tree_canopy_caption_visual_polish.py` confirms that the caption renders below the SVG, the old circle stack is removed, the layered canopy exists, and Patch 71.2 remains UI-only.
+
+### Boundary
+
+No scoring, receipt, taxonomy, batch, demo-library, storage, or authority behavior changed. ALETHEIA remains a local mirror only: no authority claim, no enforcement, no public ledger, no Global ID sync, no central storage, and human review required.

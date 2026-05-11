@@ -1,0 +1,31 @@
+ALETHEIA v1.0 — Governance Mirror
+Patch 71.2 — Tree Canopy + Caption Visual Polish
+Owner/User: Johnny Cortes Vega
+Date: 2026-05-11
+
+Purpose
+- Polish the explanatory tree visual after UI review showed that the canopy looked like disconnected circles and the caption sat inside/over the tree visual.
+- Keep the tree as a visual explainer only; receipt integrity and protocol-adjusted metrics remain canonical.
+
+Files changed
+- app.py
+  - Replaces the loose circular canopy stack with a layered ellipse canopy that connects more naturally to the trunk and branches.
+  - Adds a small state-aware canopy sag variable for visual pressure without changing risk logic.
+  - Moves the explanatory caption below the SVG visual instead of rendering it as text inside the SVG.
+  - Adds visual-only constants for testable caption/canopy placement.
+- tests/test_patch_71_2_tree_canopy_caption_visual_polish.py
+  - Confirms caption placement below the SVG, layered canopy construction, and UI-only scope.
+- PATCH_71_2_MANIFEST.txt
+- PATCH_71_2_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Out of scope
+- No scoring changes.
+- No receipt changes.
+- No Stress Test or Mirror Check classification changes.
+- No batch-file or demo-library changes.
+- No authority-boundary changes.
+
+Verification
+- Run: tools\run_patch_checks.bat 71_2

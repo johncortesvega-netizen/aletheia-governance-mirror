@@ -299,3 +299,17 @@ Check:
 ```bat
 tools\run_patch_checks.bat 71_1
 ```
+
+## Patch 71.2 — Tree Canopy + Caption Visual Polish
+
+Status: Ready for local verification.
+
+Patch 71.2 improves the explanatory tree visual after UI review showed that the canopy looked disconnected and the explanatory caption sat inside the tree image. The tree now uses a layered ellipse canopy connected to the trunk/branches, and the caption is placed below the SVG visual.
+
+No scoring, receipt, tree-state, batch-catalog, demo-library, storage, or authority-boundary logic changed. The tree remains an explanatory visual signal; receipt integrity and protocol-adjusted state remain canonical.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 71_2
+```

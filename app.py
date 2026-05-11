@@ -994,6 +994,12 @@ def action_chart(sim: dict):
 
 
 
+
+# Patch 71.2: visual-only tree polish constants.
+# The tree remains an explanatory UI element; receipt metrics stay canonical.
+TREE_VISUAL_CANOPY_LAYER_COUNT = 8
+TREE_VISUAL_CAPTION_CLASS = "aletheia-tree-caption-below-visual"
+
 def render_pulse_tree(
     score: float,
     ego: float,
@@ -1009,6 +1015,10 @@ def render_pulse_tree(
     Patch 70: the tree is a visual state explainer, not a second protocol
     metric. The receipt's protocol-adjusted integrity remains the canonical
     numeric reading; the tree score is a visual stability/pressure signal.
+
+    Patch 71.2: the canopy and caption are visual-only polish. The caption is
+    rendered below the SVG visual so it does not sit inside the tree canopy or
+    trunk area.
     """
     score = max(0.0, min(1.0, float(score)))
     ego = max(0.0, min(1.0, float(ego)))
@@ -1042,7 +1052,9 @@ def render_pulse_tree(
         glow_color = "rgba(219,119,119,0.28)"
 
     copy = tree_copy_for_state(state, mode=mode)
-    canopy_opacity = 0.25 + (score * 0.75)
+    canopy_opacity = 0.28 + (score * 0.62)
+    canopy_scale = 0.82 + (score * 0.30)
+    canopy_sag = 0 if state == "SANCTUARY" else (4 if state == "THRESHOLD" else 8)
     fallen_count = int(round(ego * 10)) if state != "QUESTION_PROMPT" else 0
     glow_height = 34 + int(alignment * 46)
 
@@ -1092,32 +1104,36 @@ def render_pulse_tree(
             {branch_html}
         </div>
 
-        <svg width="100%" height="260" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg" role="img">
-            <rect x="0" y="0" width="260" height="260" rx="18" fill="#0b1020"/>
-            <ellipse cx="130" cy="220" rx="92" ry="14" fill="rgba(212,184,138,0.16)"/>
+        <svg width="100%" height="250" viewBox="0 0 260 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ALETHEIA explanatory tree visual">
+            <rect x="0" y="0" width="260" height="250" rx="18" fill="#0b1020"/>
+            <ellipse cx="130" cy="221" rx="92" ry="14" fill="rgba(212,184,138,0.16)"/>
             <ellipse cx="130" cy="{175 - glow_height / 2}" rx="{38 + alignment * 30:.0f}" ry="{glow_height}" fill="{glow_color}"/>
 
-            <path d="M124 215 C126 178, 123 145, 118 115 C132 143, 139 175, 137 215 Z" fill="#8b5e3c"/>
-            <path d="M128 146 C104 126, 91 105, 78 78" stroke="#8b5e3c" stroke-width="9" stroke-linecap="round" fill="none"/>
-            <path d="M132 143 C155 119, 171 95, 188 62" stroke="#8b5e3c" stroke-width="9" stroke-linecap="round" fill="none"/>
-            <path d="M128 128 C132 104, 133 82, 130 48" stroke="#8b5e3c" stroke-width="8" stroke-linecap="round" fill="none"/>
+            <path d="M124 214 C126 178, 123 145, 118 116 C132 144, 139 176, 137 214 Z" fill="#8b5e3c"/>
+            <path d="M128 148 C110 129, 94 105, 80 79" stroke="#8b5e3c" stroke-width="9" stroke-linecap="round" fill="none"/>
+            <path d="M132 145 C153 124, 171 96, 188 63" stroke="#8b5e3c" stroke-width="9" stroke-linecap="round" fill="none"/>
+            <path d="M128 130 C132 104, 133 81, 130 50" stroke="#8b5e3c" stroke-width="8" stroke-linecap="round" fill="none"/>
+            <path d="M121 137 C104 126, 96 111, 93 96" stroke="#8b5e3c" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.92"/>
+            <path d="M136 133 C151 119, 159 104, 162 91" stroke="#8b5e3c" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.92"/>
 
-            <circle cx="130" cy="78" r="{34 + score * 28:.0f}" fill="{leaf_color}" opacity="{canopy_opacity:.2f}"/>
-            <circle cx="92" cy="93" r="{20 + score * 22:.0f}" fill="{leaf_color}" opacity="{max(0.16, canopy_opacity - 0.08):.2f}"/>
-            <circle cx="168" cy="88" r="{22 + score * 22:.0f}" fill="{leaf_color}" opacity="{max(0.16, canopy_opacity - 0.04):.2f}"/>
-            <circle cx="112" cy="51" r="{16 + score * 18:.0f}" fill="{leaf_color}" opacity="{max(0.12, canopy_opacity - 0.12):.2f}"/>
-            <circle cx="153" cy="49" r="{16 + score * 18:.0f}" fill="{leaf_color}" opacity="{max(0.12, canopy_opacity - 0.12):.2f}"/>
+            <ellipse cx="130" cy="88" rx="{49 * canopy_scale:.0f}" ry="{39 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{canopy_opacity:.2f}"/>
+            <ellipse cx="96" cy="98" rx="{31 * canopy_scale:.0f}" ry="{25 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.18, canopy_opacity - 0.10):.2f}"/>
+            <ellipse cx="165" cy="95" rx="{34 * canopy_scale:.0f}" ry="{27 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.18, canopy_opacity - 0.08):.2f}"/>
+            <ellipse cx="113" cy="64" rx="{27 * canopy_scale:.0f}" ry="{24 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.16, canopy_opacity - 0.13):.2f}"/>
+            <ellipse cx="151" cy="62" rx="{28 * canopy_scale:.0f}" ry="{24 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.16, canopy_opacity - 0.13):.2f}"/>
+            <ellipse cx="132" cy="118 + canopy_sag" rx="{42 * canopy_scale:.0f}" ry="{30 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.14, canopy_opacity - 0.18):.2f}"/>
+            <ellipse cx="77" cy="104 + canopy_sag" rx="{22 * canopy_scale:.0f}" ry="{18 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.14, canopy_opacity - 0.20):.2f}"/>
+            <ellipse cx="188" cy="102 + canopy_sag" rx="{22 * canopy_scale:.0f}" ry="{18 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.14, canopy_opacity - 0.20):.2f}"/>
 
             {fallen_svg}
-
-            <text x="130" y="244" text-anchor="middle" fill="#aeb7c6" font-size="10">
-                Visual tree score is explanatory; receipt integrity remains the protocol metric.
-            </text>
         </svg>
+        <div class="{TREE_VISUAL_CAPTION_CLASS}" style="text-align:center;color:#aeb7c6;font-size:10px;line-height:1.35;margin-top:8px;">
+            Visual tree score is explanatory; receipt integrity remains the protocol metric.
+        </div>
     </div>
     """
 
-    components.html(svg_html, height=430, scrolling=False)
+    components.html(svg_html, height=448, scrolling=False)
 
 def build_features_from_scan(scan: dict) -> dict:
     return {
