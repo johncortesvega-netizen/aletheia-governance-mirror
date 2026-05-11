@@ -403,6 +403,46 @@ STRESS_TEST_DEMO_SCENARIOS = {
 SCENARIOS = MIRROR_CHECK_DEMO_SCENARIOS
 
 
+def _empirical_humility_display_df(df: pd.DataFrame) -> pd.DataFrame:
+    """Patch 72.19: add humble display labels for empirical tables.
+
+    Raw/internal taxonomy columns remain available for compatibility.
+    Display tables should not present SANCTUARY as a final state.
+    """
+    if not isinstance(df, pd.DataFrame) or df.empty:
+        return df
+    out = df.copy()
+    verdict_col_name = None
+    for candidate in ["aletheia_verdict", "verdict", "result"]:
+        if candidate in out.columns:
+            verdict_col_name = candidate
+            break
+    if verdict_col_name:
+        mapping = {
+            "SANCTUARY": "Low-risk internal reading",
+            "THRESHOLD": "Review / threshold reading",
+            "ASYLUM": "High-risk internal reading",
+        }
+        out["empirical_pattern_display"] = out[verdict_col_name].astype(str).str.upper().map(mapping).fillna(out[verdict_col_name])
+        out["internal_taxonomy_label"] = out[verdict_col_name]
+        out["humility_note"] = out[verdict_col_name].astype(str).str.upper().map({
+            "SANCTUARY": "Internal taxonomy label only; not a final safety, final Sanctuary, or authority claim.",
+            "THRESHOLD": "Review-state taxonomy label; requires human interpretation and safeguard review.",
+            "ASYLUM": "High-risk taxonomy label; requires human review and does not enforce action.",
+        }).fillna("Internal taxonomy label only; human review remains required.")
+    for col in out.columns:
+        if out[col].dtype == object or pd.api.types.is_string_dtype(out[col]):
+            out[col] = out[col].replace({
+                "SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
+                    "Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. "
+                    "Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority."
+                ),
+                "SANCTUARY · SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
+                    "Low-risk internal reading · Internal taxonomy label: SANCTUARY; not a final safety, final Sanctuary, or authority claim."
+                ),
+            })
+    return out
+
 st.set_page_config(page_title="ALETHEIA", page_icon="🌿", layout="wide")
 
 st.markdown(
@@ -6047,46 +6087,6 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
                 for _, row in out.iterrows()
             ]
             return "\n".join([header, divider] + rows)
-
-        def _empirical_humility_display_df(df: pd.DataFrame) -> pd.DataFrame:
-            """Patch 72.19: add humble display labels for empirical tables.
-
-            Raw/internal taxonomy columns remain available for compatibility.
-            Display tables should not present SANCTUARY as a final state.
-            """
-            if not isinstance(df, pd.DataFrame) or df.empty:
-                return df
-            out = df.copy()
-            verdict_col_name = None
-            for candidate in ["aletheia_verdict", "verdict", "result"]:
-                if candidate in out.columns:
-                    verdict_col_name = candidate
-                    break
-            if verdict_col_name:
-                mapping = {
-                    "SANCTUARY": "Low-risk internal reading",
-                    "THRESHOLD": "Review / threshold reading",
-                    "ASYLUM": "High-risk internal reading",
-                }
-                out["empirical_pattern_display"] = out[verdict_col_name].astype(str).str.upper().map(mapping).fillna(out[verdict_col_name])
-                out["internal_taxonomy_label"] = out[verdict_col_name]
-                out["humility_note"] = out[verdict_col_name].astype(str).str.upper().map({
-                    "SANCTUARY": "Internal taxonomy label only; not a final safety, final Sanctuary, or authority claim.",
-                    "THRESHOLD": "Review-state taxonomy label; requires human interpretation and safeguard review.",
-                    "ASYLUM": "High-risk taxonomy label; requires human review and does not enforce action.",
-                }).fillna("Internal taxonomy label only; human review remains required.")
-            for col in out.columns:
-                if out[col].dtype == object or pd.api.types.is_string_dtype(out[col]):
-                    out[col] = out[col].replace({
-                        "SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
-                            "Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. "
-                            "Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority."
-                        ),
-                        "SANCTUARY · SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
-                            "Low-risk internal reading · Internal taxonomy label: SANCTUARY; not a final safety, final Sanctuary, or authority claim."
-                        ),
-                    })
-            return out
 
         def _sanitize_world_lens_receipt_text(df: pd.DataFrame) -> pd.DataFrame:
             """Patch 72.18: neutralize SANCTUARY display text in World Lens exports.

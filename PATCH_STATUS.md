@@ -1039,3 +1039,26 @@ Check:
 tools\run_patch_checks.bat 72_19
 ```
 
+## Patch 72.20 - Evidence Humility Helper Scope Fix
+
+Date: 2026-05-11
+
+Patch 72.20 fixes the runtime `NameError` from Patch 72.19 by moving `_empirical_humility_display_df(...)` into top-level app scope before Evidence Lab calls it.
+
+Implemented:
+- Helper is now defined before Evidence Lab group-average and technical table rendering.
+- Patch 72.19 humility display behavior is preserved.
+- Added a scope regression test.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No 9k allocation formula change.
+- No Evidence Lab or World Lens data model, authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_20
+```
+
