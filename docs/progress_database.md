@@ -948,3 +948,29 @@ Check:
 ```bat
 tools\run_patch_checks.bat 72_1_hotfix
 ```
+
+## Patch 72.2 - Mirror Check Input Change Reset
+
+Date: 2026-05-11
+
+Patch 72.2 fixes a Mirror Check UI-state issue where a previous assessment/receipt could stay active after the user changed the input text.
+
+Implemented:
+- Added `mirror_active_input_signature(...)` for stable current-input matching.
+- Stored `audit_active_input_signature` only after an explicit `Review idea` run.
+- Rendered the latest reading and local receipt only when the current text still matches the last reviewed input.
+- Added a closed-assessment notice when the input changes, asking the user to click Review idea again.
+- Preserved previous readings as history without treating them as the current draft.
+
+Invariant preserved:
+- No scoring logic change.
+- No verdict-routing change.
+- No receipt schema change.
+- No Threshold Mapping logic change.
+- No tree visual, Stress Test, Boundary Cases, World Lens, storage, public ledger, Global ID sync, central storage, or authority-boundary logic changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_2
+```

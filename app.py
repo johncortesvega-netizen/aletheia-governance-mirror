@@ -6751,6 +6751,15 @@ with tab_chat:
     if "audit_chat_input_source" not in st.session_state:
         st.session_state.audit_chat_input_source = "EMPTY_INPUT"
 
+    def mirror_active_input_signature(text_value: str) -> str:
+        """Stable signature for the currently typed Mirror Check input.
+
+        Patch 72.2: prevents an old assessment/receipt from staying active after
+        the user edits the input box. History may remain, but a changed input
+        requires an explicit new Review idea click.
+        """
+        return hashlib.sha256((text_value or "").strip().encode("utf-8")).hexdigest()
+
     def run_chat_audit_from_text(text_value: str, raw_text_value=None, input_source: str = "USER_INPUT", invisibility_report=None, store_history: bool = True, force_local: bool = False):
         raw_text_value = text_value if raw_text_value is None else raw_text_value
         scan = governance_scan(text_value, force_local=force_local)
@@ -7141,59 +7150,80 @@ with tab_chat:
                     input_source=audit_input_status,
                     invisibility_report=audit_invisibility_report,
                 )
+                st.session_state.audit_active_input_signature = mirror_active_input_signature(st.session_state.audit_chat_query)
                 update_protocol_state(selected_context=(audit_analysis_query[:120] + "…") if len(audit_analysis_query) > 120 else audit_analysis_query, last_update_source="Mirror Check")
             st.rerun()
 
     st.markdown("---")
 
-    # Latest result appears immediately after the question box.
+    # Latest result appears immediately after the question box, but only when
+    # it still belongs to the currently visible input.
     if st.session_state.chat_audit_history:
         latest = st.session_state.chat_audit_history[0]
-
-        st.markdown("### Latest reading")
-        if latest.get("input_source") == "DEMO_INPUT":
-            st.caption("Demo mode was used. This reading is only an example.")
-        invisibility_note = latest.get("invisibility_report")
-        if isinstance(invisibility_note, dict) and invisibility_note.get("invisibility_filter_applied"):
-            st.caption("Names and titles were removed before this review.")
-        render_pulse_tree(
-            display_score_from_judgment(latest["report"], latest["judgment"]),
-            latest["sim"]["ego"],
-            latest["sim"]["alignment"],
-            title="Mirror Reading Tree",
-            state_override=str(latest.get("judgment", {}).get("verdict", "THRESHOLD")).upper(),
-            mode="Mirror Check",
+        latest_raw_query = str(latest.get("raw_query", latest.get("query", "")) or "")
+        current_input_signature = mirror_active_input_signature(chat_query)
+        latest_input_signature = mirror_active_input_signature(latest_raw_query)
+        active_input_signature = st.session_state.get("audit_active_input_signature", latest_input_signature)
+        latest_matches_current_input = (
+            bool(chat_query.strip())
+            and current_input_signature == latest_input_signature
+            and active_input_signature == latest_input_signature
         )
-        render_chat_judgment(latest["judgment"], latest["source"], latest["report"], latest.get("sim"), latest.get("scan"))
 
-        source_hits = latest.get("source_hits", source_conformance_hits(latest["query"]))
-        if source_hits:
-            with st.expander("Source match hits", expanded=True):
-                st.dataframe(pd.DataFrame(source_hits), use_container_width=True, hide_index=True)
+        if latest_matches_current_input:
+            st.markdown("### Latest reading")
+            if latest.get("input_source") == "DEMO_INPUT":
+                st.caption("Demo mode was used. This reading is only an example.")
+            invisibility_note = latest.get("invisibility_report")
+            if isinstance(invisibility_note, dict) and invisibility_note.get("invisibility_filter_applied"):
+                st.caption("Names and titles were removed before this review.")
+            render_pulse_tree(
+                display_score_from_judgment(latest["report"], latest["judgment"]),
+                latest["sim"]["ego"],
+                latest["sim"]["alignment"],
+                title="Mirror Reading Tree",
+                state_override=str(latest.get("judgment", {}).get("verdict", "THRESHOLD")).upper(),
+                mode="Mirror Check",
+            )
+            render_chat_judgment(latest["judgment"], latest["source"], latest["report"], latest.get("sim"), latest.get("scan"))
+
+            source_hits = latest.get("source_hits", source_conformance_hits(latest["query"]))
+            if source_hits:
+                with st.expander("Source match hits", expanded=True):
+                    st.dataframe(pd.DataFrame(source_hits), use_container_width=True, hide_index=True)
+            else:
+                st.caption("Source match: no named source concept matched this idea in the current detector set.")
+
+            st.markdown("### Local witness receipt")
+            st.caption("Creates a receipt you hold. It is not published, synced, or treated as authority.")
+            mirror_receipt = build_mirror_receipt_for_entry(latest)
+            mirror_receipt_text = render_local_witness_receipt_text(mirror_receipt)
+            st.download_button(
+                "⬇️ Download receipt",
+                data=mirror_receipt_text,
+                file_name="aletheia_mirror_check_local_witness_receipt.txt",
+                mime="text/plain",
+                use_container_width=True,
+            )
+
+            with st.expander("Scanner features used for this reading"):
+                st.json(latest["scan"])
         else:
-            st.caption("Source match: no named source concept matched this idea in the current detector set.")
+            st.info("The input has changed. The previous assessment is closed for this draft. Click Review idea to create a new reading and receipt.")
+            with st.expander("Last closed reading", expanded=False):
+                verdict = latest["judgment"].get("verdict", "THRESHOLD")
+                risk = latest["judgment"].get("corruption_risk", "Medium")
+                st.markdown(f"**{verdict} · {risk} risk**")
+                st.caption(latest_raw_query[:240] + ("..." if len(latest_raw_query) > 240 else ""))
 
-        st.markdown("### Local witness receipt")
-        st.caption("Creates a receipt you hold. It is not published, synced, or treated as authority.")
-        mirror_receipt = build_mirror_receipt_for_entry(latest)
-        mirror_receipt_text = render_local_witness_receipt_text(mirror_receipt)
-        st.download_button(
-            "⬇️ Download receipt",
-            data=mirror_receipt_text,
-            file_name="aletheia_mirror_check_local_witness_receipt.txt",
-            mime="text/plain",
-            use_container_width=True,
-        )
-
-        with st.expander("Scanner features used for this reading"):
-            st.json(latest["scan"])
-
-        with st.expander("Previous readings"):
-            for idx, item in enumerate(st.session_state.chat_audit_history[1:], start=2):
-                verdict = item["judgment"].get("verdict", "THRESHOLD")
-                risk = item["judgment"].get("corruption_risk", "Medium")
-                st.markdown(f"**{idx}. {verdict} · {risk} risk**")
-                st.caption(item["query"][:240] + ("..." if len(item["query"]) > 240 else ""))
+        previous_items = st.session_state.chat_audit_history[1:] if latest_matches_current_input else st.session_state.chat_audit_history
+        if previous_items:
+            with st.expander("Previous readings"):
+                for idx, item in enumerate(previous_items, start=1):
+                    verdict = item["judgment"].get("verdict", "THRESHOLD")
+                    risk = item["judgment"].get("corruption_risk", "Medium")
+                    st.markdown(f"**{idx}. {verdict} · {risk} risk**")
+                    st.caption(item["query"][:240] + ("..." if len(item["query"]) > 240 else ""))
     else:
         st.caption("No reading yet. Share one idea above to create a Mirror Reading Tree.")
 
