@@ -822,3 +822,27 @@ Files:
 - PATCH_71_10_MANIFEST.txt
 - PATCH_71_10_RECOVERY_NOTE.md
 
+## Patch 71.11 - Mirror Check Stress Label Row Render Fix
+
+Date: 2026-05-11
+
+Patch 71.11 fixes the remaining Mirror Check latest-reading card regression where the `Stress label` row could still appear as literal code after Patch 71.10.
+
+Implemented:
+- Kept the Patch 71.10 `judgment_card_html` + `textwrap.dedent(...).strip()` render path.
+- Built the result-card detail rows as inline HTML blocks joined into `detail_rows_html`.
+- Escaped dynamic display text before inserting it into `unsafe_allow_html=True` markup.
+- Rendered the detail rows inline so Streamlit Markdown no longer treats the final row as code.
+
+Invariant preserved:
+- No receipt schema change.
+- No scoring logic change.
+- No verdict-routing change.
+- No taxonomy expansion.
+- No tree visual, Stress Test, Boundary Cases, World Lens, storage, or authority-boundary logic changed.
+
+Check:
+
+```bat
+tools\\run_patch_checks.bat 71_11
+```

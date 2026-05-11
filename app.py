@@ -4,6 +4,7 @@ import zipfile
 import hashlib
 import textwrap
 import random
+import html
 import re
 import io
 from datetime import datetime
@@ -2824,11 +2825,12 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
 
     review_band = review_band_for_state(verdict, report, sim or {})
     review_band_label = review_band.get("label", verdict.title())
+    safe_review_band_label = html.escape(str(review_band_label))
     review_band_line = ""
     if verdict == "THRESHOLD":
         review_band_line = f"""
             <div style="color:#d4b88a;font-size:1.05rem;font-weight:800;margin-top:0.2rem;">
-                {review_band_label}
+                {safe_review_band_label}
             </div>
         """
 
@@ -2836,20 +2838,35 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     if verdict == "THRESHOLD":
         review_band_detail_line = f"<strong>Review band:</strong> {review_band_label}<br>"
 
+    # Patch 71.11: keep the detail rows inline HTML instead of indented
+    # Markdown lines, otherwise Streamlit can still show the stress-label row
+    # as literal code inside the card.
+    safe_source = html.escape(str(source))
+    safe_risk = html.escape(str(judgment.get("corruption_risk", "Medium")))
+    safe_stress_label = html.escape(str(judgment.get("stress_label", "Unclassified")))
+
+    detail_rows = [
+        f'<div><strong>Safety risk:</strong> {safe_risk}</div>',
+    ]
+    if verdict == "THRESHOLD":
+        detail_rows.append(
+            f'<div style="margin-top:0.15rem;"><strong>Review band:</strong> {safe_review_band_label}</div>'
+        )
+    detail_rows.append(
+        f'<div style="margin-top:0.15rem;"><strong>Stress label:</strong> {safe_stress_label}</div>'
+    )
+    detail_rows_html = "".join(detail_rows)
+
     judgment_card_html = f"""
 <div class="soft-card">
   <div style="color:#aeb7c6;font-size:0.78rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;">
-    {source} · Protocol-adjusted internal label
+    {safe_source} · Protocol-adjusted internal label
   </div>
   <div style="color:{color};font-size:2rem;font-weight:900;margin-top:0.25rem;">
     {verdict}
   </div>
   {review_band_line}
-  <div style="color:#e8e0d0;margin-top:0.5rem;">
-    <strong>Safety risk:</strong> {judgment.get("corruption_risk", "Medium")}<br>
-    {review_band_detail_line}
-    <strong>Stress label:</strong> {judgment.get("stress_label", "Unclassified")}
-  </div>
+  <div style="color:#e8e0d0;margin-top:0.5rem;">{detail_rows_html}</div>
 </div>
 """
     st.markdown(textwrap.dedent(judgment_card_html).strip(), unsafe_allow_html=True)
