@@ -988,3 +988,29 @@ Check:
 tools\run_patch_checks.bat 72_17
 ```
 
+## Patch 72.18 - World Lens Receipt Naming and Sanctuary Humility Export Guard
+
+Date: 2026-05-11
+
+Patch 72.18 updates World Lens receipt naming and neutralizes old absolute Sanctuary narrative text in receipt/export rows.
+
+Implemented:
+- Renamed complete receipt UI from Grid receipt to World Lens receipt.
+- Updated receipt ZIP filename to `aletheia_world_lens_receipt_<year>.zip`.
+- Updated internal ZIP filenames to `aletheia_world_lens_receipt_<year>_*`.
+- Added `_sanitize_world_lens_receipt_text(...)`.
+- Sanitized `comparison_export` after World Lens diagnostic alignment so receipt/export narrative fields use low-risk/internal-taxonomy language instead of final Sanctuary wording.
+- Preserved raw/internal `SANCTUARY` taxonomy values for compatibility and aggregation.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No 9k allocation formula change.
+- No Evidence Lab data model, authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_18
+```
+

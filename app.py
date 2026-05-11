@@ -6043,7 +6043,32 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
             ]
             return "\n".join([header, divider] + rows)
 
-        def _build_grid_receipt_zip() -> bytes:
+        def _sanitize_world_lens_receipt_text(df: pd.DataFrame) -> pd.DataFrame:
+            """Patch 72.18: neutralize SANCTUARY display text in World Lens exports.
+
+            The raw/internal taxonomy label may remain SANCTUARY. Exported
+            narrative fields must not present Sanctuary as final safety, final
+            authority, or an achieved endpoint.
+            """
+            if not isinstance(df, pd.DataFrame) or df.empty:
+                return df
+            out = df.copy()
+            replacements = {
+                "SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
+                    "Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. "
+                    "Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority."
+                ),
+                "SANCTUARY · SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
+                    "Low-risk internal reading · Internal taxonomy label: SANCTUARY; not a final safety, final Sanctuary, or authority claim."
+                ),
+            }
+            for col in out.columns:
+                if out[col].dtype == object or pd.api.types.is_string_dtype(out[col]):
+                    out[col] = out[col].replace(replacements)
+                    out[col] = out[col].apply(lambda value: replacements.get(value, value) if isinstance(value, str) else value)
+            return out
+
+        def _build_world_lens_receipt_zip() -> bytes:
             receipt_summary = {
                 "selected_year": int(selected_year),
                 "grid_source_state": grid_state_label,
@@ -6139,7 +6164,7 @@ This is a World Lens Simulation for human review. It is not a real Global ID sys
             if "_allocation_role" in all_rows_receipt.columns:
                 all_rows_receipt = all_rows_receipt.rename(columns={"_allocation_role": "allocation_role"})
 
-            md = f"""# ALETHEIA Global Grid Receipt
+            md = f"""# ALETHEIA World Lens Receipt
 
 ## Scope
 
@@ -6207,18 +6232,18 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
 
             buffer = io.BytesIO()
             with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zf:
-                zf.writestr(f"aletheia_grid_receipt_{int(selected_year)}.md", md)
-                zf.writestr(f"aletheia_grid_receipt_{int(selected_year)}_summary.json", json.dumps(receipt_summary, indent=2))
-                zf.writestr(f"aletheia_grid_receipt_{int(selected_year)}_coverage.csv", coverage_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_grid_receipt_{int(selected_year)}_verdict_distribution.csv", verdict_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_grid_receipt_{int(selected_year)}_highest_integrity.csv", high_integrity_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_grid_receipt_{int(selected_year)}_lowest_integrity.csv", low_integrity_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_grid_receipt_{int(selected_year)}_highest_collapse.csv", high_collapse_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_grid_receipt_{int(selected_year)}_largest_allocations.csv", largest_alloc_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_grid_receipt_{int(selected_year)}_high_impact_nodes.csv", high_impact_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_grid_receipt_{int(selected_year)}_sensitivity_watchlist.csv", sensitivity_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_grid_receipt_{int(selected_year)}_coverage_gaps.csv", coverage_gaps_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_grid_receipt_{int(selected_year)}_all_rows.csv", all_rows_receipt.to_csv(index=False))
+                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}.md", md)
+                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_summary.json", json.dumps(receipt_summary, indent=2))
+                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_coverage.csv", coverage_receipt.to_csv(index=False))
+                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_verdict_distribution.csv", verdict_receipt.to_csv(index=False))
+                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_highest_integrity.csv", high_integrity_receipt.to_csv(index=False))
+                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_lowest_integrity.csv", low_integrity_receipt.to_csv(index=False))
+                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_highest_collapse.csv", high_collapse_receipt.to_csv(index=False))
+                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_largest_allocations.csv", largest_alloc_receipt.to_csv(index=False))
+                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_high_impact_nodes.csv", high_impact_receipt.to_csv(index=False))
+                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_sensitivity_watchlist.csv", sensitivity_receipt.to_csv(index=False))
+                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_coverage_gaps.csv", coverage_gaps_receipt.to_csv(index=False))
+                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_all_rows.csv", all_rows_receipt.to_csv(index=False))
             buffer.seek(0)
             return buffer.getvalue()
 
@@ -6279,6 +6304,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
         )
         comparison_export["sydney_protocol_overlay"] = "mirror_not_throne; anti_capture; non_divinization; appealability; transparency; fail_closed_if_guardrails_break"
         comparison_export = apply_world_lens_diagnostic_alignment(comparison_export)
+        comparison_export = _sanitize_world_lens_receipt_text(comparison_export)
         comparison_export["app_version"] = APP_VERSION
         comparison_export["module_alignment_note"] = (
             "Evidence Lab empirical scoring feeds World Lens. Scenario-text diagnostics from Mirror Check are carried as explicit not-assessed scope fields unless policy text is supplied."
@@ -6807,7 +6833,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
 
             st.markdown("#### Complete World Lens receipt")
             st.write(
-                "Download a receipt ZIP for this selected year. It includes the overview, coverage, verdict distribution, "
+                "Download a World Lens receipt ZIP for this selected year. It includes the overview, coverage, verdict distribution, "
                 "comparison tables, coverage gaps, all active rows, and a markdown summary for review."
             )
 
@@ -6817,15 +6843,15 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             if receipt_ready:
                 st.success("Receipt is ready. Evidence Lab and World Lens inputs match for this output.")
                 st.download_button(
-                    "⬇️ Download complete Grid receipt ZIP",
-                    data=_build_grid_receipt_zip(),
-                    file_name=f"aletheia_global_grid_receipt_{selected_year}.zip",
+                    "⬇️ Download World Lens receipt ZIP",
+                    data=_build_world_lens_receipt_zip(),
+                    file_name=f"aletheia_world_lens_receipt_{selected_year}.zip",
                     mime="application/zip",
                     use_container_width=True,
                 )
             else:
                 st.warning(
-                    "Receipt download is locked until Empirical Evidence and Global Grid are aligned for the selected output. "
+                    "Receipt download is locked until Empirical Evidence and World Lens are aligned for the selected output. "
                     "Follow the actions above, then rerun the Grid."
                 )
 
