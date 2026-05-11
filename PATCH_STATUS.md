@@ -473,3 +473,30 @@ Check:
 ```bat
 tools\run_patch_checks.bat 71_12
 ```
+
+## Patch 72 - Threshold Mapping Layer
+
+Date: 2026-05-11
+
+Patch 72 adds a receipt-only Threshold Mapping Layer to clarify the middle zone between captured logic and distributed resilience.
+
+Implemented:
+- Added `threshold_mapping_layer` to local witness receipts.
+- Added `threshold_direction`, `z_axis_position`, `integrity_gap`, and `repair_index`.
+- Added component readings for Power balance, Correction, and Access.
+- Added Asylum pressure signals and Sanctuary growth signals.
+- Printed `THRESHOLD MAPPING LAYER` between Raw Metrics Before Ethics and Scanner Features in readable receipts.
+- Added documentation in `docs/threshold_mapping_layer.md`.
+
+Invariant preserved:
+- Canonical taxonomy remains SANCTUARY / THRESHOLD / ASYLUM.
+- No scoring logic change.
+- No verdict-routing change.
+- No UI tree visual change.
+- No Stress Test, Boundary Cases, World Lens, storage, public ledger, Global ID sync, central storage, or authority-boundary logic changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72
+```

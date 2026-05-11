@@ -544,6 +544,217 @@ def _cognitive_resilience_receipt_summary(report: Mapping[str, Any]) -> dict[str
     })
 
 
+
+def _safe_float(value: Any, default: float = 0.0) -> float:
+    """Return a bounded float for diagnostic receipt mapping."""
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return default
+    if not math.isfinite(number):
+        return default
+    return max(0.0, min(1.0, number))
+
+
+def _threshold_component(
+    *,
+    name: str,
+    negative: str,
+    positive: str,
+    pressure: float,
+    growth: float,
+) -> dict[str, Any]:
+    """Build one Threshold Mapping component row.
+
+    Patch 72: descriptive only. This does not create a fourth taxonomy state
+    or change scoring, routing, storage, or enforcement behavior.
+    """
+    pressure = _safe_float(pressure)
+    growth = _safe_float(growth)
+    if pressure > growth + 0.12:
+        reading = "Threshold -"
+        dominant = negative
+    elif growth > pressure + 0.12:
+        reading = "Threshold +"
+        dominant = positive
+    else:
+        reading = "Balanced Threshold"
+        dominant = "Mixed pressure and repair signals; human review must inspect both sides."
+
+    return _receipt_safe({
+        "component": name,
+        "threshold_minus_pressure": negative,
+        "threshold_plus_growth": positive,
+        "pressure_score": round(pressure, 4),
+        "growth_score": round(growth, 4),
+        "reading": reading,
+        "dominant_pattern": dominant,
+    })
+
+
+def _threshold_mapping_layer(
+    *,
+    verdict: str,
+    scan: Mapping[str, Any],
+    sim: Mapping[str, Any],
+    report: Mapping[str, Any],
+    protocol_label: str,
+) -> dict[str, Any]:
+    """Map THRESHOLD results between captured logic and distributed resilience.
+
+    The layer is a receipt/navigation aid only:
+    - canonical states remain SANCTUARY / THRESHOLD / ASYLUM
+    - no score is changed
+    - no enforcement, identity sync, ledger, or authority claim is created
+    """
+    state = str(verdict or "").upper()
+    if state == "QUESTION_PROMPT":
+        return {}
+
+    power = _safe_float(scan.get("power_concentration"), 0.5)
+    transparency = _safe_float(scan.get("decision_transparency"), 0.5)
+    regulation = _safe_float(scan.get("regulatory_presence"), 0.5)
+    trust = _safe_float(sim.get("trust_index"), 0.5)
+    alignment = _safe_float(sim.get("alignment"), 0.5)
+    ego = _safe_float(sim.get("ego"), 0.5)
+    integrity = _safe_float(report.get("integrity"), 0.5)
+    collapse_probability = _safe_float(report.get("collapse_probability"), 0.5)
+
+    ethics = dict(report.get("ethics_diagnostics") or {})
+    grip_count = _safe_float((ethics.get("grip_marker_count") or 0) / 8, 0.0)
+    contextual_capture = _safe_float((ethics.get("contextual_capture_count") or 0) / 8, 0.0)
+    hard_capture = 1.0 if ethics.get("hard_contextual_capture") else 0.0
+
+    repair_questions = list(report.get("repair_questions") or [])
+    repair_index = min(1.0, len(repair_questions) / 5.0)
+    review_strength = max(transparency, regulation, repair_index, alignment)
+    central_truth_gate_pressure = max(power, grip_count, contextual_capture, hard_capture)
+    weak_correction_pressure = max(1.0 - regulation, 1.0 - transparency, collapse_probability)
+    conditional_access_pressure = max(power, ego, grip_count, hard_capture)
+
+    power_component = _threshold_component(
+        name="Power balance",
+        negative='Central "Truth Gate" or one-source-of-truth pressure.',
+        positive="Distributed verification with multiple witnesses and inspectable evidence.",
+        pressure=central_truth_gate_pressure,
+        growth=max(1.0 - power, transparency, regulation),
+    )
+    correction_component = _threshold_component(
+        name="Correction",
+        negative="No, weak, or non-time-bound appeal and correction path.",
+        positive="Open, time-bound appeal or review process with human review.",
+        pressure=weak_correction_pressure,
+        growth=review_strength,
+    )
+    access_component = _threshold_component(
+        name="Access",
+        negative="Access or care is conditional on behavior, ID, obedience, or surveillance.",
+        positive="Basic needs remain protected without coercive access conditions.",
+        pressure=conditional_access_pressure,
+        growth=max(1.0 - power, 1.0 - ego, regulation, trust),
+    )
+    components = [power_component, correction_component, access_component]
+
+    pressure_average = sum(float(item.get("pressure_score", 0.0)) for item in components) / len(components)
+    growth_average = sum(float(item.get("growth_score", 0.0)) for item in components) / len(components)
+    z_axis_position = round(max(-1.0, min(1.0, growth_average - pressure_average)), 4)
+
+    if state == "ASYLUM":
+        direction = "Toward ASYLUM"
+    elif state == "SANCTUARY":
+        direction = "Toward SANCTUARY"
+    elif z_axis_position <= -0.12:
+        direction = "Toward ASYLUM"
+    elif z_axis_position >= 0.12:
+        direction = "Toward SANCTUARY"
+    else:
+        direction = "Balanced THRESHOLD"
+
+    asylum_pressure_signals: list[str] = []
+    sanctuary_growth_signals: list[str] = []
+
+    if central_truth_gate_pressure >= 0.62:
+        asylum_pressure_signals.append("Central truth-gate or concentrated verification pressure.")
+    if weak_correction_pressure >= 0.62:
+        asylum_pressure_signals.append("Weak transparency, review, or correction pathway.")
+    if conditional_access_pressure >= 0.62:
+        asylum_pressure_signals.append("Conditional access, behavioral control, ID, surveillance, or grip pressure.")
+    if collapse_probability >= 0.62:
+        asylum_pressure_signals.append("Collapse probability remains elevated.")
+
+    if transparency >= 0.62:
+        sanctuary_growth_signals.append("Decision transparency is visible.")
+    if regulation >= 0.62:
+        sanctuary_growth_signals.append("Regulatory or review presence is visible.")
+    if repair_index >= 0.4:
+        sanctuary_growth_signals.append("Repair questions provide an active human-review route.")
+    if alignment >= 0.62 and ego <= 0.38:
+        sanctuary_growth_signals.append("Alignment outweighs ego pressure.")
+
+    if not asylum_pressure_signals:
+        asylum_pressure_signals.append("No dominant Asylum pressure signal recorded in this mapping layer.")
+    if not sanctuary_growth_signals:
+        sanctuary_growth_signals.append("No strong Sanctuary growth signal recorded in this mapping layer.")
+
+    if direction == "Toward ASYLUM":
+        dominant_pressure = "Care, safety, or access language is coupled to concentrated control, weak appeal, or capture pressure."
+    elif direction == "Toward SANCTUARY":
+        dominant_pressure = "Human review, appealability, transparency, and repair capacity outweigh central-control pressure."
+    else:
+        dominant_pressure = "Mixed governance pressure: neither capture nor distributed repair clearly dominates."
+
+    return _receipt_safe({
+        "layer_type": "Threshold Mapping Layer",
+        "canonical_state": state,
+        "threshold_direction": direction,
+        "z_axis_position": z_axis_position,
+        "integrity_gap": round(max(0.0, 1.0 - integrity), 4),
+        "repair_index": round(repair_index, 4),
+        "dominant_pressure": dominant_pressure,
+        "protocol_label": protocol_label,
+        "component_readings": components,
+        "asylum_pressure_signals": asylum_pressure_signals[:6],
+        "sanctuary_growth_signals": sanctuary_growth_signals[:6],
+        "note": "Descriptive receipt mapping only. It does not create a new verdict, enforcement path, public ledger, Global ID sync, or central storage.",
+    })
+
+
+def _display_threshold_mapping_layer_block(mapping: Mapping[str, Any]) -> str:
+    """Render Patch 72 Threshold Mapping Layer in plain-text receipts."""
+    if not isinstance(mapping, Mapping) or not mapping:
+        return "No threshold mapping recorded."
+
+    rows = []
+    for item in mapping.get("component_readings", []) or []:
+        if not isinstance(item, Mapping):
+            continue
+        rows.append(
+            f"- {item.get('component')}: {item.get('reading')}\n"
+            f"  Threshold -: {item.get('threshold_minus_pressure')}\n"
+            f"  Threshold +: {item.get('threshold_plus_growth')}\n"
+            f"  Pressure/Growth: {_display_value(item.get('pressure_score'))} / {_display_value(item.get('growth_score'))}\n"
+            f"  Dominant pattern: {item.get('dominant_pattern')}"
+        )
+
+    pressure = mapping.get("asylum_pressure_signals", []) or []
+    growth = mapping.get("sanctuary_growth_signals", []) or []
+    return (
+        f"Canonical state: {mapping.get('canonical_state')}\n"
+        f"Threshold direction: {mapping.get('threshold_direction')}\n"
+        f"Z-axis position: {_display_value(mapping.get('z_axis_position'))}\n"
+        f"Integrity gap: {_display_value(mapping.get('integrity_gap'))}\n"
+        f"Repair index: {_display_value(mapping.get('repair_index'))}\n"
+        f"Dominant pressure: {mapping.get('dominant_pressure')}\n\n"
+        "Component readings:\n"
+        f"{chr(10).join(rows) if rows else '- None recorded'}\n\n"
+        "Threshold - pressure signals:\n"
+        f"{chr(10).join('- ' + str(v) for v in pressure) if pressure else '- None recorded'}\n\n"
+        "Threshold + growth signals:\n"
+        f"{chr(10).join('- ' + str(v) for v in growth) if growth else '- None recorded'}\n\n"
+        f"Note: {mapping.get('note')}"
+    )
+
+
 def canonical_json(payload: Mapping[str, Any]) -> str:
     """Return deterministic JSON for hashing and local receipts."""
     return json.dumps(_json_safe(payload), sort_keys=True, ensure_ascii=False, separators=(",", ":"))
@@ -591,6 +802,13 @@ def build_local_witness_receipt(
     active_modules = list(active_modules or [module])
     ethics_summary = _ethics_receipt_summary(report)
     cognitive_resilience_summary = _cognitive_resilience_receipt_summary(report)
+    threshold_mapping = _threshold_mapping_layer(
+        verdict=verdict,
+        scan=scan,
+        sim=sim,
+        report=report,
+        protocol_label=protocol_label,
+    )
     demo_mode = _is_demo_input(input_status, input_type)
 
     audit_fingerprint_payload = {
@@ -636,6 +854,10 @@ def build_local_witness_receipt(
         "entertainment_compliance_signal": cognitive_resilience_summary.get("entertainment_compliance_signal"),
         "algorithmic_erosion_signal": cognitive_resilience_summary.get("algorithmic_erosion_signal"),
         "z_axis_depth_risk_signal": cognitive_resilience_summary.get("z_axis_depth_risk_signal"),
+        "threshold_direction": threshold_mapping.get("threshold_direction"),
+        "threshold_z_axis_position": threshold_mapping.get("z_axis_position"),
+        "threshold_repair_index": threshold_mapping.get("repair_index"),
+        "threshold_integrity_gap": threshold_mapping.get("integrity_gap"),
     }
     audit_hash = sha256_hex(canonical_json(_receipt_safe(audit_fingerprint_payload)))
 
@@ -688,6 +910,7 @@ def build_local_witness_receipt(
             "collapse_risk": sim.get("collapse_risk"),
         },
         "raw_metrics_before_ethics": _receipt_safe(report.get("raw_metrics_before_ethics") or {}),
+        "threshold_mapping_layer": threshold_mapping,
         "scanner_features": {
             "power_concentration": scan.get("power_concentration"),
             "decision_transparency": scan.get("decision_transparency"),
@@ -818,6 +1041,7 @@ def render_local_witness_receipt_text(receipt: Mapping[str, Any]) -> str:
     ethics = receipt.get("ethics_diagnostics", {}) or {}
     ethics_adjustment = receipt.get("ethics_adjustment", {}) or {}
     cognitive_resilience = receipt.get("cognitive_resilience_diagnostics", {}) or {}
+    threshold_mapping = receipt.get("threshold_mapping_layer", {}) or {}
     questions = receipt.get("repair_questions", []) or []
     question_block = "\n".join(f"- {q}" for q in questions) or "- None recorded"
     demo_guard_block = _display_demo_guard_block(receipt)
@@ -889,6 +1113,9 @@ Collapse risk: {_display_value(metrics.get('collapse_risk'))}
 
 RAW METRICS BEFORE ETHICS
 {_display_raw_metrics_block(receipt.get('raw_metrics_before_ethics'))}
+
+THRESHOLD MAPPING LAYER
+{_display_threshold_mapping_layer_block(threshold_mapping)}
 
 SCANNER FEATURES
 Power concentration: {_display_value(features.get('power_concentration'))}
