@@ -641,3 +641,30 @@ Patch 71.3 adds deterministic missing-safeguard negation handling:
 ### Boundary
 
 This patch does not make ALETHEIA an authority and does not change storage or enforcement behavior. Authority claim remains false; human review remains required; public ledger remains false; Global ID sync remains false; central storage remains false. The tree remains explanatory; local witness receipts remain canonical.
+
+## Patch 71.4 — Missing-Safeguard Verdict Enforcement
+
+Date: 2026-05-11
+
+Patch 71.4 closes the remaining Stress Test gap found after Patch 71.3. The algorithmic welfare triage demo explicitly says the system lacks explainability, independent challenge, and human override. That language must not remain SANCTUARY/Low with perfect trust/alignment.
+
+Implemented behavior:
+- Missing-safeguard negation is detected in the visible Stress Test path and batch path.
+- The final UI/receipt route enforces THRESHOLD / Medium with label `Missing Safeguard Negation / Needs Safeguards`.
+- Trust and alignment are capped below perfect values.
+- Ego, friction, trust friction, and collapse pressure receive non-zero review pressure.
+- Repair questions are injected before the local witness receipt is built.
+
+Invariant preserved:
+- ALETHEIA remains a mirror, not a throne.
+- No legal, political, institutional, religious, medical, or automated authority is claimed.
+- Public ledger, Global ID sync, and central storage remain false.
+- Dataflow remains Power -> Mirror, never Mirror -> Power.
+
+Files:
+- app.py
+- protocol.py
+- tests/test_patch_71_4_missing_safeguard_verdict_enforcement.py
+- PATCH_71_4_MANIFEST.txt
+- PATCH_71_4_RECOVERY_NOTE.md
+

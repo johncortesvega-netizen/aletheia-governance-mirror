@@ -1,5 +1,19 @@
 # ALETHEIA Patch Status
 
+## Patch 71.4 — Missing-Safeguard Verdict Enforcement
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Stress Test now applies a final missing-safeguard guard before visible metrics and local witness receipts are produced.
+- Explicit phrases such as `lacks explainability`, `lacks independent challenge`, and `lacks human override` route to THRESHOLD / Medium instead of SANCTUARY / Low.
+- Trust and alignment are capped below perfect values, friction/collapse pressure become non-zero, and repair questions are added.
+- Authority boundary remains unchanged: mirror only, local receipt only, human review required.
+
+Validation:
+- `tools\run_patch_checks.bat 71_4`
+
+
 This file is the compact local patch ledger for ALETHEIA v0.1. Longer implementation notes live in `docs/progress_database.md`.
 
 | Patch | Name | Status |

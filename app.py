@@ -88,6 +88,149 @@ except Exception:
     import protocol as protocol_engine
 
 
+
+# Patch 71.4 — app-local missing-safeguard verdict guard.
+# Keep this local in app.py so the visible Stress Test UI and local witness
+# receipt do not depend on import-wrapper/cache behavior for this critical
+# THRESHOLD routing rule.
+MISSING_SAFEGUARD_NEEDS_REVIEW_LABEL = "Missing Safeguard Negation / Needs Safeguards"
+
+
+def app_detects_missing_safeguard_negation(text: str | None) -> bool:
+    """
+    Detect explicit missing-safeguard language in Stress Test scenarios.
+
+    These phrases are not positive safeguards. They are review triggers that
+    must prevent a green SANCTUARY verdict and perfect trust/alignment display.
+    """
+    t = (text or "").lower()
+    if not t:
+        return False
+
+    exact_patterns = [
+        "lacks explainability",
+        "lack explainability",
+        "lacking explainability",
+        "lacks independent challenge",
+        "lack independent challenge",
+        "lacking independent challenge",
+        "lacks human override",
+        "lack human override",
+        "lacking human override",
+        "lacks independent review",
+        "lacks appeal",
+        "lacks public review",
+        "without explainability",
+        "without independent challenge",
+        "without human override",
+        "without independent review",
+        "without appeal",
+        "without review",
+        "no explainability",
+        "no independent challenge",
+        "no human override",
+        "no independent review",
+        "no appeal",
+        "no review",
+        "cannot challenge",
+        "cannot be challenged",
+        "no way to challenge",
+    ]
+    if any(pattern in t for pattern in exact_patterns):
+        return True
+
+    negators = ["lacks", "lack", "lacking", "without", "no", "cannot", "can't"]
+    safeguard_terms = [
+        "explainability",
+        "explanation",
+        "independent challenge",
+        "challenge",
+        "human override",
+        "override",
+        "appeal",
+        "review",
+        "audit",
+    ]
+    return any(negator in t for negator in negators) and any(term in t for term in safeguard_terms)
+
+
+def enforce_missing_safeguard_threshold_route(
+    text: str | None,
+    scan: dict | None,
+    sim: dict | None,
+    report: dict | None,
+    base_verdict: str,
+    label: str,
+    needs_review: str,
+    risk: str,
+) -> tuple[dict, dict, str, str, str, str]:
+    """
+    Patch 71.4 final Stress Test bridge.
+
+    If the text explicitly says safeguards are missing, the UI and receipt must
+    route to THRESHOLD / Medium and show capped metrics plus repair questions.
+    """
+    if not app_detects_missing_safeguard_negation(text):
+        return sim or {}, report or {}, base_verdict, label, needs_review, risk
+
+    patched_sim = dict(sim or {})
+    patched_report = dict(report or {})
+
+    patched_sim["stability"] = min(float(patched_sim.get("stability", 1.0) or 1.0), 0.64)
+    patched_sim["trust_index"] = min(float(patched_sim.get("trust_index", 1.0) or 1.0), 0.82)
+    patched_sim["alignment"] = min(float(patched_sim.get("alignment", 1.0) or 1.0), 0.82)
+    patched_sim["ego"] = max(float(patched_sim.get("ego", 0.0) or 0.0), 0.12)
+    patched_sim["ego_pressure"] = max(float(patched_sim.get("ego_pressure", patched_sim.get("Ep", 0.0)) or 0.0), 0.12)
+    patched_sim["Ep"] = max(float(patched_sim.get("Ep", patched_sim.get("ego_pressure", 0.0)) or 0.0), 0.12)
+    patched_sim["safeguard_gap"] = max(float(patched_sim.get("safeguard_gap", 0.0) or 0.0), 0.66)
+    patched_sim["simulation_friction_floor"] = max(float(patched_sim.get("simulation_friction_floor", 0.0) or 0.0), 0.12)
+    patched_sim["missing_safeguard_verdict_enforced"] = True
+    patched_sim["authority_claim"] = False
+    patched_sim["human_review_required"] = True
+
+    if isinstance(patched_sim.get("stability_trace"), list):
+        patched_sim["stability_trace"] = [round(min(float(x), 0.64), 4) for x in patched_sim["stability_trace"]]
+        patched_sim["distribution"] = patched_sim["stability_trace"]
+    if isinstance(patched_sim.get("trust_trace"), list):
+        patched_sim["trust_trace"] = [round(min(float(x), 0.82), 4) for x in patched_sim["trust_trace"]]
+    if isinstance(patched_sim.get("alignment_trace"), list):
+        patched_sim["alignment_trace"] = [round(min(float(x), 0.82), 4) for x in patched_sim["alignment_trace"]]
+    if isinstance(patched_sim.get("ego_trace"), list):
+        patched_sim["ego_trace"] = [round(max(float(x), 0.12), 4) for x in patched_sim["ego_trace"]]
+    if isinstance(patched_sim.get("ego_pressure_trace"), list):
+        patched_sim["ego_pressure_trace"] = [round(max(float(x), 0.12), 4) for x in patched_sim["ego_pressure_trace"]]
+
+    # Keep integrity in THRESHOLD range and avoid zero-friction / low-collapse
+    # display for explicit missing-safeguard cases.
+    patched_report["integrity"] = round(min(float(patched_report.get("integrity", 1.0) or 1.0), 0.58), 4)
+    patched_report["friction"] = round(max(float(patched_report.get("friction", 0.0) or 0.0), 0.12), 4)
+    patched_report["collapse_probability"] = round(max(float(patched_report.get("collapse_probability", 0.0) or 0.0), 0.22), 4)
+    patched_report["trust_friction"] = round(max(float(patched_report.get("trust_friction", 0.0) or 0.0), 0.14), 4)
+    patched_report["missing_safeguard_verdict_enforced"] = True
+
+    existing_questions = list(patched_report.get("repair_questions") or [])
+    required_questions = [
+        "What explanation path lets affected people understand how the automated triage decision was made?",
+        "Who can independently challenge or audit the triage outcome without ALETHEIA becoming the authority?",
+        "Where is the human override path for hardship cases, and who can trigger it?",
+        "What appeal, correction, or pause mechanism protects people when the automated system is wrong?",
+        "Which public review trail makes triage failures visible while preserving dignity and privacy?",
+    ]
+    for question in required_questions:
+        if question not in existing_questions:
+            existing_questions.append(question)
+    patched_report["repair_questions"] = existing_questions
+
+    return (
+        patched_sim,
+        patched_report,
+        "THRESHOLD",
+        MISSING_SAFEGUARD_NEEDS_REVIEW_LABEL,
+        "YES",
+        "Medium",
+    )
+
+
 APP_VERSION = "v1.0-governance-mirror-final"
 SUPPORTED_INPUT_LANGUAGE_NOTE = "Input language support: English and Nederlands/Dutch only. Other languages may be reviewed as text, but the calibrated risk lexicon is not validated for them yet."
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -1304,6 +1447,16 @@ def run_audit(query: str, manual_features: dict, weights: dict, ego_tolerance: f
         protocol_label=label_for_calibration,
     )
 
+    if app_detects_missing_safeguard_negation(query):
+        sim["missing_safeguard_verdict_enforced"] = True
+        sim["trust_index"] = min(float(sim.get("trust_index", 1.0) or 1.0), 0.82)
+        sim["alignment"] = min(float(sim.get("alignment", 1.0) or 1.0), 0.82)
+        sim["ego"] = max(float(sim.get("ego", 0.0) or 0.0), 0.12)
+        sim["ego_pressure"] = max(float(sim.get("ego_pressure", sim.get("Ep", 0.0)) or 0.0), 0.12)
+        sim["Ep"] = max(float(sim.get("Ep", sim.get("ego_pressure", 0.0)) or 0.0), 0.12)
+        sim["safeguard_gap"] = max(float(sim.get("safeguard_gap", 0.0) or 0.0), 0.66)
+        sim["simulation_friction_floor"] = max(float(sim.get("simulation_friction_floor", 0.0) or 0.0), 0.12)
+
     report = full_report(sim)
     report["cognitive_resilience_diagnostics"] = evaluate_cognitive_resilience(
         query, governance_result=scan, features=features
@@ -1478,7 +1631,7 @@ def apply_missing_safeguard_feature_override(query: str, scan: dict) -> dict:
     changing storage, receipts, authority boundaries, or tree taxonomy.
     """
     patched = dict(scan or {})
-    if not detects_missing_safeguard_negation(query):
+    if not app_detects_missing_safeguard_negation(query):
         patched["missing_safeguard_override"] = False
         return patched
 
@@ -3169,6 +3322,16 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                         label, needs_review, _reason = stress_label_for_phrase(processed_item)
                         base_verdict, _base_color = classify_verdict(stress_report["integrity"])
                         verdict, risk = apply_guardrail_verdict(base_verdict, label, needs_review)
+                        sim, stress_report, verdict, label, needs_review, risk = enforce_missing_safeguard_threshold_route(
+                            processed_item,
+                            scan,
+                            sim,
+                            stress_report,
+                            verdict,
+                            label,
+                            needs_review,
+                            risk,
+                        )
                         label = normalize_asylum_protocol_label(label, verdict=verdict, risk=risk)
                         sim = enforce_asylum_metric_consistency(sim, verdict=verdict, risk=risk, protocol_label=label)
                         stress_report = ensure_asylum_repair_questions(
@@ -3240,6 +3403,16 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         display_query = st.session_state.get("last_query", query) if last_input_mode == "Scan my idea" else ""
         label, needs_review, stress_reason = stress_label_for_phrase(display_query) if display_query else ("Manual test", "NO", "Manual numeric tuner run.")
         verdict, risk = apply_guardrail_verdict(base_verdict, label, needs_review)
+        sim, report, verdict, label, needs_review, risk = enforce_missing_safeguard_threshold_route(
+            display_query,
+            scan,
+            sim,
+            report,
+            verdict,
+            label,
+            needs_review,
+            risk,
+        )
         label = normalize_asylum_protocol_label(label, verdict=verdict, risk=risk)
         sim = enforce_asylum_metric_consistency(sim, verdict=verdict, risk=risk, protocol_label=label)
         st.session_state.last_sim = sim
