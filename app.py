@@ -2828,15 +2828,11 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     safe_review_band_label = html.escape(str(review_band_label))
     review_band_line = ""
     if verdict == "THRESHOLD":
-        review_band_line = f"""
-            <div style="color:#d4b88a;font-size:1.05rem;font-weight:800;margin-top:0.2rem;">
-                {safe_review_band_label}
-            </div>
-        """
-
-    review_band_detail_line = ""
-    if verdict == "THRESHOLD":
-        review_band_detail_line = f"<strong>Review band:</strong> {review_band_label}<br>"
+        review_band_line = (
+            '<div style="color:#d4b88a;font-size:1.05rem;font-weight:800;margin-top:0.2rem;">'
+            f'{safe_review_band_label}'
+            '</div>'
+        )
 
     # Patch 71.11: keep the detail rows inline HTML instead of indented
     # Markdown lines, otherwise Streamlit can still show the stress-label row

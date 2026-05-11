@@ -846,3 +846,27 @@ Check:
 ```bat
 tools\\run_patch_checks.bat 71_11
 ```
+
+## Patch 71.12 - Mirror Check Review Band Row Render Fix
+
+Date: 2026-05-11
+
+Patch 71.12 fixes the remaining THRESHOLD-specific Mirror Check latest-reading card regression where the visual review-band line could still appear as literal HTML/code.
+
+Implemented:
+- Built the THRESHOLD review-band visual line as inline HTML instead of an indented triple-quoted block.
+- Removed the obsolete `review_band_detail_line` fragment from the render path.
+- Preserved the Patch 71.11 inline detail rows and HTML escaping for Safety risk, Review band, and Stress label.
+
+Invariant preserved:
+- No receipt schema change.
+- No scoring logic change.
+- No verdict-routing change.
+- No taxonomy expansion.
+- No tree visual, Stress Test, Boundary Cases, World Lens, storage, or authority-boundary logic changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 71_12
+```
