@@ -559,3 +559,31 @@ Question banks are documented as `QUESTION_PROMPT / Review Tool` fixtures with m
 ### Boundary
 
 No scoring, receipt, tree, storage, or authority behavior changed. ALETHEIA remains a local mirror only: no authority claim, no enforcement, no public ledger, no Global ID sync, no central storage, and human review required.
+
+## Patch 71.1 — Module Demo Label Isolation
+
+Date: 2026-05-11
+Status: Ready for local verification
+
+### Trigger
+
+After Patch 71, UI review showed that the Stress Test tab could display demo labels and/or a load-button label associated with Mirror Check, creating confusion about which module owned the selected demo scenario.
+
+### Change
+
+Patch 71.1 separates module demo libraries in `app.py`:
+
+- `MIRROR_CHECK_DEMO_SCENARIOS` powers the Mirror Check scenario-demo dropdown.
+- `STRESS_TEST_DEMO_SCENARIOS` powers the Stress Test scenario-demo dropdown.
+- Stress Test now displays `Stress Test demo examples` and `Load Stress Test scenario demo`.
+- Mirror Check now displays `Mirror Check scenario demo examples` and `Load Mirror Check scenario demo`.
+
+The old `SCENARIOS` name remains as a compatibility alias to the Mirror Check demo map so older references do not break, while active module UI paths use module-specific maps.
+
+### Verification target
+
+`tests/test_patch_71_1_module_demo_label_isolation.py` confirms that the two demo maps exist, their titles do not overlap, Stress Test uses the Stress Test map and button label, Mirror Check uses the Mirror Check map and button label, and manifest/recovery/status/progress files are present.
+
+### Boundary
+
+No scoring, receipt, tree, batch-catalog, storage, or authority behavior changed. ALETHEIA remains a local mirror only: no authority claim, no enforcement, no public ledger, no Global ID sync, no central storage, and human review required.

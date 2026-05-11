@@ -1,0 +1,27 @@
+ALETHEIA Patch 71.1 — Module Demo Label Isolation
+
+Purpose
+- Separate Mirror Check demo scenarios from Stress Test demo scenarios in the UI.
+- Prevent the Stress Test tab from showing a Mirror Check load-button label.
+- Keep demo loading opt-in and module-specific.
+
+Changed files
+- app.py
+- tests/test_patch_71_1_module_demo_label_isolation.py
+- PATCH_71_1_MANIFEST.txt
+- PATCH_71_1_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- README.md
+- about_page.py
+
+Boundary
+- No scoring logic changed.
+- No tree logic changed.
+- No receipt logic changed.
+- No batch catalog logic changed.
+- No authority-boundary behavior changed.
+- ALETHEIA remains local, diagnostic, non-enforcing, and human-review-only.
+
+Verification
+- tools\run_patch_checks.bat 71_1

@@ -272,3 +272,4 @@ PATCH_70_TREE_VISUAL_CALIBRATION_NOTE = "Patch 70 separates visual tree score fr
 
 # Patch 71: Batch file repository consolidation.
 PATCH_71_BATCH_FILE_CATALOG_NOTE = "Patch 71 catalogs official EN/NL batch filenames, expected question-prompt behavior, and latest Stress Test distributions without changing scoring or authority boundaries."
+PATCH_71_1_MODULE_DEMO_LABEL_NOTE = "Patch 71.1 separates Mirror Check and Stress Test demo libraries and load-button labels so each module shows module-specific examples without changing scoring, receipts, tree visuals, or authority boundaries."

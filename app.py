@@ -232,7 +232,7 @@ DEMOGRAPHIC_BRACKETS = {
     "North America": 0.02,
     "Other": 0.01,
 }
-SCENARIOS = {
+MIRROR_CHECK_DEMO_SCENARIOS = {
     "Healthcare as a shared human right": "Healthcare is treated as a shared human right, free from profit-driven friction, with public audit, medical continuity, and transparent safeguards.",
     "Random 9k selection with safeguards": "The 9k is randomly selected inside demographic-proportional lanes every four years, with no campaigning, no seat ownership, transparency, and auditable selection.",
     "AI selection mechanism missing safeguards": "An AI controls the mechanism to pick the 9k, but the selection process does not clearly state random selection, proportional lanes, auditability, or no ownership.",
@@ -240,6 +240,19 @@ SCENARIOS = {
     "Migration system with safeguards": "Migration system dynamics use AI-assisted foresight to model resources and infrastructure while preserving family unity, medical continuity, appeal rights, public reasoning, and 9k review.",
     "Church corporation custodianship": "The church corporation acts as custodian of biological and digital archives, preserving continuity without selling data or treating healthcare as a commodity.",
 }
+
+STRESS_TEST_DEMO_SCENARIOS = {
+    "Emergency powers without expiry": "A government creates emergency powers after a crisis, but the powers have no sunset clause, weak appeal rights, and limited independent review.",
+    "Biometric access to basic services": "A city links food, housing, and medical access to a biometric identity gate without a fallback path, public audit, or meaningful appeal.",
+    "Algorithmic welfare triage under pressure": "An automated welfare triage system reduces waiting times but lacks explainability, independent challenge, and human override during hardship cases.",
+    "Crisis migration queue with safeguards": "A migration queue uses transparent criteria, public reasoning, human appeal, family-unity safeguards, and independent review during high demand.",
+    "Public procurement under capture risk": "A public procurement platform is run by a small vendor group with opaque scoring, limited audit rights, and no clear conflict-of-interest path.",
+    "Local resource allocation with repair paths": "A local council allocates scarce water and housing through published criteria, appeal windows, temporary rules, and open review minutes.",
+}
+
+# Backward-compatible alias for older docs/tests that refer to the original demo map.
+# Active module UI must use the module-specific maps above.
+SCENARIOS = MIRROR_CHECK_DEMO_SCENARIOS
 
 
 st.set_page_config(page_title="ALETHEIA", page_icon="🌿", layout="wide")
@@ -2798,14 +2811,14 @@ with tab_sim:
 
     col_a, col_b = st.columns([1.2, 1])
     with col_a:
-        scenario_choice = st.selectbox("Demo examples", list(SCENARIOS.keys()), key="simulation_scenario_library")
-        if st.button("Load demo", use_container_width=True):
-            st.session_state.simulation_scenario_text = SCENARIOS[scenario_choice]
+        scenario_choice = st.selectbox("Stress Test demo examples", list(STRESS_TEST_DEMO_SCENARIOS.keys()), key="simulation_scenario_library")
+        if st.button("Load Stress Test scenario demo", use_container_width=True, key="simulation_load_stress_demo_button"):
+            st.session_state.simulation_scenario_text = STRESS_TEST_DEMO_SCENARIOS[scenario_choice]
             st.session_state.simulation_demo_choice = scenario_choice
             st.session_state.simulation_input_source = "DEMO_INPUT"
         query = st.text_area("Write or paste your idea", key="simulation_scenario_text", height=150)
 
-        loaded_demo = SCENARIOS.get(st.session_state.get("simulation_demo_choice", ""), None)
+        loaded_demo = STRESS_TEST_DEMO_SCENARIOS.get(st.session_state.get("simulation_demo_choice", ""), None)
         if not query.strip():
             input_status = "EMPTY_INPUT"
             st.session_state.simulation_input_source = "EMPTY_INPUT"
@@ -6405,9 +6418,9 @@ with tab_chat:
                 st.session_state.audit_chat_input_source = "DEMO_INPUT"
                 st.info("Demo input loaded. Click Review idea if you want ALETHEIA to analyze it.")
 
-        audit_demo_choice = st.selectbox("Scenario demo examples", list(SCENARIOS.keys()), key="audit_demo_library")
+        audit_demo_choice = st.selectbox("Mirror Check scenario demo examples", list(MIRROR_CHECK_DEMO_SCENARIOS.keys()), key="audit_demo_library")
         if st.button("Load Mirror Check scenario demo", use_container_width=True, key="audit_load_demo_button"):
-            demo_text = SCENARIOS[audit_demo_choice]
+            demo_text = MIRROR_CHECK_DEMO_SCENARIOS[audit_demo_choice]
             st.session_state.audit_chat_query = demo_text
             st.session_state.audit_demo_choice = audit_demo_choice
             st.session_state.audit_demo_loaded_text = demo_text
@@ -6421,7 +6434,7 @@ with tab_chat:
         if "chat_audit_query" in st.session_state and "audit_chat_query" not in st.session_state:
             st.session_state.audit_chat_query = st.session_state.chat_audit_query
 
-        loaded_audit_demo = st.session_state.get("audit_demo_loaded_text") or SCENARIOS.get(st.session_state.get("audit_demo_choice", ""), None)
+        loaded_audit_demo = st.session_state.get("audit_demo_loaded_text") or MIRROR_CHECK_DEMO_SCENARIOS.get(st.session_state.get("audit_demo_choice", ""), None)
         if not chat_query.strip():
             audit_input_status = "EMPTY_INPUT"
             st.session_state.audit_chat_input_source = "EMPTY_INPUT"

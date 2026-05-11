@@ -700,3 +700,7 @@ Run:
 ```bat
 tools\run_patch_checks.bat 71
 ```
+
+## Patch 71.1 note — module-specific demo labels
+
+Patch 71.1 separates Mirror Check and Stress Test demo libraries in the UI. Stress Test now uses Stress Test-specific scenario demos and the `Load Stress Test scenario demo` button; Mirror Check keeps its own scenario demos and `Load Mirror Check scenario demo` button. This is a UI/demo-label correction only; scoring, receipts, tree visuals, batch catalogs, storage, and authority boundaries are unchanged.

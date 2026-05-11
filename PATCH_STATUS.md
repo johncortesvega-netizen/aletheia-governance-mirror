@@ -285,3 +285,17 @@ Check:
 ```bat
 tools\run_patch_checks.bat 71
 ```
+
+## Patch 71.1 — Module Demo Label Isolation
+
+Status: Ready for local verification.
+
+Patch 71.1 separates the visible demo libraries used by Mirror Check and Stress Test. Stress Test now uses Stress Test-specific scenario demos and the button label `Load Stress Test scenario demo`; Mirror Check keeps its own scenario demo library and `Load Mirror Check scenario demo` label.
+
+No scoring, tree, receipt, batch-catalog, storage, or authority-boundary logic changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 71_1
+```
