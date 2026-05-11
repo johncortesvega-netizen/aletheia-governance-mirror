@@ -16,7 +16,7 @@ The layer maps the movement between captured logic and distributed resilience:
 
 - **Toward ASYLUM**: care, safety, access, or protection language is coupled to concentrated control, surveillance, weak correction, ID pressure, or a central truth gate.
 - **Balanced THRESHOLD**: mixed governance pressure; neither capture nor distributed repair clearly dominates.
-- **Toward SANCTUARY**: human review, appealability, transparency, distributed verification, and repair capacity outweigh central-control pressure.
+- **Toward SANCTUARY-boundary**: human review, appealability, transparency, distributed verification, and repair capacity approach the humility boundary of human/system authority. It does not mean final Sanctuary is possessed by the system.
 
 ## Receipt fields
 
@@ -45,3 +45,37 @@ The readable receipt prints this section between **Raw Metrics Before Ethics** a
 This layer is descriptive only. It does not change scoring, verdict routing, receipt authority, storage, public ledger behavior, Global ID sync, central storage, or enforcement posture.
 
 ALETHEIA remains a mirror, not a throne.
+
+## The Humility Protocol: Sanctuary as Asymptote
+
+Patch 72.3 clarifies that the Z-axis is not progress toward perfection. It maps proximity to the boundary of human/system authority.
+
+```text
+Z = 0.0000
+Full ASYLUM pressure: coercion, opacity, absolute centralization.
+
+0.0000 < Z < 0.9999
+Human/system repair field: movement away from capture and toward transparency, appealability, decentralization, and humility.
+
+Z = 0.9999
+Maximum human/system claim: Threshold+ / humility boundary.
+
+Z = 1.0000
+OUTSIDE SYSTEM CLAIM. Final Sanctuary remains outside ALETHEIA scoring, code, hashes, receipts, trees, 9k structures, and institutional power.
+```
+
+Hard constraint: ALETHEIA must never assign `1.0000` to a human, political, algorithmic, institutional, or governance scenario.
+
+The receipt field `z_axis_position` is therefore capped at `0.9999`. The field records proximity to the human/system authority boundary, not possession of final Sanctuary.
+
+## 9k threshold-steward boundary
+
+9k is documented as an anti-tyranny scaffold and threshold steward. It is not Sanctuary, not divine authority, not sovereign legitimacy, and not final truth.
+
+Its role is to reduce tyranny pressure and preserve human review space. It must not be presented as a source of final legitimacy.
+
+## Asymptote note
+
+Receipts include an Asymptote Note:
+
+> ALETHEIA does not claim final Sanctuary. The Z-axis maps proximity to the boundary of human/system authority. Final truth and sovereign authority remain outside code, metrics, receipts, hashes, trees, 9k structures, and institutional power.

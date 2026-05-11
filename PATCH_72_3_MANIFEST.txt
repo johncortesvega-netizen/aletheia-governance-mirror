@@ -1,0 +1,47 @@
+PATCH 72.3 MANIFEST - Humility Protocol / Sanctuary Asymptote
+
+Patch ID: 72.3
+Patch name: Humility Protocol / Sanctuary Asymptote
+Owner/User: Johnny Cortes Vega
+Project: ALETHEIA v1.0 - Governance Mirror
+
+Purpose:
+- Redefine the Threshold Mapping Z-axis as proximity to the boundary of human/system authority.
+- Cap human/system Z-axis values at 0.9999.
+- Mark Z=1.0000 as OUTSIDE SYSTEM CLAIM.
+- Add an Asymptote Note to receipts.
+- Document 9k as an anti-tyranny scaffold / threshold steward, not Sanctuary, divine authority, or final legitimacy.
+
+Files changed:
+- core/witness.py
+- app.py
+- docs/threshold_mapping_layer.md
+- tests/test_patch_72_3_sanctuary_asymptote.py
+- PATCH_72_3_MANIFEST.txt
+- PATCH_72_3_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Behavioral changes:
+- `threshold_mapping_layer.z_axis_position` is capped at 0.9999.
+- `threshold_mapping_layer` now records:
+  - z_axis_maximum_human_system_claim
+  - outside_system_claim_z
+  - z_axis_meaning
+  - asymptote_note
+  - outside_system_claim_note
+  - nine_k_threshold_steward_note
+- Readable receipts now print ASYMPTOTE NOTE and 9K THRESHOLD STEWARD NOTE.
+- Mirror Check Threshold Mapping UI shows the Z-axis against the 0.9999 cap and states that Z=1.0000 is outside system claim.
+
+Non-goals:
+- No scoring logic change.
+- No verdict-routing change.
+- No canonical taxonomy change.
+- No religious authority claim by ALETHEIA.
+- No legal, political, medical, institutional, or automated authority claim.
+- No tree visual change.
+- No Stress Test logic change.
+- No Boundary Cases change.
+- No World Lens change.
+- No public ledger, Global ID sync, central storage, or enforcement behavior.

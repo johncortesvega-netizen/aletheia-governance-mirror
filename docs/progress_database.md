@@ -974,3 +974,31 @@ Check:
 ```bat
 tools\run_patch_checks.bat 72_2
 ```
+
+## Patch 72.3 - Humility Protocol / Sanctuary Asymptote
+
+Date: 2026-05-11
+
+Patch 72.3 adds the Humility Protocol: Sanctuary as Asymptote.
+
+Implemented:
+- Redefined the Threshold Mapping Z-axis as proximity to the boundary of human/system authority, not progress toward perfection.
+- Capped human/system Z-axis values at `0.9999`.
+- Marked `Z=1.0000` as `OUTSIDE SYSTEM CLAIM`.
+- Added `asymptote_note`, `outside_system_claim_note`, and `nine_k_threshold_steward_note` to the Threshold Mapping Layer.
+- Printed ASYMPTOTE NOTE and 9K THRESHOLD STEWARD NOTE in readable receipts.
+- Updated the Mirror Check Threshold Mapping UI to show Z-axis against the 0.9999 cap and state that Z=1.0000 is outside system claim.
+- Updated `docs/threshold_mapping_layer.md` with The Humility Protocol: Sanctuary as Asymptote.
+
+Invariant preserved:
+- Canonical taxonomy remains SANCTUARY / THRESHOLD / ASYLUM.
+- No scoring logic change.
+- No verdict-routing change.
+- No religious, legal, political, medical, institutional, or automated authority claim.
+- No tree visual, Stress Test, Boundary Cases, World Lens, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_3
+```

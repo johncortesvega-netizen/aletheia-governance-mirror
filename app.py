@@ -2866,7 +2866,7 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     if threshold_mapping:
         detail_rows.append(
             '<div style="margin-top:0.15rem;"><strong>Threshold mapping:</strong> '
-            f'{safe_threshold_direction} · Z-axis {threshold_z_axis:.3f} · Repair index {threshold_repair_index:.3f}</div>'
+            f'{safe_threshold_direction} · Z-axis {threshold_z_axis:.3f} / 0.9999 · Repair index {threshold_repair_index:.3f}</div>'
         )
     detail_rows_html = "".join(detail_rows)
 
@@ -2897,12 +2897,14 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
         with st.expander("Threshold mapping preview", expanded=(verdict == "THRESHOLD")):
             tcols = st.columns(3)
             tcols[0].metric("Threshold direction", str(threshold_mapping.get("threshold_direction", "Not recorded")))
-            tcols[1].metric("Z-axis", f"{float(threshold_mapping.get('z_axis_position', 0.0)):.3f}")
+            tcols[1].metric("Z-axis", f"{float(threshold_mapping.get('z_axis_position', 0.0)):.3f} / 0.9999")
             tcols[2].metric("Repair index", f"{float(threshold_mapping.get('repair_index', 0.0)):.3f}")
             st.caption(
                 "Receipt preview only: this maps THRESHOLD direction between captured logic and distributed resilience. "
-                "It does not create a new verdict or enforcement path."
+                "It does not create a new verdict or enforcement path. Z=1.0000 is outside system claim."
             )
+            st.info(str(threshold_mapping.get("asymptote_note", "ALETHEIA does not claim final Sanctuary. Final truth and sovereign authority remain outside code, metrics, receipts, hashes, trees, 9k structures, and institutional power.")))
+            st.caption(str(threshold_mapping.get("nine_k_threshold_steward_note", "9k is an anti-tyranny scaffold / threshold steward, not Sanctuary or final legitimacy.")))
             component_rows = []
             for component in threshold_mapping.get("component_readings", []) or []:
                 if isinstance(component, dict):
