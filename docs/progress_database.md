@@ -1135,3 +1135,30 @@ Check:
 ```bat
 tools\run_patch_checks.bat 72_7
 ```
+
+## Patch 72.8 - Stress Batch Input Reset and Protocol Capture Risk Presentation
+
+Date: 2026-05-11
+
+Patch 72.8 fixes Stress Test batch UI carry-over and clarifies protocol capture risk in receipts.
+
+Implemented:
+- Added a stable Stress batch input signature.
+- Stored the active Stress batch signature only after an explicit `Run Stress Batch`.
+- Hid old batch results/downloads when the uploaded or pasted batch input changes.
+- Added a closed-batch notice and optional last-closed-batch preview.
+- Added `protocol_capture_risk` and `protocol_capture_risk_note` to local witness receipt verdict blocks.
+- Printed `Protocol capture risk` separately from raw simulation `Collapse risk`.
+
+Invariant preserved:
+- No scoring logic change.
+- No verdict-routing change.
+- No canonical taxonomy change.
+- No Threshold Mapping math change.
+- No tree visual, Stress Test scoring, Evidence Lab, Boundary Cases, World Lens, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_8
+```

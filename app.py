@@ -3439,6 +3439,31 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
             key="stress_batch_invisibility_filter",
             disabled=not bool(stress_batch_items),
         )
+        stress_batch_signature = hashlib.sha256(
+            (
+                stress_batch_source
+                + "\n"
+                + stress_batch_text.strip()
+                + "\n"
+                + str(bool(stress_batch_apply_invisibility))
+            ).encode("utf-8")
+        ).hexdigest()
+        active_stress_batch_signature = st.session_state.get("stress_batch_active_signature")
+        stress_batch_has_active_results = bool(
+            st.session_state.get("stress_batch_summary")
+            or st.session_state.get("stress_batch_archive_bytes")
+        )
+        stress_batch_matches_active = (
+            bool(stress_batch_text.strip())
+            and bool(active_stress_batch_signature)
+            and active_stress_batch_signature == stress_batch_signature
+        )
+        stress_batch_is_stale = stress_batch_has_active_results and not stress_batch_matches_active
+        if stress_batch_is_stale:
+            st.info(
+                "The Stress batch input has changed. The previous batch result is closed for this draft. "
+                "Click Run Stress Batch to create a new batch and receipts."
+            )
         run_stress_batch = st.button(
             "Run Stress Batch",
             type="primary",
@@ -3541,11 +3566,12 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
             st.session_state.stress_batch_archive_bytes = archive_bytes
             st.session_state.stress_batch_index = batch_index
             st.session_state.stress_batch_summary = stress_rows
+            st.session_state.stress_batch_active_signature = stress_batch_signature
             st.success(f"Stress batch complete. {len(stress_receipts)} local receipt(s) are ready to download.")
 
-        if st.session_state.get("stress_batch_summary"):
+        if st.session_state.get("stress_batch_summary") and not stress_batch_is_stale:
             st.dataframe(pd.DataFrame(st.session_state.stress_batch_summary), use_container_width=True, hide_index=True, height=300)
-        if st.session_state.get("stress_batch_archive_bytes"):
+        if st.session_state.get("stress_batch_archive_bytes") and not stress_batch_is_stale:
             st.download_button(
                 "⬇️ Download Stress Test batch receipts",
                 data=st.session_state.stress_batch_archive_bytes,
@@ -3554,6 +3580,10 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                 use_container_width=True,
                 key="simulation_download_stress_batch_receipts",
             )
+        if stress_batch_is_stale and st.session_state.get("stress_batch_summary"):
+            with st.expander("Last closed Stress batch", expanded=False):
+                st.caption("Previous batch results are kept for review, but downloads are hidden until the current input is explicitly run.")
+                st.dataframe(pd.DataFrame(st.session_state.stress_batch_summary), use_container_width=True, hide_index=True, height=220)
 
     if "last_report" not in st.session_state:
         st.info("No review has run yet. Add your input, load a demo, or use the Manual test.")

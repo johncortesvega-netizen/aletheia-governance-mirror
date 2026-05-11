@@ -1,0 +1,38 @@
+PATCH 72.8 MANIFEST - Stress Batch Input Reset and Protocol Capture Risk Presentation
+
+Patch ID: 72.8
+Patch name: Stress Batch Input Reset and Protocol Capture Risk Presentation
+Owner/User: Johnny Cortes Vega
+Project: ALETHEIA v1.0 - Governance Mirror
+
+Purpose:
+- Prevent Stress Test batch results/downloads from staying active after the uploaded or pasted batch input changes.
+- Require an explicit new `Run Stress Batch` click before showing new batch results and receipts for changed input.
+- Clarify ASYLUM / High receipts where raw simulation `collapse_risk` can be False while protocol/ethics capture risk is True.
+
+Files changed:
+- app.py
+- core/witness.py
+- tests/test_patch_72_8_stress_batch_reset_and_capture_risk.py
+- PATCH_72_8_MANIFEST.txt
+- PATCH_72_8_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Behavioral changes:
+- Stress batch input now has a stable signature based on source, text, and Invisibility Filter setting.
+- Batch results/downloads are shown only when the current batch input matches the last explicitly run batch.
+- Changed batch input closes the previous batch for the current draft and shows a notice.
+- Last closed Stress batch remains inspectable without exposing the old download as current.
+- Local witness receipts now include `protocol_capture_risk` and `protocol_capture_risk_note` in the verdict block.
+- Readable receipts print `Protocol capture risk` separately from raw simulation `Collapse risk`.
+
+Non-goals:
+- No scoring logic change.
+- No verdict-routing change.
+- No canonical taxonomy change.
+- No Threshold Mapping math change.
+- No tree visual change.
+- No Stress Test batch receipt structure change beyond the new explanatory verdict fields.
+- No Evidence Lab, Boundary Cases, or World Lens logic change.
+- No public ledger, Global ID sync, central storage, or enforcement behavior.

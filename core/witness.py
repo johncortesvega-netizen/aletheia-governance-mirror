@@ -994,6 +994,11 @@ def build_local_witness_receipt(
             "protocol_adjusted_state": verdict,
             "risk": risk,
             "protocol_label": protocol_label,
+            "protocol_capture_risk": bool(str(verdict).upper() == "ASYLUM" or str(risk).lower() == "high"),
+            "protocol_capture_risk_note": (
+                "Protocol/ethics guardrails indicate high capture or authority risk; "
+                "this is distinct from the raw simulation collapse-risk boolean."
+            ) if bool(str(verdict).upper() == "ASYLUM" or str(risk).lower() == "high") else None,
         },
         "metrics": {
             "integrity": report.get("integrity"),
@@ -1207,6 +1212,8 @@ Trust index: {_display_value(metrics.get('trust_index'))}
 Alignment: {_display_value(metrics.get('alignment'))}
 Ego: {_display_value(metrics.get('ego'))}
 Collapse risk: {_display_value(metrics.get('collapse_risk'))}
+Protocol capture risk: {_display_value(verdict.get('protocol_capture_risk'))}
+Protocol capture risk note: {_display_value(verdict.get('protocol_capture_risk_note'))}
 
 RAW METRICS BEFORE ETHICS
 {_display_raw_metrics_block(receipt.get('raw_metrics_before_ethics'))}
