@@ -414,12 +414,20 @@ def _empirical_humility_display_df(df: pd.DataFrame) -> pd.DataFrame:
     out = df.copy()
 
     def _taxonomy_series(frame: pd.DataFrame):
-        for candidate in ["aletheia_verdict", "verdict", "Verdict", "result"]:
+        for candidate in ["empirical_pattern_display", "internal_taxonomy_label", "raw_aletheia_verdict", "raw_verdict", "aletheia_verdict", "verdict", "Verdict", "result"]:
             if candidate in frame.columns:
                 return candidate, frame[candidate].astype(str).str.upper().str.strip()
         return None, None
 
     verdict_col_name, taxonomy = _taxonomy_series(out)
+    if verdict_col_name == "empirical_pattern_display":
+        verdict_col_name = None
+        taxonomy = None
+        for candidate in ["internal_taxonomy_label", "raw_aletheia_verdict", "raw_verdict", "aletheia_verdict", "verdict", "Verdict", "result"]:
+            if candidate in out.columns:
+                verdict_col_name = candidate
+                taxonomy = out[candidate].astype(str).str.upper().str.strip()
+                break
     if taxonomy is not None:
         pattern = taxonomy.map({
             "SANCTUARY": "Low-risk internal reading",
@@ -455,11 +463,31 @@ def _empirical_humility_display_df(df: pd.DataFrame) -> pd.DataFrame:
             "Low-risk internal reading · Internal taxonomy label: SANCTUARY; "
             "not a final safety, final Sanctuary, or authority claim."
         )
+        threshold_overlay = (
+            "Review / threshold evidence pattern: unresolved safeguards or friction. "
+            "Internal taxonomy label: THRESHOLD; human interpretation and safeguard review remain required."
+        )
+        threshold_interpretation = (
+            "Review / threshold reading · Internal taxonomy label: THRESHOLD; "
+            "unresolved safeguards or friction; human review required."
+        )
+        asylum_overlay = (
+            "High-risk evidence pattern: high capture/collapse concern. "
+            "Internal taxonomy label: ASYLUM; human review is required and ALETHEIA does not enforce action."
+        )
+        asylum_interpretation = (
+            "High-risk internal reading · Internal taxonomy label: ASYLUM; "
+            "high capture/collapse concern; human review required; no enforcement action."
+        )
         replacements = {
             "SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": sanctuary_overlay,
             "SANCTUARY · SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": sanctuary_interpretation,
             "SANCTUARY · Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails": sanctuary_interpretation,
             "SANCTUARY · Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority.": sanctuary_interpretation,
+            "THRESHOLD evidence pattern: unresolved safeguards or friction": threshold_overlay,
+            "THRESHOLD · THRESHOLD evidence pattern: unresolved safeguards or friction": threshold_interpretation,
+            "ASYLUM evidence pattern: high capture/collapse concern": asylum_overlay,
+            "ASYLUM · ASYLUM evidence pattern: high capture/collapse concern": asylum_interpretation,
         }
         if text_value in replacements:
             return replacements[text_value]
@@ -471,6 +499,14 @@ def _empirical_humility_display_df(df: pd.DataFrame) -> pd.DataFrame:
             return sanctuary_interpretation
         if text_value.startswith("SANCTUARY: SANCTUARY evidence pattern"):
             return sanctuary_interpretation
+        if text_value.startswith("THRESHOLD · THRESHOLD evidence pattern"):
+            return threshold_interpretation
+        if text_value.startswith("THRESHOLD: THRESHOLD evidence pattern"):
+            return threshold_interpretation
+        if text_value.startswith("ASYLUM · ASYLUM evidence pattern"):
+            return asylum_interpretation
+        if text_value.startswith("ASYLUM: ASYLUM evidence pattern"):
+            return asylum_interpretation
         return value
 
     for col in out.columns:
@@ -6330,7 +6366,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                 zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}.md", md)
                 zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_summary.json", json.dumps(receipt_summary, indent=2))
                 zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_coverage.csv", coverage_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_verdict_distribution.csv", verdict_receipt.to_csv(index=False))
+                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_taxonomy_distribution.csv", verdict_receipt.to_csv(index=False))
                 zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_highest_integrity.csv", high_integrity_receipt.to_csv(index=False))
                 zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_lowest_integrity.csv", low_integrity_receipt.to_csv(index=False))
                 zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_highest_collapse.csv", high_collapse_receipt.to_csv(index=False))

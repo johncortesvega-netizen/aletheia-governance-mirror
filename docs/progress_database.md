@@ -1486,3 +1486,27 @@ Check:
 tools\run_patch_checks.bat 72_24
 ```
 
+## Patch 72.25 - World Lens Receipt Table Completion
+
+Date: 2026-05-11
+
+Patch 72.25 completes World Lens receipt/table display alignment after Patch 72.24.
+
+Implemented:
+- Public display helper now detects `internal_taxonomy_label`, `raw_aletheia_verdict`, and `raw_verdict`.
+- Tables already using `internal_taxonomy_label` now receive `empirical_pattern_display` and `humility_note`.
+- Remaining THRESHOLD/ASYLUM final interpretation strings are converted to internal-reading wording.
+- Receipt distribution CSV is renamed from verdict distribution to taxonomy distribution.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No 9k allocation formula change.
+- No Evidence Lab or World Lens data model, authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_25
+```
+
