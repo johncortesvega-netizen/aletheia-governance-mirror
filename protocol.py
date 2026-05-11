@@ -226,7 +226,7 @@ def protocol_repair_questions(verdict: str | None, stress_label: str = "", corru
         questions.extend(ASYLUM_REPAIR_QUESTIONS)
         questions.append("Which power should become temporary, reviewable, or revocable before human review continues?")
     elif v == "THRESHOLD":
-        questions.insert(0, "Which missing safeguard is keeping this proposal outside Sanctuary?")
+        questions.insert(0, "Which missing safeguard is keeping this proposal outside a low-risk internal reading?")
         questions.append("Which transparency, appeal, or oversight layer should be made explicit first?")
     else:
         questions.append("Which safeguard keeps this healthy state from drifting into ownership or capture later?")
@@ -1414,9 +1414,9 @@ ADVANCED_ENGLISH_STRESS_TEST_RISK_SENSITIVITY_RULES: list[dict] = [
         "severity": "THRESHOLD",
     },
     {
-        "label": "Divine Treasury Wallet Capture / Asylum",
+        "label": "Extraordinary Authority Wallet Capture / Asylum",
         "groups": [["spiritual emergency", "divine intervention wallet", "public treasury"], ["un-auditable", "moves all", "treasury funds"]],
-        "reason": "Public funds moved to an unauditable divine-authority wallet violates evidence, audit, and public accountability baselines.",
+        "reason": "Public funds moved to an unauditable extraordinary-authority wallet violates evidence, audit, and public accountability baselines.",
         "severity": "ASYLUM",
     },
     {
@@ -1558,9 +1558,9 @@ ADVANCED_ENGLISH_STRESS_TEST_RISK_SENSITIVITY_RULES: list[dict] = [
         "severity": "ASYLUM",
     },
     {
-        "label": "Divine Bias Removal Override / Asylum",
+        "label": "Final Authority Removal Override / Asylum",
         "groups": [["divine bias", "75% majority", "removal"], ["ignoring", "office", "leader"]],
-        "reason": "Spiritual language used to ignore a removal vote bypasses review and accountability.",
+        "reason": "Extraordinary authority language used to ignore a removal vote bypasses review and accountability.",
         "severity": "ASYLUM",
     },
     {

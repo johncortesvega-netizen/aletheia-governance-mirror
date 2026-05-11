@@ -710,3 +710,31 @@ Check:
 ```bat
 tools\run_patch_checks.bat 72_6
 ```
+
+## Patch 72.7 - Repair Capacity Mapping Guard
+
+Date: 2026-05-11
+
+Patch 72.7 separates generated repair questions from confirmed repair capacity in the Threshold Mapping Layer.
+
+Implemented:
+- Added `repair_question_index`.
+- Added `confirmed_repair_capacity`.
+- Kept `repair_index` as confirmed repair capacity for backward display compatibility.
+- Guarded ASYLUM component readings so they do not present as `Threshold +` while canonical state is ASYLUM.
+- Updated receipt text to print repair questions available and confirmed repair capacity separately.
+- Updated UI preview to show Repair questions and Confirmed repair separately.
+- Neutralized old "outside Sanctuary", "Divine Bias", and "Divine Treasury" wording.
+
+Invariant preserved:
+- No scoring logic change.
+- No verdict-routing change.
+- No canonical taxonomy change.
+- No receipt authority change.
+- No tree visual, Stress Test batch structure, Evidence Lab, Boundary Cases, World Lens, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_7
+```

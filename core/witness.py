@@ -646,8 +646,28 @@ def _threshold_mapping_layer(
     hard_capture = 1.0 if ethics.get("hard_contextual_capture") else 0.0
 
     repair_questions = list(report.get("repair_questions") or [])
-    repair_index = min(1.0, len(repair_questions) / 5.0)
-    review_strength = max(transparency, regulation, repair_index, alignment)
+    repair_question_index = min(1.0, len(repair_questions) / 5.0)
+    # Patch 72.7: generated repair questions are a route, not proof that
+    # safeguards already exist. Confirmed repair capacity only comes from
+    # scenario/report evidence such as transparency, oversight, appealability,
+    # and low capture pressure.
+    confirmed_repair_capacity = max(
+        0.0,
+        min(
+            0.9999,
+            (
+                transparency
+                + regulation
+                + max(0.0, 1.0 - power)
+                + max(0.0, 1.0 - ego)
+                + alignment
+            )
+            / 5.0,
+        ),
+    )
+    if state == "ASYLUM":
+        confirmed_repair_capacity = min(confirmed_repair_capacity, 0.24)
+    review_strength = max(transparency, regulation, confirmed_repair_capacity, alignment)
     central_truth_gate_pressure = max(power, grip_count, contextual_capture, hard_capture)
     weak_correction_pressure = max(1.0 - regulation, 1.0 - transparency, collapse_probability)
     conditional_access_pressure = max(power, ego, grip_count, hard_capture)
@@ -674,12 +694,23 @@ def _threshold_mapping_layer(
         growth=max(1.0 - power, 1.0 - ego, regulation, trust),
     )
     components = [power_component, correction_component, access_component]
+    if state == "ASYLUM":
+        guarded_components = []
+        for item in components:
+            guarded = dict(item)
+            guarded["reading"] = "Capture pressure"
+            guarded["growth_score"] = min(float(guarded.get("growth_score", 0.0)), confirmed_repair_capacity)
+            guarded["dominant_pattern"] = "Canonical ASYLUM pressure overrides repair-route optimism until safeguards are confirmed in the scenario."
+            guarded_components.append(_receipt_safe(guarded))
+        components = guarded_components
 
     pressure_average = sum(float(item.get("pressure_score", 0.0)) for item in components) / len(components)
     growth_average = sum(float(item.get("growth_score", 0.0)) for item in components) / len(components)
     # Patch 72.3: Z=1.0000 is outside system claim. Human/system
     # governance scenarios are capped at 0.9999.
     z_axis_position = round(max(0.0, min(0.9999, growth_average - pressure_average)), 4)
+    if state == "ASYLUM":
+        z_axis_position = round(min(z_axis_position, confirmed_repair_capacity), 4)
 
     if state == "ASYLUM":
         direction = "Toward ASYLUM"
@@ -708,8 +739,10 @@ def _threshold_mapping_layer(
         sanctuary_growth_signals.append("Decision transparency is visible.")
     if regulation >= 0.62:
         sanctuary_growth_signals.append("Regulatory or review presence is visible.")
-    if repair_index >= 0.4:
+    if repair_question_index >= 0.4:
         sanctuary_growth_signals.append("Repair questions provide an active human-review route.")
+    if confirmed_repair_capacity >= 0.4:
+        sanctuary_growth_signals.append("Confirmed safeguards are visible in the scenario.")
     if alignment >= 0.62 and ego <= 0.38:
         sanctuary_growth_signals.append("Alignment outweighs ego pressure.")
 
@@ -734,7 +767,9 @@ def _threshold_mapping_layer(
         "outside_system_claim_z": 1.0,
         "z_axis_meaning": "Proximity to the human/system authority boundary; not a perfection score or final-authority claim.",
         "integrity_gap": round(max(0.0, 1.0 - integrity), 4),
-        "repair_index": round(repair_index, 4),
+        "repair_index": round(confirmed_repair_capacity, 4),
+        "repair_question_index": round(repair_question_index, 4),
+        "confirmed_repair_capacity": round(confirmed_repair_capacity, 4),
         "dominant_pressure": dominant_pressure,
         "protocol_label": protocol_label,
         "component_readings": components,
@@ -799,6 +834,8 @@ def _display_threshold_mapping_layer_block(mapping: Mapping[str, Any]) -> str:
         f"Z-axis meaning: {mapping.get('z_axis_meaning', 'Proximity to the boundary of responsible human/system claims.')}\n"
         f"Integrity gap: {_display_value(mapping.get('integrity_gap'))}\n"
         f"Repair index: {_display_value(mapping.get('repair_index'))}\n"
+        f"Repair questions available: {_display_value(mapping.get('repair_question_index', mapping.get('repair_index')))}\n"
+        f"Confirmed repair capacity: {_display_value(mapping.get('confirmed_repair_capacity', mapping.get('repair_index')))}\n"
         f"Dominant pressure: {mapping.get('dominant_pressure')}\n\n"
         "Component readings:\n"
         f"{chr(10).join(rows) if rows else '- None recorded'}\n\n"

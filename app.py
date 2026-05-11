@@ -2866,6 +2866,8 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     safe_threshold_direction = html.escape(threshold_direction_display)
     threshold_z_axis = float(threshold_mapping.get("z_axis_position", 0.0) or 0.0)
     threshold_repair_index = float(threshold_mapping.get("repair_index", 0.0) or 0.0)
+    threshold_repair_question_index = float(threshold_mapping.get("repair_question_index", threshold_repair_index) or 0.0)
+    threshold_confirmed_repair_capacity = float(threshold_mapping.get("confirmed_repair_capacity", threshold_repair_index) or 0.0)
 
     detail_rows = [
         f'<div><strong>Safety risk:</strong> {safe_risk}</div>',
@@ -2880,7 +2882,7 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     if threshold_mapping:
         detail_rows.append(
             '<div style="margin-top:0.15rem;"><strong>Threshold direction:</strong> '
-            f'{safe_threshold_direction} · Z-axis {threshold_z_axis:.3f} / 0.9999 · Repair index {threshold_repair_index:.3f}</div>'
+            f'{safe_threshold_direction} · Z-axis {threshold_z_axis:.3f} / 0.9999 · Confirmed repair {threshold_confirmed_repair_capacity:.3f}</div>'
         )
     detail_rows_html = "".join(detail_rows)
 
@@ -2909,13 +2911,14 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
 
     if threshold_mapping:
         with st.expander("Threshold mapping preview", expanded=(verdict == "THRESHOLD")):
-            tcols = st.columns(3)
+            tcols = st.columns(4)
             tcols[0].metric("Threshold direction", friendly_threshold_direction_label(str(threshold_mapping.get("threshold_direction", "Not recorded"))))
             tcols[1].metric("Z-axis", f"{float(threshold_mapping.get('z_axis_position', 0.0)):.3f} / 0.9999")
-            tcols[2].metric("Repair index", f"{float(threshold_mapping.get('repair_index', 0.0)):.3f}")
+            tcols[2].metric("Repair questions", f"{float(threshold_mapping.get('repair_question_index', threshold_mapping.get('repair_index', 0.0))):.3f}")
+            tcols[3].metric("Confirmed repair", f"{float(threshold_mapping.get('confirmed_repair_capacity', threshold_mapping.get('repair_index', 0.0))):.3f}")
             st.caption(
                 "Receipt preview only: this maps whether the reading is moving toward capture pressure, a balanced review zone, or the human/system boundary. "
-                "It does not create a new verdict or enforcement path. Z=1.0000 remains outside ALETHEIA’s claim."
+                "It does not create a new verdict or enforcement path. Repair questions are a route, not proof that safeguards already exist. Z=1.0000 remains outside ALETHEIA’s claim."
             )
             st.info(str(threshold_mapping.get("asymptote_note", "ALETHEIA does not claim final safety, final truth, or final authority. Ultimate questions and final authority remain outside code, metrics, receipts, hashes, trees, 9k structures, and institutional power.")))
             st.caption(str(threshold_mapping.get("nine_k_threshold_steward_note", "9k is a human anti-tyranny scaffold / threshold steward, not Sanctuary or final legitimacy.")))
