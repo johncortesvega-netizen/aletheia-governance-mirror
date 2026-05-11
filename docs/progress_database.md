@@ -1360,3 +1360,28 @@ Check:
 tools\run_patch_checks.bat 72_16
 ```
 
+## Patch 72.17 - World Lens Sanctuary Display Humility Guard
+
+Date: 2026-05-11
+
+Patch 72.17 aligns World Lens / Evidence Lab country-year display with the Humility Protocol: Sanctuary as Asymptote.
+
+Implemented:
+- Changed the country-year card from `Empirical verdict` to `Empirical pattern`.
+- Displays internal `SANCTUARY` rows as `Low-risk internal reading`.
+- Adds a caption preserving `Internal taxonomy label: SANCTUARY` while clarifying that this is not a final safety, final Sanctuary, or authority claim.
+- Updates empirical overlay text to `Low-risk evidence pattern` for high-integrity/low-collapse rows.
+- Rewrites legacy uploaded `SANCTUARY evidence pattern` overlay text in the UI display layer.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No 9k allocation formula change.
+- No Evidence Lab data model, receipt schema, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_17
+```
+

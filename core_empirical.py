@@ -688,7 +688,7 @@ def protocol_overlay_status_from_row(
     if integrity < 0.62 or friction >= 0.25:
         return "THRESHOLD evidence pattern: unresolved safeguards or friction"
 
-    return "SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails"
+    return "Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority."
 
 
 def score_empirical_frame(df: pd.DataFrame) -> pd.DataFrame:

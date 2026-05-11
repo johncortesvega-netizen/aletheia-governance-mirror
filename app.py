@@ -5123,13 +5123,25 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                         return "—" if pd.isna(num) else f"{float(num):.{digits}f}"
 
                     verdict_value = _first_value(selected, ["aletheia_verdict", "verdict"], "—")
+                    verdict_text = str(verdict_value or "—").strip().upper()
+                    if verdict_text == "SANCTUARY":
+                        display_verdict_value = "Low-risk internal reading"
+                        display_verdict_caption = (
+                            "Internal taxonomy label: SANCTUARY. This means the country-year evidence pattern is low-risk within ALETHEIA's review model; "
+                            "it is not a final safety, final Sanctuary, or authority claim."
+                        )
+                    else:
+                        display_verdict_value = verdict_value
+                        display_verdict_caption = ""
                     integrity_value = _first_value(selected, ["aletheia_empirical_integrity", "integrity"], None)
                     collapse_value = _first_value(selected, ["aletheia_empirical_collapse_probability", "collapse_probability"], None)
                     coverage_value = _first_value(selected, ["empirical_completeness", "empirical_coverage", "schema_coverage"], None)
                     seats_value = pd.to_numeric(pd.Series([_first_value(selected, ["seats_9k"], None)]), errors="coerce").iloc[0]
 
                     col_a, col_b, col_c, col_d = st.columns(4)
-                    col_a.metric("Empirical verdict", verdict_value)
+                    col_a.metric("Empirical pattern", display_verdict_value)
+                    if display_verdict_caption:
+                        col_a.caption(display_verdict_caption)
                     col_b.metric("Integrity", _fmt_num(integrity_value))
                     col_c.metric("Collapse probability", _fmt_num(collapse_value))
                     col_d.metric("Allocated seats", "—" if pd.isna(seats_value) else f"{int(seats_value):,}")
@@ -5145,7 +5157,13 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                     col_h.metric("Identity valid", str(_first_value(selected, ["empirical_identity_valid", "identity_valid"], True)))
 
                     st.markdown("#### Sydney Protocol overlay")
-                    st.write(_first_value(selected, ["protocol_overlay_status", "sydney_overlay_status"], "No overlay status available."))
+                    overlay_status_value = str(_first_value(selected, ["protocol_overlay_status", "sydney_overlay_status"], "No overlay status available."))
+                    if overlay_status_value.startswith("SANCTUARY evidence pattern"):
+                        overlay_status_value = (
+                            "Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. "
+                            "Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority."
+                        )
+                    st.write(overlay_status_value)
                     st.caption("Evidence used: " + str(_first_value(selected, ["evidence_variables_used", "evidence_used"], "—")))
                     st.caption("Country-Year Explorer uses the active scored table. Search a country, then choose one of its years. Seats are read inside that year only.")
 
