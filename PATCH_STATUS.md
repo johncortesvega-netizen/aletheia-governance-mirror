@@ -605,3 +605,57 @@ Check:
 ```bat
 tools\run_patch_checks.bat 72_3
 ```
+
+## Patch 72.4 - Friendly Humility Copy Refresh
+
+Date: 2026-05-11
+
+Patch 72.4 refreshes user-facing text so the app is neutral, friendly, and current with Patch 72.3's Humility Protocol / Sanctuary Asymptote.
+
+Implemented:
+- Added friendly UI labels for Threshold Mapping directions.
+- Updated Mirror Check plain words to clarify that Sanctuary is low risk inside the prototype, not final safety.
+- Updated Z-axis copy to emphasize the human/system boundary and the 0.9999 cap.
+- Updated Threshold Mapping preview labels to Capture-pressure and Repair/growth signals.
+- Updated About, README, and Threshold Mapping docs with neutral Humility Protocol language.
+- Updated receipt notes to say ultimate questions and final authority remain outside ALETHEIA.
+
+Invariant preserved:
+- No scoring logic change.
+- No verdict-routing change.
+- No receipt schema change.
+- No Threshold Mapping math change.
+- No tree visual, Stress Test, Boundary Cases, World Lens, storage, public ledger, Global ID sync, central storage, or authority-boundary logic changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_4
+```
+
+## Patch 72.4 - Neutral Text Refresh
+
+Date: 2026-05-11
+
+Patch 72.4 refreshes user-facing copy so the app is neutral, friendly, and current with Patches 72-72.3.
+
+Implemented:
+- Updated Z-axis language to describe the boundary of what human/system tools may responsibly claim.
+- Reframed Z=1.0000 as outside ALETHEIA's claim.
+- Reframed 9k as an anti-tyranny scaffold / threshold steward without final-safety or final-legitimacy language.
+- Added a friendly Humility Protocol / Z-axis boundary section to the Protocol Guide.
+- Updated README, About, core receipt notes, and Threshold Mapping docs.
+- Removed or softened wording that could sound like perfection, final authority, or doctrinal validation in user-facing copy.
+
+Invariant preserved:
+- No scoring logic change.
+- No verdict-routing change.
+- No receipt schema change.
+- No Threshold Mapping math change.
+- No tree visual, Stress Test, Boundary Cases, World Lens, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_4
+```

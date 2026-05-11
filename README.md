@@ -10,7 +10,7 @@ ALETHEIA v0.1 helps reviewers examine governance documents and scenarios for cap
 
 It may say: **Potential risk detected. Human review required. Safeguard missing. Evidence gap found.**
 
-It must not say: **The AI has decided. This leader must be removed. This claim is divinely verified. Human review is unnecessary.**
+It must not say: **The AI has decided. This leader must be removed. This claim is finally verified. Human review is unnecessary.**
 
 Core operating line:
 
@@ -111,7 +111,7 @@ The Mechanism-vs-Claim Scanner adds a performative-ethics check. It distinguishe
 
 Self-Audit Mode points the mirror back at ALETHEIA itself. It checks baseline documents, prompts, rubrics, README language, app copy, architect-context language, and generated reports for founder capture, ideological lock-in, unverifiable authority, overclaiming, spiritual authority leakage, missing correction loops, and weak human-review safeguards. Self-audit is not proof of correctness; it is a repair-oriented review layer.
 
-Patch 40 Evidence Lab hardening adds explicit evidence status levels and the Extraordinary Claim Protocol. It treats spiritual, divine, prophetic, alien, neural, metaphysical, or otherwise exceptional claims as unverified unless supported by public, testable, non-coercive evidence. It audits policy consequences and evidence gaps; it does not validate spiritual authority or remove human review.
+Patch 40 Evidence Lab hardening adds explicit evidence status levels and the Extraordinary Claim Protocol. It treats spiritual, prophetic, alien, neural, metaphysical, or otherwise exceptional claims as unverified unless supported by public, testable, non-coercive evidence. It audits policy consequences and evidence gaps; it does not validate spiritual authority or remove human review.
 
 Patch 41 Local Witness Receipt v2 hardening adds explicit document, processed-document, report, and receipt fingerprints, plus app/rubric/prompt version context and an authority boundary: stored locally Yes; public ledger No; Global ID sync No; central storage No; authority claim No; human review required Yes.
 
@@ -190,8 +190,8 @@ Not:
 - **Audit** — governance-language and scenario risk review using Sanctuary / Threshold / Asylum labels, Sydney Protocol guardrails, and visible module integrity checks.
 - **Simulation** — V-Axis system-health simulation tracking stability, trust, alignment, ego, grievances, friction, safeguards, and collapse risk.
 - **Empirical Evidence Audit Lab** — public country-year evidence ingestion, direct/master upload handling, WGI/WDI/V-Dem/trust carry-through, ALETHEIA variable mapping, scoring, validation checks, and downloadable scored outputs.
-- **Global Grid** — selected-year country-year comparison interface for population-weighted exposure, 9k allocation where complete, active-seat diagnostics where partial, verdict distribution, integrity/collapse metrics, and coverage diagnostics.
-- **Doctrine Reference** — current operating doctrine: mirror not throne, shared protocol state, non-divinization, empirical correction, 9k representation boundaries, and Sydney/GPA HTML references.
+- **Global Grid** — selected-year country-year comparison interface for population-weighted exposure, 9k allocation where complete, active-seat diagnostics where partial, verdict distribution, integrity/collapse metrics, and coverage diagnostics. 9k is treated as a human anti-tyranny scaffold, not a source of final legitimacy.
+- **Doctrine Reference** — current operating doctrine: mirror not throne, shared protocol state, non-divinization, empirical correction, Humility Protocol / Z-axis boundary, 9k representation boundaries, and Sydney/GPA HTML references.
 - **About** — plain-language explanation, scientific caution, research direction, and developer notes.
 - **Failure Classification** — diagnostic separation of actor, policy, implementation, and data failure modes for better repair targeting.
 - **Consent-Audit Engine** — consent integrity review using Green / Yellow / Red ratings for refusal reality, basic-rights dependency, withdrawal, appeal, and pressure signals.
@@ -227,7 +227,7 @@ Key operating principles:
 
 - **Mirror Effect** — power should reflect service through accountability, dignity, protection, transparency, repair, and appealability.
 - **V-Axis Compass** — intelligence + power − ego can support stability only when trust, transparency, appealability, service alignment, and safeguards are present.
-- **Non-divinization** — no person, office, institution, nation, company, model, AI, monarch, founder, dataset, doctrine, or protocol is treated as divine, final, or beyond review.
+- **Non-divinization** — no person, office, institution, nation, company, model, AI, monarch, founder, dataset, doctrine, or protocol is treated as final or beyond review.
 - **Empirical humility** — outputs are diagnostic and correctable; they are not legal, political, medical, religious, moral, or predictive verdicts.
 - **No throne condition** — ALETHEIA must never become the authority structure it audits.
 
@@ -241,7 +241,7 @@ The empirical workflow is:
 public evidence → ALETHEIA variable mapping → empirical scoring → Sydney Protocol overlay → audit interpretation
 ```
 
-Raw empirical strength cannot override hard protocol failures such as capture, coercion, non-appealability, false divinization, opacity, sovereignty capture, or harmful authority.
+Raw empirical strength cannot override hard protocol failures such as capture, coercion, non-appealability, false authority, opacity, sovereignty capture, or harmful authority.
 
 ## Empirical data currently supported
 
@@ -280,12 +280,23 @@ The Grid distinguishes:
 
 Coverage metrics reflect the active selected-year subset after filters. A 100% coverage value over a small subset does not imply whole-world or whole-dataset coverage.
 
+
+## Humility Protocol / Sanctuary as Asymptote
+
+Patch 72.4 keeps the Z-axis language neutral and current. The Z-axis is not a perfection score. It maps how close a reading is to the boundary of what human and system tools may responsibly claim.
+
+- `Z=0.0000` means full ASYLUM pressure: coercion, opacity, or concentrated control.
+- `Z=0.9999` is the maximum human/system boundary ALETHEIA may display.
+- `Z=1.0000` remains outside ALETHEIA's claim: beyond scoring, code, receipts, hashes, trees, 9k structures, and institutional power.
+
+9k is a human anti-tyranny scaffold / threshold steward. It is not a final safety claim and not a source of final legitimacy.
+
 ## Sanctuary / Threshold / Asylum labels
 
 These are internal prototype labels, not legal, political, medical, religious, moral, or predictive verdicts.
 
-- **SANCTUARY** — the evidence or scenario pattern appears service-aligned, accountable, transparent, safeguarded, and comparatively stable under the current model.
-- **THRESHOLD** — safeguards are incomplete, evidence is mixed, uncertainty remains, or the system needs review before being treated as stable.
+- **SANCTUARY** — the evidence or scenario pattern appears low-risk, service-aligned, accountable, transparent, safeguarded, and comparatively stable under the current model. This remains an internal review label, not final safety or final authority.
+- **THRESHOLD** — safeguards are incomplete, evidence is mixed, uncertainty remains, or the system needs review and repair before being treated as stable.
 - **ASYLUM** — high capture, coercion, opacity, harm, collapse pressure, or hard protocol failure is detected.
 
 “ASYLUM” is used only as an internal protocol-risk category. It does not refer to legal asylum status, entitlement, refugee status, or humanitarian determination.
@@ -618,7 +629,7 @@ tools\run_patch_checks.bat 67_2
 
 ## Patch 68 — Advanced English Stress Lexicon + Asylum Metric Enforcement
 
-Adds advanced English Stress Test calibration for predictive sentencing, biometric/identity coercion, divine-authority wallet capture, founder-keyword mirror capture, pre-emptive arrests, loyalty-to-state baseline capture, archive deletion, unaudited mirror code, and similar high-risk governance patterns. Advanced English stress scenarios route to `THRESHOLD / Needs Safeguards` or `ASYLUM / High` instead of washing into Sanctuary. Asylum metric enforcement now applies to non-malicious Asylum labels so receipts do not retain perfect trust/alignment or zero ego.
+Adds advanced English Stress Test calibration for predictive sentencing, biometric/identity coercion, final-authority wallet capture, founder-keyword mirror capture, pre-emptive arrests, loyalty-to-state baseline capture, archive deletion, unaudited mirror code, and similar high-risk governance patterns. Advanced English stress scenarios route to `THRESHOLD / Needs Safeguards` or `ASYLUM / High` instead of washing into Sanctuary. Asylum metric enforcement now applies to non-malicious Asylum labels so receipts do not retain perfect trust/alignment or zero ego.
 
 ### Patch 69 — Stress Test question-prompt batches
 

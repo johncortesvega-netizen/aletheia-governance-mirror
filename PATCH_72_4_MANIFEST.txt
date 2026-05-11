@@ -1,0 +1,41 @@
+PATCH 72.4 MANIFEST - Neutral Text Refresh
+
+Patch ID: 72.4
+Patch name: Neutral Text Refresh
+Owner/User: Johnny Cortes Vega
+Project: ALETHEIA v1.0 - Governance Mirror
+
+Purpose:
+- Refresh user-facing copy so the app is neutral, friendly, and current with Patches 72-72.3.
+- Keep the Humility Protocol / Z-axis boundary visible without sounding doctrinal or authority-claiming.
+- Clarify that 9k is a threshold steward / anti-tyranny scaffold, not final safety or final legitimacy.
+
+Files changed:
+- app.py
+- about_page.py
+- README.md
+- core/witness.py
+- docs/threshold_mapping_layer.md
+- tests/test_patch_72_4_neutral_text_refresh.py
+- PATCH_72_4_MANIFEST.txt
+- PATCH_72_4_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Behavioral changes:
+- User-facing Z-axis language now says the axis maps the boundary of what human/system tools may responsibly claim.
+- User-facing copy avoids implying final safety, final truth, final authority, or perfection.
+- The Mirror Check Threshold Mapping preview uses neutral "outside ALETHEIA's claim" language.
+- The Protocol Guide includes a friendly Humility Protocol / Z-axis boundary section.
+- README, About, and threshold mapping docs are current with Patch 72.4.
+
+Non-goals:
+- No scoring logic change.
+- No verdict-routing change.
+- No receipt schema change.
+- No Threshold Mapping math change.
+- No tree visual change.
+- No Stress Test logic change.
+- No Boundary Cases change.
+- No World Lens change.
+- No public ledger, Global ID sync, central storage, or enforcement behavior.

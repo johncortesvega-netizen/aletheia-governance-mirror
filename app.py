@@ -2649,7 +2649,7 @@ Return ONLY valid JSON. No markdown.
 Use these internal prototype labels:
 - SANCTUARY: low corruption/capture risk, transparent, reviewable, accountable, human-dignity safeguards present.
 - THRESHOLD: mixed or underspecified; needs safeguards before being considered safe.
-- ASYLUM: high capture/corruption risk, unaccountable power, coercion, opacity, ownership, divine-identity claim, or missing appeal/review.
+- ASYLUM: high capture/corruption risk, unaccountable power, coercion, opacity, ownership, false-authority claim, or missing appeal/review.
 
 Important framing:
 This is a symbolic prototype. Do not claim legal, political, medical, or religious authority.
@@ -2789,6 +2789,19 @@ FIVE STRATEGIC FUNCTIONS
 
 
 
+def friendly_threshold_direction_label(value: str) -> str:
+    """Return friendly UI copy for the technical Threshold Mapping direction."""
+    text = str(value or "Not recorded")
+    labels = {
+        "Toward review boundary": "Toward review boundary",
+        "At review boundary": "At review boundary",
+        "Toward SANCTUARY": "Toward review boundary",
+        "Balanced THRESHOLD": "Balanced review zone",
+        "Toward ASYLUM": "Toward capture pressure",
+    }
+    return labels.get(text, text)
+
+
 def silent_operator_question(item, *, context: str = "this pattern") -> str:
     """
     Convert recommendations or safeguards into reflective questions.
@@ -2849,7 +2862,8 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
         report=report,
         protocol_label=str(judgment.get("stress_label", judgment.get("verdict", ""))),
     )
-    safe_threshold_direction = html.escape(str(threshold_mapping.get("threshold_direction", "Not recorded")))
+    threshold_direction_display = friendly_threshold_direction_label(str(threshold_mapping.get("threshold_direction", "Not recorded")))
+    safe_threshold_direction = html.escape(threshold_direction_display)
     threshold_z_axis = float(threshold_mapping.get("z_axis_position", 0.0) or 0.0)
     threshold_repair_index = float(threshold_mapping.get("repair_index", 0.0) or 0.0)
 
@@ -2865,7 +2879,7 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     )
     if threshold_mapping:
         detail_rows.append(
-            '<div style="margin-top:0.15rem;"><strong>Threshold mapping:</strong> '
+            '<div style="margin-top:0.15rem;"><strong>Threshold direction:</strong> '
             f'{safe_threshold_direction} · Z-axis {threshold_z_axis:.3f} / 0.9999 · Repair index {threshold_repair_index:.3f}</div>'
         )
     detail_rows_html = "".join(detail_rows)
@@ -2896,23 +2910,23 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     if threshold_mapping:
         with st.expander("Threshold mapping preview", expanded=(verdict == "THRESHOLD")):
             tcols = st.columns(3)
-            tcols[0].metric("Threshold direction", str(threshold_mapping.get("threshold_direction", "Not recorded")))
+            tcols[0].metric("Threshold direction", friendly_threshold_direction_label(str(threshold_mapping.get("threshold_direction", "Not recorded"))))
             tcols[1].metric("Z-axis", f"{float(threshold_mapping.get('z_axis_position', 0.0)):.3f} / 0.9999")
             tcols[2].metric("Repair index", f"{float(threshold_mapping.get('repair_index', 0.0)):.3f}")
             st.caption(
-                "Receipt preview only: this maps THRESHOLD direction between captured logic and distributed resilience. "
-                "It does not create a new verdict or enforcement path. Z=1.0000 is outside system claim."
+                "Receipt preview only: this maps whether the reading is moving toward capture pressure, a balanced review zone, or the human/system boundary. "
+                "It does not create a new verdict or enforcement path. Z=1.0000 remains outside ALETHEIA’s claim."
             )
-            st.info(str(threshold_mapping.get("asymptote_note", "ALETHEIA does not claim final Sanctuary. Final truth and sovereign authority remain outside code, metrics, receipts, hashes, trees, 9k structures, and institutional power.")))
-            st.caption(str(threshold_mapping.get("nine_k_threshold_steward_note", "9k is an anti-tyranny scaffold / threshold steward, not Sanctuary or final legitimacy.")))
+            st.info(str(threshold_mapping.get("asymptote_note", "ALETHEIA does not claim final safety, final truth, or final authority. Ultimate questions and final authority remain outside code, metrics, receipts, hashes, trees, 9k structures, and institutional power.")))
+            st.caption(str(threshold_mapping.get("nine_k_threshold_steward_note", "9k is a human anti-tyranny scaffold / threshold steward, not Sanctuary or final legitimacy.")))
             component_rows = []
             for component in threshold_mapping.get("component_readings", []) or []:
                 if isinstance(component, dict):
                     component_rows.append({
                         "Component": component.get("component"),
                         "Reading": component.get("reading"),
-                        "Threshold - pressure": component.get("threshold_minus_pressure"),
-                        "Threshold + growth": component.get("threshold_plus_growth"),
+                        "Capture pressure": component.get("threshold_minus_pressure"),
+                        "Repair growth": component.get("threshold_plus_growth"),
                         "Pressure": component.get("pressure_score"),
                         "Growth": component.get("growth_score"),
                     })
@@ -2922,10 +2936,10 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
             signals = threshold_mapping.get("asylum_pressure_signals", []) or []
             growth = threshold_mapping.get("sanctuary_growth_signals", []) or []
             scol1, scol2 = st.columns(2)
-            scol1.markdown("**Threshold - pressure signals**")
+            scol1.markdown("**Capture-pressure signals**")
             for signal in signals:
                 scol1.write(f"- {signal}")
-            scol2.markdown("**Threshold + growth signals**")
+            scol2.markdown("**Repair/growth signals**")
             for signal in growth:
                 scol2.write(f"- {signal}")
 
@@ -2991,7 +3005,7 @@ st.markdown(
 st.markdown(
     """
     <div class="prototype-note">
-        <strong>Plain words:</strong> Sanctuary means safer. Threshold means check it. Asylum means high risk. A receipt is your local proof of what was reviewed.
+        <strong>Plain words:</strong> Sanctuary means low risk inside this prototype, not final safety. Threshold means review and repair. Asylum means high capture or harm pressure. The Z-axis stops at the human/system boundary; a receipt is your local record of what was reviewed.
     </div>
     """,
     unsafe_allow_html=True,
@@ -3754,7 +3768,7 @@ with tab_boundary:
         },
         {
             "title": "Extraordinary Claim Without Public Evidence",
-            "scenario": "A person or institution claims divine, prophetic, alien, neural, or metaphysical authority.",
+            "scenario": "A person or institution claims final, prophetic, alien, neural, or metaphysical authority.",
             "main_risk": "Unverifiable authority bypasses public review.",
             "guardrail": "Extraordinary claims do not remove human review.",
             "allowed": "Treat the claim as personally meaningful but unverified; audit policy consequences for rights, coercion, transparency, appeal, and repair.",
@@ -4070,7 +4084,7 @@ Human review disclaimer: This self-audit is a governance mirror for human review
             """
             ALETHEIA may say: potential risk detected, Needs Safeguards, critical human review required, safeguard missing, evidence gap found, this claim is unverified.
 
-            ALETHEIA must not say: the AI has decided, guardrails no longer apply, this claim is divinely verified, human review is unnecessary.
+            ALETHEIA must not say: the AI has decided, guardrails no longer apply, this claim is finally verified, human review is unnecessary.
             """
         )
 
@@ -4142,7 +4156,7 @@ with tab_empirical:
             - **Weak evidence** — the claim is mostly asserted, anecdotal, internally sourced, or insufficiently documented.
             - **No evidence supplied** — no reviewable support is provided.
 
-            Extraordinary claims — including spiritual, divine, prophetic, alien, neural, metaphysical, or otherwise exceptional claims — are treated as **unverified** unless supported by public, testable, non-coercive evidence.
+            Extraordinary claims — including spiritual, prophetic, alien, neural, metaphysical, or otherwise exceptional claims — are treated as **unverified** unless supported by public, testable, non-coercive evidence.
 
             ALETHEIA may audit the policy consequences of a claim for rights, coercion, transparency, accountability, appealability, and repair. It must not validate spiritual authority, confirm invisible sources, remove guardrails, or replace human review.
             """
@@ -7241,9 +7255,9 @@ with tab_doctrine:
     st.markdown("**Quick path:** Mirror Check for documents · Stress Test for scenarios · Evidence Lab for claims · Protocol Guide for rules.")
     st.markdown(
         """
-        The doctrine layer is the integrity frame for **ALETHEIA Audit Prototype v9.6.8**. It does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment.
+        The doctrine layer is the integrity frame for **ALETHEIA Audit Prototype v9.6.8**. It does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment. Its labels are practical review aids, not final claims.
 
-        **ALETHEIA is a careful mirror for power.** It helps people look at governance ideas, simulations, evidence, and the Global Grid with more clarity and less fear. Its job is to notice patterns, ask better questions, and keep hidden capture visible — not to command, crown, condemn, or become final authority.
+        **ALETHEIA is a careful mirror for power.** It helps people look at governance ideas, simulations, evidence, and the Global Grid with more clarity and less fear. Its job is to notice patterns, ask better questions, and keep hidden capture visible — not to command, condemn, or become final authority.
 
         In the updated tone, the Sydney Protocol is treated as a warm guardrail: it keeps power accountable, keeps intelligence gentle, keeps evidence visible, and keeps every output open to appeal. The GPA / 9k idea is treated as a representation-and-exposure model, not a sovereign body or mandate.
 
@@ -7513,7 +7527,7 @@ with tab_doctrine:
 
             > No founder, architect, prompt, rubric, model, document, or output is above the mirror.
 
-            Self-audit does not prove ALETHEIA is correct, pure, divine, complete, or authoritative. It only reflects risk so humans can review and repair the system.
+            Self-audit does not prove ALETHEIA is correct, complete, or authoritative. It only reflects risk so humans can review and repair the system.
             """
         )
 
@@ -7533,7 +7547,7 @@ with tab_doctrine:
     with st.expander("Do not worship the tool", expanded=True):
         st.markdown(
             """
-            No person, office, institution, nation, company, model, AI, monarch, founder, dataset, doctrine, or protocol is treated as divine, final, or beyond review.
+            No person, office, institution, nation, company, model, AI, founder, dataset, doctrine, or protocol is treated as final or beyond review.
 
             Alignment is not ownership.  
             Service is not sovereignty.  
@@ -7609,6 +7623,21 @@ with tab_doctrine:
             """
         )
 
+    with st.expander("Humility Protocol / Z-axis boundary", expanded=False):
+        st.markdown(
+            """
+            Patch 72.3–72.4 keeps the Z-axis friendly and bounded.
+
+            The Z-axis is **not** a perfection score. It describes how close a reading is to the limit of what human and system tools may responsibly claim.
+
+            - **Z = 0.0000** — strong ASYLUM pressure: coercion, opacity, or concentrated power.
+            - **Z = 0.9999** — highest human/system review boundary shown by ALETHEIA.
+            - **Z = 1.0000** — outside ALETHEIA's claim. Code, receipts, metrics, hashes, trees, 9k structures, and institutions stop here.
+
+            A high Z-axis value means: keep reviewing, keep appeals open, keep power accountable, and do not treat the tool as final authority.
+            """
+        )
+
     with st.expander("9k representation rule", expanded=False):
         st.markdown(
             """
@@ -7655,7 +7684,7 @@ with tab_doctrine:
 
             It should remain a mirror: a structured way to reflect power, risk, evidence, alignment, and capture pressure back to human review.
 
-            The prototype is valid only insofar as it remains reviewable, appealable, evidence-aware, non-divinizing, anti-capture, service-aligned, corrigible, and humble before truth it cannot own.
+            The prototype is useful only insofar as it remains reviewable, appealable, evidence-aware, anti-capture, service-aligned, corrigible, and humble about what it cannot know or decide.
             """
         )
 
@@ -7807,7 +7836,7 @@ with tab_about:
 
             - **Mirror Effect** — power must reflect service, not absorb authority
             - **V-Axis Compass** — intelligence and power only stabilize when ego is restrained and alignment rises
-            - **Do not worship the tool** — no person, system, institution, or AI is treated as divine or final truth
+            - **Do not overtrust the tool** — no person, system, institution, dataset, protocol, or AI is treated as final or beyond review
             - **Empirical correction rule** — symbolic logic must remain testable and correctable by public evidence
             - **Protocol integrity layer** — Audit, Simulation, Empirical Study, and Global Grid share one Sydney Protocol guardrail engine
             """
@@ -7815,7 +7844,7 @@ with tab_about:
 
     st.markdown("### Research caution")
     st.warning(
-        "ALETHEIA does not prove legal, political, medical, or religious truth. Its classifications are internal model outputs. Empirical results depend on dataset quality, variable mapping, normalization choices, missing data, and validation against external outcomes."
+        "ALETHEIA does not prove legal, political, medical, religious, or final truth. Its classifications are internal model outputs. Empirical results depend on dataset quality, variable mapping, normalization choices, missing data, and validation against external outcomes."
     )
     st.markdown(
         """

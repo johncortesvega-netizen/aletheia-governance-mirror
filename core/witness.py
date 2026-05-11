@@ -27,17 +27,18 @@ DEMO_INPUT_WARNING = (
 )
 
 SANCTUARY_ASYMPTOTE_NOTE = (
-    "ALETHEIA does not claim final Sanctuary. The Z-axis maps proximity to the boundary "
-    "of human/system authority. Final truth and sovereign authority remain outside code, "
-    "metrics, receipts, hashes, trees, 9k structures, and institutional power."
+    "ALETHEIA does not claim final safety, final truth, or final authority. The Z-axis maps "
+    "how close a reading is to the boundary of what human and system tools may responsibly claim. "
+    "Ultimate questions and final authority remain outside code, metrics, receipts, hashes, "
+    "trees, 9k structures, and institutional power."
 )
 OUTSIDE_SYSTEM_CLAIM_NOTE = (
-    "Z=1.0000 is outside system claim: beyond ALETHEIA scoring, receipts, code, hashes, "
+    "Z=1.0000 is outside ALETHEIA’s claim: beyond scoring, receipts, code, hashes, "
     "trees, 9k structures, and institutional power."
 )
 NINE_K_THRESHOLD_STEWARD_NOTE = (
-    "9k is an anti-tyranny scaffold / threshold steward. It is not Sanctuary, not divine "
-    "authority, and not a source of final legitimacy."
+    "9k is a human anti-tyranny scaffold / threshold steward. It is not a final safety "
+    "claim and not a source of final legitimacy."
 )
 
 
@@ -616,9 +617,9 @@ def _threshold_mapping_layer(
 ) -> dict[str, Any]:
     """Map THRESHOLD results between captured logic and distributed resilience.
 
-    Patch 72.3: the Z-axis is a Sanctuary asymptote. It measures proximity
-    to the boundary of human/system authority, not possession of final
-    Sanctuary or progress toward perfection.
+    Patch 72.4: the Z-axis is a neutral asymptote. It measures proximity
+    to the boundary of what human and system tools may responsibly claim,
+    not a perfection score or final-authority claim.
 
     The layer is a receipt/navigation aid only:
     - canonical states remain SANCTUARY / THRESHOLD / ASYLUM
@@ -683,11 +684,11 @@ def _threshold_mapping_layer(
     if state == "ASYLUM":
         direction = "Toward ASYLUM"
     elif state == "SANCTUARY":
-        direction = "At human authority boundary"
+        direction = "At review boundary"
     elif pressure_average - growth_average >= 0.12:
         direction = "Toward ASYLUM"
     elif z_axis_position >= 0.12:
-        direction = "Toward SANCTUARY-boundary"
+        direction = "Toward review boundary"
     else:
         direction = "Balanced THRESHOLD"
 
@@ -715,12 +716,12 @@ def _threshold_mapping_layer(
     if not asylum_pressure_signals:
         asylum_pressure_signals.append("No dominant Asylum pressure signal recorded in this mapping layer.")
     if not sanctuary_growth_signals:
-        sanctuary_growth_signals.append("No strong Sanctuary growth signal recorded in this mapping layer.")
+        sanctuary_growth_signals.append("No strong review-boundary growth signal recorded in this mapping layer.")
 
     if direction == "Toward ASYLUM":
         dominant_pressure = "Care, safety, or access language is coupled to concentrated control, weak appeal, or capture pressure."
-    elif direction in {"Toward SANCTUARY-boundary", "At human authority boundary"}:
-        dominant_pressure = "Human review, appealability, transparency, and repair capacity approach the humility boundary of human/system authority."
+    elif direction in {"Toward review boundary", "At review boundary"}:
+        dominant_pressure = "Human review, appealability, transparency, and repair capacity approach the human/system humility boundary."
     else:
         dominant_pressure = "Mixed governance pressure: neither capture nor distributed repair clearly dominates."
 
@@ -731,7 +732,7 @@ def _threshold_mapping_layer(
         "z_axis_position": z_axis_position,
         "z_axis_maximum_human_system_claim": 0.9999,
         "outside_system_claim_z": 1.0,
-        "z_axis_meaning": "Proximity to the boundary of human/system authority; not progress toward perfection or possession of final Sanctuary.",
+        "z_axis_meaning": "Proximity to the human/system authority boundary; not a perfection score or final-authority claim.",
         "integrity_gap": round(max(0.0, 1.0 - integrity), 4),
         "repair_index": round(repair_index, 4),
         "dominant_pressure": dominant_pressure,
@@ -742,7 +743,7 @@ def _threshold_mapping_layer(
         "asymptote_note": SANCTUARY_ASYMPTOTE_NOTE,
         "outside_system_claim_note": OUTSIDE_SYSTEM_CLAIM_NOTE,
         "nine_k_threshold_steward_note": NINE_K_THRESHOLD_STEWARD_NOTE,
-        "note": "Descriptive receipt mapping only. It does not create a new verdict, enforcement path, public ledger, Global ID sync, central storage, final Sanctuary claim, or religious authority claim.",
+        "note": "Descriptive receipt mapping only. It does not create a new verdict, enforcement path, public ledger, Global ID sync, central storage, final-authority claim, or religious authority claim.",
     })
 
 
@@ -795,7 +796,7 @@ def _display_threshold_mapping_layer_block(mapping: Mapping[str, Any]) -> str:
         f"Z-axis position: {_display_value(mapping.get('z_axis_position'))}\n"
         f"Z-axis human/system cap: {_display_value(mapping.get('z_axis_maximum_human_system_claim', 0.9999))}\n"
         f"Outside system claim boundary: {_display_value(mapping.get('outside_system_claim_z', 1.0))}\n"
-        f"Z-axis meaning: {mapping.get('z_axis_meaning', 'Proximity to human/system authority boundary.')}\n"
+        f"Z-axis meaning: {mapping.get('z_axis_meaning', 'Proximity to the boundary of responsible human/system claims.')}\n"
         f"Integrity gap: {_display_value(mapping.get('integrity_gap'))}\n"
         f"Repair index: {_display_value(mapping.get('repair_index'))}\n"
         f"Dominant pressure: {mapping.get('dominant_pressure')}\n\n"

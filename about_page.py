@@ -44,7 +44,7 @@ def render_about():
 
         The v0.1 public-safe baseline adds explicit limits: ALETHEIA may identify risk, evidence gaps, safeguard gaps, and repair gaps, but it must not command, enforce, vote, govern, remove leaders, validate spiritual authority, or replace human judgment.
 
-        The updated doctrine style is warmer and more descriptive: soft voice, firm safeguards, evidence before certainty, and no final human or machine authority.
+        The updated doctrine style is warmer and more descriptive: soft voice, firm safeguards, evidence before certainty, and no final human or machine authority. Patch 72.4 keeps the Humility Protocol neutral: the Z-axis is a boundary marker, not a perfection score.
         """
     )
 
@@ -67,6 +67,12 @@ def render_about():
         )
 
 
+
+
+    with st.expander("Humility Protocol / Z-axis boundary", expanded=True):
+        st.write("The Z-axis now describes how close a reading is to the boundary of what human and system tools may responsibly claim. It is not a perfection score and it never grants final safety or final authority.")
+        st.write("Z=0.9999 is the highest human/system review boundary shown by ALETHEIA. Z=1.0000 remains outside ALETHEIA's claim: beyond code, metrics, receipts, hashes, trees, 9k structures, and institutional power.")
+        st.write("9k is framed as a human anti-tyranny scaffold / threshold steward. It is not a final safety claim, not a source of final legitimacy, and not an authority claim.")
 
     with st.expander("ALETHEIA v1.0 release complete", expanded=True):
         st.write("ALETHEIA v1.0 is the finished public MVP package for the Governance Mirror line. It includes the baseline, safe-language layer, Eternal Baseline, Boundary Cases, Failure Classification, Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, Local Witness Receipt v2, World Lens Simulation, Protocol Guide, sample reports, demo inputs, GitHub cleanup, and release documentation.")
@@ -100,11 +106,11 @@ def render_about():
         st.write("The Mechanism-vs-Claim Scanner checks whether ethical value language is backed by concrete safeguards. It compares claims like freedom, justice, dignity, service, transparency, or accountability against mechanisms such as appeal, audit trail, time limits, correction, evidence requirements, exit rights, independent oversight, and human review. It flags missing mechanisms for review; it does not infer bad faith or assign final intent.")
 
     with st.expander("Self-Audit Mode", expanded=True):
-        st.write("Self-Audit Mode points the mirror back at ALETHEIA itself. It checks the baseline, prompts, rubrics, README language, app copy, architect-context language, and reports for founder capture, ideological lock-in, unverifiable authority, weak appeal mechanisms, overclaiming, spiritual authority leakage, insufficient human review, and missing correction loops. It reflects risk for human review; it does not prove correctness or grant authority.")
+        st.write("Self-Audit Mode points the mirror back at ALETHEIA itself. It checks the baseline, prompts, rubrics, README language, app copy, architect-context language, and reports for founder capture, ideological lock-in, unverifiable authority, weak appeal mechanisms, overclaiming, final-authority leakage, insufficient human review, and missing correction loops. It reflects risk for human review; it does not prove correctness or grant authority.")
 
 
     with st.expander("Evidence Lab + Extraordinary Claim Protocol", expanded=True):
-        st.write("Evidence Lab marks whether claims have strong, partial, weak, or no supplied evidence. Extraordinary claims — including spiritual, divine, prophetic, alien, neural, metaphysical, or otherwise exceptional claims — are treated as unverified unless supported by public, testable, non-coercive evidence. ALETHEIA may audit the consequences of a claim for rights, coercion, transparency, accountability, and repair; it must not validate spiritual authority or remove human review.")
+        st.write("Evidence Lab marks whether claims have strong, partial, weak, or no supplied evidence. Extraordinary claims — including spiritual, prophetic, alien, neural, metaphysical, or otherwise exceptional claims — are treated as unverified unless supported by public, testable, non-coercive evidence. ALETHEIA may audit the consequences of a claim for rights, coercion, transparency, accountability, and repair; it must not validate spiritual authority or remove human review.")
 
     with st.expander("Local Witness Receipt v2", expanded=True):
         st.write("Local Witness Receipt v2 records a local, user-held fingerprint of a review: document fingerprint, processed document fingerprint, report fingerprint, timestamp, app/rubric/prompt version, active modules, and authority boundary. It explicitly states public ledger: No, Global ID sync: No, central storage: No, authority claim: No, and human review required: Yes.")
@@ -143,7 +149,7 @@ def render_about():
             - **Shared Protocol State** — Audit, Simulation, Empirical Evidence, and Global Grid are synchronized views over one protocol substrate.
             - **Mirror Effect** — power must reflect service, not absorb authority.
             - **V-Axis Compass** — intelligence and power only stabilize when ego is restrained and alignment, trust, transparency, and appealability rise.
-            - **Non-divinization** — no person, system, institution, office, monarch, founder, dataset, doctrine, protocol, or AI is treated as divine or final truth.
+            - **No final authority claim** — no person, system, institution, office, founder, dataset, doctrine, protocol, or AI is treated as final or beyond review.
             - **Empirical evidence rule** — public datasets provide the observed baseline; ALETHEIA maps that evidence into governance-risk variables and applies the Sydney Protocol overlay.
             - **Trust evidence rule** — raw survey trust and trust priors are distinct; neutral/default priors are not observed trust.
             - **Coverage and confidence** — coverage applies to the active selected view and does not imply whole-world completeness.
