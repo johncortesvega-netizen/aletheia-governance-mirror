@@ -1296,3 +1296,27 @@ Check:
 tools\run_patch_checks.bat 73
 ```
 
+
+## Patch 73.1 - Scope Copy Trim / UI Minimalism
+
+Date: 2026-05-12
+
+Patch 73.1 keeps Patch 73's scope clarification while reducing first-view UI weight in About / Why ALETHEIA.
+
+Implemented:
+- The Scope Layers expander in integrated `app.py` Why ALETHEIA is now collapsed by default.
+- The matching Scope Layers expander in standalone `about_page.py` is now collapsed by default.
+- The layered-scope copy remains available and unchanged for readers who open it.
+- No module-level disclaimer spread was added; longer scope framing stays concentrated in About/docs/README.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model, authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 73_1
+```

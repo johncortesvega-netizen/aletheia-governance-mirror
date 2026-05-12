@@ -1693,3 +1693,27 @@ Check:
 tools\run_patch_checks.bat 73
 ```
 
+
+## Patch 73.1 - Scope Copy Trim / UI Minimalism
+
+Date: 2026-05-12
+
+Patch 73.1 keeps the layered scope clarification introduced in Patch 73 but makes the UI lighter by collapsing the Scope Layers expander by default in both the integrated Why ALETHEIA tab and standalone About page.
+
+Implemented:
+- About remains the correct place for the longer current-tool / research / vision / out-of-scope distinction.
+- First-view UI no longer opens the full scope block automatically.
+- The actual scope boundary copy remains intact and reviewable.
+- No new disclaimers were spread across Mirror Check, Stress Test, Boundary Cases, Evidence Lab, or World Lens.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model, authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 73_1
+```

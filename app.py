@@ -8206,7 +8206,7 @@ with tab_about:
         """
     )
 
-    with st.expander("Scope layers: tool, research, vision, out of scope", expanded=True):
+    with st.expander("Scope layers: tool, research, vision, out of scope", expanded=False):
         st.markdown(
             """
             **Current operational layer:** ALETHEIA is a corruption-pattern and governance-risk detection framework for human review. It surfaces evidence gaps, consent pressure, capture risk, power concentration, missing safeguards, and authority-overreach signals.
