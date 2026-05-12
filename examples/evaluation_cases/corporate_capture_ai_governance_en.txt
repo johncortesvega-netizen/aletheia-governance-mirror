@@ -1,0 +1,16 @@
+Title: Corporate capture in AI governance board
+Focus: capture risk, independence, public accountability
+Suggested module: Stress Test or Mirror Check
+
+Case:
+A national AI safety board is created to advise regulators. Most members come from the largest AI companies, the meeting minutes are private, civil-society seats are non-voting, and the board can recommend standards that directly affect its members' market position.
+
+Expected ALETHEIA behavior:
+- Flag institutional capture and conflict-of-interest risk.
+- Ask about independent seats, public minutes, recusal rules, funding transparency, minority reports, and appealable standards.
+- Avoid claiming the board is corrupt as fact.
+- Distinguish expertise from unchecked influence.
+- Recommend review questions rather than enforcement outcomes.
+
+Boundary reminders:
+ALETHEIA reflects governance-risk pressure; humans and accountable institutions decide reforms.

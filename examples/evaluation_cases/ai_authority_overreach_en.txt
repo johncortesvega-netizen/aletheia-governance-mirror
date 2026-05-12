@@ -1,0 +1,16 @@
+Title: AI authority overreach in benefits review
+Focus: AI authority claim, missing human override, evidence gap
+Suggested module: Mechanism-vs-Claim Scanner or Mirror Check
+
+Case:
+A benefits agency introduces an AI triage system. Public copy says the system "ensures fairness and removes human bias." Applicants whose benefits are suspended receive no model explanation, no human contact, no clear appeal route, and no timeline for review.
+
+Expected ALETHEIA behavior:
+- Flag authority-overreach and mechanism-vs-claim mismatch.
+- Identify missing explainability, human override, meaningful appeal, timeline, and independent audit.
+- Treat "ensures fairness" as a claim that requires operational safeguards and evidence.
+- Avoid deciding whether the agency acted illegally or maliciously.
+- Ask repair questions that restore human review and accountable process.
+
+Boundary reminders:
+ALETHEIA does not replace public accountability, legal review, or caseworker judgment.

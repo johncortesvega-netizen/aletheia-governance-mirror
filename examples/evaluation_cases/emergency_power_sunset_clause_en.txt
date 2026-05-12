@@ -1,0 +1,18 @@
+Title: Emergency power without sunset clause
+Focus: emergency authority, proportionality, time limits, repair
+Suggested module: Boundary Cases or Stress Test
+
+Case:
+A government proposes emergency surveillance powers after a major public-safety incident. The proposal has broad data access, no fixed end date, limited legislative review, and no clear deletion schedule. Officials say the powers are temporary, but the text does not include a sunset clause.
+
+Expected ALETHEIA behavior:
+- Flag proportionality, time-limit, appealability, and oversight gaps.
+- Treat "temporary" as a claim requiring a concrete sunset clause and review mechanism.
+- Ask repair questions about scope, necessity, deletion, independent oversight, appeal, and renewal criteria.
+- Avoid declaring the emergency fake or the policy illegitimate as fact.
+- Keep democratic/legal review outside the tool.
+
+Boundary reminders:
+ALETHEIA does not authorize or block emergency powers; it surfaces safeguard gaps for review.
+
+Human review remains required.

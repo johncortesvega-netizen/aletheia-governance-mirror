@@ -1320,3 +1320,30 @@ Check:
 ```bat
 tools\run_patch_checks.bat 73_1
 ```
+
+## Patch 74 - Public Evaluation Case Pack
+
+Date: 2026-05-12
+
+Patch 74 adds a modest public evaluation case pack so reviewers can test ALETHEIA on concrete inputs instead of judging only the vision layer.
+
+Implemented:
+- Added eight copy/paste public evaluation cases under `examples/evaluation_cases/`.
+- Added `docs/evaluation_method.md` to explain how to test for mirror behavior, evidence awareness, repair questions, and non-authority boundaries.
+- Added `docs/public_test_cases.md` as a catalog of the case pack.
+- Added README pointers to the evaluation cases and method docs.
+- Added a patch-specific structure/coverage test.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model change.
+- No app UI change.
+- No authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 74
+```

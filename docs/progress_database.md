@@ -1717,3 +1717,30 @@ Check:
 ```bat
 tools\run_patch_checks.bat 73_1
 ```
+
+## Patch 74 - Public Evaluation Case Pack
+
+Date: 2026-05-12
+
+Patch 74 converts the public-review concern "test it on concrete inputs" into a small, reviewable example layer.
+
+Implemented:
+- Created `examples/evaluation_cases/` with eight public cases covering procurement favoritism, healthcare consent pressure, AI authority overreach, extraordinary policy claims, AI-governance capture, emergency powers without sunset clauses, visionary-language boundary tension, and police accountability review gaps.
+- Created `docs/evaluation_method.md` to explain the evaluation posture: cases are review prompts, not proof of correctness.
+- Created `docs/public_test_cases.md` as a compact catalog.
+- Updated README with pointers to the case pack and evaluation method.
+- Added `tests/test_patch_74_public_evaluation_case_pack.py` to verify case structure, risk coverage, documentation links, and patch ledger entries.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model change.
+- No app UI change.
+- No authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 74
+```

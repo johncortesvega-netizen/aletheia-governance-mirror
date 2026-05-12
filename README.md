@@ -29,6 +29,8 @@ The incorruptible-system framing is a theory horizon, not a present capability c
 
 Public release documentation now lives in `docs/limitations.md`, `docs/ethics.md`, `docs/public_release_notes.md`, and `docs/scope_layers.md`.
 
+Public evaluation cases now live in `examples/evaluation_cases/`, with method notes in `docs/evaluation_method.md` and a catalog in `docs/public_test_cases.md`. They are copy/paste test prompts for checking whether ALETHEIA surfaces risk signals, evidence gaps, consent pressure, capture risk, and authority-overreach concerns without claiming final authority.
+
 
 The v0.1 release package lives in `docs/v01_release_package.md`. It summarizes included modules, out-of-scope boundaries, quickstart commands, sample-report links, and release readiness checks.
 
