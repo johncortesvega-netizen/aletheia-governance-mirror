@@ -31,6 +31,14 @@ Public release documentation now lives in `docs/limitations.md`, `docs/ethics.md
 
 Public evaluation cases now live in `examples/evaluation_cases/`, with method notes in `docs/evaluation_method.md` and a catalog in `docs/public_test_cases.md`. They are copy/paste test prompts for checking whether ALETHEIA surfaces risk signals, evidence gaps, consent pressure, capture risk, and authority-overreach concerns without claiming final authority.
 
+## Differentiation from other governance tools
+
+ALETHEIA is not an enterprise AI governance platform, compliance engine, legal tool, institutional risk system, or technical fairness library. Its niche is **qualitative governance-risk reflection**: corruption-pattern signals, consent pressure, capture risk, evidence gaps, authority-overreach language, weak accountability, and repair questions for human review.
+
+Enterprise AI governance platforms generally focus on organizational workflows such as model inventories, compliance mapping, monitoring, reporting, approvals, vendor review, and audit artifacts. Technical fairness libraries generally focus on model-level bias, explainability, dataset, and metric workflows. ALETHEIA focuses on the power-analysis layer before, around, and beyond those tools.
+
+ALETHEIA is free/open-source code and is intended to remain free. This is part of its anti-capture posture: access to the mirror should not become a gatekeeping mechanism or a source of institutional authority. See `docs/comparison_positioning.md`.
+
 
 The v0.1 release package lives in `docs/v01_release_package.md`. It summarizes included modules, out-of-scope boundaries, quickstart commands, sample-report links, and release readiness checks.
 

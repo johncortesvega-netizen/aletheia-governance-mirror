@@ -62,6 +62,18 @@ def render_about():
             """
         )
 
+
+    with st.expander("Positioning: not enterprise compliance, not fairness library", expanded=False):
+        st.markdown(
+            """
+            ALETHEIA's niche is **qualitative governance-risk reflection**: corruption-pattern signals, consent pressure, capture risk, evidence gaps, authority-overreach language, weak accountability, and repair questions for human review.
+
+            It is not an enterprise AI governance platform, compliance engine, legal tool, institutional risk system, or technical fairness library. Enterprise platforms usually focus on model inventories, compliance workflows, monitoring, reporting, and organizational controls. Technical fairness libraries usually focus on model-level bias, explainability, datasets, and metrics.
+
+            ALETHEIA is free/open-source code and is intended to remain free. This supports the anti-capture posture: access to the mirror should not become a gatekeeping mechanism or a source of institutional authority.
+            """
+        )
+
     with st.expander("Eternal Baseline", expanded=True):
         st.markdown(
             """

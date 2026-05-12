@@ -1375,3 +1375,30 @@ Check:
 ```bat
 tools\run_patch_checks.bat 75
 ```
+
+## Patch 76 - Differentiation / Comparison Framing
+
+Date: 2026-05-12
+
+Patch 76 clarifies ALETHEIA's public niche relative to adjacent governance and AI-audit tool categories while preserving the narrow mirror boundary.
+
+Implemented:
+- Added `docs/comparison_positioning.md` to define ALETHEIA as qualitative governance-risk reflection rather than enterprise compliance, legal tooling, institutional GRC, or technical fairness tooling.
+- Added README positioning text that distinguishes enterprise AI governance workflows, technical fairness libraries, and ALETHEIA's corruption-pattern / power-analysis mirror.
+- Added a short collapsed About/Why ALETHEIA positioning expander in both app and standalone about page.
+- Added the free/open-source commitment: ALETHEIA is free/open-source code and is intended to remain free, without turning access or code into authority.
+- Added a patch-specific test covering comparison framing, free/open-source wording, and anti-overclaim boundaries.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No app engine change.
+- No competitor pricing claims.
+- No claim that ALETHEIA replaces enterprise governance, technical fairness testing, compliance review, legal review, or human judgment.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 76
+```
