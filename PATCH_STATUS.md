@@ -1347,3 +1347,31 @@ Check:
 ```bat
 tools\run_patch_checks.bat 74
 ```
+
+## Patch 75 - Mirror Check ASYLUM Metric Cap + Copy Polish
+
+Date: 2026-05-12
+
+Patch 75 fixes a Mirror Check consistency regression found while testing Patch 74 evaluation cases: ASYLUM / High readings could still show THRESHOLD-style trust/alignment/ego metrics in the Mirror Check UI/receipt path.
+
+Implemented:
+- Mirror Check now applies `enforce_asylum_metric_consistency` after final judgment generation.
+- Mirror Check normalizes ASYLUM protocol labels with `normalize_asylum_protocol_label`.
+- Mirror Check keeps ASYLUM repair questions available for high-risk readings.
+- Local witness receipt construction now defensively caps ASYLUM / High metrics even if the caller passes an uncapped sim object.
+- Protocol summary copy now uses humility language: `Protocol reading`, `internal taxonomy label`, and `ALETHEIA does not enforce action`.
+
+Invariant preserved:
+- No authority claim.
+- No enforcement path.
+- No public ledger.
+- No Global ID sync.
+- No central storage.
+- No Evidence Lab or World Lens data model change.
+- Raw pre-ethics metrics remain available in receipts when present.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 75
+```

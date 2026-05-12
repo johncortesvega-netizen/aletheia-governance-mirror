@@ -1744,3 +1744,27 @@ Check:
 ```bat
 tools\run_patch_checks.bat 74
 ```
+
+## Patch 75 - Mirror Check ASYLUM Metric Cap + Copy Polish
+
+Date: 2026-05-12
+
+Status: Implemented.
+
+Patch 75 follows directly from the Patch 74 evaluation workflow. A Mirror Check receipt showed an ASYLUM / High internal reading with uncapped trust/alignment/ego metrics. The patch keeps the reading non-authoritative but makes the metric layer consistent with the protocol-adjusted ASYLUM state.
+
+Changes:
+- Mirror Check post-judgment path applies ASYLUM metric consistency caps.
+- Local witness receipts apply a defensive ASYLUM / High cap at receipt-build time.
+- Protocol summary language now avoids `audit result` and `final label` wording.
+
+Design boundary:
+- This is display/receipt calibration only.
+- It does not change the purpose of ALETHEIA: mirror, not throne.
+- It does not add enforcement, public ledger, Global ID sync, central storage, legal authority, political authority, religious authority, medical authority, or automated authority.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 75
+```

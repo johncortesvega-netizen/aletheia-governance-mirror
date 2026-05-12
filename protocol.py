@@ -2573,8 +2573,9 @@ def final_protocol_judgment(
         reasons.append(scope_gate.get("reason"))
 
     summary = (
-        f"Protocol audit result: {verdict}. Integrity reading is {raw_integrity:.3f}; "
-        f"the final label is controlled by Sydney Protocol guardrails, MEI7 ethics, and corruption/capture pressure."
+        f"Protocol reading: {verdict}. Integrity is {raw_integrity:.3f}. "
+        f"The internal taxonomy label reflects protocol guardrails, ethics pressure, and capture-risk signals. "
+        f"ALETHEIA does not enforce action."
     )
 
     output = {

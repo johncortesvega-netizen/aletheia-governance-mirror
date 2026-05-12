@@ -1,0 +1,36 @@
+PATCH 75 — Mirror Check ASYLUM Metric Cap + Copy Polish
+
+Date: 2026-05-12
+
+Purpose:
+- Prevent Mirror Check ASYLUM / High readings from displaying or receipting THRESHOLD-style trust/alignment/ego metrics.
+- Polish the local protocol summary copy away from authority-sounding language.
+
+Changed files:
+- app.py
+- protocol.py
+- core/witness.py
+- tests/test_patch_75_mirror_check_asylum_metric_cap_copy.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_75_MANIFEST.txt
+- PATCH_75_RECOVERY_NOTE.md
+
+Behavioral changes:
+- Mirror Check now applies the existing ASYLUM metric consistency cap after the final protocol judgment is produced.
+- Mirror Check normalizes ASYLUM labels to end in `/ Asylum` where applicable.
+- Mirror Check preserves human-review repair questions for ASYLUM / High readings.
+- Local witness receipts now cap ASYLUM / High metrics defensively even if a receipt is built from an uncapped sim object.
+- Protocol summary copy now says `Protocol reading`, `internal taxonomy label`, and `ALETHEIA does not enforce action` instead of `Protocol audit result` / `final label`.
+
+Invariant preserved:
+- No new authority claim.
+- No enforcement path.
+- No public ledger.
+- No Global ID sync.
+- No central storage.
+- No Evidence Lab or World Lens data-model change.
+- Raw pre-ethics metrics remain available in receipts when present.
+
+Run:
+- tools\run_patch_checks.bat 75

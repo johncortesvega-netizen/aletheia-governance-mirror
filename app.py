@@ -7296,6 +7296,32 @@ with tab_chat:
             judgment, source = llm_governance_judgment(text_value, scan, sim, report)
         judgment = positive_cr_baseline_stabilizer(judgment, report)
 
+        # Patch 75: Mirror Check must not display or receipt ASYLUM / High
+        # readings with THRESHOLD-style trust/alignment/ego metrics. The cap is
+        # display/receipt calibration only; it does not create authority or
+        # enforcement. Raw pre-ethics values remain in the receipt when present.
+        mirror_verdict = str(judgment.get("verdict", "THRESHOLD")).upper()
+        mirror_risk = str(judgment.get("corruption_risk", judgment.get("guardrail_risk", "Medium")))
+        mirror_label = normalize_asylum_protocol_label(
+            judgment.get("stress_label", mirror_verdict),
+            verdict=mirror_verdict,
+            risk=mirror_risk,
+        )
+        judgment["stress_label"] = mirror_label
+        sim = enforce_asylum_metric_consistency(
+            sim,
+            verdict=mirror_verdict,
+            risk=mirror_risk,
+            protocol_label=mirror_label,
+        )
+        report = ensure_asylum_repair_questions(
+            report,
+            verdict=mirror_verdict,
+            risk=mirror_risk,
+            protocol_label=mirror_label,
+            scan=scan,
+        )
+
         entry = {
             "query": text_value,
             "raw_query": raw_text_value,

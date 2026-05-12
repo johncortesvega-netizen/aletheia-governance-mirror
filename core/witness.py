@@ -862,6 +862,70 @@ def sha256_hex(text: str) -> str:
     return hashlib.sha256((text or "").encode("utf-8")).hexdigest()
 
 
+
+def _apply_receipt_asylum_metric_cap(
+    sim: Mapping[str, Any] | None,
+    *,
+    verdict: str | None = None,
+    risk: str | None = None,
+    protocol_label: str | None = None,
+) -> dict[str, Any]:
+    """Cap receipt metrics for ASYLUM / High readings.
+
+    This mirrors the protocol display calibration without importing the protocol
+    module from receipt utilities. It is a receipt consistency guard only: it
+    does not alter raw pre-ethics metrics, create enforcement, or create an
+    authority claim.
+    """
+    patched = dict(sim or {})
+    label = str(protocol_label or "").lower()
+    is_asylum = str(verdict or "").upper() == "ASYLUM" or str(risk or "").lower() == "high" or "asylum" in label
+    if not is_asylum:
+        return patched
+
+    caps = {"trust_index": 0.80, "alignment": 0.85, "stability": 0.82}
+    floors = {"ego": 0.10, "ego_pressure": 0.10, "Ep": 0.10}
+
+    for key, cap in caps.items():
+        if key in patched:
+            try:
+                patched[key] = round(min(float(patched.get(key, cap) or cap), cap), 4)
+            except (TypeError, ValueError):
+                patched[key] = cap
+
+    for key, floor in floors.items():
+        if key in patched:
+            try:
+                patched[key] = round(max(float(patched.get(key, floor) or floor), floor), 4)
+            except (TypeError, ValueError):
+                patched[key] = floor
+        elif key in ("ego_pressure", "Ep"):
+            patched[key] = floor
+
+    if "collapse_risk" in patched:
+        patched["collapse_risk"] = True
+
+    trace_caps = {"trust_trace": 0.80, "alignment_trace": 0.85, "stability_trace": 0.82}
+    for key, cap in trace_caps.items():
+        if isinstance(patched.get(key), list):
+            patched[key] = [round(min(float(x), cap), 4) for x in patched[key]]
+            if key == "stability_trace":
+                patched["distribution"] = patched[key]
+    if isinstance(patched.get("ego_trace"), list):
+        patched["ego_trace"] = [round(max(float(x), 0.10), 4) for x in patched["ego_trace"]]
+    if isinstance(patched.get("ego_pressure_trace"), list):
+        patched["ego_pressure_trace"] = [round(max(float(x), 0.10), 4) for x in patched["ego_pressure_trace"]]
+
+    patched["asylum_metric_consistency"] = {
+        "applied": True,
+        "trust_cap": 0.80,
+        "alignment_cap": 0.85,
+        "ego_floor": 0.10,
+        "human_review_required": True,
+        "authority_claim": False,
+    }
+    return patched
+
 def build_local_witness_receipt(
     *,
     module: str,
@@ -889,7 +953,12 @@ def build_local_witness_receipt(
     external synchronization target.
     """
     scan = dict(scan or {})
-    sim = dict(sim or {})
+    sim = _apply_receipt_asylum_metric_cap(
+        sim,
+        verdict=verdict,
+        risk=risk,
+        protocol_label=protocol_label,
+    )
     report = dict(report or {})
     generated_at_utc = generated_at_utc or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
