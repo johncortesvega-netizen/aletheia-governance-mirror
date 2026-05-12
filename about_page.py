@@ -86,6 +86,17 @@ def render_about():
             """
         )
 
+    with st.expander("Capture risk checklist / prompt pack", expanded=False):
+        st.markdown(
+            """
+            Patch 78 adds a practical checklist and copy/paste prompts for applying the capture-risk framework one case at a time.
+
+            Use it to scan for power concentration, weak appeal paths, hidden influence, evidence gaps, consent pressure, authority overreach, and service misalignment.
+
+            The prompt pack keeps the same boundary: ALETHEIA reflects signals for human review only. It does not decide, enforce, certify, punish, or become a central authority.
+            """
+        )
+
     with st.expander("Eternal Baseline", expanded=True):
         st.markdown(
             """

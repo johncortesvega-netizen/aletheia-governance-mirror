@@ -1431,3 +1431,30 @@ Check:
 ```bat
 tools\run_patch_checks.bat 77
 ```
+
+## Patch 78 - Capture Risk Checklist / Prompt Pack
+
+Date: 2026-05-12
+
+Patch 78 turns the Patch 77 capture-risk framework into a practical checklist and copy/paste prompt pack.
+
+Implemented:
+- Added `docs/capture_risk_checklist.md` as a one-page practical checklist for power concentration, appeal paths, hidden influence, evidence integrity, consent pressure, authority boundary, and service alignment.
+- Added `examples/capture_risk_prompts/` with five copy/paste prompts for general capture-risk review, policy proposals, institution self-audit, AI governance, and evidence/consent pressure.
+- Added README and About pointers to the checklist/prompt pack.
+- Linked the practical companion from `docs/capture_risk_framework.md`.
+- Added a patch-specific test covering prompt-pack structure, boundary language, README/About links, and patch ledgers.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model change.
+- No new app module.
+- No enforcement, certification, punishment, legal authority, political authority, religious authority, public ledger, Global ID sync, central storage, or final judgment.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 78
+```

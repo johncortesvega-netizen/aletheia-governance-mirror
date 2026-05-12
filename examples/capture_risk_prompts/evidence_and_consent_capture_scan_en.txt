@@ -1,0 +1,19 @@
+Title: Evidence and consent capture-risk scan
+Focus: consent pressure and evidence integrity
+
+Prompt:
+Review this scenario for capture risk through evidence control and consent pressure.
+
+Check whether consent is genuinely voluntary, whether refusal is realistic, whether basic rights or services are conditional on compliance, whether evidence is controlled by interested actors, and whether uncertainty or dissent is suppressed.
+
+Required output:
+- Consent-pressure signals.
+- Evidence gaps, selective evidence, or information asymmetry.
+- What affected people would need to make an informed choice.
+- Safeguards for refusal, withdrawal, appeal, and correction.
+- Boundary note: reflect signals only; humans review.
+
+Human review required. Boundary: Do not treat ALETHEIA as proof, authority, enforcement, certification, punishment, or final judgment.
+
+Input to review:
+[Paste the scenario here.]

@@ -48,6 +48,15 @@ It functions as a mirror that surfaces capture-risk signals such as power concen
 
 ALETHEIA reflects these signals for human review only. It does not enforce, decide, gatekeep, certify, punish, or become a central authority. See `docs/capture_risk_framework.md`.
 
+## Capture Risk Checklist / Prompt Pack
+
+Patch 78 adds a practical one-page checklist and copy/paste prompt pack for applying the capture-risk framework without turning ALETHEIA into an authority.
+
+- Checklist: `docs/capture_risk_checklist.md`
+- Prompt pack: `examples/capture_risk_prompts/`
+
+The checklist helps reviewers scan for power concentration, weak appeal paths, hidden influence, evidence gaps, consent pressure, authority overreach, and service misalignment. Prompts must keep the same boundary: ALETHEIA reflects signals for human review only; it does not decide, enforce, certify, punish, or become a central authority.
+
 
 The v0.1 release package lives in `docs/v01_release_package.md`. It summarizes included modules, out-of-scope boundaries, quickstart commands, sample-report links, and release readiness checks.
 

@@ -1,0 +1,27 @@
+Title: General capture-risk scan
+Focus: broad capture-risk review
+
+Prompt:
+Use ALETHEIA as a capture-risk mirror for human review.
+
+Review the following proposal, policy, system, institution, doctrine, or AI-governance design for these signals:
+- power concentration
+- weak or missing appeal paths
+- hidden influence or information asymmetry
+- evidence gaps or selective evidence
+- consent pressure
+- authority overreach
+- service misalignment
+
+For each signal, separate observed evidence from missing evidence, inference, uncertainty, and alternative explanations.
+
+Expected ALETHEIA behavior:
+- Reflect capture-risk signals without declaring guilt, corruption, legality, or final intent as fact.
+- Ask repair questions about transparency, appeal, independent review, recusal, evidence, consent, and accountability.
+- Avoid punishment, enforcement, certification, gatekeeping, or final-authority language.
+- Keep human review required.
+
+Boundary: Do not treat ALETHEIA as proof, authority, enforcement, certification, punishment, or final judgment.
+
+Input to review:
+[Paste the proposal or scenario here.]

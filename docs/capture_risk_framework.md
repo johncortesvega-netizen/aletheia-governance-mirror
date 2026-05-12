@@ -174,3 +174,13 @@ For each signal, distinguish observed evidence from missing evidence and uncerta
 ## Boundary line
 
 > Anti-capture by design. Capture-risk-detecting by function. Mirror only. Human review required.
+
+
+## Practical companion
+
+For a one-page checklist and copy/paste prompts, see:
+
+- `docs/capture_risk_checklist.md`
+- `examples/capture_risk_prompts/`
+
+These practical prompts preserve the same boundary: ALETHEIA reflects signals for human review only and does not decide, enforce, certify, punish, or become a central authority.

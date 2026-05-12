@@ -1,0 +1,21 @@
+Title: Institution self-audit capture-risk scan
+Focus: applying the mirror to an institution or project itself
+
+Prompt:
+Point the mirror back at this institution, project, regulator, nonprofit, company, protocol, or governance body.
+
+Scan for founder capture, insider benefit, opaque decision-making, weak correction paths, donor/vendor influence, one-source-of-truth pressure, mission creep, and missing external review.
+
+Required output:
+- Where power or interpretation is concentrated.
+- Who can challenge, appeal, audit, rotate, or remove that power.
+- What evidence is public, missing, or controlled internally.
+- What safeguards would make the institution less capturable.
+- Human review required: the mirror is not proof of innocence or guilt.
+
+Core signal terms: power concentration, hidden influence, consent pressure, authority overreach.
+
+Boundary: Do not treat ALETHEIA as proof, authority, enforcement, certification, punishment, or final judgment.
+
+Input to review:
+[Paste institution/project details here.]

@@ -1,0 +1,23 @@
+Title: AI governance capture-risk scan
+Focus: AI policy, model oversight, or platform governance
+
+Prompt:
+Review this AI governance proposal for capture-risk signals.
+
+Look for vendor capture, model-owner influence, hidden evaluation criteria, weak appeal paths for affected users, compliance theater, overreliance on proprietary evidence, central truth-gate behavior, and authority-overreach language.
+
+Required output:
+- Capture-risk signals by category.
+- Evidence strength and evidence gaps.
+- Whether affected people can appeal or contest outputs.
+- Whether the system claims more authority than it should.
+- Repair questions that preserve human review and independent oversight.
+
+Do not treat ALETHEIA as a regulator, certification body, legal authority, or enforcement system.
+
+Core signal terms: power concentration, hidden influence, consent pressure, authority overreach.
+
+Boundary: Do not treat ALETHEIA as proof, authority, enforcement, certification, punishment, or final judgment.
+
+Input to review:
+[Paste the AI governance design here.]

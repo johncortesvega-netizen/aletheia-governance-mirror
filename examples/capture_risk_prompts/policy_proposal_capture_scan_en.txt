@@ -1,0 +1,20 @@
+Title: Policy proposal capture-risk scan
+Focus: public-purpose policy review
+
+Prompt:
+Review this policy proposal as a capture-risk mirror for human review.
+
+Check whether the policy gives concentrated actors durable power, hides influence, weakens appeal paths, relies on selective evidence, pressures consent, expands beyond mandate, or serves insiders more than the public purpose.
+
+Required output:
+1. Observed capture-risk signals.
+2. Missing evidence or disclosures.
+3. Affected groups and possible consent pressure.
+4. Safeguards that would reduce capture risk.
+5. Repair questions for human reviewers.
+6. Explicit boundary: no enforcement, no final judgment, no legal or political authority.
+
+Boundary: Do not treat ALETHEIA as proof, authority, enforcement, certification, punishment, or final judgment.
+
+Input to review:
+[Paste the policy here.]
