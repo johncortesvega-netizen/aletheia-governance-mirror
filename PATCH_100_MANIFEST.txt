@@ -1,0 +1,30 @@
+PATCH 100 MANIFEST — Release Stabilization / Public Adoption Package
+
+Baseline:
+- Patch 99 passed baseline expected.
+- This workspace was prepared from the latest uploaded build plus the previously generated Patch 99 patched-items overlay when the uploaded archive did not visibly contain Patch 99 files.
+
+Patched items:
+- README.md
+- about_page.py
+- docs/ai_integrity_mirror.md
+- docs/ai_integrity_preview_public_adoption.md
+- docs/ai_integrity_preview_release_notes.md
+- docs/ai_integrity_screenshots_guidance.md
+- docs/progress_database.md
+- PATCH_STATUS.md
+- PATCH_100_MANIFEST.txt
+- PATCH_100_RECOVERY_NOTE.md
+- tests/test_patch_100_release_stabilization_public_adoption.py
+
+Intent:
+- Stabilize the public adoption surface for ALETHEIA v1.0 AI Integrity Preview.
+- Provide first-use, release-note, screenshot, and regression-check guidance.
+
+Boundary preserved:
+- No analyzer scoring change.
+- No verdict-routing change.
+- No live model calls.
+- No external calls.
+- No repository crawler.
+- No certification, guarantee, authority, or enforcement claim.

@@ -1,0 +1,47 @@
+PATCH 92 — AI Integrity Rubric Documentation
+
+Status: READY FOR LOCAL TESTING
+
+Updated files:
+- docs/ai_integrity_rubric.md
+- docs/ai_integrity_mirror.md
+- README.md
+- tests/test_patch_92_ai_integrity_rubric_documentation.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_92_MANIFEST.txt
+- PATCH_92_RECOVERY_NOTE.md
+
+Summary:
+- Added a public, reviewable AI Integrity Mirror rubric document.
+- Documented signal categories, signal names, review questions, current weight ranges, positive review signals, evidence snippets, redaction, batch mode, receipt scope, privacy boundary, and out-of-scope claims.
+- Updated README and module documentation to point reviewers to the rubric.
+- Added patch-specific tests that verify rubric transparency and non-certification boundaries.
+
+Boundary preserved:
+- Documentation only.
+- No scoring-math change.
+- No signal-pattern change.
+- No signal-weight change.
+- No verdict-routing change.
+- No UI behavior change.
+- No receipt-generation change.
+- No live model benchmarking.
+- No external calls.
+- No repository crawler.
+- No storage layer.
+- No public ledger sync.
+- No Global ID sync.
+- No enforcement.
+- No vendor ranking.
+- No model certification, approval, or final safety claim.
+
+Verification:
+- tools\run_patch_checks.bat 92
+- tools\run_patch_checks.bat 91
+- tools\run_patch_checks.bat 90
+- tools\run_patch_checks.bat 89
+- tools\run_patch_checks.bat 88
+- tools\run_patch_checks.bat 87
+- tools\run_patch_checks.bat 86
+- tools\run_patch_checks.bat 85

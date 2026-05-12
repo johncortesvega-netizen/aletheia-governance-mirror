@@ -1,0 +1,16 @@
+# AI Integrity demo artifact: opaque agent workflow
+
+Purpose: copy this static artifact into AI Integrity Mirror to test opacity and weak reviewability.
+This demo is a pasted artifact only. It is not AI certification, not model approval,
+not a benchmark, not a safety guarantee, and not proof of truth.
+
+Workflow excerpt:
+
+The agent ranks users using proprietary hidden criteria. The scoring formula, weights,
+rules, and thresholds are confidential. The agent may deny access automatically when a
+score falls below the internal cutoff. Users do not receive a reason, explanation,
+independent review, appeal, opt-out, or override path.
+
+Review focus: opaque criteria, automated enforcement, missing review paths, and reliance
+risk. No live model, external API, repository crawler, telemetry, central storage, public
+ledger sync, or Global ID sync is part of this demo.

@@ -25,6 +25,18 @@ try:
 except Exception:
     _local_governance_scan = None
 from core.simulation import simulate
+from core.ai_integrity_mirror import (
+    AI_INTEGRITY_DEMO_EXAMPLES,
+    AI_INTEGRITY_RECEIPT_VERSION,
+    AI_INTEGRITY_RUBRIC_VERSION,
+    audit_ai_integrity_artifact,
+    audit_ai_integrity_batch,
+    build_ai_integrity_comparison,
+    build_ai_integrity_report,
+    build_ai_integrity_receipt_context,
+    render_ai_integrity_receipt_context_text,
+    render_ai_integrity_report_text,
+)
 
 from core.world_lens import (
     country_available_years,
@@ -250,6 +262,7 @@ APP_NAVIGATION_LABELS = [
     "💬 Mirror Check",
     "🚀 Stress Test",
     "🧭 Boundary Cases",
+    "🤖 AI Integrity Mirror",
     "📊 Evidence Lab",
     "🌐 World Lens",
     "📜 Protocol Guide",
@@ -260,6 +273,7 @@ APP_NAVIGATION_MAP = [
     ("Mirror Check", "Audit a document or proposal for capture risk, missing safeguards, and repair questions."),
     ("Stress Test", "Try a scenario under pressure and inspect stability, trust, friction, and repair needs."),
     ("Boundary Cases", "Test edge cases such as consent pressure, free agency, ambient capture, and self-audit."),
+    ("AI Integrity Mirror", "Review pasted AI outputs, prompts, agent specs, or code for authority-boundary and governance-integrity risk."),
     ("Evidence Lab", "Separate evidence from claims and park extraordinary claims as unverified until review."),
     ("World Lens", "Simulate population-impact risk without Global ID, real 9k body, or sovereign authority."),
     ("Protocol Guide", "Read the v0.1 operating guide, safe-language rules, and module boundaries."),
@@ -270,6 +284,7 @@ APP_UX_POLISH_SUMMARY = [
     "Start with Mirror Check when you have a document.",
     "Use Stress Test when you have a scenario.",
     "Use Boundary Cases when the ethical edge case is unclear.",
+    "Use AI Integrity Mirror when reviewing one AI answer or a delimiter-separated batch of AI artifacts.",
     "Use Evidence Lab when a claim needs source-quality review.",
     "Use Protocol Guide when you need the operating rules.",
 ]
@@ -3245,6 +3260,16 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+
+st.markdown(
+    """
+    <div class="prototype-note">
+        <strong>Privacy by design:</strong> This repository includes no telemetry, trackers, analytics SDKs, backend upload endpoint, public ledger sync, Global ID sync, or central user-input database. Inputs are processed in the running app session; receipts are user-held downloads. Hosting providers may still have their own server logs.
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Sidebar controls
 with st.sidebar:
     st.markdown(
@@ -3260,6 +3285,7 @@ with st.sidebar:
     st.header("Reading controls")
     st.caption("Choose how alert the review should be to pressure, trust, and fit.")
     st.caption("Input scope: English + Nederlands/Dutch are calibrated across modules.")
+    st.caption("Privacy boundary: no built-in telemetry, trackers, analytics SDKs, backend upload endpoint, public ledger sync, Global ID sync, or central user-input database.")
 
     preset_labels = {
         "default": "Starting preset",
@@ -3391,7 +3417,7 @@ def update_protocol_state(**updates) -> dict:
 def render_shared_protocol_state_notice(current_mode: str, *, expanded: bool = False):
     state = update_protocol_state(current_mode=current_mode)
     st.info(
-        "**Shared Protocol State** — Mirror Check, Stress Test, Evidence Lab, and World Lens are different windows into the same protocol heart. "
+        "**Shared Protocol State** — Mirror Check, Stress Test, Boundary Cases, AI Integrity Mirror, Evidence Lab, and World Lens are different windows into the same protocol heart. "
         "Changes to empirical evidence, scoring calibration, the Sydney Protocol overlay, doctrine thresholds, or the selected evidence year may echo across modes. "
         "That is intentional shared-state behavior, not an error. Scenario-only controls stay local unless you explicitly apply them to the shared protocol state."
     )
@@ -3468,7 +3494,7 @@ def render_audit_module_integrity_panel(*, expanded: bool = False):
 
 render_sydney_protocol_self_check_gate()
 
-tab_chat, tab_sim, tab_boundary, tab_empirical, tab_grid, tab_doctrine, tab_about = st.tabs(APP_NAVIGATION_LABELS)
+tab_chat, tab_sim, tab_boundary, tab_ai_integrity, tab_empirical, tab_grid, tab_doctrine, tab_about = st.tabs(APP_NAVIGATION_LABELS)
 
 with tab_sim:
     st.subheader("Stress Test — Try an Idea")
@@ -4398,6 +4424,452 @@ Human review required: {receipt_example['human_review_required']}
 Disclaimer: This receipt is a local witness artifact for human review. It is not legal proof, policy command, enforcement, extraordinary-claim validation, public ledger proof, or a replacement for human judgment.""",
         language="text",
     )
+
+with tab_ai_integrity:
+    st.subheader("AI Integrity Mirror — Static Review, Not Certification")
+    render_shared_protocol_state_notice("AI Integrity Mirror")
+    st.info(
+        "Paste an AI response, system prompt, agent workflow, policy claim, model-card excerpt, or code snippet. "
+        "ALETHEIA reflects authority-boundary and governance-integrity signals from the pasted artifact only. "
+        "It does not certify models, vendors, codebases, or outputs as safe. It also does not certify prompts or agents."
+    )
+    st.caption("Boundary extension: It does not certify models, vendors, codebases, prompts, agents, or outputs as safe.")
+    st.caption("Demo risk examples include phrases such as certified safe only as trigger text, not as an ALETHEIA claim.")
+    st.caption(
+        "Scope boundary: no live model benchmarking, no external calls, no repository crawl, no public ledger, "
+        "and no future-behavior guarantee."
+    )
+    st.caption(
+        "Data boundary: no built-in telemetry, trackers, analytics SDKs, backend upload endpoint, "
+        "or central storage of pasted AI Integrity artifacts."
+    )
+
+    ai_demo_examples = {item["title"]: item for item in AI_INTEGRITY_DEMO_EXAMPLES}
+    artifact_kind = st.selectbox(
+        "Artifact type",
+        ["AI output", "System prompt / policy", "Agent workflow / spec", "Code snippet", "Model card / safety claim"],
+        key="ai_integrity_artifact_kind",
+    )
+    selected_ai_demo = st.selectbox("AI Integrity demo examples", list(ai_demo_examples.keys()), key="ai_integrity_demo_choice")
+    selected_demo = ai_demo_examples[selected_ai_demo]
+    st.caption(f"Demo focus: {selected_demo['review_focus']} Suggested type: {selected_demo['artifact_kind']}.")
+    if st.button("Load AI Integrity demo", use_container_width=True, key="ai_integrity_load_demo"):
+        st.session_state["ai_integrity_input"] = selected_demo["text"]
+
+    ai_batch_mode = st.checkbox(
+        "Batch review mode: split pasted artifacts on lines containing ---",
+        value=False,
+        key="ai_integrity_batch_mode",
+        help="Static local batch review only. Each block receives its own risk reading; this is not live model benchmarking or certification.",
+    )
+    ai_integrity_input = st.text_area(
+        "Artifact(s) to review",
+        key="ai_integrity_input",
+        height=240,
+        placeholder="Paste one artifact, or multiple artifacts separated by a line containing ---",
+    )
+    st.caption("Static review only: no live model benchmarking, external calls, public ledger, central storage, or certification. Pasted artifact in, local risk reading out; batch mode extends that to pasted artifacts in, local risk readings out.")
+
+    if st.button("Run AI Integrity Mirror", type="primary", use_container_width=True, key="ai_integrity_run_button"):
+        if not ai_integrity_input.strip():
+            st.warning("Paste an artifact first. ALETHEIA will not fabricate an AI/system reading without input.")
+        else:
+            if ai_batch_mode:
+                ai_batch_result = audit_ai_integrity_batch(ai_integrity_input, artifact_kind=artifact_kind)
+                if not ai_batch_result["results"]:
+                    st.warning("Batch mode found no non-empty artifacts. Separate items with a line containing ---.")
+                else:
+                    st.session_state["ai_integrity_last_batch_result"] = ai_batch_result
+                    st.session_state["ai_integrity_last_result"] = ai_batch_result["results"][0]
+                    st.session_state["ai_integrity_last_input"] = ai_integrity_input
+                    st.session_state["ai_integrity_last_kind"] = artifact_kind
+                    update_protocol_state(
+                        selected_context=f"AI Integrity batch · {ai_batch_result['summary']['artifact_count']} pasted artifact(s)",
+                        last_update_source="AI Integrity Mirror",
+                    )
+            else:
+                ai_result = audit_ai_integrity_artifact(ai_integrity_input, artifact_kind=artifact_kind)
+                st.session_state["ai_integrity_last_result"] = ai_result
+                st.session_state["ai_integrity_last_batch_result"] = None
+                st.session_state["ai_integrity_last_input"] = ai_integrity_input
+                st.session_state["ai_integrity_last_kind"] = artifact_kind
+                update_protocol_state(
+                    selected_context=(ai_integrity_input[:120] + "…") if len(ai_integrity_input) > 120 else ai_integrity_input,
+                    last_update_source="AI Integrity Mirror",
+                )
+
+    ai_batch_result = st.session_state.get("ai_integrity_last_batch_result")
+    if ai_batch_result:
+        summary = ai_batch_result.get("summary", {})
+        st.markdown("### AI Integrity Batch Summary")
+        bcols = st.columns(5)
+        bcols[0].metric("Artifacts", summary.get("artifact_count", 0))
+        bcols[1].metric("Low", summary.get("risk_counts", {}).get("Low", 0))
+        bcols[2].metric("Medium", summary.get("risk_counts", {}).get("Medium", 0))
+        bcols[3].metric("High", summary.get("risk_counts", {}).get("High", 0))
+        bcols[4].metric("Highest pressure item", summary.get("highest_pressure_item") or "—")
+        st.caption(summary.get("scope_note"))
+        st.caption(summary.get("privacy_note"))
+
+        risk_order = {"High": 3, "Medium": 2, "Low": 1}
+        ordered_batch_items = sorted(
+            ai_batch_result.get("results", []),
+            key=lambda item: (
+                risk_order.get(item.get("risk"), 0),
+                float(item.get("scan", {}).get("risk_pressure", 0) or 0),
+                len(item.get("findings", []) or []),
+            ),
+            reverse=True,
+        )
+        if ordered_batch_items:
+            st.markdown("#### Highest pressure signals")
+            pressure_cols = st.columns(min(3, len(ordered_batch_items)))
+            for col, item in zip(pressure_cols, ordered_batch_items[:3]):
+                scan = item.get("scan", {})
+                findings = item.get("findings", []) or []
+                top_finding = findings[0].get("name") if findings else "No triggered signal"
+                col.markdown(
+                    f"**Item {item.get('batch_item_index')} · {item.get('risk')}**\n\n"
+                    f"State: `{item.get('state')}`\n\n"
+                    f"Pressure: `{float(scan.get('risk_pressure', 0) or 0):.3f}`\n\n"
+                    f"Top signal: {top_finding}"
+                )
+
+        batch_rows = []
+        for item in ai_batch_result.get("results", []):
+            report = item.get("report", {})
+            scan = item.get("scan", {})
+            batch_rows.append({
+                "Item": item.get("batch_item_index"),
+                "State": item.get("state"),
+                "Risk": item.get("risk"),
+                "Integrity": report.get("integrity"),
+                "Pressure": scan.get("risk_pressure"),
+                "Finding count": len(item.get("findings", []) or []),
+                "Excerpt": item.get("batch_item_excerpt"),
+            })
+        st.markdown("#### Compact review table")
+        st.dataframe(pd.DataFrame(batch_rows), use_container_width=True, hide_index=True)
+        if summary.get("category_counts"):
+            st.markdown("#### Category grouping")
+            category_rows = [
+                {"Category": category, "Triggered signals": count}
+                for category, count in summary.get("category_counts", {}).items()
+            ]
+            st.dataframe(pd.DataFrame(category_rows), use_container_width=True, hide_index=True)
+        with st.expander("Batch item details and repair questions", expanded=False):
+            for item in ai_batch_result.get("results", []):
+                st.markdown(f"**Item {item.get('batch_item_index')} — {item.get('state')} / {item.get('risk')}**")
+                st.markdown("**Repair questions for human review**")
+                for question in item.get("report", {}).get("repair_questions", [])[:3]:
+                    st.info(question)
+                if item.get("findings"):
+                    with st.expander(f"Evidence snippets — item {item.get('batch_item_index')}", expanded=False):
+                        for finding in item.get("findings", [])[:6]:
+                            snippets = finding.get("evidence_snippets", []) or []
+                            if snippets:
+                                st.write(f"**{finding.get('category', 'General')} · {finding.get('name')}**")
+                                for snippet in snippets:
+                                    st.code(snippet, language="text")
+        comparison = build_ai_integrity_comparison(ai_batch_result.get("results", []))
+        st.markdown("#### AI Integrity Comparison View")
+        st.caption(comparison.get("scope_note"))
+        st.caption(comparison.get("non_certification_note"))
+        boundary_counts = comparison.get("boundary_risk_counts", {}) or {}
+        comp_cols = st.columns(4)
+        comp_cols[0].metric("Artifacts compared", comparison.get("artifact_count", 0))
+        comp_cols[1].metric("Review needed", comparison.get("review_needed_count", 0))
+        comp_cols[2].metric("Authority pressure", boundary_counts.get("authority_claim_items", 0))
+        comp_cols[3].metric("Missing review", boundary_counts.get("missing_review_items", 0))
+
+        comparison_rows = []
+        for row in comparison.get("rows", []):
+            comparison_rows.append({
+                "Artifact": row.get("artifact"),
+                "State": row.get("state"),
+                "Risk": row.get("risk"),
+                "Risk pressure": row.get("risk_pressure"),
+                "Signals": row.get("finding_count"),
+                "Code detections": row.get("code_detection_count"),
+                "Privacy signals": row.get("privacy_active_signal_count"),
+                "Review needed": "Yes" if row.get("needs_review") else "No",
+            })
+        if comparison_rows:
+            st.dataframe(pd.DataFrame(comparison_rows), use_container_width=True, hide_index=True)
+
+        with st.expander("Boundary-risk comparison notes", expanded=False):
+            st.write(comparison.get("notice"))
+            boundary_rows = [
+                {"Boundary signal": key.replace("_", " "), "Artifact count": value}
+                for key, value in boundary_counts.items()
+            ]
+            st.dataframe(pd.DataFrame(boundary_rows), use_container_width=True, hide_index=True)
+            if comparison.get("category_totals"):
+                st.markdown("**Signal category totals across compared artifacts**")
+                st.dataframe(
+                    pd.DataFrame([
+                        {"Category": category, "Triggered signals": count}
+                        for category, count in comparison.get("category_totals", {}).items()
+                    ]),
+                    use_container_width=True,
+                    hide_index=True,
+                )
+
+        with st.expander("Artifact-level review needed notes", expanded=True):
+            for row in comparison.get("rows_by_pressure", []):
+                st.markdown(f"**{row.get('artifact')} — {row.get('state')} / {row.get('risk')}**")
+                for note in row.get("review_notes", [])[:4]:
+                    st.info(note)
+
+        st.caption("Comparison is artifact-level review support only. It is not a model-wide ranking, benchmark, certification, approval, or proof of safety.")
+
+        report_builder = build_ai_integrity_report(ai_batch_result.get("results", []))
+        report_text = render_ai_integrity_report_text(report_builder)
+        st.markdown("#### AI Integrity Report Builder")
+        st.caption(report_builder.get("scope_note"))
+        st.caption(report_builder.get("non_certification_note"))
+        rcols = st.columns(4)
+        rcols[0].metric("Artifacts", report_builder.get("artifact_count", 0))
+        rcols[1].metric("High risk", report_builder.get("risk_distribution", {}).get("High", 0))
+        rcols[2].metric("Medium risk", report_builder.get("risk_distribution", {}).get("Medium", 0))
+        rcols[3].metric("Repair questions", len(report_builder.get("repair_questions", []) or []))
+        st.info(report_builder.get("executive_summary"))
+
+        with st.expander("Compact report preview", expanded=False):
+            st.code(report_text, language="text")
+        with st.expander("Report evidence and repair focus", expanded=False):
+            if report_builder.get("top_triggered_categories"):
+                st.markdown("**Top triggered categories**")
+                st.dataframe(
+                    pd.DataFrame([
+                        {"Category": category, "Triggered signals": count}
+                        for category, count in report_builder.get("top_triggered_categories", {}).items()
+                    ]),
+                    use_container_width=True,
+                    hide_index=True,
+                )
+            snippets = report_builder.get("selected_evidence_snippets", []) or []
+            if snippets:
+                st.markdown("**Selected redacted evidence snippets**")
+                for snippet in snippets[:8]:
+                    st.write(f"**{snippet.get('artifact')} · {snippet.get('category')} · {snippet.get('signal')}**")
+                    st.code(snippet.get("redacted_snippet", ""), language="text")
+            st.markdown("**Repair questions**")
+            for question in report_builder.get("repair_questions", [])[:8]:
+                st.info(question)
+            st.caption(report_builder.get("privacy_note"))
+        st.download_button(
+            "⬇️ Download AI Integrity report",
+            data=report_text,
+            file_name="aletheia_ai_integrity_report.txt",
+            mime="text/plain",
+            use_container_width=True,
+            key="ai_integrity_report_download",
+        )
+
+    ai_result = st.session_state.get("ai_integrity_last_result")
+    if ai_result:
+        report = ai_result["report"]
+        sim = ai_result["sim"]
+        scan = ai_result["scan"]
+        state = ai_result["state"]
+        risk = ai_result["risk"]
+        protocol_label = ai_result["protocol_label"]
+
+        st.markdown("### AI Integrity Reading")
+        cols = st.columns(4)
+        cols[0].metric("Internal taxonomy label", state)
+        cols[1].metric("Risk reading", risk)
+        cols[2].metric("Integrity reading", f"{report.get('integrity', 0):.3f}")
+        cols[3].metric("Capture pressure", f"{report.get('collapse_probability', 0):.3f}")
+        st.caption("This is a static governance-integrity risk reading for review, not proof, certification, approval, or a final safety claim.")
+
+        with st.expander("How to read this result", expanded=False):
+            st.write("- **Internal taxonomy label** is ALETHEIA's internal risk-state language, not a public certification grade.")
+            st.write("- **Risk reading** reflects detected authority-boundary and governance-integrity pressure in the pasted artifact.")
+            st.write("- **Integrity reading** is a bounded internal metric; it does not prove truth, safety, legality, or alignment.")
+            st.write("- **Capture pressure** reflects coercion, opacity, enforcement, surveillance, or overclaiming signals that require human review.")
+            st.write(ai_result.get("scope_note"))
+            st.write(ai_result.get("reliance_note"))
+
+        privacy_boundary_audit = ai_result.get("privacy_boundary_audit") or scan.get("privacy_boundary_audit") or {}
+        if privacy_boundary_audit:
+            st.markdown("#### Privacy Boundary Audit Panel")
+            st.caption(privacy_boundary_audit.get("scope_note"))
+            st.caption(privacy_boundary_audit.get("non_certification_note"))
+            pcols = st.columns(4)
+            pcols[0].metric("Privacy detections", privacy_boundary_audit.get("detection_count", 0))
+            pcols[1].metric("Active signals", privacy_boundary_audit.get("active_signal_count", 0))
+            pcols[2].metric("Local-only stated", "Yes" if privacy_boundary_audit.get("local_only_statement_present") else "No")
+            pcols[3].metric("Boundary tension", "Yes" if privacy_boundary_audit.get("privacy_boundary_tension") else "No")
+            st.info(privacy_boundary_audit.get("local_only_statement"))
+            st.warning(privacy_boundary_audit.get("hosting_caveat"))
+            privacy_detections = privacy_boundary_audit.get("detections", []) or []
+            if privacy_detections:
+                privacy_rows = [
+                    {
+                        "Category": item.get("category"),
+                        "Signal": item.get("name"),
+                        "Severity": item.get("severity"),
+                        "Why it matters": item.get("description"),
+                    }
+                    for item in privacy_detections
+                ]
+                st.dataframe(pd.DataFrame(privacy_rows), use_container_width=True, hide_index=True)
+                with st.expander("Privacy evidence snippets — static boundary audit", expanded=False):
+                    for item in privacy_detections:
+                        snippets = item.get("evidence_snippets", []) or []
+                        if snippets:
+                            st.write(f"**{item.get('category')} · {item.get('name')}**")
+                            for snippet in snippets:
+                                st.code(snippet, language="text")
+                with st.expander("Privacy boundary review questions", expanded=True):
+                    for question in privacy_boundary_audit.get("review_questions", [])[:7]:
+                        st.info(question)
+            else:
+                st.caption(
+                    "No privacy-boundary trigger was detected by this static audit. "
+                    "This is not a privacy guarantee, compliance approval, hosting audit, or proof that no data is collected."
+                )
+
+        code_static_scan = ai_result.get("code_integrity_static_scan") or scan.get("code_integrity_static_scan") or {}
+        if code_static_scan:
+            st.markdown("#### Code Integrity Static Scan")
+            st.caption(code_static_scan.get("scope_note"))
+            st.caption(code_static_scan.get("non_certification_note"))
+            ccols = st.columns(4)
+            ccols[0].metric("Code detections", code_static_scan.get("detection_count", 0))
+            ccols[1].metric("High", code_static_scan.get("severity_counts", {}).get("High", 0))
+            ccols[2].metric("Medium", code_static_scan.get("severity_counts", {}).get("Medium", 0))
+            ccols[3].metric("Review gate missing", "Yes" if code_static_scan.get("missing_human_review_gate") else "No")
+            code_detections = code_static_scan.get("detections", []) or []
+            if code_detections:
+                code_rows = [
+                    {
+                        "Category": item.get("category"),
+                        "Signal": item.get("name"),
+                        "Severity": item.get("severity"),
+                        "Why it matters": item.get("description"),
+                    }
+                    for item in code_detections
+                ]
+                st.dataframe(pd.DataFrame(code_rows), use_container_width=True, hide_index=True)
+                with st.expander("Code evidence snippets — redacted static scan", expanded=False):
+                    for item in code_detections:
+                        snippets = item.get("evidence_snippets", []) or []
+                        if snippets:
+                            st.write(f"**{item.get('category')} · {item.get('name')}**")
+                            for snippet in snippets:
+                                st.code(snippet, language="text")
+                with st.expander("Code review questions", expanded=True):
+                    for question in code_static_scan.get("review_questions", [])[:6]:
+                        st.info(question)
+            else:
+                st.caption(
+                    "No code-specific trigger was detected by this static scan. "
+                    "This is not a security guarantee, vulnerability certification, compliance approval, or proof that code is safe."
+                )
+
+        findings = ai_result.get("findings", []) or []
+        if findings:
+            st.markdown("#### Highest pressure signals")
+            pressure_rows = sorted(
+                findings,
+                key=lambda item: float(item.get("weight", 0) or 0),
+                reverse=True,
+            )[:3]
+            pressure_cols = st.columns(min(3, len(pressure_rows)))
+            for col, item in zip(pressure_cols, pressure_rows):
+                col.markdown(
+                    f"**{item.get('category', 'General')}**\n\n"
+                    f"{item.get('name')}\n\n"
+                    f"Weight: `{float(item.get('weight', 0) or 0):.2f}`"
+                )
+
+            st.markdown("#### Triggered signals by category")
+            category_names = []
+            for item in findings:
+                category = item.get("category", "General")
+                if category not in category_names:
+                    category_names.append(category)
+            for category in category_names:
+                category_findings = [item for item in findings if item.get("category", "General") == category]
+                st.markdown(f"**{category}**")
+                finding_rows = [
+                    {
+                        "Signal": item.get("name"),
+                        "Weight": item.get("weight"),
+                        "Why it matters": item.get("description"),
+                    }
+                    for item in category_findings
+                ]
+                st.dataframe(pd.DataFrame(finding_rows), use_container_width=True, hide_index=True)
+                with st.expander(f"Evidence snippets — {category}", expanded=False):
+                    shown_any_snippet = False
+                    for item in category_findings:
+                        snippets = item.get("evidence_snippets", []) or []
+                        if snippets:
+                            shown_any_snippet = True
+                            st.write(f"**{item.get('name')}**")
+                            for snippet in snippets:
+                                st.code(snippet, language="text")
+                    if not shown_any_snippet:
+                        st.caption("No short evidence snippet was captured for this category.")
+            st.caption("Evidence snippets are short local excerpts from the pasted artifact. Credential-like values are redacted before display or receipt use.")
+        else:
+            st.success(
+                "No strong AI Integrity trigger was detected by this static rubric. "
+                "This is an empty finding state, not a safety guarantee, approval, certification, or proof that the artifact is correct."
+            )
+
+        st.markdown("#### Repair questions for human review")
+        st.caption("Use these prompts to rewrite, review, or constrain the artifact before relying on it.")
+        for question in report.get("repair_questions", []):
+            st.info(question)
+
+        st.markdown("#### Boundary note")
+        st.write(ai_result.get("notice"))
+        st.write(ai_result.get("scope_note"))
+        st.write(ai_result.get("reliance_note"))
+        st.caption("Asymptote note: ALETHEIA does not claim final Sanctuary; final truth and sovereign authority remain outside code, metrics, receipts, and institutional power.")
+
+        ai_receipt_context = build_ai_integrity_receipt_context(
+            ai_result,
+            review_mode="batch static artifact" if ai_batch_result else "single static artifact",
+            batch_summary=ai_batch_result.get("summary") if ai_batch_result else None,
+        )
+        ai_receipt = build_local_witness_receipt(
+            module="AI Integrity Mirror",
+            input_text=st.session_state.get("ai_integrity_last_input", ""),
+            processed_text=st.session_state.get("ai_integrity_last_input", ""),
+            input_status="USER_INPUT",
+            input_type=st.session_state.get("ai_integrity_last_kind", "AI output"),
+            scan=scan,
+            sim=sim,
+            report=report,
+            verdict=state,
+            risk=risk,
+            protocol_label=protocol_label,
+            invisibility_applied=False,
+            app_version=APP_VERSION,
+            rubric_version=AI_INTEGRITY_RUBRIC_VERSION,
+            prompt_version=AI_INTEGRITY_RECEIPT_VERSION,
+            active_modules=["AI Integrity Mirror"],
+        )
+        ai_receipt_text = render_ai_integrity_receipt_context_text(ai_receipt_context) + "\n\n" + render_local_witness_receipt_text(ai_receipt)
+        with st.expander("Local AI Integrity receipt", expanded=False):
+            st.write(ai_result.get("receipt_note"))
+            st.caption("Receipt export includes AI Integrity scope, privacy, non-certification, redacted evidence, and repair context before the generic local witness receipt.")
+            st.code(ai_receipt_text, language="text")
+        st.download_button(
+            "⬇️ Download AI Integrity receipt",
+            data=ai_receipt_text,
+            file_name="aletheia_ai_integrity_receipt.txt",
+            mime="text/plain",
+            use_container_width=True,
+            key="ai_integrity_receipt_download",
+        )
+
 
 with tab_empirical:
     st.subheader("Evidence Lab — Data Check")
@@ -7755,7 +8227,7 @@ with tab_doctrine:
         "ALETHEIA is a mirror, not a throne. This page keeps the tone clear, protective, practical, and open to review."
     )
     st.caption("ALETHEIA v1.0 is complete as a public MVP. Pick the tab that matches your task, read the boundary, and keep final review human.")
-    st.markdown("**Quick path:** Mirror Check for documents · Stress Test for scenarios · Evidence Lab for claims · Protocol Guide for rules.")
+    st.markdown("**Quick path:** Mirror Check for documents · Stress Test for scenarios · AI Integrity Mirror for AI/code artifacts · Evidence Lab for claims · Protocol Guide for rules.")
     st.markdown(
         """
         The Protocol Guide is the integrity frame for **ALETHEIA v1.0 — Governance Mirror**. It does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment. Its labels are internal review aids, not final claims.
@@ -7764,7 +8236,7 @@ with tab_doctrine:
 
         In the updated tone, the Sydney Protocol is treated as a warm guardrail: it keeps power accountable, keeps intelligence gentle, keeps evidence visible, and keeps every output open to appeal. The 9k idea is treated as a human anti-tyranny scaffold / threshold steward, not a sovereign body, mandate, Sanctuary, or final legitimacy.
 
-        Mirror Check, Stress Test, Evidence Lab, and World Lens are synchronized views over a shared protocol state. Changes to empirical evidence, scoring calibration, doctrine thresholds, Sydney Protocol overlay, or selected evidence year may propagate across modules. This is intentional protocol-state propagation, not isolated tab behavior.
+        Mirror Check, Stress Test, AI Integrity Mirror, Evidence Lab, and World Lens are synchronized views over a shared protocol state. Changes to empirical evidence, scoring calibration, doctrine thresholds, Sydney Protocol overlay, or selected evidence year may propagate across modules. This is intentional protocol-state propagation, not isolated tab behavior.
         """
     )
 
@@ -7794,6 +8266,7 @@ with tab_doctrine:
             | Mirror Check | Document and proposal review for capture risk, safeguards, repair questions, and local witness receipts. |
             | Stress Test | Scenario simulation for stability, trust, alignment, ego pressure, grievances, friction, safeguards, and collapse risk. |
             | Boundary Cases | Ethical edge-case calibration for consent, free agency, basic rights, reset misuse, ambient capture, and self-audit scenarios. |
+            | AI Integrity Mirror | Static review of pasted AI outputs, prompts, agent specs, and code snippets for authority-boundary and governance-integrity risk. |
             | Evidence Lab | Evidence status, public-data audit support, and the Extraordinary Claim Protocol for unverified exceptional claims. |
             | World Lens | Non-sovereign population-impact simulation and selected-year comparison using simulated threshold language only. |
             | Protocol Guide | Consolidated v0.1 module map, safe-language rules, shared protocol state, and limitations. |
@@ -7813,6 +8286,9 @@ with tab_doctrine:
 
             **Stress Test**  
             Models systemic pressure through stability, trust, alignment, ego, grievances, friction, and collapse risk. The simulator no longer treats raw cooperation as sufficient for health. Structural risk, unresolved grievances, weak safeguards, opacity, coercive optimization, and power concentration can cap trust, raise friction, and prevent a false low-risk reading.
+
+            **AI Integrity Mirror**  
+            Reviews pasted AI outputs, prompts, agent workflows, model-card claims, and code snippets for authority-overreach, missing human review, evidence gaps, coercion, surveillance pressure, and exposed-code risk. It returns an internal risk reading and repair questions, not model certification, vendor approval, or final safety.
 
             **Evidence Lab**  
             Ingests public country-year data, maps it into ALETHEIA variables, and produces reproducible evidence-audit outputs. This layer supports direct/master uploads, scored country-year exports, raw evidence diagnostics, trust priors, WGI/V-Dem/trust coverage, and modern-year safeguards.

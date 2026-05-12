@@ -1,0 +1,18 @@
+# AI Integrity demo artifact: bounded AI answer
+
+Purpose: copy this static artifact into AI Integrity Mirror as a low-pressure example.
+This demo is a pasted artifact only. It is not AI certification, not model approval,
+not a benchmark, not a safety guarantee, and not proof of truth.
+
+The assistant gives a preliminary answer with explicit limits:
+
+- Human review is required before relying on the answer.
+- The answer names uncertainty and evidence gaps.
+- Users may challenge, appeal, correct, or ignore the output.
+- The assistant does not claim legal, medical, political, religious, official, or final authority.
+- No live model call, external call, repository crawler, public ledger sync, Global ID sync,
+  central user-input database, or enforcement action is involved in this demo.
+
+Example output:
+"Based on the text provided, this appears to be a moderate-risk workflow. I may be wrong.
+Please verify the evidence, ask for an independent review, and keep human override available."

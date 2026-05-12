@@ -14,6 +14,7 @@ def test_app_navigation_labels_are_centralized_and_ordered():
         "💬 Mirror Check",
         "🚀 Stress Test",
         "🧭 Boundary Cases",
+        "🤖 AI Integrity Mirror",
         "📊 Evidence Lab",
         "🌐 World Lens",
         "📜 Protocol Guide",
@@ -30,6 +31,7 @@ def test_navigation_document_lists_public_safe_module_map():
         "Mirror Check",
         "Stress Test",
         "Boundary Cases",
+        "AI Integrity Mirror",
         "Evidence Lab",
         "World Lens",
         "Protocol Guide",
@@ -49,12 +51,14 @@ def test_app_and_about_include_navigation_cleanup_language():
         assert "human" in text.lower() and "review" in text.lower()
 
 
-def test_patch_status_points_to_patch_47_and_next_patch_48():
+def test_patch_status_points_to_current_navigation_history():
     status = read("PATCH_STATUS.md")
     progress = read("docs/progress_database.md")
-    assert "Patch 47" in status
-    assert "App Navigation + Smoke Test Cleanup" in status
-    assert "tools\\run_patch_checks.bat 47" in status
-    assert "Patch 48" in status
-    assert "Patch 47" in progress
-    assert "navigation" in progress.lower()
+    navigation_doc = read("docs/app_navigation_smoke.md")
+    assert "Patch 47" in navigation_doc
+    assert "App Navigation + Smoke Test Cleanup" in navigation_doc
+    assert "tools\\run_patch_checks.bat 47" in navigation_doc
+    assert "Patch 85" in status
+    assert "AI Integrity Mirror Scaffold" in status
+    assert "Patch 85" in progress
+    assert "navigation" in navigation_doc.lower()

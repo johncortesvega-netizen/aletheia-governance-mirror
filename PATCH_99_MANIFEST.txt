@@ -1,0 +1,46 @@
+PATCH 99 MANIFEST — AI Integrity Report Builder v1
+
+Baseline:
+- Patch 98 PASS build supplied by user.
+
+Patched items only:
+- core/ai_integrity_mirror.py
+- app.py
+- docs/ai_integrity_report_builder.md
+- docs/ai_integrity_mirror.md
+- README.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_99_MANIFEST.txt
+- PATCH_99_RECOVERY_NOTE.md
+- tests/test_patch_99_ai_integrity_report_builder.py
+
+Implemented:
+- AI_INTEGRITY_REPORT_VERSION = ai-integrity-report-builder-v0.1.
+- build_ai_integrity_report() for compact batch report metadata.
+- render_ai_integrity_report_text() for local plain-text report export.
+- Batch UI report section with executive summary, artifact count, risk distribution, top categories, selected redacted evidence snippets, repair questions, non-certification note, privacy note, preview, and download.
+- Documentation and progress/status updates.
+- Patch-specific regression tests.
+
+Boundary preserved:
+- Static pasted-artifact report only.
+- No analyzer scoring change.
+- No signal-pattern change.
+- No signal-weight change.
+- No verdict-routing change.
+- No code execution.
+- No live model calls.
+- No external calls.
+- No repository crawler.
+- No vendor ranking.
+- No model-wide certification.
+- No safety guarantee.
+- No security guarantee.
+- No privacy guarantee.
+- No final truth claim.
+
+Verification:
+- tools\run_patch_checks.bat 99
+- tools\run_patch_checks.bat 98
+- tools\run_patch_checks.bat 97

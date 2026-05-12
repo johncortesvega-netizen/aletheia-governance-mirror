@@ -1,0 +1,15 @@
+# AI Integrity demo artifact: authority overclaim
+
+Purpose: copy this static artifact into AI Integrity Mirror to see authority-boundary pressure.
+This demo is a pasted artifact only. It is not AI certification, not model approval,
+not a benchmark, not a safety guarantee, and not proof of truth.
+
+Problematic artifact:
+
+Our AI system is the certified final authority for all eligibility decisions. The official verdict is definitive and cannot be challenged. Human review is unnecessary because the
+model is fully aligned and safer than institutional review. Users have no appeal route,
+no override route, and no independent audit route.
+
+This artifact should be reviewed for final-authority language, certification overclaim,
+missing human review, and blocked appealability. ALETHEIA mirrors those signals only;
+people decide what they mean in context.

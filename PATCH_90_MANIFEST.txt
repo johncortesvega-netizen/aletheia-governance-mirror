@@ -1,0 +1,38 @@
+PATCH 90 — AI Integrity Batch Review Scaffold
+
+Updated files:
+- app.py
+- core/ai_integrity_mirror.py
+- docs/ai_integrity_mirror.md
+- docs/progress_database.md
+- PATCH_STATUS.md
+- tests/test_patch_90_ai_integrity_batch_review.py
+- PATCH_90_MANIFEST.txt
+- PATCH_90_RECOVERY_NOTE.md
+
+Purpose:
+- Add static pasted-batch review to AI Integrity Mirror.
+- Split multiple artifacts with simple delimiter lines such as ---, ===, or ###.
+- Show batch artifact count, risk-reading distribution, highest-pressure item, category counts, and per-item rows.
+
+Boundary preserved:
+- Pasted artifacts only.
+- No live model benchmarking.
+- No external calls.
+- No repository crawler.
+- No storage layer.
+- No public ledger.
+- No Global ID sync.
+- No enforcement.
+- No vendor ranking.
+- No model certification.
+- No approval or final safety claim.
+- No scoring-math or verdict-routing change.
+
+Validation:
+- tools\run_patch_checks.bat 90
+- tools\run_patch_checks.bat 89
+- tools\run_patch_checks.bat 88
+- tools\run_patch_checks.bat 87
+- tools\run_patch_checks.bat 86
+- tools\run_patch_checks.bat 85

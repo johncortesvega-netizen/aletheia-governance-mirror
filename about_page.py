@@ -16,7 +16,7 @@ def _header_image() -> str | None:
 def render_about():
     st.subheader("Why ALETHEIA")
     st.info("ALETHEIA helps people review governance risk, evidence gaps, and safeguard needs. It reflects; people decide. Calibrated input language support is English and Nederlands/Dutch.")
-    st.caption("ALETHEIA v1.0 complete: public MVP package, release boundary, v0.2 roadmap, and deployment prep are documented.")
+    st.caption("ALETHEIA v1.0 AI Integrity Preview: public adoption docs, demo path, release boundary, and stabilization checks are documented.")
 
     header = _header_image()
     if header:
@@ -33,6 +33,20 @@ def render_about():
             - **Protocol Guide** — read the operating rules and limits.
             
             **Input language scope:** English and Nederlands/Dutch are calibrated across the app. Other languages may be pasted as text, but risk lexicons are not validated for them yet.
+            """
+        )
+
+
+    with st.expander("ALETHEIA v1.0 AI Integrity Preview", expanded=True):
+        st.markdown(
+            """
+            Patch 100 stabilizes the AI Integrity patch arc as a public-facing preview package.
+
+            **First-use path:** read `docs/ai_integrity_preview_public_adoption.md`, try the demo files in `examples/ai_integrity/`, paste batch examples into AI Integrity Mirror, compare artifact-level readings, and export a local report for human review.
+
+            **What it is:** static artifact-level review for AI outputs, prompts, agent specs, policy claims, code snippets, privacy-boundary claims, and batch artifacts.
+
+            **What it is not:** live model benchmarking, repository crawling, vendor ranking, model certification, safety guarantee, security guarantee, privacy guarantee, legal/medical/political/religious authority, or automated enforcement.
             """
         )
 
@@ -162,6 +176,9 @@ def render_about():
 
     with st.expander("Local Witness Receipt v2", expanded=True):
         st.write("Local Witness Receipt v2 records a local, user-held fingerprint of a review: document fingerprint, processed document fingerprint, report fingerprint, timestamp, app/rubric/prompt version, active modules, and authority boundary. It explicitly states public ledger: No, Global ID sync: No, central storage: No, authority claim: No, and human review required: Yes.")
+
+    with st.expander("Privacy by design / no built-in data collection", expanded=True):
+        st.write("ALETHEIA's repository includes no built-in telemetry, trackers, analytics SDKs, backend upload endpoint, public ledger sync, Global ID sync, or central user-input database. Inputs are processed in the running app session and receipts are user-held downloads. If someone deploys ALETHEIA through a third-party host, that host may still have its own server or access logs outside ALETHEIA's code boundary.")
 
     with st.expander("World Lens Simulation", expanded=True):
         st.write("World Lens Simulation is a non-authority impact mirror. It helps users review affected groups, power gains, protection losses, basic-rights risk, minority-rights risk, ambient capture risk, appealability, exit, and repair. It uses simulated threshold signal language only; it does not activate Global ID, select a real 9k, create World Leader logic, issue automatic resets, or make governance decisions.")

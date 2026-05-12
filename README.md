@@ -4,6 +4,32 @@ ALETHEIA is a Streamlit governance-risk research prototype aligned with the Sydn
 
 ALETHEIA is a **mirror, not a throne**. It can surface governance-risk patterns for review, but it does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment.
 
+ALETHEIA is also **privacy-by-design inside this repository**: no built-in telemetry, trackers, analytics SDKs, backend upload endpoint, public ledger sync, Global ID sync, or central user-input database. Inputs are processed in the running app session, and receipts are user-held downloads. Third-party hosting layers may still have their own server or access logs outside ALETHEIA's application code.
+
+
+## AI Integrity Mirror
+
+AI Integrity Mirror is a static, local-first review module for pasted AI outputs, prompts, agent specs, model-card excerpts, policy claims, and code snippets. It reflects governance-integrity signals such as authority overreach, weak reviewability, opacity, coercion pressure, surveillance/identity capture, exposed credentials, and unsafe execution/data-flow markers.
+
+It produces a reviewable risk reading for the pasted artifact only. It does not certify AI systems, approve vendors, benchmark live models, prove safety, replace human review, call external APIs, crawl repositories, or store pasted artifacts centrally.
+
+Code Integrity Static Scan documentation lives in `docs/code_integrity_static_scan.md`. It is a static pasted-code review aid, not a vulnerability certification or security guarantee.
+
+Rubric documentation lives in `docs/ai_integrity_rubric.md`; module notes live in `docs/ai_integrity_mirror.md`; ready-to-use demo files live in `examples/ai_integrity/` with notes in `docs/ai_integrity_demo_pack.md`. Patch 94 improves the review-table display with highest-pressure signals above the table, category grouping, collapsible evidence snippets, prominent repair questions, and clearer empty-state copy.
+
+
+## Human-auditable protocol baseline self-audit
+
+Patch 101 adds a local baseline self-audit for selected protocol, release-boundary, and AI Integrity files. Run:
+
+```bat
+python tools\run_protocol_baseline_self_audit.py
+```
+
+The check compares watched files against `data/protocol_baseline_manifest.json` and reports `MATCHES_BASELINE`, `MODIFIED_REQUIRES_HUMAN_REVIEW`, `MISSING_REQUIRES_HUMAN_REVIEW`, or optional `UNKNOWN_FILE_REQUIRES_HUMAN_REVIEW` statuses. It is human-auditable review evidence only: not tamper-proof, not automated approval, not security/privacy certification, and not proof of safety.
+
+Go-live static privacy review notes live in `docs/go_live_privacy_review_statement.md`. The statement is a static repository review only; hosting and deployment logs remain outside ALETHEIA and require human review.
+
 ## 2-minute public explanation
 
 ALETHEIA v0.1 helps reviewers examine governance documents and scenarios for capture risk, coercion risk, consent pressure, performative ethics, evidence gaps, missing safeguards, and repair gaps.
@@ -773,3 +799,53 @@ tools\run_patch_checks.bat 71
 ## Patch 71.1 note — module-specific demo labels
 
 Patch 71.1 separates Mirror Check and Stress Test demo libraries in the UI. Stress Test now uses Stress Test-specific scenario demos and the `Load Stress Test scenario demo` button; Mirror Check keeps its own scenario demos and `Load Mirror Check scenario demo` button. This is a UI/demo-label correction only; scoring, receipts, tree visuals, batch catalogs, storage, and authority boundaries are unchanged.
+
+## Patch 96 — Privacy Boundary Audit Panel
+
+Patch 96 adds a static **Privacy Boundary Audit Panel** inside AI Integrity Mirror. It flags analytics packages, external network call patterns, telemetry keywords, database write hints, backend endpoint hints, local-only statement markers, and boundary tension between privacy claims and visible implementation hints.
+
+Boundary preserved: static pasted-artifact review only. No analyzer scoring change, no verdict-routing change, no runtime monitoring, no host-log inspection, no dependency crawl, no repository crawler, no external calls, no live model benchmarking, no privacy guarantee, no compliance approval, no vendor audit, no hosting audit, no certification, and no proof that no data is collected.
+
+Documentation: `docs/privacy_boundary_audit_panel.md`.
+
+
+## Patch 97 — AI Integrity Comparison View
+
+Patch 97 adds **AI Integrity Comparison View** for delimiter-separated AI Integrity batch artifacts. It shows side-by-side artifact-level risk readings, signal counts, boundary-risk comparison, category totals, and review needed notes.
+
+Use it to compare pasted AI outputs such as Model A answer, Model B answer, and Model C answer after manually collecting the outputs. ALETHEIA does not call live models, benchmark live models, rank vendors, or certify systems.
+
+Boundary preserved: static pasted-artifact comparison only. No analyzer scoring change, no verdict-routing change, no live model benchmarking, no external calls, no repository crawler, no enforcement, not model-wide certification, not a vendor ranking, and not a final truth claim.
+
+Documentation: `docs/ai_integrity_comparison_view.md`.
+
+## Patch 98 — AI Integrity Red Team Prompt Pack
+
+Patch 98 adds a static **AI Integrity Red Team Prompt Pack v1** for manual testing. Users can copy prompts into a separate model or workflow, collect the outputs, and paste those outputs into AI Integrity Mirror for artifact-level review.
+
+The pack covers authority overreach, legal/medical/political false authority, manipulation pressure, privacy extraction, surveillance/capture, false certainty, no-appeal automation, unsafe code request, refusal quality, and bounded-answer control.
+
+Boundary preserved: static prompt examples only. ALETHEIA does not run prompts, call live models, benchmark live models, rank vendors, certify systems, certify code safety, guarantee truth, guarantee security, enforce decisions, or make model-wide certification claims.
+
+Documentation: `docs/ai_integrity_red_team_prompt_pack.md`.
+
+
+## Patch 99 — AI Integrity Report Builder
+
+Patch 99 adds an **AI Integrity Report Builder v1** for batch results. It summarizes pasted artifact-level readings into a compact human-review packet with executive summary, artifact count, risk distribution, top triggered categories, selected redacted evidence snippets, repair questions, non-certification note, and privacy note. See `docs/ai_integrity_report_builder.md`.
+
+Boundary: static pasted-artifact report only. No live model calls, no external calls, no repository crawl, no vendor ranking, no model-wide certification, no safety guarantee, no security guarantee, no privacy guarantee, and no final truth claim.
+
+## Patch 100 — ALETHEIA v1.0 AI Integrity Preview
+
+Patch 100 stabilizes the public adoption surface for the AI Integrity patch arc from Patch 85 through Patch 99.
+
+Public adoption docs:
+
+- `docs/ai_integrity_preview_public_adoption.md`
+- `docs/ai_integrity_preview_release_notes.md`
+- `docs/ai_integrity_screenshots_guidance.md`
+
+The preview package gives new users a clear path from demo examples to batch review, comparison, code/privacy boundary review, red-team prompt outputs, and compact reports.
+
+Boundary preserved: release-surface stabilization only. No analyzer scoring change, no verdict-routing change, no new live model call, no external call, no repository crawler, no vendor ranking, no model-wide certification, no security guarantee, no privacy guarantee, no legal/medical/political/religious authority, no public ledger sync, no Global ID sync, no central storage, no enforcement, and no final truth claim.

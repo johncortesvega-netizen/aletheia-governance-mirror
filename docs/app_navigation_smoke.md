@@ -9,10 +9,11 @@ The app should expose the v0.1 mirror stack in a stable order:
 1. Mirror Check
 2. Stress Test
 3. Boundary Cases
-4. Evidence Lab
-5. World Lens
-6. Protocol Guide
-7. Why ALETHEIA
+4. AI Integrity Mirror
+5. Evidence Lab
+6. World Lens
+7. Protocol Guide
+8. Why ALETHEIA
 
 ## Navigation Rule
 
@@ -27,6 +28,7 @@ No tab may command, enforce, validate spiritual authority, replace legal review,
 | Mirror Check | Document and proposal review for capture risk, safeguards, repair questions, and local witness receipts. |
 | Stress Test | Scenario simulation for stability, trust, alignment, ego pressure, grievances, friction, safeguards, and collapse risk. |
 | Boundary Cases | Ethical edge-case calibration for consent, free agency, basic rights, reset misuse, ambient capture, and self-audit scenarios. |
+| AI Integrity Mirror | Static review of pasted AI outputs, prompts, agent specs, and code snippets for authority-boundary and governance-integrity risk. |
 | Evidence Lab | Evidence status, public-data audit support, and the Extraordinary Claim Protocol for unverified exceptional claims. |
 | World Lens | Non-sovereign population-impact simulation and selected-year comparison using simulated threshold language only. |
 | Protocol Guide | Consolidated v0.1 module map, safe-language rules, shared protocol state, and limitations. |

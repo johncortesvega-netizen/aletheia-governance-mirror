@@ -1961,3 +1961,395 @@ Verification:
 tools\run_patch_checks.bat 84
 tools\run_patch_checks.bat 82
 ```
+
+## Patch 85 - AI Integrity Mirror Scaffold
+
+Patch 85 adds **AI Integrity Mirror** to the existing ALETHEIA app as a static, local-first governance-integrity review module for AI/code artifacts.
+
+Implemented:
+- `core/ai_integrity_mirror.py` static analyzer.
+- New `🤖 AI Integrity Mirror` app tab.
+- Review support for AI outputs, system prompts/policies, agent workflows/specs, model-card/safety claims, and code snippets.
+- Deterministic detection for final-authority claims, automated enforcement, missing review/appeal, opacity, manipulation pressure, surveillance/identity capture, exposed secrets, and unsafe code-execution markers.
+- Internal taxonomy label, risk, integrity, collapse pressure, repair questions, and local witness receipt download.
+- `docs/ai_integrity_mirror.md`, `PATCH_85_MANIFEST.txt`, `PATCH_85_RECOVERY_NOTE.md`, and `tests/test_patch_85_ai_integrity_mirror.py`.
+
+Boundary preserved:
+- AI Integrity Mirror is a review mirror, not a model-certification authority.
+- No live model benchmarking, external calls, repository crawler, public ledger, Global ID sync, central storage, enforcement, or final safety claim.
+- No scoring change to Mirror Check, Stress Test, Evidence Lab, or World Lens.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 85
+```
+
+## Patch 86 - AI Integrity Mirror Copy & Receipt Polish
+
+AI Integrity Mirror does not certify AI systems, vendors, prompts, agents, codebases, or outputs.
+
+Patch 86 follows Patch 85 by tightening the AI Integrity Mirror language around its strongest boundary: static pasted-artifact review, not model certification.
+
+Implemented:
+- Updated the AI Integrity rubric version to `ai-integrity-v0.2-static-receipt-polish`.
+- Added scope, receipt, and reliance notes to analyzer output.
+- Propagated non-certification copy into scan/report metadata so local receipts carry the same boundary as the UI.
+- Changed UI metric language to risk reading, integrity reading, and capture pressure.
+- Added a "How to read this result" expander to reduce overinterpretation of internal metrics.
+- Updated `docs/ai_integrity_mirror.md`, `PATCH_86_MANIFEST.txt`, `PATCH_86_RECOVERY_NOTE.md`, and `tests/test_patch_86_ai_integrity_copy_receipt_polish.py`.
+
+Boundary preserved:
+- AI Integrity Mirror remains a review mirror for pasted artifacts only.
+- No live model benchmarking, external calls, repository crawler, public ledger, Global ID sync, central storage, enforcement, certification, vendor approval, or final safety claim.
+- No scoring-math or verdict-routing change to any ALETHEIA module.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 86
+tools\run_patch_checks.bat 85
+```
+## Patch 87 - AI Integrity Mirror Demo Examples and Static Smoke Coverage
+
+Patch 87 follows the AI Integrity Mirror scaffold/copy work by improving example discipline. Demo examples now live in the analyzer module as shared metadata rather than an app-only dictionary, and tests audit every demo example directly.
+
+Implemented:
+- Added `AI_INTEGRITY_DEMO_EXAMPLES` with title, artifact kind, review focus, and text.
+- Updated the app to load demo examples from the shared metadata.
+- Added user-facing demo focus captions.
+- Removed duplicated non-certification sentence from the app info copy.
+- Added `tests/test_patch_87_ai_integrity_demo_examples.py`.
+
+Boundary preserved:
+- Static pasted-artifact review only.
+- No live model benchmarking, external calls, repository crawler, certification, enforcement, public ledger, Global ID sync, central storage, scoring-math change, or verdict-routing change.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 87
+tools\run_patch_checks.bat 86
+tools\run_patch_checks.bat 85
+```
+
+
+## Patch 88 - AI Integrity Mirror Signal Evidence Snippets
+
+Patch 88 extends the Patch 85-87 AI Integrity Mirror line with clearer review evidence. Triggered findings now include a category and local evidence snippet so users can see why a signal fired without treating the reading as certification.
+
+Implemented:
+- Signal-category metadata for AI Integrity findings.
+- Short evidence snippets from the pasted artifact for each triggered rule.
+- Redaction of credential-like values and private-key blocks before snippets appear in UI/metadata.
+- UI table columns for Category and Evidence snippet.
+- `tests/test_patch_88_ai_integrity_signal_evidence.py`.
+
+Boundary preserved:
+- AI Integrity Mirror remains a static review mirror for pasted artifacts only.
+- Evidence snippets support human review; they do not prove truth, safety, legality, or alignment.
+- No live model benchmarking, external calls, repository crawler, public ledger, Global ID sync, central storage, enforcement, certification, vendor approval, scoring-math change, or verdict-routing change.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 88
+tools\run_patch_checks.bat 87
+tools\run_patch_checks.bat 86
+tools\run_patch_checks.bat 85
+```
+
+## Patch 89 — Privacy Boundary Visibility
+
+Patch 89 makes the no-built-in-data-collection boundary visible and testable. It adds privacy-by-design copy to the app surface, sidebar, AI Integrity Mirror, About page, README, and `docs/privacy_boundary.md`.
+
+Safe claim: ALETHEIA's repository includes no built-in telemetry, trackers, analytics SDKs, backend upload endpoint, public ledger sync, Global ID sync, or central user-input database. Inputs are processed in the running app session and receipts are user-held downloads.
+
+Deployment caution: third-party hosting layers may still keep server logs, access logs, crash logs, request metadata, or operational monitoring outside ALETHEIA's app-code boundary. Public deployment claims must review the host as well as the repository.
+
+Boundary preserved: no scoring-math change, no verdict-routing change, no AI Integrity rubric change, no live model benchmarking, no external calls, no repository crawler, no storage layer, no public ledger, no Global ID sync, no enforcement, no certification, and no authority claim.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 89
+tools\run_patch_checks.bat 88
+tools\run_patch_checks.bat 87
+tools\run_patch_checks.bat 86
+tools\run_patch_checks.bat 85
+```
+
+## Patch 90 — AI Integrity Batch Review Scaffold
+
+Patch 90 turns AI Integrity Mirror from single-artifact review into a small pasted-batch review workflow while keeping the same static, local-first boundary.
+
+Implemented:
+- Simple delimiter splitter for pasted batch items using lines such as `---`, `===`, or `###`.
+- Batch analyzer that reuses `audit_ai_integrity_artifact` for each item rather than adding a separate scoring route.
+- Batch summary with artifact count, risk-reading distribution, highest-pressure item, category counts, and redacted excerpts.
+- AI Integrity tab batch-mode checkbox and review table.
+- Patch-specific tests in `tests/test_patch_90_ai_integrity_batch_review.py`.
+
+Boundary preserved: pasted artifacts only; no live model benchmarking, no external calls, no repository crawler, no storage layer, no public ledger, no Global ID sync, no enforcement, no vendor ranking, no model certification, no approval, no final safety claim, and no scoring-math or verdict-routing change.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 90
+tools\run_patch_checks.bat 89
+tools\run_patch_checks.bat 88
+tools\run_patch_checks.bat 87
+tools\run_patch_checks.bat 86
+tools\run_patch_checks.bat 85
+```
+
+## Patch 91 — AI Integrity Receipt Export Polish
+
+Patch 91 makes AI Integrity Mirror receipt downloads more useful for human review while preserving the static mirror boundary.
+
+Implemented:
+- AI Integrity receipt version marker: `ai-integrity-receipt-polish-v0.5`.
+- Receipt context builder for AI Integrity-specific metadata.
+- Readable receipt context renderer.
+- App receipt export prefix containing static review scope, privacy boundary, non-certification note, reliance boundary, finding summary, redacted evidence snippets, repair questions, and optional batch summary.
+- Patch-specific tests in `tests/test_patch_91_ai_integrity_receipt_export_polish.py`.
+
+Boundary preserved: receipt export polish only. No scoring-math change, no verdict-routing change, no live model benchmarking, no external calls, no repository crawler, no storage layer, no public ledger sync, no Global ID sync, no enforcement, no vendor ranking, no model certification, no approval, and no final safety claim.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 91
+tools\run_patch_checks.bat 90
+tools\run_patch_checks.bat 89
+tools\run_patch_checks.bat 88
+tools\run_patch_checks.bat 87
+tools\run_patch_checks.bat 86
+tools\run_patch_checks.bat 85
+```
+
+## Patch 92 — AI Integrity Rubric Documentation
+
+Patch 92 makes the AI Integrity Mirror rubric explicit without changing runtime behavior.
+
+Implemented:
+- New `docs/ai_integrity_rubric.md` documentation page.
+- Reviewable table of signal categories, signal names, review questions, and current weight ranges.
+- Documentation for positive review signals, evidence snippets, redaction, single/batch mode, receipt scope, privacy boundary, and out-of-scope claims.
+- README and AI Integrity documentation updated to point reviewers to the rubric.
+- Patch-specific regression tests in `tests/test_patch_92_ai_integrity_rubric_documentation.py`.
+
+Boundary preserved: documentation only. No scoring-math change, no signal-pattern change, no signal-weight change, no verdict-routing change, no UI behavior change, no receipt-generation change, no live model benchmarking, no external calls, no repository crawler, no storage layer, no public ledger sync, no Global ID sync, no enforcement, no vendor ranking, no model certification, no approval, and no final safety claim.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 92
+tools\run_patch_checks.bat 91
+tools\run_patch_checks.bat 90
+tools\run_patch_checks.bat 89
+tools\run_patch_checks.bat 88
+tools\run_patch_checks.bat 87
+tools\run_patch_checks.bat 86
+tools\run_patch_checks.bat 85
+```
+
+## Patch 93 — AI Integrity Batch Demo Pack
+
+Patch 93 adds a ready-to-use static demo pack for AI Integrity Mirror.
+
+Implemented:
+- `examples/ai_integrity/bounded_ai_answer.txt` for bounded, reviewable AI-answer behavior.
+- `examples/ai_integrity/authority_overclaim.txt` for final-authority and certification-overclaim pressure.
+- `examples/ai_integrity/opaque_agent_workflow.txt` for hidden-criteria and weak-reviewability pressure.
+- `examples/ai_integrity/code_secret_example.txt` for credential-like strings and unsafe execution/network markers.
+- `examples/ai_integrity/central_identity_capture_claim.txt` for Global ID, biometric tracking, central registry, continuous monitoring, and blacklist pressure.
+- `examples/ai_integrity/batch_demo_v1.txt` as a separator-delimited batch-mode demo.
+- `docs/ai_integrity_demo_pack.md`, README pointer, AI Integrity Mirror documentation pointer, manifest, recovery note, and patch-specific tests.
+
+Boundary preserved: examples/docs/tests only. No analyzer scoring change, no signal-pattern change, no signal-weight change, no verdict-routing change, no UI behavior change, no receipt-generation change, no live model benchmarking, no external calls, no repository crawler, no storage layer, no public ledger sync, no Global ID sync, no enforcement, no vendor ranking, no model certification, no approval, and no final safety claim.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 93
+tools\run_patch_checks.bat 92
+tools\run_patch_checks.bat 91
+tools\run_patch_checks.bat 90
+tools\run_patch_checks.bat 89
+tools\run_patch_checks.bat 88
+tools\run_patch_checks.bat 87
+tools\run_patch_checks.bat 86
+tools\run_patch_checks.bat 85
+```
+
+## Patch 94 — AI Integrity UI Review Table Polish
+
+Patch 94 improves the AI Integrity Mirror result display for faster human review.
+
+Implemented:
+- Highest pressure signals now appear above the detailed review table.
+- Batch review keeps compact summary cards and adds a clearer compact review table heading.
+- Batch results include category grouping and collapsible item-level evidence snippets.
+- Single-artifact findings are grouped by category.
+- Evidence snippets are collapsed by category instead of crowding the main table.
+- Repair questions are shown as prominent human-review prompts.
+- Empty-state copy explicitly says no-trigger output is not a safety guarantee, approval, certification, or proof.
+- Patch-specific regression tests in `tests/test_patch_94_ai_integrity_ui_review_table_polish.py`.
+
+Boundary preserved: UI/result presentation only. No analyzer scoring change, no signal-pattern change, no signal-weight change, no verdict-routing change, no receipt-generation change, no live model benchmarking, no external calls, no repository crawler, no storage layer, no public ledger sync, no Global ID sync, no enforcement, no vendor ranking, no model certification, no approval, and no final safety claim.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 94
+tools\run_patch_checks.bat 93
+tools\run_patch_checks.bat 92
+```
+
+
+## Patch 95 — Code Integrity Static Scan v1
+
+Patch 95 adds a code-specific static scan layer for pasted code artifacts.
+
+Implemented:
+- `CODE_INTEGRITY_SCAN_VERSION = code-integrity-static-scan-v0.1`.
+- `scan_code_integrity_static()` for deterministic pasted-code review.
+- Detection categories for exposed secrets, dangerous execution, hardcoded admin bypass, unsafe deletion, outbound network calls, telemetry/tracking, central logging / identity sync, and missing human-review gates in automated decision code.
+- Redacted evidence snippets, severity counts, category counts, and review questions.
+- AI Integrity Mirror display section for Code Integrity Static Scan metadata.
+- Documentation in `docs/code_integrity_static_scan.md` and docs/README pointers.
+- Patch-specific regression tests in `tests/test_patch_95_code_integrity_static_scan.py`.
+
+Boundary preserved: static pasted-code scan only. No analyzer scoring change, no verdict-routing change, no code execution, no dependency audit, no repository crawler, no external calls, no live model benchmarking, no penetration test, no security guarantee, no vulnerability certification, no compliance approval, no model certification, no enforcement, no approval, and no final safety claim.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 95
+tools\run_patch_checks.bat 94
+tools\run_patch_checks.bat 93
+```
+
+## Patch 96 — Privacy Boundary Audit Panel
+
+Patch 96 adds a static Privacy Boundary Audit Panel to AI Integrity Mirror.
+
+Implemented:
+- `PRIVACY_BOUNDARY_SCAN_VERSION = privacy-boundary-audit-v0.1`.
+- `scan_privacy_boundary_static()` for deterministic pasted-artifact privacy-boundary review.
+- Detection categories for analytics packages, external network call patterns, telemetry keywords, database write hints, backend endpoint hints, and local-only statement markers.
+- Boundary tension indicator when local-only/no-data-collection wording appears beside analytics, network, telemetry, database, or backend evidence.
+- Local-only statement and hosting caveat surfaced in the AI Integrity Mirror result view.
+- Redacted evidence snippets, category counts, and privacy boundary review questions.
+- Documentation in `docs/privacy_boundary_audit_panel.md` and docs/README pointers.
+- Patch-specific regression tests in `tests/test_patch_96_privacy_boundary_audit_panel.py`.
+
+Boundary preserved: static pasted-artifact review only. No analyzer scoring change, no verdict-routing change, no runtime monitoring, no host-log inspection, no dependency crawl, no repository crawler, no external calls, no live model benchmarking, no privacy guarantee, no compliance approval, no vendor audit, no hosting audit, no certification, and no proof that no data is collected.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 96
+tools\run_patch_checks.bat 95
+tools\run_patch_checks.bat 94
+```
+
+
+## Patch 97 — AI Integrity Comparison View v1
+
+Patch 97 adds artifact-level **AI Integrity Comparison View** for AI Integrity batch results.
+
+Implemented:
+- `AI_INTEGRITY_COMPARISON_VERSION = ai-integrity-comparison-view-v0.1`.
+- `build_ai_integrity_comparison()` for side-by-side comparison metadata.
+- Batch UI section showing artifact count, review needed count, authority pressure, missing review, signal counts, boundary-risk comparison, category totals, and artifact-level review needed notes.
+- Documentation in `docs/ai_integrity_comparison_view.md` and AI Integrity/README pointers.
+- Patch-specific regression tests in `tests/test_patch_97_ai_integrity_comparison_view.py`.
+
+Boundary preserved: static pasted-artifact comparison only. No analyzer scoring change, no signal-pattern change, no signal-weight change, no verdict-routing change, no receipt-generation change, no live model benchmarking, no external calls, no repository crawler, no storage layer, no public ledger sync, no Global ID sync, no enforcement, not model-wide certification, not a vendor ranking, and not a final truth claim.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 97
+tools\run_patch_checks.bat 96
+tools\run_patch_checks.bat 95
+```
+
+## Patch 98 — AI Integrity Red Team Prompt Pack v1
+
+Patch 98 adds a static/manual red-team prompt pack for AI Integrity Mirror adoption testing.
+
+Implemented:
+- `examples/ai_integrity/red_team_prompt_pack_v1.txt` with prompt categories for authority overreach, legal/medical/political false authority, manipulation pressure, privacy extraction, surveillance/capture, false certainty, no-appeal automation, unsafe code request, refusal quality, and bounded-answer control.
+- `docs/ai_integrity_red_team_prompt_pack.md` with usage workflow and boundary language.
+- README and AI Integrity Mirror documentation pointers.
+- Patch-specific regression tests in `tests/test_patch_98_red_team_prompt_pack.py`.
+
+Boundary preserved: static prompt examples/docs/tests only. ALETHEIA does not run prompts, call live models, benchmark live models, rank vendors, certify models, certify code safety, guarantee truth, guarantee security, enforce decisions, publish to a public ledger, sync Global ID, create central user-input storage, or make model-wide certification claims. Outputs remain pasted artifacts for human review.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 98
+tools\run_patch_checks.bat 97
+tools\run_patch_checks.bat 96
+```
+
+
+## Patch 99 — AI Integrity Report Builder v1
+
+Patch 99 adds a compact AI Integrity Report Builder for delimiter-separated batch results. The builder summarizes existing static artifact-level readings into an executive summary, artifact count, risk distribution, state distribution, top triggered categories, highest-pressure artifacts, selected redacted evidence snippets, repair questions, non-certification note, and privacy note.
+
+Files touched include `core/ai_integrity_mirror.py`, `app.py`, `docs/ai_integrity_report_builder.md`, `docs/ai_integrity_mirror.md`, `README.md`, `PATCH_STATUS.md`, `PATCH_99_MANIFEST.txt`, `PATCH_99_RECOVERY_NOTE.md`, and `tests/test_patch_99_ai_integrity_report_builder.py`.
+
+Boundary: static pasted-artifact report only. No scoring change, no verdict-routing change, no live model calls, no external calls, no repository crawl, no vendor ranking, no model-wide certification, no safety guarantee, no security guarantee, no privacy guarantee, no enforcement, and no final truth claim.
+
+## Patch 100 — Release Stabilization / Public Adoption Package
+
+Patch 100 marks the AI Integrity work from patches 85-99 as **ALETHEIA v1.0 AI Integrity Preview**.
+
+Implemented:
+- Public adoption guide for the AI Integrity Preview.
+- Release notes for the AI Integrity Preview milestone.
+- Screenshot/caption guidance that preserves non-authority language.
+- README and AI Integrity docs pointers for the first-use path.
+- About page copy pointing to demo files, report builder, privacy/code boundary checks, comparison view, and red-team prompt outputs.
+- Patch-specific regression tests.
+
+Boundary preserved: stabilization and public-facing polish only. No scoring change, no verdict-routing change, no live model calls, no external calls, no repository crawler, no vendor ranking, no model-wide certification, no security guarantee, no privacy guarantee, no legal/medical/political/religious authority, no enforcement, and no final truth claim.
+
+Suggested verification:
+
+```bat
+tools\run_patch_checks.bat 100
+tools\run_patch_checks.bat 99
+tools\run_patch_checks.bat 98
+tools\run_patch_checks.bat 97
+tools\run_patch_checks.bat 96
+tools\run_patch_checks.bat 95
+```
+
+
+## Patch 101 — Human-Auditable Protocol Baseline Self-Audit
+
+Patch 101 adds a local hash-based self-audit for selected protocol, release-boundary, and AI Integrity files. It creates a human-readable way to see whether watched files match the known local baseline or require human review before release.
+
+Implemented:
+- `core/protocol_baseline_self_audit.py` with SHA-256 comparison helpers and text/JSON rendering.
+- `tools/run_protocol_baseline_self_audit.py` CLI wrapper.
+- `data/protocol_baseline_manifest.json` listing watched baseline files and expected hashes.
+- `docs/protocol_baseline_self_audit.md` with usage and boundary language.
+- `docs/go_live_privacy_review_statement.md` recording the final static privacy-boundary review statement.
+- Patch-specific tests.
+
+Boundary preserved: human-auditable review evidence only. The audit is not tamper-proof, not automated approval, not certification, not a security guarantee, not a privacy guarantee, not enforcement, and not final truth. Human review remains required before release.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 101
+python tools\run_protocol_baseline_self_audit.py
+tools\run_patch_checks.bat 100
+```

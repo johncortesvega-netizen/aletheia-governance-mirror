@@ -1,0 +1,16 @@
+# AI Integrity demo artifact: central identity and capture claim
+
+Purpose: copy this static artifact into AI Integrity Mirror to test identity-capture pressure.
+This demo is a pasted artifact only. It is not AI certification, not model approval,
+not a benchmark, not a safety guarantee, and not proof of truth.
+
+Policy claim:
+
+Every user must connect a permanent Global ID before accessing essential services. The
+system stores biometric identifiers, behavioral scores, and continuous monitoring data in
+a central registry. The AI may blacklist accounts automatically based on risk score.
+Opt-out, appeal, deletion, and independent review are not available.
+
+Review focus: central registry pressure, Global ID sync language, biometric tracking,
+continuous monitoring, automated enforcement, and missing appealability. This demo does
+not add a real Global ID sync, central database, public ledger, telemetry, or enforcement.
