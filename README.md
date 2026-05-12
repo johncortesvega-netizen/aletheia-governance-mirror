@@ -40,6 +40,15 @@ Enterprise AI governance platforms generally focus on organizational workflows s
 ALETHEIA is free/open-source code and is intended to remain free. This is part of its anti-capture posture: access to the mirror should not become a gatekeeping mechanism or a source of institutional authority. See `docs/comparison_positioning.md`.
 
 
+## Capture Risk Signals Framework
+
+ALETHEIA is **anti-capture by design and capture-risk-detecting by function**.
+
+It functions as a mirror that surfaces capture-risk signals such as power concentration, weak appeal paths, hidden influence, evidence gaps, consent pressure, authority overreach, and service misalignment.
+
+ALETHEIA reflects these signals for human review only. It does not enforce, decide, gatekeep, certify, punish, or become a central authority. See `docs/capture_risk_framework.md`.
+
+
 The v0.1 release package lives in `docs/v01_release_package.md`. It summarizes included modules, out-of-scope boundaries, quickstart commands, sample-report links, and release readiness checks.
 
 

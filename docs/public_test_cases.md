@@ -1,6 +1,6 @@
 # Public Test Cases
 
-Patch 74 introduces a small case pack for testing whether ALETHEIA remains a mirror rather than a throne.
+Patch 74 introduced a small case pack. Patch 77 adds an explicit capture-risk framework case for testing whether ALETHEIA remains a mirror rather than a throne.
 
 | Case file | Primary focus | Useful module |
 |---|---|---|
@@ -12,6 +12,7 @@ Patch 74 introduces a small case pack for testing whether ALETHEIA remains a mir
 | `examples/evaluation_cases/emergency_power_sunset_clause_en.txt` | emergency authority, proportionality, sunset clause | Boundary Cases / Stress Test |
 | `examples/evaluation_cases/visionary_language_boundary_en.txt` | scope layering, humility, non-authority boundary | Self-Audit / Mirror Check |
 | `examples/evaluation_cases/police_accountability_review_en.txt` | institutional accountability, dignity, evidence gap | Mirror Check / Evidence Lab |
+| `examples/evaluation_cases/regulatory_capture_revolving_door_en.txt` | regulatory capture, revolving-door incentives, hidden influence | Mirror Check / Stress Test |
 
 ## Expected review behavior
 

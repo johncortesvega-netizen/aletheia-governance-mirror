@@ -1796,3 +1796,31 @@ Run:
 ```bat
 tools\run_patch_checks.bat 76
 ```
+
+## Patch 77 - Capture Risk Signals Framework
+
+Date: 2026-05-12
+
+### Purpose
+
+Patch 77 turns the anti-capture framing into an explicit public framework. It clarifies that ALETHEIA is anti-capture by design and capture-risk-detecting by function.
+
+### Implemented
+
+- Added `docs/capture_risk_framework.md`.
+- Added a regulatory-capture / revolving-door evaluation case.
+- Updated README and About with a collapsed capture-risk framework pointer.
+- Updated `docs/public_test_cases.md` to include the new case.
+- Added `tests/test_patch_77_capture_risk_framework.py`.
+
+### Boundary preserved
+
+Patch 77 is documentation/copy/test only. It does not add a new app module, change scoring, change verdict routing, change witness receipts, change evidence/data pipelines, or add enforcement. ALETHEIA continues to reflect capture-risk signals for human review only.
+
+### Verification
+
+Run:
+
+```bat
+tools\run_patch_checks.bat 77
+```

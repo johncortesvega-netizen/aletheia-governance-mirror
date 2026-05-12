@@ -1402,3 +1402,32 @@ Check:
 ```bat
 tools\run_patch_checks.bat 76
 ```
+
+## Patch 77 - Capture Risk Signals Framework
+
+Date: 2026-05-12
+
+Patch 77 makes ALETHEIA's anti-capture logic explicit as a public framework while preserving the mirror boundary.
+
+Implemented:
+- Added `docs/capture_risk_framework.md` with the core statement: ALETHEIA is anti-capture by design and capture-risk-detecting by function.
+- Defined capture-risk signal categories: power concentration, weak or missing appeal paths, hidden influence / information asymmetry, evidence gaps or selective evidence, consent pressure, authority overreach, and service misalignment.
+- Added a copy/paste capture-risk audit prompt and usage guidance.
+- Added `examples/evaluation_cases/regulatory_capture_revolving_door_en.txt` to test hidden influence, revolving-door incentives, evidence gaps, and public-accountability safeguards.
+- Added README and About pointers to the capture-risk framework.
+- Updated the public test-case catalog.
+- Added a patch-specific test covering framework content, boundary wording, evaluation-case structure, About/README links, and patch ledgers.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No app engine change.
+- No new module.
+- No enforcement, certification, punishment, legal authority, political authority, religious authority, public ledger, Global ID sync, central storage, or final judgment.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 77
+```

@@ -8257,6 +8257,18 @@ with tab_about:
             """
         )
 
+
+    with st.expander("Capture risk framework: anti-capture by design", expanded=False):
+        st.markdown(
+            """
+            ALETHEIA is **anti-capture by design and capture-risk-detecting by function**.
+
+            It reflects capture-risk signals for human review: power concentration, weak appeal paths, hidden influence, evidence gaps, consent pressure, authority overreach, and service misalignment.
+
+            ALETHEIA does not enforce, decide, gatekeep, certify, punish, or become a central authority. It asks review questions so humans can examine safeguards, evidence, and accountability.
+            """
+        )
+
     with st.expander("Navigation map", expanded=True):
         st.markdown(
             """
