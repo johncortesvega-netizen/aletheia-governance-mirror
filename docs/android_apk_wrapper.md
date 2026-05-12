@@ -126,3 +126,14 @@ Plugin [id: 'com.android.application'] was not found
 ```
 
 The Android wrapper now declares the Android Gradle Plugin version at the project root and applies the app plugin only inside the `app` module. See `docs/android_gradle_plugin_resolution.md` for the recovery steps.
+
+
+## Patch 84 note: adaptive icon resource placement
+
+Patch 84 fixes release-build resource linking when Android reports:
+
+```text
+<adaptive-icon> elements require a sdk version of at least 26
+```
+
+The adaptive launcher icon XML now lives in `mipmap-anydpi-v26/`, while `mipmap-anydpi/` contains non-adaptive bitmap fallbacks. This keeps the wrapper compatible with `minSdk 23` without removing adaptive icons for API 26+ devices. See `docs/android_adaptive_icon_resource_fix.md`.

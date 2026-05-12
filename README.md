@@ -73,6 +73,8 @@ Patch 82 adds the ALETHEIA launcher icon to the Android wrapper and hardens the 
 
 Patch 83 fixes Android Gradle Plugin resolution for signed APK builds. The wrapper project now defines plugin repositories and the `com.android.application` version at the project root, while the `app` module remains the only Android application module.
 
+Patch 84 fixes Android adaptive launcher-icon resource placement for release builds that fail with `<adaptive-icon> elements require a sdk version of at least 26`. See `docs/android_adaptive_icon_resource_fix.md`.
+
 
 The v0.1 release package lives in `docs/v01_release_package.md`. It summarizes included modules, out-of-scope boundaries, quickstart commands, sample-report links, and release readiness checks.
 

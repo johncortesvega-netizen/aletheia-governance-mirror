@@ -1577,3 +1577,38 @@ Verification:
 tools\run_patch_checks.bat 82
 tools\run_patch_checks.bat 81
 ```
+
+## Patch 84 - Android Adaptive Icon Resource Fix
+
+Status: READY FOR LOCAL TESTING
+
+Patch 84 fixes Android release resource linking for the optional WebView wrapper when the build reports:
+
+```text
+<adaptive-icon> elements require a sdk version of at least 26
+```
+
+Summary:
+- Moved adaptive launcher icon XML into `mipmap-anydpi-v26/`.
+- Replaced unqualified `mipmap-anydpi/` launcher XML with non-adaptive bitmap fallbacks.
+- Preserved `minSdk 23` instead of raising the minimum Android version.
+- Updated the Patch 82 icon test expectations so older patch checks align with the resource-placement fix.
+- Added `docs/android_adaptive_icon_resource_fix.md` and a patch-specific guard test.
+
+Boundary preserved:
+- No Streamlit engine change.
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model change.
+- No WebView URL change.
+- No new Android permissions.
+- No keystore, password, private key, or signed APK is included.
+- No ads, trackers, analytics SDKs, push notifications, public ledger sync, Global ID sync, central storage, enforcement, certification, punishment, legal authority, political authority, religious authority, or final judgment.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 84
+tools\run_patch_checks.bat 82
+```

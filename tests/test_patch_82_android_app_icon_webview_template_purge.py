@@ -49,6 +49,8 @@ def test_launcher_icon_resources_are_aletheia_assets_not_default_android_only():
         "drawable/ic_launcher_foreground.xml",
         "mipmap-anydpi/ic_launcher.xml",
         "mipmap-anydpi/ic_launcher_round.xml",
+        "mipmap-anydpi-v26/ic_launcher.xml",
+        "mipmap-anydpi-v26/ic_launcher_round.xml",
         "mipmap-mdpi/ic_launcher.webp",
         "mipmap-mdpi/ic_launcher_round.webp",
         "mipmap-hdpi/ic_launcher.webp",
@@ -67,11 +69,17 @@ def test_launcher_icon_resources_are_aletheia_assets_not_default_android_only():
 
     foreground_xml = read("android_webview/app/src/main/res/drawable/ic_launcher_foreground.xml")
     background_xml = read("android_webview/app/src/main/res/drawable/ic_launcher_background.xml")
-    adaptive_icon = read("android_webview/app/src/main/res/mipmap-anydpi/ic_launcher.xml")
-    adaptive_round = read("android_webview/app/src/main/res/mipmap-anydpi/ic_launcher_round.xml")
+    fallback_icon = read("android_webview/app/src/main/res/mipmap-anydpi/ic_launcher.xml")
+    fallback_round = read("android_webview/app/src/main/res/mipmap-anydpi/ic_launcher_round.xml")
+    adaptive_icon = read("android_webview/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml")
+    adaptive_round = read("android_webview/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml")
 
     assert "@drawable/aletheia_launcher_foreground" in foreground_xml
     assert "#F7F0E6" in background_xml
+    assert "<adaptive-icon" not in fallback_icon
+    assert "<adaptive-icon" not in fallback_round
+    assert "@drawable/aletheia_launcher_foreground" in fallback_icon
+    assert "@drawable/aletheia_launcher_foreground" in fallback_round
     assert "@drawable/ic_launcher_background" in adaptive_icon
     assert "@drawable/ic_launcher_foreground" in adaptive_icon
     assert "@drawable/ic_launcher_background" in adaptive_round

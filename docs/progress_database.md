@@ -1942,3 +1942,22 @@ Verification: `tools\run_patch_checks.bat 82` and `tools\run_patch_checks.bat 81
 ## Patch 83 Notes
 
 Patch 83 fixes the Android WebView wrapper Gradle configuration so Android Studio can resolve `com.android.application` during signed APK builds. The project root now declares the Android Gradle Plugin version with `apply false`, the app module applies the plugin locally, and settings files define the required plugin repositories. This is a build-configuration-only patch: no Streamlit engine change, no scoring change, no receipt change, no authority-boundary change, no new Android permissions, no keystore, and no signed APK are included.
+
+## Patch 84 Notes
+
+Patch 84 fixes Android release-build resource linking for the optional ALETHEIA Mirror WebView wrapper. The previous launcher-icon resource placement exposed `<adaptive-icon>` XML to Android API levels below 26 while the wrapper keeps `minSdk 23`; Android then failed `processReleaseResources`.
+
+Implemented:
+- Added `mipmap-anydpi-v26/ic_launcher.xml` and `mipmap-anydpi-v26/ic_launcher_round.xml` for API 26+ adaptive icons.
+- Replaced unqualified `mipmap-anydpi/ic_launcher.xml` and `mipmap-anydpi/ic_launcher_round.xml` with non-adaptive bitmap fallback icons.
+- Added `docs/android_adaptive_icon_resource_fix.md`.
+- Updated the Patch 82 icon test and added `tests/test_patch_84_android_adaptive_icon_resource_fix.py`.
+
+Boundary preserved: no Streamlit engine change, no scoring change, no receipt change, no WebView URL change, no new Android permissions, no keystore, no signed APK, no public ledger, no Global ID sync, no central storage, no enforcement, and no authority claim.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 84
+tools\run_patch_checks.bat 82
+```
