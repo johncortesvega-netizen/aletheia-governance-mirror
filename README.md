@@ -67,6 +67,10 @@ The wrapper requests only Android internet access. It does not add ads, trackers
 
 Patch 80 adds a signed-release APK guide for safer direct sharing: `docs/signed_release_apk.md`. The repository includes only an example signing file; private keystores, passwords, and `signing.properties` must stay local and must never be committed.
 
+If a built APK shows a default `Hello Android!` screen instead of the live web app, it was likely built from a default Android template or wrong project folder. Use the troubleshooting guide: `docs/android_webview_troubleshooting.md`.
+
+Patch 82 adds the ALETHEIA launcher icon to the Android wrapper and hardens the wrapper against stale default-template builds. The launcher now uses the repository mascot/logo assets instead of the default Android icon, and both Groovy and Kotlin Gradle files are aligned to the WebView package.
+
 
 The v0.1 release package lives in `docs/v01_release_package.md`. It summarizes included modules, out-of-scope boundaries, quickstart commands, sample-report links, and release readiness checks.
 

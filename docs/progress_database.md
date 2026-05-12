@@ -1896,3 +1896,45 @@ Boundary preserved:
 - ALETHEIA remains free/open-source, anti-capture by design, capture-risk-detecting by function, and a mirror for human review.
 - No local keystore or signing secret is included in the repo.
 - No authority, enforcement, central storage, public ledger, Global ID sync, or native rewrite claim is introduced.
+
+## Patch 81 - Android WebView Hello Android Guard / Troubleshooting
+
+Status: Ready for local verification.
+
+Patch 81 responds to the Android APK symptom where a built app opens to a default `Hello Android!` screen instead of the live ALETHEIA web app. The current wrapper source already uses a Java WebView activity, so this patch adds a hard source guard and a focused troubleshooting document to prevent wrong-folder/default-template builds.
+
+Implemented:
+- Added `docs/android_webview_troubleshooting.md` with Android Studio clean/rebuild steps and correct project-folder guidance.
+- Updated README and `docs/android_apk_wrapper.md` with a direct troubleshooting pointer.
+- Added `tests/test_patch_81_android_webview_hello_android_guard.py` to fail if default Android template markers are committed or if the WebView entry point stops loading `https://aletheialive.streamlit.app/`.
+
+Boundary preserved:
+- No Streamlit engine change.
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model change.
+- No native rewrite or offline mobile claim.
+- No keystore, private key, password, or signed APK is committed.
+- No new Android permissions beyond internet access.
+- No ads, trackers, analytics SDKs, push notifications, public ledger sync, Global ID sync, central storage, enforcement, certification, punishment, legal authority, political authority, religious authority, or final judgment.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 81
+```
+
+## Patch 82 - Android App Icon / WebView Template Purge
+
+Patch 82 follows the Android wrapper signing/troubleshooting work by adding the ALETHEIA launcher icon and hardening the wrapper source against stale default-template builds. The Android manifest now binds `@mipmap/ic_launcher` and `@mipmap/ic_launcher_round`, and the launcher resources use ALETHEIA mascot/logo-derived assets instead of the default Android icon.
+
+Implementation notes:
+- The active launcher activity remains `android_webview/app/src/main/java/net/johncortesvega/aletheia/MainActivity.java`.
+- The stale `V1/Aletheia/MainActivity.kt` Android template source is neutralized so it cannot show `Hello Android!`.
+- The wrapper build config is Java/WebView-only; Compose template dependencies are removed from the Groovy build path.
+- Kotlin Gradle mirror files are aligned to the same package for clarity if Android Studio inspects them.
+
+Boundary preserved: this is an Android wrapper polish and guard patch only. It changes no ALETHEIA scoring, receipts, World Lens data model, Evidence Lab logic, public ledger behavior, Global ID sync, central storage, enforcement, authority claim, or signed-key handling.
+
+Verification: `tools\run_patch_checks.bat 82` and `tools\run_patch_checks.bat 81`.

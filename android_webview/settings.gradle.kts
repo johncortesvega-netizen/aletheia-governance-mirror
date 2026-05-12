@@ -15,5 +15,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "ALETHEIA Mirror Android"
-include ':app'
-include ':app'
+include(":app")

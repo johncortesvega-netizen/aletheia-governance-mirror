@@ -1,0 +1,31 @@
+PATCH 81 — Android WebView Hello Android Guard / Troubleshooting
+
+Status: READY FOR LOCAL TESTING
+
+Purpose:
+- Prevent and diagnose the common APK-wrapper mistake where Android Studio builds a default template app that only shows "Hello Android!" instead of ALETHEIA Mirror.
+
+Files added:
+- docs/android_webview_troubleshooting.md
+- tests/test_patch_81_android_webview_hello_android_guard.py
+- PATCH_81_MANIFEST.txt
+- PATCH_81_RECOVERY_NOTE.md
+
+Files updated:
+- README.md
+- docs/android_apk_wrapper.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Boundaries preserved:
+- No Streamlit engine change.
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model change.
+- No native rewrite or offline mobile claim.
+- No keystore, password, or signed APK included.
+- No ads, trackers, analytics SDKs, push notifications, public ledger, Global ID sync, central storage, enforcement, certification, punishment, legal authority, political authority, religious authority, or final judgment.
+
+Validation:
+- tools\run_patch_checks.bat 81

@@ -1,0 +1,50 @@
+PATCH 82 MANIFEST — Android App Icon / WebView Template Purge
+
+Purpose:
+- Add the ALETHEIA launcher icon to the optional Android WebView wrapper.
+- Remove stale default Android template risk that can lead to a `Hello Android!` screen.
+- Preserve the WebView-only wrapper boundary and internet-only permission model.
+
+Files changed/added:
+- README.md
+- PATCH_STATUS.md
+- PATCH_82_MANIFEST.txt
+- PATCH_82_RECOVERY_NOTE.md
+- docs/android_apk_wrapper.md
+- docs/android_webview_troubleshooting.md
+- docs/progress_database.md
+- android_webview/build.gradle
+- android_webview/build.gradle.kts
+- android_webview/settings.gradle.kts
+- android_webview/app/build.gradle
+- android_webview/app/build.gradle.kts
+- android_webview/app/src/main/AndroidManifest.xml
+- android_webview/app/src/main/java/V1/Aletheia/MainActivity.kt
+- android_webview/app/src/main/res/drawable/aletheia_launcher_foreground.png
+- android_webview/app/src/main/res/drawable/ic_launcher_background.xml
+- android_webview/app/src/main/res/drawable/ic_launcher_foreground.xml
+- android_webview/app/src/main/res/mipmap-anydpi/ic_launcher.xml
+- android_webview/app/src/main/res/mipmap-anydpi/ic_launcher_round.xml
+- android_webview/app/src/main/res/mipmap-mdpi/ic_launcher.webp
+- android_webview/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp
+- android_webview/app/src/main/res/mipmap-hdpi/ic_launcher.webp
+- android_webview/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp
+- android_webview/app/src/main/res/mipmap-xhdpi/ic_launcher.webp
+- android_webview/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp
+- android_webview/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp
+- android_webview/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp
+- android_webview/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp
+- android_webview/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp
+- tests/test_patch_82_android_app_icon_webview_template_purge.py
+
+Checks:
+- tools\run_patch_checks.bat 82
+- tools\run_patch_checks.bat 81
+
+Boundary:
+- No Streamlit engine change.
+- No scoring, receipt, Evidence Lab, World Lens, or data-model change.
+- No native rewrite or offline-mobile claim.
+- No new Android permission beyond INTERNET.
+- No keystore, private key, password, or signed APK included.
+- No ads, trackers, analytics SDKs, push notifications, public ledger, Global ID sync, central storage, enforcement, certification, punishment, legal authority, political authority, religious authority, or final judgment.

@@ -1,8 +1,11 @@
 <resources>
+
     <style name="AppTheme" parent="android:style/Theme.Material.Light.NoActionBar">
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@color/aletheia_background</item>
         <item name="android:navigationBarColor">@color/aletheia_background</item>
         <item name="android:fontFamily">sans</item>
     </style>
+
+    <style name="Theme.AletheiaMirror" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>

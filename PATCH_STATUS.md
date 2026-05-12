@@ -1516,3 +1516,50 @@ Check:
 ```bat
 tools\run_patch_checks.bat 80
 ```
+
+## Patch 81 - Android WebView Hello Android Guard / Troubleshooting
+
+Status: READY FOR LOCAL TESTING
+
+Patch 81 adds a troubleshooting guard for APK builds that accidentally show a default `Hello Android!` template screen instead of the ALETHEIA WebView.
+
+Summary:
+- Added `docs/android_webview_troubleshooting.md`.
+- Linked the troubleshooting guide from README and `docs/android_apk_wrapper.md`.
+- Added a patch-specific test that verifies `MainActivity.java` is a WebView activity, points to `https://aletheialive.streamlit.app/`, and contains no default Android template markers.
+- No Streamlit engine change, no scoring change, no receipt change, no native rewrite, no new permissions, no keystore, and no signed APK included.
+
+Validation:
+- `tools\run_patch_checks.bat 81`
+
+## Patch 82 - Android App Icon / WebView Template Purge
+
+Status: READY FOR LOCAL TESTING
+
+Patch 82 adds the ALETHEIA launcher icon to the Android WebView wrapper and removes remaining stale Android default-template risk from the wrapper project.
+
+Summary:
+- Added ALETHEIA mascot/logo launcher resources for adaptive and legacy Android icons.
+- Added `android:icon` and `android:roundIcon` to the Android manifest.
+- Replaced the stale default-template Kotlin activity with a neutral placeholder so it cannot show `Hello Android!`.
+- Simplified the Groovy Android Gradle config to Java WebView only, with no Compose dependency path.
+- Aligned Kotlin Gradle mirror files to the same WebView package in case Android Studio reads them.
+- Updated Android wrapper and troubleshooting docs.
+- Added a patch-specific test for launcher icons, manifest icon bindings, WebView package alignment, and no default-template markers.
+
+Boundary preserved:
+- No Streamlit engine change.
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No native rewrite or offline mobile claim.
+- No new Android permissions beyond internet access.
+- No keystore, private key, password, or signed APK is committed.
+- No ads, trackers, analytics SDKs, push notifications, public ledger sync, Global ID sync, central storage, enforcement, certification, punishment, legal authority, political authority, religious authority, or final judgment.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 82
+tools\run_patch_checks.bat 81
+```

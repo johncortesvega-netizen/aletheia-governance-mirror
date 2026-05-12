@@ -62,6 +62,30 @@ Expected debug APK path:
 android_webview/app/build/outputs/apk/debug/app-debug.apk
 ```
 
+
+## Troubleshooting: default Hello Android screen
+
+If the installed APK only shows a default `Hello Android!` screen, the APK was not built from the ALETHEIA WebView `MainActivity.java` in this project. Open `android_webview/` directly in Android Studio, clean/rebuild the project, and generate the signed APK again.
+
+Detailed troubleshooting lives in:
+
+```text
+docs/android_webview_troubleshooting.md
+```
+
+
+## Launcher icon
+
+Patch 82 adds the ALETHEIA mascot/logo as the Android launcher icon. The wrapper uses Android launcher resources under:
+
+```text
+android_webview/app/src/main/res/mipmap-*
+android_webview/app/src/main/res/mipmap-anydpi/
+android_webview/app/src/main/res/drawable/aletheia_launcher_foreground.png
+```
+
+The icon change is cosmetic only. It does not add permissions, tracking, storage, authority, enforcement, or native decision logic.
+
 ## Distribution note
 
 Sending an APK directly to people is sideloading. Android may warn users that the app is from an unknown source. That warning is normal for APKs distributed outside an app store.
