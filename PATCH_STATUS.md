@@ -1,5 +1,19 @@
 # ALETHEIA Patch Status
 
+## Patch 83 — Android Gradle Plugin Resolution Fix
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Fixed Android wrapper Gradle plugin resolution for signed APK builds.
+- Project-level Gradle files now declare `com.android.application` with a version and `apply false`.
+- App-module Gradle files apply the Android application plugin only inside `android_webview/app`.
+- Settings files define `google()`, `mavenCentral()`, and `gradlePluginPortal()` repositories without duplicate includes.
+- No Streamlit engine change, no scoring change, no new Android permissions, no keystore, and no signed APK included.
+
+Validation:
+- `tools\run_patch_checks.bat 83`
+
 ## Patch 71.10 - Mirror Check HTML Rendering Fix
 
 Status: READY FOR LOCAL TESTING

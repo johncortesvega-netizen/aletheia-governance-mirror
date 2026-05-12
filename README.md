@@ -71,6 +71,8 @@ If a built APK shows a default `Hello Android!` screen instead of the live web a
 
 Patch 82 adds the ALETHEIA launcher icon to the Android wrapper and hardens the wrapper against stale default-template builds. The launcher now uses the repository mascot/logo assets instead of the default Android icon, and both Groovy and Kotlin Gradle files are aligned to the WebView package.
 
+Patch 83 fixes Android Gradle Plugin resolution for signed APK builds. The wrapper project now defines plugin repositories and the `com.android.application` version at the project root, while the `app` module remains the only Android application module.
+
 
 The v0.1 release package lives in `docs/v01_release_package.md`. It summarizes included modules, out-of-scope boundaries, quickstart commands, sample-report links, and release readiness checks.
 

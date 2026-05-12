@@ -1938,3 +1938,7 @@ Implementation notes:
 Boundary preserved: this is an Android wrapper polish and guard patch only. It changes no ALETHEIA scoring, receipts, World Lens data model, Evidence Lab logic, public ledger behavior, Global ID sync, central storage, enforcement, authority claim, or signed-key handling.
 
 Verification: `tools\run_patch_checks.bat 82` and `tools\run_patch_checks.bat 81`.
+
+## Patch 83 Notes
+
+Patch 83 fixes the Android WebView wrapper Gradle configuration so Android Studio can resolve `com.android.application` during signed APK builds. The project root now declares the Android Gradle Plugin version with `apply false`, the app module applies the plugin locally, and settings files define the required plugin repositories. This is a build-configuration-only patch: no Streamlit engine change, no scoring change, no receipt change, no authority-boundary change, no new Android permissions, no keystore, and no signed APK are included.

@@ -116,3 +116,13 @@ docs/signed_release_apk.md
 ```
 
 The repo includes only `android_webview/signing.properties.example`. Your real `signing.properties` file, `.jks` keystore, and passwords must stay local and must not be committed.
+
+## Patch 83 note: Android Gradle Plugin resolution
+
+Patch 83 fixes Android Studio/Gradle builds that fail with:
+
+```text
+Plugin [id: 'com.android.application'] was not found
+```
+
+The Android wrapper now declares the Android Gradle Plugin version at the project root and applies the app plugin only inside the `app` module. See `docs/android_gradle_plugin_resolution.md` for the recovery steps.
