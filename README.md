@@ -57,6 +57,16 @@ Patch 78 adds a practical one-page checklist and copy/paste prompt pack for appl
 
 The checklist helps reviewers scan for power concentration, weak appeal paths, hidden influence, evidence gaps, consent pressure, authority overreach, and service misalignment. Prompts must keep the same boundary: ALETHEIA reflects signals for human review only; it does not decide, enforce, certify, punish, or become a central authority.
 
+## Android APK wrapper
+
+Patch 79 adds an optional lightweight Android WebView wrapper in `android_webview/`. The wrapper is named **ALETHEIA Mirror** and opens the live Streamlit app at `https://aletheialive.streamlit.app/`.
+
+This is not a native rewrite and not an offline mobile version. It is a small APK shell for easier Android access while the actual ALETHEIA app remains the hosted Streamlit governance-risk mirror.
+
+The wrapper requests only Android internet access. It does not add ads, trackers, analytics SDKs, push notifications, native storage, public ledger sync, Global ID sync, central storage, enforcement behavior, or authority claims. Build notes live in `docs/android_apk_wrapper.md`.
+
+Patch 80 adds a signed-release APK guide for safer direct sharing: `docs/signed_release_apk.md`. The repository includes only an example signing file; private keystores, passwords, and `signing.properties` must stay local and must never be committed.
+
 
 The v0.1 release package lives in `docs/v01_release_package.md`. It summarizes included modules, out-of-scope boundaries, quickstart commands, sample-report links, and release readiness checks.
 

@@ -1458,3 +1458,61 @@ Check:
 ```bat
 tools\run_patch_checks.bat 78
 ```
+
+## Patch 79 - Android WebView APK Wrapper
+
+Date: 2026-05-12
+
+Patch 79 adds an optional lightweight Android wrapper so people can install an APK that opens the live ALETHEIA Streamlit app.
+
+Implemented:
+- Added `android_webview/`, a minimal Android WebView project named **ALETHEIA Mirror**.
+- The wrapper opens `https://aletheialive.streamlit.app/`.
+- Added `docs/android_apk_wrapper.md` with Android Studio and command-line build notes.
+- Added README documentation clarifying that the APK wrapper is not a native rewrite and not an offline mobile version.
+- Added a patch-specific test covering wrapper structure, live URL, internet-only permission posture, no dangerous permissions, boundary wording, and patch ledgers.
+
+Invariant preserved:
+- No Streamlit engine change.
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model change.
+- No native rewrite or offline mobile claim.
+- No ads, trackers, analytics SDKs, push notifications, public ledger, Global ID sync, central storage, enforcement, certification, punishment, legal authority, political authority, religious authority, or final judgment.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 79
+```
+
+## Patch 80 - Signed Release APK Build Guide
+
+Date: 2026-05-12
+
+Patch 80 adds a safe local release-signing workflow for the optional ALETHEIA Mirror Android WebView wrapper.
+
+Implemented:
+- Added `docs/signed_release_apk.md` with keystore creation, signed release build, sharing, and recovery notes.
+- Added `android_webview/signing.properties.example` as a local-only template.
+- Updated `android_webview/app/build.gradle` to support release signing from local `signing.properties` when present.
+- Updated `.gitignore` to exclude local Android signing secrets and release artifacts.
+- Updated README and `docs/android_apk_wrapper.md` to point to the signed-release guide.
+- Added a patch-specific test covering signing docs, secret exclusion, release build configuration, and patch ledgers.
+
+Invariant preserved:
+- No keystore, private key, password, or signed APK is committed.
+- No Streamlit engine change.
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model change.
+- No native rewrite or offline mobile claim.
+- No ads, trackers, analytics SDKs, push notifications, public ledger, Global ID sync, central storage, enforcement, certification, punishment, legal authority, political authority, religious authority, or final judgment.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 80
+```

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ALETHEIA Mirror</string>
+    <string name="live_app_url">https://aletheialive.streamlit.app/</string>
+</resources>

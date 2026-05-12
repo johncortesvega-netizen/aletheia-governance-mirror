@@ -1851,3 +1851,48 @@ Check:
 ```bat
 tools\run_patch_checks.bat 78
 ```
+
+## Patch 79 - Android WebView APK Wrapper
+
+Date: 2026-05-12
+
+Patch 79 adds a minimal Android WebView wrapper under `android_webview/` so ALETHEIA can be packaged as an APK that opens the live Streamlit app.
+
+Implemented:
+- Added an Android project named **ALETHEIA Mirror**.
+- Added a WebView `MainActivity` that opens `https://aletheialive.streamlit.app/`.
+- Requested only the Android `INTERNET` permission.
+- Disabled cleartext traffic and file/content access inside the WebView.
+- Added `docs/android_apk_wrapper.md` with build and distribution notes.
+- Updated README with an Android wrapper section.
+- Added `tests/test_patch_79_android_webview_wrapper.py`.
+
+Boundary preserved:
+
+The Android wrapper is an access shell, not a new authority layer and not a native rewrite. It does not change ALETHEIA scoring, routing, receipts, data processing, Mirror Check, Stress Test, Evidence Lab, World Lens, or authority boundaries. It does not add ads, trackers, analytics SDKs, push notifications, public ledger sync, Global ID sync, central storage, enforcement, certification, punishment, or final judgment.
+
+Verification:
+
+Run:
+
+```bat
+tools\run_patch_checks.bat 79
+```
+
+## Patch 80 - Signed Release APK Build Guide
+
+Status: Ready for local verification.
+
+Patch 80 follows Patch 79 by adding a safe signed-release path for the optional ALETHEIA Mirror Android WebView wrapper.
+
+Key additions:
+- `docs/signed_release_apk.md` explains keystore generation, local signing properties, release APK build commands, sharing cautions, and recovery steps.
+- `android_webview/signing.properties.example` provides a template without storing real secrets.
+- `.gitignore` excludes Android signing secrets and local release artifacts.
+- `android_webview/app/build.gradle` can sign release builds when local `signing.properties` exists.
+
+Boundary preserved:
+- The wrapper remains a WebView shell for `https://aletheialive.streamlit.app/`.
+- ALETHEIA remains free/open-source, anti-capture by design, capture-risk-detecting by function, and a mirror for human review.
+- No local keystore or signing secret is included in the repo.
+- No authority, enforcement, central storage, public ledger, Global ID sync, or native rewrite claim is introduced.

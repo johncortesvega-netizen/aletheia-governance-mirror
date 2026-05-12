@@ -11,3 +11,11 @@ android/
 *.apk
 *.aab
 .DS_Store
+
+# Android local release signing secrets - never commit these
+android_webview/signing.properties
+android_webview/*.jks
+android_webview/*.keystore
+android_webview/app/*.jks
+android_webview/app/*.keystore
+android_webview/app/release/

@@ -1,0 +1,8 @@
+# Copy this file to signing.properties and fill in local values.
+# Never commit signing.properties or your .jks/.keystore file.
+# Paths are relative to android_webview/ unless you use an absolute path.
+
+storeFile=aletheia-release-key.jks
+storePassword=CHANGE_ME_USE_A_LONG_PRIVATE_PASSWORD
+keyAlias=aletheia
+keyPassword=CHANGE_ME_USE_A_LONG_PRIVATE_PASSWORD

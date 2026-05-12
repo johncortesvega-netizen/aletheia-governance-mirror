@@ -1,0 +1,33 @@
+PATCH 80 - Signed Release APK Build Guide
+
+Updated files:
+- .gitignore
+- README.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/android_apk_wrapper.md
+- android_webview/app/build.gradle
+
+New files:
+- docs/signed_release_apk.md
+- android_webview/signing.properties.example
+- PATCH_80_MANIFEST.txt
+- PATCH_80_RECOVERY_NOTE.md
+- tests/test_patch_80_signed_release_apk_guide.py
+
+Purpose:
+- Add a safe local signing path for the optional ALETHEIA Mirror Android WebView wrapper.
+- Keep private keystores and signing passwords out of the repository.
+- Document direct APK sharing cautions without changing the Streamlit app or governance mirror engine.
+
+Explicit non-goals:
+- No keystore or password is included.
+- No signed APK is committed.
+- No native rewrite.
+- No offline mobile capability claim.
+- No new permissions beyond the Patch 79 internet-only wrapper posture.
+- No scoring, verdict, receipt, Evidence Lab, World Lens, or authority-boundary changes.
+
+Compatibility note:
+- This patched-items zip includes the Patch 79 Android WebView wrapper files as well as Patch 80 signing additions, so it can be applied to a local tree that has not separately merged Patch 79 yet.
+- If Patch 79 is already applied, these wrapper files should overwrite with the same intended content plus Patch 80 release-signing support.
