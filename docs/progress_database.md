@@ -1668,3 +1668,28 @@ Check:
 tools\run_patch_checks.bat 72_31
 ```
 
+## Patch 73 - Layered Scope Clarification
+
+Date: 2026-05-12
+
+Patch 73 clarifies the public scope distinction between ALETHEIA's current tool layer, research layer, long-term vision layer, and out-of-scope boundary.
+
+Implemented:
+- README now frames ALETHEIA's current operational layer as a corruption-pattern and governance-risk detection framework for human review.
+- Added `docs/scope_layers.md` to separate current capability, research hypotheses, theoretical horizon, and non-authority exclusions.
+- Why ALETHEIA / About now includes a visible Scope Layers expander in both `app.py` and standalone `about_page.py`.
+- The incorruptible-system language is explicitly framed as a theory horizon, not a present capability, mandate, or authority claim.
+- Out-of-scope copy states that ALETHEIA does not govern, enforce, allocate authority, select representatives, create a real 9k body, issue mandates, validate spiritual or political authority, or replace human judgment.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model, authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 73
+```
+

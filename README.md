@@ -16,7 +16,19 @@ Core operating line:
 
 > ALETHEIA reflects. Humans review. Power stays accountable.
 
-Public release documentation now lives in `docs/limitations.md`, `docs/ethics.md`, and `docs/public_release_notes.md`.
+## Scope layers
+
+ALETHEIA should be read in layers:
+
+- **Current operational layer** — a corruption-pattern and governance-risk detection framework for human review. It surfaces evidence gaps, consent pressure, capture risk, power concentration, missing safeguards, and authority-overreach signals.
+- **Research layer** — hypotheses, benchmarks, empirical mappings, scenario tests, and validation work that may make the mirror more precise over time.
+- **Vision layer** — a long-term theoretical horizon exploring what governance would look like if anti-corruption principles were followed consistently: transparency, consent, accountability, proportionality, dignity, appealability, repair, and limits on concentrated power.
+- **Out-of-scope layer** — ALETHEIA does not govern, enforce, allocate authority, select representatives, create a real 9k body, issue mandates, validate spiritual or political authority, or replace human judgment.
+
+The incorruptible-system framing is a theory horizon, not a present capability claim. The current tool is narrower: a mirror for detecting corruption patterns and governance-risk pressure before humans decide what, if anything, should be done.
+
+Public release documentation now lives in `docs/limitations.md`, `docs/ethics.md`, `docs/public_release_notes.md`, and `docs/scope_layers.md`.
+
 
 The v0.1 release package lives in `docs/v01_release_package.md`. It summarizes included modules, out-of-scope boundaries, quickstart commands, sample-report links, and release readiness checks.
 
