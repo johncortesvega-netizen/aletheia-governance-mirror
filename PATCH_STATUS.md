@@ -1244,3 +1244,30 @@ Check:
 tools\run_patch_checks.bat 72_30
 ```
 
+## Patch 72.31 - Why ALETHEIA Copy Humility Polish
+
+Date: 2026-05-12
+
+Patch 72.31 gives Why ALETHEIA / About the same copy-humility treatment applied to the rest of the app.
+
+Implemented:
+- Why ALETHEIA intro now says ALETHEIA reflects; people decide.
+- Mirror Check description now uses public reading plus raw/internal taxonomy label wording.
+- Evidence Lab description now says empirical evidence-audit workflow and rejects proof-engine/oracle framing.
+- World Lens description now uses comparison/exposure model language and rejects Global ID, real 9k body, sovereign body, and political mandate readings.
+- Protocol Guide description uses Humility / Z-axis boundary language instead of V-Axis Compass.
+- Research caution says outputs are internal review readings.
+- Standalone `about_page.py` received matching copy polish.
+
+Invariant preserved:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab or World Lens data model, authority boundary, storage, public ledger, Global ID sync, central storage, or enforcement behavior changed.
+
+Check:
+
+```bat
+tools\run_patch_checks.bat 72_31
+```
+

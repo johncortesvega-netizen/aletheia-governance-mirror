@@ -8190,7 +8190,7 @@ with tab_doctrine:
 
 with tab_about:
     st.subheader("Why ALETHEIA")
-    st.info("Start here if you are new: ALETHEIA helps review risk; it does not decide for people.")
+    st.info("Start here if you are new: ALETHEIA helps review governance risk, evidence gaps, and safeguard needs. It reflects; people decide.")
 
     header_image = resolve_about_header_image()
     if header_image is not None:
@@ -8198,19 +8198,11 @@ with tab_about:
 
     st.markdown(
         """
-        **ALETHEIA v1.0 is a governance-risk research prototype and public MVP.** It helps people examine governance ideas, simulate system pressure, and study how representation may interact with trust, stability, alignment, and capture risk.
+        **ALETHEIA v1.0 is a governance-risk research prototype and public MVP.** It helps people examine governance ideas, simulate system pressure, review evidence quality, and study how population-weighted exposure may interact with trust, stability, alignment, and capture risk.
 
-        It is not designed to rule, command, enforce, vote, govern, remove leaders, validate spiritual authority, or replace human judgment. **ALETHEIA is a mirror:** a structured way to check whether a proposal protects service, transparency, dignity, accountability, and stability — or whether it concentrates power, hides decisions, weakens appeal rights, or creates capture.
+        It is not designed to rule, command, enforce, vote, govern, remove leaders, validate spiritual authority, confirm extraordinary claims, or replace human judgment. **ALETHEIA is a mirror:** a structured way to ask whether a proposal protects service, transparency, dignity, accountability, appeal, and repair — or whether it concentrates power, hides decisions, weakens appeal rights, or creates capture.
 
-        Patch 37 adds the **Consent-Audit Engine**. Patch 38 adds the **Mechanism-vs-Claim Scanner**. Patch 39 adds **Self-Audit Mode**. Patch 40 hardens the **Evidence Lab** with evidence status levels and the Extraordinary Claim Protocol. Together these layers help identify what needs repair without assigning final blame or authority.
-
-        Patch 46 adds **Sample Reports / Example Audits** so people can inspect the output format before using their own documents. The samples are demonstration artifacts only, not authority claims.
-
-        Patch 47 hardens **App Navigation + Smoke Test Cleanup** so the visible tab structure matches the v0.1 roadmap and local tests can confirm the app still compiles after navigation changes.
-
-        Patch 52 adds **UX Polish**: shorter helper text, a clearer first-use path, and less dense public-facing navigation copy. It adds no doctrine and no authority.
-
-        Patch 56–60 finalizes the **ALETHEIA v1.0 release package**: v0.2 roadmap, feature backlog, future-module boundaries, report export notes, manual evidence attachment notes, rubric confidence notes, deployment prep, and v1 completion documentation.
+        The v1.0 release package includes Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, World Lens, Local Witness Receipts, public limitations, examples, and deployment documentation. These layers help identify what needs review or repair without assigning blame, issuing commands, or claiming final authority.
         """
     )
 
@@ -8219,18 +8211,17 @@ with tab_about:
             """
             | Tab | What it does |
             |---|---|
-            | Mirror Check | Reviews documents and proposals for capture risk and missing safeguards. |
-            | Stress Test | Simulates system pressure and repair questions. |
-            | Boundary Cases | Tests difficult ethical scenarios. |
-            | Evidence Lab | Reviews evidence status and extraordinary claims. |
-            | World Lens | Simulates population-impact risk without real Global ID or sovereign authority. |
-            | Protocol Guide | Explains the modules, safe language, and limitations. |
+            | Mirror Check | Reviews documents and proposals for capture risk, missing safeguards, and repair questions. |
+            | Stress Test | Simulates scenario pressure and asks repair questions. |
+            | Boundary Cases | Tests difficult ethical scenarios before they become app logic or public claims. |
+            | Evidence Lab | Reviews evidence status, source coverage, schema readiness, and extraordinary claims. |
+            | World Lens | Reviews selected-year, population-weighted evidence exposure without real Global ID, a real 9k body, or sovereign authority. |
+            | Protocol Guide | Explains the modules, safe language, internal taxonomy labels, and limitations. |
             | Why ALETHEIA | Explains the project, baseline, and public-safe purpose. |
 
             All navigation remains non-authoritative: **ALETHEIA reflects. Humans review. Power stays accountable.**
             """
         )
-
 
     with st.expander("First-use path", expanded=True):
         st.markdown(
@@ -8241,18 +8232,17 @@ with tab_about:
             - **Have a scenario?** Use Stress Test.
             - **Have an ethical edge case?** Use Boundary Cases.
             - **Have a claim or source question?** Use Evidence Lab.
-            - **Need impact framing?** Use World Lens.
+            - **Need selected-year impact framing?** Use World Lens.
             - **Need rules and limits?** Use Protocol Guide.
 
             The UX rule is simple: make the next step obvious while keeping every output reviewable.
             """
         )
 
-
     with st.expander("Eternal Baseline", expanded=True):
         st.markdown(
             """
-            The **Eternal Baseline** is ALETHEIA's ethical continuity layer. It preserves the project's core guardrails across versions without becoming a command layer.
+            The **Eternal Baseline** is ALETHEIA's ethical continuity layer. It preserves core guardrails across versions without becoming a command layer, sacred proof, or founder-validation artifact.
 
             It protects continuity around human dignity, basic rights, free agency, transparency, appealability, accountability, evidence, repair, non-coercion, and human review.
 
@@ -8260,9 +8250,9 @@ with tab_about:
 
             > **Intelligence + Power - Ego = Stability**
 
-            This is an ethical design rule, not mathematical proof. ALETHEIA uses it to ask whether intelligence and power are being restrained by humility, accountability, transparency, and repair.
+            This is an ethical design rule, not mathematical proof. ALETHEIA uses it to ask whether intelligence and power are restrained by humility, accountability, transparency, and repair.
 
-            Historical archive material may contain AI-flattery artifacts or inflated validation language. Those materials are treated as development context, not independent proof, founder validation, or governance justification.
+            Historical archive material may contain AI-flattery artifacts or inflated validation language. Those materials are development context only, not independent proof, founder validation, or governance justification.
 
             **ALETHEIA reflects. Humans review. Power stays accountable.**
             """
@@ -8273,55 +8263,55 @@ with tab_about:
     with st.expander("Mirror Check", expanded=True):
         st.markdown(
             """
-            Users can submit governance proposals and receive an internal prototype classification: **SANCTUARY**, **THRESHOLD**, or **ASYLUM**.
+            Users can submit governance proposals and receive a public reading plus a raw/internal taxonomy label: **SANCTUARY**, **THRESHOLD**, or **ASYLUM**.
 
-            The audit layer scans for capture risk, opacity, coercion, missing appeal rights, weak transparency, and other governance-risk patterns.
+            Those labels are compatibility labels for review workflows. They are not legal, political, medical, religious, moral, or predictive verdicts. The audit layer scans for capture risk, opacity, coercion, missing appeal rights, weak transparency, and other governance-risk patterns.
             """
         )
 
     with st.expander("Stress Test", expanded=True):
         st.markdown(
             """
-            The system models governance pressure through archetype agents with intelligence, power, ego, alignment, trust, grievances, alliances, and memory.
+            Stress Test models governance pressure through archetype agents with intelligence, power, ego, alignment, trust, grievances, alliances, and memory.
 
-            It tracks **Stability**, **Trust**, **Alignment**, and **Ego** over time.
+            It tracks **Stability**, **Trust**, **Alignment**, and **Ego** over time. These are simulation readings, not predictions, commands, or final judgments.
             """
         )
 
     with st.expander("Evidence Lab", expanded=True):
         st.markdown(
             """
-            Users can upload country-year datasets and map them into ALETHEIA variables for empirical scoring, schema checks, 9k allocation, and internal correlation checks.
+            Evidence Lab lets users upload country-year datasets and map them into ALETHEIA variables for schema checks, empirical scoring, 9k evidence allocation, source coverage review, and validation planning.
 
-            This layer is the bridge from symbolic prototype to reproducible research workflow.
+            This layer adds an empirical evidence-audit workflow to ALETHEIA's symbolic and protocol-guided governance-risk mirror. It is not a proof engine or oracle.
             """
         )
 
     with st.expander("World Lens", expanded=True):
         st.markdown(
             """
-            The grid shows how a 9k global body could be allocated by population and how those seats may intersect with governance-risk conditions when empirical data is available.
+            World Lens shows selected-year, population-weighted evidence exposure and how internal taxonomy readings may intersect with governance-risk conditions when empirical data is available.
 
-            The grid is a **representation model**. It is not a real election, government, authority mechanism, or political mandate.
+            World Lens is a **comparison and exposure model**. It is not a real election, government, sovereign body, authority mechanism, political mandate, Global ID system, or real 9k body.
             """
         )
 
     with st.expander("Protocol Guide", expanded=True):
         st.markdown(
             """
-            The doctrine layer preserves the symbolic principles behind the prototype while remaining corrigible by evidence.
+            Protocol Guide preserves the operating boundaries behind the mirror while remaining corrigible by evidence.
 
-            - **Mirror Effect** — power must reflect service, not absorb authority
-            - **V-Axis Compass** — intelligence and power only stabilize when ego is restrained and alignment rises
-            - **Do not overtrust the tool** — no person, system, institution, dataset, protocol, or AI is treated as final or beyond review
-            - **Empirical correction rule** — symbolic logic must remain testable and correctable by public evidence
-            - **Protocol integrity layer** — Audit, Simulation, Empirical Study, and Global Grid share one Sydney Protocol guardrail engine
+            - **Mirror Effect** — power must reflect service, not absorb authority.
+            - **Humility / Z-axis boundary** — no code, receipt, metric, hash, tree, 9k structure, institution, person, or model reaches final authority.
+            - **Do not overtrust the tool** — no person, system, institution, dataset, protocol, founder, office, or AI is treated as final or beyond review.
+            - **Empirical correction rule** — symbolic logic must remain testable and correctable by public evidence.
+            - **Protocol integrity layer** — Mirror Check, Stress Test, Boundary Cases, Evidence Lab, and World Lens share one guardrail substrate.
             """
         )
 
     st.markdown("### Research caution")
     st.warning(
-        "ALETHEIA does not prove legal, political, medical, religious, or final truth. Its classifications are internal model outputs. Empirical results depend on dataset quality, variable mapping, normalization choices, missing data, and validation against external outcomes."
+        "ALETHEIA does not prove legal, political, medical, religious, moral, predictive, or final truth. Its outputs are internal review readings. Empirical results depend on dataset quality, variable mapping, normalization choices, missing data, and validation against external outcomes."
     )
     st.markdown(
         """
@@ -8342,7 +8332,7 @@ with tab_about:
 
         The direction is clear: symbolic governance logic should be tested against empirical evidence. Where the model is useful, it should become more precise. Where the data challenges it, the model should be corrected.
 
-        **ALETHEIA is built for that process.**
+        **ALETHEIA is built for review, correction, and humility — not final authority.**
         """
     )
 
@@ -8351,9 +8341,9 @@ with tab_about:
         st.code(
             """app.py                  # Streamlit UI
 core/parser.py          # local/AI governance scan
-core/simulation.py      # agent-based V-Axis stability simulation
+core/simulation.py      # agent-based stability simulation
 core/scoring.py         # integrity, friction, collapse probability, review questions
-core/empirical.py       # country-year scoring, 9k allocation, validation helpers
+core/empirical.py       # country-year scoring, 9k evidence allocation, validation helpers
 core_empirical.py       # import fallback for Streamlit deployments
 config/weights.py       # I/A/E/P weight presets
 data_processed/         # empirical templates and generated scores

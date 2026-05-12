@@ -1,0 +1,39 @@
+PATCH 72.31 MANIFEST - Why ALETHEIA Copy Humility Polish
+
+Patch ID: 72.31
+Patch name: Why ALETHEIA Copy Humility Polish
+Owner/User: Johnny Cortes Vega
+Project: ALETHEIA v1.0 - Governance Mirror
+
+Purpose:
+- Give the Why ALETHEIA / About page the same humility/copy treatment as the rest of the app.
+- Replace older classification/V-axis/Grid/proof wording with review-oriented, internal-taxonomy, World Lens, and humility-boundary language.
+- Keep ALETHEIA framed as a mirror for human review, not a final authority or proof engine.
+
+Files changed:
+- app.py
+- about_page.py
+- tests/test_patch_72_31_why_aletheia_copy_humility_polish.py
+- PATCH_72_31_MANIFEST.txt
+- PATCH_72_31_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Behavioral / copy changes:
+- Why ALETHEIA intro now says ALETHEIA reflects; people decide.
+- Clarifies that ALETHEIA does not validate spiritual authority, confirm extraordinary claims, or replace human judgment.
+- Mirror Check description now says public reading plus raw/internal taxonomy label.
+- SANCTUARY / THRESHOLD / ASYLUM are described as compatibility labels for review workflows, not final verdicts.
+- Evidence Lab description now says empirical evidence-audit workflow and not proof engine or oracle.
+- World Lens description now uses comparison/exposure model language and explicitly rejects Global ID, real 9k body, sovereign body, and political mandate readings.
+- Protocol Guide description replaces V-Axis Compass with Humility / Z-axis boundary language.
+- Research caution now says outputs are internal review readings.
+- Standalone `about_page.py` receives matching copy polish.
+
+Non-goals:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab data model change.
+- No World Lens data model change.
+- No public ledger, Global ID sync, central storage, or enforcement behavior.

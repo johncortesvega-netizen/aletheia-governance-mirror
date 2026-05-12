@@ -14,8 +14,8 @@ def _header_image() -> str | None:
 
 
 def render_about():
-    st.subheader("About ALETHEIA")
-    st.info("ALETHEIA helps people review governance risk, evidence gaps, and safeguard needs. It does not decide, enforce, validate final truth, or replace human judgment. Calibrated input language support is English and Nederlands/Dutch.")
+    st.subheader("Why ALETHEIA")
+    st.info("ALETHEIA helps people review governance risk, evidence gaps, and safeguard needs. It reflects; people decide. Calibrated input language support is English and Nederlands/Dutch.")
     st.caption("ALETHEIA v1.0 complete: public MVP package, release boundary, v0.2 roadmap, and deployment prep are documented.")
 
     header = _header_image()
@@ -76,22 +76,22 @@ def render_about():
 
     with st.expander("ALETHEIA v1.0 release complete", expanded=True):
         st.write("ALETHEIA v1.0 is the finished public MVP package for the Governance Mirror line. It includes the baseline, safe-language layer, Eternal Baseline, Boundary Cases, Failure Classification, Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, Local Witness Receipt v2, World Lens Simulation, Protocol Guide, sample reports, demo inputs, GitHub cleanup, and release documentation.")
-        st.write("The v1.0 boundary remains strict: no Global ID sync, no real 9k selection, no World Leader logic, no automatic reset, no public ledger authority, no neural validation, no religious validation, no legal authority, and no automated enforcement.")
+        st.write("The v1.0 boundary remains strict: no Global ID sync, no real 9k body, no World Leader logic, no automatic reset, no public ledger authority, no neural validation, no religious validation, no legal authority, and no automated enforcement.")
         st.write("Next planning documents live in docs/v02_roadmap.md, docs/feature_backlog.md, and docs/deployment_prep.md.")
 
     st.markdown("### What ALETHEIA does")
 
     with st.expander("Audit", expanded=True):
-        st.write("Users can submit governance proposals and receive an internal review label: SANCTUARY, THRESHOLD, or ASYLUM. These labels are model signals for human review, not final verdicts. The audit layer scans for capture risk, opacity, coercion, missing appeal rights, weak transparency, and other governance-risk patterns.")
+        st.write("Users can submit governance proposals and receive a public reading plus a raw/internal taxonomy label: SANCTUARY, THRESHOLD, or ASYLUM. These labels are compatibility labels for human review, not final verdicts, final safety claims, or authority claims. The audit layer scans for capture risk, opacity, coercion, missing appeal rights, weak transparency, and other governance-risk patterns.")
 
     with st.expander("Simulation", expanded=True):
         st.write("The system models governance pressure through archetype agents with intelligence, power, ego, alignment, trust, grievances, alliances, and memory. It tracks Stability, Trust, Alignment, and Ego over time.")
 
     with st.expander("Empirical Study", expanded=True):
-        st.write("Users can upload country-year datasets and map them into ALETHEIA variables for empirical scoring, schema checks, 9k allocation, and internal correlation checks. This layer is the bridge from symbolic prototype to reproducible research workflow.")
+        st.write("Users can upload country-year datasets and map them into ALETHEIA variables for empirical scoring, schema checks, 9k allocation, and internal correlation checks. This layer is the bridge from symbolic and protocol-guided governance-risk mirror to an empirical evidence-audit workflow.")
 
-    with st.expander("Global Grid", expanded=True):
-        st.write("The Grid shows selected-year, population-weighted governance-risk exposure across country-year rows. Full years may sum to 9,000 seats; partial or filtered years must use active-seat language. The Grid is a comparison and exposure model, not a real election, government, authority mechanism, or political mandate.")
+    with st.expander("World Lens", expanded=True):
+        st.write("World Lens shows selected-year, population-weighted governance-risk exposure across country-year rows. Full years may sum to 9,000 evidence seats; partial or filtered years must use active-seat evidence language. World Lens is a comparison and exposure model, not a real election, government, authority mechanism, political mandate, Global ID system, or real 9k body.")
 
     with st.expander("Boundary Cases", expanded=True):
         st.write("The Boundary Cases layer stress-tests difficult edge cases before they become app logic or public claims. It covers prediction vs free agency, consent under pressure, basic-rights scarcity, ambient capture, extraordinary claims, neural-data consent, performative ethics, and ALETHEIA self-audit. These cases calibrate the review model; they do not create authority, enforcement, or final decisions.")
@@ -146,9 +146,9 @@ def render_about():
 
             The practical tone is: care first, power accountable, evidence visible, labels humble, and every judgment open to review.
 
-            - **Shared Protocol State** — Audit, Simulation, Empirical Evidence, and Global Grid are synchronized views over one protocol substrate.
+            - **Shared Protocol State** — Audit, Simulation, Empirical Evidence, and World Lens are synchronized views over one protocol substrate.
             - **Mirror Effect** — power must reflect service, not absorb authority.
-            - **V-Axis Compass** — intelligence and power only stabilize when ego is restrained and alignment, trust, transparency, and appealability rise.
+            - **Humility / Z-axis boundary** — no code, receipt, metric, hash, tree, 9k structure, institution, person, or model reaches final authority.
             - **No final authority claim** — no person, system, institution, office, founder, dataset, doctrine, protocol, or AI is treated as final or beyond review.
             - **Empirical evidence rule** — public datasets provide the observed baseline; ALETHEIA maps that evidence into governance-risk variables and applies the Sydney Protocol overlay.
             - **Trust evidence rule** — raw survey trust and trust priors are distinct; neutral/default priors are not observed trust.
@@ -195,7 +195,7 @@ def render_about():
         st.write("See docs/stress_test_prompting_guide.md and docs/stress_test_batch_baselines.md for the scenario-writing rules and batch contract.")
 
     st.markdown("### Scientific caution")
-    st.warning("ALETHEIA does not prove legal, political, medical, religious, or final truth. Its classifications are internal model outputs. Empirical results depend on dataset quality, variable mapping, normalization choices, missing data, and validation against external outcomes.")
+    st.warning("ALETHEIA does not prove legal, political, medical, religious, moral, predictive, or final truth. Its outputs are internal review readings. Empirical results depend on dataset quality, variable mapping, normalization choices, missing data, and validation against external outcomes.")
 
     st.markdown(
         """
@@ -218,7 +218,7 @@ def render_about():
         st.code(
             """app.py                  # Streamlit UI
 core/parser.py          # local/AI governance scan
-core/simulation.py      # agent-based V-Axis stability simulation
+core/simulation.py      # agent-based stability simulation
 core/scoring.py         # integrity, friction, collapse probability, recommendations
 core/empirical.py       # country-year scoring, 9k allocation, validation helpers
 core_empirical.py       # import fallback for Streamlit deployments
@@ -231,7 +231,7 @@ assets/                 # header image and other optional UI assets""",
         st.code("pip install -r requirements.txt\nstreamlit run app.py", language="bash")
 
     with st.expander("GitHub Cleanup Package", expanded=False):
-        st.write("Patch 55 prepares ALETHEIA for public repository review through a repository map, contribution guide, and GitHub cleanup checklist. It is documentation-only and adds no governance authority, Global ID sync, real 9k selection, World Leader logic, automatic reset, public ledger, neural validation, religious validation, legal authority, or automated enforcement.")
+        st.write("Patch 55 prepares ALETHEIA for public repository review through a repository map, contribution guide, and GitHub cleanup checklist. It is documentation-only and adds no governance authority, Global ID sync, real 9k body, World Leader logic, automatic reset, public ledger, neural validation, religious validation, legal authority, or automated enforcement.")
 
 PATCH_61A_ASYLUM_REPAIR_NOTE = "High-risk ASYLUM outputs include repair questions for human review only."
 
