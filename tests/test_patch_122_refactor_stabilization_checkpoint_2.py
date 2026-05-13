@@ -60,10 +60,10 @@ def test_app_py_imports_and_calls_current_ui_helpers():
         "from ui.module_intro import render_boundary_cases_intro, render_consent_audit_intro, render_stress_test_scan_intro",
         "from ui.privacy_audit_panel import render_privacy_boundary_audit_panel",
         "from ui.status_cards import render_ai_integrity_boundary_cards",
-        "render_app_boundary_notices(st)",
-        "render_app_header(APP_VERSION, st)",
+        "render_app_boundary_notices(SUPPORTED_INPUT_LANGUAGE_NOTE, st)",
+        "render_app_header(mascot_logo_uri, APP_VERSION, st)",
         "render_how_to_use_note(st)",
-        "render_try_this_first_guide(st)",
+        "render_try_this_first_guide(st, expanded=False)",
         "render_stress_test_scan_intro(st)",
         "render_boundary_cases_intro(st)",
         "render_consent_audit_intro(st)",
@@ -85,10 +85,12 @@ def test_app_py_remains_runtime_orchestrator():
         "full_report",
         "simulate",
         "audit_ai_integrity_artifact",
-        "scan_privacy_boundary_static",
     ]
     for phrase in required:
         assert phrase in app
+
+    privacy_core = read("core/ai_integrity_mirror.py")
+    assert "def scan_privacy_boundary_static" in privacy_core
 
 
 def test_ui_helpers_do_not_contain_runtime_or_network_logic():

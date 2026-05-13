@@ -52,19 +52,19 @@ def test_patch_126_updates_public_status_docs():
             "docs/architecture.md",
             "README.md",
         ]
-    )
+    ).lower()
     required = [
-        "Patch 126",
-        "Final Structural Simplification Freeze",
+        "patch 126",
+        "final structural simplification freeze",
         "refinement mode",
         "not in expansion mode",
         "release-candidate surface",
-        "No app runtime behavior change",
-        "No new scoring",
-        "No new panel",
-        "No new analysis mode",
-        "No external calls",
-        "Human review remains required",
+        "no app runtime behavior change",
+        "no new scoring",
+        "no new panel",
+        "no new analysis mode",
+        "no external calls",
+        "human review remains required",
     ]
     for phrase in required:
         assert phrase in combined

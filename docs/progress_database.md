@@ -2699,3 +2699,10 @@ This is documentation and regression-test only. `app.py` is not changed.
 Boundary preserved: no app runtime behavior, new module, scoring, routing, panel, analysis mode, intelligence, receipt schema, session-state, privacy scan, AI Integrity scan, World Lens math, external calls, telemetry, analytics, storage or identity sync, privacy guarantee, certification, enforcement, or final truth behavior changed.
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+
+## Patch 126 Local-Review Stabilization Note
+
+During review of Patches 119-126, stale regression expectations were corrected. Patch 119 no longer requires an old exact import string after grouped module-intro imports. Patch 122 now recognizes the current app-shell helper signatures and confirms that the static privacy boundary scan remains owned by `core/ai_integrity_mirror.py`. The protocol baseline manifest was resaved as UTF-8 without BOM and refreshed to the current watched-file hashes.
+
+This is test/manifest hygiene only. No app runtime behavior, scoring, routing, receipt schema, signal pattern, signal weight, privacy scan behavior, AI Integrity scan behavior, World Lens math, external call, telemetry, analytics, storage, identity sync, privacy guarantee, certification, enforcement, or final truth behavior changed. Human review remains required.

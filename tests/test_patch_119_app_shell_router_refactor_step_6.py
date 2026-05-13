@@ -28,7 +28,10 @@ def test_module_intro_helper_exists_and_imports():
 
 def test_app_imports_and_calls_module_intro_helper():
     app = read("app.py")
-    assert "from ui.module_intro import render_stress_test_scan_intro" in app
+    # Patch 120 may group module-intro imports on one line. Keep this check
+    # semantic instead of requiring the old single-function import string.
+    assert "from ui.module_intro import" in app
+    assert "render_stress_test_scan_intro" in app
     assert "render_stress_test_scan_intro(st)" in app
     assert 'st.info("Scan my idea is for your own text.' not in app
 

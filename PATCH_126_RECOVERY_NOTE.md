@@ -12,3 +12,9 @@ Review focus:
 - The public language should remain non-authoritative.
 
 This patch does not certify ALETHEIA, guarantee privacy, enforce outcomes, or claim final truth. Humans keep the judgment.
+
+Local-review stabilization note:
+- Relaxed stale Patch 119 import-string check so grouped module-intro imports remain valid.
+- Updated Patch 122 stabilization expectations for current helper signatures and privacy-scan ownership.
+- Resaved data/protocol_baseline_manifest.json as UTF-8 without BOM and refreshed watched-file hashes.
+- Relaxed Patch 126 public-status wording check to be case-insensitive while preserving the same boundary requirements.

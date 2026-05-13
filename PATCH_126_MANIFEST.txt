@@ -7,6 +7,8 @@ Status: READY FOR LOCAL REVIEW
 Changed or added files:
 - docs/final_structural_simplification_freeze.md
 - tests/test_patch_126_final_structural_simplification_freeze.py
+- tests/test_patch_119_app_shell_router_refactor_step_6.py
+- tests/test_patch_122_refactor_stabilization_checkpoint_2.py
 - PATCH_126_MANIFEST.txt
 - PATCH_126_RECOVERY_NOTE.md
 - PATCH_STATUS.md
@@ -37,3 +39,9 @@ Boundary:
 - No external calls, telemetry, analytics, storage or identity sync, certification, enforcement, privacy guarantee, or final-truth claim.
 
 Human review remains required.
+
+Local-review stabilization note:
+- Relaxed stale Patch 119 import-string check so grouped module-intro imports remain valid.
+- Updated Patch 122 stabilization expectations for current helper signatures and privacy-scan ownership.
+- Resaved data/protocol_baseline_manifest.json as UTF-8 without BOM and refreshed watched-file hashes.
+- Relaxed Patch 126 public-status wording check to be case-insensitive while preserving the same boundary requirements.

@@ -2815,3 +2815,8 @@ tools\run_patch_checks.bat 125
 tools\run_patch_checks.bat 124
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+
+### Patch 126 local-review stabilization note
+
+Patch 126 also repairs stale regression expectations found during local review of Patches 119-126. The changes are test/manifest hygiene only: grouped imports are accepted, current helper signatures are recognized, privacy-scan ownership remains in the core layer, and the protocol baseline manifest is UTF-8 without BOM. No app runtime behavior change, no new scoring, no new panel, no new analysis mode, no external calls, and no authority expansion. Human review remains required.
