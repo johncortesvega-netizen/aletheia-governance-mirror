@@ -1016,3 +1016,9 @@ Boundary preserved: no runtime behavior change, no scoring, verdict routing, sig
 Patch 118 polishes the beginner path introduced in Patch 111. It adds a first-audit checklist, clearer “what this means / what this does not mean” copy, and stop-and-review prompts for cases involving rights, reputation, safety, legal/medical/political/institutional/financial consequences, missing evidence, or unclear receipts.
 
 Boundary preserved: Patch 118 is static beginner UX copy and documentation only. It does not change scoring, verdict routing, signal patterns, signal weights, receipt schemas, module routing, external calls, live model calls, telemetry, analytics, central storage, Global ID sync, public ledger sync, privacy guarantees, certification, enforcement, or final-truth behavior. Humans keep the judgment.
+
+## Patch 127 — Encoding Cleanup and Tab Icon Restore
+
+Patch 127 repairs visible UTF-8 mojibake in the public app surface and restores the Streamlit tab icons after the late structural-refactor chain.
+
+Scope: public UI text cleanup only. No scoring, verdict routing, signal patterns, signal weights, receipt schemas, module routing, session state, privacy scan behavior, AI Integrity scan behavior, World Lens math, external calls, telemetry, analytics, storage or identity sync, privacy guarantees, certification, enforcement, or final-truth behavior changed. Human review remains required.

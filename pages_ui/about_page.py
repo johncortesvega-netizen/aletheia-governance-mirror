@@ -30,7 +30,7 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
         """
         **ALETHEIA v1.0 is a governance-risk research prototype and public MVP.** It helps people examine governance ideas, simulate system pressure, review evidence quality, and study how population-weighted exposure may interact with trust, stability, alignment, and capture risk.
 
-        It is not designed to rule, command, enforce, vote, govern, remove leaders, validate spiritual authority, confirm extraordinary claims, or replace human judgment. **ALETHEIA is a mirror:** a structured way to ask whether a proposal protects service, transparency, dignity, accountability, appeal, and repair â€” or whether it concentrates power, hides decisions, weakens appeal rights, or creates capture.
+        It is not designed to rule, command, enforce, vote, govern, remove leaders, validate spiritual authority, confirm extraordinary claims, or replace human judgment. **ALETHEIA is a mirror:** a structured way to ask whether a proposal protects service, transparency, dignity, accountability, appeal, and repair — or whether it concentrates power, hides decisions, weakens appeal rights, or creates capture.
 
         The v1.0 release package includes Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, World Lens, Local Witness Receipts, public limitations, examples, and deployment documentation. These layers help identify what needs review or repair without assigning blame, issuing commands, or claiming final authority.
         """
@@ -179,11 +179,11 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
             """
             Protocol Guide preserves the operating boundaries behind the mirror while remaining corrigible by evidence.
 
-            - **Mirror Effect** â€” power must reflect service, not absorb authority.
-            - **Humility / Z-axis boundary** â€” no code, receipt, metric, hash, tree, 9k structure, institution, person, or model reaches final authority.
-            - **Do not overtrust the tool** â€” no person, system, institution, dataset, protocol, founder, office, or AI is treated as final or beyond review.
-            - **Empirical correction rule** â€” symbolic logic must remain testable and correctable by public evidence.
-            - **Protocol integrity layer** â€” Mirror Check, Stress Test, Boundary Cases, Evidence Lab, and World Lens share one guardrail substrate.
+            - **Mirror Effect** — power must reflect service, not absorb authority.
+            - **Humility / Z-axis boundary** — no code, receipt, metric, hash, tree, 9k structure, institution, person, or model reaches final authority.
+            - **Do not overtrust the tool** — no person, system, institution, dataset, protocol, founder, office, or AI is treated as final or beyond review.
+            - **Empirical correction rule** — symbolic logic must remain testable and correctable by public evidence.
+            - **Protocol integrity layer** — Mirror Check, Stress Test, Boundary Cases, Evidence Lab, and World Lens share one guardrail substrate.
             """
         )
 
@@ -210,7 +210,7 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
 
         The direction is clear: symbolic governance logic should be tested against empirical evidence. Where the model is useful, it should become more precise. Where the data challenges it, the model should be corrected.
 
-        **ALETHEIA is built for review, correction, and humility â€” not final authority.**
+        **ALETHEIA is built for review, correction, and humility — not final authority.**
         """
     )
 

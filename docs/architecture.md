@@ -215,3 +215,11 @@ Patch 126 records the corrected project posture: ALETHEIA is not in expansion mo
 Allowed structural work is limited to moving existing UI code into clearer files, removing duplication, consolidating repeated copy, improving documentation navigation, tightening tests, and locking behavior. The current behavior is treated as the release-candidate surface to preserve.
 
 `app.py` remains unchanged by Patch 126. There is no app runtime behavior change, new module, new scoring, new panel, new analysis mode, new intelligence, receipt schema change, module-routing change, session-state change, privacy scan change, AI Integrity scan change, World Lens math change, external call, telemetry, analytics, storage, identity sync, certification, enforcement, privacy guarantee, or final truth behavior.
+
+## Patch 127 - Encoding Cleanup and Tab Icon Restore
+
+Patch 127 keeps the release-candidate structure intact and only repairs visible text-encoding corruption in public UI text. The restored tab icons and punctuation do not change the application architecture.
+
+`app.py` remains the orchestrator. The existing `ui/` and `pages_ui/` helper boundaries remain unchanged.
+
+Boundary preserved: no scoring, no routing, no receipt schema, no signal logic, no privacy scan logic, no AI Integrity scan logic, no World Lens math, no external calls, no telemetry, no privacy guarantee, no certification, no enforcement, and no final-truth behavior changed. Human review remains required.

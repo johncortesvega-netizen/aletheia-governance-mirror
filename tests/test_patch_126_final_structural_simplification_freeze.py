@@ -121,10 +121,10 @@ def test_patch_126_boundary_language_is_non_authoritative():
         assert phrase not in changed
 
 
-def test_patch_126_manifest_tracks_current_patch():
+def test_patch_126_manifest_tracks_freeze_files_after_later_patches():
     manifest = json.loads(read("data/protocol_baseline_manifest.json"))
-    assert manifest["created_for_patch"] == "126"
-    assert "Patch 126 final structural simplification freeze" in manifest["baseline_id"]
+    assert int(str(manifest["created_for_patch"])) >= 126
+    assert "ALETHEIA v1.0 AI Integrity Preview" in manifest["baseline_id"]
     assert "docs/final_structural_simplification_freeze.md" in manifest["files"]
     assert "tests/test_patch_126_final_structural_simplification_freeze.py" in manifest["files"]
     assert "PATCH_126_MANIFEST.txt" in manifest["files"]

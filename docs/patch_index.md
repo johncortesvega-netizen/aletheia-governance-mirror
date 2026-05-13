@@ -219,3 +219,9 @@ Scope: static UI copy extraction only. `app.py` remains the orchestrator for Evi
 Patch 126 adds `docs/final_structural_simplification_freeze.md` and locks the roadmap posture around refinement rather than expansion.
 
 Scope: documentation and regression-test only. ALETHEIA is not in expansion mode. It is in refinement mode. Allowed work is limited to moving existing UI code into clearer files, removing duplication, consolidating repeated copy, improving documentation navigation, tightening tests, and locking the existing release-candidate surface. No app runtime behavior change, no new scoring, no new panel, no new analysis mode, no new intelligence, no receipt schema change, no module-routing change, no session-state change, no privacy scan change, no AI Integrity scan change, no World Lens math change, no external calls, no telemetry, no analytics, no storage or identity sync, no privacy guarantee, no certification, no enforcement, and no final truth claim. Humans keep the judgment.
+
+## Patch 127 - Encoding Cleanup and Tab Icon Restore
+
+Patch 127 fixes visible mojibake in the public UI surface and restores the tab icons after the late structural-refactor chain. This is a refinement patch, not a feature expansion.
+
+Scope: public UI text cleanup only. No scoring, no module-routing change, no receipt schema change, no signal change, no privacy scan change, no AI Integrity scan change, no World Lens math change, no external calls, no telemetry, no certification, no enforcement, and no final-truth behavior. Human review remains required.

@@ -1,12 +1,12 @@
-## Patch 118 Notes Ã¢â‚¬â€ Beginner UX Polish v2
+## Patch 118 Notes — Beginner UX Polish v2
 
-Patch 118 polishes the beginner guide introduced in Patch 111. It adds a first-audit checklist, clearer Ã¢â‚¬Å“what this means / what this does not meanÃ¢â‚¬Â copy, and stop-and-review prompts for high-consequence or unclear cases.
+Patch 118 polishes the beginner guide introduced in Patch 111. It adds a first-audit checklist, clearer “what this means / what this does not mean” copy, and stop-and-review prompts for high-consequence or unclear cases.
 
 This is static UX copy and documentation only. It does not change runtime behavior, scoring, verdict routing, signal patterns, signal weights, receipt schemas, module routing, external calls, live model calls, telemetry, analytics, central storage, Global ID sync, public ledger sync, privacy guarantees, certification, enforcement, or final-truth behavior.
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
 
-## Patch 117 Ã¢â‚¬â€ Refactor Stabilization Checkpoint
+## Patch 117 — Refactor Stabilization Checkpoint
 
 Status: READY FOR LOCAL REVIEW
 
@@ -16,7 +16,7 @@ Scope: documentation and regression tests only. No runtime behavior change, no s
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
 
-## Patch 116 Ã¢â‚¬â€ App Shell Router Refactor Step 5
+## Patch 116 — App Shell Router Refactor Step 5
 
 Status: READY FOR LOCAL TESTING
 
@@ -30,34 +30,34 @@ This file tracks current project progress inside the repo so patch continuity is
 
 ## Current Status
 
-Current patch: Patch 49 Ã¢â‚¬â€ Full Test Suite / Legacy Test Cleanup.
+Current patch: Patch 49 — Full Test Suite / Legacy Test Cleanup.
 
 Patch 47 is treated as passed. Patch 48 adds the v0.1 release-candidate gate: included modules, explicit exclusions, manual smoke-test steps, automated checks, and release readiness criteria.
 
 ## Current Patch Map
 
-- Patch 33 Ã¢â‚¬â€ Baseline v0.1 + Safe Language + Eternal Baseline Ã¢â‚¬â€ passed.
-- Patch 34 Ã¢â‚¬â€ Boundary Cases Matrix Ã¢â‚¬â€ passed.
-- Patch 35 Ã¢â‚¬â€ Failure Classification Ã¢â‚¬â€ passed.
-- Patch 36 Ã¢â‚¬â€ Patch Automation Toolkit Ã¢â‚¬â€ passed.
-- Patch 36.1 Ã¢â‚¬â€ Automation Script Hotfix + Safe Check Workflow Ã¢â‚¬â€ passed.
-- Patch 37 Ã¢â‚¬â€ Consent-Audit Engine Ã¢â‚¬â€ passed.
-- Patch 38 Ã¢â‚¬â€ Mechanism-vs-Claim Scanner Ã¢â‚¬â€ passed.
-- Patch 39 Ã¢â‚¬â€ Self-Audit Mode Ã¢â‚¬â€ passed.
-- Patch 40 Ã¢â‚¬â€ Evidence Lab + Extraordinary Claim Protocol Ã¢â‚¬â€ passed.
-- Patch 41 Ã¢â‚¬â€ Local Witness Receipt v2 Ã¢â‚¬â€ passed.
-- Patch 42 Ã¢â‚¬â€ World Lens Simulation Ã¢â‚¬â€ passed.
-- Patch 43 Ã¢â‚¬â€ Protocol Guide Consolidation Ã¢â‚¬â€ passed.
-- Patch 44 Ã¢â‚¬â€ Progress Database + Patch Status Hardening Ã¢â‚¬â€ passed.
-- Patch 45 Ã¢â‚¬â€ Public README + Limitations Polish Ã¢â‚¬â€ passed.
-- Patch 46 Ã¢â‚¬â€ Sample Reports / Example Audits Ã¢â‚¬â€ passed.
-- Patch 47 Ã¢â‚¬â€ App Navigation + Smoke Test Cleanup Ã¢â‚¬â€ passed.
-- Patch 48 Ã¢â‚¬â€ Release Candidate Checklist Ã¢â‚¬â€ passed.
-- Patch 49 Ã¢â‚¬â€ Full Test Suite / Legacy Test Cleanup Ã¢â‚¬â€ current.
+- Patch 33 — Baseline v0.1 + Safe Language + Eternal Baseline — passed.
+- Patch 34 — Boundary Cases Matrix — passed.
+- Patch 35 — Failure Classification — passed.
+- Patch 36 — Patch Automation Toolkit — passed.
+- Patch 36.1 — Automation Script Hotfix + Safe Check Workflow — passed.
+- Patch 37 — Consent-Audit Engine — passed.
+- Patch 38 — Mechanism-vs-Claim Scanner — passed.
+- Patch 39 — Self-Audit Mode — passed.
+- Patch 40 — Evidence Lab + Extraordinary Claim Protocol — passed.
+- Patch 41 — Local Witness Receipt v2 — passed.
+- Patch 42 — World Lens Simulation — passed.
+- Patch 43 — Protocol Guide Consolidation — passed.
+- Patch 44 — Progress Database + Patch Status Hardening — passed.
+- Patch 45 — Public README + Limitations Polish — passed.
+- Patch 46 — Sample Reports / Example Audits — passed.
+- Patch 47 — App Navigation + Smoke Test Cleanup — passed.
+- Patch 48 — Release Candidate Checklist — passed.
+- Patch 49 — Full Test Suite / Legacy Test Cleanup — current.
 
 ## Current Architecture Direction
 
-User input Ã¢â€ â€™ optional actor-bias reduction Ã¢â€ â€™ Mirror Check / Stress Test Ã¢â€ â€™ Boundary Cases Ã¢â€ â€™ Failure Classification Ã¢â€ â€™ Consent-Audit Engine Ã¢â€ â€™ Mechanism-vs-Claim Scanner Ã¢â€ â€™ Self-Audit Mode Ã¢â€ â€™ Evidence Lab / Extraordinary Claim Protocol Ã¢â€ â€™ World Lens Simulation Ã¢â€ â€™ Protocol Guide consolidation Ã¢â€ â€™ sample reports / examples Ã¢â€ â€™ repair questions Ã¢â€ â€™ Local Witness Receipt v2 Ã¢â€ â€™ human judgment.
+User input → optional actor-bias reduction → Mirror Check / Stress Test → Boundary Cases → Failure Classification → Consent-Audit Engine → Mechanism-vs-Claim Scanner → Self-Audit Mode → Evidence Lab / Extraordinary Claim Protocol → World Lens Simulation → Protocol Guide consolidation → sample reports / examples → repair questions → Local Witness Receipt v2 → human judgment.
 
 ## Module Map
 
@@ -119,7 +119,7 @@ Patch 42 adds World Lens Simulation as a non-sovereign population-impact mirror.
 
 ## Patch 43 Notes
 
-Patch 43 consolidates the v0.1 logic from patches 33Ã¢â‚¬â€œ42 into `docs/protocol_guide.md` and the app Protocol Guide. It connects the Baseline, Safe Language Layer, Eternal Baseline, Boundary Cases Matrix, Failure Classification, Consent-Audit Engine, Mechanism-vs-Claim Scanner, Self-Audit Mode, Evidence Lab, Local Witness Receipt v2, and World Lens Simulation into one user-facing operating guide. It adds no governance authority and preserves mirror-not-throne, human-review-required language.
+Patch 43 consolidates the v0.1 logic from patches 33–42 into `docs/protocol_guide.md` and the app Protocol Guide. It connects the Baseline, Safe Language Layer, Eternal Baseline, Boundary Cases Matrix, Failure Classification, Consent-Audit Engine, Mechanism-vs-Claim Scanner, Self-Audit Mode, Evidence Lab, Local Witness Receipt v2, and World Lens Simulation into one user-facing operating guide. It adds no governance authority and preserves mirror-not-throne, human-review-required language.
 
 ## Patch 44 Notes
 
@@ -136,7 +136,7 @@ Patch 46 adds `docs/sample_reports.md` and four public-safe example artifacts un
 
 ## Next Logical Patch
 
-Patch 50 Ã¢â‚¬â€ v0.1 Release Package.
+Patch 50 — v0.1 Release Package.
 
 
 ## Patch 47 Notes
@@ -163,9 +163,9 @@ Patch 49 adds no governance authority, no Global ID sync, no real 9k selection, 
 
 ## Next Logical Patch
 
-Patch 50 Ã¢â‚¬â€ v0.1 Release Package.
+Patch 50 — v0.1 Release Package.
 
-## Patch 50 Ã¢â‚¬â€ v0.1 Release Package
+## Patch 50 — v0.1 Release Package
 
 Status: Current
 
@@ -184,7 +184,7 @@ Boundary:
 
 Patch 50 is packaging only. It does not activate real Global ID, real 9k selection, World Leader logic, neural data, public ledger, automatic reset, legal authority, religious authority, or automated enforcement.
 
-Next logical patch: Patch 51 Ã¢â‚¬â€ Git Diff Workflow Setup.
+Next logical patch: Patch 51 — Git Diff Workflow Setup.
 
 
 ## Patch 51 Notes
@@ -195,7 +195,7 @@ The patched-items-only zip workflow remains valid. Git diff workflow is a develo
 
 ## Next Logical Patch
 
-Patch 54 Ã¢â‚¬â€ Example Audit Runner / Demo Inputs.
+Patch 54 — Example Audit Runner / Demo Inputs.
 
 
 ## Patch 52 Notes
@@ -208,10 +208,10 @@ Patch 52 adds no doctrine, no scoring authority, no Global ID sync, no real 9k s
 
 ## Next Logical Patch
 
-Patch 54 Ã¢â‚¬â€ Example Audit Runner / Demo Inputs.
+Patch 54 — Example Audit Runner / Demo Inputs.
 
 
-## Patch 53 Ã¢â‚¬â€ Final v0.1 Smoke Release
+## Patch 53 — Final v0.1 Smoke Release
 
 Status: Current / release-smoke patch
 
@@ -231,10 +231,10 @@ tools\run_checks.bat
 
 Boundary: no new doctrine, no Global ID sync, no real 9k selection, no World Leader logic, no automatic reset, no public ledger, no neural validation, no religious validation, no legal authority, and no automated enforcement.
 
-Next logical patch: Patch 54 Ã¢â‚¬â€ Example Audit Runner / Demo Inputs.
+Next logical patch: Patch 54 — Example Audit Runner / Demo Inputs.
 
 
-## Patch 55 Ã¢â‚¬â€ GitHub Cleanup Package
+## Patch 55 — GitHub Cleanup Package
 
 Status: Current / ready for local verification
 
@@ -256,10 +256,10 @@ Updated:
 
 Boundary: Patch 55 is documentation and repository packaging only. It adds no governance authority, Global ID sync, real 9k selection, World Leader logic, automatic reset, public ledger authority, neural validation, religious validation, legal authority, or automated enforcement.
 
-Next logical patch: Patch 56 Ã¢â‚¬â€ v0.2 Planning Document.
+Next logical patch: Patch 56 — v0.2 Planning Document.
 
 
-## Patch 56Ã¢â‚¬â€œ60 Ã¢â‚¬â€ v1 Finalization Bundle
+## Patch 56–60 — v1 Finalization Bundle
 
 Status: Current / final v1 package
 
@@ -283,7 +283,7 @@ Next work: v0.2 planning, report export implementation, manual evidence attachme
 
 Boundary: no governance authority, no Global ID sync, no real 9k selection, no World Leader logic, no automatic reset, no public ledger authority, no neural validation, no religious validation, no legal authority, and no automated enforcement.
 
-## Patch 61A Ã¢â‚¬â€ Asylum Repair Questions
+## Patch 61A — Asylum Repair Questions
 
 Status: ready for local verification.
 
@@ -297,7 +297,7 @@ tools\run_patch_checks.bat 61A
 
 
 
-## Patch 61B Ã¢â‚¬â€ Malicious Leadership Metric Calibration
+## Patch 61B — Malicious Leadership Metric Calibration
 
 Status: Current / ready for local verification
 
@@ -325,12 +325,12 @@ tools\run_patch_checks.bat 61B
 ```
 
 
-## Patch 61C Notes Ã¢â‚¬â€ Country-Year Available-Year Filter
+## Patch 61C Notes — Country-Year Available-Year Filter
 
 Patch 61C hardens World Lens / Evidence Lab country-year selection. The Country-Year Explorer now computes available years for the selected country/ISO3 only, displays country-specific availability wording, and documents that ALETHEIA must not silently fall back to a stale previous country, global/default year, or invented country-year row.
 
 
-## Patch 61D Ã¢â‚¬â€ Missing Raw Trust Display
+## Patch 61D — Missing Raw Trust Display
 
 Patch 61D clarifies World Lens trust interpretation by separating observed raw trust evidence from neutral trust-prior fallback values. Missing raw trust is displayed as `not available`, and neutral priors are labeled as `0.500 neutral default`.
 
@@ -340,7 +340,7 @@ Check:
 tools\run_patch_checks.bat 61D
 ```
 
-## Patch 61E Ã¢â‚¬â€ World Lens Value Guards
+## Patch 61E — World Lens Value Guards
 
 Patch 61E adds a deterministic selected-year guard for World Lens. It verifies selected-year seat totals, focus-country values, no-stale-year behavior, verdict-seat derivation, and clear trust-prior interpretation.
 
@@ -353,7 +353,7 @@ tools\run_patch_checks.bat 61E
 Boundary: diagnostic only; no governance authority, no Global ID sync, no public ledger, no automatic reset, and no enforcement.
 
 
-## Patch 62 Ã¢â‚¬â€ Post-61 Regression Smoke Test
+## Patch 62 — Post-61 Regression Smoke Test
 
 Status: ready for local verification.
 
@@ -373,9 +373,9 @@ tools\run_patch_checks.bat 62
 ```
 
 
-## Patch 63 Ã¢â‚¬â€ Post-62 Release Refresh
+## Patch 63 — Post-62 Release Refresh
 
-Patch 63 records the post-62 release state in project documentation. It ties the completed Patch 61AÃ¢â‚¬â€œ61E calibration series and Patch 62 smoke regression back into the public README, About page, release notes, and status files.
+Patch 63 records the post-62 release state in project documentation. It ties the completed Patch 61A–61E calibration series and Patch 62 smoke regression back into the public README, About page, release notes, and status files.
 
 Current post-62 stable modules:
 
@@ -387,7 +387,7 @@ Current post-62 stable modules:
 
 Boundary: diagnostic only, mirror-only, human-review required.
 
-## Patch 64 Ã¢â‚¬â€ Mirror Check Batch Baseline Validation
+## Patch 64 — Mirror Check Batch Baseline Validation
 
 Patch 64 records three official Mirror Check batch baselines:
 
@@ -405,7 +405,7 @@ Check:
 tools\run_patch_checks.bat 64
 ```
 
-## Patch 65 Ã¢â‚¬â€ Stress Test Prompting Guide + Batch Baseline
+## Patch 65 — Stress Test Prompting Guide + Batch Baseline
 
 Patch 65 extends Stress Test validation after the Mirror Check batch baselines. It adds:
 
@@ -418,7 +418,7 @@ Expected behavior: Simulation receipts remain local, authority-safe, human-revie
 
 Boundary: diagnostic only; no governance authority, no Global ID sync, no public ledger, no central storage, no automated reset, and no enforcement.
 
-## Patch 66 Ã¢â‚¬â€ Stress Test Risk Sensitivity Calibration
+## Patch 66 — Stress Test Risk Sensitivity Calibration
 
 Status: Delivered
 
@@ -430,13 +430,13 @@ Check:
 tools\run_patch_checks.bat 66
 ```
 
-## Patch 67 Ã¢â‚¬â€ Stress Test Threshold Repair + Metric Softening
+## Patch 67 — Stress Test Threshold Repair + Metric Softening
 
 Patch 67 completes the second Stress Test calibration layer after Patch 66. Stress scenarios that route to `THRESHOLD / Needs Safeguards` now receive repair questions and a light metric softening guard: trust and alignment are capped below perfect values, while ego/ego-pressure receive a small review-pressure floor. This makes medium-risk results more useful without turning ALETHEIA into an authority system.
 
 Boundary: diagnostic only; no enforcement, no automatic reset, no public ledger, no Global ID sync, no central storage, and no authority claim.
 
-## Patch 67.1 Ã¢â‚¬â€ Dutch Stress Test Lexicon + Threshold Receipt Enforcement
+## Patch 67.1 — Dutch Stress Test Lexicon + Threshold Receipt Enforcement
 
 Status: Ready for local verification.
 
@@ -448,7 +448,7 @@ Check command:
 tools\run_patch_checks.bat 67_1
 ```
 
-## Patch 67.2 Ã¢â‚¬â€ Dutch Stress Lexicon Gap Fix + App-Wide Input Scope
+## Patch 67.2 — Dutch Stress Lexicon Gap Fix + App-Wide Input Scope
 
 Patch 67.2 closes the remaining Dutch Stress Test calibration gaps discovered after Patch 67.1. The following Dutch stress patterns now route to `THRESHOLD / Needs Safeguards` rather than `SANCTUARY`:
 
@@ -468,11 +468,11 @@ Check:
 tools\run_patch_checks.bat 67_2
 ```
 
-## Patch 68 Ã¢â‚¬â€ Advanced English Stress Lexicon + Asylum Metric Enforcement
+## Patch 68 — Advanced English Stress Lexicon + Asylum Metric Enforcement
 
 Adds advanced English Stress Test calibration for predictive sentencing, biometric/identity coercion, divine-authority wallet capture, founder-keyword mirror capture, pre-emptive arrests, loyalty-to-state baseline capture, archive deletion, unaudited mirror code, and similar high-risk governance patterns. Advanced English stress scenarios route to `THRESHOLD / Needs Safeguards` or `ASYLUM / High` instead of washing into Sanctuary. Asylum metric enforcement now applies to non-malicious Asylum labels so receipts do not retain perfect trust/alignment or zero ego.
 
-## Patch 69 Ã¢â‚¬â€ Stress Test Question Prompt Detection
+## Patch 69 — Stress Test Question Prompt Detection
 
 Status: completed.
 
@@ -483,7 +483,7 @@ Fix: Stress Test batch mode now checks whether the batch is a question set. If s
 Reminder file used by the user: `formal doctrine repair-question baseline.txt`.
 Repo baseline copy: `examples/batch_questions/formal_doctrine_repair_questions_nl.txt`.
 
-## Patch 69.1 Ã¢â‚¬â€ Stress Batch Scenario-vs-Question Detection
+## Patch 69.1 — Stress Batch Scenario-vs-Question Detection
 
 Status: Ready for local verification.
 
@@ -499,7 +499,7 @@ Safety boundary unchanged: no authority claim, no public ledger, no Global ID sy
 Check: `tools\run_patch_checks.bat 69_1`
 
 
-## Patch 68.1 Ã¢â‚¬â€ Asylum Label / Metric Consistency
+## Patch 68.1 — Asylum Label / Metric Consistency
 
 Status: Ready for local verification.
 
@@ -509,7 +509,7 @@ New rule: if final state is ASYLUM, the label is normalized to `/ Asylum`, trust
 
 Check: `tools\run_patch_checks.bat 68_1`
 
-## Patch 70 Ã¢â‚¬â€ Mirror + Stress Tree Visual Calibration
+## Patch 70 — Mirror + Stress Tree Visual Calibration
 
 Status: Ready for local verification.
 
@@ -522,7 +522,7 @@ Patch 70 updates the tree visual used by Mirror Check and Stress Test. It keeps 
 
 Boundary unchanged: no authority claim, no enforcement, no public ledger, no Global ID sync, no central storage, and human review required.
 
-## Patch 70.1 Ã¢â‚¬â€ Negated Safeguard Strength Calibration
+## Patch 70.1 — Negated Safeguard Strength Calibration
 
 Date: 2026-05-11
 Status: Ready for local verification
@@ -548,7 +548,7 @@ Patch 70.1 adds a narrow positive-credit negation filter in `core/ethics.py`. Po
 
 No authority expansion. ALETHEIA remains local, non-enforcing, human-review-only, and does not claim legal, political, institutional, religious, medical, or automated authority.
 
-## Patch 71 Ã¢â‚¬â€ Batch File Repository Consolidation
+## Patch 71 — Batch File Repository Consolidation
 
 Date: 2026-05-11
 Status: Ready for local verification
@@ -586,7 +586,7 @@ Question banks are documented as `QUESTION_PROMPT / Review Tool` fixtures with m
 
 No scoring, receipt, tree, storage, or authority behavior changed. ALETHEIA remains a local mirror only: no authority claim, no enforcement, no public ledger, no Global ID sync, no central storage, and human review required.
 
-## Patch 71.1 Ã¢â‚¬â€ Module Demo Label Isolation
+## Patch 71.1 — Module Demo Label Isolation
 
 Date: 2026-05-11
 Status: Ready for local verification
@@ -614,7 +614,7 @@ The old `SCENARIOS` name remains as a compatibility alias to the Mirror Check de
 
 No scoring, receipt, tree, batch-catalog, storage, or authority behavior changed. ALETHEIA remains a local mirror only: no authority claim, no enforcement, no public ledger, no Global ID sync, no central storage, and human review required.
 
-## Patch 71.2 Ã¢â‚¬â€ Tree Canopy + Caption Visual Polish
+## Patch 71.2 — Tree Canopy + Caption Visual Polish
 
 Date: 2026-05-11
 Status: Ready for local verification
@@ -641,7 +641,7 @@ Patch 71.2 updates `render_pulse_tree` in `app.py`:
 No scoring, receipt, taxonomy, batch, demo-library, storage, or authority behavior changed. ALETHEIA remains a local mirror only: no authority claim, no enforcement, no public ledger, no Global ID sync, no central storage, and human review required.
 
 
-## Patch 71.3 Ã¢â‚¬â€ Stress Test Missing-Safeguard Negation + Tree Canopy Tune
+## Patch 71.3 — Stress Test Missing-Safeguard Negation + Tree Canopy Tune
 
 Date: 2026-05-11
 Status: Ready for local verification
@@ -668,7 +668,7 @@ Patch 71.3 adds deterministic missing-safeguard negation handling:
 
 This patch does not make ALETHEIA an authority and does not change storage or enforcement behavior. Authority claim remains false; human review remains required; public ledger remains false; Global ID sync remains false; central storage remains false. The tree remains explanatory; local witness receipts remain canonical.
 
-## Patch 71.4 Ã¢â‚¬â€ Missing-Safeguard Verdict Enforcement
+## Patch 71.4 — Missing-Safeguard Verdict Enforcement
 
 Date: 2026-05-11
 
@@ -695,7 +695,7 @@ Files:
 - PATCH_71_4_RECOVERY_NOTE.md
 
 
-## Patch 71.5 Ã¢â‚¬â€ Boundary Cases Missing-Safeguard Cleanup
+## Patch 71.5 — Boundary Cases Missing-Safeguard Cleanup
 
 Date: 2026-05-11
 
@@ -721,7 +721,7 @@ Files:
 - PATCH_71_5_RECOVERY_NOTE.md
 
 
-## Patch 71.6 Ã¢â‚¬â€ Tree Central Glow Removal
+## Patch 71.6 — Tree Central Glow Removal
 
 Date: 2026-05-11
 
@@ -745,7 +745,7 @@ Files:
 - PATCH_71_6_RECOVERY_NOTE.md
 
 
-## Patch 71.7 Ã¢â‚¬â€ Threshold Review Band Display
+## Patch 71.7 — Threshold Review Band Display
 
 Date: 2026-05-11
 
@@ -773,7 +773,7 @@ Files:
 - PATCH_71_7_RECOVERY_NOTE.md
 
 
-## Patch 71.8 Ã¢â‚¬â€ Stress Test Review Band Card Polish
+## Patch 71.8 — Stress Test Review Band Card Polish
 
 Date: 2026-05-11
 
@@ -797,7 +797,7 @@ Files:
 - PATCH_71_8_RECOVERY_NOTE.md
 
 
-## Patch 71.9 Ã¢â‚¬â€ Mirror Check Review Band Display
+## Patch 71.9 — Mirror Check Review Band Display
 
 Date: 2026-05-11
 
@@ -1647,7 +1647,7 @@ Date: 2026-05-12
 Patch 72.30 gives Protocol Guide the same copy/humility treatment applied to the rest of the app.
 
 Implemented:
-- Protocol Guide identity now says ALETHEIA v1.0 Ã¢â‚¬â€ Governance Mirror.
+- Protocol Guide identity now says ALETHEIA v1.0 — Governance Mirror.
 - `keep final judgment human` changed to `keep final review human`.
 - Old Protocol Guide `Global Grid` public copy changed to World Lens.
 - 9k copy now says human anti-tyranny scaffold / threshold steward.
@@ -1994,7 +1994,7 @@ Patch 85 adds **AI Integrity Mirror** to the existing ALETHEIA app as a static, 
 
 Implemented:
 - `core/ai_integrity_mirror.py` static analyzer.
-- New `Ã°Å¸Â¤â€“ AI Integrity Mirror` app tab.
+- New `🤖 AI Integrity Mirror` app tab.
 - Review support for AI outputs, system prompts/policies, agent workflows/specs, model-card/safety claims, and code snippets.
 - Deterministic detection for final-authority claims, automated enforcement, missing review/appeal, opacity, manipulation pressure, surveillance/identity capture, exposed secrets, and unsafe code-execution markers.
 - Internal taxonomy label, risk, integrity, collapse pressure, repair questions, and local witness receipt download.
@@ -2085,7 +2085,7 @@ tools\run_patch_checks.bat 86
 tools\run_patch_checks.bat 85
 ```
 
-## Patch 89 Ã¢â‚¬â€ Privacy Boundary Visibility
+## Patch 89 — Privacy Boundary Visibility
 
 Patch 89 makes the no-built-in-data-collection boundary visible and testable. It adds privacy-by-design copy to the app surface, sidebar, AI Integrity Mirror, About page, README, and `docs/privacy_boundary.md`.
 
@@ -2105,7 +2105,7 @@ tools\run_patch_checks.bat 86
 tools\run_patch_checks.bat 85
 ```
 
-## Patch 90 Ã¢â‚¬â€ AI Integrity Batch Review Scaffold
+## Patch 90 — AI Integrity Batch Review Scaffold
 
 Patch 90 turns AI Integrity Mirror from single-artifact review into a small pasted-batch review workflow while keeping the same static, local-first boundary.
 
@@ -2129,7 +2129,7 @@ tools\run_patch_checks.bat 86
 tools\run_patch_checks.bat 85
 ```
 
-## Patch 91 Ã¢â‚¬â€ AI Integrity Receipt Export Polish
+## Patch 91 — AI Integrity Receipt Export Polish
 
 Patch 91 makes AI Integrity Mirror receipt downloads more useful for human review while preserving the static mirror boundary.
 
@@ -2154,7 +2154,7 @@ tools\run_patch_checks.bat 86
 tools\run_patch_checks.bat 85
 ```
 
-## Patch 92 Ã¢â‚¬â€ AI Integrity Rubric Documentation
+## Patch 92 — AI Integrity Rubric Documentation
 
 Patch 92 makes the AI Integrity Mirror rubric explicit without changing runtime behavior.
 
@@ -2180,7 +2180,7 @@ tools\run_patch_checks.bat 86
 tools\run_patch_checks.bat 85
 ```
 
-## Patch 93 Ã¢â‚¬â€ AI Integrity Batch Demo Pack
+## Patch 93 — AI Integrity Batch Demo Pack
 
 Patch 93 adds a ready-to-use static demo pack for AI Integrity Mirror.
 
@@ -2209,7 +2209,7 @@ tools\run_patch_checks.bat 86
 tools\run_patch_checks.bat 85
 ```
 
-## Patch 94 Ã¢â‚¬â€ AI Integrity UI Review Table Polish
+## Patch 94 — AI Integrity UI Review Table Polish
 
 Patch 94 improves the AI Integrity Mirror result display for faster human review.
 
@@ -2234,7 +2234,7 @@ tools\run_patch_checks.bat 92
 ```
 
 
-## Patch 95 Ã¢â‚¬â€ Code Integrity Static Scan v1
+## Patch 95 — Code Integrity Static Scan v1
 
 Patch 95 adds a code-specific static scan layer for pasted code artifacts.
 
@@ -2257,7 +2257,7 @@ tools\run_patch_checks.bat 94
 tools\run_patch_checks.bat 93
 ```
 
-## Patch 96 Ã¢â‚¬â€ Privacy Boundary Audit Panel
+## Patch 96 — Privacy Boundary Audit Panel
 
 Patch 96 adds a static Privacy Boundary Audit Panel to AI Integrity Mirror.
 
@@ -2282,7 +2282,7 @@ tools\run_patch_checks.bat 94
 ```
 
 
-## Patch 97 Ã¢â‚¬â€ AI Integrity Comparison View v1
+## Patch 97 — AI Integrity Comparison View v1
 
 Patch 97 adds artifact-level **AI Integrity Comparison View** for AI Integrity batch results.
 
@@ -2303,7 +2303,7 @@ tools\run_patch_checks.bat 96
 tools\run_patch_checks.bat 95
 ```
 
-## Patch 98 Ã¢â‚¬â€ AI Integrity Red Team Prompt Pack v1
+## Patch 98 — AI Integrity Red Team Prompt Pack v1
 
 Patch 98 adds a static/manual red-team prompt pack for AI Integrity Mirror adoption testing.
 
@@ -2324,7 +2324,7 @@ tools\run_patch_checks.bat 96
 ```
 
 
-## Patch 99 Ã¢â‚¬â€ AI Integrity Report Builder v1
+## Patch 99 — AI Integrity Report Builder v1
 
 Patch 99 adds a compact AI Integrity Report Builder for delimiter-separated batch results. The builder summarizes existing static artifact-level readings into an executive summary, artifact count, risk distribution, state distribution, top triggered categories, highest-pressure artifacts, selected redacted evidence snippets, repair questions, non-certification note, and privacy note.
 
@@ -2332,7 +2332,7 @@ Files touched include `core/ai_integrity_mirror.py`, `app.py`, `docs/ai_integrit
 
 Boundary: static pasted-artifact report only. No scoring change, no verdict-routing change, no live model calls, no external calls, no repository crawl, no vendor ranking, no model-wide certification, no safety guarantee, no security guarantee, no privacy guarantee, no enforcement, and no final truth claim.
 
-## Patch 100 Ã¢â‚¬â€ Release Stabilization / Public Adoption Package
+## Patch 100 — Release Stabilization / Public Adoption Package
 
 Patch 100 marks the AI Integrity work from patches 85-99 as **ALETHEIA v1.0 AI Integrity Preview**.
 
@@ -2358,7 +2358,7 @@ tools\run_patch_checks.bat 95
 ```
 
 
-## Patch 101 Ã¢â‚¬â€ Human-Auditable Protocol Baseline Self-Audit
+## Patch 101 — Human-Auditable Protocol Baseline Self-Audit
 
 Patch 101 adds a local hash-based self-audit for selected protocol, release-boundary, and AI Integrity files. It creates a human-readable way to see whether watched files match the known local baseline or require human review before release.
 
@@ -2381,7 +2381,7 @@ tools\run_patch_checks.bat 100
 ```
 
 
-## Patch 102 Ã¢â‚¬â€ Structural Improvement Entry Point
+## Patch 102 — Structural Improvement Entry Point
 
 Patch 102 starts the external-review improvement path with documentation architecture rather than a risky immediate code refactor. The review advice identified a large `app.py`, rule-based signal limits, Streamlit hosting limits, contributor complexity, and local-first/no-external-call tradeoffs. Structurally, the right first move is to document the intended architecture, contributor path, and staged refactor order before changing runtime behavior.
 
@@ -2403,7 +2403,7 @@ tools\run_patch_checks.bat 102
 tools\run_patch_checks.bat 101
 ```
 
-## Patch 103 Ã¢â‚¬â€ Signal Detection Transparency Documentation
+## Patch 103 — Signal Detection Transparency Documentation
 
 Patch 103 documents the signal-detection posture identified in external review: ALETHEIA uses transparent rule-based and heuristic signal detection in key review paths. The patch makes this a trust asset rather than a hidden limitation.
 
@@ -2427,15 +2427,15 @@ tools\run_patch_checks.bat 101
 
 
 
-## Patch 102 Ã¢â‚¬â€ Structural Improvement Entry Point
+## Patch 102 — Structural Improvement Entry Point
 
 Patch 102 started the reviewable structural path with docs-first architecture/onboarding work before any `app.py` refactor. It added contributor and architecture entry points while preserving all runtime behavior and authority boundaries.
 
-## Patch 103 Ã¢â‚¬â€ Signal Detection Transparency Documentation
+## Patch 103 — Signal Detection Transparency Documentation
 
 Patch 103 documented ALETHEIA's transparent rule-based and heuristic signal-detection basis. It clarified explainability/privacy strengths, English/Dutch calibration limits, and the requirement that signal outputs remain internal governance-risk readings rather than verdicts or certifications.
 
-## Patch 104 Ã¢â‚¬â€ Boundary, Privacy, and Hosted-Use Transparency
+## Patch 104 — Boundary, Privacy, and Hosted-Use Transparency
 
 Patch 104 adds a central public boundary statement and hosted-use caveat before larger UI or `app.py` refactors.
 
@@ -2458,7 +2458,7 @@ tools\run_patch_checks.bat 102
 tools\run_patch_checks.bat 101
 ```
 
-## Patch 105 Ã¢â‚¬â€ Patch History and Public Trust Navigation
+## Patch 105 — Patch History and Public Trust Navigation
 
 Patch 105 responds to the external-review observation that ALETHEIA's long patch trail can feel overwhelming for new reviewers and contributors. It adds a documentation navigation layer instead of changing runtime behavior.
 
@@ -2488,7 +2488,7 @@ python tools
 un_protocol_baseline_self_audit.py
 ```
 
-## Patch 106 Ã¢â‚¬â€ Signal Dictionary and Glossary
+## Patch 106 — Signal Dictionary and Glossary
 
 Patch 106 adds a reviewer-facing signal dictionary / glossary after the Patch 103 signal-detection transparency layer and the Patch 105 public-trust navigation layer.
 
@@ -2526,7 +2526,7 @@ Boundary preserved:
 Principle retained: ALETHEIA surfaces signals. Humans keep the judgment.
 
 
-## Patch 107 Ã¢â‚¬â€ Boundary and Privacy UI Wiring
+## Patch 107 — Boundary and Privacy UI Wiring
 
 Patch 107 makes the boundary/privacy trust layer visible inside the running Streamlit app. The sidebar now renders the existing privacy/local-first expander and compact boundary footer from `core/privacy_panel.py` and `core/boundary.py`.
 
@@ -2535,7 +2535,7 @@ Scope: narrow runtime UI wiring only. No scoring change, no verdict-routing chan
 Human review remains required.
 
 
-## Patch 108 Ã¢â‚¬â€ App Shell Router Refactor Step 1
+## Patch 108 — App Shell Router Refactor Step 1
 
 Patch 108 begins the gradual app.py router/shell refactor. It extracts the stable top-of-app boundary notices into `ui/app_shell.py` and keeps `app.py` responsible for orchestration. This is the first small maintainability step after the documentation, privacy, trust, and signal-glossary foundation.
 
@@ -2543,7 +2543,7 @@ Scope: app shell extraction only. No scoring change, no verdict-routing change, 
 
 Human review remains required.
 
-## Patch 109 Notes Ã¢â‚¬â€ App Shell Router Refactor Step 2
+## Patch 109 Notes — App Shell Router Refactor Step 2
 
 Patch 109 continues the gradual app.py router/shell refactor after Patch 108. It extracts the stable sidebar identity card and sidebar context copy into `ui/app_shell.py` while keeping `app.py` as the orchestrator.
 
@@ -2556,7 +2556,7 @@ Human review remains required. ALETHEIA surfaces signals; humans keep the judgme
 
 App.py remains the orchestrator for behavior; Patch 109 only extracts sidebar shell copy.
 
-## Patch 110 Notes Ã¢â‚¬â€ App Shell Router Refactor Step 3
+## Patch 110 Notes — App Shell Router Refactor Step 3
 
 Patch 110 continues the gradual app.py router/shell refactor after Patches 108 and 109. It extracts the stable public header and first-use note into `ui/app_shell.py` while keeping `app.py` as the orchestrator.
 
@@ -2566,7 +2566,7 @@ App.py remains the orchestrator for behavior; Patch 110 only extracts public hea
 
 
 
-## Patch 111 Notes Ã¢â‚¬â€ Beginner Try This First UX
+## Patch 111 Notes — Beginner Try This First UX
 
 Patch 111 starts the beginner UX layer after app-shell refactor steps 108-110. It adds `ui/beginner_guide.py`, wires a compact "Start here: try this first" guide into `app.py`, and documents the first safe path in `docs/beginner_ux.md`.
 
@@ -2575,7 +2575,7 @@ The guide points new users toward Mirror Check, a risk reading, observed reasons
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
 
 
-## Patch 112 Notes Ã¢â‚¬â€ Privacy Audit Panel v1
+## Patch 112 Notes — Privacy Audit Panel v1
 
 Patch 112 starts the privacy audit panel roadmap item in the current structural sequence. It extracts the Privacy Boundary Audit Panel renderer into `ui/privacy_audit_panel.py` while preserving the existing static privacy-boundary scan inside AI Integrity Mirror.
 
@@ -2585,7 +2585,7 @@ This is a UI/rendering extraction only. It does not change scoring, verdict rout
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
 
-## Patch 113 Notes Ã¢â‚¬â€ Public Trust Package Consolidation
+## Patch 113 Notes — Public Trust Package Consolidation
 
 Patch 113 consolidates the public trust package after the boundary, signal, privacy, onboarding, patch-navigation, app-shell, beginner UX, and Privacy Audit Panel v1 sequence. It rewrites `docs/public_trust_package.md` as the central review map and adds `docs/public_review_checklist.md` for public reviewers.
 
@@ -2597,7 +2597,7 @@ Human review remains required. ALETHEIA surfaces signals; humans keep the judgme
 
 
 
-## Patch 114 Notes Ã¢â‚¬â€ Public Release Polish v1
+## Patch 114 Notes — Public Release Polish v1
 
 Patch 114 polishes the public entry path after Patch 113. It adds `docs/public_release_polish_v1.md` and updates the README, public release notes, trust package, patch index, architecture, and trust-package README so public reviewers can begin with boundary, privacy/local-first posture, hosted-use caveats, signal basis, beginner path, public trust map, and public-review checklist.
 
@@ -2606,7 +2606,7 @@ This is documentation/release-surface polish only. It does not change app.py, ru
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
 
 
-## Patch 115 Notes Ã¢â‚¬â€ App Shell Router Refactor Step 4
+## Patch 115 Notes — App Shell Router Refactor Step 4
 
 Patch 115 resumes Option A after the Patch 114 public release polish. It extracts static sidebar tuning-section headings and captions from `app.py` into `ui/app_shell.py`.
 
@@ -2616,7 +2616,7 @@ Boundary preserved: no external calls, live model calls, telemetry, analytics, c
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
 
-## Patch 119 Notes Ã¢â‚¬â€ App Shell Router Refactor Step 6
+## Patch 119 Notes — App Shell Router Refactor Step 6
 
 Patch 119 continues the app-shell router refactor after the Patch 117 stabilization checkpoint and Patch 118 beginner UX polish. It adds `ui/module_intro.py` and extracts one small Stress Test module intro note from `app.py`.
 
@@ -2626,7 +2626,7 @@ Boundary preserved: no external calls, live model calls, telemetry, analytics, s
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
 
-## Patch 120 Notes Ã¢â‚¬â€ Module Intro Extraction Step 2
+## Patch 120 Notes — Module Intro Extraction Step 2
 
 Patch 120 continues the module-intro extraction sequence. It adds two more copy-only helpers to `ui/module_intro.py`: one for the Boundary Cases calibration note and one for the Consent-Audit Engine intro.
 
@@ -2636,7 +2636,7 @@ Boundary preserved: no external calls, live model calls, telemetry, analytics, s
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
 
-## Patch 121 Notes Ã¢â‚¬â€ Shared Status / Notice Cards
+## Patch 121 Notes — Shared Status / Notice Cards
 
 Patch 121 starts the shared status/notice-card layer by adding `ui/status_cards.py`. It extracts the static AI Integrity boundary caption group into `render_ai_integrity_boundary_cards`.
 
@@ -2706,3 +2706,13 @@ Human review remains required. ALETHEIA surfaces signals; humans keep the judgme
 During review of Patches 119-126, stale regression expectations were corrected. Patch 119 no longer requires an old exact import string after grouped module-intro imports. Patch 122 now recognizes the current app-shell helper signatures and confirms that the static privacy boundary scan remains owned by `core/ai_integrity_mirror.py`. The protocol baseline manifest was resaved as UTF-8 without BOM and refreshed to the current watched-file hashes.
 
 This is test/manifest hygiene only. No app runtime behavior, scoring, routing, receipt schema, signal pattern, signal weight, privacy scan behavior, AI Integrity scan behavior, World Lens math, external call, telemetry, analytics, storage, identity sync, privacy guarantee, certification, enforcement, or final truth behavior changed. Human review remains required.
+
+## Patch 127 Notes - Encoding Cleanup and Tab Icon Restore
+
+Patch 127 repairs visible UTF-8 mojibake in the public app surface after the late structural-refactor sequence. It restores the app tab icons and normal Unicode punctuation in app-facing text and public progress notes.
+
+This is a public UI text cleanup only. It does not add a new feature, module, panel, analysis mode, or intelligence. It only restores readable text where corrupted symbols appeared.
+
+Boundary preserved: no scoring, routing, receipt schema, signal pattern, signal weight, session-state, upload handling, download handling, privacy scan, AI Integrity scan, World Lens math, external call, telemetry, analytics, storage or identity sync, privacy guarantee, certification, enforcement, or final-truth behavior changed.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.

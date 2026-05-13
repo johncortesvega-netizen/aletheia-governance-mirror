@@ -2820,3 +2820,21 @@ python tools\run_protocol_baseline_self_audit.py
 ### Patch 126 local-review stabilization note
 
 Patch 126 also repairs stale regression expectations found during local review of Patches 119-126. The changes are test/manifest hygiene only: grouped imports are accepted, current helper signatures are recognized, privacy-scan ownership remains in the core layer, and the protocol baseline manifest is UTF-8 without BOM. No app runtime behavior change, no new scoring, no new panel, no new analysis mode, no external calls, and no authority expansion. Human review remains required.
+
+## Patch 127 - Encoding Cleanup and Tab Icon Restore
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 127 repairs visible UTF-8 mojibake in the public app surface after the late structural-refactor sequence. It restores tab icons and normal Unicode punctuation where broken broken emoji bytes, broken dashes, and broken bullets appeared in the app UI or public progress notes.
+
+Boundary preserved: public UI text cleanup only. No scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module-routing change, no session-state change, no upload handling change, no download handling change, no privacy scan change, no AI Integrity scan change, no World Lens math change, no external calls, no telemetry, no analytics, no storage or identity sync, no privacy guarantee, no certification, no enforcement, and no final-truth behavior changed.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+Validation targets:
+
+```bat
+tools\run_patch_checks.bat 127
+tools\run_patch_checks.bat 126
+python tools\run_protocol_baseline_self_audit.py
+```
