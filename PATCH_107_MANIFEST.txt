@@ -1,0 +1,45 @@
+PATCH 107 — Boundary and Privacy UI Wiring
+
+Status: READY FOR LOCAL TESTING
+
+Purpose:
+- Wire the reusable Patch 104 boundary and privacy helpers into the Streamlit sidebar.
+- Make the local-first / hosted-use caveat visible in the live app without changing scoring or receipts.
+
+Files changed:
+- app.py
+- tests/test_patch_107_boundary_privacy_ui_wiring.py
+- PATCH_107_MANIFEST.txt
+- PATCH_107_RECOVERY_NOTE.md
+- README.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- data/protocol_baseline_manifest.json
+
+Behavior changes:
+- Narrow runtime UI wiring only: the sidebar now renders the existing privacy/local-first expander and compact boundary footer.
+
+Boundary preserved:
+- No scoring change.
+- No verdict-routing change.
+- No signal-pattern change.
+- No signal-weight change.
+- No receipt schema change.
+- No external calls.
+- No live model calls.
+- No telemetry.
+- No analytics.
+- No backend upload endpoint.
+- No central storage.
+- No Global ID sync.
+- No public ledger sync.
+- No privacy guarantee.
+- No security guarantee.
+- No certification.
+- No enforcement.
+- No final truth claim.
+
+Suggested verification:
+- tools\run_patch_checks.bat 107
+- tools\run_patch_checks.bat 106
+- python tools\run_protocol_baseline_self_audit.py

@@ -17,6 +17,20 @@ import plotly.graph_objects as go
 import streamlit as st
 import streamlit.components.v1 as components
 
+from core.boundary import render_boundary_statement
+from core.privacy_panel import render_privacy_panel
+from pages_ui.about_page import render_about_public_info_page
+from pages_ui.trust_package_page import render_public_trust_package_page
+from ui.app_shell import render_app_boundary_notices, render_sidebar_brand, render_sidebar_context
+from ui.app_shell import render_app_header, render_how_to_use_note, render_app_footer_banner
+from ui.app_shell import render_sidebar_review_lens_intro, render_sidebar_review_lens_note
+from ui.app_shell import render_sidebar_review_rhythm_intro, render_sidebar_review_rhythm_note
+from ui.app_shell import render_sidebar_safety_rails_intro, render_sidebar_safety_rails_note
+from ui.beginner_guide import render_try_this_first_guide
+from ui.module_intro import render_boundary_cases_intro, render_consent_audit_intro, render_stress_test_scan_intro
+from ui.privacy_audit_panel import render_privacy_boundary_audit_panel
+from ui.status_cards import render_ai_integrity_boundary_cards
+
 from core.parser import parse_scenario_llm, decouple_actor
 from core.ethics import evaluate_ethics, apply_ethics_to_metrics
 from core.cognitive_resilience import evaluate_cognitive_resilience, apply_cognitive_resilience_to_metrics, positive_cr_baseline_stabilizer
@@ -105,7 +119,7 @@ except Exception:
 
 
 
-# Patch 71.4 — app-local missing-safeguard verdict guard.
+# Patch 71.4 â€” app-local missing-safeguard verdict guard.
 # Keep this local in app.py so the visible Stress Test UI and local witness
 # receipt do not depend on import-wrapper/cache behavior for this critical
 # THRESHOLD routing rule.
@@ -259,14 +273,14 @@ DOCTRINE_HTML_FILES = [
 TOTAL_9K = 9000
 
 APP_NAVIGATION_LABELS = [
-    "💬 Mirror Check",
-    "🚀 Stress Test",
-    "🧭 Boundary Cases",
-    "🤖 AI Integrity Mirror",
-    "📊 Evidence Lab",
-    "🌐 World Lens",
-    "📜 Protocol Guide",
-    "ℹ️ Why ALETHEIA",
+    "ðŸ’¬ Mirror Check",
+    "ðŸš€ Stress Test",
+    "ðŸ§­ Boundary Cases",
+    "ðŸ¤– AI Integrity Mirror",
+    "ðŸ“Š Evidence Lab",
+    "ðŸŒ World Lens",
+    "ðŸ“œ Protocol Guide",
+    "â„¹ï¸ Why ALETHEIA",
 ]
 
 APP_NAVIGATION_MAP = [
@@ -475,7 +489,7 @@ def _empirical_humility_display_df(df: pd.DataFrame) -> pd.DataFrame:
             "Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority."
         )
         sanctuary_interpretation = (
-            "Low-risk internal reading · Internal taxonomy label: SANCTUARY; "
+            "Low-risk internal reading Â· Internal taxonomy label: SANCTUARY; "
             "not a final safety, final Sanctuary, or authority claim."
         )
         threshold_overlay = (
@@ -483,7 +497,7 @@ def _empirical_humility_display_df(df: pd.DataFrame) -> pd.DataFrame:
             "Internal taxonomy label: THRESHOLD; human interpretation and safeguard review remain required."
         )
         threshold_interpretation = (
-            "Review / threshold reading · Internal taxonomy label: THRESHOLD; "
+            "Review / threshold reading Â· Internal taxonomy label: THRESHOLD; "
             "unresolved safeguards or friction; human review required."
         )
         asylum_overlay = (
@@ -491,34 +505,34 @@ def _empirical_humility_display_df(df: pd.DataFrame) -> pd.DataFrame:
             "Internal taxonomy label: ASYLUM; human review is required and ALETHEIA does not enforce action."
         )
         asylum_interpretation = (
-            "High-risk internal reading · Internal taxonomy label: ASYLUM; "
+            "High-risk internal reading Â· Internal taxonomy label: ASYLUM; "
             "high capture/collapse concern; human review required; no enforcement action."
         )
         replacements = {
             "SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": sanctuary_overlay,
-            "SANCTUARY · SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": sanctuary_interpretation,
-            "SANCTUARY · Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails": sanctuary_interpretation,
-            "SANCTUARY · Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority.": sanctuary_interpretation,
+            "SANCTUARY Â· SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": sanctuary_interpretation,
+            "SANCTUARY Â· Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails": sanctuary_interpretation,
+            "SANCTUARY Â· Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority.": sanctuary_interpretation,
             "THRESHOLD evidence pattern: unresolved safeguards or friction": threshold_overlay,
-            "THRESHOLD · THRESHOLD evidence pattern: unresolved safeguards or friction": threshold_interpretation,
+            "THRESHOLD Â· THRESHOLD evidence pattern: unresolved safeguards or friction": threshold_interpretation,
             "ASYLUM evidence pattern: high capture/collapse concern": asylum_overlay,
-            "ASYLUM · ASYLUM evidence pattern: high capture/collapse concern": asylum_interpretation,
+            "ASYLUM Â· ASYLUM evidence pattern: high capture/collapse concern": asylum_interpretation,
         }
         if text_value in replacements:
             return replacements[text_value]
-        if text_value.startswith("SANCTUARY · Low-risk evidence pattern"):
+        if text_value.startswith("SANCTUARY Â· Low-risk evidence pattern"):
             return sanctuary_interpretation
         if text_value.startswith("SANCTUARY: Low-risk evidence pattern"):
             return sanctuary_interpretation
-        if text_value.startswith("SANCTUARY · SANCTUARY evidence pattern"):
+        if text_value.startswith("SANCTUARY Â· SANCTUARY evidence pattern"):
             return sanctuary_interpretation
         if text_value.startswith("SANCTUARY: SANCTUARY evidence pattern"):
             return sanctuary_interpretation
-        if text_value.startswith("THRESHOLD · THRESHOLD evidence pattern"):
+        if text_value.startswith("THRESHOLD Â· THRESHOLD evidence pattern"):
             return threshold_interpretation
         if text_value.startswith("THRESHOLD: THRESHOLD evidence pattern"):
             return threshold_interpretation
-        if text_value.startswith("ASYLUM · ASYLUM evidence pattern"):
+        if text_value.startswith("ASYLUM Â· ASYLUM evidence pattern"):
             return asylum_interpretation
         if text_value.startswith("ASYLUM: ASYLUM evidence pattern"):
             return asylum_interpretation
@@ -622,7 +636,7 @@ def _protocol_metric_display(value: object) -> str:
     return html.escape(_protocol_public_label(label))
 
 
-st.set_page_config(page_title="ALETHEIA", page_icon="🌿", layout="wide")
+st.set_page_config(page_title="ALETHEIA", page_icon="ðŸŒ¿", layout="wide")
 
 st.markdown(
     """
@@ -976,8 +990,8 @@ st.markdown(
         font-size: 2.2rem;
         line-height: 1;
     }
-    .botanical-frame::before { content: "❧"; top: 0.45rem; left: 0.75rem; }
-    .botanical-frame::after { content: "❦"; right: 0.85rem; bottom: 0.45rem; }
+    .botanical-frame::before { content: "â§"; top: 0.45rem; left: 0.75rem; }
+    .botanical-frame::after { content: "â¦"; right: 0.85rem; bottom: 0.45rem; }
 
     .hero {
         border: 0;
@@ -1375,7 +1389,7 @@ def tree_copy_for_state(state: str, mode: str = "Mirror Check") -> dict:
             "score_label": "Visual review-tool signal",
             "caption": "Audit question detected. This input is a review prompt, not a scored governance scenario.",
             "root": "Human review",
-            "trunk": "Question → reflection → repair",
+            "trunk": "Question â†’ reflection â†’ repair",
             "branches": ["Clarity", "Appeal", "Bias check", "Repair", "Human review"],
         }
 
@@ -1535,20 +1549,20 @@ def render_pulse_tree(
         width:100%;
     ">
         <div style="font-family:Georgia,serif;color:#d4b88a;font-size:22px;font-weight:700;margin-bottom:6px;">
-            🌳 {title}
+            ðŸŒ³ {title}
         </div>
         <div style="color:#aeb7c6;font-size:13px;margin-bottom:8px;">
             Mode: <strong>{mode}</strong>
-            · State: <strong style="color:{leaf_color};">{state}</strong>
-            · {copy.get('score_label', 'Visual tree score')} {score:.2f}
-            · Alignment {alignment:.2f}
-            · Ego {ego:.2f}
+            Â· State: <strong style="color:{leaf_color};">{state}</strong>
+            Â· {copy.get('score_label', 'Visual tree score')} {score:.2f}
+            Â· Alignment {alignment:.2f}
+            Â· Ego {ego:.2f}
         </div>
         <div style="color:#e8e0d0;font-size:13px;line-height:1.45;margin-bottom:10px;">
-            <strong>{copy.get('headline', state)}</strong> — {copy.get('caption', '')}
+            <strong>{copy.get('headline', state)}</strong> â€” {copy.get('caption', '')}
         </div>
         <div style="color:#aeb7c6;font-size:12px;line-height:1.5;margin-bottom:10px;">
-            Root: <strong>{copy.get('root', 'Human review')}</strong> · Trunk: <strong>{copy.get('trunk', 'Evidence + accountability')}</strong><br/>
+            Root: <strong>{copy.get('root', 'Human review')}</strong> Â· Trunk: <strong>{copy.get('trunk', 'Evidence + accountability')}</strong><br/>
             {branch_html}
         </div>
 
@@ -1852,7 +1866,7 @@ def render_doctrine_html_reference(title: str, html_path: Path, key_prefix: str)
         st.caption(f"Embedded from `{html_path.name}`")
     with c2:
         st.download_button(
-            f"⬇️ Download {html_path.name}",
+            f"â¬‡ï¸ Download {html_path.name}",
             data=html_text,
             file_name=html_path.name,
             mime="text/html",
@@ -1908,7 +1922,7 @@ def stress_contains(text: str, terms: list[str]) -> bool:
 
 
 
-# Patch 71.3 — missing-safeguard negation calibration.
+# Patch 71.3 â€” missing-safeguard negation calibration.
 # Visuals and metrics must not treat negated safeguards as present safeguards.
 MISSING_SAFEGUARD_NEGATION_PATTERNS = [
     "lacks explainability", "lacks independent challenge", "lacks human override",
@@ -2095,7 +2109,7 @@ SOURCE_CONFORMANCE_MATRIX = {
     },
     "V-Axis Formula": {
         "domain": "Core Model",
-        "terms": ["v-axis", "intelligence + power - ego", "intelligence + power − ego", "ego suppression", "intelligence acceleration"],
+        "terms": ["v-axis", "intelligence + power - ego", "intelligence + power âˆ’ ego", "ego suppression", "intelligence acceleration"],
         "review": "NO",
         "reason": "V-Axis stability formula reference detected."
     },
@@ -2831,7 +2845,7 @@ def render_sydney_protocol_self_check_gate():
         st.error("SYSTEM LOGIC CHECK FAILED")
         st.warning(
             "Sydney Protocol guardrail logic is inconsistent. Do not trust this audit output yet. "
-            "Logic broken — wait for administrator review."
+            "Logic broken â€” wait for administrator review."
         )
         if check.get("failures"):
             st.code("\n".join(check["failures"]), language="text")
@@ -3124,14 +3138,14 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     if threshold_mapping:
         detail_rows.append(
             '<div style="margin-top:0.15rem;"><strong>Threshold direction:</strong> '
-            f'{safe_threshold_direction} · Z-axis {threshold_z_axis:.3f} / 0.9999 · Confirmed repair {threshold_confirmed_repair_capacity:.3f}</div>'
+            f'{safe_threshold_direction} Â· Z-axis {threshold_z_axis:.3f} / 0.9999 Â· Confirmed repair {threshold_confirmed_repair_capacity:.3f}</div>'
         )
     detail_rows_html = "".join(detail_rows)
 
     judgment_card_html = f"""
 <div class="soft-card">
   <div style="color:#aeb7c6;font-size:0.78rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;">
-    {safe_source} · Protocol-adjusted internal label
+    {safe_source} Â· Protocol-adjusted internal label
   </div>
   <div style="color:{color};font-size:2rem;font-weight:900;margin-top:0.25rem;">
     {_protocol_metric_display(verdict)}
@@ -3163,7 +3177,7 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
             tcols[3].metric("Confirmed repair", f"{float(threshold_mapping.get('confirmed_repair_capacity', threshold_mapping.get('repair_index', 0.0))):.3f}")
             st.caption(
                 "Receipt preview only: this maps whether the reading is moving toward capture pressure, a balanced review zone, or the human/system boundary. "
-                "It does not create a new verdict or enforcement path. Repair questions are a route, not proof that safeguards already exist. Z=1.0000 remains outside ALETHEIA’s claim."
+                "It does not create a new verdict or enforcement path. Repair questions are a route, not proof that safeguards already exist. Z=1.0000 remains outside ALETHEIAâ€™s claim."
             )
             st.info(str(threshold_mapping.get("asymptote_note", "ALETHEIA does not claim final safety, final truth, or final authority. Ultimate questions and final authority remain outside code, metrics, receipts, hashes, trees, 9k structures, and institutional power.")))
             st.caption(str(threshold_mapping.get("nine_k_threshold_steward_note", "9k is a human anti-tyranny scaffold / threshold steward, not Sanctuary or final legitimacy.")))
@@ -3210,82 +3224,18 @@ header_path = Path("assets/header.jpg")
 if header_path.exists():
     st.image(str(header_path), use_container_width=True)
 
-st.markdown(
-    f"""
-    <div class="botanical-frame hero">
-        <div class="hero-grid">
-            <div>
-                <div class="hero-kicker">Sydney Protocol · Local Mirror · Plain Words</div>
-                <div class="hero-title">ALETHEIA</div>
-                <div class="hero-sub">A mirror, not a throne.</div>
-                <div class="caption">{APP_VERSION} · English + Nederlands/Dutch input supported · Spot control. Protect people. Keep truth visible.</div>
-            </div>
-            <div class="hero-emblem" aria-hidden="true"><img class="aletheia-mascot-logo" src="{mascot_logo_uri}" alt="" /></div>
-        </div>
-        <div class="civic-ribbon">
-            <div class="ribbon-item"><span class="ribbon-icon">🛡️</span><div><div class="ribbon-label">Purpose</div><div class="ribbon-body">People first. Scores second.</div></div></div>
-            <div class="ribbon-item"><span class="ribbon-icon">🌿</span><div><div class="ribbon-label">Method</div><div class="ribbon-body">Show the pattern. Keep appeal open.</div></div></div>
-            <div class="ribbon-item"><span class="ribbon-icon">🪞</span><div><div class="ribbon-label">Boundary</div><div class="ribbon-body">ALETHEIA asks. People decide. It never rules, votes, commands, or replaces people.</div></div></div>
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+render_app_header(mascot_logo_uri, APP_VERSION, st)
+render_how_to_use_note(st)
+render_try_this_first_guide(st, expanded=False)
 
-st.markdown(
-    """
-    <div class="prototype-note">
-        <strong>How to use this:</strong> Paste an idea. ALETHEIA looks for power, pressure, appeal, and risk. You keep the final say. It is not legal, medical, political, religious, or official advice.
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-st.markdown(
-    f"""
-    <div class="prototype-note">
-        <strong>Input language scope:</strong> {SUPPORTED_INPUT_LANGUAGE_NOTE}
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-
-st.markdown(
-    """
-    <div class="prototype-note">
-        <strong>Plain words:</strong> Sanctuary means low risk inside this prototype, not final safety. Threshold means review and repair. Asylum means high capture or harm pressure. The Z-axis stops at the human/system boundary; a receipt is your local record of what was reviewed.
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-
-st.markdown(
-    """
-    <div class="prototype-note">
-        <strong>Privacy by design:</strong> This repository includes no telemetry, trackers, analytics SDKs, backend upload endpoint, public ledger sync, Global ID sync, or central user-input database. Inputs are processed in the running app session; receipts are user-held downloads. Hosting providers may still have their own server logs.
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+render_app_boundary_notices(SUPPORTED_INPUT_LANGUAGE_NOTE, st)
 
 # Sidebar controls
 with st.sidebar:
-    st.markdown(
-        f"""
-        <div class="sidebar-emblem-card">
-            <div class="sidebar-emblem-mark"><img class="aletheia-mascot-logo" src="{mascot_logo_uri}" alt="" /></div>
-            <div class="sidebar-brand">ALETHEIA</div>
-            <div class="sidebar-tagline">A mirror, not a throne.</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    st.header("Reading controls")
-    st.caption("Choose how alert the review should be to pressure, trust, and fit.")
-    st.caption("Input scope: English + Nederlands/Dutch are calibrated across modules.")
-    st.caption("Privacy boundary: no built-in telemetry, trackers, analytics SDKs, backend upload endpoint, public ledger sync, Global ID sync, or central user-input database.")
+    render_sidebar_brand(mascot_logo_uri, st)
+    render_sidebar_context(st)
+    render_privacy_panel(st, expanded=False)
+    render_boundary_statement("footer", st)
 
     preset_labels = {
         "default": "Starting preset",
@@ -3305,7 +3255,7 @@ with st.sidebar:
         st.session_state["sidebar_capture_sensitivity"] = 0.55
         st.session_state["sidebar_alignment_floor"] = 0.45
 
-    st.markdown("#### Review lens")
+    render_sidebar_review_lens_intro(st)
     preset_display = st.selectbox(
         "Review lens",
         preset_options,
@@ -3313,7 +3263,7 @@ with st.sidebar:
         key="sidebar_weight_profile",
         help="Choose a starting view. It is only a lens, not a truth machine.",
     )
-    st.caption("This only sets the lens. ALETHEIA waits for your idea.")
+    render_sidebar_review_lens_note(st)
 
     selected_preset = next(
         key for key in WEIGHT_PRESETS.keys()
@@ -3321,8 +3271,7 @@ with st.sidebar:
     )
     weights = WEIGHT_PRESETS[selected_preset]
 
-    st.markdown("---")
-    st.markdown("#### Review rhythm")
+    render_sidebar_review_rhythm_intro(st)
     steps = st.slider(
         "Steps",
         20,
@@ -3340,10 +3289,9 @@ with st.sidebar:
         key="sidebar_agent_voices",
         help="How many small voices join the test.",
     )
-    st.caption("The test keeps voices small so the pattern is easy to read. The 9k view lives in World Lens.")
+    render_sidebar_review_rhythm_note(st)
 
-    st.markdown("---")
-    st.markdown("#### Safety rails")
+    render_sidebar_safety_rails_intro(st)
     ego_tolerance = st.slider(
         "Control sensitivity",
         0.35,
@@ -3362,7 +3310,7 @@ with st.sidebar:
         key="sidebar_alignment_floor",
         help="Minimum fit needed before a system can look stable.",
     )
-    st.caption("Gentle voice, firm rails. These settings change the reading, not the boundary.")
+    render_sidebar_safety_rails_note(st)
 
 
 MIN_FULL_GRID_COUNTRIES = 100
@@ -3417,7 +3365,7 @@ def update_protocol_state(**updates) -> dict:
 def render_shared_protocol_state_notice(current_mode: str, *, expanded: bool = False):
     state = update_protocol_state(current_mode=current_mode)
     st.info(
-        "**Shared Protocol State** — Mirror Check, Stress Test, Boundary Cases, AI Integrity Mirror, Evidence Lab, and World Lens are different windows into the same protocol heart. "
+        "**Shared Protocol State** â€” Mirror Check, Stress Test, Boundary Cases, AI Integrity Mirror, Evidence Lab, and World Lens are different windows into the same protocol heart. "
         "Changes to empirical evidence, scoring calibration, the Sydney Protocol overlay, doctrine thresholds, or the selected evidence year may echo across modes. "
         "That is intentional shared-state behavior, not an error. Scenario-only controls stay local unless you explicitly apply them to the shared protocol state."
     )
@@ -3431,10 +3379,10 @@ def render_shared_protocol_state_notice(current_mode: str, *, expanded: bool = F
             ("V-Dem active", "Yes" if state.get("vdem_active") else "No"),
             ("Demo data active", "Yes" if state.get("synthetic_demo_active") else "No"),
             ("Sydney Protocol overlay active", "Yes" if state.get("sydney_protocol_overlay_active") else "No"),
-            ("Selected evidence year", state.get("selected_evidence_year", "—")),
-            ("Selected case / scenario", state.get("selected_context", "—")),
-            ("Evidence basis", state.get("grid_basis", "—")),
-            ("Last protocol update source", state.get("last_update_source", "—")),
+            ("Selected evidence year", state.get("selected_evidence_year", "â€”")),
+            ("Selected case / scenario", state.get("selected_context", "â€”")),
+            ("Evidence basis", state.get("grid_basis", "â€”")),
+            ("Last protocol update source", state.get("last_update_source", "â€”")),
         ]
         st.dataframe(pd.DataFrame(rows, columns=["State field", "Value"]), use_container_width=True, hide_index=True)
 
@@ -3497,7 +3445,7 @@ render_sydney_protocol_self_check_gate()
 tab_chat, tab_sim, tab_boundary, tab_ai_integrity, tab_empirical, tab_grid, tab_doctrine, tab_about = st.tabs(APP_NAVIGATION_LABELS)
 
 with tab_sim:
-    st.subheader("Stress Test — Try an Idea")
+    st.subheader("Stress Test â€” Try an Idea")
     render_shared_protocol_state_notice("Stress Test")
     st.write("Start with your own scenario, load a demo on purpose, or use the Manual test. ALETHEIA does not read examples by default. You lead.")
 
@@ -3509,7 +3457,7 @@ with tab_sim:
     )
 
     if input_mode == "Scan my idea":
-        st.info("Scan my idea is for your own text. Demo scenarios are there if you choose them, but they never run by themselves.")
+        render_stress_test_scan_intro(st)
     else:
         st.warning("Manual test is for hands-on testing. The sliders shape the result. Any text is just a note.")
 
@@ -3556,7 +3504,7 @@ with tab_sim:
             if apply_invisibility and input_status != "EMPTY_INPUT":
                 st.caption("Names and titles are removed before review. The pattern stays visible.")
 
-        selected_context = "Waiting for your input" if input_status == "EMPTY_INPUT" else ((query[:120] + "…") if len(query) > 120 else query)
+        selected_context = "Waiting for your input" if input_status == "EMPTY_INPUT" else ((query[:120] + "â€¦") if len(query) > 120 else query)
         update_protocol_state(selected_context=selected_context, last_update_source="Stress Test")
         if input_mode == "Manual test":
             st.caption("Manual test mode is active: sliders shape the result directly. Scenario text is optional context, not hidden default data.")
@@ -3653,12 +3601,12 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                 st.session_state.last_query_raw = query
                 st.session_state.last_input_status = input_status
                 st.session_state.last_invisibility_report = invisibility_report
-                selected_context = "Manual test" if input_mode == "Manual test" else ((analysis_query[:120] + "…") if len(analysis_query) > 120 else analysis_query)
+                selected_context = "Manual test" if input_mode == "Manual test" else ((analysis_query[:120] + "â€¦") if len(analysis_query) > 120 else analysis_query)
                 update_protocol_state(selected_context=selected_context, last_update_source="Stress Test")
                 if input_mode == "Scan my idea":
                     st.rerun()
 
-    with st.expander("Stress Test Batch Testing — up to 50 scenarios", expanded=False):
+    with st.expander("Stress Test Batch Testing â€” up to 50 scenarios", expanded=False):
         st.caption("Upload or paste scenario-style inputs. Batch testing is explicit opt-in, local-only, and creates local witness receipts.")
         stress_batch_source = st.radio(
             "Stress batch input source",
@@ -3816,7 +3764,7 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                         "Review band": stress_review_band.get("label"),
                         "Risk": risk,
                         "Label": label,
-                        "Integrity": "—" if integrity_value is None else round(float(integrity_value), 3),
+                        "Integrity": "â€”" if integrity_value is None else round(float(integrity_value), 3),
                         "Repair questions": len((stress_report or {}).get("repair_questions") or []),
                     })
             archive_bytes, batch_index = build_local_witness_batch_zip(stress_receipts, module="Simulation", app_version=APP_VERSION)
@@ -3830,7 +3778,7 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
             st.dataframe(pd.DataFrame(st.session_state.stress_batch_summary), use_container_width=True, hide_index=True, height=300)
         if st.session_state.get("stress_batch_archive_bytes") and not stress_batch_is_stale:
             st.download_button(
-                "⬇️ Download Stress Test batch receipts",
+                "â¬‡ï¸ Download Stress Test batch receipts",
                 data=st.session_state.stress_batch_archive_bytes,
                 file_name="aletheia_stress_test_batch_witness_receipts.zip",
                 mime="application/zip",
@@ -3886,9 +3834,9 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         verdict_color = {"SANCTUARY": "#8fbc8f", "THRESHOLD": "#e5c36b", "ASYLUM": "#db7777"}.get(verdict, base_color)
         input_status_label = st.session_state.get("last_input_status", "MANUAL_INPUT" if last_input_mode == "Manual test" else "USER_INPUT")
         invisibility_report = st.session_state.get("last_invisibility_report")
-        invisibility_note = " · Invisibility Filter: on" if isinstance(invisibility_report, dict) and invisibility_report.get("invisibility_filter_applied") else ""
+        invisibility_note = " Â· Invisibility Filter: on" if isinstance(invisibility_report, dict) and invisibility_report.get("invisibility_filter_applied") else ""
         current_review_band = review_band_for_state(verdict, report, sim)
-        st.caption(f"Feature source: {last_input_mode} · Input status: {input_status_label} · Scan mode: {scan_mode} · Protocol label: {label} · Review band: {current_review_band.get('label')}{invisibility_note}")
+        st.caption(f"Feature source: {last_input_mode} Â· Input status: {input_status_label} Â· Scan mode: {scan_mode} Â· Protocol label: {label} Â· Review band: {current_review_band.get('label')}{invisibility_note}")
 
         c1, c2, c3, c4 = st.columns(4)
         review_band = review_band_for_state(verdict, report, sim)
@@ -3950,13 +3898,13 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         repair_questions = report.get("repair_questions") or []
         if repair_questions:
             for idx, question in enumerate(repair_questions[:5], start=1):
-                soft_card(f"REVIEW · Question {idx}", silent_operator_question(question, context="this repair path"))
+                soft_card(f"REVIEW Â· Question {idx}", silent_operator_question(question, context="this repair path"))
         else:
             for rec in report["recommendations"][:5]:
                 priority = str(rec.get("priority", "review")).upper()
                 target = rec.get("target", "System")
                 action = rec.get("action", "Review")
-                soft_card(f"{priority} · {target} · {action}", silent_operator_question(rec, context=str(target)))
+                soft_card(f"{priority} Â· {target} Â· {action}", silent_operator_question(rec, context=str(target)))
 
         st.markdown("### Local witness receipt")
         st.caption("Creates a receipt you hold. It is not published, synced, or treated as authority.")
@@ -3978,7 +3926,7 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         )
         receipt_text = render_local_witness_receipt_text(receipt)
         st.download_button(
-            "⬇️ Download receipt",
+            "â¬‡ï¸ Download receipt",
             data=receipt_text,
             file_name="aletheia_local_witness_receipt.txt",
             mime="text/plain",
@@ -3986,14 +3934,14 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         )
 
 with tab_boundary:
-    st.subheader("Boundary Cases — Calibration Center")
+    st.subheader("Boundary Cases â€” Calibration Center")
     render_shared_protocol_state_notice("Boundary Cases")
     st.write(
         "Use this tab to stress-test difficult governance edge cases. "
         "ALETHEIA reflects risk patterns for human review; it does not command, enforce, vote, remove leaders, or replace people."
     )
 
-    st.info("Boundary cases calibrate the review model. They do not create authority, enforcement, or final decisions.")
+    render_boundary_cases_intro(st)
 
     failure_mode_definitions = {
         "Actor Failure": "A person, group, office, founder, operator, or implementing body misuses power, manipulates others, bypasses review, or becomes unfit.",
@@ -4181,23 +4129,19 @@ Human review note: This is a mirror output, not an instruction or enforcement de
         language="text",
     )
 
-    st.markdown("### Consent-Audit Engine")
-    st.write(
-        "Consent is treated as valid only when refusal is realistically possible. "
-        "This check looks for structural pressure, basic-rights dependency, withdrawal gaps, and unclear alternatives."
-    )
+    render_consent_audit_intro(st)
     consent_examples = {
-        "Green — refusal is realistic": {
+        "Green â€” refusal is realistic": {
             "summary": "The person can say no without losing basic rights, safety, dignity, or essential access.",
             "signals": "Clear opt-out, no retaliation, fallback/alternative path, withdrawal right, plain-language explanation, meaningful appeal, and human review.",
             "failure": "No serious failure signal / monitor for implementation drift.",
         },
-        "Yellow — pressure or ambiguity exists": {
+        "Yellow â€” pressure or ambiguity exists": {
             "summary": "Refusal technically exists, but the cost, consequence, dependency, or withdrawal path is unclear.",
             "signals": "Default opt-in, confusing terms, weak withdrawal, power imbalance, service dependency, unclear data retention, weak fallback, unclear appeal, or no human override.",
             "failure": "Policy Failure / Implementation Failure / Data Failure",
         },
-        "Red — consent appears structurally forced": {
+        "Red â€” consent appears structurally forced": {
             "summary": "Refusal is practically impossible, punished, hidden, or tied to loss of basic rights or essential services.",
             "signals": "Loss of food, housing, care, safety, work, due process, essential access, fallback path, appeal, or non-revocable agreement.",
             "failure": "Policy Failure / Actor Failure / Implementation Failure",
@@ -4246,19 +4190,19 @@ Human review disclaimer: This is a mirror output for human review. It is not leg
         "Values language can be sincere, but mechanisms make it reviewable, appealable, and correctable."
     )
     mechanism_examples = {
-        "High — claims supported by mechanisms": {
+        "High â€” claims supported by mechanisms": {
             "claims": "The document states values and connects them to concrete procedures.",
             "mechanisms": "Independent appeal process, public audit trail, time-limited authority, correction path, evidence requirement, explainability, independent challenge, human override, human review, exit right.",
             "missing": "No major missing safeguard in the selected example.",
             "failure": "No serious failure signal / monitor for implementation drift.",
         },
-        "Medium — partial safeguards": {
+        "Medium â€” partial safeguards": {
             "claims": "The document uses ethical language and includes some safeguards, but key procedures are vague or incomplete.",
             "mechanisms": "Some review or oversight exists, but appeal, correction, evidence standards, explainability, independent challenge, human override, fallback, or time limits are unclear.",
             "missing": "Clarify appeal, audit trail, correction, responsible actor, and review deadline.",
             "failure": "Policy Failure / Implementation Failure / Data Failure",
         },
-        "Low — mostly values language": {
+        "Low â€” mostly values language": {
             "claims": "The document repeatedly says it protects freedom, justice, dignity, safety, or service.",
             "mechanisms": "Few or no concrete safeguards are described.",
             "missing": "Appeal, audit trail, correction, time limits, independent review, explainability, independent challenge, human override, fallback, evidence rules, exit, and accountability.",
@@ -4316,17 +4260,17 @@ Human review note: This is a mirror output. It flags mechanism gaps; it does not
         "It checks baseline documents, prompts, rubrics, README language, app copy, architect-context language, and generated reports for self-capture risk."
     )
     self_audit_examples = {
-        "Green — no obvious self-capture signal": {
+        "Green â€” no obvious self-capture signal": {
             "summary": "The reviewed text preserves human review, avoids founder elevation, and includes appeal or correction language.",
             "risks": "Monitor for drift as prompts, rubrics, and app language change.",
             "repair": "Keep versioned logs, independent review, and correction paths visible.",
         },
-        "Yellow — safeguard unclear or incomplete": {
+        "Yellow â€” safeguard unclear or incomplete": {
             "summary": "The reviewed text is mostly safe, but appeal, correction, evidence limits, or founder-capture safeguards are weak or implicit.",
             "risks": "Overclaiming, weak review language, vague correction path, or unclear evidence standard.",
             "repair": "Add explicit human review, appeal, correction, evidence limits, and safe output rules.",
         },
-        "Red — self-capture or authority leakage risk": {
+        "Red â€” self-capture or authority leakage risk": {
             "summary": "The reviewed text may imply that ALETHEIA, its founder, doctrine, model, baseline, or prompt is beyond review.",
             "risks": "Founder capture, ideological lock-in, unverifiable authority, unverified authority leakage, or human-review bypass.",
             "repair": "Remove authority language, add independent review, add appeal/correction, and state that self-audit is not proof of correctness.",
@@ -4426,23 +4370,14 @@ Disclaimer: This receipt is a local witness artifact for human review. It is not
     )
 
 with tab_ai_integrity:
-    st.subheader("AI Integrity Mirror — Static Review, Not Certification")
+    st.subheader("AI Integrity Mirror â€” Static Review, Not Certification")
     render_shared_protocol_state_notice("AI Integrity Mirror")
     st.info(
         "Paste an AI response, system prompt, agent workflow, policy claim, model-card excerpt, or code snippet. "
         "ALETHEIA reflects authority-boundary and governance-integrity signals from the pasted artifact only. "
         "It does not certify models, vendors, codebases, or outputs as safe. It also does not certify prompts or agents."
     )
-    st.caption("Boundary extension: It does not certify models, vendors, codebases, prompts, agents, or outputs as safe.")
-    st.caption("Demo risk examples include phrases such as certified safe only as trigger text, not as an ALETHEIA claim.")
-    st.caption(
-        "Scope boundary: no live model benchmarking, no external calls, no repository crawl, no public ledger, "
-        "and no future-behavior guarantee."
-    )
-    st.caption(
-        "Data boundary: no built-in telemetry, trackers, analytics SDKs, backend upload endpoint, "
-        "or central storage of pasted AI Integrity artifacts."
-    )
+    render_ai_integrity_boundary_cards(st)
 
     ai_demo_examples = {item["title"]: item for item in AI_INTEGRITY_DEMO_EXAMPLES}
     artifact_kind = st.selectbox(
@@ -4484,7 +4419,7 @@ with tab_ai_integrity:
                     st.session_state["ai_integrity_last_input"] = ai_integrity_input
                     st.session_state["ai_integrity_last_kind"] = artifact_kind
                     update_protocol_state(
-                        selected_context=f"AI Integrity batch · {ai_batch_result['summary']['artifact_count']} pasted artifact(s)",
+                        selected_context=f"AI Integrity batch Â· {ai_batch_result['summary']['artifact_count']} pasted artifact(s)",
                         last_update_source="AI Integrity Mirror",
                     )
             else:
@@ -4494,7 +4429,7 @@ with tab_ai_integrity:
                 st.session_state["ai_integrity_last_input"] = ai_integrity_input
                 st.session_state["ai_integrity_last_kind"] = artifact_kind
                 update_protocol_state(
-                    selected_context=(ai_integrity_input[:120] + "…") if len(ai_integrity_input) > 120 else ai_integrity_input,
+                    selected_context=(ai_integrity_input[:120] + "â€¦") if len(ai_integrity_input) > 120 else ai_integrity_input,
                     last_update_source="AI Integrity Mirror",
                 )
 
@@ -4507,7 +4442,7 @@ with tab_ai_integrity:
         bcols[1].metric("Low", summary.get("risk_counts", {}).get("Low", 0))
         bcols[2].metric("Medium", summary.get("risk_counts", {}).get("Medium", 0))
         bcols[3].metric("High", summary.get("risk_counts", {}).get("High", 0))
-        bcols[4].metric("Highest pressure item", summary.get("highest_pressure_item") or "—")
+        bcols[4].metric("Highest pressure item", summary.get("highest_pressure_item") or "â€”")
         st.caption(summary.get("scope_note"))
         st.caption(summary.get("privacy_note"))
 
@@ -4529,7 +4464,7 @@ with tab_ai_integrity:
                 findings = item.get("findings", []) or []
                 top_finding = findings[0].get("name") if findings else "No triggered signal"
                 col.markdown(
-                    f"**Item {item.get('batch_item_index')} · {item.get('risk')}**\n\n"
+                    f"**Item {item.get('batch_item_index')} Â· {item.get('risk')}**\n\n"
                     f"State: `{item.get('state')}`\n\n"
                     f"Pressure: `{float(scan.get('risk_pressure', 0) or 0):.3f}`\n\n"
                     f"Top signal: {top_finding}"
@@ -4559,16 +4494,16 @@ with tab_ai_integrity:
             st.dataframe(pd.DataFrame(category_rows), use_container_width=True, hide_index=True)
         with st.expander("Batch item details and repair questions", expanded=False):
             for item in ai_batch_result.get("results", []):
-                st.markdown(f"**Item {item.get('batch_item_index')} — {item.get('state')} / {item.get('risk')}**")
+                st.markdown(f"**Item {item.get('batch_item_index')} â€” {item.get('state')} / {item.get('risk')}**")
                 st.markdown("**Repair questions for human review**")
                 for question in item.get("report", {}).get("repair_questions", [])[:3]:
                     st.info(question)
                 if item.get("findings"):
-                    with st.expander(f"Evidence snippets — item {item.get('batch_item_index')}", expanded=False):
+                    with st.expander(f"Evidence snippets â€” item {item.get('batch_item_index')}", expanded=False):
                         for finding in item.get("findings", [])[:6]:
                             snippets = finding.get("evidence_snippets", []) or []
                             if snippets:
-                                st.write(f"**{finding.get('category', 'General')} · {finding.get('name')}**")
+                                st.write(f"**{finding.get('category', 'General')} Â· {finding.get('name')}**")
                                 for snippet in snippets:
                                     st.code(snippet, language="text")
         comparison = build_ai_integrity_comparison(ai_batch_result.get("results", []))
@@ -4617,7 +4552,7 @@ with tab_ai_integrity:
 
         with st.expander("Artifact-level review needed notes", expanded=True):
             for row in comparison.get("rows_by_pressure", []):
-                st.markdown(f"**{row.get('artifact')} — {row.get('state')} / {row.get('risk')}**")
+                st.markdown(f"**{row.get('artifact')} â€” {row.get('state')} / {row.get('risk')}**")
                 for note in row.get("review_notes", [])[:4]:
                     st.info(note)
 
@@ -4652,14 +4587,14 @@ with tab_ai_integrity:
             if snippets:
                 st.markdown("**Selected redacted evidence snippets**")
                 for snippet in snippets[:8]:
-                    st.write(f"**{snippet.get('artifact')} · {snippet.get('category')} · {snippet.get('signal')}**")
+                    st.write(f"**{snippet.get('artifact')} Â· {snippet.get('category')} Â· {snippet.get('signal')}**")
                     st.code(snippet.get("redacted_snippet", ""), language="text")
             st.markdown("**Repair questions**")
             for question in report_builder.get("repair_questions", [])[:8]:
                 st.info(question)
             st.caption(report_builder.get("privacy_note"))
         st.download_button(
-            "⬇️ Download AI Integrity report",
+            "â¬‡ï¸ Download AI Integrity report",
             data=report_text,
             file_name="aletheia_ai_integrity_report.txt",
             mime="text/plain",
@@ -4693,44 +4628,7 @@ with tab_ai_integrity:
             st.write(ai_result.get("reliance_note"))
 
         privacy_boundary_audit = ai_result.get("privacy_boundary_audit") or scan.get("privacy_boundary_audit") or {}
-        if privacy_boundary_audit:
-            st.markdown("#### Privacy Boundary Audit Panel")
-            st.caption(privacy_boundary_audit.get("scope_note"))
-            st.caption(privacy_boundary_audit.get("non_certification_note"))
-            pcols = st.columns(4)
-            pcols[0].metric("Privacy detections", privacy_boundary_audit.get("detection_count", 0))
-            pcols[1].metric("Active signals", privacy_boundary_audit.get("active_signal_count", 0))
-            pcols[2].metric("Local-only stated", "Yes" if privacy_boundary_audit.get("local_only_statement_present") else "No")
-            pcols[3].metric("Boundary tension", "Yes" if privacy_boundary_audit.get("privacy_boundary_tension") else "No")
-            st.info(privacy_boundary_audit.get("local_only_statement"))
-            st.warning(privacy_boundary_audit.get("hosting_caveat"))
-            privacy_detections = privacy_boundary_audit.get("detections", []) or []
-            if privacy_detections:
-                privacy_rows = [
-                    {
-                        "Category": item.get("category"),
-                        "Signal": item.get("name"),
-                        "Severity": item.get("severity"),
-                        "Why it matters": item.get("description"),
-                    }
-                    for item in privacy_detections
-                ]
-                st.dataframe(pd.DataFrame(privacy_rows), use_container_width=True, hide_index=True)
-                with st.expander("Privacy evidence snippets — static boundary audit", expanded=False):
-                    for item in privacy_detections:
-                        snippets = item.get("evidence_snippets", []) or []
-                        if snippets:
-                            st.write(f"**{item.get('category')} · {item.get('name')}**")
-                            for snippet in snippets:
-                                st.code(snippet, language="text")
-                with st.expander("Privacy boundary review questions", expanded=True):
-                    for question in privacy_boundary_audit.get("review_questions", [])[:7]:
-                        st.info(question)
-            else:
-                st.caption(
-                    "No privacy-boundary trigger was detected by this static audit. "
-                    "This is not a privacy guarantee, compliance approval, hosting audit, or proof that no data is collected."
-                )
+        render_privacy_boundary_audit_panel(privacy_boundary_audit, st)
 
         code_static_scan = ai_result.get("code_integrity_static_scan") or scan.get("code_integrity_static_scan") or {}
         if code_static_scan:
@@ -4754,11 +4652,11 @@ with tab_ai_integrity:
                     for item in code_detections
                 ]
                 st.dataframe(pd.DataFrame(code_rows), use_container_width=True, hide_index=True)
-                with st.expander("Code evidence snippets — redacted static scan", expanded=False):
+                with st.expander("Code evidence snippets â€” redacted static scan", expanded=False):
                     for item in code_detections:
                         snippets = item.get("evidence_snippets", []) or []
                         if snippets:
-                            st.write(f"**{item.get('category')} · {item.get('name')}**")
+                            st.write(f"**{item.get('category')} Â· {item.get('name')}**")
                             for snippet in snippets:
                                 st.code(snippet, language="text")
                 with st.expander("Code review questions", expanded=True):
@@ -4804,7 +4702,7 @@ with tab_ai_integrity:
                     for item in category_findings
                 ]
                 st.dataframe(pd.DataFrame(finding_rows), use_container_width=True, hide_index=True)
-                with st.expander(f"Evidence snippets — {category}", expanded=False):
+                with st.expander(f"Evidence snippets â€” {category}", expanded=False):
                     shown_any_snippet = False
                     for item in category_findings:
                         snippets = item.get("evidence_snippets", []) or []
@@ -4862,7 +4760,7 @@ with tab_ai_integrity:
             st.caption("Receipt export includes AI Integrity scope, privacy, non-certification, redacted evidence, and repair context before the generic local witness receipt.")
             st.code(ai_receipt_text, language="text")
         st.download_button(
-            "⬇️ Download AI Integrity receipt",
+            "â¬‡ï¸ Download AI Integrity receipt",
             data=ai_receipt_text,
             file_name="aletheia_ai_integrity_receipt.txt",
             mime="text/plain",
@@ -4872,7 +4770,7 @@ with tab_ai_integrity:
 
 
 with tab_empirical:
-    st.subheader("Evidence Lab — Data Check")
+    st.subheader("Evidence Lab â€” Data Check")
     render_shared_protocol_state_notice("Evidence Lab")
     st.write(
         "Build or upload a country-year evidence table from public sources, then let ALETHEIA carry it through variable mapping, empirical scoring, and the Sydney Protocol overlay. "
@@ -4888,12 +4786,12 @@ with tab_empirical:
             """
             Evidence Lab uses four review levels:
 
-            - **Strong evidence** — multiple public, relevant, reviewable sources support the claim.
-            - **Partial evidence** — some evidence exists, but coverage, independence, relevance, or completeness is limited.
-            - **Weak evidence** — the claim is mostly asserted, anecdotal, internally sourced, or insufficiently documented.
-            - **No evidence supplied** — no reviewable support is provided.
+            - **Strong evidence** â€” multiple public, relevant, reviewable sources support the claim.
+            - **Partial evidence** â€” some evidence exists, but coverage, independence, relevance, or completeness is limited.
+            - **Weak evidence** â€” the claim is mostly asserted, anecdotal, internally sourced, or insufficiently documented.
+            - **No evidence supplied** â€” no reviewable support is provided.
 
-            Extraordinary claims — including spiritual, prophetic, alien, neural, metaphysical, or otherwise exceptional claims — are treated as **unverified** unless supported by public, testable, non-coercive evidence.
+            Extraordinary claims â€” including spiritual, prophetic, alien, neural, metaphysical, or otherwise exceptional claims â€” are treated as **unverified** unless supported by public, testable, non-coercive evidence.
 
             ALETHEIA may audit the policy consequences of a claim for rights, coercion, transparency, accountability, appealability, and repair. It must not validate spiritual authority, confirm invisible sources, remove guardrails, or replace human review.
             """
@@ -4925,9 +4823,9 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
         language="text",
     )
 
-    with st.expander("Data sources → ALETHEIA fields → Protocol view", expanded=True):
+    with st.expander("Data sources â†’ ALETHEIA fields â†’ Protocol view", expanded=True):
         st.markdown(
-            "**Flow:** public evidence → variable mapping → scoring → protocol overlay → review."
+            "**Flow:** public evidence â†’ variable mapping â†’ scoring â†’ protocol overlay â†’ review."
         )
         st.markdown("#### Data source map")
         source_df = evidence_source_frame()
@@ -4954,7 +4852,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
         st.markdown("**Helpful empirical columns**")
         helpful_empirical_columns = [c for c in EMPIRICAL_COLUMNS if c != "population"]
         st.code("\n".join(helpful_empirical_columns), language="text")
-        st.caption("Scale expectations: WGI fields can use their normal -2.5 to +2.5 scale. V-Dem and trust fields should already be 0–1.")
+        st.caption("Scale expectations: WGI fields can use their normal -2.5 to +2.5 scale. V-Dem and trust fields should already be 0â€“1.")
 
 
     st.markdown("### Build a country-year table from public data")
@@ -5143,7 +5041,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
         st.caption("This table merges WGI, population, and optional V-Dem/trust data. V-Dem rows before 1996 are filtered out by default.")
         st.dataframe(master_df.head(250), use_container_width=True, hide_index=True, height=260)
         st.download_button(
-            "⬇️ Download generated country-year master CSV",
+            "â¬‡ï¸ Download generated country-year master CSV",
             data=master_df.to_csv(index=False),
             file_name="aletheia_country_year_master.csv",
             mime="text/csv",
@@ -5160,7 +5058,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
     st.markdown("### Score evidence table")
     template_df = empirical_template()
     st.download_button(
-        "⬇️ Download empirical CSV template",
+        "â¬‡ï¸ Download empirical CSV template",
         data=template_df.to_csv(index=False),
         file_name="aletheia_empirical_country_year_template.csv",
         mime="text/csv",
@@ -5478,7 +5376,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
         # means aligned with the real uploaded evidence instead of the demo rows.
         scored_for_validation = scored.reset_index(drop=True).copy()
 
-        st.markdown("### Topline Evidence Results" + (" · Synthetic demo" if use_template else " · Uploaded evidence"))
+        st.markdown("### Topline Evidence Results" + (" Â· Synthetic demo" if use_template else " Â· Uploaded evidence"))
         if use_template:
             st.caption("Synthetic rows are for app testing only. Do not read them as real-world findings.")
         else:
@@ -5488,14 +5386,14 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
         e1.metric("Rows scored", f"{len(scored):,}")
 
         seat_year_label = "Synthetic 9k seats" if use_template else "Latest-year 9k seats"
-        seat_year_value = "—"
+        seat_year_value = "â€”"
         seat_caption = ""
         seat_df = allocation_base_all.copy()
         if not seat_df.empty and "year" in seat_df.columns and "seats_9k" in seat_df.columns:
             year_values = pd.to_numeric(seat_df["year"], errors="coerce")
             if year_values.notna().any():
                 latest_year = int(year_values.dropna().max())
-                seat_year_label = "Synthetic 9k seats" if use_template else f"9k seats · {latest_year}"
+                seat_year_label = "Synthetic 9k seats" if use_template else f"9k seats Â· {latest_year}"
                 latest_year_mask = year_values == latest_year
                 latest_year_seats = int(pd.to_numeric(seat_df.loc[latest_year_mask, "seats_9k"], errors="coerce").sum(skipna=True))
                 seat_year_value = f"{latest_year_seats:,}"
@@ -5532,7 +5430,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
 
         csv_out = scored.to_csv(index=False)
         st.download_button(
-            "⬇️ Download scored empirical ALETHEIA table",
+            "â¬‡ï¸ Download scored empirical ALETHEIA table",
             data=csv_out,
             file_name="aletheia_evidence_audit_scores.csv",
             mime="text/csv",
@@ -5594,7 +5492,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                         "BFA": "Burkina Faso", "BDI": "Burundi", "KHM": "Cambodia", "CMR": "Cameroon", "CAN": "Canada",
                         "CAF": "Central African Republic", "TCD": "Chad", "CHL": "Chile", "CHN": "China", "COL": "Colombia",
                         "COD": "Democratic Republic of the Congo", "COG": "Republic of the Congo", "CRI": "Costa Rica",
-                        "CIV": "Côte d’Ivoire", "HRV": "Croatia", "CUB": "Cuba", "CYP": "Cyprus", "CZE": "Czechia",
+                        "CIV": "CÃ´te dâ€™Ivoire", "HRV": "Croatia", "CUB": "Cuba", "CYP": "Cyprus", "CZE": "Czechia",
                         "DNK": "Denmark", "DOM": "Dominican Republic", "ECU": "Ecuador", "EGY": "Egypt", "SLV": "El Salvador",
                         "ERI": "Eritrea", "EST": "Estonia", "ETH": "Ethiopia", "FIN": "Finland", "FRA": "France",
                         "GAB": "Gabon", "GEO": "Georgia", "DEU": "Germany", "GHA": "Ghana", "GRC": "Greece",
@@ -5613,7 +5511,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                         "SVK": "Slovakia", "SVN": "Slovenia", "SOM": "Somalia", "ZAF": "South Africa", "KOR": "South Korea",
                         "SSD": "South Sudan", "ESP": "Spain", "LKA": "Sri Lanka", "SDN": "Sudan", "SWE": "Sweden",
                         "CHE": "Switzerland", "SYR": "Syria", "TWN": "Taiwan", "TJK": "Tajikistan", "TZA": "Tanzania",
-                        "THA": "Thailand", "TUN": "Tunisia", "TUR": "Türkiye", "TKM": "Turkmenistan", "UGA": "Uganda",
+                        "THA": "Thailand", "TUN": "Tunisia", "TUR": "TÃ¼rkiye", "TKM": "Turkmenistan", "UGA": "Uganda",
                         "UKR": "Ukraine", "ARE": "United Arab Emirates", "GBR": "United Kingdom", "USA": "United States",
                         "URY": "Uruguay", "UZB": "Uzbekistan", "VEN": "Venezuela", "VNM": "Vietnam", "YEM": "Yemen",
                         "ZMB": "Zambia", "ZWE": "Zimbabwe",
@@ -5645,7 +5543,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                         .sort_values(["_country_name", "_iso3_label"])
                         .reset_index(drop=True)
                     )
-                    country_lookup["_country_option"] = country_lookup["_country_name"] + " · " + country_lookup["_iso3_label"]
+                    country_lookup["_country_option"] = country_lookup["_country_name"] + " Â· " + country_lookup["_iso3_label"]
                     country_options = country_lookup["_country_option"].tolist()
 
                     synced_iso3 = st.session_state.get("aletheia_synced_iso3")
@@ -5682,7 +5580,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                     ].iloc[0]
                     st.session_state["aletheia_synced_iso3"] = str(selected_iso).upper()
                     st.session_state["aletheia_synced_country_name"] = str(selected_country_name)
-                    st.caption(f"Focus country set for Grid/report context: {selected_country_name} · {str(selected_iso).upper()}")
+                    st.caption(f"Focus country set for Grid/report context: {selected_country_name} Â· {str(selected_iso).upper()}")
 
                     country_rows_all_years = valid_rows[valid_rows["_iso3_label"] == selected_iso].copy()
                     country_years = country_available_years(valid_rows, selected_iso)
@@ -5693,7 +5591,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                     )
                     if not country_years:
                         st.warning(
-                            f"No available country-year data for {selected_country_name} · {str(selected_iso).upper()}. "
+                            f"No available country-year data for {selected_country_name} Â· {str(selected_iso).upper()}. "
                             "Choose another country or rebuild the country-year master."
                         )
                         st.stop()
@@ -5724,18 +5622,18 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                         st.info("No country-year row matches that country and year. Try another country or year.")
                         st.stop()
 
-                    explorer_rows["_label"] = explorer_rows["_country_name"] + " · " + explorer_rows["_iso3_label"] + " · " + explorer_rows["_year_int"].astype(str)
+                    explorer_rows["_label"] = explorer_rows["_country_name"] + " Â· " + explorer_rows["_iso3_label"] + " Â· " + explorer_rows["_year_int"].astype(str)
                     if "seats_9k" in explorer_rows.columns:
                         _seat_nums = pd.to_numeric(explorer_rows["seats_9k"], errors="coerce")
                         explorer_rows.loc[_seat_nums.notna(), "_label"] = (
                             explorer_rows.loc[_seat_nums.notna(), "_label"]
-                            + " · "
+                            + " Â· "
                             + _seat_nums[_seat_nums.notna()].astype(int).astype(str)
                             + " seats"
                         )
 
                     st.caption(
-                        "Explorer source: active scored table. Search country first, then choose one of that country’s available years. "
+                        "Explorer source: active scored table. Search country first, then choose one of that countryâ€™s available years. "
                         "This avoids stale global-year fallback and shares the confirmed year with allocation and Grid outputs when available."
                     )
 
@@ -5756,7 +5654,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                         f"{int(selected_explorer_year)}::"
                         f"{str(selected.get('country', selected_country_name))}"
                     )
-                    pending_label = f"{selected_country_name} · {str(selected_iso).upper()} · {int(selected_explorer_year)}"
+                    pending_label = f"{selected_country_name} Â· {str(selected_iso).upper()} Â· {int(selected_explorer_year)}"
                     active_signature = st.session_state.get("empirical_country_year_explorer_active_signature")
                     active_selected = active_signature == selected_explorer_signature
 
@@ -5792,7 +5690,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                     st.stop()
 
                 if selected is not None:
-                    def _first_value(row, names, default="—"):
+                    def _first_value(row, names, default="â€”"):
                         for name in names:
                             if name in row.index:
                                 value = row.get(name)
@@ -5802,10 +5700,10 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
 
                     def _fmt_num(value, digits=3):
                         num = pd.to_numeric(pd.Series([value]), errors="coerce").iloc[0]
-                        return "—" if pd.isna(num) else f"{float(num):.{digits}f}"
+                        return "â€”" if pd.isna(num) else f"{float(num):.{digits}f}"
 
-                    verdict_value = _first_value(selected, ["aletheia_verdict", "verdict"], "—")
-                    verdict_text = str(verdict_value or "—").strip().upper()
+                    verdict_value = _first_value(selected, ["aletheia_verdict", "verdict"], "â€”")
+                    verdict_text = str(verdict_value or "â€”").strip().upper()
                     if verdict_text == "SANCTUARY":
                         display_verdict_value = "Low-risk internal reading"
                         display_verdict_caption = (
@@ -5826,10 +5724,10 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                         col_a.caption(display_verdict_caption)
                     col_b.metric("Integrity", _fmt_num(integrity_value))
                     col_c.metric("Collapse probability", _fmt_num(collapse_value))
-                    col_d.metric("Allocated seats", "—" if pd.isna(seats_value) else f"{int(seats_value):,}")
+                    col_d.metric("Allocated seats", "â€”" if pd.isna(seats_value) else f"{int(seats_value):,}")
 
                     col_e, col_f, col_g, col_h = st.columns(4)
-                    col_e.metric("Empirical coverage", _fmt_num(coverage_value, digits=1) if pd.to_numeric(pd.Series([coverage_value]), errors="coerce").iloc[0] > 1 else ("—" if pd.isna(pd.to_numeric(pd.Series([coverage_value]), errors="coerce").iloc[0]) else f"{pd.to_numeric(pd.Series([coverage_value]), errors='coerce').iloc[0]:.1%}"))
+                    col_e.metric("Empirical coverage", _fmt_num(coverage_value, digits=1) if pd.to_numeric(pd.Series([coverage_value]), errors="coerce").iloc[0] > 1 else ("â€”" if pd.isna(pd.to_numeric(pd.Series([coverage_value]), errors="coerce").iloc[0]) else f"{pd.to_numeric(pd.Series([coverage_value]), errors='coerce').iloc[0]:.1%}"))
                     raw_trust_value = _first_value(selected, ["wvs_generalized_trust"], None)
                     trust_prior_value = _first_value(selected, ["empirical_trust_prior"], None)
                     col_f.metric("Raw trust", format_raw_trust_label(raw_trust_value))
@@ -5846,7 +5744,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                             "Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority."
                         )
                     st.write(overlay_status_value)
-                    st.caption("Evidence used: " + str(_first_value(selected, ["evidence_variables_used", "evidence_used"], "—")))
+                    st.caption("Evidence used: " + str(_first_value(selected, ["evidence_variables_used", "evidence_used"], "â€”")))
                     st.caption("Country-Year Explorer uses the active scored table. Search a country, then choose one of its years. Seats are read inside that year only.")
 
                     feature_cols = [
@@ -5860,7 +5758,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                     for col in feature_cols:
                         if col in selected.index:
                             value = pd.to_numeric(pd.Series([selected.get(col)]), errors="coerce").iloc[0]
-                            feature_rows.append({"feature": col, "value": "—" if pd.isna(value) else f"{value:.3f}"})
+                            feature_rows.append({"feature": col, "value": "â€”" if pd.isna(value) else f"{value:.3f}"})
                     feature_table = pd.DataFrame(feature_rows)
                     if not feature_table.empty:
                         st.dataframe(feature_table, use_container_width=True, hide_index=True, height=300)
@@ -5919,14 +5817,14 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                         iso3_name = str(active_explorer_payload.get("iso3", st.session_state.get("aletheia_synced_iso3", ""))).strip().upper()
                         st.success(
                             f"Seat allocation view confirmed for diagnostic selection: "
-                            f"{country_name or iso3_name} · {iso3_name} · {active_allocation_year}"
+                            f"{country_name or iso3_name} Â· {iso3_name} Â· {active_allocation_year}"
                         )
                         st.caption(
                             "The allocation chart is now static and tied to the confirmed Country-Year Explorer diagnostic. "
                             "Change the country/year above, then press the run button again to update this chart."
                         )
                         fig = go.Figure(go.Bar(x=alloc_year["country"], y=alloc_year["seats_9k"]))
-                        fig.update_layout(template="plotly_white", title=f"9k allocation · {active_allocation_year}", height=420, margin=dict(l=10, r=10, t=55, b=10))
+                        fig.update_layout(template="plotly_white", title=f"9k allocation Â· {active_allocation_year}", height=420, margin=dict(l=10, r=10, t=55, b=10))
                         st.plotly_chart(fig, use_container_width=True)
             else:
                 st.info("No valid years are available for seat display.")
@@ -5936,7 +5834,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
         st.markdown("### Evidence checks")
         st.caption(
             "Internal checks compare ALETHEIA outputs to variables that may also be score inputs. External validation checks use optional outcome columns that are not score inputs. "
-            "Pearson correlations are withheld until N ≥ 30. For true validation, add external outcomes such as conflict events, coups, regime breakdown, political violence, or future-year decline."
+            "Pearson correlations are withheld until N â‰¥ 30. For true validation, add external outcomes such as conflict events, coups, regime breakdown, political violence, or future-year decline."
         )
         corr_df, group_df = validation_summary(scored_for_validation)
         vc1, vc2 = st.columns(2)
@@ -5988,7 +5886,7 @@ with tab_grid:
     with wl_col1:
         wl_basic_rights = st.selectbox(
             "Basic-rights risk",
-            ["Green — no apparent threat", "Yellow — unclear / safeguard needed", "Red — likely systematic rights risk"],
+            ["Green â€” no apparent threat", "Yellow â€” unclear / safeguard needed", "Red â€” likely systematic rights risk"],
             index=1,
             key="world_lens_basic_rights_v1",
         )
@@ -6001,7 +5899,7 @@ with tab_grid:
     with wl_col2:
         wl_minority = st.selectbox(
             "Minority-rights risk",
-            ["Green — no apparent risk", "Yellow — review needed", "Red — likely minority-rights risk"],
+            ["Green â€” no apparent risk", "Yellow â€” review needed", "Red â€” likely minority-rights risk"],
             index=1,
             key="world_lens_minority_rights_v1",
         )
@@ -6014,7 +5912,7 @@ with tab_grid:
     with wl_col3:
         wl_ambient = st.selectbox(
             "Ambient capture risk",
-            ["Green — low", "Yellow — plausible pressure", "Red — high shared manipulation risk"],
+            ["Green â€” low", "Yellow â€” plausible pressure", "Red â€” high shared manipulation risk"],
             index=1,
             key="world_lens_ambient_capture_v1",
         )
@@ -6181,7 +6079,7 @@ This is a World Lens for human review. It is not a real Global ID system, real 9
         def _format_grid_year(_year: int) -> str:
             row = year_diag_by_year.get(int(_year), {})
             suffix = "full 9k evidence view" if row.get("full") else "partial evidence view"
-            return f"{int(_year)} — {suffix}"
+            return f"{int(_year)} â€” {suffix}"
 
         synced_evidence_year = st.session_state.get("aletheia_synced_evidence_year")
         try:
@@ -6208,11 +6106,11 @@ This is a World Lens for human review. It is not a real Global ID system, real 9
         selected_year_diag = year_diag_by_year.get(int(selected_year), {})
         selected_year_status = "full 9k evidence view" if selected_year_diag.get("full") else "partial selected-year evidence view"
         st.caption(
-            f"{int(selected_year)} — {selected_year_status}: "
-            f"{selected_year_diag.get('allocated_countries', selected_year_diag.get('countries', 0)):,} allocated countries · "
+            f"{int(selected_year)} â€” {selected_year_status}: "
+            f"{selected_year_diag.get('allocated_countries', selected_year_diag.get('countries', 0)):,} allocated countries Â· "
             f"{selected_year_diag.get('seats', 0):,} active seats"
             + (
-                f" · {selected_year_diag.get('zero_seat_rows', 0):,} zero-seat diagnostic row(s)"
+                f" Â· {selected_year_diag.get('zero_seat_rows', 0):,} zero-seat diagnostic row(s)"
                 if selected_year_diag.get("zero_seat_rows", 0) else ""
             )
             + "."
@@ -6344,7 +6242,7 @@ This is a World Lens for human review. It is not a real Global ID system, real 9
         is_full_grid = countries_scored >= MIN_FULL_GRID_COUNTRIES and has_complete_seat_total and not active_filters
         grid_state_label = "Full empirical scored master" if is_full_grid else "Partial empirical subset"
         if active_filters:
-            grid_state_label += " · filtered view"
+            grid_state_label += " Â· filtered view"
         metric_scope_word = "World Lens" if is_full_grid else "selected subset"
         seat_metric_label = "9k seats allocated" if is_full_grid else "Active selected-year seats"
         allocation_heading = "9k internal taxonomy signal" if is_full_grid else "Active-seat internal taxonomy signal"
@@ -6470,16 +6368,16 @@ This is a World Lens for human review. It is not a real Global ID system, real 9
         m1, m2, m3, m4 = st.columns(4)
         m1.metric("Countries scored", f"{countries_scored:,}")
         m2.metric(seat_metric_label, f"{total_seats:,}")
-        m3.metric(f"Weighted {metric_scope_word} integrity", "—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
-        m4.metric(f"Weighted {metric_scope_word} collapse probability", "—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
+        m3.metric(f"Weighted {metric_scope_word} integrity", "â€”" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
+        m4.metric(f"Weighted {metric_scope_word} collapse probability", "â€”" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
 
         m5, m6, m7, m8, m9 = st.columns(5)
-        m5.metric("Average empirical coverage", "—" if pd.isna(avg_coverage) else f"{avg_coverage:.1%}")
+        m5.metric("Average empirical coverage", "â€”" if pd.isna(avg_coverage) else f"{avg_coverage:.1%}")
         raw_trust_coverage_label, trust_prior_coverage_label, trust_coverage_note = trust_coverage_label(trust_coverage, trust_prior_coverage)
         m6.metric("Raw trust survey coverage", raw_trust_coverage_label)
         m7.metric("Neutral trust-prior fallback coverage", trust_prior_coverage_label)
-        m8.metric("WGI coverage", "—" if pd.isna(wgi_coverage) else f"{wgi_coverage:.1%}")
-        m9.metric("V-Dem coverage", "—" if pd.isna(vdem_coverage) else f"{vdem_coverage:.1%}")
+        m8.metric("WGI coverage", "â€”" if pd.isna(wgi_coverage) else f"{wgi_coverage:.1%}")
+        m9.metric("V-Dem coverage", "â€”" if pd.isna(vdem_coverage) else f"{vdem_coverage:.1%}")
         st.caption("Coverage cards show only the active selected-year rows after filters. " + trust_coverage_note)
 
         focus_iso3 = str(st.session_state.get("aletheia_synced_iso3") or "NLD").upper().strip()
@@ -6512,8 +6410,8 @@ This is a World Lens for human review. It is not a real Global ID system, real 9
                         "country": focus_row.get("country", focus_iso3),
                         "iso3": focus_row.get("iso3", focus_iso3),
                         "year": focus_row.get("year", selected_year),
-                        "seats": focus_row.get("seats_9k", "—"),
-                        "verdict": focus_row.get("aletheia_verdict", focus_row.get("verdict", "—")),
+                        "seats": focus_row.get("seats_9k", "â€”"),
+                        "verdict": focus_row.get("aletheia_verdict", focus_row.get("verdict", "â€”")),
                         "raw_trust_label": format_raw_trust_label(focus_row.get("wvs_generalized_trust")),
                         "trust_prior_label": format_trust_prior_label(focus_row.get("empirical_trust_prior")),
                     }
@@ -6540,9 +6438,9 @@ This is a World Lens for human review. It is not a real Global ID system, real 9
             if value_guard.get("focus_row_available"):
                 focus_guard = value_guard.get("focus", {})
                 st.caption(
-                    f"Focus guard: {focus_guard.get('country', focus_iso3 or 'NLD')} · {focus_guard.get('iso3', focus_iso3 or 'NLD')} · "
-                    f"{focus_guard.get('year', selected_year)} · seats {focus_guard.get('seats', '—')} · "
-                    f"verdict {focus_guard.get('verdict', '—')} · raw trust {focus_guard.get('raw_trust_label', 'not available')} · "
+                    f"Focus guard: {focus_guard.get('country', focus_iso3 or 'NLD')} Â· {focus_guard.get('iso3', focus_iso3 or 'NLD')} Â· "
+                    f"{focus_guard.get('year', selected_year)} Â· seats {focus_guard.get('seats', 'â€”')} Â· "
+                    f"verdict {focus_guard.get('verdict', 'â€”')} Â· raw trust {focus_guard.get('raw_trust_label', 'not available')} Â· "
                     f"trust prior {focus_guard.get('trust_prior_label', 'not available')}."
                 )
             else:
@@ -6586,7 +6484,7 @@ This is a World Lens for human review. It is not a real Global ID system, real 9
                 "BFA": "Burkina Faso", "BDI": "Burundi", "KHM": "Cambodia", "CMR": "Cameroon", "CAN": "Canada",
                 "CAF": "Central African Republic", "TCD": "Chad", "CHL": "Chile", "CHN": "China", "COL": "Colombia",
                 "COD": "Democratic Republic of the Congo", "COG": "Republic of the Congo", "CRI": "Costa Rica",
-                "CIV": "Côte d’Ivoire", "HRV": "Croatia", "CUB": "Cuba", "CYP": "Cyprus", "CZE": "Czechia",
+                "CIV": "CÃ´te dâ€™Ivoire", "HRV": "Croatia", "CUB": "Cuba", "CYP": "Cyprus", "CZE": "Czechia",
                 "DNK": "Denmark", "DOM": "Dominican Republic", "ECU": "Ecuador", "EGY": "Egypt", "SLV": "El Salvador",
                 "ERI": "Eritrea", "EST": "Estonia", "ETH": "Ethiopia", "FIN": "Finland", "FRA": "France",
                 "GAB": "Gabon", "GEO": "Georgia", "DEU": "Germany", "GHA": "Ghana", "GRC": "Greece",
@@ -6605,7 +6503,7 @@ This is a World Lens for human review. It is not a real Global ID system, real 9
                 "SVK": "Slovakia", "SVN": "Slovenia", "SOM": "Somalia", "ZAF": "South Africa", "KOR": "South Korea",
                 "SSD": "South Sudan", "ESP": "Spain", "LKA": "Sri Lanka", "SDN": "Sudan", "SWE": "Sweden",
                 "CHE": "Switzerland", "SYR": "Syria", "TWN": "Taiwan", "TJK": "Tajikistan", "TZA": "Tanzania",
-                "THA": "Thailand", "TUN": "Tunisia", "TUR": "Türkiye", "TKM": "Turkmenistan", "UGA": "Uganda",
+                "THA": "Thailand", "TUN": "Tunisia", "TUR": "TÃ¼rkiye", "TKM": "Turkmenistan", "UGA": "Uganda",
                 "UKR": "Ukraine", "ARE": "United Arab Emirates", "GBR": "United Kingdom", "USA": "United States",
                 "URY": "Uruguay", "UZB": "Uzbekistan", "VEN": "Venezuela", "VNM": "Vietnam", "YEM": "Yemen",
                 "ZMB": "Zambia", "ZWE": "Zimbabwe",
@@ -6619,7 +6517,7 @@ This is a World Lens for human review. It is not a real Global ID system, real 9
                 comparison_df.get("country", pd.Series("", index=comparison_df.index)),
             )
         ]
-        comparison_df["_hover_label"] = comparison_df["_country_name"].astype(str) + " · " + comparison_df.get("iso3", pd.Series("", index=comparison_df.index)).fillna("").astype(str)
+        comparison_df["_hover_label"] = comparison_df["_country_name"].astype(str) + " Â· " + comparison_df.get("iso3", pd.Series("", index=comparison_df.index)).fillna("").astype(str)
 
         if present_wgi_cols:
             wgi_numeric = comparison_df[present_wgi_cols].apply(pd.to_numeric, errors="coerce")
@@ -6745,8 +6643,8 @@ This is a World Lens for human review. It is not a real Global ID system, real 9
                     "Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. "
                     "Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority."
                 ),
-                "SANCTUARY · SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
-                    "Low-risk internal reading · Internal taxonomy label: SANCTUARY; not a final safety, final Sanctuary, or authority claim."
+                "SANCTUARY Â· SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
+                    "Low-risk internal reading Â· Internal taxonomy label: SANCTUARY; not a final safety, final Sanctuary, or authority claim."
                 ),
             }
             for col in out.columns:
@@ -6865,10 +6763,10 @@ This is a World Lens for human review. It is not a real Global ID system, real 9
 
 ## Weighted metrics
 
-- Weighted integrity: **{"—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}"}**
-- Weighted friction: **{"—" if pd.isna(weighted_friction) else f"{weighted_friction:.3f}"}**
-- Weighted collapse probability: **{"—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}"}**
-- Average empirical coverage: **{"—" if pd.isna(avg_coverage) else f"{avg_coverage:.1%}"}**
+- Weighted integrity: **{"â€”" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}"}**
+- Weighted friction: **{"â€”" if pd.isna(weighted_friction) else f"{weighted_friction:.3f}"}**
+- Weighted collapse probability: **{"â€”" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}"}**
+- Average empirical coverage: **{"â€”" if pd.isna(avg_coverage) else f"{avg_coverage:.1%}"}**
 
 ## Coverage
 
@@ -7013,10 +6911,10 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                     if "_country_name" in focus_row.columns and not focus_row.empty
                     else focus_country_name
                 )
-                st.info(f"Focus country from Empirical Explorer: **{_focus_label} · {focus_iso3} · {int(selected_year)}**. Global metrics remain full selected-year metrics; the country is surfaced as focus/context, not used as a Grid filter.")
+                st.info(f"Focus country from Empirical Explorer: **{_focus_label} Â· {focus_iso3} Â· {int(selected_year)}**. Global metrics remain full selected-year metrics; the country is surfaced as focus/context, not used as a Grid filter.")
             else:
                 st.warning(
-                    f"Focus country **{focus_country_name or focus_iso3} · {focus_iso3}** is not available in the active Global Grid rows for {int(selected_year)}. "
+                    f"Focus country **{focus_country_name or focus_iso3} Â· {focus_iso3}** is not available in the active Global Grid rows for {int(selected_year)}. "
                     "Choose a year where the country exists or rebuild the master."
                 )
 
@@ -7059,7 +6957,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             top_n = grid_source.head(25).copy()
             label_col = "iso3" if "iso3" in top_n.columns else "country"
             fig = go.Figure(go.Bar(x=top_n[label_col], y=top_n["seats_9k"]))
-            fig.update_layout(template="plotly_white", title=(f"Top 25 country-level 9k allocations · {selected_year}" if is_full_grid else f"Top active selected-year seat allocations · {selected_year}"), height=430, margin=dict(l=10, r=10, t=55, b=10))
+            fig.update_layout(template="plotly_white", title=(f"Top 25 country-level 9k allocations Â· {selected_year}" if is_full_grid else f"Top active selected-year seat allocations Â· {selected_year}"), height=430, margin=dict(l=10, r=10, t=55, b=10))
             st.plotly_chart(fig, use_container_width=True)
             st.caption("Showing the top 25 countries by seats. The full table is in Country-Year Detail. Partial years may not add to 9,000.")
 
@@ -7080,9 +6978,9 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
         with view_tabs[3]:
             st.markdown("### Integrity and collapse")
             c1, c2, c3 = st.columns(3)
-            c1.metric(f"Weighted {metric_scope_word} integrity", "—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
-            c2.metric(f"Weighted {metric_scope_word} friction", "—" if pd.isna(weighted_friction) else f"{weighted_friction:.3f}")
-            c3.metric(f"Weighted {metric_scope_word} collapse probability", "—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
+            c1.metric(f"Weighted {metric_scope_word} integrity", "â€”" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
+            c2.metric(f"Weighted {metric_scope_word} friction", "â€”" if pd.isna(weighted_friction) else f"{weighted_friction:.3f}")
+            c3.metric(f"Weighted {metric_scope_word} collapse probability", "â€”" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
             if integrity_col in grid_source.columns and collapse_col in grid_source.columns:
                 scatter_df = grid_source.copy()
                 scatter_df["_integrity"] = _numeric_series(integrity_col)
@@ -7097,7 +6995,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                         hovertemplate="%{text}<br>Integrity: %{x:.3f}<br>Collapse probability: %{y:.3f}<extra></extra>",
                     )
                 )
-                fig.update_layout(template="plotly_white", title=f"Integrity vs collapse probability · {selected_year}", xaxis_title="Integrity", yaxis_title="Collapse probability", height=480, margin=dict(l=10, r=10, t=55, b=10))
+                fig.update_layout(template="plotly_white", title=f"Integrity vs collapse probability Â· {selected_year}", xaxis_title="Integrity", yaxis_title="Collapse probability", height=480, margin=dict(l=10, r=10, t=55, b=10))
                 st.plotly_chart(fig, use_container_width=True)
             else:
                 st.info("Integrity/collapse columns are not available for this selected year.")
@@ -7210,7 +7108,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                         hovertemplate="%{text}<br>V-Dem democracy: %{x:.3f}<br>Trust: %{y:.3f}<extra></extra>",
                     )
                 )
-                fig.update_layout(template="plotly_white", title=f"{trust_label} vs V-Dem democracy · {selected_year}", xaxis_title="V-Dem democracy", yaxis_title=trust_label, height=470, margin=dict(l=10, r=10, t=55, b=10))
+                fig.update_layout(template="plotly_white", title=f"{trust_label} vs V-Dem democracy Â· {selected_year}", xaxis_title="V-Dem democracy", yaxis_title=trust_label, height=470, margin=dict(l=10, r=10, t=55, b=10))
                 st.plotly_chart(fig, use_container_width=True)
             else:
                 st.info("Trust vs democracy needs V-Dem democracy plus raw trust or trust prior values.")
@@ -7228,7 +7126,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                         hovertemplate="%{text}<br>Available WGI mean: %{x:.3f}<br>V-Dem democracy: %{y:.3f}<extra></extra>",
                     )
                 )
-                fig.update_layout(template="plotly_white", title=f"Available WGI mean vs V-Dem democracy · {selected_year}", xaxis_title="Available WGI mean", yaxis_title="V-Dem democracy", height=470, margin=dict(l=10, r=10, t=55, b=10))
+                fig.update_layout(template="plotly_white", title=f"Available WGI mean vs V-Dem democracy Â· {selected_year}", xaxis_title="Available WGI mean", yaxis_title="V-Dem democracy", height=470, margin=dict(l=10, r=10, t=55, b=10))
                 st.plotly_chart(fig, use_container_width=True)
             else:
                 st.info(
@@ -7261,7 +7159,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             st.markdown("### Coverage checks")
             d1, d2, d3, d4 = st.columns(4)
             d1.metric("Allocated country rows", f"{countries_scored:,}")
-            d2.metric("Zero-seat diagnostic rows", f"{displayed_zero_seat_rows:,}" + (f" shown · {hidden_zero_seat_rows:,} hidden" if hidden_zero_seat_rows else ""))
+            d2.metric("Zero-seat diagnostic rows", f"{displayed_zero_seat_rows:,}" + (f" shown Â· {hidden_zero_seat_rows:,} hidden" if hidden_zero_seat_rows else ""))
             d3.metric("Missing raw trust", f"{missing_trust:,}")
             d4.metric("Missing WGI", f"{missing_wgi:,}")
             d5, d6, d7 = st.columns(3)
@@ -7280,7 +7178,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                 {"Source": "V-Dem", "Rows present": int(vdem_mask.sum()), "Rows missing": missing_vdem, "Coverage": vdem_coverage},
             ])
             coverage_display = coverage_df.copy()
-            coverage_display["Coverage"] = coverage_display["Coverage"].map(lambda x: "—" if pd.isna(x) else f"{x:.1%}")
+            coverage_display["Coverage"] = coverage_display["Coverage"].map(lambda x: "â€”" if pd.isna(x) else f"{x:.1%}")
             st.dataframe(coverage_display, use_container_width=True, hide_index=True)
 
             with st.expander("Trust source check", expanded=False):
@@ -7295,7 +7193,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                         ]
                         td1, td2, td3 = st.columns(3)
                         td1.metric("Raw trust rows in master", f"{int(len(_trust_years)):,}")
-                        td2.metric("Raw trust year range", "—" if _trust_years.empty else f"{int(_trust_years.min())}–{int(_trust_years.max())}")
+                        td2.metric("Raw trust year range", "â€”" if _trust_years.empty else f"{int(_trust_years.min())}â€“{int(_trust_years.max())}")
                         td3.metric("Raw trust rows for selected year", f"{int(len(_selected_trust_rows)):,}")
                         st.caption(
                             "If selected-year raw trust is 0 while trust prior is 100%, ALETHEIA is using neutral/default trust priors for that year. "
@@ -7332,14 +7230,14 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             if focus_iso3 and "iso3" in display_df.columns:
                 _focus_mask = display_df["iso3"].astype(str).str.upper().eq(focus_iso3)
                 if _focus_mask.any():
-                    st.info(f"Focus country row shown first: **{focus_country_name or focus_iso3} · {focus_iso3} · {int(selected_year)}**")
+                    st.info(f"Focus country row shown first: **{focus_country_name or focus_iso3} Â· {focus_iso3} Â· {int(selected_year)}**")
                     display_df = pd.concat([display_df.loc[_focus_mask], display_df.loc[~_focus_mask]], ignore_index=True)
                 else:
-                    st.warning(f"Focus country **{focus_country_name or focus_iso3} · {focus_iso3}** is not present in this selected-year detail table.")
+                    st.warning(f"Focus country **{focus_country_name or focus_iso3} Â· {focus_iso3}** is not present in this selected-year detail table.")
             st.dataframe(_world_lens_ui_table_df(display_df), use_container_width=True, hide_index=True, height=480)
             csv_grid = grid_source.to_csv(index=False)
             st.download_button(
-                "⬇️ Download selected-year World Lens CSV",
+                "â¬‡ï¸ Download selected-year World Lens CSV",
                 data=csv_grid,
                 file_name=f"aletheia_world_lens_{selected_year}.csv",
                 mime="text/csv",
@@ -7349,14 +7247,14 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
         receipt_ready = True
 
         def _receipt_check(name: str, ok: bool, fix: str) -> None:
-            nonlocal_receipt_checks.append({"Check": name, "Status": "OK" if ok else "Needs action", "What to do": "—" if ok else fix})
+            nonlocal_receipt_checks.append({"Check": name, "Status": "OK" if ok else "Needs action", "What to do": "â€”" if ok else fix})
 
         nonlocal_receipt_checks = empirical_grid_receipt_checks
         empirical_active_ok = isinstance(empirical_scored_raw, pd.DataFrame) and not empirical_scored_raw.empty
         _receipt_check(
             "Empirical scored table is active",
             empirical_active_ok,
-            "Run Evidence Lab — Data Check first, then build and score the country-year table.",
+            "Run Evidence Lab â€” Data Check first, then build and score the country-year table.",
         )
 
         empirical_year_match_ok = False
@@ -7431,8 +7329,8 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             rp1, rp2, rp3, rp4 = st.columns(4)
             rp1.metric("Selected year", f"{selected_year}")
             rp2.metric("World Lens state", "Full 9k evidence view" if is_full_grid else "Partial / active-seat evidence view")
-            rp3.metric("Weighted integrity", "—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
-            rp4.metric("Weighted collapse", "—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
+            rp3.metric("Weighted integrity", "â€”" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
+            rp4.metric("Weighted collapse", "â€”" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
 
             st.markdown("#### Internal taxonomy distribution for reports")
             if not verdict_summary_df.empty:
@@ -7452,9 +7350,9 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                 report_options_df = comparison_df.copy()
                 report_options_df["_report_label"] = (
                     report_options_df["_country_name"].fillna("").astype(str)
-                    + " · "
+                    + " Â· "
                     + report_options_df.get("iso3", pd.Series("", index=report_options_df.index)).fillna("").astype(str)
-                    + " · "
+                    + " Â· "
                     + report_options_df.get("year", pd.Series(selected_year, index=report_options_df.index)).astype(str)
                 )
                 report_filter_key = f"grid_report_country_year_filter_{selected_year}"
@@ -7480,7 +7378,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                 if focus_iso3:
                     _focus_label_matches = [
                         i for i, label in enumerate(report_labels)
-                        if f"· {focus_iso3} ·" in str(label) or str(label).upper().find(focus_iso3) >= 0
+                        if f"Â· {focus_iso3} Â·" in str(label) or str(label).upper().find(focus_iso3) >= 0
                     ]
                     if _focus_label_matches:
                         focus_report_index = _focus_label_matches[0]
@@ -7515,7 +7413,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                 )
                 safe_label = re.sub(r"[^A-Za-z0-9_-]+", "_", str(selected_label)).strip("_")
                 st.download_button(
-                    "⬇️ Download selected country-year review packet CSV",
+                    "â¬‡ï¸ Download selected country-year review packet CSV",
                     data=selected_row_export.to_csv(index=False),
                     file_name=f"aletheia_world_lens_review_packet_{selected_year}_{safe_label}.csv",
                     mime="text/csv",
@@ -7533,7 +7431,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             if receipt_ready:
                 st.success("Receipt is ready. Evidence Lab and World Lens inputs match for this output.")
                 st.download_button(
-                    "⬇️ Download World Lens receipt ZIP",
+                    "â¬‡ï¸ Download World Lens receipt ZIP",
                     data=_build_world_lens_receipt_zip(),
                     file_name=f"aletheia_world_lens_receipt_{selected_year}.zip",
                     mime="application/zip",
@@ -7566,7 +7464,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             ]
             export_cols = [c for c in export_cols if c in comparison_export.columns]
             st.download_button(
-                "⬇️ Download selected-year World Lens review CSV",
+                "â¬‡ï¸ Download selected-year World Lens review CSV",
                 data=comparison_export[export_cols].to_csv(index=False),
                 file_name=f"aletheia_world_lens_comparison_{selected_year}.csv",
                 mime="text/csv",
@@ -7615,11 +7513,11 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             st.markdown(f"### {allocation_heading}")
             p1, p2, p3 = st.columns(3)
             with p1:
-                metric_card("YES / Support", "—", "Requires empirical selected-year rows.")
+                metric_card("YES / Support", "â€”", "Requires empirical selected-year rows.")
             with p2:
-                metric_card("REVIEW", "—", "Requires empirical selected-year rows.")
+                metric_card("REVIEW", "â€”", "Requires empirical selected-year rows.")
             with p3:
-                metric_card("BLOCK", "—", "Requires empirical selected-year rows.")
+                metric_card("BLOCK", "â€”", "Requires empirical selected-year rows.")
 
         with fallback_tabs[1]:
             st.markdown("### Prototype population mirror")
@@ -7692,7 +7590,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             st.info("Country-year detail is unavailable until selected-year data rows are active.")
 
 with tab_chat:
-    st.subheader("Mirror Check — Gentle Risk Review")
+    st.subheader("Mirror Check â€” Gentle Risk Review")
     render_shared_protocol_state_notice("Mirror Check")
     render_audit_module_integrity_panel()
 
@@ -7974,7 +7872,7 @@ with tab_chat:
         if "audit_batch_testing_open" not in st.session_state:
             st.session_state.audit_batch_testing_open = False
 
-        if st.button("Batch Testing — up to 50 lines", use_container_width=True, key="audit_open_batch_testing_button"):
+        if st.button("Batch Testing â€” up to 50 lines", use_container_width=True, key="audit_open_batch_testing_button"):
             st.session_state.audit_batch_testing_open = not st.session_state.audit_batch_testing_open
 
         if not st.session_state.audit_batch_testing_open:
@@ -8094,7 +7992,7 @@ with tab_chat:
                     })
                     # Keep the narrow side panel readable: fold Role into Reading instead of hiding a third column.
                     batch_display_df["Reading"] = batch_display_df.apply(
-                        lambda row: f"{row['Reading']} · {row['Role']}" if row.get("Role") else row["Reading"],
+                        lambda row: f"{row['Reading']} Â· {row['Role']}" if row.get("Role") else row["Reading"],
                         axis=1,
                     )
                     batch_display_df = batch_display_df[["#", "Type", "Reading"]]
@@ -8111,14 +8009,14 @@ with tab_chat:
                     )
                 if st.session_state.get("audit_batch_archive_bytes"):
                     st.download_button(
-                        "⬇️ Download full batch archive (.zip)",
+                        "â¬‡ï¸ Download full batch archive (.zip)",
                         data=st.session_state.audit_batch_archive_bytes,
                         file_name="aletheia_mirror_check_batch_witness_receipts.zip",
                         mime="application/zip",
                         use_container_width=True,
                     )
 
-    selected_chat_context = "Waiting for your input" if audit_input_status == "EMPTY_INPUT" else ((chat_query[:120] + "…") if len(chat_query) > 120 else chat_query)
+    selected_chat_context = "Waiting for your input" if audit_input_status == "EMPTY_INPUT" else ((chat_query[:120] + "â€¦") if len(chat_query) > 120 else chat_query)
     update_protocol_state(selected_context=selected_chat_context, last_update_source="Mirror Check")
 
     if clear_chat:
@@ -8142,7 +8040,7 @@ with tab_chat:
                     invisibility_report=audit_invisibility_report,
                 )
                 st.session_state.audit_active_input_signature = mirror_active_input_signature(st.session_state.audit_chat_query)
-                update_protocol_state(selected_context=(audit_analysis_query[:120] + "…") if len(audit_analysis_query) > 120 else audit_analysis_query, last_update_source="Mirror Check")
+                update_protocol_state(selected_context=(audit_analysis_query[:120] + "â€¦") if len(audit_analysis_query) > 120 else audit_analysis_query, last_update_source="Mirror Check")
             st.rerun()
 
     st.markdown("---")
@@ -8190,7 +8088,7 @@ with tab_chat:
             mirror_receipt = build_mirror_receipt_for_entry(latest)
             mirror_receipt_text = render_local_witness_receipt_text(mirror_receipt)
             st.download_button(
-                "⬇️ Download receipt",
+                "â¬‡ï¸ Download receipt",
                 data=mirror_receipt_text,
                 file_name="aletheia_mirror_check_local_witness_receipt.txt",
                 mime="text/plain",
@@ -8204,7 +8102,7 @@ with tab_chat:
             with st.expander("Last closed reading", expanded=False):
                 verdict = latest["judgment"].get("verdict", "THRESHOLD")
                 risk = latest["judgment"].get("corruption_risk", "Medium")
-                st.markdown(f"**{verdict} · {risk} risk**")
+                st.markdown(f"**{verdict} Â· {risk} risk**")
                 st.caption(latest_raw_query[:240] + ("..." if len(latest_raw_query) > 240 else ""))
 
         previous_items = st.session_state.chat_audit_history[1:] if latest_matches_current_input else st.session_state.chat_audit_history
@@ -8213,7 +8111,7 @@ with tab_chat:
                 for idx, item in enumerate(previous_items, start=1):
                     verdict = item["judgment"].get("verdict", "THRESHOLD")
                     risk = item["judgment"].get("corruption_risk", "Medium")
-                    st.markdown(f"**{idx}. {verdict} · {risk} risk**")
+                    st.markdown(f"**{idx}. {verdict} Â· {risk} risk**")
                     st.caption(item["query"][:240] + ("..." if len(item["query"]) > 240 else ""))
     else:
         st.caption("No reading yet. Share one idea above to create a Mirror Reading Tree.")
@@ -8227,12 +8125,13 @@ with tab_doctrine:
         "ALETHEIA is a mirror, not a throne. This page keeps the tone clear, protective, practical, and open to review."
     )
     st.caption("ALETHEIA v1.0 is complete as a public MVP. Pick the tab that matches your task, read the boundary, and keep final review human.")
-    st.markdown("**Quick path:** Mirror Check for documents · Stress Test for scenarios · AI Integrity Mirror for AI/code artifacts · Evidence Lab for claims · Protocol Guide for rules.")
+    st.markdown("**Quick path:** Mirror Check for documents Â· Stress Test for scenarios Â· AI Integrity Mirror for AI/code artifacts Â· Evidence Lab for claims Â· Protocol Guide for rules.")
+    render_public_trust_package_page(st)
     st.markdown(
         """
-        The Protocol Guide is the integrity frame for **ALETHEIA v1.0 — Governance Mirror**. It does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment. Its labels are internal review aids, not final claims.
+        The Protocol Guide is the integrity frame for **ALETHEIA v1.0 â€” Governance Mirror**. It does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment. Its labels are internal review aids, not final claims.
 
-        **ALETHEIA is a careful mirror for power.** It helps people look at governance ideas, simulations, evidence, and World Lens with more clarity and less fear. Its job is to notice patterns, ask better questions, and keep hidden capture visible — not to command, condemn, or become final authority.
+        **ALETHEIA is a careful mirror for power.** It helps people look at governance ideas, simulations, evidence, and World Lens with more clarity and less fear. Its job is to notice patterns, ask better questions, and keep hidden capture visible â€” not to command, condemn, or become final authority.
 
         In the updated tone, the Sydney Protocol is treated as a warm guardrail: it keeps power accountable, keeps intelligence gentle, keeps evidence visible, and keeps every output open to appeal. The 9k idea is treated as a human anti-tyranny scaffold / threshold steward, not a sovereign body, mandate, Sanctuary, or final legitimacy.
 
@@ -8325,17 +8224,17 @@ with tab_doctrine:
 
             **Connected modules:**
 
-            - Baseline v0.1 — defines what ALETHEIA may and may not do.
-            - Safe Language Layer — keeps outputs in review language, not enforcement language.
-            - Eternal Baseline — provides ethical continuity across versions without becoming a command layer.
-            - Boundary Cases Matrix — stress-tests edge scenarios for human review.
-            - Failure Classification — separates Actor, Policy, Implementation, and Data Failure.
-            - Consent-Audit Engine — checks whether refusal is realistically possible.
-            - Mechanism-vs-Claim Scanner — distinguishes values language from safeguards.
-            - Self-Audit Mode — lets ALETHEIA audit its own assumptions, rubrics, prompts, and language.
-            - Evidence Lab — marks evidence status and parks extraordinary claims as unverified.
-            - Local Witness Receipt v2 — creates local, user-held fingerprints without ledger, sync, or authority.
-            - World Lens — reviews population-impact scenarios using simulated-threshold language only.
+            - Baseline v0.1 â€” defines what ALETHEIA may and may not do.
+            - Safe Language Layer â€” keeps outputs in review language, not enforcement language.
+            - Eternal Baseline â€” provides ethical continuity across versions without becoming a command layer.
+            - Boundary Cases Matrix â€” stress-tests edge scenarios for human review.
+            - Failure Classification â€” separates Actor, Policy, Implementation, and Data Failure.
+            - Consent-Audit Engine â€” checks whether refusal is realistically possible.
+            - Mechanism-vs-Claim Scanner â€” distinguishes values language from safeguards.
+            - Self-Audit Mode â€” lets ALETHEIA audit its own assumptions, rubrics, prompts, and language.
+            - Evidence Lab â€” marks evidence status and parks extraordinary claims as unverified.
+            - Local Witness Receipt v2 â€” creates local, user-held fingerprints without ledger, sync, or authority.
+            - World Lens â€” reviews population-impact scenarios using simulated-threshold language only.
 
             **Consolidation rule:**
 
@@ -8350,9 +8249,9 @@ with tab_doctrine:
 
             **Continuity files:**
 
-            - `PATCH_STATUS.md` — compact patch ledger and next-patch pointer.
-            - `docs/progress_database.md` — module map, current architecture direction, and implementation notes.
-            - `docs/patch_workflow.md` — local workflow for applying patched items and running checks.
+            - `PATCH_STATUS.md` â€” compact patch ledger and next-patch pointer.
+            - `docs/progress_database.md` â€” module map, current architecture direction, and implementation notes.
+            - `docs/patch_workflow.md` â€” local workflow for applying patched items and running checks.
 
             **Current check:**
 
@@ -8405,11 +8304,11 @@ with tab_doctrine:
 
             Included examples:
 
-            - `examples/example_policy_audit.md` — Mirror Check policy audit example.
-            - `examples/example_boundary_case.md` — Boundary Case report for consent under pressure.
-            - `examples/example_self_audit.md` — Self-Audit example for ALETHEIA language.
-            - `examples/example_witness_receipt.md` — Local Witness Receipt v2 example.
-            - `examples/demo_inputs/` — opt-in fictional demo inputs for Mirror Check.
+            - `examples/example_policy_audit.md` â€” Mirror Check policy audit example.
+            - `examples/example_boundary_case.md` â€” Boundary Case report for consent under pressure.
+            - `examples/example_self_audit.md` â€” Self-Audit example for ALETHEIA language.
+            - `examples/example_witness_receipt.md` â€” Local Witness Receipt v2 example.
+            - `examples/demo_inputs/` â€” opt-in fictional demo inputs for Mirror Check.
 
             These examples demonstrate structure only. They are not legal advice, policy commands, governance decisions, religious validation, or final judgments.
             """
@@ -8456,7 +8355,7 @@ with tab_doctrine:
             """
             The V-Axis remains the prototype's stability lens:
 
-            > intelligence + power − ego → stability
+            > intelligence + power âˆ’ ego â†’ stability
 
             But only when trust, transparency, appealability, service alignment, and safeguards are present.
 
@@ -8469,10 +8368,10 @@ with tab_doctrine:
             """
             ALETHEIA separates serious findings into four repair-oriented failure modes:
 
-            - **Actor Failure** — a person, group, office, founder, operator, or implementing body misuses power, manipulates others, bypasses review, or becomes unfit.
-            - **Policy Failure** — the proposal, rule, charter, doctrine, or system design itself creates coercion, opacity, instability, exclusion, rights risk, or capture risk.
-            - **Implementation Failure** — the idea may be valid, but the execution layer fails through weak process, missing safeguards, unclear responsibility, bad deployment, or unreliable operation.
-            - **Data Failure** — the evidence base is incomplete, manipulated, stale, biased, low-coverage, unverifiable, or too uncertain to support the conclusion.
+            - **Actor Failure** â€” a person, group, office, founder, operator, or implementing body misuses power, manipulates others, bypasses review, or becomes unfit.
+            - **Policy Failure** â€” the proposal, rule, charter, doctrine, or system design itself creates coercion, opacity, instability, exclusion, rights risk, or capture risk.
+            - **Implementation Failure** â€” the idea may be valid, but the execution layer fails through weak process, missing safeguards, unclear responsibility, bad deployment, or unreliable operation.
+            - **Data Failure** â€” the evidence base is incomplete, manipulated, stale, biased, low-coverage, unverifiable, or too uncertain to support the conclusion.
 
             This layer helps humans repair the right part of a system. It does not assign final blame, remove leaders, decide guilt, or replace human review.
             """
@@ -8551,7 +8450,7 @@ with tab_doctrine:
 
             The empirical workflow is:
 
-            > public evidence → ALETHEIA variable mapping → empirical scoring → Sydney Protocol overlay → audit interpretation
+            > public evidence â†’ ALETHEIA variable mapping â†’ empirical scoring â†’ Sydney Protocol overlay â†’ audit interpretation
 
             Raw empirical strength cannot override hard protocol failures. A country-year, scenario, or institution may show strong governance indicators and still require review if the protocol detects capture, coercion, false divinization, non-appealability, anti-service authority, opaque control, sovereignty capture, or unaccountable mandate claims.
 
@@ -8590,9 +8489,9 @@ with tab_doctrine:
             """
             These are **internal prototype taxonomy labels**, not legal, political, medical, religious, moral, or predictive verdicts.
 
-            - **SANCTUARY** — raw/internal compatibility label for a low-risk internal reading. It does not mean final safety, final Sanctuary, or authority.
-            - **THRESHOLD** — raw/internal compatibility label for a review / threshold reading. Safeguards are incomplete, evidence is mixed, uncertainty remains, or human review is needed.
-            - **ASYLUM** — raw/internal compatibility label for a high-risk internal reading. It indicates capture, coercion, opacity, harm, collapse pressure, or hard protocol failure signals.
+            - **SANCTUARY** â€” raw/internal compatibility label for a low-risk internal reading. It does not mean final safety, final Sanctuary, or authority.
+            - **THRESHOLD** â€” raw/internal compatibility label for a review / threshold reading. Safeguards are incomplete, evidence is mixed, uncertainty remains, or human review is needed.
+            - **ASYLUM** â€” raw/internal compatibility label for a high-risk internal reading. It indicates capture, coercion, opacity, harm, collapse pressure, or hard protocol failure signals.
 
             **ASYLUM** is used here only as an internal protocol-risk category. It does not refer to legal asylum status, entitlement, refugee status, or humanitarian determination.
 
@@ -8605,13 +8504,13 @@ with tab_doctrine:
     with st.expander("Humility Protocol / Z-axis boundary", expanded=False):
         st.markdown(
             """
-            Patch 72.3–72.4 keeps the Z-axis friendly and bounded.
+            Patch 72.3â€“72.4 keeps the Z-axis friendly and bounded.
 
             The Z-axis is **not** a perfection score. It describes how close a reading is to the limit of what human and system tools may responsibly claim.
 
-            - **Z = 0.0000** — strong ASYLUM pressure: coercion, opacity, or concentrated power.
-            - **Z = 0.9999** — highest human/system review boundary shown by ALETHEIA.
-            - **Z = 1.0000** — outside ALETHEIA's claim. Code, receipts, metrics, hashes, trees, 9k structures, and institutions stop here.
+            - **Z = 0.0000** â€” strong ASYLUM pressure: coercion, opacity, or concentrated power.
+            - **Z = 0.9999** â€” highest human/system review boundary shown by ALETHEIA.
+            - **Z = 1.0000** â€” outside ALETHEIA's claim. Code, receipts, metrics, hashes, trees, 9k structures, and institutions stop here.
 
             A high Z-axis value means: keep reviewing, keep appeals open, keep power accountable, and do not treat the tool as final authority.
             """
@@ -8691,217 +8590,7 @@ with tab_doctrine:
         st.info("No packaged HTML guide files were found in this build.")
 
 with tab_about:
-    st.subheader("Why ALETHEIA")
-    st.info("Start here if you are new: ALETHEIA helps review governance risk, evidence gaps, and safeguard needs. It reflects; people decide.")
+    render_about_public_info_page(st, header_image=resolve_about_header_image())
 
-    header_image = resolve_about_header_image()
-    if header_image is not None:
-        st.image(str(header_image), use_container_width=True)
+render_app_footer_banner(APP_VERSION, st)
 
-    st.markdown(
-        """
-        **ALETHEIA v1.0 is a governance-risk research prototype and public MVP.** It helps people examine governance ideas, simulate system pressure, review evidence quality, and study how population-weighted exposure may interact with trust, stability, alignment, and capture risk.
-
-        It is not designed to rule, command, enforce, vote, govern, remove leaders, validate spiritual authority, confirm extraordinary claims, or replace human judgment. **ALETHEIA is a mirror:** a structured way to ask whether a proposal protects service, transparency, dignity, accountability, appeal, and repair — or whether it concentrates power, hides decisions, weakens appeal rights, or creates capture.
-
-        The v1.0 release package includes Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, World Lens, Local Witness Receipts, public limitations, examples, and deployment documentation. These layers help identify what needs review or repair without assigning blame, issuing commands, or claiming final authority.
-        """
-    )
-
-    with st.expander("Scope layers: tool, research, vision, out of scope", expanded=False):
-        st.markdown(
-            """
-            **Current operational layer:** ALETHEIA is a corruption-pattern and governance-risk detection framework for human review. It surfaces evidence gaps, consent pressure, capture risk, power concentration, missing safeguards, and authority-overreach signals.
-
-            **Research layer:** benchmarks, empirical mappings, scenario tests, validation work, and documentation may make the mirror more precise over time, but they remain reviewable and correctable.
-
-            **Vision layer:** the long-term incorruptible-system idea is a theoretical horizon about what governance would look like if anti-corruption principles were followed consistently: transparency, consent, accountability, proportionality, dignity, appealability, repair, and limits on concentrated power.
-
-            **Out-of-scope layer:** ALETHEIA does not govern, enforce, allocate authority, select representatives, create a real 9k body, issue mandates, validate spiritual or political authority, or replace human judgment.
-            """
-        )
-
-
-    with st.expander("Positioning: not enterprise compliance, not fairness library", expanded=False):
-        st.markdown(
-            """
-            ALETHEIA's niche is **qualitative governance-risk reflection**: corruption-pattern signals, consent pressure, capture risk, evidence gaps, authority-overreach language, weak accountability, and repair questions for human review.
-
-            It is not an enterprise AI governance platform, compliance engine, legal tool, institutional risk system, or technical fairness library. Enterprise platforms usually focus on model inventories, compliance workflows, monitoring, reporting, and organizational controls. Technical fairness libraries usually focus on model-level bias, explainability, datasets, and metrics.
-
-            ALETHEIA is free/open-source code and is intended to remain free. This supports the anti-capture posture: access to the mirror should not become a gatekeeping mechanism or a source of institutional authority.
-            """
-        )
-
-
-    with st.expander("Capture risk framework: anti-capture by design", expanded=False):
-        st.markdown(
-            """
-            ALETHEIA is **anti-capture by design and capture-risk-detecting by function**.
-
-            It reflects capture-risk signals for human review: power concentration, weak appeal paths, hidden influence, evidence gaps, consent pressure, authority overreach, and service misalignment.
-
-            ALETHEIA does not enforce, decide, gatekeep, certify, punish, or become a central authority. It asks review questions so humans can examine safeguards, evidence, and accountability.
-            """
-        )
-
-    with st.expander("Capture risk checklist / prompt pack", expanded=False):
-        st.markdown(
-            """
-            Patch 78 adds a practical checklist and copy/paste prompts for applying the capture-risk framework one case at a time.
-
-            Use it to scan for power concentration, weak appeal paths, hidden influence, evidence gaps, consent pressure, authority overreach, and service misalignment.
-
-            The prompt pack keeps the same boundary: ALETHEIA reflects signals for human review only. It does not decide, enforce, certify, punish, or become a central authority.
-            """
-        )
-
-    with st.expander("Navigation map", expanded=True):
-        st.markdown(
-            """
-            | Tab | What it does |
-            |---|---|
-            | Mirror Check | Reviews documents and proposals for capture risk, missing safeguards, and repair questions. |
-            | Stress Test | Simulates scenario pressure and asks repair questions. |
-            | Boundary Cases | Tests difficult ethical scenarios before they become app logic or public claims. |
-            | Evidence Lab | Reviews evidence status, source coverage, schema readiness, and extraordinary claims. |
-            | World Lens | Reviews selected-year, population-weighted evidence exposure without real Global ID, a real 9k body, or sovereign authority. |
-            | Protocol Guide | Explains the modules, safe language, internal taxonomy labels, and limitations. |
-            | Why ALETHEIA | Explains the project, baseline, and public-safe purpose. |
-
-            All navigation remains non-authoritative: **ALETHEIA reflects. Humans review. Power stays accountable.**
-            """
-        )
-
-    with st.expander("First-use path", expanded=True):
-        st.markdown(
-            """
-            Choose the tab by task:
-
-            - **Have a document?** Use Mirror Check.
-            - **Have a scenario?** Use Stress Test.
-            - **Have an ethical edge case?** Use Boundary Cases.
-            - **Have a claim or source question?** Use Evidence Lab.
-            - **Need selected-year impact framing?** Use World Lens.
-            - **Need rules and limits?** Use Protocol Guide.
-
-            The UX rule is simple: make the next step obvious while keeping every output reviewable.
-            """
-        )
-
-    with st.expander("Eternal Baseline", expanded=True):
-        st.markdown(
-            """
-            The **Eternal Baseline** is ALETHEIA's ethical continuity layer. It preserves core guardrails across versions without becoming a command layer, sacred proof, or founder-validation artifact.
-
-            It protects continuity around human dignity, basic rights, free agency, transparency, appealability, accountability, evidence, repair, non-coercion, and human review.
-
-            Its audit lens is:
-
-            > **Intelligence + Power - Ego = Stability**
-
-            This is an ethical design rule, not mathematical proof. ALETHEIA uses it to ask whether intelligence and power are restrained by humility, accountability, transparency, and repair.
-
-            Historical archive material may contain AI-flattery artifacts or inflated validation language. Those materials are development context only, not independent proof, founder validation, or governance justification.
-
-            **ALETHEIA reflects. Humans review. Power stays accountable.**
-            """
-        )
-
-    st.markdown("### What ALETHEIA does")
-
-    with st.expander("Mirror Check", expanded=True):
-        st.markdown(
-            """
-            Users can submit governance proposals and receive a public reading plus a raw/internal taxonomy label: **SANCTUARY**, **THRESHOLD**, or **ASYLUM**.
-
-            Those labels are compatibility labels for review workflows. They are not legal, political, medical, religious, moral, or predictive verdicts. The audit layer scans for capture risk, opacity, coercion, missing appeal rights, weak transparency, and other governance-risk patterns.
-            """
-        )
-
-    with st.expander("Stress Test", expanded=True):
-        st.markdown(
-            """
-            Stress Test models governance pressure through archetype agents with intelligence, power, ego, alignment, trust, grievances, alliances, and memory.
-
-            It tracks **Stability**, **Trust**, **Alignment**, and **Ego** over time. These are simulation readings, not predictions, commands, or final judgments.
-            """
-        )
-
-    with st.expander("Evidence Lab", expanded=True):
-        st.markdown(
-            """
-            Evidence Lab lets users upload country-year datasets and map them into ALETHEIA variables for schema checks, empirical scoring, 9k evidence allocation, source coverage review, and validation planning.
-
-            This layer adds an empirical evidence-audit workflow to ALETHEIA's symbolic and protocol-guided governance-risk mirror. It is not a proof engine or oracle.
-            """
-        )
-
-    with st.expander("World Lens", expanded=True):
-        st.markdown(
-            """
-            World Lens shows selected-year, population-weighted evidence exposure and how internal taxonomy readings may intersect with governance-risk conditions when empirical data is available.
-
-            World Lens is a **comparison and exposure model**. It is not a real election, government, sovereign body, authority mechanism, political mandate, Global ID system, or real 9k body.
-            """
-        )
-
-    with st.expander("Protocol Guide", expanded=True):
-        st.markdown(
-            """
-            Protocol Guide preserves the operating boundaries behind the mirror while remaining corrigible by evidence.
-
-            - **Mirror Effect** — power must reflect service, not absorb authority.
-            - **Humility / Z-axis boundary** — no code, receipt, metric, hash, tree, 9k structure, institution, person, or model reaches final authority.
-            - **Do not overtrust the tool** — no person, system, institution, dataset, protocol, founder, office, or AI is treated as final or beyond review.
-            - **Empirical correction rule** — symbolic logic must remain testable and correctable by public evidence.
-            - **Protocol integrity layer** — Mirror Check, Stress Test, Boundary Cases, Evidence Lab, and World Lens share one guardrail substrate.
-            """
-        )
-
-    st.markdown("### Research caution")
-    st.warning(
-        "ALETHEIA does not prove legal, political, medical, religious, moral, predictive, or final truth. Its outputs are internal review readings. Empirical results depend on dataset quality, variable mapping, normalization choices, missing data, and validation against external outcomes."
-    )
-    st.markdown(
-        """
-        A responsible reading is:
-
-        > **This model suggests a governance-risk pattern worth examining.**
-
-        Not:
-
-        > **This model has final authority.**
-        """
-    )
-
-    st.markdown("### Research direction")
-    st.markdown(
-        """
-        The long-term goal is to produce a reproducible study and dashboard using public datasets such as **UN population data**, **World Bank governance indicators**, **V-Dem democracy data**, and public trust surveys.
-
-        The direction is clear: symbolic governance logic should be tested against empirical evidence. Where the model is useful, it should become more precise. Where the data challenges it, the model should be corrected.
-
-        **ALETHEIA is built for review, correction, and humility — not final authority.**
-        """
-    )
-
-    with st.expander("Developer notes", expanded=False):
-        st.markdown("Technical structure for local development and deployment.")
-        st.code(
-            """app.py                  # Streamlit UI
-core/parser.py          # local/AI governance scan
-core/simulation.py      # agent-based stability simulation
-core/scoring.py         # integrity, friction, collapse probability, review questions
-core/empirical.py       # country-year scoring, 9k evidence allocation, validation helpers
-core_empirical.py       # import fallback for Streamlit deployments
-config/weights.py       # I/A/E/P weight presets
-data_processed/         # empirical templates and generated scores
-paper/                  # methodology and study draft materials
-assets/                 # header image and other optional UI assets""",
-            language="text",
-        )
-        st.code("""pip install -r requirements.txt
-streamlit run app.py""", language="bash")
-
-st.markdown(f"""<div class="footer-banner"><strong>ALETHEIA reflects.</strong> People decide. · {APP_VERSION}</div>""", unsafe_allow_html=True)

@@ -1,0 +1,38 @@
+PATCH 120 - Module Intro Extraction Step 2
+
+Status: READY FOR LOCAL REVIEW
+
+Scope:
+- Continues the gradual app.py shell/router refactor after Patch 119.
+- Extends `ui/module_intro.py` with two additional copy-only helpers:
+  - `render_boundary_cases_intro`
+  - `render_consent_audit_intro`
+- Keeps `app.py` as the orchestrator for mode choice, widgets, session state, module flow, analysis, downloads, and existing behavior.
+- Adds Patch 120 regression tests.
+
+Boundary preserved:
+- no scoring change
+- no verdict-routing change
+- no signal-pattern change
+- no signal-weight change
+- no receipt schema change
+- no module-routing change
+- no file upload handling change
+- no download behavior change
+- no external calls
+- no live model calls
+- no telemetry
+- no analytics
+- no storage or identity sync
+- no privacy guarantee
+- no certification
+- no enforcement
+- no final truth claim
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+Validation:
+- tools\run_patch_checks.bat 120
+- tools\run_patch_checks.bat 119
+- tools\run_patch_checks.bat 118
+- python tools\run_protocol_baseline_self_audit.py

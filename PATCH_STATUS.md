@@ -1,4 +1,148 @@
+## Patch 118 — Beginner UX Polish v2
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 118 polishes the beginner path from Patch 111 by adding a first-audit checklist, clearer “what this means / what this does not mean” copy, and stop-and-review prompts for rights, reputation, safety, missing evidence, legal/medical/political/institutional/financial consequences, and unclear receipts.
+
+Boundary preserved: static beginner UX copy and documentation only. No scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module-routing change, no external calls, no live model calls, no telemetry, no analytics, no central storage, no Global ID sync, no public ledger sync, no privacy guarantee, no certification, no enforcement, and no final truth claim. Humans keep the judgment.
+
+Validation targets:
+
+```bat
+tools\run_patch_checks.bat 118
+tools\run_patch_checks.bat 117
+tools\run_patch_checks.bat 116
+tools\run_patch_checks.bat 115
+python tools\run_protocol_baseline_self_audit.py
+```
+
+## Patch 117 — Refactor Stabilization Checkpoint
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 117 pauses the app-shell router refactor after Patch 116 and adds a stabilization checkpoint. It documents the refactor boundary and adds tests proving that `ui/app_shell.py` remains a static shell-copy helper layer while `app.py` remains the orchestrator for interactive controls, session state, module routing, scoring, receipts, downloads, and analysis behavior.
+
+Boundary preserved: no runtime behavior change, no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module-routing change, no external calls, no live model calls, no telemetry, no analytics, no central storage, no Global ID sync, no public ledger sync, no privacy guarantee, no certification, no enforcement, and no final truth claim. Humans keep the judgment.
+
+Validation targets:
+
+```bat
+tools
+un_patch_checks.bat 117
+tools
+un_patch_checks.bat 116
+tools
+un_patch_checks.bat 115
+tools
+un_patch_checks.bat 114
+python tools
+un_protocol_baseline_self_audit.py
+```
+
+## Patch 116 — App Shell Router Refactor Step 5
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Extracts the stable footer banner into `ui/app_shell.py` as a copy-only app-shell helper.
+- Updates `app.py` to call `render_app_footer_banner(APP_VERSION, st)` while keeping runtime orchestration in `app.py`.
+- Keeps this as static shell extraction only: no interactive controls, session state, module routing, scoring, receipts, downloads, or analysis behavior moved.
+- No scoring, verdict-routing, signal-pattern, signal-weight, receipt schema, module-routing, external-call, live-model-call, telemetry, analytics, central-storage, Global ID sync, public ledger sync, privacy-guarantee, certification, enforcement, or final-truth behavior changed.
+
+Validation:
+- `tools\run_patch_checks.bat 116`
+- `tools\run_patch_checks.bat 115`
+- `tools\run_patch_checks.bat 114`
+- `python tools\run_protocol_baseline_self_audit.py`
+
 # ALETHEIA Patch Status
+
+## Patch 115 — App Shell Router Refactor Step 4
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Extracts static sidebar tuning-section headings and explanatory captions into `ui/app_shell.py`.
+- Updates `app.py` to call the new app-shell helpers while keeping all interactive sidebar controls in place.
+- Keeps `app.py` as the orchestrator for session state, module routing, scoring, receipts, downloads, and analysis behavior.
+- No scoring, verdict-routing, signal-pattern, signal-weight, receipt schema, module-routing, external-call, live-model-call, telemetry, analytics, central-storage, Global ID sync, public ledger sync, privacy-guarantee, certification, enforcement, or final-truth behavior changed.
+
+Validation:
+- `tools\run_patch_checks.bat 115`
+- `tools\run_patch_checks.bat 114`
+- `tools\run_patch_checks.bat 113`
+- `python tools\run_protocol_baseline_self_audit.py`
+
+## Patch 114 — Public Release Polish v1
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Adds `docs/public_release_polish_v1.md` as the public wording and first-review entry note.
+- Updates README, public release notes, public trust package, patch index, architecture, and trust-package README.
+- Clarifies that ALETHEIA outputs are internal governance-risk readings and repair prompts, not verdicts or certifications.
+- Keeps public links direct and reviewable rather than relying on shortened links.
+- No app.py change, no runtime behavior change, no scoring, verdict-routing, signal-pattern, signal-weight, receipt schema, module-routing, external-call, live-model-call, telemetry, analytics, central-storage, Global ID sync, public ledger sync, privacy-guarantee, certification, enforcement, or final-truth behavior changed.
+
+Validation:
+- `tools\run_patch_checks.bat 114`
+- `tools\run_patch_checks.bat 113`
+- `tools\run_patch_checks.bat 112`
+- `tools\run_patch_checks.bat 111`
+- `python tools\run_protocol_baseline_self_audit.py`
+
+## Patch 111 — Beginner Try This First UX
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Adds `ui/beginner_guide.py` with a compact first-run "Start here: try this first" guide.
+- Wires the guide under the public header in `app.py` without changing module routing, scoring, receipts, or signal logic.
+- Adds `docs/beginner_ux.md` to document the beginner path and its boundaries.
+- Keeps `app.py` as the orchestrator for behavior.
+- No scoring, verdict-routing, signal-pattern, signal-weight, receipt schema, module-routing, external-call, telemetry, analytics, storage, certification, enforcement, privacy-guarantee, or final-truth behavior changed.
+
+Validation:
+- `tools\run_patch_checks.bat 111`
+- `tools\run_patch_checks.bat 110`
+- `tools\run_patch_checks.bat 109`
+- `tools\run_patch_checks.bat 108`
+- `tools\run_patch_checks.bat 107`
+- `tools\run_patch_checks.bat 106`
+- `python tools\run_protocol_baseline_self_audit.py`
+
+
+## Patch 103 — Signal Detection Transparency Documentation
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Adds `docs/signal_detection.md` to document ALETHEIA's transparent rule-based and heuristic signal-detection posture.
+- Frames rule-based detection as explainable, local-first, and reviewable while clearly naming limits around nuance, irony, coded language, cultural context, and languages outside the strongest English/Dutch calibration path.
+- Updates README, architecture, and contributor docs with the signal-basis pointer.
+- Updates the Patch 101 baseline manifest hashes for changed watched docs so the human-auditable baseline remains explicit and reviewable.
+- No scoring, verdict-routing, signal-pattern, signal-weight, receipt schema, Streamlit behavior, external-call, telemetry, storage, or authority-boundary logic changed.
+
+Validation:
+- `tools\run_patch_checks.bat 103`
+- `tools\run_patch_checks.bat 102`
+- `tools\run_patch_checks.bat 101`
+
+## Patch 102 — Structural Improvement Entry Point
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Adds a documentation-first structural improvement path before any `app.py` refactor.
+- Adds architecture and new-contributor entry docs so later refactors have a reviewable boundary.
+- Adds `CONTRIBUTING.md` with safe contribution areas, high-review areas, and prohibited authority-drift directions.
+- Updates README with the structural path.
+- Updates the Patch 101 baseline manifest hashes for changed watched docs so the human-auditable baseline self-audit remains explicit and reviewable.
+- No scoring, verdict-routing, receipt schema, Streamlit behavior, external calls, telemetry, storage, or authority-boundary logic changed.
+
+Validation:
+- `tools\run_patch_checks.bat 102`
+- `tools\run_patch_checks.bat 101`
 
 ## Patch 83 — Android Gradle Plugin Resolution Fix
 
@@ -2202,4 +2346,432 @@ Verification:
 tools\run_patch_checks.bat 101
 python tools\run_protocol_baseline_self_audit.py
 tools\run_patch_checks.bat 100
+```
+
+
+## Patch 102 - Structural Improvement Entry Point
+
+Status: PASSED BY USER / READY FOR NEXT PATCH
+
+Patch 102 starts the structural improvement path with documentation-first onboarding and architecture mapping before any `app.py` refactor.
+
+Boundary preserved: documentation/tests only; no runtime behavior, scoring, verdict routing, receipt schema, telemetry, storage, external-call behavior, or authority-claim changes.
+
+## Patch 103 - Signal Detection Transparency Documentation
+
+Status: PASSED BY USER / READY FOR NEXT PATCH
+
+Patch 103 documents ALETHEIA's transparent rule-based and heuristic signal-detection posture, including English/Dutch calibration limits and human-review requirements.
+
+Boundary preserved: documentation/tests only; no scoring, verdict routing, signal-pattern, signal-weight, receipt schema, telemetry, storage, external-call behavior, or authority-claim changes.
+
+## Patch 104 - Boundary, Privacy, and Hosted-Use Transparency
+
+Status: PASSED BY USER / READY FOR NEXT PATCH
+
+Patch 104 adds a central boundary statement, hosted-use caveat, and small reusable helper modules for future UI use.
+
+Summary:
+- Added `docs/BOUNDARY.md`.
+- Added `docs/hosting_limits.md`.
+- Added `core/boundary.py`.
+- Added `core/privacy_panel.py`.
+- Updated README, CONTRIBUTING, architecture, and privacy-boundary docs.
+- Added patch-specific tests in `tests/test_patch_104_boundary_privacy_hosting.py`.
+
+Boundary preserved:
+- No scoring change.
+- No verdict-routing change.
+- No signal-pattern change.
+- No signal-weight change.
+- No receipt schema change.
+- No Streamlit page wiring change.
+- No app.py refactor.
+- No external calls.
+- No live model calls.
+- No telemetry.
+- No analytics.
+- No backend upload endpoint.
+- No central storage.
+- No Global ID sync.
+- No public ledger sync.
+- No privacy guarantee.
+- No security guarantee.
+- No certification.
+- No enforcement.
+- No final truth claim.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 104
+tools\run_patch_checks.bat 103
+tools\run_patch_checks.bat 102
+tools\run_patch_checks.bat 101
+```
+
+## Patch 105 - Patch History and Public Trust Navigation
+
+Status: READY FOR LOCAL TESTING
+
+Patch 105 adds a documentation navigation layer so reviewers and contributors can inspect ALETHEIA's boundary, privacy, hosting, signal-detection, architecture, and patch-history documents without being overwhelmed by the full patch trail.
+
+Summary:
+- Added `docs/patch_index.md`.
+- Added `docs/public_trust_package.md`.
+- Added `examples/Trust_Package_README.md`.
+- Updated README, CONTRIBUTING, architecture, status, and progress docs.
+- Added patch-specific tests in `tests/test_patch_105_patch_index_trust_navigation.py`.
+
+Boundary preserved:
+- No runtime behavior change.
+- No scoring change.
+- No verdict-routing change.
+- No signal-pattern change.
+- No signal-weight change.
+- No receipt schema change.
+- No Streamlit page wiring change.
+- No app.py refactor.
+- No external calls.
+- No live model calls.
+- No telemetry.
+- No analytics.
+- No backend upload endpoint.
+- No central storage.
+- No Global ID sync.
+- No public ledger sync.
+- No privacy guarantee.
+- No security guarantee.
+- No certification.
+- No enforcement.
+- No final truth claim.
+
+Verification:
+
+```bat
+tools
+un_patch_checks.bat 105
+tools
+un_patch_checks.bat 104
+tools
+un_patch_checks.bat 103
+tools
+un_patch_checks.bat 102
+tools
+un_patch_checks.bat 101
+python tools
+un_protocol_baseline_self_audit.py
+```
+
+## Patch 106 - Signal Dictionary and Glossary
+
+Status: READY FOR LOCAL TESTING
+
+Patch 106 adds `docs/SIGNAL_DICTIONARY.md`, a reviewer-facing glossary for signal families, review questions, typical cues, possible false positives, and repair directions.
+
+Summary:
+- Added `docs/SIGNAL_DICTIONARY.md`.
+- Linked the dictionary from signal-detection, public-trust, patch-index, contributor, trust-package, and README surfaces.
+- Added patch-specific tests in `tests/test_patch_106_signal_dictionary_glossary.py`.
+
+Boundary preserved:
+- No runtime behavior change.
+- No scoring change.
+- No verdict-routing change.
+- No signal-pattern change.
+- No signal-weight change.
+- No receipt schema change.
+- No Streamlit page wiring change.
+- No app.py refactor.
+- No external calls.
+- No live model calls.
+- No telemetry.
+- No analytics.
+- No backend upload endpoint.
+- No central storage.
+- No Global ID sync.
+- No public ledger sync.
+- No privacy guarantee.
+- No security guarantee.
+- No certification.
+- No enforcement.
+- No final truth claim.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 106
+tools\run_patch_checks.bat 105
+tools\run_patch_checks.bat 104
+tools\run_patch_checks.bat 103
+tools\run_patch_checks.bat 102
+tools\run_patch_checks.bat 101
+python tools\run_protocol_baseline_self_audit.py
+```
+
+
+## Patch 107 - Boundary and Privacy UI Wiring
+
+Status: READY FOR LOCAL TESTING
+
+Patch 107 wires the existing Patch 104 boundary/privacy helpers into the Streamlit sidebar. This is narrow runtime UI wiring only: it makes the local-first / hosted-use caveat and compact "mirror, not throne" footer visible in the app.
+
+Boundary preserved:
+- No scoring change.
+- No verdict-routing change.
+- No signal-pattern change.
+- No signal-weight change.
+- No receipt schema change.
+- No external calls.
+- No live model calls.
+- No telemetry.
+- No analytics.
+- No backend upload endpoint.
+- No central storage.
+- No Global ID sync.
+- No public ledger sync.
+- No privacy guarantee.
+- No security guarantee.
+- No certification.
+- No enforcement.
+- No final truth claim.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 107
+tools\run_patch_checks.bat 106
+python tools\run_protocol_baseline_self_audit.py
+```
+
+
+## Patch 108 - App Shell Router Refactor Step 1
+
+Status: READY FOR LOCAL TESTING
+
+Patch 108 starts the gradual app.py router/shell refactor by extracting the top-of-app boundary notices into `ui/app_shell.py`. The app now calls `render_app_boundary_notices(SUPPORTED_INPUT_LANGUAGE_NOTE, st)` instead of keeping those static notices inline.
+
+Boundary preserved:
+- No scoring change.
+- No verdict-routing change.
+- No signal-pattern change.
+- No signal-weight change.
+- No receipt schema change.
+- No external calls.
+- No live model calls.
+- No telemetry.
+- No analytics.
+- No backend upload endpoint.
+- No central storage.
+- No Global ID sync.
+- No public ledger sync.
+- No privacy guarantee.
+- No security guarantee.
+- No certification.
+- No enforcement.
+- No final truth claim.
+
+Verification:
+
+```bat
+tools\run_patch_checks.bat 108
+tools\run_patch_checks.bat 107
+tools\run_patch_checks.bat 106
+python tools\run_protocol_baseline_self_audit.py
+```
+
+## Patch 109 — App Shell Router Refactor Step 2
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Continues the gradual app.py router/shell refactor started in Patch 108.
+- Extracts the stable sidebar identity card and sidebar context copy into `ui/app_shell.py`.
+- Keeps `app.py` as the orchestrator for navigation, interactive controls, session state, scoring calls, receipt generation, downloads, and module routing.
+- Adds patch-specific tests proving the new helpers are copy-only and boundary-safe.
+
+Boundary preserved: no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module routing change, no navigation change, no external calls, no live model calls, no telemetry, no analytics, no central storage, no Global ID sync, no public ledger sync, no privacy guarantee, no certification, no enforcement, and no final truth claim.
+
+Human review remains required.
+
+Validation:
+- `tools\run_patch_checks.bat 109`
+- `tools\run_patch_checks.bat 108`
+- `tools\run_patch_checks.bat 107`
+- `tools\run_patch_checks.bat 106`
+- `python tools\run_protocol_baseline_self_audit.py`
+
+
+App.py remains the orchestrator for behavior; Patch 109 only extracts sidebar shell copy.
+
+## Patch 110 — App Shell Router Refactor Step 3
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 110 continues the gradual `app.py` router/shell refactor by extracting the stable public header and first-use note into `ui/app_shell.py`. `app.py` remains the orchestrator for behavior, module routing, session state, scoring, receipts, downloads, and interactive controls.
+
+Validation targets:
+
+- `tools\run_patch_checks.bat 110`
+- `tools\run_patch_checks.bat 109`
+- `tools\run_patch_checks.bat 108`
+- `tools\run_patch_checks.bat 107`
+- `tools\run_patch_checks.bat 106`
+- `python tools\run_protocol_baseline_self_audit.py`
+
+Boundary preserved: no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module routing change, no external calls, no live model calls, no telemetry, no analytics, no central storage, no Global ID sync, no public ledger sync, no privacy guarantee, no certification, no enforcement, and no final truth claim.
+
+
+## Patch 112 — Privacy Audit Panel v1
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 112 extracts the Privacy Boundary Audit Panel rendering into `ui/privacy_audit_panel.py` and documents the panel in `docs/privacy_audit_panel_v1.md`. The underlying scan remains the static privacy-boundary audit used by AI Integrity Mirror for pasted artifacts.
+
+App.py remains the orchestrator for behavior, module routing, session state, scoring, receipts, downloads, and interactive controls.
+
+Boundary preserved: no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module-routing change, no external calls, no live model calls, no telemetry, no analytics, no central storage, no Global ID sync, no public ledger sync, no privacy guarantee, no compliance approval, no certification, no enforcement, and no final truth claim. Humans keep the judgment.
+
+Validation targets:
+
+```bat
+tools\run_patch_checks.bat 112
+tools\run_patch_checks.bat 111
+tools\run_patch_checks.bat 110
+tools\run_patch_checks.bat 109
+python tools\run_protocol_baseline_self_audit.py
+```
+
+## Patch 113 — Public Trust Package Consolidation
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 113 consolidates the public trust package and adds a concise public review checklist. `docs/public_trust_package.md` is now the central review map for boundary statements, privacy/local-first posture, hosted-use limits, signal detection, the signal dictionary, architecture, beginner UX, Privacy Audit Panel v1, patch history, and the public-review checklist.
+
+Boundary preserved: documentation/navigation only. No app.py change, no runtime behavior change, no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module-routing change, no external calls, no live model calls, no telemetry, no analytics, no central storage, no Global ID sync, no public ledger sync, no privacy guarantee, no compliance approval, no certification, no enforcement, and no final truth claim. Humans keep the judgment.
+
+Validation targets:
+
+```bat
+tools\run_patch_checks.bat 113
+tools\run_patch_checks.bat 112
+tools\run_patch_checks.bat 111
+tools\run_patch_checks.bat 110
+python tools\run_protocol_baseline_self_audit.py
+```
+
+## Patch 119 — App Shell Router Refactor Step 6
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 119 continues the gradual app.py shell/router refactor. It adds `ui/module_intro.py` and extracts exactly one small static/non-interactive UI copy block: the Stress Test "Scan my idea" note now renders through `render_stress_test_scan_intro(st)`.
+
+Boundary preserved: copy-only module intro extraction. `app.py` remains the orchestrator for mode choice, widgets, session state, module routing, scoring, receipts, uploads, downloads, privacy audit scan logic, AI Integrity scan logic, World Lens math, and analysis behavior. No scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no external calls, no telemetry, no analytics, no storage or identity sync, no privacy guarantee, no certification, no enforcement, and no final truth claim.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+Validation targets:
+
+```bat
+tools\run_patch_checks.bat 119
+tools\run_patch_checks.bat 118
+tools\run_patch_checks.bat 117
+python tools\run_protocol_baseline_self_audit.py
+```
+
+## Patch 120 — Module Intro Extraction Step 2
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 120 continues the static module-intro extraction path started in Patch 119. It extends `ui/module_intro.py` with `render_boundary_cases_intro` and `render_consent_audit_intro`, replacing two small inline copy blocks in `app.py`.
+
+Boundary preserved: copy-only module intro extraction. `app.py` remains the orchestrator for mode choice, widgets, session state, module routing, scoring, receipts, uploads, downloads, privacy audit scan logic, AI Integrity scan logic, World Lens math, and analysis behavior. No scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no external calls, no telemetry, no analytics, no storage or identity sync, no privacy guarantee, no certification, no enforcement, and no final truth claim.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+Validation targets:
+
+```bat
+tools\run_patch_checks.bat 120
+tools\run_patch_checks.bat 119
+tools\run_patch_checks.bat 118
+python tools\run_protocol_baseline_self_audit.py
+```
+
+## Patch 121 — Shared Status / Notice Cards
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 121 starts the shared status/notice-card layer. It adds `ui/status_cards.py` and moves the AI Integrity boundary caption group into `render_ai_integrity_boundary_cards`.
+
+Boundary preserved: copy-only status/notice card extraction. `app.py` remains the orchestrator for mode choice, widgets, session state, module routing, scoring, receipts, uploads, downloads, privacy audit scan logic, AI Integrity scan logic, World Lens math, and analysis behavior. No scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no external calls, no telemetry, no analytics, no storage or identity sync, no privacy guarantee, no certification, no enforcement, and no final truth claim.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+Validation targets:
+
+```bat
+tools\run_patch_checks.bat 121
+tools\run_patch_checks.bat 120
+tools\run_patch_checks.bat 119
+python tools\run_protocol_baseline_self_audit.py
+```
+
+## Patch 122 - Refactor Stabilization Checkpoint 2
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 122 stabilizes the app-shell router refactor after Patch 119, Patch 120, and Patch 121. It adds `docs/refactor_stabilization_checkpoint_2.md` and regression tests that verify helper importability, `app.py` helper wiring, copy-only helper boundaries, non-authoritative language, and repair-note hygiene.
+
+Boundary preserved: documentation and regression tests only. `app.py` remains the orchestrator for mode choice, widgets, session state, module routing, scoring, receipts, uploads, downloads, privacy audit scan logic, AI Integrity scan logic, World Lens math, and analysis behavior. No runtime behavior change, no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module-routing change, no external calls, no telemetry, no analytics, no storage or identity sync, no privacy guarantee, no certification, no enforcement, and no final truth claim.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+Validation targets:
+
+```bat
+tools\run_patch_checks.bat 122
+tools\run_patch_checks.bat 121
+tools\run_patch_checks.bat 120
+python tools\run_protocol_baseline_self_audit.py
+```
+
+## Patch 123 - About / Public Info Page Extraction
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 123 starts the low-risk page extraction phase. It moves the in-app `Why ALETHEIA` / About tab copy from `app.py` into `pages_ui/about_page.py`, leaving `app.py` responsible for opening the tab, resolving the optional header image, and calling the page renderer.
+
+Boundary preserved: page-level display extraction only. The older root-level `about_page.py` remains available for standalone About-page compatibility. `app.py` remains the orchestrator for mode choice, widgets, session state, module routing, scoring, receipts, uploads, downloads, privacy audit scan logic, AI Integrity scan logic, World Lens math, and analysis behavior. No runtime behavior change, no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module-routing change, no session-state change, no external calls, no telemetry, no analytics, no storage or identity sync, no privacy guarantee, no certification, no enforcement, and no final truth claim.
+
+Patch 123 also aligns the Patch 122 checkpoint test with the existing privacy-audit helper name. This is test-only and does not change app behavior.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+Validation targets:
+
+```bat
+tools\run_patch_checks.bat 123
+tools\run_patch_checks.bat 122
+tools\run_patch_checks.bat 121
+python tools\run_protocol_baseline_self_audit.py
+```
+
+## Patch 124 - Trust Package Page Extraction
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 124 exposes the public trust package review route inside the Protocol Guide tab through `pages_ui/trust_package_page.py`. The helper renders document pointers and review prompts only; the source of truth remains `docs/public_trust_package.md`, `docs/public_review_checklist.md`, and the linked boundary, privacy, signal, architecture, beginner, and patch-history docs.
+
+Boundary preserved: page-level display extraction only. `app.py` remains the orchestrator for tabs, widgets, session state, module routing, scoring, receipts, uploads, downloads, privacy audit scan logic, AI Integrity scan logic, World Lens math, and analysis behavior. No runtime analysis behavior change, no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module-routing change, no session-state change, no external calls, no telemetry, no analytics, no storage or identity sync, no privacy guarantee, no certification, no enforcement, and no final truth claim.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+Validation targets:
+
+```bat
+tools\run_patch_checks.bat 124
+tools\run_patch_checks.bat 123
+tools\run_patch_checks.bat 122
+python tools\run_protocol_baseline_self_audit.py
 ```

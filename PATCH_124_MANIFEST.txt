@@ -1,0 +1,38 @@
+PATCH 124 MANIFEST
+
+Patch: 124
+Title: Trust Package Page Extraction
+Status: READY FOR LOCAL REVIEW
+
+Changed or added files:
+- app.py
+- pages_ui/trust_package_page.py
+- docs/trust_package_page_extraction.md
+- tests/test_patch_124_trust_package_page_extraction.py
+- PATCH_124_MANIFEST.txt
+- PATCH_124_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- docs/architecture.md
+- README.md
+- data/protocol_baseline_manifest.json
+
+Scope:
+- Add a display-only Public Trust Package page helper.
+- Wire the helper into the Protocol Guide tab.
+- Keep documentation files as the source of truth.
+- Keep `app.py` as the orchestrator.
+
+Boundary:
+- No runtime analysis behavior change.
+- No scoring change.
+- No verdict-routing change.
+- No signal-pattern or signal-weight change.
+- No receipt schema change.
+- No module-routing change.
+- No session-state change.
+- No upload, download, privacy scan, AI Integrity scan, or World Lens math change.
+- No external calls, telemetry, analytics, storage or identity sync, certification, enforcement, privacy guarantee, or final-truth claim.
+
+Human review remains required.

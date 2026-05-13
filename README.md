@@ -7,6 +7,94 @@ ALETHEIA is a **mirror, not a throne**. It can surface governance-risk patterns 
 ALETHEIA is also **privacy-by-design inside this repository**: no built-in telemetry, trackers, analytics SDKs, backend upload endpoint, public ledger sync, Global ID sync, or central user-input database. Inputs are processed in the running app session, and receipts are user-held downloads. Third-party hosting layers may still have their own server or access logs outside ALETHEIA's application code.
 
 
+
+## Public start here
+
+Patch 114 polishes the public entry path after the Public Trust Package consolidation. New reviewers should start with the boundary, privacy posture, signal basis, beginner path, and public-review checklist before reading the full patch history.
+
+Recommended first-read documents:
+
+- `docs/BOUNDARY.md` — authority and scope boundary.
+- `docs/privacy_boundary.md` and `docs/hosting_limits.md` — local-first and hosted-use caveats.
+- `docs/signal_detection.md` and `docs/SIGNAL_DICTIONARY.md` — rule-based / heuristic signal basis and limits.
+- `docs/beginner_ux.md` — safe first-use path.
+- `docs/public_trust_package.md` — central review map.
+- `docs/public_review_checklist.md` — checklist before relying on a reading.
+- `docs/public_release_polish_v1.md` — public wording and release-polish notes.
+
+Public wording standard: ALETHEIA is a free, open-source governance mirror. Its outputs are internal governance-risk readings and repair prompts, not verdicts or certifications.
+
+Boundary preserved: Patch 114 is public release/documentation polish only. It does not change runtime behavior, scoring, verdict routing, signal patterns, signal weights, receipt schemas, module routing, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantees, or final-truth behavior.
+
+
+## Structural improvement entry point
+
+Patch 102 starts the maintainability/onboarding path recommended by external review. The first structural move is documentation-first: clarify architecture, contributor entry, signal limitations, privacy/local-first posture, and the staged `app.py` reduction plan before any behavior-changing refactor.
+
+Start here for the structural path:
+
+- `docs/structural_improvement_entrypoint.md`
+- `docs/architecture.md`
+- `docs/new_contributor_start_here.md`
+- `CONTRIBUTING.md`
+
+Boundary preserved: Patch 102 changes documentation and tests only. It does not change scoring, verdict routing, receipt schemas, external-call behavior, telemetry, storage, or authority claims. ALETHEIA remains a bounded mirror: it surfaces signals; humans keep the judgment.
+
+## Signal detection transparency
+
+Patch 103 documents ALETHEIA's transparent rule-based and heuristic signal-detection posture. The signal system is intentionally reviewable and local-first: it uses inspectable patterns, bounded rules, and protocol guardrails rather than live model calls or opaque external analysis.
+
+This is a strength for explainability and privacy, but it has limits. It may miss or misread irony, coded language, indirect coercion, culturally specific meaning, domain shorthand, long context-dependent arguments, or languages outside the strongest English/Dutch calibration path.
+
+Read: `docs/signal_detection.md`
+
+Boundary preserved: Patch 103 is documentation and tests only. It does not change scoring, verdict routing, signal patterns, signal weights, receipt schemas, external calls, telemetry, storage, or authority claims. Signal results remain internal governance-risk readings, not verdicts or certifications. Human review remains required.
+
+## Boundary, privacy, and hosted-use transparency
+
+Patch 104 adds a central public boundary statement and hosted-use caveat. ALETHEIA is a **mirror, not a throne**: it surfaces governance-risk signals for human review, but it does not certify truth, safety, legality, ethics, privacy, security, or legitimacy.
+
+Read these before public or sensitive use:
+
+- `docs/BOUNDARY.md`
+- `docs/privacy_boundary.md`
+- `docs/hosting_limits.md`
+
+Privacy posture: the repository is local-first by design and includes no built-in telemetry, analytics SDKs, trackers, backend upload endpoint, public ledger sync, Global ID sync, or central user-input storage. Inputs are processed in the active app session, and receipts are user-held downloads. For sensitive audits, run ALETHEIA locally. Hosted deployments may have platform-level logs outside ALETHEIA's application-code boundary.
+
+Boundary preserved: Patch 104 adds documentation and small reusable helper modules only. It does not change scoring, verdict routing, signal patterns, signal weights, receipt schemas, Streamlit page behavior, external calls, telemetry, storage, or authority claims.
+
+## Patch history and public trust navigation
+
+Patch 105 adds a navigation layer for reviewers and contributors who need a shorter path through ALETHEIA's patch history and trust-relevant documents. Patch 113 consolidates that trust-facing path so `docs/public_trust_package.md` becomes the central map to boundary statements, privacy posture, hosting limits, signal detection, architecture, beginner UX, the privacy audit panel, patch history, and the public review checklist.
+
+Read:
+
+- `docs/public_trust_package.md`
+- `docs/public_review_checklist.md`
+- `docs/patch_index.md`
+- `examples/Trust_Package_README.md`
+
+This does not certify ALETHEIA or make it tamper-proof. It gives reviewers a clearer map: boundary, privacy, hosting limits, signal detection, architecture, beginner path, privacy audit panel, contributor start, patch status, and recovery notes.
+
+Boundary preserved: Patches 105 and 113 are documentation/navigation patches only. They do not change runtime behavior, scoring, verdict routing, signal patterns, signal weights, receipt schemas, Streamlit page behavior, external calls, telemetry, storage, certification, enforcement, or authority claims.
+
+## App shell router refactor
+
+Patch 108 started the gradual `app.py` router/shell refactor by extracting the stable top-of-app boundary notices into `ui/app_shell.py`. Patch 109 continues that same behavior-preserving path by extracting the stable sidebar identity card and sidebar context copy into the same helper module. Patch 110 extracts the stable public header and first-use note. Patch 115 continues that same path by extracting static sidebar tuning-section headings and notes while leaving interactive controls in `app.py`. Patch 119 adds `ui/module_intro.py` and moves one small Stress Test module intro note into a copy-only helper. Patch 120 continues that module-intro path by moving two more static intro blocks: Boundary Cases and Consent-Audit. Patch 121 adds `ui/status_cards.py` for shared copy-only notice cards and moves the AI Integrity boundary caption group. Patch 122 adds a second stabilization checkpoint for the current helper boundary.
+
+This keeps `app.py` as the orchestrator while moving static shell copy into a smaller reviewable file. Interactive controls, scoring, verdict routing, signal patterns, signal weights, receipts, downloads, and session-state behavior remain in `app.py`.
+
+Boundary preserved: Patches 109-110, 115, 119, 120, 121, and 122 are UI shell/module-intro/status-card extraction or stabilization steps only. They do not change scoring, verdict routing, signal patterns, signal weights, receipt schemas, module routing, external calls, telemetry, analytics, storage, privacy guarantees, certification, enforcement, or final truth claims.
+
+## Low-risk page extraction
+
+Patch 123 starts the page extraction phase by moving the in-app `Why ALETHEIA` / About tab copy into `pages_ui/about_page.py`. `app.py` remains the orchestrator for tabs, image resolution, widgets, session state, routing, scoring, receipts, uploads, downloads, privacy audit scan logic, AI Integrity scan logic, World Lens math, and analysis behavior.
+
+Patch 124 adds `pages_ui/trust_package_page.py` and exposes the public trust package review route inside the Protocol Guide tab. The helper points reviewers to boundary, privacy, signal, architecture, beginner, patch-history, and public-review checklist docs while keeping those docs as the source of truth.
+
+Boundary preserved: Patches 123 and 124 are page-level display extractions only. They add no external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantees, or final truth claims.
+
 ## AI Integrity Mirror
 
 AI Integrity Mirror is a static, local-first review module for pasted AI outputs, prompts, agent specs, model-card excerpts, policy claims, and code snippets. It reflects governance-integrity signals such as authority overreach, weak reviewability, opacity, coercion pressure, surveillance/identity capture, exposed credentials, and unsafe execution/data-flow markers.
@@ -849,3 +937,70 @@ Public adoption docs:
 The preview package gives new users a clear path from demo examples to batch review, comparison, code/privacy boundary review, red-team prompt outputs, and compact reports.
 
 Boundary preserved: release-surface stabilization only. No analyzer scoring change, no verdict-routing change, no new live model call, no external call, no repository crawler, no vendor ranking, no model-wide certification, no security guarantee, no privacy guarantee, no legal/medical/political/religious authority, no public ledger sync, no Global ID sync, no central storage, no enforcement, and no final truth claim.
+
+## Patch 106 — Signal Dictionary and Glossary
+
+Patch 106 adds `docs/SIGNAL_DICTIONARY.md`, a reviewer-facing glossary for ALETHEIA signal families such as authority overreach, consent pressure, missing appeal or review, power concentration, capture risk, evidence gaps, surveillance or identity-sync pressure, automation without human review, non-transparency, and repair need.
+
+The dictionary is a signal dictionary, not a scoring specification. It explains review questions, typical cues, possible false positives, and repair directions so reviewers can understand the rule-based / heuristic signal posture documented in Patch 103.
+
+Boundary preserved: documentation-only. No runtime behavior change, no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no Streamlit page wiring change, no `app.py` refactor, no external calls, no telemetry, no analytics, no certification, no enforcement, and no final truth claim.
+
+
+
+## Patch 107 — Boundary and privacy UI wiring
+
+Patch 107 makes the existing boundary/privacy wording visible in the Streamlit sidebar. It wires the reusable `core/boundary.py` and `core/privacy_panel.py` helpers into `app.py` without changing scoring, verdict routing, signal patterns, signal weights, receipt schema, external calls, telemetry, analytics, storage, certification, enforcement, or final-truth behavior.
+
+The visible rule remains: **ALETHEIA surfaces signals. Humans keep the judgment.**
+
+
+## Patch 108 — App shell router refactor step 1
+
+Patch 108 begins the gradual `app.py` router/shell refactor by extracting the stable top-of-app boundary notices into `ui/app_shell.py`. This is a narrow UI-structure change only; the visible boundary copy is intended to remain equivalent while `app.py` becomes easier to maintain.
+
+No scoring, verdict routing, signal patterns, signal weights, receipt schema, external calls, telemetry, analytics, storage, certification, enforcement, or final-truth behavior changed.
+
+
+App.py remains the orchestrator for behavior; Patch 109 only extracts sidebar shell copy.
+
+### Patch 110 — App Shell Router Refactor Step 3
+
+Patch 110 continues the gradual `app.py` router/shell refactor by moving the stable public header and first-use note into `ui/app_shell.py`. `app.py` remains the orchestrator for behavior, module routing, session state, scoring, receipts, downloads, and interactive controls.
+
+Boundary preserved: Patch 110 is a UI shell extraction only. It introduces no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module routing change, no external calls, no live model calls, no telemetry, no analytics, no central storage, no Global ID sync, no public ledger sync, no privacy guarantee, no certification, no enforcement, and no final truth claim.
+
+
+
+## Patch 111 — Beginner Try This First UX
+
+Patch 111 adds a compact beginner guide so first-time users have a safe starting path: Mirror Check, risk reading, observed reasons, repair questions, and optional local receipt download. The guide is rendered by `ui/beginner_guide.py` and wired under the public header in `app.py`.
+
+Boundary preserved: Patch 111 is a small UX helper only. It introduces no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module-routing change, no external calls, no live model calls, no telemetry, no analytics, no central storage, no Global ID sync, no public ledger sync, no privacy guarantee, no certification, no enforcement, and no final truth claim.
+
+## Privacy Audit Panel v1
+
+Patch 112 makes the Privacy Boundary Audit Panel easier to maintain by moving its Streamlit rendering into `ui/privacy_audit_panel.py`. The underlying scan remains the static privacy-boundary review already used inside AI Integrity Mirror.
+
+The panel reflects visible privacy-boundary signals in pasted artifacts: analytics hints, external network-call patterns, telemetry keywords, database-write hints, backend endpoint hints, local-only statements, and boundary tension. It provides review questions for humans.
+
+Boundary preserved: app.py remains the orchestrator. Patch 112 does not change scoring, verdict-routing, signal-patterns, signal-weights, receipt schemas, module-routing, external calls, live model calls, telemetry, analytics, central storage, Global ID sync, public ledger sync, privacy guarantees, compliance approval, certification, enforcement, or final truth behavior. Humans keep the judgment.
+
+## Patch 116 — App Shell Router Refactor Step 5
+
+Patch 116 continues the gradual `app.py` reduction by extracting the stable footer banner into `ui/app_shell.py`. This is static shell extraction only. `app.py` remains the orchestrator for interactive controls, session state, module routing, scoring, receipts, downloads, and analysis behavior.
+
+Boundary preserved: Patch 116 does not change scoring, verdict routing, signal patterns, signal weights, receipt schemas, module routing, external calls, live model calls, telemetry, analytics, central storage, Global ID sync, public ledger sync, privacy guarantees, certification, enforcement, or final-truth behavior. Humans keep the judgment.
+
+
+## Patch 117 — Refactor Stabilization Checkpoint
+
+Patch 117 pauses the app-shell router refactor sequence after Patch 116 and adds a stabilization checkpoint. It documents the refactor boundary in `docs/refactor_stabilization_checkpoint.md` and adds regression tests to verify that `ui/app_shell.py` remains a static shell-copy helper layer while `app.py` remains the orchestrator for interactive controls, session state, module routing, scoring, receipts, downloads, and analysis behavior.
+
+Boundary preserved: no runtime behavior change, no scoring, verdict routing, signal patterns, signal weights, receipt schemas, module routing, external calls, live model calls, telemetry, analytics, central storage, Global ID sync, public ledger sync, privacy guarantees, certification, enforcement, or final-truth behavior. Humans keep the judgment.
+
+## Patch 118 — Beginner UX Polish v2
+
+Patch 118 polishes the beginner path introduced in Patch 111. It adds a first-audit checklist, clearer “what this means / what this does not mean” copy, and stop-and-review prompts for cases involving rights, reputation, safety, legal/medical/political/institutional/financial consequences, missing evidence, or unclear receipts.
+
+Boundary preserved: Patch 118 is static beginner UX copy and documentation only. It does not change scoring, verdict routing, signal patterns, signal weights, receipt schemas, module routing, external calls, live model calls, telemetry, analytics, central storage, Global ID sync, public ledger sync, privacy guarantees, certification, enforcement, or final-truth behavior. Humans keep the judgment.

@@ -81,3 +81,14 @@ Check:
 ```bat
 tools\run_patch_checks.bat 63
 ```
+
+
+## Patch 114 — Public Release Polish v1
+
+Patch 114 updates the public-facing entry path after the trust-package consolidation sequence. It points new reviewers toward the boundary statement, privacy/local-first posture, hosted-use caveats, signal basis, beginner path, public trust package, and public-review checklist before they rely on any ALETHEIA reading.
+
+Public wording standard:
+
+> ALETHEIA is a free, open-source governance mirror. It helps people review pressure around power, consent, evidence, appeal, capture risk, privacy posture, and human review. Its outputs are internal governance-risk readings and repair prompts, not verdicts or certifications.
+
+This is release-surface polish only. It does not change app behavior, scoring, verdict routing, signal patterns, signal weights, receipts, module routing, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantees, or final-truth behavior.

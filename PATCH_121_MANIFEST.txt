@@ -1,0 +1,36 @@
+PATCH 121 - Shared Status / Notice Cards
+
+Status: READY FOR LOCAL REVIEW
+
+Scope:
+- Adds `ui/status_cards.py` for copy-only status and boundary cards.
+- Extracts the static AI Integrity boundary caption group into `render_ai_integrity_boundary_cards`.
+- Keeps `app.py` as the orchestrator for mode choice, widgets, session state, module flow, analysis, downloads, and existing behavior.
+- Adds Patch 121 regression tests.
+
+Boundary preserved:
+- no scoring change
+- no verdict-routing change
+- no signal-pattern change
+- no signal-weight change
+- no receipt schema change
+- no module-routing change
+- no file upload handling change
+- no download behavior change
+- no external calls
+- no live model calls
+- no telemetry
+- no analytics
+- no storage or identity sync
+- no privacy guarantee
+- no certification
+- no enforcement
+- no final truth claim
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+Validation:
+- tools\run_patch_checks.bat 121
+- tools\run_patch_checks.bat 120
+- tools\run_patch_checks.bat 119
+- python tools\run_protocol_baseline_self_audit.py

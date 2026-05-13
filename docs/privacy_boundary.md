@@ -37,3 +37,20 @@ Boundary preserved: no scoring-math change, no verdict-routing change, no AI Int
 ```bat
 tools\run_patch_checks.bat 89
 ```
+
+
+## Patch 104 clarification: local-first, not hosted privacy guarantee
+
+ALETHEIA is local-first by design. That means the repository/application boundary avoids built-in telemetry, analytics SDKs, trackers, backend upload endpoints, public ledger sync, Global ID sync, and central user-input storage.
+
+This does **not** mean every hosted deployment can guarantee that no infrastructure logs exist. Streamlit Cloud or another hosting provider may maintain server logs, access logs, request metadata, crash logs, operational monitoring, or rate-limit records outside ALETHEIA's application code.
+
+For sensitive audits, use the local repository. Treat hosted deployments as public-demo or light-review surfaces unless the hosting environment has been separately reviewed by humans.
+
+Related documents:
+
+- `docs/BOUNDARY.md`
+- `docs/hosting_limits.md`
+
+
+This is not a privacy guarantee. Human review remains required.

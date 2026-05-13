@@ -1,0 +1,13 @@
+app.py
+ui/beginner_guide.py
+docs/beginner_ux.md
+tests/test_patch_111_beginner_try_this_first_ux.py
+PATCH_111_MANIFEST.txt
+PATCH_111_RECOVERY_NOTE.md
+README.md
+docs/architecture.md
+docs/patch_index.md
+docs/public_trust_package.md
+PATCH_STATUS.md
+docs/progress_database.md
+data/protocol_baseline_manifest.json

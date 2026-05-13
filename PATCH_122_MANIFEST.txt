@@ -1,0 +1,35 @@
+PATCH 122 MANIFEST
+
+Patch: 122
+Title: Refactor Stabilization Checkpoint 2
+Status: READY FOR LOCAL REVIEW
+
+Changed or added files:
+- docs/refactor_stabilization_checkpoint_2.md
+- tests/test_patch_122_refactor_stabilization_checkpoint_2.py
+- PATCH_122_MANIFEST.txt
+- PATCH_122_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- docs/architecture.md
+- README.md
+- data/protocol_baseline_manifest.json
+
+Scope:
+- Add a stabilization checkpoint after Patch 119, Patch 120, and Patch 121.
+- Keep app.py as the orchestrator.
+- Add tests for helper importability, app.py helper wiring, copy-only helper boundaries, non-authoritative language, and repair-note hygiene.
+
+Boundary:
+- No runtime behavior change.
+- No scoring change.
+- No verdict-routing change.
+- No signal-pattern or signal-weight change.
+- No receipt schema change.
+- No module-routing change.
+- No session-state change.
+- No upload, download, privacy scan, AI Integrity scan, or World Lens math change.
+- No external calls, telemetry, analytics, storage or identity sync, certification, enforcement, privacy guarantee, or final-truth claim.
+
+Human review remains required.

@@ -1,0 +1,52 @@
+PATCH 114 — Public Release Polish v1
+
+Files added:
+- docs/public_release_polish_v1.md
+- tests/test_patch_114_public_release_polish_v1.py
+- PATCH_114_MANIFEST.txt
+- PATCH_114_RECOVERY_NOTE.md
+
+Files updated:
+- README.md
+- docs/public_release_notes.md
+- docs/public_trust_package.md
+- docs/patch_index.md
+- docs/architecture.md
+- examples/Trust_Package_README.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- data/protocol_baseline_manifest.json
+
+Purpose:
+- Polish the public entry path after Patch 113.
+- Add a direct first-review path through boundary, privacy, hosting limits, signal basis, beginner UX, public trust package, and public review checklist.
+- Clarify public wording: internal governance-risk readings and repair prompts, not verdicts or certifications.
+
+Boundary preserved:
+- Documentation/release-surface only.
+- No app.py change.
+- No runtime behavior change.
+- No scoring change.
+- No verdict-routing change.
+- No signal-pattern change.
+- No signal-weight change.
+- No receipt schema change.
+- No module-routing change.
+- No external calls.
+- No live model calls.
+- No telemetry.
+- No analytics.
+- No central storage.
+- No Global ID sync.
+- No public ledger sync.
+- No privacy guarantee.
+- No certification.
+- No enforcement.
+- No final truth claim.
+
+Validation targets:
+- tools\run_patch_checks.bat 114
+- tools\run_patch_checks.bat 113
+- tools\run_patch_checks.bat 112
+- tools\run_patch_checks.bat 111
+- python tools\run_protocol_baseline_self_audit.py
