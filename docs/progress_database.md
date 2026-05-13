@@ -2687,3 +2687,15 @@ This is static UI copy extraction only. `app.py` still owns Evidence Lab upload 
 Boundary preserved: no evidence processing, upload handling, dataframe logic, scoring, routing, receipt schema, session-state, privacy scan, AI Integrity scan, World Lens math, external calls, telemetry, analytics, storage or identity sync, privacy guarantee, certification, enforcement, or final truth behavior changed.
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+## Patch 126 Notes - Final Structural Simplification Freeze
+
+Patch 126 records the corrected roadmap posture. ALETHEIA is not in expansion mode. It is in refinement mode.
+
+Allowed work is limited to moving existing UI code into clearer files, removing duplication, consolidating repeated copy, improving documentation navigation, tightening regression tests, and locking existing behavior. The current behavior is treated as the release-candidate surface to preserve.
+
+This is documentation and regression-test only. `app.py` is not changed.
+
+Boundary preserved: no app runtime behavior, new module, scoring, routing, panel, analysis mode, intelligence, receipt schema, session-state, privacy scan, AI Integrity scan, World Lens math, external calls, telemetry, analytics, storage or identity sync, privacy guarantee, certification, enforcement, or final truth behavior changed.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.

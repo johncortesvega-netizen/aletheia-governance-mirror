@@ -207,3 +207,11 @@ Patch 124 adds `pages_ui/trust_package_page.py` and calls it from the Protocol G
 Patch 125 adds `pages_ui/evidence_lab_page.py` and moves stable Evidence Lab intro copy plus public-data build guidance out of `app.py`.
 
 `app.py` remains the runtime orchestrator. It still owns Evidence Lab upload widgets, build buttons, dataframe processing, public upload diagnostics, scoring, validation, downloads, receipts, session state, Evidence Lab / World Lens synchronization, privacy scan logic, AI Integrity scan logic, World Lens math, and analysis behavior. Patch 125 adds no external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantee, or final truth behavior.
+
+## Patch 126 - Final Structural Simplification Freeze
+
+Patch 126 records the corrected project posture: ALETHEIA is not in expansion mode. It is in refinement mode.
+
+Allowed structural work is limited to moving existing UI code into clearer files, removing duplication, consolidating repeated copy, improving documentation navigation, tightening tests, and locking behavior. The current behavior is treated as the release-candidate surface to preserve.
+
+`app.py` remains unchanged by Patch 126. There is no app runtime behavior change, new module, new scoring, new panel, new analysis mode, new intelligence, receipt schema change, module-routing change, session-state change, privacy scan change, AI Integrity scan change, World Lens math change, external call, telemetry, analytics, storage, identity sync, certification, enforcement, privacy guarantee, or final truth behavior.

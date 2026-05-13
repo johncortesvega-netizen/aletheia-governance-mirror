@@ -213,3 +213,9 @@ Scope: page-level display extraction only. Documentation remains the source of t
 Patch 125 adds `pages_ui/evidence_lab_page.py` and moves stable Evidence Lab intro copy plus public-data build guidance out of `app.py`.
 
 Scope: static UI copy extraction only. `app.py` remains the orchestrator for Evidence Lab upload widgets, build buttons, dataframe processing, public upload diagnostics, scoring, validation, downloads, receipts, session state, Evidence Lab / World Lens synchronization, and analysis behavior. No evidence processing change, no upload handling change, no dataframe logic change, no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no external calls, no telemetry, no analytics, no storage or identity sync, no privacy guarantee, no certification, no enforcement, and no final truth claim. Humans keep the judgment.
+
+## Patch 126 - Final Structural Simplification Freeze
+
+Patch 126 adds `docs/final_structural_simplification_freeze.md` and locks the roadmap posture around refinement rather than expansion.
+
+Scope: documentation and regression-test only. ALETHEIA is not in expansion mode. It is in refinement mode. Allowed work is limited to moving existing UI code into clearer files, removing duplication, consolidating repeated copy, improving documentation navigation, tightening tests, and locking the existing release-candidate surface. No app runtime behavior change, no new scoring, no new panel, no new analysis mode, no new intelligence, no receipt schema change, no module-routing change, no session-state change, no privacy scan change, no AI Integrity scan change, no World Lens math change, no external calls, no telemetry, no analytics, no storage or identity sync, no privacy guarantee, no certification, no enforcement, and no final truth claim. Humans keep the judgment.

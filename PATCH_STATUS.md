@@ -2794,3 +2794,24 @@ tools\run_patch_checks.bat 124
 tools\run_patch_checks.bat 123
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+## Patch 126 - Final Structural Simplification Freeze
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 126 records the corrected project posture. ALETHEIA is not in expansion mode. It is in refinement mode.
+
+Allowed work from this point is limited to moving existing UI code into clearer files, removing duplication, consolidating repeated copy, improving documentation navigation, tightening regression tests, and locking existing behavior. The current behavior is treated as the release-candidate surface to preserve.
+
+Boundary preserved: documentation and regression-test only. `app.py` is unchanged. No app runtime behavior change, no new module, no new scoring, no new panel, no new analysis mode, no new intelligence, no receipt schema change, no module-routing change, no session-state change, no privacy scan change, no AI Integrity scan change, no World Lens math change, no external calls, no telemetry, no analytics, no storage or identity sync, no privacy guarantee, no certification, no enforcement, and no final truth claim.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+Validation targets:
+
+```bat
+tools\run_patch_checks.bat 126
+tools\run_patch_checks.bat 125
+tools\run_patch_checks.bat 124
+python tools\run_protocol_baseline_self_audit.py
+```

@@ -1,6 +1,6 @@
-{
-    "baseline_id":  "ALETHEIA v1.0 AI Integrity Preview / Patch 125 evidence lab static UI extraction",
-    "created_for_patch":  "125",
+﻿{
+    "baseline_id":  "ALETHEIA v1.0 AI Integrity Preview / Patch 126 final structural simplification freeze",
+    "created_for_patch":  "126",
     "files":  {
                   "about_page.py":  "78c9b248b5c15d8561d64d161970d2fa9b795b949becbfa33868fd53865863cb",
                   "core/ai_integrity_mirror.py":  "5f0ecb588ce8093bef49dd58d773e3e6139d97f16cb4dbae769f524cb8b82b5b",
@@ -52,17 +52,21 @@
                   "tests/test_patch_124_trust_package_page_extraction.py":  "b2e6f09d63bffcd74cca4cc43b0feebe23489fe7f8bdc03bdbe03d79de34fcec",
                   "PATCH_124_MANIFEST.txt":  "4039ef5a16e625fa63759a4ba805db697fe57a1d224d5b385414cf28b3bf63b0",
                   "PATCH_124_RECOVERY_NOTE.md":  "8cae9bb53045d56714593c9b1072a39b2e597085d2ff59d5385ed2722104aa71",
-                  "PATCH_STATUS.md":  "2e5311a915dfdf88d4c3a055a8edc690c3e31861e267e7b60974749168e68f2e",
-                  "README.md":  "df9504bf74f9a3d149cbd9a5102df2f4f7e3495afcb28d793c4fe73d1edd8021",
+                  "PATCH_STATUS.md":  "4a9c3fb707586cc659bdf9bd054f86ef623e82533756bcb5a3505d1312a3cd14",
+                  "README.md":  "50ced1e283b1e3bdadb6b03660fc10358ca1741b5e357eba356f2bdeed3dfafa",
                   "app.py":  "1cee3050814bcf313937ebbae1097baa1782b602e81d3a5aa0c3152770f3c757",
-                  "docs/progress_database.md":  "8d927b9fb5a1fbe5c353933b54e9b68a9330c2236dab5f87e09d7dc6124c765b",
-                  "docs/architecture.md":  "c43824a7b07dbc78c0b706847c7455ddc3db409ad9ea83488bcb7bc8a955f3e9",
-                  "docs/patch_index.md":  "f7e75d076cbb140d0b662c1bcfe798ed57118560cabf20633f06dd81afc8e8d9",
+                  "docs/progress_database.md":  "27d07f8f73b42e22bd28e2c36348f1a8d4bee0d4ad34e93123376033c99fd06f",
+                  "docs/architecture.md":  "87033631612c277040a381992e280dc98285a41256b8272010ca5e827fafe5a1",
+                  "docs/patch_index.md":  "9acc4a3db0849b0e812a84dd4d115c894f6c2d9f21806046b9db6a1bbb3687fd",
                   "docs/evidence_lab_static_ui_extraction.md":  "70dd9c39e297d080f4ddd04a099706093cef21e62772c44a6322f909c3435670",
                   "pages_ui/evidence_lab_page.py":  "1adf784fb0f9000d498c6ee38f831120746600d849c6f72a183fe7a82eb2c51b",
                   "tests/test_patch_125_evidence_lab_static_ui_extraction.py":  "e9bcaaf35f5691bf2bdf52ee555171d9fe1e1965d7948d3996d2906550c6a04d",
                   "PATCH_125_MANIFEST.txt":  "88cb0d686866a9c60aa78ec63816dea95646aa5d528aa2e921e4e2350e35b67d",
-                  "PATCH_125_RECOVERY_NOTE.md":  "f163345a62a48817d2e7056af66da8e7c9f1e75d696990929374de79794bbd8e"
+                  "PATCH_125_RECOVERY_NOTE.md":  "f163345a62a48817d2e7056af66da8e7c9f1e75d696990929374de79794bbd8e",
+                  "docs/final_structural_simplification_freeze.md":  "8a1d4b06423d9fed1d7315c9c1a105c3a08696636427bc3f7061ea3e361de6ad",
+                  "tests/test_patch_126_final_structural_simplification_freeze.py":  "521bce4a51b5209c63e3ccf7e21702b803738a7a4960aaeb2c54f33f29d6e9aa",
+                  "PATCH_126_MANIFEST.txt":  "3404d6a0e86cc3b178e9a074d2ec89dcde1828fd44f51b3f6e7fe0caae6af825",
+                  "PATCH_126_RECOVERY_NOTE.md":  "044c457ca2e562d144c89320b86ff974fd1bf1b3a712d00a570d6e5cc84afcdc"
               },
     "human_review_required_note":  "Only humans can audit, interpret, approve, reject, or release changes.",
     "manifest_version":  "protocol-baseline-manifest-v0.1",

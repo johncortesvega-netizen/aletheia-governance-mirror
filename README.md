@@ -99,6 +99,14 @@ Patch 125 starts Evidence Lab static UI extraction by moving stable intro copy a
 
 Boundary preserved: Patch 125 is static UI copy extraction only. It adds no evidence processing change, upload handling change, dataframe logic change, scoring change, telemetry, analytics, certification, enforcement, privacy guarantee, or final truth claim.
 
+## Final structural simplification freeze
+
+Patch 126 records the corrected development principle: ALETHEIA is not in expansion mode. It is in refinement mode.
+
+Allowed work from this point is limited to moving existing UI code into clearer files, removing duplication, consolidating repeated copy, improving documentation navigation, tightening regression tests, and locking existing behavior. The current behavior is treated as the release-candidate surface to preserve.
+
+Boundary preserved: Patch 126 is documentation and regression-test only. No app runtime behavior change, new module, new scoring, new panel, new analysis mode, new intelligence, receipt schema change, module-routing change, session-state change, privacy scan change, AI Integrity scan change, World Lens math change, external calls, telemetry, analytics, storage, identity sync, certification, enforcement, privacy guarantee, or final truth claim.
+
 ## AI Integrity Mirror
 
 AI Integrity Mirror is a static, local-first review module for pasted AI outputs, prompts, agent specs, model-card excerpts, policy claims, and code snippets. It reflects governance-integrity signals such as authority overreach, weak reviewability, opacity, coercion pressure, surveillance/identity capture, exposed credentials, and unsafe execution/data-flow markers.
