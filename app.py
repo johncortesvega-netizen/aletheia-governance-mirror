@@ -20,6 +20,7 @@ import streamlit.components.v1 as components
 from core.boundary import render_boundary_statement
 from core.privacy_panel import render_privacy_panel
 from pages_ui.about_page import render_about_public_info_page
+from pages_ui.evidence_lab_page import render_evidence_lab_intro, render_evidence_lab_public_data_build_intro
 from pages_ui.trust_package_page import render_public_trust_package_page
 from ui.app_shell import render_app_boundary_notices, render_sidebar_brand, render_sidebar_context
 from ui.app_shell import render_app_header, render_how_to_use_note, render_app_footer_banner
@@ -4770,16 +4771,8 @@ with tab_ai_integrity:
 
 
 with tab_empirical:
-    st.subheader("Evidence Lab â€” Data Check")
+    render_evidence_lab_intro(st)
     render_shared_protocol_state_notice("Evidence Lab")
-    st.write(
-        "Build or upload a country-year evidence table from public sources, then let ALETHEIA carry it through variable mapping, empirical scoring, and the Sydney Protocol overlay. "
-        "This layer is where symbolic doctrine meets public evidence in a reproducible, inspectable way."
-    )
-
-    st.info(
-        "Evidence does not come from ALETHEIA. Public datasets provide the baseline. ALETHEIA only maps and reflects it."
-    )
 
     with st.expander("Evidence status + extraordinary claim protocol", expanded=True):
         st.markdown(
@@ -4855,13 +4848,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
         st.caption("Scale expectations: WGI fields can use their normal -2.5 to +2.5 scale. V-Dem and trust fields should already be 0â€“1.")
 
 
-    st.markdown("### Build a country-year table from public data")
-    st.caption(
-        "A simple path is: start with World Bank WGI, add population for country-level allocation, and optionally enrich the result with V-Dem and trust data. The separate merged-evidence uploader is for a fully prepared ALETHEIA-ready master CSV."
-    )
-    st.info(
-        "Empirical build flow: WGI plus population create the core country-year base; V-Dem and trust enrich matching rows. By default, scoring stays in the modern era from 1996 onward so historical V-Dem rows are not accidentally mixed with modern population or seat allocation."
-    )
+    render_evidence_lab_public_data_build_intro(st)
 
     with st.expander("How to get and prepare the first real dataset", expanded=False):
         st.markdown(ingestion_notes_markdown())

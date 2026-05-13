@@ -201,3 +201,9 @@ Patch 123 starts low-risk page extraction by moving the in-app `Why ALETHEIA` / 
 Patch 124 adds `pages_ui/trust_package_page.py` and calls it from the Protocol Guide tab. The helper renders a public trust package review route that points to the relevant documentation rather than duplicating the docs as authority.
 
 `app.py` remains the runtime orchestrator. It still owns tab selection, widgets, session state, module routing, scoring, receipts, uploads, downloads, privacy audit scan logic, AI Integrity scan logic, World Lens math, and analysis behavior. Patch 124 adds no external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantee, or final truth behavior.
+
+## Patch 125 - Evidence Lab Static UI Extraction
+
+Patch 125 adds `pages_ui/evidence_lab_page.py` and moves stable Evidence Lab intro copy plus public-data build guidance out of `app.py`.
+
+`app.py` remains the runtime orchestrator. It still owns Evidence Lab upload widgets, build buttons, dataframe processing, public upload diagnostics, scoring, validation, downloads, receipts, session state, Evidence Lab / World Lens synchronization, privacy scan logic, AI Integrity scan logic, World Lens math, and analysis behavior. Patch 125 adds no external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantee, or final truth behavior.

@@ -95,6 +95,10 @@ Patch 124 adds `pages_ui/trust_package_page.py` and exposes the public trust pac
 
 Boundary preserved: Patches 123 and 124 are page-level display extractions only. They add no external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantees, or final truth claims.
 
+Patch 125 starts Evidence Lab static UI extraction by moving stable intro copy and public-data build guidance into `pages_ui/evidence_lab_page.py`. Evidence Lab uploads, dataframe processing, scoring, validation, downloads, receipts, session state, and World Lens synchronization remain in `app.py`.
+
+Boundary preserved: Patch 125 is static UI copy extraction only. It adds no evidence processing change, upload handling change, dataframe logic change, scoring change, telemetry, analytics, certification, enforcement, privacy guarantee, or final truth claim.
+
 ## AI Integrity Mirror
 
 AI Integrity Mirror is a static, local-first review module for pasted AI outputs, prompts, agent specs, model-card excerpts, policy claims, and code snippets. It reflects governance-integrity signals such as authority overreach, weak reviewability, opacity, coercion pressure, surveillance/identity capture, exposed credentials, and unsafe execution/data-flow markers.

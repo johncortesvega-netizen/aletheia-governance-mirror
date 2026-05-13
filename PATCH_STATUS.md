@@ -2775,3 +2775,22 @@ tools\run_patch_checks.bat 123
 tools\run_patch_checks.bat 122
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+## Patch 125 - Evidence Lab Static UI Extraction
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 125 starts the Evidence Lab static UI extraction. It adds `pages_ui/evidence_lab_page.py` and moves stable Evidence Lab intro copy plus public-data build guidance out of `app.py`.
+
+Boundary preserved: static UI copy extraction only. `app.py` remains the orchestrator for Evidence Lab upload widgets, build buttons, dataframe processing, public upload diagnostics, scoring, validation, downloads, receipts, session state, Evidence Lab / World Lens synchronization, and analysis behavior. No evidence processing change, no upload handling change, no dataframe logic change, no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module-routing change, no session-state change, no privacy scan change, no AI Integrity scan change, no World Lens math change, no external calls, no telemetry, no analytics, no storage or identity sync, no privacy guarantee, no certification, no enforcement, and no final truth claim.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+Validation targets:
+
+```bat
+tools\run_patch_checks.bat 125
+tools\run_patch_checks.bat 124
+tools\run_patch_checks.bat 123
+python tools\run_protocol_baseline_self_audit.py
+```

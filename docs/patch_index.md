@@ -207,3 +207,9 @@ Scope: page-level display extraction only. `app.py` remains the orchestrator for
 Patch 124 adds `pages_ui/trust_package_page.py` and wires a display-only Public Trust Package section into the Protocol Guide tab.
 
 Scope: page-level display extraction only. Documentation remains the source of truth, especially `docs/public_trust_package.md` and `docs/public_review_checklist.md`. `app.py` remains the orchestrator for tabs, widgets, session state, module routing, scoring, receipts, uploads, downloads, privacy audit scan logic, AI Integrity scan logic, World Lens math, and analysis behavior. No runtime analysis behavior change, no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no external calls, no telemetry, no analytics, no storage or identity sync, no privacy guarantee, no certification, no enforcement, and no final truth claim. Humans keep the judgment.
+
+## Patch 125 - Evidence Lab Static UI Extraction
+
+Patch 125 adds `pages_ui/evidence_lab_page.py` and moves stable Evidence Lab intro copy plus public-data build guidance out of `app.py`.
+
+Scope: static UI copy extraction only. `app.py` remains the orchestrator for Evidence Lab upload widgets, build buttons, dataframe processing, public upload diagnostics, scoring, validation, downloads, receipts, session state, Evidence Lab / World Lens synchronization, and analysis behavior. No evidence processing change, no upload handling change, no dataframe logic change, no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no external calls, no telemetry, no analytics, no storage or identity sync, no privacy guarantee, no certification, no enforcement, and no final truth claim. Humans keep the judgment.
