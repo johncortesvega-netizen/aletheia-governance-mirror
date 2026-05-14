@@ -248,6 +248,18 @@ Patch 130 records ALETHEIA as being in release-candidate refinement mode after t
 This is not expansion. No new modules, no new scoring, no new risk states, no live model calls, no agentic review, no enterprise workflow, no telemetry, no analytics, no storage or identity sync, no certification, no enforcement, no privacy guarantee, and no final-truth claim are introduced or planned by this freeze.
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
-## Patch 131 - Test and Check Hygiene
+## Patch 134 - Receipt Reader Standard View v1
 
-Patch 131 belongs to the release-candidate refinement path. It improves test and check hygiene only: selected recent patch tests now assert structural import/call intent, `tools/run_checks.py` mirrors the existing safe-check batch workflow, and `docs/test_check_hygiene.md` records deterministic local validation commands. It does not change runtime behavior, scoring, verdict-routing, receipt schemas, signal patterns, signal weights, Privacy Audit scan behavior, AI Integrity scan behavior, World Lens math, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantees, or final-truth behavior. Humans keep the judgment.
+Patch 134 adds a simple Receipt Reader - Standard View for pasted ALETHEIA receipts. It parses obvious fields, shows missing values as missing, and maps native states into secondary review bands for interoperability. It does not rescore, override, approve, reject, certify, enforce, change receipt schemas, modify existing receipt generation, call external services, use LLMs, create embeddings, store data, collect telemetry, or claim final truth. Human review remains required.
+
+## Patch 133 - Receipt Reader Standard View Design Doc
+
+Patch 133 adds the design document for Receipt Reader - Standard View. It defines a future interpretation layer for pasted ALETHEIA receipts: native receipt values first, Standard View review bands second, and human review always required. This is documentation/design only: no runtime Receipt Reader UI, parser, scoring, receipt schema change, new risk state, external standard as authority, external call, telemetry, storage, compliance certification language, or final-truth claim is introduced.
+
+## Patch 132 - Start Page Stabilization Checkpoint
+
+Patch 132 records the Patch 131 Start Page / How to Start gate as stable. It adds checkpoint documentation and tests only, verifying session-state-only behavior and confirming the normal module interface still renders after the gate passes. It does not add UI capability, modules, scoring, routing, receipt schema changes, signal changes, Privacy Audit scan behavior changes, AI Integrity scan behavior changes, World Lens math changes, external calls, telemetry, analytics, tracking, storage, certification, enforcement, privacy-guarantee claims, or final-truth claims. Humans keep the judgment.
+
+## Patch 131 - Start Page / How to Start Gate
+
+Patch 131 belongs to release-candidate refinement. It adds a Start Page / How to Start gate before the main module interface renders, using Streamlit session-state only. It is not a new module, router, wizard, role selector, personalization layer, stored preference, or analysis engine. No cookies, accounts, persistent storage, telemetry, analytics, tracking, external calls, local LLM calls, embeddings, database, auth, login, scoring, routing, receipt schema, signal behavior, Privacy Audit scan behavior, AI Integrity scan behavior, or World Lens math changed. Humans keep the judgment.

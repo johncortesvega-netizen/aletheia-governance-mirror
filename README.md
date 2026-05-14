@@ -8,13 +8,13 @@ ALETHEIA is also **privacy-by-design inside this repository**: no built-in telem
 
 
 
-## Patch 131 - Test and Check Hygiene
+## Patch 131 - Start Page / How to Start Gate
 
 Status: READY FOR LOCAL REVIEW
 
-Patch 131 keeps ALETHEIA in release-candidate refinement mode and improves local validation reliability. It tightens selected brittle recent patch tests so they check structural import/call intent rather than exact import-line formatting, adds hygiene regression coverage for encoding, UTF-8 JSON manifest, internal repair-note, authority-claim, and telemetry/external-call/storage wording risks, and adds `tools/run_checks.py` as a Python wrapper for the existing safe-check workflow.
+Patch 131 adds a calm first-entry Start Page / How to Start gate before the full module interface renders. The normal ALETHEIA interface remains hidden until the user clicks `Proceed to ALETHEIA`; after that, the app continues exactly through the existing module interface for the current Streamlit session.
 
-Boundary preserved: tests, local check tooling, documentation, patch records, and the protocol baseline manifest only. No runtime behavior change, no scoring, no verdict-routing, no receipt schema, no signal-pattern or signal-weight change, no Privacy Audit scan behavior change, no AI Integrity scan behavior change, no World Lens math change, no external calls, no telemetry, no analytics, no storage, no identity sync, no Global ID sync, no public ledger sync, no privacy guarantee, no certification, no enforcement, and no final-truth behavior changed. Humans keep the judgment.
+Boundary preserved: release-candidate refinement only. The gate uses session-state only. No cookies, no accounts, no persistent storage, no telemetry, no analytics, no tracking, no external calls, no local LLM calls, no embeddings, no database, no auth, no login, no scoring change, no routing change, no receipt schema change, no signal regex or signal weight change, no Privacy Audit scan behavior change, no AI Integrity scan behavior change, and no World Lens math change. Humans keep the judgment.
 
 Validation targets:
 
@@ -23,7 +23,6 @@ python tools\run_patch_checks.py 131
 python tools\run_patch_checks.py 130
 python tools\run_patch_checks.py 129
 python tools\run_protocol_baseline_self_audit.py
-python tools\run_checks.py
 ```
 
 ## Public start here

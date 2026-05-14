@@ -1,21 +1,18 @@
-# Patch 131 Recovery Note - Test and Check Hygiene
+# Patch 131 Recovery Note - Start Page / How to Start Gate
 
-Patch 131 is a maintenance-only release-candidate refinement patch. It changes tests, local check tooling, documentation, patch records, and the protocol baseline manifest only.
+Patch 131 adds a first-entry Start Page / How to Start gate. The normal module interface remains unchanged after the user clicks `Proceed to ALETHEIA`.
 
-To inspect or recover:
+Recovery inspection:
 
-1. Review `PATCH_131_MANIFEST.txt` for the exact changed-file list.
-2. Compare the updated tests against the Patch 130 baseline. The selected Patch 121-125 assertions now verify structural import/call intent instead of exact import-line formatting.
-3. Run:
+1. Review `ui/start_page.py`. It is a copy-only helper with one proceed button.
+2. Review the small `app.py` gate after `st.set_page_config`. It checks `st.session_state["aletheia_start_gate_passed"]`, renders the Start Page when missing or false, sets the key when the button is clicked, reruns the app, and stops before the main modules render.
+3. Run the validation commands below.
 
 ```bat
 python tools\run_patch_checks.py 131
 python tools\run_patch_checks.py 130
 python tools\run_patch_checks.py 129
 python tools\run_protocol_baseline_self_audit.py
-python tools\run_checks.py
 ```
 
-Expected result: Patch 131, 130, and 129 checks pass; the protocol baseline self-audit reports zero differences requiring human review; the current safe-check wrapper passes.
-
-Boundary preserved: no runtime behavior change, no scoring, no verdict-routing, no receipt schema, no signal-pattern or signal-weight change, no Privacy Audit scan behavior change, no AI Integrity scan behavior change, no World Lens math change, no external calls, no telemetry, no analytics, no storage, no identity sync, no Global ID sync, no public ledger sync, no certification, no enforcement, no privacy guarantee, and no final-truth behavior. Humans keep the judgment.
+Boundary preserved: no scoring, routing, receipts, receipt schema, signal regex, signal weights, Privacy Audit scan behavior, AI Integrity scan behavior, World Lens math, uploads, downloads, telemetry, analytics, tracking, cookies, accounts, persistent storage, external calls, local LLM calls, embeddings, database, auth, login, certifying claim, enforcement claim, approval/rejection claim, privacy-guarantee claim, or final-truth claim changed. Humans keep the judgment.

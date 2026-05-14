@@ -2895,13 +2895,64 @@ Validation:
 - `tools\run_patch_checks.bat 128`
 - `tools\run_patch_checks.bat 127`
 - `python tools\run_protocol_baseline_self_audit.py`
-## Patch 131 - Test and Check Hygiene
+## Patch 134 - Receipt Reader Standard View v1
 
 Status: READY FOR LOCAL REVIEW
 
-Patch 131 improves local validation hygiene in release-candidate refinement mode. It makes selected Patch 121-125 tests less brittle by checking structural imports and calls instead of exact import formatting, adds Patch 131 regression coverage for UTF-8 JSON manifest hygiene, internal repair-note leakage, authority/certification/final-truth claims, and telemetry/external-call/storage wording risks, and adds a Python safe-check wrapper at `tools/run_checks.py`.
+Patch 134 adds a simple Receipt Reader - Standard View. Users can paste an ALETHEIA receipt and see native receipt values, a secondary plain-language review band, human-review guidance, a non-certification note, and parsing limits. Missing fields are shown as `Not found in pasted receipt`.
 
-Boundary preserved: tests, local check tooling, documentation, patch records, and protocol baseline manifest only. No runtime behavior change, no scoring, no verdict-routing, no receipt schema, no signal-pattern or signal-weight change, no Privacy Audit scan behavior change, no AI Integrity scan behavior change, no World Lens math change, no external calls, no telemetry, no analytics, no storage, no identity sync, no Global ID sync, no public ledger sync, no privacy guarantee, no certification, no enforcement, and no final-truth behavior changed. Humans keep the judgment.
+Boundary preserved: the reader explains pasted receipts only. No new scoring, no risk-state recalculation, no receipt schema change, no existing receipt generation change, no external calls, no LLM calls, no embeddings, no database, no storage, no telemetry, no compliance certification, no legal/medical/political/institutional authority claim, and no final truth claim. It does not rescore, certify, approve, reject, enforce, or override the original receipt. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 134
+python tools\run_patch_checks.py 133
+python tools\run_patch_checks.py 132
+python tools\run_protocol_baseline_self_audit.py
+```
+
+## Patch 133 - Receipt Reader Standard View Design Doc
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 133 defines Receipt Reader - Standard View as a documentation/design-only step. The design maps native ALETHEIA receipt values into plain-language review bands for human and interoperability review, while preserving native receipt values as the source of truth.
+
+Boundary preserved: documentation/design only. No runtime Receipt Reader UI, no parser, no scoring change, no receipt schema change, no new risk states, no external standards as authority, no compliance certification language, no external calls, no telemetry, no storage, and no final-truth claim. The Receipt Reader explains and maps receipts; it does not rescore, certify, approve, reject, override, enforce, or decide. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 133
+python tools\run_patch_checks.py 132
+python tools\run_patch_checks.py 131
+python tools\run_protocol_baseline_self_audit.py
+```
+
+## Patch 132 - Start Page Stabilization Checkpoint
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 132 stabilizes the Patch 131 Start Page / How to Start gate with checkpoint documentation and regression tests. It confirms the gate is session-state-only, stops before module tabs when not passed, and leaves the normal module interface available after `Proceed to ALETHEIA`.
+
+Boundary preserved: test/check/docs patch only. No new UI feature, no new module, no scoring change, no routing change, no receipt schema change, no signal change, no Privacy Audit scan behavior change, no AI Integrity scan behavior change, no World Lens math change, no external calls, no telemetry, no analytics, no tracking, no cookies, no accounts, no auth, no persistent storage, no certification, no enforcement, no privacy-guarantee claim, and no final-truth claim. Humans keep the judgment.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 132
+python tools\run_patch_checks.py 131
+python tools\run_patch_checks.py 130
+python tools\run_protocol_baseline_self_audit.py
+```
+
+## Patch 131 - Start Page / How to Start Gate
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 131 adds a calm Start Page / How to Start gate before the full ALETHEIA module interface renders. It is a release-candidate refinement for readability and boundary clarity: first launch shows the start page, and clicking `Proceed to ALETHEIA` sets a session-state key so the normal app appears for that Streamlit session.
+
+Boundary preserved: no new module tab, no user-intent router, no role selection, no wizard, no personalization, no cookies, no accounts, no persistent storage, no telemetry, no analytics, no tracking, no external calls, no local LLM calls, no embeddings, no database, no auth, no login, no scoring change, no routing change, no receipt schema change, no signal regex or signal weight change, no Privacy Audit scan behavior change, no AI Integrity scan behavior change, no World Lens math change, no uploads or downloads behavior change, no certifying claim, no enforcement claim, no approval/rejection claim, no privacy-guarantee claim, and no final-truth claim. Humans keep the judgment.
 
 Validation targets:
 
@@ -2910,5 +2961,4 @@ python tools\run_patch_checks.py 131
 python tools\run_patch_checks.py 130
 python tools\run_patch_checks.py 129
 python tools\run_protocol_baseline_self_audit.py
-python tools\run_checks.py
 ```

@@ -160,3 +160,8 @@ This checkpoint is not a certification, privacy guarantee, compliance approval, 
 Patch 118 strengthens the beginner path by adding a first-audit checklist, clearer meaning/non-meaning language, and stop-and-review prompts to `ui/beginner_guide.py` and `docs/beginner_ux.md`. This helps public reviewers understand how a first-time user is guided toward human review rather than automatic reliance.
 
 The guide remains static copy. It is not a certification workflow, approval workflow, privacy guarantee, enforcement mechanism, or final-truth claim. Humans keep the judgment.
+## Receipt Reader - Standard View Design
+
+Patch 133 adds `docs/receipt_reader_standard_view.md` as a design-only note for a future Receipt Reader - Standard View. The intended reader explains pasted ALETHEIA receipts by keeping native receipt values as source of truth and mapping them secondarily into plain-language review bands for interoperability.
+
+This design is not a certification path. It does not add runtime UI, parsing code, scoring, receipt schema changes, new risk states, external standards as authority, external calls, telemetry, storage, compliance certification language, or final-truth claims. Human review remains required.

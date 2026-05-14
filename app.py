@@ -30,6 +30,7 @@ from ui.app_shell import render_sidebar_safety_rails_intro, render_sidebar_safet
 from ui.beginner_guide import render_try_this_first_guide
 from ui.module_intro import render_boundary_cases_intro, render_consent_audit_intro, render_stress_test_scan_intro
 from ui.privacy_audit_panel import render_privacy_boundary_audit_panel
+from ui.receipt_reader import render_receipt_reader_standard_view
 from ui.status_cards import render_ai_integrity_boundary_cards
 from ui.input_clarity import (
     render_language_calibration_caveat,
@@ -39,6 +40,7 @@ from ui.input_clarity import (
     warn_empty_ai_integrity_batch,
     warn_no_public_data_upload,
 )
+from ui.start_page import START_GATE_SESSION_KEY, render_start_page
 
 from core.parser import parse_scenario_llm, decouple_actor
 from core.ethics import evaluate_ethics, apply_ethics_to_metrics
@@ -288,6 +290,7 @@ APP_NAVIGATION_LABELS = [
     "🤖 AI Integrity Mirror",
     "📊 Evidence Lab",
     "🌐 World Lens",
+    "Receipt Reader",
     "📜 Protocol Guide",
     "ℹ️ Why ALETHEIA",
 ]
@@ -299,6 +302,7 @@ APP_NAVIGATION_MAP = [
     ("AI Integrity Mirror", "Review pasted AI outputs, prompts, agent specs, or code for authority-boundary and governance-integrity risk."),
     ("Evidence Lab", "Separate evidence from claims and park extraordinary claims as unverified until review."),
     ("World Lens", "Simulate population-impact risk without Global ID, real 9k body, or sovereign authority."),
+    ("Receipt Reader", "Explain pasted ALETHEIA receipts using native values and plain-language review bands."),
     ("Protocol Guide", "Read the v0.1 operating guide, safe-language rules, and module boundaries."),
     ("Why ALETHEIA", "Understand the v1.0 public MVP, release boundary, examples, and research direction."),
 ]
@@ -646,6 +650,12 @@ def _protocol_metric_display(value: object) -> str:
 
 
 st.set_page_config(page_title="ALETHEIA", page_icon="🌿", layout="wide")
+
+if not st.session_state.get(START_GATE_SESSION_KEY, False):
+    if render_start_page(st):
+        st.session_state[START_GATE_SESSION_KEY] = True
+        st.rerun()
+    st.stop()
 
 st.markdown(
     """
@@ -3451,7 +3461,7 @@ def render_audit_module_integrity_panel(*, expanded: bool = False):
 
 render_sydney_protocol_self_check_gate()
 
-tab_chat, tab_sim, tab_boundary, tab_ai_integrity, tab_empirical, tab_grid, tab_doctrine, tab_about = st.tabs(APP_NAVIGATION_LABELS)
+tab_chat, tab_sim, tab_boundary, tab_ai_integrity, tab_empirical, tab_grid, tab_receipt_reader, tab_doctrine, tab_about = st.tabs(APP_NAVIGATION_LABELS)
 
 with tab_sim:
     st.subheader("Stress Test — Try an Idea")
@@ -7583,6 +7593,9 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
         with inactive_tabs[5]:
             st.info("Country-year detail is unavailable until selected-year data rows are active.")
 
+with tab_receipt_reader:
+    render_receipt_reader_standard_view(st)
+
 with tab_chat:
     st.subheader("Mirror Check — Gentle Risk Review")
     render_shared_protocol_state_notice("Mirror Check")
@@ -8587,4 +8600,3 @@ with tab_about:
     render_about_public_info_page(st, header_image=resolve_about_header_image())
 
 render_app_footer_banner(APP_VERSION, st)
-

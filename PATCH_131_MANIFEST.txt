@@ -1,44 +1,36 @@
-PATCH 131 MANIFEST - Test and Check Hygiene
+PATCH 131 MANIFEST - Start Page / How to Start Gate
 
 Status: READY FOR LOCAL REVIEW
 
 Changed files:
-- tests/test_patch_121_shared_status_notice_cards.py
-- tests/test_patch_122_refactor_stabilization_checkpoint_2.py
-- tests/test_patch_123_about_public_info_page_extraction.py
-- tests/test_patch_124_trust_package_page_extraction.py
-- tests/test_patch_125_evidence_lab_static_ui_extraction.py
-- tests/test_patch_131_test_check_hygiene.py
-- tools/run_checks.py
-- tools/run_current_suite.py
-- docs/test_check_hygiene.md
+- app.py
+- ui/start_page.py
+- tests/test_patch_131_start_page_gate.py
 - PATCH_131_RECOVERY_NOTE.md
 - PATCH_STATUS.md
 - README.md
 - docs/architecture.md
 - docs/patch_index.md
 - docs/progress_database.md
-- docs/final_structural_simplification_freeze.md
 - data/protocol_baseline_manifest.json
 
 Purpose:
-- Improve local validation clarity in release-candidate refinement mode.
-- Make selected recent patch tests check structural imports and calls instead of fragile exact import formatting.
-- Add local regression checks for UTF-8 JSON manifest hygiene, internal repair-note leakage, authority/certification/final-truth claims, and telemetry/external-call/storage wording risks.
-- Add a Python `tools/run_checks.py` wrapper matching the existing safe-check batch workflow.
+- Add a calm first-entry Start Page / How to Start gate before the full module interface renders.
+- Keep the normal ALETHEIA app hidden until the user clicks `Proceed to ALETHEIA`.
+- Use Streamlit session state only through `aletheia_start_gate_passed`.
 
 Boundary preserved:
-- No runtime behavior change.
+- No new module tab.
+- No user-intent router.
+- No role selection, wizard, personalization, cookies, accounts, persistent storage, telemetry, analytics, tracking, external calls, local LLM calls, embeddings, database, auth, or login.
 - No scoring change.
-- No verdict-routing change.
+- No routing change.
 - No receipt schema change.
-- No signal-pattern or signal-weight change.
+- No signal regex or signal weight change.
 - No Privacy Audit scan behavior change.
 - No AI Integrity scan behavior change.
 - No World Lens math change.
-- No new UI feature.
-- No external calls, telemetry, analytics, storage, identity sync, Global ID sync, or public ledger sync.
-- No certification, enforcement, privacy guarantee, or final-truth behavior.
+- No certifying, enforcement, approval, rejection, privacy-guarantee, or final-truth claim.
 - Humans keep the judgment.
 
 Validation targets:
@@ -46,4 +38,3 @@ Validation targets:
 - python tools\run_patch_checks.py 130
 - python tools\run_patch_checks.py 129
 - python tools\run_protocol_baseline_self_audit.py
-- python tools\run_checks.py

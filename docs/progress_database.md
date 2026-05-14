@@ -2741,10 +2741,34 @@ Patch 130 records ALETHEIA as being in release-candidate refinement mode after t
 This is not expansion. No new modules, no new scoring, no new risk states, no live model calls, no agentic review, no enterprise workflow, no telemetry, no analytics, no storage or identity sync, no certification, no enforcement, no privacy guarantee, and no final-truth claim are introduced or planned by this freeze.
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
-## Patch 131 Notes
+## Patch 134 Notes - Receipt Reader Standard View v1
 
-Current patch: Patch 131 - Test and Check Hygiene.
+Current patch: Patch 134 - Receipt Reader Standard View v1.
 
-Patch 130 passed and placed ALETHEIA in release-candidate refinement mode. Patch 131 improves local validation clarity and reliability without changing runtime behavior. It updates selected recent patch tests to assert structural import/call intent instead of incidental import formatting, adds regression checks for UTF-8 JSON manifest hygiene, internal repair-note leakage, authority/certification/final-truth claims, and telemetry/external-call/storage wording risks, documents the Windows validation command pattern in `docs/test_check_hygiene.md`, and adds `tools/run_checks.py` as a Python wrapper for the existing safe-check workflow.
+Patch 134 implements the design from Patch 133 as a simple pasted-receipt reader. It shows native receipt values first, then a secondary Standard View band. Missing fields are shown as `Not found in pasted receipt`.
 
-Boundary preserved: tests, local check tooling, documentation, patch records, and the protocol baseline manifest only. No scoring, no verdict-routing, no receipt schema, no signal-pattern or signal-weight change, no Privacy Audit scan behavior change, no AI Integrity scan behavior change, no World Lens math change, no external calls, no telemetry, no analytics, no storage, no identity sync, no Global ID sync, no public ledger sync, no privacy guarantee, no certification, no enforcement, and no final-truth behavior changed. Humans keep the judgment.
+Boundary preserved: no new scoring, no recalculation of risk state, no receipt schema change, no modification to existing receipt generation, no external calls, no LLM calls, no embeddings, no database, no storage, no telemetry, no compliance certification, no authority claim, and no final truth claim. Human review remains required.
+
+## Patch 133 Notes - Receipt Reader Standard View Design Doc
+
+Current patch: Patch 133 - Receipt Reader Standard View Design Doc.
+
+Patch 133 defines Receipt Reader - Standard View before implementation. Native receipt values remain the source of truth; Standard View is a secondary interoperability mapping into plain-language review bands: SANCTUARY to low review pressure, THRESHOLD to elevated review pressure, ASYLUM to high review pressure / escalation review required, and QUESTION_PROMPT to not scored / review-tool mode.
+
+Boundary preserved: documentation/design only. No runtime Receipt Reader UI, no parser, no scoring, no receipt schema change, no new risk states, no external standards as authority, no compliance certification language, no external calls, no telemetry, no storage, and no final-truth claim. Human review remains required.
+
+## Patch 132 Notes - Start Page Stabilization Checkpoint
+
+Current patch: Patch 132 - Start Page Stabilization Checkpoint.
+
+Patch 132 is a test/check/docs checkpoint for the Patch 131 Start Page / How to Start gate. It verifies that the gate remains session-state-only, uses no cookies/accounts/persistent storage, stops before the module interface until passed, and leaves the normal app interface available after `Proceed to ALETHEIA`.
+
+Boundary preserved: no new UI feature, no new modules, no scoring, no routing, no receipt schema, no signal behavior, no Privacy Audit scan behavior change, no AI Integrity scan behavior change, no World Lens math change, no external calls, no telemetry, no analytics, no tracking, no auth, no storage, no certification, no enforcement, no privacy-guarantee claim, and no final-truth claim. Humans keep the judgment.
+
+## Patch 131 Notes - Start Page / How to Start Gate
+
+Current patch: Patch 131 - Start Page / How to Start Gate.
+
+Patch 130 passed and placed ALETHEIA in release-candidate refinement mode. Patch 131 adds a calm first-entry Start Page / How to Start gate so users do not land directly inside the full module interface. The gate is session-state only: clicking `Proceed to ALETHEIA` sets `aletheia_start_gate_passed` for the current Streamlit session and reveals the existing app.
+
+Boundary preserved: no new module tab, no user-intent router, no role selection, no wizard, no personalization, no cookies, no accounts, no persistent storage, no telemetry, no analytics, no tracking, no external calls, no local LLM calls, no embeddings, no database, no auth, no login, no scoring change, no routing change, no receipt schema change, no signal regex or signal weight change, no Privacy Audit scan behavior change, no AI Integrity scan behavior change, no World Lens math change, and no uploads or downloads behavior change. Humans keep the judgment.
