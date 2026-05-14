@@ -60,7 +60,7 @@ def test_receipt_reader_prefers_machine_readable_json_and_reads_current_receipt_
     fields = parsed["fields"]
 
     assert parsed["native_state"] == "SANCTUARY"
-    assert parsed["standard_band"] == "Low review pressure"
+    assert parsed["standard_band"] == "Low (Standard Band)"
     assert fields["module_source"] == "Mirror Check"
     assert fields["risk_state"] == "Low"
     assert fields["protocol_adjusted_state"] == "SANCTUARY"
@@ -71,9 +71,9 @@ def test_receipt_reader_prefers_machine_readable_json_and_reads_current_receipt_
     assert fields["trust"] == "0.9800"
     assert fields["alignment"] == "0.9500"
     assert fields["ego"] == "0.0009"
-    assert "What appeal path exists" in fields["repair_questions"]
-    assert "Who can pause" in fields["repair_questions"]
-    assert "Power balance" not in fields["repair_questions"]
+    assert "What appeal path exists" in parsed["repair_questions"][0]
+    assert any("Who can pause" in question for question in parsed["repair_questions"])
+    assert not any("Power balance" in question for question in parsed["repair_questions"])
 
 
 def test_receipt_reader_text_fallback_accepts_risk_and_trust_index_without_component_leakage():
@@ -102,8 +102,8 @@ SILENT OPERATOR REPAIR QUESTIONS
     assert fields["module_source"] == "AI Integrity Mirror"
     assert fields["risk_state"] == "Elevated"
     assert fields["trust"] == "0.7700"
-    assert "Which claim needs evidence" in fields["repair_questions"]
-    assert "Power balance" not in fields["repair_questions"]
+    assert "Which claim needs evidence" in parsed["repair_questions"][0]
+    assert not any("Power balance" in question for question in parsed["repair_questions"])
 
 
 def test_receipt_reader_is_shared_utility_and_does_not_change_module_receipts_or_scoring():
@@ -133,14 +133,14 @@ def test_receipt_reader_is_shared_utility_and_does_not_change_module_receipts_or
         assert phrase.lower() not in lower_helper
 
 
-def test_receipt_reader_ui_values_are_vertical_and_uploaded_language_only():
+def test_receipt_reader_ui_uses_uploaded_language_only_and_standard_metric_rows():
     helper = read("ui/receipt_reader.py")
-    assert "_render_value_list" in helper
-    assert "Trust index" in helper
+    assert "Performance & Risk Metrics" in helper
+    assert "Trust Index" in helper
     assert "Not found in uploaded receipt" in helper
-    assert "Risk state" in helper
+    assert "risk_state" in helper
     assert "pasted receipt" not in helper.lower()
-    assert ".table(" not in helper
+    assert "file_uploader" in helper
 
 
 def test_patch_142_1_docs_capture_parser_calibration_boundary():

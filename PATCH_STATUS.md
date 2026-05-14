@@ -1,3 +1,11 @@
+## Patch 142.6 — Receipt Reader World Lens Binding Fix
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 142.6 fixes Receipt Reader binding for World Lens receipts. World Lens evidence receipts are now parsed from their World Lens section before generic/local-witness fallback, so embedded Simulation/Mirror Check fallback lines cannot overwrite the module source or protocol label. Batch ZIP inspection continues to use actual receipt files rather than batch index files and prefers JSON over duplicate TXT receipt pairs.
+
+Boundary preserved: parser/Standard View display only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal regex/weights, World Lens math, Stress Test scoring/tree logic, AI Integrity scan behavior, Privacy Audit scan behavior, external calls, live model calls, embeddings, telemetry, analytics, storage, Global ID sync, public ledger sync, certification, enforcement, approval, rejection, legal authority, official authority, privacy guarantee, or final-truth behavior changed. Human review remains required.
+
 ## Patch 137 - Validation Alignment After Unit Preview
 
 Status: READY FOR LOCAL REVIEW
@@ -3065,22 +3073,5 @@ Validation targets:
 
 ```bat
 python tools\run_patch_checks.py 142_4
-python tools\run_protocol_baseline_self_audit.py
-```
-
-## Patch 142.5 - Receipt Reader Batch ZIP Receipt Selection Fix
-
-Status: READY FOR LOCAL REVIEW
-
-Patch 142.5 fixes Receipt Reader batch ZIP handling so `batch_index.txt` and `batch_index.json` are not inspected as receipts. The batch summary uses actual receipt files for counts/distributions, deduplicates `.json`/`.txt` pairs, and prefers `receipt_01.json` over `receipt_01.txt` for the first inspectable Standard View panel.
-
-Boundary preserved: no scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, external calls, live model calls, embeddings, telemetry, analytics, database/storage, Global ID sync, public ledger sync, certification, enforcement, official-authority, privacy-guarantee, security-guarantee, or final-truth behavior changed.
-
-Validation targets:
-
-```bat
-python tools\run_patch_checks.py 142_5
-python tools\run_patch_checks.py 142_4
-python tools\run_patch_checks.py 142_3
 python tools\run_protocol_baseline_self_audit.py
 ```

@@ -1,3 +1,11 @@
+## Patch 142.6 — Receipt Reader World Lens Binding Fix
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 142.6 fixes Receipt Reader binding for World Lens receipts. World Lens evidence receipts are now parsed from their World Lens section before generic/local-witness fallback, so embedded Simulation/Mirror Check fallback lines cannot overwrite the module source or protocol label. Batch ZIP inspection continues to use actual receipt files rather than batch index files and prefers JSON over duplicate TXT receipt pairs.
+
+Boundary preserved: parser/Standard View display only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal regex/weights, World Lens math, Stress Test scoring/tree logic, AI Integrity scan behavior, Privacy Audit scan behavior, external calls, live model calls, embeddings, telemetry, analytics, storage, Global ID sync, public ledger sync, certification, enforcement, approval, rejection, legal authority, official authority, privacy guarantee, or final-truth behavior changed. Human review remains required.
+
 ## Patch 118 Notes — Beginner UX Polish v2
 
 Patch 118 polishes the beginner guide introduced in Patch 111. It adds a first-audit checklist, clearer “what this means / what this does not mean” copy, and stop-and-review prompts for high-consequence or unclear cases.
@@ -2829,11 +2837,3 @@ Current patch: Patch 142.4 - Receipt Reader Narrative Standard View Output.
 Receipt Reader now presents uploaded receipts in a more readable narrative Standard View: System Status, Native State, Review Pressure, Protocol Label, Module Source, Performance & Risk Metrics, Core Logic, Summary for the Reader, and repair questions. The parser still prioritizes machine-readable receipt JSON when present and falls back to obvious text fields without inferring missing values.
 
 The reader remains a support utility. It translates uploaded receipt values verbally and maps them into a secondary review band for clarity. It does not rescore, override, certify, approve, reject, enforce, generate a new receipt, or claim final truth. Batch ZIP summaries remain descriptive counts of uploaded receipts only.
-
-## Patch 142.5 Notes - Receipt Reader Batch ZIP Receipt Selection Fix
-
-Current patch: Patch 142.5 - Receipt Reader Batch ZIP Receipt Selection Fix.
-
-Patch 142.5 fixes a Receipt Reader batch-ZIP issue where `batch_index.txt` could be chosen as the first inspectable receipt. The reader now treats batch index files as index/summary context only, uses actual receipt files for batch counts and distributions, deduplicates receipt `.json`/`.txt` pairs, and prefers JSON for `receipt_01` inspection when available.
-
-Boundary preserved: no scoring, no verdict routing, no taxonomy change, no receipt schema, no receipt generation, no signal regex or signal weight changes, no AI Integrity scan behavior change, no Privacy Audit scan behavior change, no World Lens math change, no external calls, no live model calls, no embeddings, no telemetry, no analytics, no database/storage, no Global ID sync, no public ledger sync, no certification, no enforcement, no privacy/security guarantee, and no final-truth claim.

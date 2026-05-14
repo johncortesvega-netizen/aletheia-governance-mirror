@@ -1,0 +1,34 @@
+ALETHEIA PATCH 142.6 MANIFEST
+
+Patch name: Receipt Reader World Lens Binding Fix
+
+Changed files:
+- ui/receipt_reader.py
+- tests/test_patch_142_6_receipt_reader_world_lens_binding.py
+- tests/test_patch_142_1_receipt_reader_parser_calibration.py
+- PATCH_142_6_MANIFEST.txt
+- PATCH_142_6_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- data/protocol_baseline_manifest.json
+
+Purpose:
+- Bind World Lens receipts to the World Lens receipt section before generic/local-witness fallback parsing.
+- Prevent embedded Simulation/Mirror Check fallback fields from overriding World Lens module/source or protocol label.
+- Preserve module-aware Standard View metrics for World Lens evidence receipts.
+- Ensure batch ZIP inspection uses actual receipt files, not batch index files, and prefers JSON over duplicate TXT pairs.
+
+Boundaries preserved:
+- No scoring changes.
+- No verdict-routing changes.
+- No taxonomy changes.
+- No receipt schema changes.
+- No receipt generation changes.
+- No signal regex or weight changes.
+- No AI Integrity scan behavior changes.
+- No Privacy Audit scan behavior changes.
+- No World Lens math changes.
+- No Stress Test scoring/tree logic changes.
+- No external calls, live model calls, embeddings, telemetry, analytics, database/storage, Global ID sync, or public ledger sync.
+- No certification, enforcement, approval, rejection, legal authority, official authority, privacy guarantee, or final-truth claim.
