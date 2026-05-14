@@ -1,0 +1,51 @@
+PATCH 141.3 - Unit Preview Button Placement Hotfix
+
+Status: ready for local review.
+
+Purpose:
+- Move the two Unit Preview action buttons directly under the chatbox/prompt.
+- Render the buttons side by side.
+- Keep packaged HTML/reference previews below the action buttons.
+
+Files changed:
+- ui/unit_preview.py
+- tests/test_patch_141_2_unit_preview_reference_placement_hotfix.py
+- tests/test_patch_141_3_unit_preview_buttons_above_reference_hotfix.py
+- PATCH_141_3_MANIFEST.txt
+- PATCH_141_3_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- docs/architecture.md
+- data/protocol_baseline_manifest.json
+
+Boundary preserved:
+- No scoring changes.
+- No verdict routing changes.
+- No taxonomy changes.
+- No SANCTUARY / THRESHOLD / ASYLUM logic changes.
+- No QUESTION_PROMPT logic changes.
+- No receipt schema changes.
+- No receipt generation changes.
+- No signal regex or weight changes.
+- No AI Integrity scan behavior changes.
+- No Privacy Audit scan behavior changes.
+- No World Lens math changes.
+- No upload/download behavior changes.
+- No external calls.
+- No live model calls.
+- No embeddings.
+- No telemetry.
+- No analytics.
+- No database/storage.
+- No Global ID sync.
+- No public ledger sync.
+- No certification, enforcement, approval, rejection, privacy guarantee, or final-truth claim.
+
+Validation:
+- python tools\run_patch_checks.py 141_3
+- python tools\run_patch_checks.py 141_2
+- python tools\run_patch_checks.py 141
+- python tools\run_patch_checks.py 140
+- python tools\run_patch_checks.py 139
+- python tools\run_protocol_baseline_self_audit.py

@@ -7,15 +7,17 @@ def read(rel: str) -> str:
     return (ROOT / rel).read_text(encoding="utf-8")
 
 
-def test_reference_previews_render_under_unit_preview_prompt():
+def test_reference_previews_render_below_unit_preview_actions():
     unit_preview = read("ui/unit_preview.py")
     assert "render_unit_preview_html_reference(container)" in unit_preview
     assert "Reference previews" in unit_preview
     assert "container.text_area(" in unit_preview
     prompt_index = unit_preview.index("preview_text = container.text_area")
-    reference_index = unit_preview.index("render_unit_preview_html_reference(container)")
+    columns_index = unit_preview.index("action_columns = container.columns(2)")
     preview_button_index = unit_preview.index('container.button("Preview review path"')
-    assert prompt_index < reference_index < preview_button_index
+    proceed_button_index = unit_preview.index('container.button(\n            "Proceed to ALETHEIA"')
+    reference_index = unit_preview.index("render_unit_preview_html_reference(container)")
+    assert prompt_index < columns_index < preview_button_index < proceed_button_index < reference_index
 
 
 def test_reference_previews_remain_local_and_first_page_only():

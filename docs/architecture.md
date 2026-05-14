@@ -290,3 +290,9 @@ Patch 141.1 clarifies the late-page app structure: after the main module work su
 The Unit Preview first page now places packaged local reference previews under the Unit Preview prompt. This keeps the hook page sequence compact and legible: boundary/orientation, prompt, then optional local reference previews. The references are not a module, do not call external services, and do not change any analysis engine, scoring function, receipt parser, receipt generator, or scan behavior.
 
 Boundary preserved: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal regex/weight change, no AI Integrity scan behavior change, no Privacy Audit scan behavior change, no World Lens math change, no upload/download behavior change, no telemetry, no analytics, no storage, no certification, no enforcement, no privacy guarantee, and no final-truth claim.
+
+## Patch 141.3 architecture note — Unit Preview button placement
+
+The Unit Preview first page sequence is now: boundary/orientation copy, Unit Preview chatbox, side-by-side action buttons, optional suggested path output, and then packaged local reference previews. This keeps the primary actions directly under the prompt while preserving the reference previews as secondary orientation material on the hook page.
+
+Boundary preserved: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal regex/weight change, no AI Integrity scan behavior change, no Privacy Audit scan behavior change, no World Lens math change, no upload/download behavior change, no external calls, no telemetry, no analytics, no storage, no certification, no enforcement, no privacy guarantee, and no final-truth claim.

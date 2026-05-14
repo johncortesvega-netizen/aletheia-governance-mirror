@@ -2848,3 +2848,11 @@ Current patch: Patch 141.2 - Unit Preview Reference Placement Hotfix.
 Patch 141.2 moves the packaged local reference previews to sit under the Unit Preview prompt on the first app page. This keeps the first-page flow clearer: orientation copy, prompt, then local reference previews. The previews still render side by side when `Sydney_Protocol_v3.2.html` and/or `GPA_v8.2.html` exist, still stay on the Unit Preview hook page, and still do not enter the full module app.
 
 Boundary preserved: placement only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal regex, signal weights, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, upload/download behavior, external calls, live model calls, embeddings, telemetry, analytics, database/storage, Global ID sync, public ledger sync, certification, enforcement, approval, rejection, privacy guarantee, or final-truth behavior changed. Human review remains required.
+
+## Patch 141.3 Notes - Unit Preview Button Placement Hotfix
+
+Current patch: Patch 141.3 - Unit Preview Button Placement Hotfix.
+
+Patch 141.3 responds to first-page layout review. The Unit Preview action buttons now sit directly under the Unit Preview chatbox and are side by side: `Preview review path` and `Proceed to ALETHEIA`. Reference previews remain packaged local HTML, remain on the Unit Preview hook page, and now render below those actions.
+
+Boundary preserved: UI placement only. No scoring, routing, taxonomy, receipt schema, receipt generation, signal logic, AI Integrity behavior, Privacy Audit behavior, World Lens math, upload/download behavior, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed. Human review remains required.

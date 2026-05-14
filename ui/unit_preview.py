@@ -176,13 +176,24 @@ def render_unit_preview(container=None) -> bool:
         height=160,
         key="aletheia_unit_preview_text",
     )
-    render_unit_preview_html_reference(container)
 
-    if container.button("Preview review path", key="aletheia_unit_preview_button"):
+    action_columns = container.columns(2)
+    with action_columns[0]:
+        preview_clicked = container.button("Preview review path", key="aletheia_unit_preview_button")
+    with action_columns[1]:
+        proceed_clicked = container.button(
+            "Proceed to ALETHEIA",
+            type="primary",
+            key="aletheia_unit_preview_proceed",
+        )
+
+    if preview_clicked:
         suggestion = suggest_review_path(preview_text)
         container.markdown("### Suggested path")
         container.write(suggestion["path"])
         container.caption(suggestion["reason"])
         container.caption("You can still choose any module after entering ALETHEIA.")
 
-    return bool(container.button("Proceed to ALETHEIA", type="primary", key="aletheia_unit_preview_proceed"))
+    render_unit_preview_html_reference(container)
+
+    return bool(proceed_clicked)

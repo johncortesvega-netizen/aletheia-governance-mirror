@@ -3079,3 +3079,11 @@ Status: READY FOR LOCAL REVIEW.
 Patch 141.2 moves the packaged local reference previews so they appear under the Unit Preview prompt on the first app page. The references remain side-by-side when present, remain local packaged HTML, remain outside the full module app, and fail gracefully when files are missing.
 
 Boundary preserved: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal regex/weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no upload/download behavior changes, no external calls, no telemetry, no analytics, no storage, no certification, no enforcement, no privacy guarantee, and no final-truth claim. Human review remains required.
+
+## Patch 141.3 - Unit Preview Button Placement Hotfix
+
+Status: READY FOR LOCAL REVIEW.
+
+Patch 141.3 moves the two Unit Preview action buttons directly under the Unit Preview chatbox and renders them side by side. The packaged local reference previews remain on the first app page but now appear below those buttons, not between the prompt and the actions.
+
+Boundary preserved: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal regex/weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no upload/download behavior changes, no external calls, no telemetry, no analytics, no storage, no certification, no enforcement, no privacy guarantee, and no final-truth claim. Human review remains required.

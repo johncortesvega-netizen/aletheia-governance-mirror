@@ -307,3 +307,9 @@ Patch 141.1 moves the Receipt Reader support expander under an explicit Support 
 Patch 141.2 places the packaged local reference previews under the Unit Preview prompt on the first app page. The references remain side-by-side when present, local-only, graceful when missing, and confined to the Unit Preview hook page rather than the full module app.
 
 Scope: UI placement and tests/docs only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, upload/download behavior, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed. Human review remains required.
+
+## Patch 141.3 - Unit Preview Button Placement Hotfix
+
+Patch 141.3 places the Unit Preview action buttons side by side directly under the Unit Preview chatbox. The local reference previews remain on the first app page but render below the action buttons.
+
+Scope: visual placement, tests, and docs only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, upload/download behavior, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed.
