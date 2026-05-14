@@ -1,0 +1,49 @@
+PATCH 142.5 — Receipt Reader Batch ZIP Receipt Selection Fix
+
+Status: READY FOR LOCAL REVIEW
+
+Purpose
+- Fix Receipt Reader batch ZIP handling so batch index files are used only for indexing/summary context and are not inspected as if they were receipts.
+- Ensure the first inspectable receipt in a batch ZIP is an actual receipt file, preferring receipt_01.json over receipt_01.txt when both exist.
+
+Files changed
+- ui/receipt_reader.py
+- tests/test_patch_142_5_receipt_reader_batch_zip_receipt_selection.py
+- PATCH_142_5_MANIFEST.txt
+- PATCH_142_5_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- data/protocol_baseline_manifest.json
+
+Behavior
+- Batch ZIP parsing filters out batch_index.txt and batch_index.json from inspectable receipt views.
+- Receipt ZIP parsing deduplicates receipt_XX.json / receipt_XX.txt pairs by receipt index and prefers JSON.
+- Batch summary now reports actual receipt count, native-state distribution, risk distribution, and module/source distribution from actual receipt files.
+- The inspect panel opens the first real receipt file rather than batch_index.txt.
+
+Boundaries preserved
+- No scoring change.
+- No verdict routing change.
+- No taxonomy change.
+- No receipt schema change.
+- No receipt generation change.
+- No signal regex or signal weight change.
+- No AI Integrity scan behavior change.
+- No Privacy Audit scan behavior change.
+- No World Lens math change.
+- No external calls.
+- No live model calls.
+- No embeddings.
+- No telemetry.
+- No analytics.
+- No database/storage.
+- No Global ID sync.
+- No public ledger sync.
+- No certification, approval, rejection, enforcement, official-authority, privacy-guarantee, security-guarantee, or final-truth claim.
+
+Validation targets
+- python tools\run_patch_checks.py 142_5
+- python tools\run_patch_checks.py 142_4
+- python tools\run_patch_checks.py 142_3
+- python tools\run_protocol_baseline_self_audit.py

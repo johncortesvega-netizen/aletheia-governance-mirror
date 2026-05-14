@@ -68,6 +68,56 @@ def _first_match(text: str, patterns: list[str]) -> str:
     return MISSING_VALUE
 
 
+
+
+def _markdown_bold_value(text: str, label: str) -> str:
+    pattern = rf"(?im)^\s*-\s*{re.escape(label)}\s*:\s*\*\*(.+?)\*\*\s*$"
+    match = re.search(pattern, text)
+    return match.group(1).strip() if match else MISSING_VALUE
+
+
+def _world_lens_fields_from_text(text: str) -> dict[str, str]:
+    return {
+        "selected_year": _markdown_bold_value(text, "Selected year"),
+        "world_lens_source_state": _markdown_bold_value(text, "World Lens source state"),
+        "evidence_allocation_status": _markdown_bold_value(text, "Evidence allocation status"),
+        "allocated_country_rows": _markdown_bold_value(text, "Allocated country rows"),
+        "active_selected_year_seats": _markdown_bold_value(text, "Active selected-year seats"),
+        "rows_excluded_diagnostic": _markdown_bold_value(text, "Rows excluded / diagnostic"),
+        "hidden_zero_seat_diagnostic_rows": _markdown_bold_value(text, "Hidden zero-seat diagnostic rows"),
+        "weighted_integrity": _markdown_bold_value(text, "Weighted integrity"),
+        "weighted_friction": _markdown_bold_value(text, "Weighted friction"),
+        "weighted_collapse_probability": _markdown_bold_value(text, "Weighted collapse probability"),
+        "average_empirical_coverage": _markdown_bold_value(text, "Average empirical coverage"),
+        "trust_raw_survey_coverage": _table_value_after_source(text, "Trust raw survey"),
+        "trust_prior_coverage": _table_value_after_source(text, "Trust prior"),
+    }
+
+
+def _table_value_after_source(text: str, source: str) -> str:
+    for line in text.splitlines():
+        if f"| {source} |" in line:
+            cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+            if len(cells) >= 4:
+                return cells[3]
+    return MISSING_VALUE
+
+
+def _ai_integrity_fields_from_text(text: str) -> dict[str, str]:
+    return {
+        "receipt_header": _first_match(text, [r"(?im)^\s*Receipt header\s*:\s*(.+?)\s*$"]),
+        "review_mode": _first_match(text, [r"(?im)^\s*Review mode\s*:\s*(.+?)\s*$"]),
+        "artifact_type": _first_match(text, [r"(?im)^\s*Artifact type\s*:\s*(.+?)\s*$"]),
+        "positive_review_signals": _first_match(text, [r"(?im)^\s*Positive review signals\s*:\s*(.+?)\s*$"]),
+    }
+
+
+def _receipt_kind(module_family: str) -> str:
+    if module_family == "Stress Test / Simulation":
+        return "Stress Test"
+    return module_family
+
+
 def _native_state_from_text(value: Any) -> str:
     upper = str(value or "").upper()
     for state in STANDARD_BANDS:
@@ -197,7 +247,28 @@ def _fields_from_json(data: dict[str, Any], text: str) -> dict[str, str]:
 
 
 def _fields_from_text(text: str) -> dict[str, str]:
-    return {key: _first_match(text, patterns) for key, patterns in TEXT_FIELD_PATTERNS.items()}
+    fields = {key: _first_match(text, patterns) for key, patterns in TEXT_FIELD_PATTERNS.items()}
+    lower = text.lower()
+    if "world lens" in lower or "selected-year evidence" in lower or "evidence allocation status" in lower:
+        world = _world_lens_fields_from_text(text)
+        fields["module_source"] = "World Lens"
+        fields["risk_state"] = "World Lens evidence view"
+        fields["protocol_adjusted_state"] = "WORLD_LENS_EVIDENCE_VIEW"
+        fields["protocol_label"] = "Selected-year evidence / 9k allocation view"
+        fields["integrity"] = world.get("weighted_integrity", MISSING_VALUE)
+        fields["friction"] = world.get("weighted_friction", MISSING_VALUE)
+        fields["collapse_probability"] = world.get("weighted_collapse_probability", MISSING_VALUE)
+        raw = world.get("trust_raw_survey_coverage", MISSING_VALUE)
+        prior = world.get("trust_prior_coverage", MISSING_VALUE)
+        fields["trust"] = f"Trust prior coverage {prior}; raw trust survey coverage {raw}"
+    if "ai integrity receipt context" in lower:
+        fields["module_source"] = "AI Integrity Mirror"
+        fields["risk_state"] = _first_match(text, [r"(?im)^\s*(?:Risk reading|Risk)\s*:\s*(.+?)\s*$"])
+        fields["protocol_adjusted_state"] = _first_match(text, [r"(?im)^\s*(?:Internal taxonomy label|Protocol-adjusted state)\s*:\s*(.+?)\s*$"])
+        fields["protocol_label"] = _first_match(text, [r"(?im)^\s*Protocol label\s*:\s*(.+?)\s*$"])
+        fields["integrity"] = _first_match(text, [r"(?im)^\s*(?:Integrity reading|Integrity)\s*:\s*(.+?)\s*$"])
+        fields["friction"] = _first_match(text, [r"(?im)^\s*(?:Capture pressure|Friction)\s*:\s*(.+?)\s*$"])
+    return fields
 
 
 def _metric_float(value: str) -> float | None:
@@ -329,6 +400,9 @@ def parse_receipt_standard_view(receipt_text: str) -> dict[str, Any]:
         native_state = _native_state_from_text(text)
 
     module_family = _module_family(fields.get("module_source", ""), text)
+    if module_family == "World Lens":
+        native_state = "WORLD_LENS_EVIDENCE_VIEW"
+
     metric_rows = [
         {
             "Metric": label,
@@ -338,12 +412,38 @@ def parse_receipt_standard_view(receipt_text: str) -> dict[str, Any]:
         for key, label in METRIC_ORDER
     ]
 
+    receipt_kind = _receipt_kind(module_family)
+    world_lens_fields = _world_lens_fields_from_text(text) if module_family == "World Lens" else {}
+    ai_integrity_fields = _ai_integrity_fields_from_text(text) if module_family == "AI Integrity Mirror" else {}
+    if module_family == "World Lens":
+        plain_language = (
+            "Standard View is reading this as a World Lens selected-year evidence receipt, not as a Mirror Check scenario. "
+            "It preserves country-year evidence context and does not certify a country, government, or institution."
+        )
+    elif module_family == "AI Integrity Mirror":
+        plain_language = (
+            "Standard View is reading this as an AI Integrity static artifact receipt. It does not test a live model, "
+            "vendor, deployment, hidden prompt, training data, or future behavior."
+        )
+    elif module_family == "Stress Test / Simulation":
+        plain_language = (
+            "Standard View is reading this as a Stress Test / Simulation receipt. It preserves the scenario receipt values "
+            "without re-running the scenario or changing tree/scoring output."
+        )
+    else:
+        plain_language = "Standard View is reading this as an uploaded ALETHEIA receipt without inferring missing values."
+
     return {
         "native_state": native_state,
         "system_status": native_state,
         "status_line": STATUS_LINES.get(native_state, "The uploaded receipt is shown without inferring missing values."),
         "standard_band": STANDARD_BANDS.get(native_state, MISSING_VALUE),
         "module_family": module_family,
+        "receipt_kind": receipt_kind,
+        "world_lens_fields": world_lens_fields,
+        "ai_integrity_fields": ai_integrity_fields,
+        "plain_language_explanation": plain_language,
+        "non_certification_note": "This is not certification, approval, rejection, enforcement, final truth, legal advice, or proof of safety.",
         "fields": fields,
         "metric_rows": metric_rows,
         "repair_questions": repair_questions,
@@ -363,33 +463,66 @@ def _read_uploaded_text(uploaded_file: Any) -> tuple[str, str]:
     return bytes(raw).decode("utf-8", errors="replace"), name
 
 
-def _read_zip_receipts(uploaded_file: Any) -> tuple[list[tuple[str, str]], str]:
+def _is_batch_index_name(filename: str) -> bool:
+    base = filename.rsplit("/", 1)[-1].lower()
+    return base.startswith("batch_index") or base.startswith("index")
+
+
+def _receipt_sort_key(filename: str) -> tuple[int, int, str]:
+    base = filename.rsplit("/", 1)[-1].lower()
+    match = re.search(r"receipt[_-]?(\d+)", base)
+    number = int(match.group(1)) if match else 10_000
+    ext_rank = 0 if base.endswith(".json") else 1 if base.endswith(".txt") else 2
+    return (number, ext_rank, base)
+
+
+def _receipt_group_key(filename: str) -> str:
+    base = filename.rsplit("/", 1)[-1].lower()
+    return re.sub(r"\.(json|txt|md)$", "", base)
+
+
+def _read_zip_receipts(uploaded_file: Any) -> tuple[list[tuple[str, str]], str, list[tuple[str, str]]]:
     name = getattr(uploaded_file, "name", "uploaded receipts.zip") or "uploaded receipts.zip"
     raw = uploaded_file.getvalue()
-    receipts: list[tuple[str, str]] = []
+    receipt_candidates: list[tuple[str, str]] = []
+    index_files: list[tuple[str, str]] = []
     with zipfile.ZipFile(io.BytesIO(bytes(raw))) as archive:
         for info in archive.infolist():
             lower = info.filename.lower()
             if info.is_dir() or not lower.endswith((".txt", ".md", ".json")):
                 continue
             text = archive.read(info).decode("utf-8", errors="replace")
-            receipts.append((info.filename, text))
-    return receipts, name
+            if _is_batch_index_name(info.filename):
+                index_files.append((info.filename, text))
+            else:
+                receipt_candidates.append((info.filename, text))
+
+    selected: dict[str, tuple[str, str]] = {}
+    for filename, text in sorted(receipt_candidates, key=lambda item: _receipt_sort_key(item[0])):
+        key = _receipt_group_key(filename)
+        if key not in selected:
+            selected[key] = (filename, text)
+    return list(selected.values()), name, index_files
 
 
 def parse_uploaded_receipt_file(uploaded_file: Any) -> dict[str, Any]:
     """Parse one uploaded receipt file or a ZIP of receipt text files."""
     name = getattr(uploaded_file, "name", "") or ""
     if name.lower().endswith(".zip"):
-        receipts, zip_name = _read_zip_receipts(uploaded_file)
+        receipts, zip_name, index_files = _read_zip_receipts(uploaded_file)
         views = [(filename, parse_receipt_standard_view(text)) for filename, text in receipts]
         distribution = Counter(view.get("native_state", MISSING_VALUE) for _, view in views)
+        risk_distribution = Counter(view.get("fields", {}).get("risk_state", MISSING_VALUE) for _, view in views)
+        module_distribution = Counter(view.get("fields", {}).get("module_source", MISSING_VALUE) for _, view in views)
         return {
             "kind": "batch_zip",
             "name": zip_name,
             "receipt_count": len(views),
             "distribution": dict(distribution),
+            "risk_distribution": dict(risk_distribution),
+            "module_distribution": dict(module_distribution),
             "views": views,
+            "index_files": index_files,
         }
     text, filename = _read_uploaded_text(uploaded_file)
     return {"kind": "single", "name": filename, "view": parse_receipt_standard_view(text)}
@@ -430,10 +563,19 @@ def _render_batch_zip(container: Any, parsed: dict[str, Any]) -> None:
     container.markdown("### Batch Receipt Summary")
     container.write(f"Uploaded batch file: {parsed.get('name')}")
     container.write(f"Receipts read: {parsed.get('receipt_count', 0)}")
+    module_distribution = parsed.get("module_distribution") or {}
+    if module_distribution:
+        container.write("Module/source distribution")
+        container.table([{"Module Source": key, "Count": value} for key, value in sorted(module_distribution.items())])
     distribution = parsed.get("distribution") or {}
     if distribution:
+        container.write("Native state distribution")
         container.table([{"Native State": key, "Count": value} for key, value in sorted(distribution.items())])
-    container.info("Batch ZIP reading summarizes uploaded receipts only. It does not rescore, merge verdicts, or create a new receipt.")
+    risk_distribution = parsed.get("risk_distribution") or {}
+    if risk_distribution:
+        container.write("Risk distribution")
+        container.table([{"Risk State": key, "Count": value} for key, value in sorted(risk_distribution.items())])
+    container.info("Batch ZIP reading summarizes actual receipt files only. Batch index files are used only as indexes and are not inspected as receipts. It does not rescore, merge verdicts, or create a new receipt.")
     views = parsed.get("views") or []
     if views:
         first_name, first_view = views[0]

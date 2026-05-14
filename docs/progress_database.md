@@ -2829,3 +2829,11 @@ Current patch: Patch 142.4 - Receipt Reader Narrative Standard View Output.
 Receipt Reader now presents uploaded receipts in a more readable narrative Standard View: System Status, Native State, Review Pressure, Protocol Label, Module Source, Performance & Risk Metrics, Core Logic, Summary for the Reader, and repair questions. The parser still prioritizes machine-readable receipt JSON when present and falls back to obvious text fields without inferring missing values.
 
 The reader remains a support utility. It translates uploaded receipt values verbally and maps them into a secondary review band for clarity. It does not rescore, override, certify, approve, reject, enforce, generate a new receipt, or claim final truth. Batch ZIP summaries remain descriptive counts of uploaded receipts only.
+
+## Patch 142.5 Notes - Receipt Reader Batch ZIP Receipt Selection Fix
+
+Current patch: Patch 142.5 - Receipt Reader Batch ZIP Receipt Selection Fix.
+
+Patch 142.5 fixes a Receipt Reader batch-ZIP issue where `batch_index.txt` could be chosen as the first inspectable receipt. The reader now treats batch index files as index/summary context only, uses actual receipt files for batch counts and distributions, deduplicates receipt `.json`/`.txt` pairs, and prefers JSON for `receipt_01` inspection when available.
+
+Boundary preserved: no scoring, no verdict routing, no taxonomy change, no receipt schema, no receipt generation, no signal regex or signal weight changes, no AI Integrity scan behavior change, no Privacy Audit scan behavior change, no World Lens math change, no external calls, no live model calls, no embeddings, no telemetry, no analytics, no database/storage, no Global ID sync, no public ledger sync, no certification, no enforcement, no privacy/security guarantee, and no final-truth claim.

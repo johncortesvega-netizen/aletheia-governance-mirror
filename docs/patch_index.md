@@ -292,3 +292,7 @@ Patch 140 moves beginner orientation copy into Aletheia Unit Preview and removes
 ## Patch 142.4 - Receipt Reader Narrative Standard View Output
 
 Patch 142.4 reformats Receipt Reader into a clearer narrative Standard View. It shows System Status, Native State, Review Pressure, Protocol Label, Module Source, Performance & Risk Metrics, Core Logic, Summary for the Reader, and repair questions while preserving native uploaded receipt values. It remains upload-only, parses obvious fields without inference, and does not rescore, override, certify, approve, reject, enforce, generate receipts, call external services, use models or embeddings, store data, collect telemetry, or claim final truth.
+
+## Patch 142.5 - Receipt Reader Batch ZIP Receipt Selection Fix
+
+Patch 142.5 ensures batch ZIP uploads in Receipt Reader inspect actual receipt files instead of batch index files. Batch indexes remain index/summary material only; `receipt_01.json` is preferred over `receipt_01.txt` when both exist. No scoring, routing, receipt schema, receipt generation, module scan behavior, World Lens math, external calls, telemetry, storage, certification, enforcement, or final-truth behavior changed.
