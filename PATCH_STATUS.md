@@ -2895,3 +2895,20 @@ Validation:
 - `tools\run_patch_checks.bat 128`
 - `tools\run_patch_checks.bat 127`
 - `python tools\run_protocol_baseline_self_audit.py`
+## Patch 131 - Test and Check Hygiene
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 131 improves local validation hygiene in release-candidate refinement mode. It makes selected Patch 121-125 tests less brittle by checking structural imports and calls instead of exact import formatting, adds Patch 131 regression coverage for UTF-8 JSON manifest hygiene, internal repair-note leakage, authority/certification/final-truth claims, and telemetry/external-call/storage wording risks, and adds a Python safe-check wrapper at `tools/run_checks.py`.
+
+Boundary preserved: tests, local check tooling, documentation, patch records, and protocol baseline manifest only. No runtime behavior change, no scoring, no verdict-routing, no receipt schema, no signal-pattern or signal-weight change, no Privacy Audit scan behavior change, no AI Integrity scan behavior change, no World Lens math change, no external calls, no telemetry, no analytics, no storage, no identity sync, no Global ID sync, no public ledger sync, no privacy guarantee, no certification, no enforcement, and no final-truth behavior changed. Humans keep the judgment.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 131
+python tools\run_patch_checks.py 130
+python tools\run_patch_checks.py 129
+python tools\run_protocol_baseline_self_audit.py
+python tools\run_checks.py
+```

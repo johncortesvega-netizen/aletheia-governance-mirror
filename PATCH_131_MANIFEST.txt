@@ -1,0 +1,49 @@
+PATCH 131 MANIFEST - Test and Check Hygiene
+
+Status: READY FOR LOCAL REVIEW
+
+Changed files:
+- tests/test_patch_121_shared_status_notice_cards.py
+- tests/test_patch_122_refactor_stabilization_checkpoint_2.py
+- tests/test_patch_123_about_public_info_page_extraction.py
+- tests/test_patch_124_trust_package_page_extraction.py
+- tests/test_patch_125_evidence_lab_static_ui_extraction.py
+- tests/test_patch_131_test_check_hygiene.py
+- tools/run_checks.py
+- tools/run_current_suite.py
+- docs/test_check_hygiene.md
+- PATCH_131_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- README.md
+- docs/architecture.md
+- docs/patch_index.md
+- docs/progress_database.md
+- docs/final_structural_simplification_freeze.md
+- data/protocol_baseline_manifest.json
+
+Purpose:
+- Improve local validation clarity in release-candidate refinement mode.
+- Make selected recent patch tests check structural imports and calls instead of fragile exact import formatting.
+- Add local regression checks for UTF-8 JSON manifest hygiene, internal repair-note leakage, authority/certification/final-truth claims, and telemetry/external-call/storage wording risks.
+- Add a Python `tools/run_checks.py` wrapper matching the existing safe-check batch workflow.
+
+Boundary preserved:
+- No runtime behavior change.
+- No scoring change.
+- No verdict-routing change.
+- No receipt schema change.
+- No signal-pattern or signal-weight change.
+- No Privacy Audit scan behavior change.
+- No AI Integrity scan behavior change.
+- No World Lens math change.
+- No new UI feature.
+- No external calls, telemetry, analytics, storage, identity sync, Global ID sync, or public ledger sync.
+- No certification, enforcement, privacy guarantee, or final-truth behavior.
+- Humans keep the judgment.
+
+Validation targets:
+- python tools\run_patch_checks.py 131
+- python tools\run_patch_checks.py 130
+- python tools\run_patch_checks.py 129
+- python tools\run_protocol_baseline_self_audit.py
+- python tools\run_checks.py

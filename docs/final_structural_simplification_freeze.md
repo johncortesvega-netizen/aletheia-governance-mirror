@@ -32,3 +32,7 @@ The app remains a governance-risk mirror. It surfaces signals and repair prompts
 Future work should prefer small, reviewable cleanup patches. Behavior changes, new capability, new scoring, new panels, storage changes, identity sync, telemetry, analytics, or external calls are outside this freeze.
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+## Patch 131 validation hygiene
+
+Patch 131 is inside this release-candidate refinement posture. It improves test and check hygiene only: selected recent tests assert structural import/call intent, the local safe-check batch workflow has a matching Python entry point, and validation commands are documented clearly. This is not expansion and does not change runtime behavior, scoring, verdict-routing, receipt schemas, signal patterns, signal weights, Privacy Audit scan behavior, AI Integrity scan behavior, World Lens math, external calls, telemetry, analytics, storage, identity sync, Global ID sync, public ledger sync, certification, enforcement, privacy guarantees, or final-truth behavior.

@@ -9,6 +9,26 @@ def read(rel: str) -> str:
     return (ROOT / rel).read_text(encoding="utf-8")
 
 
+def parsed_app() -> ast.AST:
+    return ast.parse(read("app.py"))
+
+
+def imports_name(tree: ast.AST, module_name: str, imported_name: str) -> bool:
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom) and node.module == module_name:
+            if any(alias.name == imported_name for alias in node.names):
+                return True
+    return False
+
+
+def calls_name(tree: ast.AST, function_name: str) -> bool:
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+            if node.func.id == function_name:
+                return True
+    return False
+
+
 def test_patch_121_files_exist():
     required = [
         "ui/status_cards.py",
@@ -28,8 +48,9 @@ def test_status_cards_helper_exists_and_imports():
 
 def test_app_imports_and_calls_status_card_helper():
     app = read("app.py")
-    assert "from ui.status_cards import render_ai_integrity_boundary_cards" in app
-    assert "render_ai_integrity_boundary_cards(st)" in app
+    tree = parsed_app()
+    assert imports_name(tree, "ui.status_cards", "render_ai_integrity_boundary_cards")
+    assert calls_name(tree, "render_ai_integrity_boundary_cards")
     assert 'st.caption("Boundary extension: It does not certify models' not in app
     assert 'st.caption("Demo risk examples include phrases' not in app
 

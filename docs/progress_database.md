@@ -2741,3 +2741,10 @@ Patch 130 records ALETHEIA as being in release-candidate refinement mode after t
 This is not expansion. No new modules, no new scoring, no new risk states, no live model calls, no agentic review, no enterprise workflow, no telemetry, no analytics, no storage or identity sync, no certification, no enforcement, no privacy guarantee, and no final-truth claim are introduced or planned by this freeze.
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+## Patch 131 Notes
+
+Current patch: Patch 131 - Test and Check Hygiene.
+
+Patch 130 passed and placed ALETHEIA in release-candidate refinement mode. Patch 131 improves local validation clarity and reliability without changing runtime behavior. It updates selected recent patch tests to assert structural import/call intent instead of incidental import formatting, adds regression checks for UTF-8 JSON manifest hygiene, internal repair-note leakage, authority/certification/final-truth claims, and telemetry/external-call/storage wording risks, documents the Windows validation command pattern in `docs/test_check_hygiene.md`, and adds `tools/run_checks.py` as a Python wrapper for the existing safe-check workflow.
+
+Boundary preserved: tests, local check tooling, documentation, patch records, and the protocol baseline manifest only. No scoring, no verdict-routing, no receipt schema, no signal-pattern or signal-weight change, no Privacy Audit scan behavior change, no AI Integrity scan behavior change, no World Lens math change, no external calls, no telemetry, no analytics, no storage, no identity sync, no Global ID sync, no public ledger sync, no privacy guarantee, no certification, no enforcement, and no final-truth behavior changed. Humans keep the judgment.

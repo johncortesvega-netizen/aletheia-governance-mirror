@@ -9,6 +9,26 @@ def read(rel: str) -> str:
     return (ROOT / rel).read_text(encoding="utf-8")
 
 
+def parsed_app() -> ast.AST:
+    return ast.parse(read("app.py"))
+
+
+def imports_name(tree: ast.AST, module_name: str, imported_name: str) -> bool:
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom) and node.module == module_name:
+            if any(alias.name == imported_name for alias in node.names):
+                return True
+    return False
+
+
+def calls_name(tree: ast.AST, function_name: str) -> bool:
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+            if node.func.id == function_name:
+                return True
+    return False
+
+
 def test_patch_125_files_exist():
     required = [
         "pages_ui/evidence_lab_page.py",
@@ -31,9 +51,13 @@ def test_evidence_lab_helper_is_importable():
 
 def test_app_imports_and_calls_evidence_lab_helpers():
     app = read("app.py")
-    assert "from pages_ui.evidence_lab_page import render_evidence_lab_intro, render_evidence_lab_public_data_build_intro" in app
-    assert "render_evidence_lab_intro(st)" in app
-    assert "render_evidence_lab_public_data_build_intro(st)" in app
+    tree = parsed_app()
+    for function_name in [
+        "render_evidence_lab_intro",
+        "render_evidence_lab_public_data_build_intro",
+    ]:
+        assert imports_name(tree, "pages_ui.evidence_lab_page", function_name)
+        assert calls_name(tree, function_name)
 
     evidence_section = app.split("with tab_empirical:", 1)[1].split("with tab_grid:", 1)[0]
     assert "render_evidence_lab_intro(st)" in evidence_section

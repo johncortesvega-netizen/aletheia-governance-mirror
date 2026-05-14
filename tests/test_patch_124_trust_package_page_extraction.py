@@ -9,6 +9,26 @@ def read(rel: str) -> str:
     return (ROOT / rel).read_text(encoding="utf-8")
 
 
+def parsed_app() -> ast.AST:
+    return ast.parse(read("app.py"))
+
+
+def imports_name(tree: ast.AST, module_name: str, imported_name: str) -> bool:
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom) and node.module == module_name:
+            if any(alias.name == imported_name for alias in node.names):
+                return True
+    return False
+
+
+def calls_name(tree: ast.AST, function_name: str) -> bool:
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+            if node.func.id == function_name:
+                return True
+    return False
+
+
 def test_patch_124_files_exist():
     required = [
         "pages_ui/trust_package_page.py",
@@ -31,8 +51,9 @@ def test_trust_package_helper_is_importable():
 
 def test_app_imports_and_calls_trust_package_helper():
     app = read("app.py")
-    assert "from pages_ui.trust_package_page import render_public_trust_package_page" in app
-    assert "render_public_trust_package_page(st)" in app
+    tree = parsed_app()
+    assert imports_name(tree, "pages_ui.trust_package_page", "render_public_trust_package_page")
+    assert calls_name(tree, "render_public_trust_package_page")
     protocol_section = app.split("with tab_doctrine:", 1)[1].split("with tab_about:", 1)[0]
     assert "render_public_trust_package_page(st)" in protocol_section
 

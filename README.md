@@ -8,6 +8,24 @@ ALETHEIA is also **privacy-by-design inside this repository**: no built-in telem
 
 
 
+## Patch 131 - Test and Check Hygiene
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 131 keeps ALETHEIA in release-candidate refinement mode and improves local validation reliability. It tightens selected brittle recent patch tests so they check structural import/call intent rather than exact import-line formatting, adds hygiene regression coverage for encoding, UTF-8 JSON manifest, internal repair-note, authority-claim, and telemetry/external-call/storage wording risks, and adds `tools/run_checks.py` as a Python wrapper for the existing safe-check workflow.
+
+Boundary preserved: tests, local check tooling, documentation, patch records, and the protocol baseline manifest only. No runtime behavior change, no scoring, no verdict-routing, no receipt schema, no signal-pattern or signal-weight change, no Privacy Audit scan behavior change, no AI Integrity scan behavior change, no World Lens math change, no external calls, no telemetry, no analytics, no storage, no identity sync, no Global ID sync, no public ledger sync, no privacy guarantee, no certification, no enforcement, and no final-truth behavior changed. Humans keep the judgment.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 131
+python tools\run_patch_checks.py 130
+python tools\run_patch_checks.py 129
+python tools\run_protocol_baseline_self_audit.py
+python tools\run_checks.py
+```
+
 ## Public start here
 
 Patch 114 polishes the public entry path after the Public Trust Package consolidation. New reviewers should start with the boundary, privacy posture, signal basis, beginner path, and public-review checklist before reading the full patch history.

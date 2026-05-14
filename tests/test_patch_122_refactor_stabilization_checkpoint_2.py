@@ -9,6 +9,26 @@ def read(rel: str) -> str:
     return (ROOT / rel).read_text(encoding="utf-8")
 
 
+def parsed_app() -> ast.AST:
+    return ast.parse(read("app.py"))
+
+
+def imports_name(tree: ast.AST, module_name: str, imported_name: str) -> bool:
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom) and node.module == module_name:
+            if any(alias.name == imported_name for alias in node.names):
+                return True
+    return False
+
+
+def calls_name(tree: ast.AST, function_name: str) -> bool:
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+            if node.func.id == function_name:
+                return True
+    return False
+
+
 HELPERS = {
     "ui.app_shell": [
         "render_app_boundary_notices",
@@ -54,24 +74,27 @@ def test_ui_helpers_import_and_expose_expected_functions():
 
 def test_app_py_imports_and_calls_current_ui_helpers():
     app = read("app.py")
-    expected = [
-        "from ui.app_shell import",
-        "from ui.beginner_guide import render_try_this_first_guide",
-        "from ui.module_intro import render_boundary_cases_intro, render_consent_audit_intro, render_stress_test_scan_intro",
-        "from ui.privacy_audit_panel import render_privacy_boundary_audit_panel",
-        "from ui.status_cards import render_ai_integrity_boundary_cards",
-        "render_app_boundary_notices(SUPPORTED_INPUT_LANGUAGE_NOTE, st)",
-        "render_app_header(mascot_logo_uri, APP_VERSION, st)",
-        "render_how_to_use_note(st)",
-        "render_try_this_first_guide(st, expanded=False)",
-        "render_stress_test_scan_intro(st)",
-        "render_boundary_cases_intro(st)",
-        "render_consent_audit_intro(st)",
-        "render_ai_integrity_boundary_cards(st)",
-        "render_app_footer_banner(APP_VERSION, st)",
-    ]
-    for phrase in expected:
-        assert phrase in app
+    tree = parsed_app()
+    expected = {
+        "ui.app_shell": [
+            "render_app_boundary_notices",
+            "render_app_header",
+            "render_how_to_use_note",
+            "render_app_footer_banner",
+        ],
+        "ui.beginner_guide": ["render_try_this_first_guide"],
+        "ui.module_intro": [
+            "render_boundary_cases_intro",
+            "render_consent_audit_intro",
+            "render_stress_test_scan_intro",
+        ],
+        "ui.privacy_audit_panel": ["render_privacy_boundary_audit_panel"],
+        "ui.status_cards": ["render_ai_integrity_boundary_cards"],
+    }
+    for module_name, function_names in expected.items():
+        for function_name in function_names:
+            assert imports_name(tree, module_name, function_name), f"{module_name}.{function_name}"
+            assert calls_name(tree, function_name), function_name
 
 
 def test_app_py_remains_runtime_orchestrator():

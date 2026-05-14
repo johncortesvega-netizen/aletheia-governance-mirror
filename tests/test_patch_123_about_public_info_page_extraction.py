@@ -9,6 +9,26 @@ def read(rel: str) -> str:
     return (ROOT / rel).read_text(encoding="utf-8")
 
 
+def parsed_app() -> ast.AST:
+    return ast.parse(read("app.py"))
+
+
+def imports_name(tree: ast.AST, module_name: str, imported_name: str) -> bool:
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom) and node.module == module_name:
+            if any(alias.name == imported_name for alias in node.names):
+                return True
+    return False
+
+
+def calls_name(tree: ast.AST, function_name: str) -> bool:
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+            if node.func.id == function_name:
+                return True
+    return False
+
+
 def test_patch_123_files_exist():
     required = [
         "pages_ui/__init__.py",
@@ -30,9 +50,10 @@ def test_about_page_helper_is_importable():
 
 def test_app_imports_and_calls_about_page_helper():
     app = read("app.py")
-    assert "from pages_ui.about_page import render_about_public_info_page" in app
+    tree = parsed_app()
+    assert imports_name(tree, "pages_ui.about_page", "render_about_public_info_page")
+    assert calls_name(tree, "render_about_public_info_page")
     assert "with tab_about:" in app
-    assert "render_about_public_info_page(st, header_image=resolve_about_header_image())" in app
     assert 'st.subheader("Why ALETHEIA")' not in app
     assert 'with st.expander("Positioning: not enterprise compliance, not fairness library"' not in app
 

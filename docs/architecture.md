@@ -54,6 +54,8 @@ ALETHEIA is designed to avoid built-in telemetry, external model calls, backend 
 
 Patch manifests, recovery notes, status files, and the progress database are part of the reviewability structure. They show what changed, why it changed, how to test it, and which boundaries were preserved. They can feel large to new contributors, so future work should add better patch-history navigation rather than deleting the audit trail.
 
+Patch 131 adds a test/check hygiene note at `docs/test_check_hygiene.md` and a Python safe-check wrapper at `tools/run_checks.py`. These belong to validation infrastructure only. They do not change runtime behavior, scoring, verdict-routing, receipt schemas, signal patterns, signal weights, Privacy Audit scan behavior, AI Integrity scan behavior, World Lens math, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantees, or final-truth behavior. Humans keep the judgment.
+
 ## Future extraction target
 
 A safe future structure would move repeated UI and copy into dedicated modules while keeping behavior stable:

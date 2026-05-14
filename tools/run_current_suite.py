@@ -89,6 +89,7 @@ def existing_compile_targets() -> list[str]:
         "protocol.py",
         "core/witness.py",
         "tools/run_patch_checks.py",
+        "tools/run_checks.py",
         "tools/package_patched_items.py",
         "tools/run_current_suite.py",
         "tools/run_legacy_test_inventory.py",
