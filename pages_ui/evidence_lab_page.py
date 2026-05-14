@@ -17,14 +17,14 @@ def render_evidence_lab_intro(container=None) -> None:
 
         container = st
 
-    container.subheader("Evidence Lab — Data Check")
+    container.subheader("Evidence Lab — Evidence Review")
     container.write(
         "Build or upload a country-year evidence table from public sources, then let ALETHEIA carry it through "
         "variable mapping, empirical scoring, and the Sydney Protocol overlay. "
-        "This layer is where symbolic doctrine meets public evidence in a reproducible, inspectable way."
+        "This layer helps reviewers see what the evidence can support, what is missing, and where human review remains necessary."
     )
     container.info(
-        "Evidence does not come from ALETHEIA. Public datasets provide the baseline. ALETHEIA only maps and reflects it."
+        "Evidence does not come from ALETHEIA. Public datasets provide the baseline. ALETHEIA maps and reflects them; it does not certify them."
     )
 
 

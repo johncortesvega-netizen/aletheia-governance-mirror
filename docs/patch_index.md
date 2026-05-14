@@ -225,3 +225,13 @@ Scope: documentation and regression-test only. ALETHEIA is not in expansion mode
 Patch 127 fixes visible mojibake in the public UI surface and restores the tab icons after the late structural-refactor chain. This is a refinement patch, not a feature expansion.
 
 Scope: public UI text cleanup only. No scoring, no module-routing change, no receipt schema change, no signal change, no privacy scan change, no AI Integrity scan change, no World Lens math change, no external calls, no telemetry, no certification, no enforcement, and no final-truth behavior. Human review remains required.
+
+## Patch 128 - Public UI Text Consistency Pass
+
+Patch 128 refines the public UI copy after Patch 127's encoding cleanup. It does not expand the machine. It clarifies the current positioning: ALETHEIA's strength is restraint, compliance can become a mirage when paper governance hides capture pressure, regulation is a floor rather than the final measure of integrity, and the mirror asks where power is moving, who can appeal, what is hidden, and where human review is weakened.
+
+Changed surface: About / Why ALETHEIA, Trust Package page, Evidence Lab static intro, and beginner guide copy. No scoring, routing, receipt schema, signal logic, privacy scan, AI Integrity scan, World Lens math, external call, telemetry, storage, certification, enforcement, or final-truth behavior changed.
+
+Patch 128 public wording note: the compliance mirage is a review concern, not a legal conclusion. ALETHEIA asks reviewers to look beyond paperwork toward power movement, appeal, hidden influence, and human review.
+
+Patch 128 public wording note: regulation as a floor means compliance is not treated as the final measure of integrity; the compliance mirage remains a review concern, not a legal conclusion.

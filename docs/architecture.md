@@ -223,3 +223,13 @@ Patch 127 keeps the release-candidate structure intact and only repairs visible 
 `app.py` remains the orchestrator. The existing `ui/` and `pages_ui/` helper boundaries remain unchanged.
 
 Boundary preserved: no scoring, no routing, no receipt schema, no signal logic, no privacy scan logic, no AI Integrity scan logic, no World Lens math, no external calls, no telemetry, no privacy guarantee, no certification, no enforcement, and no final-truth behavior changed. Human review remains required.
+
+## Patch 128 - Public UI Text Consistency Pass
+
+Patch 128 keeps the current architecture intact and changes public UI copy only. It uses the existing extracted page/helper structure (`pages_ui/about_page.py`, `pages_ui/trust_package_page.py`, `pages_ui/evidence_lab_page.py`, and `ui/beginner_guide.py`) to make the release-candidate surface easier to understand.
+
+The patch reinforces refinement mode, not expansion: no app runtime behavior, scoring, routing, receipts, signal logic, privacy scan logic, AI Integrity scan logic, World Lens math, external calls, telemetry, analytics, storage, certification, enforcement, or final-truth behavior changed. Human review remains required.
+
+Patch 128 public wording note: the compliance mirage is a review concern, not a legal conclusion. ALETHEIA asks reviewers to look beyond paperwork toward power movement, appeal, hidden influence, and human review.
+
+Patch 128 public wording note: regulation as a floor means compliance is not treated as the final measure of integrity; the compliance mirage remains a review concern, not a legal conclusion.

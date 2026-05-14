@@ -39,6 +39,9 @@ def get_try_this_first_markdown() -> str:
     appeal, capture risk, and human review. A stronger pressure reading means
     the input deserves more review; it does not prove wrongdoing.
 
+    Its role is restraint: it asks where power is moving, what is hidden, who can
+    appeal, and where human review is being weakened.
+
     **What this does not mean**
 
     The reading is not a verdict, certification, approval, legal finding,

@@ -2838,3 +2838,27 @@ tools\run_patch_checks.bat 127
 tools\run_patch_checks.bat 126
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+## Patch 128 - Public UI Text Consistency Pass
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 128 refines public UI copy after the page-extraction and encoding-cleanup sequence. It incorporates the current positioning that ALETHEIA's strength is restraint: it does not follow the normal AI-governance trend of adding more automation, more intelligence, and more institutional control.
+
+The public pages now state more clearly that regulation is a floor, not the final measure of integrity; compliance workflows can miss capture pressure, consent erosion, hidden influence, weak appeal paths, and authority drift; and ALETHEIA asks where power is moving, who can appeal, what is hidden, and where human review is being weakened.
+
+Boundary preserved: public UI text consistency only. This is refinement, not expansion. No scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module-routing change, no session-state change, no upload handling change, no download handling change, no privacy scan change, no AI Integrity scan change, no World Lens math change, no external calls, no telemetry, no analytics, no storage or identity sync, no privacy guarantee, no certification, no enforcement, and no final-truth behavior changed.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+Validation targets:
+
+```bat
+tools\run_patch_checks.bat 128
+tools\run_patch_checks.bat 127
+python tools\run_protocol_baseline_self_audit.py
+```
+
+Patch 128 public wording note: the compliance mirage is a review concern, not a legal conclusion. ALETHEIA asks reviewers to look beyond paperwork toward power movement, appeal, hidden influence, and human review.
+
+Patch 128 public wording note: regulation as a floor means compliance is not treated as the final measure of integrity; the compliance mirage remains a review concern, not a legal conclusion.

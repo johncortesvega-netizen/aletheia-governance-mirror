@@ -85,6 +85,14 @@ def render_public_trust_package_page(container=None) -> None:
             "Use this map to find the relevant docs. It does not prove truth, safety, legality, ethics, privacy, security, compliance, or legitimacy."
         )
 
+        st.markdown("#### Review posture")
+        st.write(
+            "ALETHEIA treats regulation as a floor, not the final measure of integrity. "
+            "The trust package is therefore organized around boundary, privacy, signal basis, "
+            "appeal, and reviewability rather than automatic approval. Its public question is: "
+            "where is power moving, what is hidden, who can appeal, and where is human review being weakened?"
+        )
+
         for title, paths, question in TRUST_PACKAGE_REVIEW_PATH:
             st.markdown(f"#### {title}")
             st.write(question)

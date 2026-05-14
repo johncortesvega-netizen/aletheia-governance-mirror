@@ -1022,3 +1022,13 @@ Boundary preserved: Patch 118 is static beginner UX copy and documentation only.
 Patch 127 repairs visible UTF-8 mojibake in the public app surface and restores the Streamlit tab icons after the late structural-refactor chain.
 
 Scope: public UI text cleanup only. No scoring, verdict routing, signal patterns, signal weights, receipt schemas, module routing, session state, privacy scan behavior, AI Integrity scan behavior, World Lens math, external calls, telemetry, analytics, storage or identity sync, privacy guarantees, certification, enforcement, or final-truth behavior changed. Human review remains required.
+
+## Patch 128 — Public UI Text Consistency Pass
+
+Patch 128 refines public-facing copy without changing behavior. It clarifies ALETHEIA's current stance: its strength is restraint; regulation is a floor, not the final measure of integrity; and the mirror asks where power is moving, who can appeal, what is hidden, and where human review is being weakened.
+
+This patch updates the About / Why ALETHEIA page, Trust Package page, Evidence Lab static intro, and beginner guide copy. It is public UI text consistency only, not expansion. No scoring, routing, receipt schema, signal logic, privacy scan, AI Integrity scan, World Lens math, external call, telemetry, storage, certification, enforcement, or final-truth behavior changed. Human review remains required.
+
+Patch 128 public wording note: the compliance mirage is a review concern, not a legal conclusion. ALETHEIA asks reviewers to look beyond paperwork toward power movement, appeal, hidden influence, and human review.
+
+Patch 128 public wording note: regulation as a floor means compliance is not treated as the final measure of integrity; the compliance mirage remains a review concern, not a legal conclusion.

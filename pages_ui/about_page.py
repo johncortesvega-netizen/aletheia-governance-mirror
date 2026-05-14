@@ -23,6 +23,31 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
     st.subheader("Why ALETHEIA")
     st.info("Start here if you are new: ALETHEIA helps review governance risk, evidence gaps, and safeguard needs. It reflects; people decide.")
 
+    with st.expander("A different position: restraint as strength", expanded=True):
+        st.markdown(
+            """
+            ALETHEIA does not follow the normal AI-governance trend of adding more automation,
+            more intelligence, and more institutional control. Its strength is restraint.
+
+            Many enterprise governance tools focus on compliance workflows: regulatory readiness,
+            risk registers, model inventories, dashboards, and audit paperwork. Those tools can be
+            useful, but they can also create a **compliance mirage**: a system may look governed on
+            paper while still carrying capture risk, consent pressure, hidden influence, weak appeal
+            paths, or authority drift.
+
+            ALETHEIA treats regulation as a floor, not the final measure of integrity. It asks:
+
+            - Where is power moving?
+            - Who can appeal?
+            - What is hidden?
+            - Where is human review being weakened?
+
+            The mirror does not replace enterprise governance, legal review, security review, or
+            technical audit. It exists in the space those systems often miss: capture pressure,
+            consent erosion, appeal failure, hidden influence, and authority drift.
+            """
+        )
+
     if header_image is not None:
         st.image(str(header_image), use_container_width=True)
 
@@ -56,6 +81,8 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
             ALETHEIA's niche is **qualitative governance-risk reflection**: corruption-pattern signals, consent pressure, capture risk, evidence gaps, authority-overreach language, weak accountability, and repair questions for human review.
 
             It is not an enterprise AI governance platform, compliance engine, legal tool, institutional risk system, or technical fairness library. Enterprise platforms usually focus on model inventories, compliance workflows, monitoring, reporting, and organizational controls. Technical fairness libraries usually focus on model-level bias, explainability, datasets, and metrics.
+
+            ALETHEIA is best understood as a **counterweight and reflection layer** around those systems. It does not ask only whether a system is legal or procedurally compliant. It asks whether the system is honest, reviewable, appealable, and still subordinate to human judgment.
 
             ALETHEIA is free/open-source code and is intended to remain free. This supports the anti-capture posture: access to the mirror should not become a gatekeeping mechanism or a source of institutional authority.
             """

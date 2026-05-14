@@ -2716,3 +2716,15 @@ This is a public UI text cleanup only. It does not add a new feature, module, pa
 Boundary preserved: no scoring, routing, receipt schema, signal pattern, signal weight, session-state, upload handling, download handling, privacy scan, AI Integrity scan, World Lens math, external call, telemetry, analytics, storage or identity sync, privacy guarantee, certification, enforcement, or final-truth behavior changed.
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+## Patch 128 Notes - Public UI Text Consistency Pass
+
+Patch 128 is a public copy refinement patch. It updates the extracted About, Trust Package, Evidence Lab intro, and beginner-guide copy so the app explains ALETHEIA's current stance more consistently: restraint is a strength, regulation is a floor, and the mirror asks where power moves, who can appeal, what is hidden, and where human review is weakened.
+
+This is not expansion. It does not add a new module, panel, analysis mode, intelligence layer, scoring behavior, routing behavior, receipt schema, signal pattern, signal weight, privacy scan behavior, AI Integrity scan behavior, World Lens math, external call, telemetry, analytics, storage or identity sync, privacy guarantee, certification, enforcement, or final-truth behavior.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+Patch 128 public wording note: the compliance mirage is a review concern, not a legal conclusion. ALETHEIA asks reviewers to look beyond paperwork toward power movement, appeal, hidden influence, and human review.
+
+Patch 128 public wording note: regulation as a floor means compliance is not treated as the final measure of integrity; the compliance mirage remains a review concern, not a legal conclusion.
