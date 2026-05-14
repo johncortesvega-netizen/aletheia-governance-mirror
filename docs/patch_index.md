@@ -296,3 +296,8 @@ Patch 141 converts Receipt Reader - Standard View from pasted-receipt intake to 
 It also renders packaged HTML reference previews side by side on the Unit Preview hook page, preserves AI Integrity Mirror visibility as a main work module, updates public V1 header/footer wording, refreshes Why ALETHEIA positioning, and raises the tree canopy as visual-only UI polish.
 
 Scope: UI placement, copy, support-utility intake, docs, and tests only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, external calls, telemetry, analytics, storage, certification, enforcement, or final-truth behavior changed. Human review remains required.
+
+
+## Patch 141.1 - Receipt Reader Support Utility Placement Hotfix
+
+Patch 141.1 moves the Receipt Reader support expander under an explicit Support utilities heading above the footer. The utility remains outside the main module tab row and remains upload-only. No scoring, routing, taxonomy, receipt schema, receipt generation, signal, AI Integrity, Privacy Audit, World Lens, external-call, telemetry, storage, synchronization, certification, enforcement, or final-truth behavior changes.

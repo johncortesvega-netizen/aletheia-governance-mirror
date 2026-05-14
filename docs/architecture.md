@@ -279,3 +279,8 @@ Patch 140 clarifies the UX architecture: Aletheia Unit Preview is the orientatio
 Receipt Reader - Standard View remains a support utility outside the main module tab row. In Patch 141 its active intake is upload-only for local ALETHEIA receipt files (`.txt`, `.md`, `.json`). It reads uploaded receipt text in the running session, extracts obvious fields, and displays a compact Standard View mapping. It does not rescore, route verdicts, infer missing values, generate receipts, override uploaded receipt values, store files, call external services, use live model calls, use embeddings, create telemetry, or claim certification.
 
 Aletheia Unit Preview remains the front-door hook. Packaged local HTML references may render side by side on that hook page when files exist; missing files are ignored calmly. AI Integrity Mirror remains one of the main work modules. The pulse tree canopy adjustment in Patch 141 is visual-only and does not touch scoring logic, receipt metrics, or verdict routing.
+
+
+## Patch 141.1 - Support Utility Placement
+
+Patch 141.1 clarifies the late-page app structure: after the main module work surface, optional review aids appear under `Support utilities`, followed by the public footer. Receipt Reader - Standard View belongs in that support utility section, not in the footer and not in the main module tab row. The Receipt Reader remains an upload-only reader for existing ALETHEIA receipt files and does not rescore, override, generate, certify, approve, reject, enforce, or decide.

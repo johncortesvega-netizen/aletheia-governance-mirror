@@ -3062,3 +3062,12 @@ The reader displays native receipt state, native ALETHEIA values, a plain-langua
 Additional UI placement updates: Unit Preview renders packaged local HTML references side by side when present; AI Integrity Mirror remains visible as a main module and appears in Unit Preview guidance; public header/footer wording includes `Aletheia V1 — Governance Mirror Final`; Why ALETHEIA matches current V1 positioning; the pulse canopy/tree visual sits higher as visual-only polish.
 
 Boundary preserved: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal regex/weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no external calls, no telemetry, no analytics, no storage, no certification, no enforcement, no privacy guarantee, and no final-truth claim. Human review remains required.
+
+
+## Patch 141.1 - Receipt Reader Support Utility Placement Hotfix
+
+Status: prepared.
+
+Patch 141.1 places Receipt Reader - Standard View under an explicit Support utilities heading above the public footer so it no longer visually blends with the footer. Receipt Reader remains outside the main module tab row and remains upload-only for `.txt`, `.md`, or `.json` ALETHEIA receipt files.
+
+Boundary preserved: placement and copy only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal regex or weight, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, external-call behavior, telemetry, analytics, storage, Global ID sync, public ledger sync, certification, enforcement, approval, rejection, privacy guarantee, or final-truth behavior changes.

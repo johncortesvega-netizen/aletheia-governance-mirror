@@ -8594,8 +8594,18 @@ with tab_doctrine:
 with tab_about:
     render_about_public_info_page(st, header_image=resolve_about_header_image())
 
+st.divider()
+st.markdown("### Support utilities")
+st.caption(
+    "Optional reading aids that support review without becoming main modules. "
+    "They do not rescore, certify, approve, reject, enforce, or override ALETHEIA receipts."
+)
 with st.expander("Receipt Reader — Standard View", expanded=False):
-    st.caption("Have an ALETHEIA receipt? Upload a .txt, .md, or .json receipt file for native values and a standard review-band explanation. This utility does not rescore, certify, approve, reject, or override the original receipt.")
+    st.caption(
+        "Have an ALETHEIA receipt? Upload a .txt, .md, or .json receipt file for native values "
+        "and a standard review-band explanation. This utility does not rescore, certify, approve, "
+        "reject, or override the original receipt."
+    )
     render_receipt_reader_standard_view(st)
 
 render_app_footer_banner(APP_VERSION, st)

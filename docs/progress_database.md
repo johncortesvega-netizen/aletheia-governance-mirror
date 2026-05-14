@@ -2831,3 +2831,12 @@ Patch 141 makes Receipt Reader - Standard View upload-only. Users upload an ALET
 Patch 141 also keeps Aletheia Unit Preview as the hook page while rendering packaged local HTML references side by side when present, confirms AI Integrity Mirror remains visible as a main module and Unit Preview guidance example, updates public header/footer wording to `Aletheia V1 — Governance Mirror Final`, refreshes Why ALETHEIA V1 positioning, and moves the pulse tree canopy higher as visual-only polish.
 
 Boundary preserved: no scoring, verdict routing, taxonomy, SANCTUARY / THRESHOLD / ASYLUM logic, QUESTION_PROMPT logic, receipt schema, receipt generation, signal regex, signal weights, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, external calls, live model calls, embeddings, telemetry, analytics, database/storage, Global ID sync, public ledger sync, certification, enforcement, approval, rejection, privacy guarantee, or final-truth behavior changed. Human review remains required.
+
+
+## Patch 141.1 Notes - Receipt Reader Support Utility Placement Hotfix
+
+Current patch: Patch 141.1 - Receipt Reader Support Utility Placement Hotfix.
+
+Receipt Reader - Standard View now sits under a clear `Support utilities` section above the footer. This fixes the visual confusion where the support expander appeared to be part of the footer. Receipt Reader remains upload-only and outside the main module tabs.
+
+Boundary preserved: placement and copy only; no scoring, routing, taxonomy, receipt schema, receipt generation, signals, AI Integrity behavior, Privacy Audit behavior, World Lens math, external calls, telemetry, storage, synchronization, certification, enforcement, approval, rejection, privacy guarantee, or final-truth behavior changed.

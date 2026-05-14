@@ -89,6 +89,17 @@ def test_ai_integrity_remains_visible_as_main_module():
     assert "tab_receipt_reader" not in app
 
 
+def test_receipt_reader_is_clearly_in_support_utilities_above_footer():
+    app = read("app.py")
+    assert 'st.markdown("### Support utilities")' in app
+    assert "Optional reading aids that support review without becoming main modules" in app
+    support_index = app.index('st.markdown("### Support utilities")')
+    reader_index = app.index('with st.expander("Receipt Reader — Standard View"')
+    footer_index = app.index("render_app_footer_banner(APP_VERSION, st)")
+    assert support_index < reader_index < footer_index
+    assert "tab_receipt_reader" not in app
+
+
 def test_header_footer_v1_language_and_mirror_boundary():
     shell = read("ui/app_shell.py")
     assert "Aletheia V1 — Governance Mirror Final" in shell
