@@ -271,3 +271,10 @@ Patch 132 records the Patch 131 Start Page / How to Start gate as stable. It add
 ## Patch 131 - Start Page / How to Start Gate
 
 Patch 131 belongs to release-candidate refinement. It adds a Start Page / How to Start gate before the main module interface renders, using Streamlit session-state only. It is not a new module, router, wizard, role selector, personalization layer, stored preference, or analysis engine. No cookies, accounts, persistent storage, telemetry, analytics, tracking, external calls, local LLM calls, embeddings, database, auth, login, scoring, routing, receipt schema, signal behavior, Privacy Audit scan behavior, AI Integrity scan behavior, or World Lens math changed. Humans keep the judgment.
+
+
+## Patch 137 - Validation Alignment After Unit Preview
+
+Patch 137 is a test/check hygiene patch after the Patch 131-136 entry-flow sequence. It aligns older Patch 131/132 validation with the current Aletheia Unit Preview implementation by checking the structural invariant instead of the old exact Start Page import.
+
+Scope: validation and documentation only. No runtime behavior change, no scoring change, no verdict routing change, no taxonomy change, no receipt schema or receipt generation change, no signal regex or signal weight change, no AI Integrity scan behavior change, no Privacy Audit scan behavior change, no World Lens math change, no uploads/downloads or batch behavior change, no external calls, no telemetry, no analytics, no storage or identity sync, no certification, no enforcement, no privacy guarantee, and no final-truth behavior changed. Humans keep the judgment.

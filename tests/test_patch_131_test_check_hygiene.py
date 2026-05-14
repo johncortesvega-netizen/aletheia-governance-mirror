@@ -30,7 +30,9 @@ def test_protocol_baseline_manifest_is_utf8_json_without_bom():
     raw = read_bytes("data/protocol_baseline_manifest.json")
     assert not raw.startswith(b"\xef\xbb\xbf")
     manifest = json.loads(raw.decode("utf-8"))
-    assert manifest["created_for_patch"] == "131"
+    created_for_patch = str(manifest["created_for_patch"])
+    assert created_for_patch.isdigit()
+    assert int(created_for_patch) >= 131
     assert "tests/test_patch_131_test_check_hygiene.py" in manifest["files"]
     assert "tools/run_checks.py" in manifest["files"]
 

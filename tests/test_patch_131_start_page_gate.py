@@ -37,16 +37,33 @@ def test_start_page_helper_defines_render_function_and_copy():
 def test_app_imports_calls_and_stops_for_session_state_gate():
     app = read("app.py")
     tree = ast.parse(app)
-    imports = [
-        node
-        for node in ast.walk(tree)
-        if isinstance(node, ast.ImportFrom) and node.module == "ui.start_page"
-    ]
-    imported_names = {alias.name for node in imports for alias in node.names}
-    assert {"START_GATE_SESSION_KEY", "render_start_page"}.issubset(imported_names)
-    assert "st.session_state.get(START_GATE_SESSION_KEY, False)" in app
-    assert "render_start_page(st)" in app
-    assert "st.session_state[START_GATE_SESSION_KEY] = True" in app
+    imports = [node for node in ast.walk(tree) if isinstance(node, ast.ImportFrom)]
+    imported_by_module = {
+        node.module: {alias.name for alias in node.names}
+        for node in imports
+        if node.module in {"ui.start_page", "ui.unit_preview"}
+    }
+
+    # Patch 131 originally introduced the Start Page gate. Later refinement patches
+    # may replace that front door with Aletheia Unit Preview, but the validation
+    # target remains the same: a session-state-only pre-app gate before modules.
+    has_start_page_gate = {"START_GATE_SESSION_KEY", "render_start_page"}.issubset(
+        imported_by_module.get("ui.start_page", set())
+    )
+    has_unit_preview_gate = {"UNIT_PREVIEW_SESSION_KEY", "render_unit_preview"}.issubset(
+        imported_by_module.get("ui.unit_preview", set())
+    )
+    assert has_start_page_gate or has_unit_preview_gate
+
+    assert (
+        "st.session_state.get(START_GATE_SESSION_KEY, False)" in app
+        or "st.session_state.get(UNIT_PREVIEW_SESSION_KEY, False)" in app
+    )
+    assert "render_start_page(st)" in app or "render_unit_preview(st)" in app
+    assert (
+        "st.session_state[START_GATE_SESSION_KEY] = True" in app
+        or "st.session_state[UNIT_PREVIEW_SESSION_KEY] = True" in app
+    )
     assert "st.rerun()" in app
     assert "st.stop()" in app
 

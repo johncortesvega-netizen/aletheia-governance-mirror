@@ -1,3 +1,24 @@
+## Patch 137 - Validation Alignment After Unit Preview
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 137 aligns older Patch 131/132 validation with the current Patch 135/136 Aletheia Unit Preview implementation. The older tests now verify the actual invariant — a session-state-only pre-app gate before modules — instead of requiring the original exact `ui.start_page` import after Unit Preview superseded the start page implementation.
+
+Boundary preserved: test/check/docs patch only. No runtime behavior change, no scoring change, no verdict routing change, no taxonomy change, no receipt schema or receipt generation change, no signal regex or signal weight change, no AI Integrity scan behavior change, no Privacy Audit scan behavior change, no World Lens math change, no uploads/downloads or batch behavior change, no external calls, no telemetry, no analytics, no storage or identity sync, no certification, no enforcement, no privacy guarantee, and no final-truth behavior changed. Humans keep the judgment.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 137
+python tools\run_patch_checks.py 136
+python tools\run_patch_checks.py 135
+python tools\run_patch_checks.py 134
+python tools\run_patch_checks.py 133
+python tools\run_patch_checks.py 132
+python tools\run_patch_checks.py 131
+python tools\run_protocol_baseline_self_audit.py
+```
+
 ## Patch 130 — Release Candidate Freeze
 
 Status: READY FOR LOCAL REVIEW

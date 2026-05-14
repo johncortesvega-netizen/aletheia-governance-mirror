@@ -21,14 +21,32 @@ def test_patch_132_files_exist():
 
 def test_start_gate_remains_session_state_only_and_stops_before_modules():
     app = read("app.py")
-    assert "from ui.start_page import START_GATE_SESSION_KEY, render_start_page" in app
-    assert "st.session_state.get(START_GATE_SESSION_KEY, False)" in app
-    assert "render_start_page(st)" in app
-    assert "st.session_state[START_GATE_SESSION_KEY] = True" in app
+    has_start_page_gate = (
+        "from ui.start_page import START_GATE_SESSION_KEY, render_start_page" in app
+        and "st.session_state.get(START_GATE_SESSION_KEY, False)" in app
+        and "render_start_page(st)" in app
+        and "st.session_state[START_GATE_SESSION_KEY] = True" in app
+    )
+    has_unit_preview_gate = (
+        "from ui.unit_preview import UNIT_PREVIEW_SESSION_KEY, render_unit_preview" in app
+        and "st.session_state.get(UNIT_PREVIEW_SESSION_KEY, False)" in app
+        and "render_unit_preview(st)" in app
+        and "st.session_state[UNIT_PREVIEW_SESSION_KEY] = True" in app
+    )
+    assert has_start_page_gate or has_unit_preview_gate
     assert "st.rerun()" in app
     assert "st.stop()" in app
 
-    gate_index = app.index("if not st.session_state.get(START_GATE_SESSION_KEY, False):")
+    gate_markers = [
+        marker
+        for marker in [
+            "if not st.session_state.get(START_GATE_SESSION_KEY, False):",
+            "if not st.session_state.get(UNIT_PREVIEW_SESSION_KEY, False):",
+        ]
+        if marker in app
+    ]
+    assert gate_markers
+    gate_index = min(app.index(marker) for marker in gate_markers)
     tabs_index = app.index("st.tabs(APP_NAVIGATION_LABELS)")
     assert gate_index < tabs_index
 

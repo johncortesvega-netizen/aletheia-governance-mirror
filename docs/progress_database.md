@@ -2790,3 +2790,12 @@ Current patch: Patch 131 - Start Page / How to Start Gate.
 Patch 130 passed and placed ALETHEIA in release-candidate refinement mode. Patch 131 adds a calm first-entry Start Page / How to Start gate so users do not land directly inside the full module interface. The gate is session-state only: clicking `Proceed to ALETHEIA` sets `aletheia_start_gate_passed` for the current Streamlit session and reveals the existing app.
 
 Boundary preserved: no new module tab, no user-intent router, no role selection, no wizard, no personalization, no cookies, no accounts, no persistent storage, no telemetry, no analytics, no tracking, no external calls, no local LLM calls, no embeddings, no database, no auth, no login, no scoring change, no routing change, no receipt schema change, no signal regex or signal weight change, no Privacy Audit scan behavior change, no AI Integrity scan behavior change, no World Lens math change, and no uploads or downloads behavior change. Humans keep the judgment.
+
+
+## Patch 137 Notes - Validation Alignment After Unit Preview
+
+Current patch: Patch 137 - Validation Alignment After Unit Preview.
+
+Patch 137 fixes stale validation from the Patch 131/132 start-page sequence after Patch 135/136 replaced the front door with Aletheia Unit Preview. The older tests now accept the current Unit Preview session-state gate while still enforcing the same boundary: pre-app suggestion only, no scoring, no routing decision, no receipt mutation, no storage, no external calls, and no authority claim.
+
+Status: READY FOR LOCAL REVIEW.

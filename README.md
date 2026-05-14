@@ -1069,3 +1069,8 @@ Status: READY FOR LOCAL REVIEW
 Patch 135 adds Aletheia Unit Preview as a small first-entry preview before the full app appears. It suggests where to begin from a short pasted text, question, scenario, or receipt. It is a suggestion, not a decision, and users can still choose any module after entering ALETHEIA.
 
 Boundary preserved: no scoring, no verdict routing, no taxonomy change, no receipt schema change, no receipt generation change, no signal regex or signal weight change, no AI Integrity scan behavior change, no Privacy Audit scan behavior change, no World Lens math change, no uploads/download behavior change, no batch behavior change, no storage, no external calls, no telemetry, no analytics, no accounts, no database, no Global ID sync, no public ledger sync, no new scoring engine, no new risk states, no final-truth claim, and no privacy guarantee. Human judgment remains required.
+
+
+### Patch 137 validation alignment
+
+Patch 137 is a test/check hygiene patch. It aligns older Start Page validation with the current Aletheia Unit Preview front door. It changes validation only; app behavior, scoring, receipts, signal logic, privacy scan behavior, AI Integrity behavior, and World Lens math remain unchanged.

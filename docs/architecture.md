@@ -256,3 +256,8 @@ Patch 130 records ALETHEIA as being in release-candidate refinement mode after t
 This is not expansion. No new modules, no new scoring, no new risk states, no live model calls, no agentic review, no enterprise workflow, no telemetry, no analytics, no storage or identity sync, no certification, no enforcement, no privacy guarantee, and no final-truth claim are introduced or planned by this freeze.
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+
+
+## Patch 137 validation note
+
+Patch 137 does not alter the architecture. It records that the current entry gate is Aletheia Unit Preview (`ui/unit_preview.py`) and updates older validation to check the session-state-only pre-app gate boundary rather than the superseded exact `ui.start_page` import. `app.py` remains the orchestrator and all analysis modules remain unchanged.
