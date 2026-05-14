@@ -36,8 +36,7 @@ def test_normal_app_surface_still_exists_after_gate():
     app = read("app.py")
     required = [
         "render_app_header(mascot_logo_uri, APP_VERSION, st)",
-        "render_how_to_use_note(st)",
-        "render_try_this_first_guide(st, expanded=False)",
+        "render_app_boundary_notices(SUPPORTED_INPUT_LANGUAGE_NOTE, st)",
         "render_sidebar_brand(mascot_logo_uri, st)",
         "render_sidebar_context(st)",
         "render_receipt_reader_standard_view(st)",
@@ -47,7 +46,7 @@ def test_normal_app_surface_still_exists_after_gate():
         "with tab_ai_integrity:",
         "with tab_empirical:",
         "with tab_grid:",
-        "with tab_receipt_reader:",
+        "Receipt Reader — Standard View",
         "with tab_doctrine:",
         "with tab_about:",
     ]

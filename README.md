@@ -1082,3 +1082,7 @@ ALETHEIA now uses Aletheia Unit Preview as the single pre-app entry surface. The
 ## Patch 139 - Unit Preview Header Entry Hotfix
 
 Patch 139 keeps Aletheia Unit Preview as the app's single hook before the module interface, but renders it after the public ALETHEIA header/styling. The first screen is now the polished ALETHEIA header plus Unit Preview, not a plain pre-header gate. Clicking Proceed to ALETHEIA opens the full module interface directly.
+
+### Patch 140 orientation refinement
+
+Aletheia Unit Preview is the first orientation surface. It now carries the practical `How to use this` guidance and short examples before the user enters the full app. After proceeding, the module tabs remain the working surface. Receipt Reader - Standard View is available as a support utility rather than a main module tab.

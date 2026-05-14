@@ -22,6 +22,46 @@ def get_unit_preview_boundary_text() -> str:
     )
 
 
+def get_unit_preview_how_to_use_markdown() -> str:
+    """Return the front-door orientation copy and examples."""
+    return """
+**How to use this**
+
+Paste a short idea, question, receipt, policy, AI output, or scenario. ALETHEIA looks for power, pressure, appeal, evidence, and risk. You keep the final say.
+
+**Examples**
+
+- **Mirror Check:** A city wants to use an AI tool to decide who receives housing support.
+- **Stress Test:** An evil penguin rises to power after a revolution and removes appeal rights.
+- **Boundary Cases:** A hospital AI recommends care, but no human doctor can override it.
+- **AI Integrity Mirror:** An AI assistant claims it can certify whether a policy is ethical.
+- **Evidence Lab:** Upload a CSV or source note to compare claims against supporting evidence.
+- **World Lens:** Compare a country-year governance context before interpreting a risk reading.
+
+Already have an ALETHEIA receipt? Use **Receipt Reader — Standard View** after entering ALETHEIA.
+"""
+
+
+def get_unit_preview_start_here_markdown() -> str:
+    """Return the first-use checklist for the front door."""
+    return """
+**A safe first path**
+
+1. Paste one short item into Unit Preview.
+2. Read the suggested path as a suggestion, not a decision.
+3. Enter ALETHEIA and choose the module yourself.
+4. Inspect observed reasons, values, and repair questions before relying on any reading.
+5. Download a receipt only when you want a local review record.
+
+**Stop and review if**
+
+- the result could affect rights, access, reputation, safety, or institutional action;
+- source evidence is missing, stale, unclear, or one-sided;
+- the text involves legal, medical, political, institutional, or financial consequences;
+- you cannot explain the receipt in plain language to another reviewer.
+"""
+
+
 def suggest_review_path(text: str) -> dict[str, str]:
     """Suggest a starting path using transparent local keyword rules."""
     value = (text or "").strip()
@@ -88,6 +128,9 @@ def render_unit_preview(container=None) -> bool:
         "Paste a short text, question, receipt, or scenario to get a suggested path before entering ALETHEIA."
     )
     container.info(get_unit_preview_boundary_text())
+    container.markdown(get_unit_preview_how_to_use_markdown())
+    with container.expander("Start here: try this first", expanded=False):
+        container.markdown(get_unit_preview_start_here_markdown())
 
     preview_text = container.text_area(
         "Short text, question, scenario, or receipt",

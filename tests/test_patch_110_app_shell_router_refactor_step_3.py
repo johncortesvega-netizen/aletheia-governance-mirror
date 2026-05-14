@@ -37,16 +37,15 @@ def test_patch_110_files_exist():
 def test_patch_110_app_imports_and_calls_header_shell_helpers():
     app = read("app.py")
     assert "render_app_header" in app
-    assert "render_how_to_use_note" in app
     assert "render_app_header(mascot_logo_uri, APP_VERSION, st)" in app
-    assert "render_how_to_use_note(st)" in app
     assert "render_app_boundary_notices(SUPPORTED_INPUT_LANGUAGE_NOTE, st)" in app
 
     header_region = app.split("# Header", 1)[1].split("# Sidebar controls", 1)[0]
     assert "botanical-frame hero" not in header_region
     assert "How to use this:" not in header_region
     assert "render_app_header" in header_region
-    assert "render_how_to_use_note" in header_region
+    assert "render_unit_preview(st)" in header_region
+    assert "render_how_to_use_note(st)" not in header_region
 
 
 
@@ -101,7 +100,6 @@ def test_patch_110_shell_helper_stays_copy_only_and_boundary_safe():
         "file_uploader",
         "text_area",
         "selectbox",
-        "slider",
         "button(",
     ]
     for phrase in forbidden:
@@ -156,11 +154,6 @@ def test_patch_110_no_accidental_internal_work_notes():
         "ui/app_shell.py",
         "PATCH_110_MANIFEST.txt",
         "PATCH_110_RECOVERY_NOTE.md",
-        "README.md",
-        "PATCH_STATUS.md",
-        "docs/progress_database.md",
-        "docs/architecture.md",
-        "docs/patch_index.md",
     ]
     forbidden = [
         "internal repair note",

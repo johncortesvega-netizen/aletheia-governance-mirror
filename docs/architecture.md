@@ -269,3 +269,7 @@ Aletheia Unit Preview is the only active pre-app entry gate. The older Start Pag
 ## Patch 139 Entry Flow Note
 
 Patch 139 keeps `ui/unit_preview.py` as the only active pre-module entry hook, but `app.py` now renders the public ALETHEIA header before the session-state Unit Preview gate. The order is: Streamlit setup and styling, public header, Unit Preview gate, then full app content only after the user proceeds. This is a UX wiring correction only; analysis engines and module behavior remain unchanged.
+
+## Patch 140 Orientation Placement
+
+Patch 140 clarifies the UX architecture: Aletheia Unit Preview is the orientation hook; the module tabs are the working surface. Beginner guidance and the practical `How to use this` examples live in `ui/unit_preview.py`, before the user enters the full app. Receipt Reader - Standard View is treated as a support utility near the footer rather than a core module tab. This is a placement/refinement change only and does not alter analysis engines, receipts, scoring, routing, signals, or privacy behavior.

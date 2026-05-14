@@ -44,9 +44,6 @@ HELPERS = {
     "ui.status_cards": [
         "render_ai_integrity_boundary_cards",
     ],
-    "ui.beginner_guide": [
-        "render_try_this_first_guide",
-    ],
     "ui.privacy_audit_panel": [
         "render_privacy_boundary_audit_panel",
     ],
@@ -79,10 +76,8 @@ def test_app_py_imports_and_calls_current_ui_helpers():
         "ui.app_shell": [
             "render_app_boundary_notices",
             "render_app_header",
-            "render_how_to_use_note",
             "render_app_footer_banner",
         ],
-        "ui.beginner_guide": ["render_try_this_first_guide"],
         "ui.module_intro": [
             "render_boundary_cases_intro",
             "render_consent_audit_intro",
@@ -90,6 +85,7 @@ def test_app_py_imports_and_calls_current_ui_helpers():
         ],
         "ui.privacy_audit_panel": ["render_privacy_boundary_audit_panel"],
         "ui.status_cards": ["render_ai_integrity_boundary_cards"],
+        "ui.unit_preview": ["render_unit_preview"],
     }
     for module_name, function_names in expected.items():
         for function_name in function_names:

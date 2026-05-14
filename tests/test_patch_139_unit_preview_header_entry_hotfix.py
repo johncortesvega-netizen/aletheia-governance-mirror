@@ -23,16 +23,16 @@ def test_unit_preview_renders_after_public_header_not_as_plain_first_screen():
     header = "render_app_header(mascot_logo_uri, APP_VERSION, st)"
     gate = "if not st.session_state.get(UNIT_PREVIEW_SESSION_KEY, False):"
     preview_call = "render_unit_preview(st)"
-    how_to = "render_how_to_use_note(st)"
+    boundary = "render_app_boundary_notices(SUPPORTED_INPUT_LANGUAGE_NOTE, st)"
     tabs = "st.tabs(APP_NAVIGATION_LABELS)"
 
     assert header in app
     assert gate in app
     assert preview_call in app
-    assert how_to in app
+    assert boundary in app
     assert tabs in app
 
-    assert app.index(header) < app.index(gate) < app.index(how_to) < app.index(tabs)
+    assert app.index(header) < app.index(gate) < app.index(boundary) < app.index(tabs)
     assert app.count(gate) == 1
     assert app.count(preview_call) == 1
 
@@ -48,7 +48,7 @@ def test_no_legacy_start_page_or_duplicate_entry_gate_is_active():
 def test_unit_preview_still_stops_before_full_modules_until_proceed():
     app = read("app.py")
     gate_block_start = app.index("if not st.session_state.get(UNIT_PREVIEW_SESSION_KEY, False):")
-    gate_block_end = app.index("render_how_to_use_note(st)")
+    gate_block_end = app.index("render_app_boundary_notices(SUPPORTED_INPUT_LANGUAGE_NOTE, st)")
     gate_block = app[gate_block_start:gate_block_end]
 
     assert "if render_unit_preview(st):" in gate_block

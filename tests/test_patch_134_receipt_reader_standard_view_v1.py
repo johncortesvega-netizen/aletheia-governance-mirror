@@ -89,12 +89,13 @@ def test_receipt_reader_helper_is_local_explanatory_only():
         assert phrase.lower() not in lowered
 
 
-def test_app_exposes_receipt_reader_without_changing_existing_tabs():
+def test_app_exposes_receipt_reader_as_support_utility_without_main_tab():
     app = read("app.py")
     assert "from ui.receipt_reader import render_receipt_reader_standard_view" in app
-    assert '"Receipt Reader"' in app
-    assert "tab_receipt_reader" in app
+    assert "Receipt Reader — Standard View" in app
     assert "render_receipt_reader_standard_view(st)" in app
+    assert "tab_receipt_reader" not in app
+    assert '"Receipt Reader",' not in app
     for existing in [
         "Mirror Check",
         "Stress Test",

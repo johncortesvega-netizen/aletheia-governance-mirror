@@ -23,11 +23,10 @@ from pages_ui.about_page import render_about_public_info_page
 from pages_ui.evidence_lab_page import render_evidence_lab_intro, render_evidence_lab_public_data_build_intro
 from pages_ui.trust_package_page import render_public_trust_package_page
 from ui.app_shell import render_app_boundary_notices, render_sidebar_brand, render_sidebar_context
-from ui.app_shell import render_app_header, render_how_to_use_note, render_app_footer_banner
+from ui.app_shell import render_app_header, render_app_footer_banner
 from ui.app_shell import render_sidebar_review_lens_intro, render_sidebar_review_lens_note
 from ui.app_shell import render_sidebar_review_rhythm_intro, render_sidebar_review_rhythm_note
 from ui.app_shell import render_sidebar_safety_rails_intro, render_sidebar_safety_rails_note
-from ui.beginner_guide import render_try_this_first_guide
 from ui.module_intro import render_boundary_cases_intro, render_consent_audit_intro, render_stress_test_scan_intro
 from ui.privacy_audit_panel import render_privacy_boundary_audit_panel
 from ui.receipt_reader import render_receipt_reader_standard_view
@@ -290,7 +289,6 @@ APP_NAVIGATION_LABELS = [
     "🤖 AI Integrity Mirror",
     "📊 Evidence Lab",
     "🌐 World Lens",
-    "Receipt Reader",
     "📜 Protocol Guide",
     "ℹ️ Why ALETHEIA",
 ]
@@ -302,7 +300,6 @@ APP_NAVIGATION_MAP = [
     ("AI Integrity Mirror", "Review pasted AI outputs, prompts, agent specs, or code for authority-boundary and governance-integrity risk."),
     ("Evidence Lab", "Separate evidence from claims and park extraordinary claims as unverified until review."),
     ("World Lens", "Simulate population-impact risk without Global ID, real 9k body, or sovereign authority."),
-    ("Receipt Reader", "Explain pasted ALETHEIA receipts using native values and plain-language review bands."),
     ("Protocol Guide", "Read the v0.1 operating guide, safe-language rules, and module boundaries."),
     ("Why ALETHEIA", "Understand the v1.0 public MVP, release boundary, examples, and research direction."),
 ]
@@ -3248,9 +3245,6 @@ if not st.session_state.get(UNIT_PREVIEW_SESSION_KEY, False):
         st.rerun()
     st.stop()
 
-render_how_to_use_note(st)
-render_try_this_first_guide(st, expanded=False)
-
 render_app_boundary_notices(SUPPORTED_INPUT_LANGUAGE_NOTE, st)
 
 # Sidebar controls
@@ -3465,7 +3459,7 @@ def render_audit_module_integrity_panel(*, expanded: bool = False):
 
 render_sydney_protocol_self_check_gate()
 
-tab_chat, tab_sim, tab_boundary, tab_ai_integrity, tab_empirical, tab_grid, tab_receipt_reader, tab_doctrine, tab_about = st.tabs(APP_NAVIGATION_LABELS)
+tab_chat, tab_sim, tab_boundary, tab_ai_integrity, tab_empirical, tab_grid, tab_doctrine, tab_about = st.tabs(APP_NAVIGATION_LABELS)
 
 with tab_sim:
     st.subheader("Stress Test — Try an Idea")
@@ -7597,9 +7591,6 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
         with inactive_tabs[5]:
             st.info("Country-year detail is unavailable until selected-year data rows are active.")
 
-with tab_receipt_reader:
-    render_receipt_reader_standard_view(st)
-
 with tab_chat:
     st.subheader("Mirror Check — Gentle Risk Review")
     render_shared_protocol_state_notice("Mirror Check")
@@ -8603,4 +8594,9 @@ with tab_doctrine:
 with tab_about:
     render_about_public_info_page(st, header_image=resolve_about_header_image())
 
+with st.expander("Receipt Reader — Standard View", expanded=False):
+    st.caption("Have an ALETHEIA receipt? Paste it here for native values and a standard review-band explanation. This utility does not rescore, certify, approve, reject, or override the original receipt.")
+    render_receipt_reader_standard_view(st)
+
 render_app_footer_banner(APP_VERSION, st)
+

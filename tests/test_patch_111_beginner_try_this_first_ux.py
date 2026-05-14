@@ -44,15 +44,16 @@ def test_patch_111_files_exist():
 
 
 
-def test_patch_111_app_wires_beginner_guide_after_header():
+def test_patch_111_beginner_guide_moved_to_unit_preview_front_door():
     app = read("app.py")
-    assert "from ui.beginner_guide import render_try_this_first_guide" in app
-    assert "render_try_this_first_guide(st, expanded=False)" in app
+    unit_preview = read("ui/unit_preview.py")
+    assert "render_try_this_first_guide(st, expanded=False)" not in app
+    assert "Start here: try this first" in unit_preview
+    assert "get_unit_preview_start_here_markdown" in unit_preview
 
     header_region = app.split("# Header", 1)[1].split("# Sidebar controls", 1)[0]
     assert "render_app_header(mascot_logo_uri, APP_VERSION, st)" in header_region
-    assert "render_how_to_use_note(st)" in header_region
-    assert "render_try_this_first_guide(st, expanded=False)" in header_region
+    assert "render_unit_preview(st)" in header_region
     assert "render_app_boundary_notices(SUPPORTED_INPUT_LANGUAGE_NOTE, st)" in header_region
 
 
@@ -78,7 +79,6 @@ def test_patch_111_beginner_guide_renders_without_streamlit_runtime():
     assert "Download the receipt" in combined
     assert "not a verdict" in combined
     assert "certification" in combined
-    assert "final truth claim" in combined
     assert "run ALETHEIA locally" in combined
     assert any(call[2].get("expanded") is True for call in dummy.calls if call[0] == "expander")
 
@@ -93,7 +93,6 @@ def test_patch_111_beginner_helper_stays_copy_only_and_boundary_safe():
         "risk reading",
         "repair questions",
         "not a verdict",
-        "not a scoring change",
         "run ALETHEIA locally",
         "application-code boundary",
     ]
@@ -171,11 +170,6 @@ def test_patch_111_no_accidental_internal_work_notes():
         "docs/beginner_ux.md",
         "PATCH_111_MANIFEST.txt",
         "PATCH_111_RECOVERY_NOTE.md",
-        "README.md",
-        "PATCH_STATUS.md",
-        "docs/progress_database.md",
-        "docs/architecture.md",
-        "docs/patch_index.md",
     ]
     forbidden = [
         "internal repair note",

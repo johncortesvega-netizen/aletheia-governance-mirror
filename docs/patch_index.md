@@ -284,3 +284,7 @@ Scope: validation and documentation only. No runtime behavior change, no scoring
 ## Patch 139 - Unit Preview Header Entry Hotfix
 
 Patch 139 keeps Aletheia Unit Preview as the single hook before the full app while moving the gate after the public ALETHEIA header/styling. This removes the plain first-screen effect and preserves the intended hook → full modules flow. No scoring, routing, receipt, signal, privacy, AI Integrity, World Lens, telemetry, storage, certification, enforcement, privacy-guarantee, or final-truth behavior changed.
+
+## Patch 140 - Unit Preview Orientation Cleanup
+
+Patch 140 moves beginner orientation copy into Aletheia Unit Preview and removes repeated beginner onboarding from the full app after the user proceeds. It also moves Receipt Reader - Standard View out of the main module tab row and exposes it as a support utility near the footer. This preserves the structure: hook first, modules after. No scoring, routing, receipts, signals, AI Integrity behavior, Privacy Audit behavior, World Lens math, external calls, telemetry, storage, certification, enforcement, privacy guarantee, or final-truth behavior changes.

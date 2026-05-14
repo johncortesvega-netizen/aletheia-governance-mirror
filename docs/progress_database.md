@@ -2811,3 +2811,13 @@ Current patch: Patch 139 - Unit Preview Header Entry Hotfix.
 Patch 139 corrects the front-door UX after the Unit Preview work. The Unit Preview remains the single hook before modules, but it now renders after the public ALETHEIA header and styling so the user does not see a plain first pre-header screen. The full module interface still stays hidden until the user clicks Proceed to ALETHEIA.
 
 No scoring, routing, taxonomy, receipt schema, signal behavior, AI Integrity behavior, Privacy Audit behavior, World Lens math, upload/download behavior, external calls, telemetry, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed.
+
+## Patch 140 Notes - Unit Preview Orientation Cleanup
+
+Current patch: Patch 140 - Unit Preview Orientation Cleanup.
+
+Patch 140 keeps the hook/meat structure: Aletheia Unit Preview is the first orientation surface, and the modules are the work surface after the user proceeds. Beginner copy is no longer repeated inside the full app. The Unit Preview now includes the how-to-start note, six practical examples, and a compact first-use checklist.
+
+Receipt Reader - Standard View is no longer treated as a core module tab. It remains available as a support utility near the footer for users who already have an ALETHEIA receipt.
+
+Boundary preserved: placement and copy organization only. No scoring, routing, taxonomy, receipt schemas, receipt generation, signal regexes, signal weights, AI Integrity behavior, Privacy Audit behavior, World Lens math, uploads, downloads, external calls, telemetry, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed.

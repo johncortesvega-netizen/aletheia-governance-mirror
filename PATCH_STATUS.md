@@ -3031,3 +3031,22 @@ Status: Ready for local review.
 Patch 139 keeps Aletheia Unit Preview as the single pre-module hook, but moves the active gate so it renders after the public ALETHEIA header and styling. This removes the visible plain first-screen effect while preserving the hook before the full modules.
 
 No scoring, verdict routing, taxonomy, receipt schema, signal behavior, AI Integrity behavior, Privacy Audit behavior, World Lens math, upload/download behavior, external calls, telemetry, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed.
+
+## Patch 140 - Unit Preview Orientation Cleanup
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 140 keeps Aletheia Unit Preview as the hook and moves beginner orientation out of the full app work surface. The `How to use this` note and `Start here: try this first` checklist now live on Unit Preview, together with six short examples for Mirror Check, Stress Test, Boundary Cases, AI Integrity Mirror, Evidence Lab, and World Lens.
+
+Receipt Reader - Standard View remains available, but it is no longer a main module tab. It is exposed as a support utility near the footer after the module work surface.
+
+Boundary preserved: no scoring, routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity behavior, Privacy Audit behavior, World Lens math, upload/download behavior, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 140
+python tools\run_patch_checks.py 139
+python tools\run_patch_checks.py 138
+python tools\run_protocol_baseline_self_audit.py
+```
