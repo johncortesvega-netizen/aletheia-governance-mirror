@@ -304,3 +304,11 @@ Aletheia Unit Preview now exposes a small deterministic helper, `detect_unit_pre
 Priority order is intentionally specific before general: Receipt Reader, AI Integrity Mirror, Privacy Audit, World Lens, Stress Test, Evidence Lab, Why ALETHEIA / guidance, then Mirror Check fallback. This keeps Mirror Check as the fallback rather than the universal answer.
 
 Architecture boundary preserved: no scoring, no verdict routing, no receipt schema, no receipt generation, no AI Integrity scan behavior, no Privacy Audit scan behavior, no World Lens math, no external calls, no telemetry, no analytics, no certification, and no final-truth claim.
+
+## Patch 142.1 Architecture Note - Receipt Reader Parser Calibration
+
+Receipt Reader - Standard View remains a single support utility outside the main module tab row. It applies to uploaded ALETHEIA receipts from every module by reading shared receipt structures: module/source, verdict fields, native metrics, authority-boundary notes when visible, and repair questions.
+
+Patch 142.1 makes the parser prefer the `MACHINE-READABLE RECEIPT JSON` block when present. If that block is unavailable or invalid, it falls back to conservative line parsing. The fallback recognizes current text receipt keys such as `Risk:` and `Trust index:`. Repair questions are extracted only from JSON `repair_questions` or the `SILENT OPERATOR REPAIR QUESTIONS` section, not from threshold component readings.
+
+The parser is descriptive only. It does not rescore, route verdicts, infer missing values, generate receipts, override uploaded receipt values, alter receipt schemas, change module scan behavior, call external services, use live model calls, use embeddings, create telemetry, create analytics, store files, certify, approve, reject, enforce, or claim final truth. Human review remains required.

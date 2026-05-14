@@ -2864,3 +2864,13 @@ Patch 142 calibrates the Aletheia Unit Preview first-page prompt so specific phr
 The preview display now shows Suggested path, Why, and Next step in plain language. Mirror Check is the fallback, not the universal answer.
 
 Scope: Unit Preview routing guidance, tests, and documentation only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, upload/download behavior, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed.
+
+## Patch 142.1 Notes - Receipt Reader Parser Calibration
+
+Current patch: Patch 142.1 - Receipt Reader Parser Calibration.
+
+Patch 142.1 fixes Receipt Reader's uploaded-receipt parsing for the current local witness receipt format. The reader now prefers the `MACHINE-READABLE RECEIPT JSON` block when it exists, falls back to text parsing only when JSON is unavailable, accepts `Risk:` as the risk field, accepts `Trust index:` as trust, and extracts repair questions only from JSON `repair_questions` or the `SILENT OPERATOR REPAIR QUESTIONS` section.
+
+The visual output is tightened so native values appear as a compact vertical list rather than a wide paragraph. This makes the reader clearer for receipts produced by any ALETHEIA module while preserving the original receipt as the source of truth.
+
+Boundary preserved: Receipt Reader does not rescore, reroute, infer missing values, generate receipts, override uploaded receipts, change receipt schema, change AI Integrity scan behavior, change Privacy Audit scan behavior, change World Lens math, call external services, use live model calls, use embeddings, create telemetry, create analytics, certify, approve, reject, enforce, or claim final truth. Human review remains required.

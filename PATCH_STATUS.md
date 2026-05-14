@@ -3097,3 +3097,13 @@ Patch 142 calibrates Aletheia Unit Preview so it detects intent-specific phrases
 Mirror Check is the fallback, not the universal answer. AI-output prompts point to AI Integrity Mirror; receipt prompts point to Receipt Reader; privacy, telemetry, analytics, tracking, storage, or consent prompts point to Privacy Audit; country-year governance prompts point to World Lens; scenario/pressure prompts point to Stress Test; orientation prompts point to Why ALETHEIA / guidance.
 
 Boundary preserved: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal regex/weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no upload/download behavior changes, no external calls, no live model calls, no embeddings, no telemetry, no analytics, no storage, no certification, no enforcement, no privacy guarantee, and no final-truth claim. Human review remains required.
+
+## Patch 142.1 - Receipt Reader Parser Calibration
+
+Status: READY FOR LOCAL REVIEW.
+
+Patch 142.1 calibrates Receipt Reader - Standard View for the current ALETHEIA local witness receipt format. The reader now prefers the `MACHINE-READABLE RECEIPT JSON` block when present, falls back to text parsing only when needed, accepts `Risk:` and `Trust index:`, and extracts repair questions only from JSON `repair_questions` or the `SILENT OPERATOR REPAIR QUESTIONS` section.
+
+Receipt Reader remains a single shared support utility for uploaded receipts from every module. It reads native receipt fields without rescoring, rerouting, generating a new receipt, overriding the uploaded receipt, or changing any module scan behavior.
+
+Boundary preserved: no scoring, no verdict routing, no taxonomy, no QUESTION_PROMPT logic, no receipt schema, no receipt generation, no signal regex/weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no external calls, no live model calls, no embeddings, no telemetry, no analytics, no storage, no certification, no enforcement, no approval/rejection behavior, no privacy guarantee, and no final-truth claim. Human review remains required.

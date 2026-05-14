@@ -319,3 +319,9 @@ Scope: visual placement, tests, and docs only. No scoring, verdict routing, taxo
 Patch 142 adds an internal Unit Preview intent-router calibration layer and batch-style tests. It keeps Unit Preview as a local orientation helper while improving phrase detection so AI Integrity Mirror, Receipt Reader, Privacy Audit, World Lens, Stress Test, Evidence Lab, and Why ALETHEIA / guidance are suggested when appropriate. Mirror Check is the fallback path for unclear or general governance text.
 
 Boundary: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal behavior, no AI Integrity scan behavior, no Privacy Audit scan behavior, no World Lens math, no external calls, no telemetry, no analytics, no storage, no certification, and no final-truth behavior changed.
+
+## Patch 142.1 - Receipt Reader Parser Calibration
+
+Patch 142.1 calibrates Receipt Reader - Standard View for uploaded ALETHEIA local witness receipts. It prefers `MACHINE-READABLE RECEIPT JSON`, supports text fallback for `Risk:` and `Trust index:`, and limits repair-question extraction to JSON `repair_questions` or `SILENT OPERATOR REPAIR QUESTIONS` so threshold component readings are not misidentified as repair questions.
+
+Boundary: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal behavior, no AI Integrity scan behavior, no Privacy Audit scan behavior, no World Lens math, no external calls, no telemetry, no analytics, no storage, no certification, and no final-truth behavior changed. Human review remains required.
