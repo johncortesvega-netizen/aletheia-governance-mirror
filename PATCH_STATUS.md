@@ -3107,3 +3107,13 @@ Patch 142.1 calibrates Receipt Reader - Standard View for the current ALETHEIA l
 Receipt Reader remains a single shared support utility for uploaded receipts from every module. It reads native receipt fields without rescoring, rerouting, generating a new receipt, overriding the uploaded receipt, or changing any module scan behavior.
 
 Boundary preserved: no scoring, no verdict routing, no taxonomy, no QUESTION_PROMPT logic, no receipt schema, no receipt generation, no signal regex/weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no external calls, no live model calls, no embeddings, no telemetry, no analytics, no storage, no certification, no enforcement, no approval/rejection behavior, no privacy guarantee, and no final-truth claim. Human review remains required.
+
+## Patch 142.2 - Unit Preview Scenario Intent Hotfix
+
+Status: READY FOR LOCAL REVIEW.
+
+Patch 142.2 fixes the Unit Preview router when the user enters a scenario-shaped prompt without explicit module words. Short narrative or institutional scenario phrases such as `an evil penguin rises to power after a revolution`, appeal-right removal, housing-support allocation, hospital AI override cases, or public-service access-control cases now suggest Stress Test before the Mirror Check fallback.
+
+The Unit Preview action buttons now use a compact button row directly under the chatbox. Reference previews remain below those buttons on the Unit Preview hook page.
+
+Boundary preserved: Unit Preview orientation and layout only. No scoring, no verdict routing, no taxonomy, no QUESTION_PROMPT logic, no receipt schema, no receipt generation, no signal regex/weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no upload/download behavior changes, no external calls, no live model calls, no embeddings, no telemetry, no analytics, no storage, no certification, no enforcement, no approval/rejection behavior, no privacy guarantee, and no final-truth claim. Human review remains required.

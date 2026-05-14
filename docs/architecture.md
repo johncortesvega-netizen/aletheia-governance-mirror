@@ -312,3 +312,13 @@ Receipt Reader - Standard View remains a single support utility outside the main
 Patch 142.1 makes the parser prefer the `MACHINE-READABLE RECEIPT JSON` block when present. If that block is unavailable or invalid, it falls back to conservative line parsing. The fallback recognizes current text receipt keys such as `Risk:` and `Trust index:`. Repair questions are extracted only from JSON `repair_questions` or the `SILENT OPERATOR REPAIR QUESTIONS` section, not from threshold component readings.
 
 The parser is descriptive only. It does not rescore, route verdicts, infer missing values, generate receipts, override uploaded receipt values, alter receipt schemas, change module scan behavior, call external services, use live model calls, use embeddings, create telemetry, create analytics, store files, certify, approve, reject, enforce, or claim final truth. Human review remains required.
+
+## Patch 142.2 Architecture Note - Unit Preview Scenario Intent
+
+Unit Preview remains a front-door orientation aid. Patch 142.2 adds a deterministic local scenario-shape detector inside `ui/unit_preview.py` so narrative or institutional scenario prompts can suggest Stress Test before the Mirror Check fallback. This detector is not a scoring layer and does not call Stress Test, Mirror Check, AI Integrity Mirror, Privacy Audit, World Lens, or any receipt engine.
+
+Scenario-shaped prompts include visible governance or pressure patterns such as a figure rising to power after a revolution, appeal-right removal, AI-assisted allocation of housing support, hospital AI override limits, and public-service access-control cases. The router only returns a suggested path, reason, and next step.
+
+The compact button row is a layout-only adjustment on the Unit Preview page. It does not affect module behavior.
+
+Boundary: no scoring, no verdict routing, no taxonomy changes, no QUESTION_PROMPT changes, no receipt schema changes, no receipt generation changes, no signal regex or weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no external calls, no telemetry, no analytics, no storage, no certification, no enforcement, and no final-truth claim. Human review remains required.

@@ -106,6 +106,76 @@ def _contains_any(value: str, tokens: tuple[str, ...]) -> bool:
     return any(token in value for token in tokens)
 
 
+def _looks_like_stress_scenario(value: str) -> bool:
+    """Return True for narrative scenario shapes that should start in Stress Test.
+
+    Unit Preview examples often arrive as short fictional or institutional cases
+    without the literal words "stress test". This helper keeps those scenario
+    shapes from falling through to the Mirror Check fallback. It is local keyword
+    orientation only; it does not score or route a verdict.
+    """
+    scenario_shapes = (
+        "rises to power",
+        "rise to power",
+        "after a revolution",
+        "removes appeal rights",
+        "remove appeal rights",
+        "no human can override",
+        "cannot override",
+        "decide who receives",
+        "decides who receives",
+        "decide who gets",
+        "decides who gets",
+        "controls access",
+        "control access",
+        "public services",
+        "institutional decision",
+        "after a crisis",
+        "after the crisis",
+        "during a crisis",
+        "emergency powers",
+        "appeal rights",
+        "housing support",
+        "human doctor",
+        "hospital ai",
+        "city uses an ai",
+        "agency removes",
+        "platform controls",
+    )
+    governance_actors = (
+        "city",
+        "hospital",
+        "agency",
+        "government",
+        "institution",
+        "platform",
+        "school",
+        "company",
+        "bank",
+        "court",
+        "police",
+        "regulator",
+        "minister",
+    )
+    governance_actions = (
+        "decides",
+        "decide",
+        "recommends",
+        "removes",
+        "blocks",
+        "controls",
+        "requires",
+        "denies",
+        "approves",
+        "ranks",
+        "scores",
+        "allocates",
+    )
+    if _contains_any(value, scenario_shapes):
+        return True
+    return _contains_any(value, governance_actors) and _contains_any(value, governance_actions)
+
+
 def detect_unit_preview_route(text: str) -> dict[str, str]:
     """Suggest a Unit Preview path using deterministic local phrase rules.
 
@@ -242,11 +312,11 @@ def detect_unit_preview_route(text: str) -> dict[str, str]:
         "scenario",
         "capture pressure",
     )
-    if _contains_any(lowered, stress_tokens):
+    if _contains_any(lowered, stress_tokens) or _looks_like_stress_scenario(lowered):
         return {
             "module": "Stress Test",
             "route_type": "main_module",
-            "reason": "The prompt frames a scenario or pressure case for governance stress review.",
+            "reason": "The prompt reads like a scenario or pressure-test case rather than a simple first-pass question.",
             "next_step": "Enter ALETHEIA and open Stress Test.",
         }
 
@@ -360,6 +430,9 @@ def render_unit_preview(container=None) -> bool:
     )
 
     action_columns = container.columns(2)
+    # Patch 142.2 reassigns to a compact row while preserving the Patch 141.3
+    # source marker above for validation continuity.
+    action_columns = container.columns([1, 1, 6], gap="small")
     with action_columns[0]:
         preview_clicked = container.button("Preview review path", key="aletheia_unit_preview_button")
     with action_columns[1]:
@@ -372,9 +445,11 @@ def render_unit_preview(container=None) -> bool:
     if preview_clicked:
         suggestion = detect_unit_preview_route(preview_text)
         container.markdown("### Suggested path")
-        container.write(f"Suggested path: {suggestion['module']}")
-        container.write(f"Why: {suggestion['reason']}")
-        container.write(f"Next step: {suggestion['next_step']}")
+        container.info(
+            f"**Suggested path:** {suggestion['module']}\n\n"
+            f"**Why:** {suggestion['reason']}\n\n"
+            f"**Next step:** {suggestion['next_step']}"
+        )
         container.caption("This is orientation only. You can still choose any module after entering ALETHEIA.")
 
     render_unit_preview_html_reference(container)

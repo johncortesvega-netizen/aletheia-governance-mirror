@@ -325,3 +325,9 @@ Boundary: no scoring, no verdict routing, no taxonomy, no receipt schema, no rec
 Patch 142.1 calibrates Receipt Reader - Standard View for uploaded ALETHEIA local witness receipts. It prefers `MACHINE-READABLE RECEIPT JSON`, supports text fallback for `Risk:` and `Trust index:`, and limits repair-question extraction to JSON `repair_questions` or `SILENT OPERATOR REPAIR QUESTIONS` so threshold component readings are not misidentified as repair questions.
 
 Boundary: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal behavior, no AI Integrity scan behavior, no Privacy Audit scan behavior, no World Lens math, no external calls, no telemetry, no analytics, no storage, no certification, and no final-truth behavior changed. Human review remains required.
+
+## Patch 142.2 - Unit Preview Scenario Intent Hotfix
+
+Patch 142.2 fixes scenario-shaped Unit Preview prompts so they suggest Stress Test before the Mirror Check fallback. The patch adds regression coverage for the `evil penguin` scenario, institutional scenario shapes, and the compact button row under the chatbox.
+
+Scope: Unit Preview orientation/layout only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, external calls, telemetry, analytics, storage, certification, enforcement, or final-truth claim changed. Human review remains required.

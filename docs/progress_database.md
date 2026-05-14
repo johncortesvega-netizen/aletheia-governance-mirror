@@ -2874,3 +2874,13 @@ Patch 142.1 fixes Receipt Reader's uploaded-receipt parsing for the current loca
 The visual output is tightened so native values appear as a compact vertical list rather than a wide paragraph. This makes the reader clearer for receipts produced by any ALETHEIA module while preserving the original receipt as the source of truth.
 
 Boundary preserved: Receipt Reader does not rescore, reroute, infer missing values, generate receipts, override uploaded receipts, change receipt schema, change AI Integrity scan behavior, change Privacy Audit scan behavior, change World Lens math, call external services, use live model calls, use embeddings, create telemetry, create analytics, certify, approve, reject, enforce, or claim final truth. Human review remains required.
+
+## Patch 142.2 Notes - Unit Preview Scenario Intent Hotfix
+
+Current patch: Patch 142.2 - Unit Preview Scenario Intent Hotfix.
+
+Patch 142.2 calibrates the Unit Preview intent router so scenario-shaped text is recognized before the Mirror Check fallback. The regression example `an evil penguin rises to power after a revolution` now suggests Stress Test even though it does not contain the literal words "stress test" or "scenario". Additional scenario-shaped examples include appeal-right removal after crisis, city AI housing allocation, hospital AI override limits, and public-service access-control cases.
+
+The front-door action buttons remain directly under the chatbox but now use a compact button row. Reference previews remain packaged local HTML, remain below the buttons, and remain outside the full module app.
+
+Boundary preserved: Unit Preview orientation and layout only. No scoring, verdict routing, taxonomy, QUESTION_PROMPT logic, receipt schema, receipt generation, signal regex or weights, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, upload/download behavior, external calls, live model calls, embeddings, telemetry, analytics, database/storage, certification, enforcement, approval/rejection behavior, privacy guarantee, or final-truth claim changed. Human review remains required.
