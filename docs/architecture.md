@@ -265,3 +265,7 @@ Patch 137 does not alter the architecture. It records that the current entry gat
 ### Patch 138 note — Single pre-app entry surface
 
 Aletheia Unit Preview is the only active pre-app entry gate. The older Start Page helper is retained only as a compatibility wrapper and must not be called by `app.py`. This prevents double-gate behavior while preserving a session-only, non-authoritative entry flow.
+
+## Patch 139 Entry Flow Note
+
+Patch 139 keeps `ui/unit_preview.py` as the only active pre-module entry hook, but `app.py` now renders the public ALETHEIA header before the session-state Unit Preview gate. The order is: Streamlit setup and styling, public header, Unit Preview gate, then full app content only after the user proceeds. This is a UX wiring correction only; analysis engines and module behavior remain unchanged.

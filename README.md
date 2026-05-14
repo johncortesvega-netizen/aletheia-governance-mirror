@@ -1078,3 +1078,7 @@ Patch 137 is a test/check hygiene patch. It aligns older Start Page validation w
 ### Patch 138 note: single Unit Preview entry
 
 ALETHEIA now uses Aletheia Unit Preview as the single pre-app entry surface. The old Start Page is no longer an active gate. Unit Preview suggests where to begin; it does not score, certify, approve, reject, or replace the full modules.
+
+## Patch 139 - Unit Preview Header Entry Hotfix
+
+Patch 139 keeps Aletheia Unit Preview as the app's single hook before the module interface, but renders it after the public ALETHEIA header/styling. The first screen is now the polished ALETHEIA header plus Unit Preview, not a plain pre-header gate. Clicking Proceed to ALETHEIA opens the full module interface directly.

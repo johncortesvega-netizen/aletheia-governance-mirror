@@ -81,7 +81,8 @@ def test_patch_138_manifest_is_current_and_utf8_without_bom():
     raw = read_bytes("data/protocol_baseline_manifest.json")
     assert not raw.startswith(b"\xef\xbb\xbf")
     manifest = json.loads(raw.decode("utf-8"))
-    assert str(manifest["created_for_patch"]) == "138"
+    assert str(manifest["created_for_patch"]).isdigit()
+    assert int(str(manifest["created_for_patch"])) >= 138
     files = manifest["files"]
     for rel in [
         "ui/start_page.py",

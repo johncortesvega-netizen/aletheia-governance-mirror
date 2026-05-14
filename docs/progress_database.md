@@ -2803,3 +2803,11 @@ Status: READY FOR LOCAL REVIEW.
 ### Patch 138 — Single Unit Preview Entry Hotfix
 
 Patch 138 corrects the pre-app entry flow after Unit Preview. ALETHEIA now has one active entry gate: Aletheia Unit Preview. The retired Start Page helper remains only as a compatibility wrapper that delegates to Unit Preview. This prevents the old page from appearing before or flashing alongside the current Unit Preview. No scoring, routing, receipts, signals, privacy, AI Integrity, World Lens, telemetry, storage, or authority-boundary behavior changed.
+
+## Patch 139 Notes - Unit Preview Header Entry Hotfix
+
+Current patch: Patch 139 - Unit Preview Header Entry Hotfix.
+
+Patch 139 corrects the front-door UX after the Unit Preview work. The Unit Preview remains the single hook before modules, but it now renders after the public ALETHEIA header and styling so the user does not see a plain first pre-header screen. The full module interface still stays hidden until the user clicks Proceed to ALETHEIA.
+
+No scoring, routing, taxonomy, receipt schema, signal behavior, AI Integrity behavior, Privacy Audit behavior, World Lens math, upload/download behavior, external calls, telemetry, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed.

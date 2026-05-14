@@ -651,12 +651,6 @@ def _protocol_metric_display(value: object) -> str:
 
 st.set_page_config(page_title="ALETHEIA", page_icon="🌿", layout="wide")
 
-if not st.session_state.get(UNIT_PREVIEW_SESSION_KEY, False):
-    if render_unit_preview(st):
-        st.session_state[UNIT_PREVIEW_SESSION_KEY] = True
-        st.rerun()
-    st.stop()
-
 st.markdown(
     """
     <style>
@@ -3244,6 +3238,16 @@ if header_path.exists():
     st.image(str(header_path), use_container_width=True)
 
 render_app_header(mascot_logo_uri, APP_VERSION, st)
+
+# Aletheia Unit Preview is the only pre-module hook. It renders after the
+# public header/CSS so users see one polished entry surface, then stops before
+# the full module interface until they proceed.
+if not st.session_state.get(UNIT_PREVIEW_SESSION_KEY, False):
+    if render_unit_preview(st):
+        st.session_state[UNIT_PREVIEW_SESSION_KEY] = True
+        st.rerun()
+    st.stop()
+
 render_how_to_use_note(st)
 render_try_this_first_guide(st, expanded=False)
 

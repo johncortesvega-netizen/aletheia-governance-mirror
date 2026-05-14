@@ -3023,3 +3023,11 @@ python tools\run_protocol_baseline_self_audit.py
 Status: Ready for local review.
 
 Patch 138 keeps Aletheia Unit Preview as the single active pre-app gate and retires the old Start Page as an active UI path. The legacy helper now delegates to Unit Preview so stale imports cannot revive the old page. No runtime analysis behavior, scoring, routing, receipts, signals, privacy scan behavior, AI Integrity behavior, World Lens math, external calls, telemetry, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed.
+
+## Patch 139 - Unit Preview Header Entry Hotfix
+
+Status: Ready for local review.
+
+Patch 139 keeps Aletheia Unit Preview as the single pre-module hook, but moves the active gate so it renders after the public ALETHEIA header and styling. This removes the visible plain first-screen effect while preserving the hook before the full modules.
+
+No scoring, verdict routing, taxonomy, receipt schema, signal behavior, AI Integrity behavior, Privacy Audit behavior, World Lens math, upload/download behavior, external calls, telemetry, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed.

@@ -280,3 +280,7 @@ Patch 137 is a test/check hygiene patch after the Patch 131-136 entry-flow seque
 Scope: validation and documentation only. No runtime behavior change, no scoring change, no verdict routing change, no taxonomy change, no receipt schema or receipt generation change, no signal regex or signal weight change, no AI Integrity scan behavior change, no Privacy Audit scan behavior change, no World Lens math change, no uploads/downloads or batch behavior change, no external calls, no telemetry, no analytics, no storage or identity sync, no certification, no enforcement, no privacy guarantee, and no final-truth behavior changed. Humans keep the judgment.
 
 - **Patch 138 — Single Unit Preview Entry Hotfix**: retires the old Start Page as an active gate and keeps Aletheia Unit Preview as the single pre-app entry surface; validation-only/wiring hotfix with no scoring or module behavior changes.
+
+## Patch 139 - Unit Preview Header Entry Hotfix
+
+Patch 139 keeps Aletheia Unit Preview as the single hook before the full app while moving the gate after the public ALETHEIA header/styling. This removes the plain first-screen effect and preserves the intended hook → full modules flow. No scoring, routing, receipt, signal, privacy, AI Integrity, World Lens, telemetry, storage, certification, enforcement, privacy-guarantee, or final-truth behavior changed.
