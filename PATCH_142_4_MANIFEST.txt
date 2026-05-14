@@ -1,0 +1,35 @@
+PATCH 142.4 — Receipt Reader Narrative Standard View Output
+
+Changed files:
+- ui/receipt_reader.py
+- tests/test_patch_142_4_receipt_reader_narrative_output.py
+- PATCH_142_4_MANIFEST.txt
+- PATCH_142_4_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- data/protocol_baseline_manifest.json
+
+Purpose:
+- Reformat Receipt Reader output into a compact narrative Standard View:
+  System Status, Native State, Review Pressure, Protocol Label, Module Source,
+  Performance & Risk Metrics, Core Logic, Summary for the Reader, and repair questions.
+- Keep uploaded receipt values native and unchanged.
+- Keep missing values as "Not found in uploaded receipt".
+- Preserve upload-only intake.
+- Allow batch ZIP receipt exports to be summarized without rescoring.
+
+Boundaries:
+- No scoring changes.
+- No verdict routing changes.
+- No taxonomy changes.
+- No receipt schema changes.
+- No receipt generation changes.
+- No AI Integrity scan behavior changes.
+- No Privacy Audit scan behavior changes.
+- No World Lens math changes.
+- No live model calls.
+- No external calls.
+- No embeddings.
+- No telemetry, analytics, database/storage, Global ID sync, or public ledger sync.
+- No certification, approval, rejection, enforcement, official-authority, legal-authority, privacy-guarantee, security-guarantee, or final-truth claim.

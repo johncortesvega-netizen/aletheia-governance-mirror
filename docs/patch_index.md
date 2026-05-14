@@ -289,50 +289,6 @@ Patch 139 keeps Aletheia Unit Preview as the single hook before the full app whi
 
 Patch 140 moves beginner orientation copy into Aletheia Unit Preview and removes repeated beginner onboarding from the full app after the user proceeds. It also moves Receipt Reader - Standard View out of the main module tab row and exposes it as a support utility near the footer. This preserves the structure: hook first, modules after. No scoring, routing, receipts, signals, AI Integrity behavior, Privacy Audit behavior, World Lens math, external calls, telemetry, storage, certification, enforcement, privacy guarantee, or final-truth behavior changes.
 
-## Patch 141 - V1 UI Placement and Receipt Reader Upload Cleanup
+## Patch 142.4 - Receipt Reader Narrative Standard View Output
 
-Patch 141 converts Receipt Reader - Standard View from pasted-receipt intake to upload-only intake for ALETHEIA receipt files (`.txt`, `.md`, `.json`). The reader shows native receipt state, native values, plain-language explanation, Standard View band, human-review note, non-certification note, and parsing limits without rescoring, generating a new receipt, or overriding uploaded receipt values.
-
-It also renders packaged HTML reference previews side by side on the Unit Preview hook page, preserves AI Integrity Mirror visibility as a main work module, updates public V1 header/footer wording, refreshes Why ALETHEIA positioning, and raises the tree canopy as visual-only UI polish.
-
-Scope: UI placement, copy, support-utility intake, docs, and tests only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, external calls, telemetry, analytics, storage, certification, enforcement, or final-truth behavior changed. Human review remains required.
-
-
-## Patch 141.1 - Receipt Reader Support Utility Placement Hotfix
-
-Patch 141.1 moves the Receipt Reader support expander under an explicit Support utilities heading above the footer. The utility remains outside the main module tab row and remains upload-only. No scoring, routing, taxonomy, receipt schema, receipt generation, signal, AI Integrity, Privacy Audit, World Lens, external-call, telemetry, storage, synchronization, certification, enforcement, or final-truth behavior changes.
-
-## Patch 141.2 - Unit Preview Reference Placement Hotfix
-
-Patch 141.2 places the packaged local reference previews under the Unit Preview prompt on the first app page. The references remain side-by-side when present, local-only, graceful when missing, and confined to the Unit Preview hook page rather than the full module app.
-
-Scope: UI placement and tests/docs only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, upload/download behavior, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed. Human review remains required.
-
-## Patch 141.3 - Unit Preview Button Placement Hotfix
-
-Patch 141.3 places the Unit Preview action buttons side by side directly under the Unit Preview chatbox. The local reference previews remain on the first app page but render below the action buttons.
-
-Scope: visual placement, tests, and docs only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, upload/download behavior, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed.
-
-## Patch 142 - Unit Preview Intent Router Calibration
-
-Patch 142 adds an internal Unit Preview intent-router calibration layer and batch-style tests. It keeps Unit Preview as a local orientation helper while improving phrase detection so AI Integrity Mirror, Receipt Reader, Privacy Audit, World Lens, Stress Test, Evidence Lab, and Why ALETHEIA / guidance are suggested when appropriate. Mirror Check is the fallback path for unclear or general governance text.
-
-Boundary: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal behavior, no AI Integrity scan behavior, no Privacy Audit scan behavior, no World Lens math, no external calls, no telemetry, no analytics, no storage, no certification, and no final-truth behavior changed.
-
-## Patch 142.1 - Receipt Reader Parser Calibration
-
-Patch 142.1 calibrates Receipt Reader - Standard View for uploaded ALETHEIA local witness receipts. It prefers `MACHINE-READABLE RECEIPT JSON`, supports text fallback for `Risk:` and `Trust index:`, and limits repair-question extraction to JSON `repair_questions` or `SILENT OPERATOR REPAIR QUESTIONS` so threshold component readings are not misidentified as repair questions.
-
-Boundary: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal behavior, no AI Integrity scan behavior, no Privacy Audit scan behavior, no World Lens math, no external calls, no telemetry, no analytics, no storage, no certification, and no final-truth behavior changed. Human review remains required.
-
-## Patch 142.3 - Receipt Reader Module Receipt Calibration and Stress Batch Tree Reset
-
-Patch 142.3 calibrates Receipt Reader - Standard View for module receipts and fixes stale Stress Test tree display after batch runs.
-
-- World Lens uploaded receipts now display World Lens evidence context rather than Mirror Check scenario wording.
-- AI Integrity Mirror uploaded receipts now display static artifact review context without live-model or vendor claims.
-- Stress Test / Simulation uploaded receipts preserve native state, metrics, and repair questions without re-running or rescoring.
-- Stress Test batch runs close prior single-scenario tree/result state so the old tree does not remain below batch output.
-
-Scope: parser/UI display and Stress Test session-state cleanup only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, uploads/downloads, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed. Human review remains required.
+Patch 142.4 reformats Receipt Reader into a clearer narrative Standard View. It shows System Status, Native State, Review Pressure, Protocol Label, Module Source, Performance & Risk Metrics, Core Logic, Summary for the Reader, and repair questions while preserving native uploaded receipt values. It remains upload-only, parses obvious fields without inference, and does not rescore, override, certify, approve, reject, enforce, generate receipts, call external services, use models or embeddings, store data, collect telemetry, or claim final truth.

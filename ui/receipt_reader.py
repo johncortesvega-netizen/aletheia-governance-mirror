@@ -1,95 +1,62 @@
 """Receipt Reader - Standard View helpers.
 
-This module explains uploaded ALETHEIA receipts. It does not rescore, approve,
-reject, certify, enforce, override, or change the original receipt.
+Receipt Reader explains uploaded ALETHEIA receipts. It does not rescore,
+approve, reject, certify, enforce, override, or change the original receipt.
 """
 from __future__ import annotations
 
-import csv
 import io
 import json
 import re
+import zipfile
+from collections import Counter
 from typing import Any
 
 
 RECEIPT_READER_BOUNDARY = (
     "Receipt Reader - Standard View explains uploaded ALETHEIA receipts. "
-    "It does not rescore, certify, approve, reject, or override the original receipt."
+    "It does not rescore, certify, approve, reject, enforce, or override the original receipt."
 )
 
 MISSING_VALUE = "Not found in uploaded receipt"
 
 STANDARD_BANDS = {
-    "SANCTUARY": "Low review pressure",
-    "THRESHOLD": "Elevated review pressure",
-    "ASYLUM": "High review pressure / escalation review required",
-    "QUESTION_PROMPT": "Not scored / review-tool mode",
+    "SANCTUARY": "Low (Standard Band)",
+    "THRESHOLD": "Elevated (Standard Band)",
+    "ASYLUM": "High (Standard Band / escalation review required)",
+    "QUESTION_PROMPT": "Not scored (review-tool mode)",
 }
 
-FIELD_PATTERNS = {
+STATUS_LINES = {
+    "SANCTUARY": "The uploaded receipt maps to a stable low-review operating context.",
+    "THRESHOLD": "The uploaded receipt maps to an elevated-review context that needs human inspection.",
+    "ASYLUM": "The uploaded receipt maps to high review pressure and requires careful human escalation review.",
+    "QUESTION_PROMPT": "The uploaded receipt is a review-tool or question-prompt reading, not a scored scenario.",
+}
+
+TEXT_FIELD_PATTERNS = {
     "module_source": [r"(?im)^\s*(?:module|source|active modules)\s*:\s*(.+?)\s*$"],
-    "risk_state": [r"(?im)^\s*(?:risk state|risk|state|verdict|judgment)\s*:\s*(.+?)\s*$"],
+    "risk_state": [r"(?im)^\s*(?:risk|risk state|state|verdict|judgment)\s*:\s*(.+?)\s*$"],
     "protocol_adjusted_state": [
         r"(?im)^\s*(?:protocol-adjusted state|protocol adjusted state|adjusted state)\s*:\s*(.+?)\s*$",
+        r"(?im)^\s*(?:internal taxonomy label|native receipt state)\s*:\s*(.+?)\s*$",
     ],
     "protocol_label": [r"(?im)^\s*(?:protocol label|protocol state|protocol judgment)\s*:\s*(.+?)\s*$"],
-    "integrity": [r"(?im)^\s*integrity\s*:\s*(.+?)\s*$"],
-    "friction": [r"(?im)^\s*friction\s*:\s*(.+?)\s*$"],
+    "integrity": [r"(?im)^\s*(?:integrity|integrity reading)\s*:\s*(.+?)\s*$"],
+    "friction": [r"(?im)^\s*(?:friction|capture pressure)\s*:\s*(.+?)\s*$"],
     "collapse_probability": [r"(?im)^\s*(?:collapse probability|collapse)\s*:\s*(.+?)\s*$"],
     "trust": [r"(?im)^\s*(?:trust index|trust)\s*:\s*(.+?)\s*$"],
     "alignment": [r"(?im)^\s*alignment\s*:\s*(.+?)\s*$"],
     "ego": [r"(?im)^\s*ego\s*:\s*(.+?)\s*$"],
 }
 
-WORLD_LENS_PATTERNS = {
-    "selected_year": [r"(?im)^\s*-\s*Selected year:\s*\*\*(.+?)\*\*\s*$"],
-    "source_state": [r"(?im)^\s*-\s*World Lens source state:\s*\*\*(.+?)\*\*\s*$"],
-    "evidence_allocation_status": [r"(?im)^\s*-\s*Evidence allocation status:\s*\*\*(.+?)\*\*\s*$"],
-    "allocated_country_rows": [r"(?im)^\s*-\s*Allocated country rows:\s*\*\*(.+?)\*\*\s*$"],
-    "active_selected_year_seats": [r"(?im)^\s*-\s*Active selected-year seats:\s*\*\*(.+?)\*\*\s*$"],
-    "rows_excluded_diagnostic": [r"(?im)^\s*-\s*Rows excluded / diagnostic:\s*\*\*(.+?)\*\*\s*$"],
-    "hidden_zero_seat_rows": [r"(?im)^\s*-\s*Hidden zero-seat diagnostic rows:\s*\*\*(.+?)\*\*\s*$"],
-    "weighted_integrity": [r"(?im)^\s*-\s*Weighted integrity:\s*\*\*(.+?)\*\*\s*$"],
-    "weighted_friction": [r"(?im)^\s*-\s*Weighted friction:\s*\*\*(.+?)\*\*\s*$"],
-    "weighted_collapse_probability": [r"(?im)^\s*-\s*Weighted collapse probability:\s*\*\*(.+?)\*\*\s*$"],
-    "average_empirical_coverage": [r"(?im)^\s*-\s*Average empirical coverage:\s*\*\*(.+?)\*\*\s*$"],
-}
-
-
-WORLD_LENS_FIELD_LABELS = [
-    ("Selected year", "selected_year"),
-    ("Source state", "source_state"),
-    ("Evidence allocation status", "evidence_allocation_status"),
-    ("Allocated country rows", "allocated_country_rows"),
-    ("Active selected-year seats", "active_selected_year_seats"),
-    ("Rows excluded / diagnostic", "rows_excluded_diagnostic"),
-    ("Hidden zero-seat diagnostic rows", "hidden_zero_seat_rows"),
-    ("Weighted integrity", "weighted_integrity"),
-    ("Weighted friction", "weighted_friction"),
-    ("Weighted collapse probability", "weighted_collapse_probability"),
-    ("Average empirical coverage", "average_empirical_coverage"),
-]
-
-AI_INTEGRITY_PATTERNS = {
-    "review_mode": [r"(?im)^\s*Review mode:\s*(.+?)\s*$"],
-    "artifact_type": [r"(?im)^\s*Artifact type:\s*(.+?)\s*$"],
-    "internal_taxonomy_label": [r"(?im)^\s*Internal taxonomy label:\s*(.+?)\s*$"],
-    "risk_reading": [r"(?im)^\s*Risk reading:\s*(.+?)\s*$"],
-    "integrity_reading": [r"(?im)^\s*Integrity reading:\s*(.+?)\s*$"],
-    "capture_pressure": [r"(?im)^\s*Capture pressure:\s*(.+?)\s*$"],
-    "risk_pressure": [r"(?im)^\s*Risk pressure:\s*(.+?)\s*$"],
-    "positive_review_signals": [r"(?im)^\s*Positive review signals:\s*(.+?)\s*$"],
-}
-
-AI_INTEGRITY_FIELD_LABELS = [
-    ("Review mode", "review_mode"),
-    ("Artifact type", "artifact_type"),
-    ("Internal taxonomy label", "internal_taxonomy_label"),
-    ("Risk reading", "risk_reading"),
-    ("Integrity reading", "integrity_reading"),
-    ("Capture pressure", "capture_pressure"),
-    ("Risk pressure", "risk_pressure"),
-    ("Positive review signals", "positive_review_signals"),
+METRIC_ORDER = [
+    ("trust", "Trust Index"),
+    ("alignment", "Alignment"),
+    ("integrity", "Integrity"),
+    ("collapse_probability", "Collapse Probability"),
+    ("friction", "Friction"),
+    ("ego", "Ego"),
 ]
 
 
@@ -101,112 +68,59 @@ def _first_match(text: str, patterns: list[str]) -> str:
     return MISSING_VALUE
 
 
-def _native_state_from_text(value: str) -> str:
-    upper = value.upper()
+def _native_state_from_text(value: Any) -> str:
+    upper = str(value or "").upper()
     for state in STANDARD_BANDS:
         if state in upper:
             return state
     return MISSING_VALUE
 
 
-def _first_native_state(fields: dict[str, str], receipt_text: str) -> str:
-    for key in ["protocol_adjusted_state", "risk_state", "protocol_label", "internal_taxonomy_label"]:
-        state = _native_state_from_text(fields.get(key, ""))
-        if state != MISSING_VALUE:
-            return state
-    return _native_state_from_text(receipt_text)
-
-
 def _format_value(value: Any) -> str:
-    if value is None:
+    if value is None or value == "":
         return MISSING_VALUE
     if isinstance(value, bool):
         return "True" if value else "False"
-    if isinstance(value, float):
-        return f"{value:.4f}"
-    if isinstance(value, int):
-        return str(value)
-    if isinstance(value, list):
-        if not value:
-            return MISSING_VALUE
-        return ", ".join(_format_value(item) for item in value)
-    text = str(value).strip()
-    return text if text else MISSING_VALUE
+    if isinstance(value, (int, float)):
+        return f"{float(value):.4f}"
+    return str(value).strip() or MISSING_VALUE
 
 
-def _json_after_machine_readable_marker(text: str) -> dict[str, Any] | None:
+def _json_after_marker(text: str) -> dict[str, Any] | None:
     marker = "MACHINE-READABLE RECEIPT JSON"
-    lower_text = text.lower()
-    marker_index = lower_text.find(marker.lower())
-    search_start = marker_index + len(marker) if marker_index != -1 else 0
-    brace_index = text.find("{", search_start)
-    if brace_index == -1:
+    if marker not in text:
+        stripped = text.strip()
+        if stripped.startswith("{"):
+            try:
+                parsed = json.loads(stripped)
+                return parsed if isinstance(parsed, dict) else None
+            except Exception:
+                return None
         return None
+
+    after = text.split(marker, 1)[1]
+    start = after.find("{")
+    if start < 0:
+        return None
+    candidate = after[start:].strip()
+    decoder = json.JSONDecoder()
     try:
-        payload, _ = json.JSONDecoder().raw_decode(text[brace_index:])
-    except json.JSONDecodeError:
+        parsed, _ = decoder.raw_decode(candidate)
+    except Exception:
         return None
-    return payload if isinstance(payload, dict) else None
+    return parsed if isinstance(parsed, dict) else None
 
 
-def _json_from_receipt_text(text: str) -> dict[str, Any] | None:
-    stripped = text.strip()
-    if stripped.startswith("{"):
-        try:
-            payload = json.loads(stripped)
-        except json.JSONDecodeError:
-            payload = None
-        if isinstance(payload, dict):
-            return payload
-    return _json_after_machine_readable_marker(text)
-
-
-def _extract_json_fields(payload: dict[str, Any]) -> dict[str, str]:
-    verdict = payload.get("verdict") if isinstance(payload.get("verdict"), dict) else {}
-    metrics = payload.get("metrics") if isinstance(payload.get("metrics"), dict) else {}
-    return {
-        "module_source": _format_value(payload.get("module") or payload.get("active_modules")),
-        "risk_state": _format_value(verdict.get("risk") or payload.get("risk")),
-        "protocol_adjusted_state": _format_value(
-            verdict.get("protocol_adjusted_state")
-            or payload.get("protocol_adjusted_state")
-            or payload.get("canonical_state")
-        ),
-        "protocol_label": _format_value(verdict.get("protocol_label") or payload.get("protocol_label")),
-        "integrity": _format_value(metrics.get("integrity")),
-        "friction": _format_value(metrics.get("friction")),
-        "collapse_probability": _format_value(metrics.get("collapse_probability")),
-        "trust": _format_value(metrics.get("trust_index") or metrics.get("trust")),
-        "alignment": _format_value(metrics.get("alignment")),
-        "ego": _format_value(metrics.get("ego")),
-    }
-
-
-def _extract_json_repair_questions(payload: dict[str, Any]) -> str:
-    questions = payload.get("repair_questions")
-    if not isinstance(questions, list):
-        return MISSING_VALUE
-    cleaned = [str(item).strip() for item in questions if str(item).strip()]
-    if not cleaned:
-        return MISSING_VALUE
-    return "\n".join(f"- {item}" for item in cleaned)
-
-
-def _repair_questions_from_text(text: str) -> str:
+def _repair_questions_from_text(text: str) -> list[str]:
     lines = text.splitlines()
     start = None
-    allowed_headings = {
-        "silent operator repair questions",
-        "repair questions",
-        "repair questions found in uploaded receipt",
-    }
     for index, line in enumerate(lines):
-        normalized = line.strip().strip(":").lower()
-        if normalized in allowed_headings:
+        lower = line.strip().lower()
+        if lower in {"silent operator repair questions", "repair questions"}:
             start = index
             break
     if start is None:
-        return MISSING_VALUE
+        return []
 
     collected: list[str] = []
     for line in lines[start + 1 :]:
@@ -215,247 +129,320 @@ def _repair_questions_from_text(text: str) -> str:
             if collected:
                 break
             continue
-        if re.match(r"^[A-Z][A-Z0-9 /_-]{2,}:\s*$", stripped) and collected:
+        if stripped.isupper() and collected:
             break
-        if stripped.startswith(("-", "*")) or re.match(r"^\d+[\.)]\s+", stripped):
-            collected.append(stripped)
-            continue
-        if collected:
+        if re.match(r"^[A-Z][A-Za-z0-9 /_-]{2,}:\s*", stripped) and collected:
             break
-    return "\n".join(collected) if collected else MISSING_VALUE
+        if stripped.startswith(("-", "*")):
+            item = stripped[1:].strip()
+            if item:
+                collected.append(item)
+        elif re.match(r"^\d+[\.)]\s+", stripped):
+            collected.append(re.sub(r"^\d+[\.)]\s+", "", stripped).strip())
+        elif collected:
+            break
+    return collected
 
 
-def _markdown_table_rows_after_heading(text: str, heading: str) -> list[dict[str, str]]:
-    lines = text.splitlines()
-    start = None
-    heading_lower = heading.strip().lower()
-    for index, line in enumerate(lines):
-        if line.strip().lower() == heading_lower:
-            start = index + 1
-            break
-    if start is None:
-        return []
-    table_lines: list[str] = []
-    for line in lines[start:]:
-        stripped = line.strip()
-        if not stripped:
-            if table_lines:
-                break
-            continue
-        if stripped.startswith("## ") and table_lines:
-            break
-        if stripped.startswith("|"):
-            table_lines.append(stripped)
-        elif table_lines:
-            break
-    if len(table_lines) < 3:
-        return []
-    header = [cell.strip() for cell in table_lines[0].strip("|").split("|")]
-    rows: list[dict[str, str]] = []
-    for raw_row in table_lines[2:]:
-        cells = [cell.strip() for cell in raw_row.strip("|").split("|")]
-        if len(cells) != len(header):
-            continue
-        rows.append(dict(zip(header, cells)))
-    return rows
-
-
-def _detect_receipt_kind(text: str, fields: dict[str, str]) -> str:
-    lower_text = text.lower()
-    module = fields.get("module_source", "").lower()
-    if "aletheia world lens receipt" in lower_text or "world lens source state" in lower_text:
+def _module_family(module: str, text: str = "") -> str:
+    value = f"{module} {text}".lower()
+    if "world lens" in value or "selected-year evidence" in value or "9k" in value:
         return "World Lens"
-    if "world lens" in module:
-        return "World Lens"
-    if "ai integrity receipt context" in lower_text or "ai integrity mirror" in module:
+    if "ai integrity" in value or "static artifact" in value:
         return "AI Integrity Mirror"
-    if "stress test" in lower_text or module in {"simulation", "stress test"}:
-        return "Stress Test"
-    return fields.get("module_source") or "Generic"
+    if "simulation" in value or "stress test" in value:
+        return "Stress Test / Simulation"
+    if "privacy" in value:
+        return "Privacy Audit"
+    if "evidence lab" in value:
+        return "Evidence Lab"
+    if "mirror check" in value:
+        return "Mirror Check"
+    return module if module and module != MISSING_VALUE else "Uploaded Receipt"
 
 
-def _world_lens_fields_from_text(text: str) -> dict[str, str]:
-    fields = {key: _first_match(text, patterns) for key, patterns in WORLD_LENS_PATTERNS.items()}
-    coverage_rows = _markdown_table_rows_after_heading(text, "## Coverage")
-    distribution_rows = _markdown_table_rows_after_heading(text, "## Internal taxonomy distribution")
-    trust_raw = next((row for row in coverage_rows if row.get("source") == "Trust raw survey"), {})
-    trust_prior = next((row for row in coverage_rows if row.get("source") == "Trust prior"), {})
-    fields.update({
-        "trust_raw_survey_coverage": trust_raw.get("coverage", MISSING_VALUE) or MISSING_VALUE,
-        "trust_prior_coverage": trust_prior.get("coverage", MISSING_VALUE) or MISSING_VALUE,
-        "taxonomy_distribution_rows": str(len(distribution_rows)) if distribution_rows else MISSING_VALUE,
-    })
-    return fields
+def _fields_from_json(data: dict[str, Any], text: str) -> dict[str, str]:
+    verdict = data.get("verdict") if isinstance(data.get("verdict"), dict) else {}
+    metrics = data.get("metrics") if isinstance(data.get("metrics"), dict) else {}
+    threshold = data.get("threshold_mapping_layer") if isinstance(data.get("threshold_mapping_layer"), dict) else {}
 
-
-def _ai_integrity_fields_from_text(text: str) -> dict[str, str]:
-    return {key: _first_match(text, patterns) for key, patterns in AI_INTEGRITY_PATTERNS.items()}
-
-
-def read_uploaded_receipt_file(uploaded_file: Any) -> str:
-    """Decode an uploaded ALETHEIA receipt file without storing or rescoring it."""
-    if uploaded_file is None:
-        return ""
-    raw = uploaded_file.getvalue() if hasattr(uploaded_file, "getvalue") else uploaded_file.read()
-    if isinstance(raw, str):
-        return raw
-    return bytes(raw or b"").decode("utf-8", errors="replace")
-
-
-def parse_receipt_standard_view(receipt_text: str) -> dict[str, object]:
-    """Extract uploaded receipt fields without inferring missing values or changing the receipt."""
-    text = receipt_text or ""
-    json_payload = _json_from_receipt_text(text)
-    if json_payload is not None:
-        fields = _extract_json_fields(json_payload)
-        fields["repair_questions"] = _extract_json_repair_questions(json_payload)
+    active_modules = data.get("active_modules")
+    if isinstance(active_modules, list) and active_modules:
+        module = ", ".join(str(item) for item in active_modules)
     else:
-        fields = {key: _first_match(text, patterns) for key, patterns in FIELD_PATTERNS.items()}
-        fields["repair_questions"] = _repair_questions_from_text(text)
-
-    # Module-aware overlays keep each uploaded receipt in its native context.
-    receipt_kind = _detect_receipt_kind(text, fields)
-    world_lens_fields = _world_lens_fields_from_text(text) if receipt_kind == "World Lens" else {}
-    ai_integrity_fields = _ai_integrity_fields_from_text(text) if receipt_kind == "AI Integrity Mirror" else {}
-
-    if receipt_kind == "World Lens":
-        fields["module_source"] = "World Lens"
-        fields["integrity"] = world_lens_fields.get("weighted_integrity", MISSING_VALUE)
-        fields["friction"] = world_lens_fields.get("weighted_friction", MISSING_VALUE)
-        fields["collapse_probability"] = world_lens_fields.get("weighted_collapse_probability", MISSING_VALUE)
-        fields["trust"] = "Raw survey unavailable; trust prior recorded" if world_lens_fields.get("trust_raw_survey_coverage") == "0.0" else MISSING_VALUE
-        fields["protocol_label"] = "World Lens selected-year evidence view"
-        fields["risk_state"] = "Distribution view"
-        fields["protocol_adjusted_state"] = MISSING_VALUE
-    elif receipt_kind == "AI Integrity Mirror":
-        fields["module_source"] = "AI Integrity Mirror"
-        if ai_integrity_fields.get("risk_reading") != MISSING_VALUE:
-            fields["risk_state"] = ai_integrity_fields["risk_reading"]
-        if ai_integrity_fields.get("internal_taxonomy_label") != MISSING_VALUE:
-            fields["protocol_adjusted_state"] = ai_integrity_fields["internal_taxonomy_label"]
-        if ai_integrity_fields.get("integrity_reading") != MISSING_VALUE:
-            fields["integrity"] = ai_integrity_fields["integrity_reading"]
-        if ai_integrity_fields.get("capture_pressure") != MISSING_VALUE:
-            fields["friction"] = ai_integrity_fields["capture_pressure"]
-
-    native_state = _first_native_state(fields, text)
-    if receipt_kind == "World Lens":
-        native_state = "WORLD_LENS_EVIDENCE_VIEW"
-        standard_band = "Country-year evidence distribution / human interpretation required"
-        explanation = (
-            "Standard View is reading this as a World Lens receipt. It keeps the selected-year evidence, "
-            "9k seat allocation, empirical coverage, trust-prior note, and taxonomy distribution separate from "
-            "Mirror Check scenario wording. It does not certify a country, government, institution, or system."
-        )
-        parsing_limits = (
-            "World Lens receipts are evidence-distribution receipts. Country rows and distribution tables are summarized only when obvious fields are present; missing fields are not inferred."
-        )
-    elif receipt_kind == "AI Integrity Mirror":
-        standard_band = STANDARD_BANDS.get(native_state, MISSING_VALUE)
-        explanation = (
-            "Standard View is reading this as an AI Integrity Mirror receipt. It reflects a static artifact review only; "
-            "it does not test a live model, vendor, deployment, training data, hidden system prompt, or future behavior."
-        )
-        parsing_limits = "Only obvious uploaded AI Integrity receipt fields are shown. Missing or unclear fields are not inferred."
-    elif receipt_kind == "Stress Test":
-        standard_band = STANDARD_BANDS.get(native_state, MISSING_VALUE)
-        explanation = (
-            "Standard View is reading this as a Stress Test / Simulation receipt. It preserves the scenario receipt's native state, "
-            "metrics, and repair questions without re-running the scenario or changing the tree/scoring output."
-        )
-        parsing_limits = "Only obvious uploaded Stress Test receipt fields are shown. Missing or unclear fields are not inferred."
-    else:
-        standard_band = STANDARD_BANDS.get(native_state, MISSING_VALUE)
-        explanation = (
-            "Standard View is a verbal reading aid for the uploaded receipt. It keeps native "
-            "ALETHEIA values first and maps them into a secondary review band without creating a new verdict."
-        )
-        parsing_limits = "Only obvious uploaded receipt fields are shown. Missing or unclear fields are not inferred."
+        module = data.get("module") or _first_match(text, TEXT_FIELD_PATTERNS["module_source"])
 
     return {
-        "receipt_kind": receipt_kind,
-        "native_state": native_state,
-        "standard_band": standard_band,
-        "fields": fields,
-        "world_lens_fields": world_lens_fields,
-        "ai_integrity_fields": ai_integrity_fields,
-        "boundary": RECEIPT_READER_BOUNDARY,
-        "plain_language_explanation": explanation,
-        "human_review_note": "Human review remains required before relying on this reading.",
-        "non_certification_note": "This is not certification, approval, rejection, enforcement, or final truth.",
-        "parsing_limits": parsing_limits,
+        "module_source": _format_value(module),
+        "risk_state": _format_value(verdict.get("risk") or data.get("risk") or _first_match(text, TEXT_FIELD_PATTERNS["risk_state"])),
+        "protocol_adjusted_state": _format_value(
+            verdict.get("protocol_adjusted_state")
+            or threshold.get("canonical_state")
+            or data.get("protocol_adjusted_state")
+            or _first_match(text, TEXT_FIELD_PATTERNS["protocol_adjusted_state"])
+        ),
+        "protocol_label": _format_value(
+            verdict.get("protocol_label")
+            or threshold.get("protocol_label")
+            or data.get("protocol_label")
+            or _first_match(text, TEXT_FIELD_PATTERNS["protocol_label"])
+        ),
+        "integrity": _format_value(metrics.get("integrity") or data.get("integrity")),
+        "friction": _format_value(metrics.get("friction") or data.get("friction")),
+        "collapse_probability": _format_value(metrics.get("collapse_probability") or data.get("collapse_probability")),
+        "trust": _format_value(metrics.get("trust_index") or data.get("trust_index")),
+        "alignment": _format_value(metrics.get("alignment") or data.get("alignment")),
+        "ego": _format_value(metrics.get("ego") or data.get("ego")),
     }
 
 
-def _render_card(container: Any, title: str, body: str) -> None:
-    container.markdown(f"**{title}**")
-    container.write(body)
+def _fields_from_text(text: str) -> dict[str, str]:
+    return {key: _first_match(text, patterns) for key, patterns in TEXT_FIELD_PATTERNS.items()}
 
 
-def _render_value_list(container: Any, values: list[tuple[str, str]]) -> None:
-    for label, value in values:
-        container.markdown(f"- **{label}:** {value}")
+def _metric_float(value: str) -> float | None:
+    try:
+        return float(str(value).strip())
+    except Exception:
+        return None
 
 
-def _render_world_lens_cards(container: Any, view: dict[str, object]) -> None:
-    world_fields = view.get("world_lens_fields") if isinstance(view.get("world_lens_fields"), dict) else {}
-    card_a, card_b = container.columns(2)
-    with card_a:
-        card_a.markdown("**World Lens scope card**")
-        _render_value_list(card_a, [(label, str(world_fields.get(key, MISSING_VALUE))) for label, key in WORLD_LENS_FIELD_LABELS[:7]])
-    with card_b:
-        card_b.markdown("**World Lens evidence values card**")
-        _render_value_list(card_b, [(label, str(world_fields.get(key, MISSING_VALUE))) for label, key in WORLD_LENS_FIELD_LABELS[7:]])
-        _render_value_list(card_b, [
-            ("Trust raw survey coverage", str(world_fields.get("trust_raw_survey_coverage", MISSING_VALUE))),
-            ("Trust prior coverage", str(world_fields.get("trust_prior_coverage", MISSING_VALUE))),
-            ("Distribution rows", str(world_fields.get("taxonomy_distribution_rows", MISSING_VALUE))),
-        ])
+def _interpret_metric(key: str, value: str, native_state: str) -> str:
+    number = _metric_float(value)
+    if number is None:
+        return "Not available in uploaded receipt."
+    if key == "trust":
+        if number >= 0.9:
+            return "Near-total reliability."
+        if number >= 0.75:
+            return "Strong reliability; still requires human review."
+        return "Reliability pressure is visible."
+    if key == "alignment":
+        if number >= 0.9:
+            return "High synergy with core objectives."
+        if number >= 0.75:
+            return "Generally aligned with review objectives."
+        return "Alignment pressure needs review."
+    if key == "integrity":
+        if number >= 0.9:
+            return "Very strong structural consistency."
+        if number >= 0.7:
+            return "Solid structural consistency."
+        if number >= 0.5:
+            return "Mixed structural consistency."
+        return "Low structural consistency."
+    if key == "collapse_probability":
+        if number <= 0.1:
+            return "Minimal risk of system failure."
+        if number <= 0.3:
+            return "Reviewable collapse pressure."
+        return "High collapse pressure."
+    if key == "friction":
+        if number <= 0.01:
+            return "Zero operational resistance."
+        if number <= 0.15:
+            return "Low operational resistance."
+        return "Friction requires review."
+    if key == "ego":
+        if number <= 0.01:
+            return "Effectively neutralized."
+        if number <= 0.15:
+            return "Low ego pressure."
+        return "Ego pressure requires review."
+    return "Shown as recorded in the uploaded receipt."
 
 
-def _render_ai_integrity_cards(container: Any, view: dict[str, object]) -> None:
+def _summary_for_state(native_state: str, fields: dict[str, str]) -> str:
+    risk = fields.get("risk_state", MISSING_VALUE)
+    trust = fields.get("trust", MISSING_VALUE)
+    alignment = fields.get("alignment", MISSING_VALUE)
+    friction = fields.get("friction", MISSING_VALUE)
+    collapse = fields.get("collapse_probability", MISSING_VALUE)
+
+    if native_state == "SANCTUARY":
+        return (
+            f"The uploaded receipt is operating in a {risk} risk state with friction {friction}. "
+            f"Trust ({trust}) and alignment ({alignment}) are strong in the native values, and collapse probability "
+            f"({collapse}) is low. This is a Standard View translation only; it does not create a new verdict."
+        )
+    if native_state == "THRESHOLD":
+        return (
+            f"The uploaded receipt is in {native_state} with {risk} risk pressure. The values should be read as a "
+            "human-review checkpoint: inspect repair questions, appealability, transparency, and safeguards before relying on it."
+        )
+    if native_state == "ASYLUM":
+        return (
+            "The uploaded receipt carries high review pressure. Treat the repair questions and human-review boundary as central; "
+            "do not use this reader as approval, rejection, enforcement, or certification."
+        )
+    if native_state == "QUESTION_PROMPT":
+        return "The uploaded receipt is a review-tool prompt rather than a scored scenario. Use it to guide human inspection."
+    return "The uploaded receipt could not be mapped into a native state without inferring missing values."
+
+
+def _core_logic_title(module_family: str) -> str:
+    if module_family == "Mirror Check":
+        return "Core Logic (The Mirror Check)"
+    if module_family == "World Lens":
+        return "Core Logic (World Lens Context)"
+    if module_family == "AI Integrity Mirror":
+        return "Core Logic (AI Integrity Mirror)"
+    if module_family == "Stress Test / Simulation":
+        return "Core Logic (Stress Test / Simulation)"
+    return f"Core Logic ({module_family})"
+
+
+def _core_logic_text(module_family: str) -> str:
+    base = (
+        "The Standard View serves as a verbal translation of the uploaded receipt. "
+        "Its primary function is to keep native ALETHEIA values first."
+    )
+    key_protocol = (
+        "Key Protocol: the reader maps data into a secondary review band for clarity without generating a new verdict, "
+        "rescoring, or altering the original receipt."
+    )
+    if module_family == "World Lens":
+        return base + " It reads World Lens as country-year evidence context, not as certification of a country or government. " + key_protocol
+    if module_family == "AI Integrity Mirror":
+        return base + " It reads AI Integrity receipts as static artifact reviews, not live model, vendor, or deployment certification. " + key_protocol
+    if module_family == "Stress Test / Simulation":
+        return base + " It reads Stress Test receipts as scenario outputs without re-running the tree or changing score logic. " + key_protocol
+    return base + " " + key_protocol
+
+
+def parse_receipt_standard_view(receipt_text: str) -> dict[str, Any]:
+    """Extract uploaded receipt fields without inferring, rescoring, or overriding values."""
+    text = receipt_text or ""
+    data = _json_after_marker(text)
+    fields = _fields_from_json(data, text) if data else _fields_from_text(text)
+
+    repair_questions: list[str] = []
+    if isinstance(data, dict) and isinstance(data.get("repair_questions"), list):
+        repair_questions = [str(item).strip() for item in data["repair_questions"] if str(item).strip()]
+    if not repair_questions:
+        repair_questions = _repair_questions_from_text(text)
+
+    native_state = _native_state_from_text(fields.get("protocol_adjusted_state"))
+    if native_state == MISSING_VALUE:
+        native_state = _native_state_from_text(fields.get("risk_state"))
+    if native_state == MISSING_VALUE:
+        native_state = _native_state_from_text(text)
+
+    module_family = _module_family(fields.get("module_source", ""), text)
+    metric_rows = [
+        {
+            "Metric": label,
+            "Value": fields.get(key, MISSING_VALUE),
+            "Interpretation": _interpret_metric(key, fields.get(key, MISSING_VALUE), native_state),
+        }
+        for key, label in METRIC_ORDER
+    ]
+
+    return {
+        "native_state": native_state,
+        "system_status": native_state,
+        "status_line": STATUS_LINES.get(native_state, "The uploaded receipt is shown without inferring missing values."),
+        "standard_band": STANDARD_BANDS.get(native_state, MISSING_VALUE),
+        "module_family": module_family,
+        "fields": fields,
+        "metric_rows": metric_rows,
+        "repair_questions": repair_questions,
+        "core_logic_title": _core_logic_title(module_family),
+        "core_logic_text": _core_logic_text(module_family),
+        "summary": _summary_for_state(native_state, fields),
+        "boundary": RECEIPT_READER_BOUNDARY,
+        "parsing_limits": f"Only obvious uploaded {module_family} receipt fields are shown. Missing or unclear fields are not inferred.",
+    }
+
+
+def _read_uploaded_text(uploaded_file: Any) -> tuple[str, str]:
+    name = getattr(uploaded_file, "name", "uploaded receipt") or "uploaded receipt"
+    raw = uploaded_file.getvalue()
+    if isinstance(raw, str):
+        return raw, name
+    return bytes(raw).decode("utf-8", errors="replace"), name
+
+
+def _read_zip_receipts(uploaded_file: Any) -> tuple[list[tuple[str, str]], str]:
+    name = getattr(uploaded_file, "name", "uploaded receipts.zip") or "uploaded receipts.zip"
+    raw = uploaded_file.getvalue()
+    receipts: list[tuple[str, str]] = []
+    with zipfile.ZipFile(io.BytesIO(bytes(raw))) as archive:
+        for info in archive.infolist():
+            lower = info.filename.lower()
+            if info.is_dir() or not lower.endswith((".txt", ".md", ".json")):
+                continue
+            text = archive.read(info).decode("utf-8", errors="replace")
+            receipts.append((info.filename, text))
+    return receipts, name
+
+
+def parse_uploaded_receipt_file(uploaded_file: Any) -> dict[str, Any]:
+    """Parse one uploaded receipt file or a ZIP of receipt text files."""
+    name = getattr(uploaded_file, "name", "") or ""
+    if name.lower().endswith(".zip"):
+        receipts, zip_name = _read_zip_receipts(uploaded_file)
+        views = [(filename, parse_receipt_standard_view(text)) for filename, text in receipts]
+        distribution = Counter(view.get("native_state", MISSING_VALUE) for _, view in views)
+        return {
+            "kind": "batch_zip",
+            "name": zip_name,
+            "receipt_count": len(views),
+            "distribution": dict(distribution),
+            "views": views,
+        }
+    text, filename = _read_uploaded_text(uploaded_file)
+    return {"kind": "single", "name": filename, "view": parse_receipt_standard_view(text)}
+
+
+def _render_single_view(container: Any, view: dict[str, Any]) -> None:
     fields = view["fields"]
-    ai_fields = view.get("ai_integrity_fields") if isinstance(view.get("ai_integrity_fields"), dict) else {}
-    card_a, card_b = container.columns(2)
-    with card_a:
-        card_a.markdown("**Native state card**")
-        _render_value_list(card_a, [
-            ("Native receipt state", str(view["native_state"])),
-            ("Standard review band", str(view["standard_band"])),
-            ("Module/source", fields["module_source"]),
-        ])
-    with card_b:
-        card_b.markdown("**AI Integrity artifact card**")
-        _render_value_list(card_b, [(label, str(ai_fields.get(key, MISSING_VALUE))) for label, key in AI_INTEGRITY_FIELD_LABELS])
+    container.markdown(f"### System Status: {view['system_status']}")
+    container.write(view["status_line"])
+
+    container.markdown(
+        f"**Native State:** {view['native_state']}  \n"
+        f"**Review Pressure:** {view['standard_band']}  \n"
+        f"**Protocol Label:** {fields.get('protocol_label', MISSING_VALUE)}  \n"
+        f"**Module Source:** {fields.get('module_source', MISSING_VALUE)}"
+    )
+
+    container.markdown("### Performance & Risk Metrics")
+    container.caption("Quantitative analysis of uploaded receipt health and alignment.")
+    container.table(view["metric_rows"])
+
+    container.markdown(f"### {view['core_logic_title']}")
+    container.write(view["core_logic_text"])
+
+    container.markdown("### Summary for the Reader")
+    container.write(view["summary"])
+    container.info("This is not certification, approval, rejection, enforcement, or final truth. Human review remains required.")
+    container.caption(view["parsing_limits"])
+
+    questions = view.get("repair_questions") or []
+    if questions:
+        container.markdown("### Repair questions found in uploaded receipt")
+        for question in questions:
+            container.markdown(f"- {question}")
 
 
-def _render_generic_cards(container: Any, view: dict[str, object]) -> None:
-    fields = view["fields"]
-    card_a, card_b = container.columns(2)
-    with card_a:
-        card_a.markdown("**Native state card**")
-        _render_value_list(card_a, [
-            ("Native receipt state", str(view["native_state"])),
-            ("Standard review band", str(view["standard_band"])),
-        ])
-    with card_b:
-        card_b.markdown("**Values card**")
-        _render_value_list(card_b, [
-            ("Module/source", fields["module_source"]),
-            ("Risk state", fields["risk_state"]),
-            ("Protocol-adjusted state", fields["protocol_adjusted_state"]),
-            ("Protocol label", fields["protocol_label"]),
-            ("Integrity", fields["integrity"]),
-            ("Friction", fields["friction"]),
-            ("Collapse probability", fields["collapse_probability"]),
-            ("Trust index", fields["trust"]),
-            ("Alignment", fields["alignment"]),
-            ("Ego", fields["ego"]),
-        ])
+def _render_batch_zip(container: Any, parsed: dict[str, Any]) -> None:
+    container.markdown("### Batch Receipt Summary")
+    container.write(f"Uploaded batch file: {parsed.get('name')}")
+    container.write(f"Receipts read: {parsed.get('receipt_count', 0)}")
+    distribution = parsed.get("distribution") or {}
+    if distribution:
+        container.table([{"Native State": key, "Count": value} for key, value in sorted(distribution.items())])
+    container.info("Batch ZIP reading summarizes uploaded receipts only. It does not rescore, merge verdicts, or create a new receipt.")
+    views = parsed.get("views") or []
+    if views:
+        first_name, first_view = views[0]
+        with container.expander(f"Inspect first receipt: {first_name}", expanded=False):
+            _render_single_view(container, first_view)
 
 
 def render_receipt_reader_standard_view(container=None) -> None:
-    """Render the upload-only Receipt Reader - Standard View."""
+    """Render upload-only Receipt Reader - Standard View."""
     if container is None:
         import streamlit as st  # type: ignore
 
@@ -463,38 +450,24 @@ def render_receipt_reader_standard_view(container=None) -> None:
 
     container.subheader("Receipt Reader - Standard View")
     container.caption(RECEIPT_READER_BOUNDARY)
-    uploaded_file = container.file_uploader(
+    uploaded = container.file_uploader(
         "Upload an ALETHEIA receipt file",
-        type=["txt", "md", "json"],
+        type=["txt", "md", "json", "zip"],
         accept_multiple_files=False,
-        key="receipt_reader_uploaded_file",
-        help="Receipt Reader reads uploaded ALETHEIA receipt files only. It does not rescore or create a new receipt.",
+        key="aletheia_receipt_reader_upload",
     )
 
-    if uploaded_file is None:
+    if uploaded is None:
         container.info("Upload an ALETHEIA receipt file to read it in Standard View.")
         return
 
-    receipt_text = read_uploaded_receipt_file(uploaded_file)
-    if not receipt_text.strip():
-        container.warning("The uploaded receipt file appears empty. No values were inferred.")
+    try:
+        parsed = parse_uploaded_receipt_file(uploaded)
+    except Exception as exc:  # pragma: no cover - Streamlit-facing guardrail
+        container.error(f"Could not read uploaded receipt file: {exc}")
         return
 
-    view = parse_receipt_standard_view(receipt_text)
-    fields = view["fields"]
-    receipt_kind = str(view.get("receipt_kind", "Generic"))
-
-    if receipt_kind == "World Lens":
-        _render_world_lens_cards(container, view)
-    elif receipt_kind == "AI Integrity Mirror":
-        _render_ai_integrity_cards(container, view)
+    if parsed.get("kind") == "batch_zip":
+        _render_batch_zip(container, parsed)
     else:
-        _render_generic_cards(container, view)
-
-    _render_card(container, "Plain-language explanation card", str(view["plain_language_explanation"]))
-    _render_card(container, "Standard View card", str(view["human_review_note"]))
-    container.info(str(view["non_certification_note"]))
-    container.caption(str(view["parsing_limits"]))
-    if fields["repair_questions"] != MISSING_VALUE:
-        container.markdown("**Repair questions found in uploaded receipt**")
-        container.write(fields["repair_questions"])
+        _render_single_view(container, parsed["view"])
