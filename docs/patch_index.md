@@ -248,6 +248,14 @@ Patch 130 records ALETHEIA as being in release-candidate refinement mode after t
 This is not expansion. No new modules, no new scoring, no new risk states, no live model calls, no agentic review, no enterprise workflow, no telemetry, no analytics, no storage or identity sync, no certification, no enforcement, no privacy guarantee, and no final-truth claim are introduced or planned by this freeze.
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+## Patch 136 - Aletheia Unit Preview Stabilization
+
+Patch 136 is a stabilization checkpoint for Aletheia Unit Preview. It adds documentation and tests only, verifying the preview remains session-only, non-authoritative, non-scoring, non-routing, and non-persistent. The checkpoint confirms normal module tabs, including Receipt Reader, remain available after the gate passes. No scoring, verdict routing, receipt schema, receipt generation, signal behavior, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, external-call behavior, telemetry, analytics, storage, certification, enforcement, final-truth, or privacy-guarantee behavior changes.
+
+## Patch 135 - Aletheia Unit Preview v1
+
+Patch 135 adds Aletheia Unit Preview as a pre-app intake layer. It is a front-door preview, not a new module or router. It suggests where to begin using transparent local rules, then lets the user proceed to the normal app. It does not score, route verdicts, create receipts, call module engines, certify, approve, reject, enforce, store data, call external services, use LLMs, create embeddings, sync identities, or claim final truth. Human review remains required.
+
 ## Patch 134 - Receipt Reader Standard View v1
 
 Patch 134 adds a simple Receipt Reader - Standard View for pasted ALETHEIA receipts. It parses obvious fields, shows missing values as missing, and maps native states into secondary review bands for interoperability. It does not rescore, override, approve, reject, certify, enforce, change receipt schemas, modify existing receipt generation, call external services, use LLMs, create embeddings, store data, collect telemetry, or claim final truth. Human review remains required.

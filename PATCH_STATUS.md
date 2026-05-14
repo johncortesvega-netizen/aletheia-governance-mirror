@@ -2895,6 +2895,40 @@ Validation:
 - `tools\run_patch_checks.bat 128`
 - `tools\run_patch_checks.bat 127`
 - `python tools\run_protocol_baseline_self_audit.py`
+## Patch 136 - Aletheia Unit Preview Stabilization
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 136 stabilizes the Patch 135 Aletheia Unit Preview with checkpoint documentation and regression tests. It confirms the preview remains a front-door suggestion layer only, uses the session key `aletheia_unit_preview_passed`, stops before normal module tabs until passed, and leaves the normal app interface available after the gate passes.
+
+Boundary preserved: test/check/docs patch only. No new UI feature, no new modules, no scoring changes, no verdict routing changes, no receipt schema or receipt generation changes, no signal regex or signal weight changes, no AI Integrity scan behavior change, no Privacy Audit scan behavior change, no World Lens math change, no uploads/downloads or batch behavior change, no external calls, no telemetry, no analytics, no tracking, no cookies, no accounts, no persistent storage, no database, no Global ID sync, no public ledger sync, no certification, no enforcement, no final-truth claim, no approval/rejection claim, and no privacy-guarantee claim. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 136
+python tools\run_patch_checks.py 135
+python tools\run_patch_checks.py 134
+python tools\run_protocol_baseline_self_audit.py
+```
+
+## Patch 135 - Aletheia Unit Preview v1
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 135 adds Aletheia Unit Preview as a small front-door preview before the full app appears. Users may paste a short text, question, scenario, or receipt and receive a transparent `Suggested path` before entering ALETHEIA. The suggestion is not a decision, and users can still choose any module after entering the app.
+
+Boundary preserved: refinement only. No chatbot, no LLM calls, no embeddings, no agentic routing, no automatic approval or rejection, no certification, no compliance finding, no legal/medical/political/institutional authority claim, no telemetry, no analytics, no accounts, no persistent user profiles, no database, no Global ID sync, no public ledger sync, no new scoring engine, no new risk states, no final-truth claim, and no privacy guarantee. No scoring, verdict routing, taxonomy, SANCTUARY / THRESHOLD / ASYLUM logic, QUESTION_PROMPT logic, receipt schema, receipt generation, signal regex, signal weight, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, uploads/download behavior, batch behavior, data storage, or external-call behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 135
+python tools\run_patch_checks.py 134
+python tools\run_patch_checks.py 133
+python tools\run_protocol_baseline_self_audit.py
+```
+
 ## Patch 134 - Receipt Reader Standard View v1
 
 Status: READY FOR LOCAL REVIEW

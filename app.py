@@ -40,7 +40,7 @@ from ui.input_clarity import (
     warn_empty_ai_integrity_batch,
     warn_no_public_data_upload,
 )
-from ui.start_page import START_GATE_SESSION_KEY, render_start_page
+from ui.unit_preview import UNIT_PREVIEW_SESSION_KEY, render_unit_preview
 
 from core.parser import parse_scenario_llm, decouple_actor
 from core.ethics import evaluate_ethics, apply_ethics_to_metrics
@@ -651,9 +651,9 @@ def _protocol_metric_display(value: object) -> str:
 
 st.set_page_config(page_title="ALETHEIA", page_icon="🌿", layout="wide")
 
-if not st.session_state.get(START_GATE_SESSION_KEY, False):
-    if render_start_page(st):
-        st.session_state[START_GATE_SESSION_KEY] = True
+if not st.session_state.get(UNIT_PREVIEW_SESSION_KEY, False):
+    if render_unit_preview(st):
+        st.session_state[UNIT_PREVIEW_SESSION_KEY] = True
         st.rerun()
     st.stop()
 

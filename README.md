@@ -1062,3 +1062,10 @@ Patch 130 records ALETHEIA as being in release-candidate refinement mode after t
 This is not expansion. No new modules, no new scoring, no new risk states, no live model calls, no agentic review, no enterprise workflow, no telemetry, no analytics, no storage or identity sync, no certification, no enforcement, no privacy guarantee, and no final-truth claim are introduced or planned by this freeze.
 
 Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
+## Patch 135 - Aletheia Unit Preview v1
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 135 adds Aletheia Unit Preview as a small first-entry preview before the full app appears. It suggests where to begin from a short pasted text, question, scenario, or receipt. It is a suggestion, not a decision, and users can still choose any module after entering ALETHEIA.
+
+Boundary preserved: no scoring, no verdict routing, no taxonomy change, no receipt schema change, no receipt generation change, no signal regex or signal weight change, no AI Integrity scan behavior change, no Privacy Audit scan behavior change, no World Lens math change, no uploads/download behavior change, no batch behavior change, no storage, no external calls, no telemetry, no analytics, no accounts, no database, no Global ID sync, no public ledger sync, no new scoring engine, no new risk states, no final-truth claim, and no privacy guarantee. Human judgment remains required.

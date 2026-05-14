@@ -60,6 +60,10 @@ Patch 133 defines Receipt Reader - Standard View as a design-only future interpr
 
 Patch 134 implements Receipt Reader - Standard View v1 as a small local helper in `ui/receipt_reader.py` and a reachable app tab. It parses obvious pasted receipt fields only, shows missing fields as `Not found in pasted receipt`, displays native values before secondary review bands, and keeps the original receipt authoritative. It does not change scoring, routing, receipt schemas, receipt generation, signal behavior, Privacy Audit scan behavior, AI Integrity scan behavior, World Lens math, uploads, downloads, external calls, LLM calls, embeddings, database/storage behavior, telemetry, certification, enforcement, or final-truth behavior.
 
+Patch 135 adds `ui/unit_preview.py` as a pre-app Aletheia Unit Preview gate. `app.py` remains the orchestrator: the preview renders before normal module tabs, and `Proceed to ALETHEIA` sets a session-only Streamlit key before rerunning into the existing app. The preview uses transparent local keyword rules to suggest a starting path; it does not call scoring engines, receipt builders, AI Integrity scans, Privacy Audit scans, World Lens math, uploads, downloads, external services, LLMs, embeddings, storage, telemetry, analytics, accounts, databases, identity sync, public ledgers, or any authority mechanism.
+
+Patch 136 stabilizes that preview with tests and documentation only. It confirms the gate remains before the tab interface, the normal app still exists after the gate passes, and the preview helper stays local suggestion logic rather than a routing, scoring, receipt, scan, storage, telemetry, or authority layer.
+
 ## Future extraction target
 
 A safe future structure would move repeated UI and copy into dedicated modules while keeping behavior stable:
