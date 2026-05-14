@@ -3071,3 +3071,11 @@ Status: prepared.
 Patch 141.1 places Receipt Reader - Standard View under an explicit Support utilities heading above the public footer so it no longer visually blends with the footer. Receipt Reader remains outside the main module tab row and remains upload-only for `.txt`, `.md`, or `.json` ALETHEIA receipt files.
 
 Boundary preserved: placement and copy only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal regex or weight, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, external-call behavior, telemetry, analytics, storage, Global ID sync, public ledger sync, certification, enforcement, approval, rejection, privacy guarantee, or final-truth behavior changes.
+
+## Patch 141.2 - Unit Preview Reference Placement Hotfix
+
+Status: READY FOR LOCAL REVIEW.
+
+Patch 141.2 moves the packaged local reference previews so they appear under the Unit Preview prompt on the first app page. The references remain side-by-side when present, remain local packaged HTML, remain outside the full module app, and fail gracefully when files are missing.
+
+Boundary preserved: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal regex/weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no upload/download behavior changes, no external calls, no telemetry, no analytics, no storage, no certification, no enforcement, no privacy guarantee, and no final-truth claim. Human review remains required.

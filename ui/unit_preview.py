@@ -168,7 +168,6 @@ def render_unit_preview(container=None) -> bool:
     )
     container.info(get_unit_preview_boundary_text())
     container.markdown(get_unit_preview_how_to_use_markdown())
-    render_unit_preview_html_reference(container)
     with container.expander("Start here: try this first", expanded=False):
         container.markdown(get_unit_preview_start_here_markdown())
 
@@ -177,6 +176,7 @@ def render_unit_preview(container=None) -> bool:
         height=160,
         key="aletheia_unit_preview_text",
     )
+    render_unit_preview_html_reference(container)
 
     if container.button("Preview review path", key="aletheia_unit_preview_button"):
         suggestion = suggest_review_path(preview_text)

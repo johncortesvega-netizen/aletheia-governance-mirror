@@ -2840,3 +2840,11 @@ Current patch: Patch 141.1 - Receipt Reader Support Utility Placement Hotfix.
 Receipt Reader - Standard View now sits under a clear `Support utilities` section above the footer. This fixes the visual confusion where the support expander appeared to be part of the footer. Receipt Reader remains upload-only and outside the main module tabs.
 
 Boundary preserved: placement and copy only; no scoring, routing, taxonomy, receipt schema, receipt generation, signals, AI Integrity behavior, Privacy Audit behavior, World Lens math, external calls, telemetry, storage, synchronization, certification, enforcement, approval, rejection, privacy guarantee, or final-truth behavior changed.
+
+## Patch 141.2 Notes - Unit Preview Reference Placement Hotfix
+
+Current patch: Patch 141.2 - Unit Preview Reference Placement Hotfix.
+
+Patch 141.2 moves the packaged local reference previews to sit under the Unit Preview prompt on the first app page. This keeps the first-page flow clearer: orientation copy, prompt, then local reference previews. The previews still render side by side when `Sydney_Protocol_v3.2.html` and/or `GPA_v8.2.html` exist, still stay on the Unit Preview hook page, and still do not enter the full module app.
+
+Boundary preserved: placement only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal regex, signal weights, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, upload/download behavior, external calls, live model calls, embeddings, telemetry, analytics, database/storage, Global ID sync, public ledger sync, certification, enforcement, approval, rejection, privacy guarantee, or final-truth behavior changed. Human review remains required.

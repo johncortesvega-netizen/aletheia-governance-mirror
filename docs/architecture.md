@@ -284,3 +284,9 @@ Aletheia Unit Preview remains the front-door hook. Packaged local HTML reference
 ## Patch 141.1 - Support Utility Placement
 
 Patch 141.1 clarifies the late-page app structure: after the main module work surface, optional review aids appear under `Support utilities`, followed by the public footer. Receipt Reader - Standard View belongs in that support utility section, not in the footer and not in the main module tab row. The Receipt Reader remains an upload-only reader for existing ALETHEIA receipt files and does not rescore, override, generate, certify, approve, reject, enforce, or decide.
+
+## Patch 141.2 architecture note — Unit Preview reference placement
+
+The Unit Preview first page now places packaged local reference previews under the Unit Preview prompt. This keeps the hook page sequence compact and legible: boundary/orientation, prompt, then optional local reference previews. The references are not a module, do not call external services, and do not change any analysis engine, scoring function, receipt parser, receipt generator, or scan behavior.
+
+Boundary preserved: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal regex/weight change, no AI Integrity scan behavior change, no Privacy Audit scan behavior change, no World Lens math change, no upload/download behavior change, no telemetry, no analytics, no storage, no certification, no enforcement, no privacy guarantee, and no final-truth claim.

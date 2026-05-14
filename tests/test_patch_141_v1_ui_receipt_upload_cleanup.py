@@ -76,6 +76,7 @@ def test_unit_preview_renders_packaged_html_and_ai_integrity_guidance():
     assert "Sydney_Protocol_v3.2.html" in unit_preview
     assert "GPA_v8.2.html" in unit_preview
     assert "container.columns(len(html_files))" in unit_preview
+    assert unit_preview.index("preview_text = container.text_area") < unit_preview.index("render_unit_preview_html_reference(container)")
     assert "AI Integrity Mirror:" in unit_preview
     assert "Receipt Reader — Standard View" in unit_preview
 
