@@ -2875,12 +2875,12 @@ The visual output is tightened so native values appear as a compact vertical lis
 
 Boundary preserved: Receipt Reader does not rescore, reroute, infer missing values, generate receipts, override uploaded receipts, change receipt schema, change AI Integrity scan behavior, change Privacy Audit scan behavior, change World Lens math, call external services, use live model calls, use embeddings, create telemetry, create analytics, certify, approve, reject, enforce, or claim final truth. Human review remains required.
 
-## Patch 142.2 Notes - Unit Preview Scenario Intent Hotfix
+## Patch 142.3 Notes - Receipt Reader Module Receipt Calibration and Stress Batch Tree Reset
 
-Current patch: Patch 142.2 - Unit Preview Scenario Intent Hotfix.
+Current patch: Patch 142.3 - Receipt Reader Module Receipt Calibration and Stress Batch Tree Reset.
 
-Patch 142.2 calibrates the Unit Preview intent router so scenario-shaped text is recognized before the Mirror Check fallback. The regression example `an evil penguin rises to power after a revolution` now suggests Stress Test even though it does not contain the literal words "stress test" or "scenario". Additional scenario-shaped examples include appeal-right removal after crisis, city AI housing allocation, hospital AI override limits, and public-service access-control cases.
+Receipt Reader - Standard View remains an upload-only support utility, but now reads module receipts in their own context instead of flattening every file into Mirror Check-style fields. World Lens receipts are treated as selected-year evidence distribution receipts: selected year, World Lens source state, evidence allocation status, active selected-year seats, weighted integrity/friction/collapse values, empirical coverage, and trust raw/prior coverage notes are shown when present. AI Integrity Mirror receipts are treated as static artifact review receipts, not live model or vendor certification. Stress Test / Simulation receipts are treated as scenario receipt readings and are not re-run.
 
-The front-door action buttons remain directly under the chatbox but now use a compact button row. Reference previews remain packaged local HTML, remain below the buttons, and remain outside the full module app.
+Stress Test batch behavior was also tightened: when a user runs one scenario and then runs a Stress batch, the prior single-scenario tree/result state is closed so the old tree does not remain below the batch output.
 
-Boundary preserved: Unit Preview orientation and layout only. No scoring, verdict routing, taxonomy, QUESTION_PROMPT logic, receipt schema, receipt generation, signal regex or weights, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, upload/download behavior, external calls, live model calls, embeddings, telemetry, analytics, database/storage, certification, enforcement, approval/rejection behavior, privacy guarantee, or final-truth claim changed. Human review remains required.
+Boundary preserved: no scoring, verdict routing, taxonomy, QUESTION_PROMPT behavior, receipt schema, receipt generation, signal regexes, signal weights, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, external calls, live model calls, embeddings, telemetry, analytics, storage, certification, enforcement, approval/rejection behavior, privacy guarantee, legal/official authority, or final-truth behavior changed. Human review remains required.

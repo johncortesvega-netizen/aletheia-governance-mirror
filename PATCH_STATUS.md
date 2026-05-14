@@ -3108,12 +3108,14 @@ Receipt Reader remains a single shared support utility for uploaded receipts fro
 
 Boundary preserved: no scoring, no verdict routing, no taxonomy, no QUESTION_PROMPT logic, no receipt schema, no receipt generation, no signal regex/weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no external calls, no live model calls, no embeddings, no telemetry, no analytics, no storage, no certification, no enforcement, no approval/rejection behavior, no privacy guarantee, and no final-truth claim. Human review remains required.
 
-## Patch 142.2 - Unit Preview Scenario Intent Hotfix
+## Patch 142.3 - Receipt Reader Module Receipt Calibration and Stress Batch Tree Reset
 
 Status: READY FOR LOCAL REVIEW.
 
-Patch 142.2 fixes the Unit Preview router when the user enters a scenario-shaped prompt without explicit module words. Short narrative or institutional scenario phrases such as `an evil penguin rises to power after a revolution`, appeal-right removal, housing-support allocation, hospital AI override cases, or public-service access-control cases now suggest Stress Test before the Mirror Check fallback.
+Patch 142.3 makes Receipt Reader - Standard View module-aware for uploaded receipts. World Lens receipts now keep their selected-year evidence context, including 9k seat allocation, weighted integrity/friction/collapse values, empirical coverage, trust raw survey coverage, and trust-prior coverage notes where present. They are not forced into Mirror Check scenario wording and are not treated as country, government, institution, or system certification.
 
-The Unit Preview action buttons now use a compact button row directly under the chatbox. Reference previews remain below those buttons on the Unit Preview hook page.
+AI Integrity Mirror receipts now show static artifact-review context without implying live model, vendor, deployment, hidden-prompt, training-data, or future-behavior testing. Stress Test / Simulation receipts keep their native state, metrics, and repair questions without re-running scenarios.
 
-Boundary preserved: Unit Preview orientation and layout only. No scoring, no verdict routing, no taxonomy, no QUESTION_PROMPT logic, no receipt schema, no receipt generation, no signal regex/weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no upload/download behavior changes, no external calls, no live model calls, no embeddings, no telemetry, no analytics, no storage, no certification, no enforcement, no approval/rejection behavior, no privacy guarantee, and no final-truth claim. Human review remains required.
+Patch 142.3 also closes stale single-scenario Stress Test tree/result state when a Stress batch is run afterward, so a prior single-scenario tree does not remain below the batch output.
+
+Boundary preserved: no scoring, no verdict routing, no taxonomy, no QUESTION_PROMPT logic, no receipt schema, no receipt generation, no signal regex/weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no external calls, no live model calls, no embeddings, no telemetry, no analytics, no storage, no certification, no enforcement, no approval/rejection behavior, no privacy guarantee, and no final-truth claim. Human review remains required.

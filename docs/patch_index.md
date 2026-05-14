@@ -326,8 +326,13 @@ Patch 142.1 calibrates Receipt Reader - Standard View for uploaded ALETHEIA loca
 
 Boundary: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal behavior, no AI Integrity scan behavior, no Privacy Audit scan behavior, no World Lens math, no external calls, no telemetry, no analytics, no storage, no certification, and no final-truth behavior changed. Human review remains required.
 
-## Patch 142.2 - Unit Preview Scenario Intent Hotfix
+## Patch 142.3 - Receipt Reader Module Receipt Calibration and Stress Batch Tree Reset
 
-Patch 142.2 fixes scenario-shaped Unit Preview prompts so they suggest Stress Test before the Mirror Check fallback. The patch adds regression coverage for the `evil penguin` scenario, institutional scenario shapes, and the compact button row under the chatbox.
+Patch 142.3 calibrates Receipt Reader - Standard View for module receipts and fixes stale Stress Test tree display after batch runs.
 
-Scope: Unit Preview orientation/layout only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, external calls, telemetry, analytics, storage, certification, enforcement, or final-truth claim changed. Human review remains required.
+- World Lens uploaded receipts now display World Lens evidence context rather than Mirror Check scenario wording.
+- AI Integrity Mirror uploaded receipts now display static artifact review context without live-model or vendor claims.
+- Stress Test / Simulation uploaded receipts preserve native state, metrics, and repair questions without re-running or rescoring.
+- Stress Test batch runs close prior single-scenario tree/result state so the old tree does not remain below batch output.
+
+Scope: parser/UI display and Stress Test session-state cleanup only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, uploads/downloads, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed. Human review remains required.

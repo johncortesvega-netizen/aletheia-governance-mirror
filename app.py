@@ -3789,6 +3789,22 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
             st.session_state.stress_batch_index = batch_index
             st.session_state.stress_batch_summary = stress_rows
             st.session_state.stress_batch_active_signature = stress_batch_signature
+            # Patch 142.3: a Stress Test batch is a separate workflow. If the user
+            # ran one scenario first and then runs a batch, close the single-scenario
+            # tree/result state so the old tree does not remain below the batch.
+            for stress_single_key in [
+                "last_scan",
+                "last_features",
+                "last_sim",
+                "last_report",
+                "last_scan_mode",
+                "last_input_mode",
+                "last_query",
+                "last_query_raw",
+                "last_input_status",
+                "last_invisibility_report",
+            ]:
+                st.session_state.pop(stress_single_key, None)
             st.success(f"Stress batch complete. {len(stress_receipts)} local receipt(s) are ready to download.")
 
         if st.session_state.get("stress_batch_summary") and not stress_batch_is_stale:
