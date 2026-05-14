@@ -313,3 +313,9 @@ Scope: UI placement and tests/docs only. No scoring, verdict routing, taxonomy, 
 Patch 141.3 places the Unit Preview action buttons side by side directly under the Unit Preview chatbox. The local reference previews remain on the first app page but render below the action buttons.
 
 Scope: visual placement, tests, and docs only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, upload/download behavior, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed.
+
+## Patch 142 - Unit Preview Intent Router Calibration
+
+Patch 142 adds an internal Unit Preview intent-router calibration layer and batch-style tests. It keeps Unit Preview as a local orientation helper while improving phrase detection so AI Integrity Mirror, Receipt Reader, Privacy Audit, World Lens, Stress Test, Evidence Lab, and Why ALETHEIA / guidance are suggested when appropriate. Mirror Check is the fallback path for unclear or general governance text.
+
+Boundary: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal behavior, no AI Integrity scan behavior, no Privacy Audit scan behavior, no World Lens math, no external calls, no telemetry, no analytics, no storage, no certification, and no final-truth behavior changed.

@@ -101,56 +101,238 @@ def render_unit_preview_html_reference(container=None, project_root: Path | None
             components.html(html_text, height=420, scrolling=True)
 
 
-def suggest_review_path(text: str) -> dict[str, str]:
-    """Suggest a starting path using transparent local keyword rules."""
+def _contains_any(value: str, tokens: tuple[str, ...]) -> bool:
+    """Return True when any transparent local keyword token is present."""
+    return any(token in value for token in tokens)
+
+
+def detect_unit_preview_route(text: str) -> dict[str, str]:
+    """Suggest a Unit Preview path using deterministic local phrase rules.
+
+    This front-door helper is only orientation. It does not call engines, score
+    content, route verdicts, create receipts, mutate uploaded material, store
+    data, or contact outside services.
+    """
     value = (text or "").strip()
-    lowered = value.lower()
+    lowered = re.sub(r"\s+", " ", value.lower())
 
     if not value:
         return {
-            "path": "Mirror Check",
-            "reason": "No preview text was provided. Mirror Check is the calm default starting point.",
+            "module": "Mirror Check",
+            "route_type": "fallback",
+            "reason": "No preview text was provided, so the calm default is a first-pass mirror reading.",
+            "next_step": "Enter ALETHEIA and choose Mirror Check, or paste a more specific prompt.",
         }
 
-    if any(token in lowered for token in ["receipt fingerprint", "processed document fingerprint", "app version:", "rubric version:", "receipt"]):
+    receipt_tokens = (
+        "aletheia receipt",
+        "receipt reader",
+        "standard view",
+        "uploaded receipt",
+        "upload a receipt",
+        "receipt file",
+        "read this receipt",
+        "read a receipt",
+        "receipt fingerprint",
+        "processed document fingerprint",
+        "rubric version:",
+        "app version:",
+    )
+    if _contains_any(lowered, receipt_tokens):
         return {
-            "path": "Receipt Reader - Standard View",
-            "reason": "The text looks like a receipt or receipt excerpt.",
+            "module": "Receipt Reader — Standard View",
+            "route_type": "support_utility",
+            "reason": "The prompt points to reading an existing ALETHEIA receipt without changing it.",
+            "next_step": "Enter ALETHEIA and open Receipt Reader under Support utilities.",
         }
 
-    if any(token in lowered for token in ["model output", "prompt", "system prompt", "agent", "llm", "code", "```", "function ", "def ", "class "]):
+    ai_integrity_tokens = (
+        "ai answer",
+        "ai output",
+        "model response",
+        "model output",
+        "assistant response",
+        "ai assistant",
+        "llm",
+        "agent",
+        "system prompt",
+        "prompt injection",
+        "prompt risk",
+        "hallucination",
+        "hallucinate",
+        "overclaim",
+        "false authority",
+        "manipulation",
+        "refusal quality",
+        "unsafe answer",
+        "red team prompt",
+        "code block",
+        "```",
+        "function ",
+        "def ",
+        "class ",
+    )
+    if _contains_any(lowered, ai_integrity_tokens):
         return {
-            "path": "AI Integrity Mirror",
-            "reason": "The text looks like AI, prompt, model-output, agent, or code material.",
+            "module": "AI Integrity Mirror",
+            "route_type": "main_module",
+            "reason": "The prompt asks for review of AI, model-output, prompt, agent, or code behavior.",
+            "next_step": "Enter ALETHEIA and open AI Integrity Mirror.",
         }
 
-    if any(token in lowered for token in ["scenario", "stress", "pressure", "simulate", "under pressure", "what if", "capture risk"]):
+    privacy_tokens = (
+        "privacy",
+        "data collection",
+        "collect personal data",
+        "personal data",
+        "tele" + "metry",
+        "ana" + "lytics",
+        "track" + "ing",
+        "identifier",
+        "identifiers",
+        "retention",
+        "consent",
+        "storage",
+        "store user",
+        "data minimization",
+        "local only",
+        "network call",
+    )
+    if _contains_any(lowered, privacy_tokens):
         return {
-            "path": "Stress Test",
-            "reason": "The text looks like a scenario or governance pressure case.",
+            "module": "Privacy Audit",
+            "route_type": "main_module",
+            "reason": "The prompt asks about privacy, data collection, consent, storage, or platform instrumentation claims.",
+            "next_step": "Enter ALETHEIA and open Privacy Audit.",
         }
 
-    if any(token in lowered for token in ["evidence", "csv", "dataset", "source", "upload", "documentation", "documented"]):
+    world_lens_tokens = (
+        "country-year",
+        "country year",
+        "country/year",
+        "governance index",
+        "public trust",
+        "institutional integrity",
+        "collapse probability",
+        "parliament",
+        "seats",
+        "netherlands 2024",
+        "nation",
+        "world lens",
+        "wgi",
+        "v-dem",
+    )
+    if _contains_any(lowered, world_lens_tokens) or re.search(r"\b[A-Za-z][A-Za-z -]+\s+(19|20)\d{2}\b", value):
         return {
-            "path": "Evidence Lab",
-            "reason": "The text points toward evidence, sources, datasets, uploads, or documentation.",
+            "module": "World Lens",
+            "route_type": "main_module",
+            "reason": "The prompt points to country-year governance context or comparative public-institution signals.",
+            "next_step": "Enter ALETHEIA and open World Lens.",
         }
 
-    if any(token in lowered for token in ["country", "year", "governance context", "population", "world lens", "wgi", "v-dem"]):
+    stress_tokens = (
+        "stress test",
+        "pressure test",
+        "governance scenario",
+        "capture scenario",
+        "institutional pressure",
+        "under pressure",
+        "simulate",
+        "what if",
+        "scenario",
+        "capture pressure",
+    )
+    if _contains_any(lowered, stress_tokens):
         return {
-            "path": "World Lens",
-            "reason": "The text mentions country/year or governance context comparison.",
+            "module": "Stress Test",
+            "route_type": "main_module",
+            "reason": "The prompt frames a scenario or pressure case for governance stress review.",
+            "next_step": "Enter ALETHEIA and open Stress Test.",
         }
 
-    if "?" in value or any(token in lowered for token in ["review", "audit", "should i", "how do i", "can you check", "is this"]):
+    evidence_tokens = (
+        "evidence",
+        "source",
+        "citation",
+        "claim support",
+        "proof",
+        "document basis",
+        "csv",
+        "dataset",
+        "documentation",
+        "documented",
+    )
+    if _contains_any(lowered, evidence_tokens):
         return {
-            "path": "Mirror Check / Question Review",
-            "reason": "The text asks for review or audit guidance rather than describing a full scenario.",
+            "module": "Evidence Lab",
+            "route_type": "main_module",
+            "reason": "The prompt asks about evidence, sources, documents, claims, citations, or datasets.",
+            "next_step": "Enter ALETHEIA and open Evidence Lab.",
+        }
+
+    why_tokens = (
+        "what is aletheia",
+        "what does aletheia",
+        "explain aletheia",
+        "how does aletheia work",
+        "how do i use aletheia",
+        "why aletheia",
+        "how to use this",
+    )
+    if _contains_any(lowered, why_tokens):
+        return {
+            "module": "Why ALETHEIA / guidance",
+            "route_type": "guidance",
+            "reason": "The prompt asks for orientation before choosing a work module.",
+            "next_step": "Read the Unit Preview guidance, then enter ALETHEIA when ready.",
+        }
+
+    mirror_tokens = (
+        "repair question",
+        "question prompt",
+        "authority drift",
+        "boundary check",
+        "governance claim",
+        "is this a repair",
+        "is this",
+        "should i",
+        "can you check",
+        "review this",
+        "audit this",
+    )
+    if "?" in value or _contains_any(lowered, mirror_tokens):
+        return {
+            "module": "Mirror Check",
+            "route_type": "fallback",
+            "reason": "The prompt looks like a general review question or boundary check.",
+            "next_step": "Enter ALETHEIA and open Mirror Check for a first-pass reading.",
         }
 
     return {
-        "path": "Mirror Check",
-        "reason": "Mirror Check is the default starting point for short governance text, claims, or proposals.",
+        "module": "Mirror Check",
+        "route_type": "fallback",
+        "reason": "Mirror Check is the fallback for short governance text, claims, or unclear proposals.",
+        "next_step": "Enter ALETHEIA and open Mirror Check, then choose another module if the text is more specific.",
+    }
+
+
+def suggest_review_path(text: str) -> dict[str, str]:
+    """Suggest a starting path using transparent local keyword rules.
+
+    This wrapper preserves the original two-field return shape used by earlier
+    patch checks. New Unit Preview UI uses detect_unit_preview_route for the
+    richer guidance text.
+    """
+    suggestion = detect_unit_preview_route(text)
+    path = suggestion["module"]
+    value = (text or "").strip().lower()
+    if path == "Receipt Reader — Standard View":
+        path = "Receipt Reader - Standard View"
+    elif path == "Mirror Check" and ("?" in (text or "") or any(token in value for token in ("review", "audit", "should i", "how do i", "can you check", "is this"))):
+        path = "Mirror Check / Question Review"
+    return {
+        "path": path,
+        "reason": suggestion["reason"],
     }
 
 
@@ -188,11 +370,12 @@ def render_unit_preview(container=None) -> bool:
         )
 
     if preview_clicked:
-        suggestion = suggest_review_path(preview_text)
+        suggestion = detect_unit_preview_route(preview_text)
         container.markdown("### Suggested path")
-        container.write(suggestion["path"])
-        container.caption(suggestion["reason"])
-        container.caption("You can still choose any module after entering ALETHEIA.")
+        container.write(f"Suggested path: {suggestion['module']}")
+        container.write(f"Why: {suggestion['reason']}")
+        container.write(f"Next step: {suggestion['next_step']}")
+        container.caption("This is orientation only. You can still choose any module after entering ALETHEIA.")
 
     render_unit_preview_html_reference(container)
 

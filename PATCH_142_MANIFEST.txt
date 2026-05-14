@@ -1,0 +1,50 @@
+PATCH 142 - Unit Preview Intent Router Calibration
+
+Status: ready for local review.
+
+Purpose:
+- Calibrate Aletheia Unit Preview so it detects intent-specific phrases before falling back to Mirror Check.
+- Add a deterministic local helper, detect_unit_preview_route, for Unit Preview guidance only.
+- Show a clearer Suggested path / Why / Next step response in Unit Preview.
+- Add an internal batch-style router test matrix covering AI Integrity Mirror, Receipt Reader, Privacy Audit, World Lens, Stress Test, Why ALETHEIA guidance, and Mirror Check fallback.
+
+Files changed:
+- ui/unit_preview.py
+- tests/test_patch_142_unit_preview_intent_router.py
+- PATCH_142_MANIFEST.txt
+- PATCH_142_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- docs/architecture.md
+- data/protocol_baseline_manifest.json
+
+Boundary preserved:
+- No scoring changes.
+- No verdict routing changes.
+- No taxonomy changes.
+- No SANCTUARY / THRESHOLD / ASYLUM logic changes.
+- No QUESTION_PROMPT logic changes.
+- No receipt schema changes.
+- No receipt generation changes.
+- No signal regex or weight changes.
+- No AI Integrity scan behavior changes.
+- No Privacy Audit scan behavior changes.
+- No World Lens math changes.
+- No upload/download behavior changes.
+- No external calls.
+- No live model calls.
+- No embeddings.
+- No telemetry.
+- No analytics.
+- No database/storage.
+- No Global ID sync.
+- No public ledger sync.
+- No certification, enforcement, approval, rejection, privacy guarantee, or final-truth claim.
+
+Validation:
+- python tools\run_patch_checks.py 142
+- python tools\run_patch_checks.py 141
+- python tools\run_patch_checks.py 140
+- python tools\run_patch_checks.py 139
+- python tools\run_protocol_baseline_self_audit.py

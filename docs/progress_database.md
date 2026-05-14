@@ -2856,3 +2856,11 @@ Current patch: Patch 141.3 - Unit Preview Button Placement Hotfix.
 Patch 141.3 responds to first-page layout review. The Unit Preview action buttons now sit directly under the Unit Preview chatbox and are side by side: `Preview review path` and `Proceed to ALETHEIA`. Reference previews remain packaged local HTML, remain on the Unit Preview hook page, and now render below those actions.
 
 Boundary preserved: UI placement only. No scoring, routing, taxonomy, receipt schema, receipt generation, signal logic, AI Integrity behavior, Privacy Audit behavior, World Lens math, upload/download behavior, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed. Human review remains required.
+
+## Patch 142 - Unit Preview Intent Router Calibration
+
+Patch 142 calibrates the Aletheia Unit Preview first-page prompt so specific phrases are recognized before the fallback path. The new local helper `detect_unit_preview_route` is deterministic and limited to orientation. It suggests AI Integrity Mirror, Receipt Reader, Privacy Audit, World Lens, Stress Test, Evidence Lab, Why ALETHEIA / guidance, or Mirror Check fallback based on transparent local phrase families.
+
+The preview display now shows Suggested path, Why, and Next step in plain language. Mirror Check is the fallback, not the universal answer.
+
+Scope: Unit Preview routing guidance, tests, and documentation only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, upload/download behavior, external calls, telemetry, analytics, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed.

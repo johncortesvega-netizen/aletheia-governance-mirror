@@ -3087,3 +3087,13 @@ Status: READY FOR LOCAL REVIEW.
 Patch 141.3 moves the two Unit Preview action buttons directly under the Unit Preview chatbox and renders them side by side. The packaged local reference previews remain on the first app page but now appear below those buttons, not between the prompt and the actions.
 
 Boundary preserved: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal regex/weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no upload/download behavior changes, no external calls, no telemetry, no analytics, no storage, no certification, no enforcement, no privacy guarantee, and no final-truth claim. Human review remains required.
+
+## Patch 142 - Unit Preview Intent Router Calibration
+
+Status: READY FOR LOCAL REVIEW.
+
+Patch 142 calibrates Aletheia Unit Preview so it detects intent-specific phrases before falling back to Mirror Check. The preview now uses a deterministic local helper, `detect_unit_preview_route`, and displays a plain-language Suggested path / Why / Next step response.
+
+Mirror Check is the fallback, not the universal answer. AI-output prompts point to AI Integrity Mirror; receipt prompts point to Receipt Reader; privacy, telemetry, analytics, tracking, storage, or consent prompts point to Privacy Audit; country-year governance prompts point to World Lens; scenario/pressure prompts point to Stress Test; orientation prompts point to Why ALETHEIA / guidance.
+
+Boundary preserved: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal regex/weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no upload/download behavior changes, no external calls, no live model calls, no embeddings, no telemetry, no analytics, no storage, no certification, no enforcement, no privacy guarantee, and no final-truth claim. Human review remains required.
