@@ -1,3 +1,20 @@
+## Patch 130 — Release Candidate Freeze
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 130 records ALETHEIA as being in release-candidate refinement mode. The current app behavior is the surface to preserve; future work should be limited to bug fixes, public-copy/readability fixes, input clarity, test hygiene, documentation navigation, and small behavior-preserving cleanup.
+
+Boundary preserved: documentation and regression-test only. No runtime behavior change, no scoring change, no verdict-routing change, no signal-pattern or signal-weight change, no receipt schema change, no module-routing change, no privacy scan behavior change, no AI Integrity scan behavior change, no World Lens math change, no external calls, no live model calls, no telemetry, no analytics, no central storage, no Global ID sync, no public ledger sync, no privacy guarantee, no certification, no enforcement, and no final-truth behavior changed. Humans keep the judgment.
+
+Validation targets:
+
+```bat
+tools\run_patch_checks.bat 130
+tools\run_patch_checks.bat 129
+tools\run_patch_checks.bat 128
+python tools\run_protocol_baseline_self_audit.py
+```
+
 ## Patch 118 — Beginner UX Polish v2
 
 Status: READY FOR LOCAL REVIEW
@@ -2862,3 +2879,19 @@ python tools\run_protocol_baseline_self_audit.py
 Patch 128 public wording note: the compliance mirage is a review concern, not a legal conclusion. ALETHEIA asks reviewers to look beyond paperwork toward power movement, appeal, hidden influence, and human review.
 
 Patch 128 public wording note: regulation as a floor means compliance is not treated as the final measure of integrity; the compliance mirage remains a review concern, not a legal conclusion.
+
+## Patch 129 — Input and Error Clarity Pass
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Adds `ui/input_clarity.py` as a copy-only helper for selected input and upload messages.
+- Clarifies empty AI Integrity input, empty batch artifacts, English/Dutch language-calibration limits, public-data upload requirements, and direct CSV read failures.
+- Keeps this as refinement mode only: clearer user guidance, same mirror behavior.
+- No scoring, verdict-routing, signal-pattern, signal-weight, receipt schema, module-routing, privacy-scan behavior, AI Integrity scan behavior, World Lens math, external-call, telemetry, analytics, storage, privacy-guarantee, certification, enforcement, or final-truth behavior changed.
+
+Validation:
+- `tools\run_patch_checks.bat 129`
+- `tools\run_patch_checks.bat 128`
+- `tools\run_patch_checks.bat 127`
+- `python tools\run_protocol_baseline_self_audit.py`

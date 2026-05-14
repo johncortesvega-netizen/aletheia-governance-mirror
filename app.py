@@ -31,6 +31,14 @@ from ui.beginner_guide import render_try_this_first_guide
 from ui.module_intro import render_boundary_cases_intro, render_consent_audit_intro, render_stress_test_scan_intro
 from ui.privacy_audit_panel import render_privacy_boundary_audit_panel
 from ui.status_cards import render_ai_integrity_boundary_cards
+from ui.input_clarity import (
+    render_language_calibration_caveat,
+    render_direct_csv_read_failed,
+    render_upload_processing_failed,
+    warn_empty_ai_integrity_artifact,
+    warn_empty_ai_integrity_batch,
+    warn_no_public_data_upload,
+)
 
 from core.parser import parse_scenario_llm, decouple_actor
 from core.ethics import evaluate_ethics, apply_ethics_to_metrics
@@ -4405,15 +4413,16 @@ with tab_ai_integrity:
         placeholder="Paste one artifact, or multiple artifacts separated by a line containing ---",
     )
     st.caption("Static review only: no live model benchmarking, external calls, public ledger, central storage, or certification. Pasted artifact in, local risk reading out; batch mode extends that to pasted artifacts in, local risk readings out.")
+    render_language_calibration_caveat(st)
 
     if st.button("Run AI Integrity Mirror", type="primary", use_container_width=True, key="ai_integrity_run_button"):
         if not ai_integrity_input.strip():
-            st.warning("Paste an artifact first. ALETHEIA will not fabricate an AI/system reading without input.")
+            warn_empty_ai_integrity_artifact(st)
         else:
             if ai_batch_mode:
                 ai_batch_result = audit_ai_integrity_batch(ai_integrity_input, artifact_kind=artifact_kind)
                 if not ai_batch_result["results"]:
-                    st.warning("Batch mode found no non-empty artifacts. Separate items with a line containing ---.")
+                    warn_empty_ai_integrity_batch(st)
                 else:
                     st.session_state["ai_integrity_last_batch_result"] = ai_batch_result
                     st.session_state["ai_integrity_last_result"] = ai_batch_result["results"][0]
@@ -4898,7 +4907,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                 vdem_df = read_public_data_upload(vdem_upload) if vdem_upload is not None else None
                 trust_df = read_public_data_upload(trust_upload) if trust_upload is not None else None
                 if all(x is None for x in [wgi_df, pop_df, vdem_df, trust_df]):
-                    st.warning("Upload at least one public data file first. WGI is the best starting point.")
+                    warn_no_public_data_upload(st)
                 else:
                     diagnostics_df = public_upload_diagnostics(
                         wgi_df=wgi_df,
@@ -4920,9 +4929,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                 st.success(f"Upload processed: built a country-year table with {len(master_df):,} row(s); {valid_rows:,} valid identity row(s).")
         except Exception as exc:
             st.session_state.pop("empirical_master_df", None)
-            st.error("Upload processing failed.")
-            st.warning("No valid country-year table was made. The app did not switch to demo data while upload mode was active.")
-            st.error(f"Could not build master table: {exc}")
+            render_upload_processing_failed(st, exc)
             if isinstance(st.session_state.get("empirical_ingest_diagnostics"), pd.DataFrame):
                 st.markdown("#### Upload check details")
                 st.dataframe(st.session_state["empirical_ingest_diagnostics"], use_container_width=True, hide_index=True)
@@ -5081,7 +5088,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
                         "Grid coverage for that source will correctly remain 0%."
                     )
         except Exception as exc:
-            st.error(f"Could not read uploaded CSV: {exc}")
+            render_direct_csv_read_failed(st, exc)
             direct_upload_df = None
 
     use_template = st.checkbox(

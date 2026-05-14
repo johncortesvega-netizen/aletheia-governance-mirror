@@ -2728,3 +2728,16 @@ Human review remains required. ALETHEIA surfaces signals; humans keep the judgme
 Patch 128 public wording note: the compliance mirage is a review concern, not a legal conclusion. ALETHEIA asks reviewers to look beyond paperwork toward power movement, appeal, hidden influence, and human review.
 
 Patch 128 public wording note: regulation as a floor means compliance is not treated as the final measure of integrity; the compliance mirage remains a review concern, not a legal conclusion.
+
+## Patch 129 Notes - Input and Error Clarity Pass
+
+Patch 129 adds a small copy-only input clarity layer. The patch centralizes selected empty-input, language-calibration, and upload/read-failure messages in `ui/input_clarity.py` and wires those helpers into `app.py` where the same input checks already existed.
+
+Structural intent: refinement, not expansion. The patch improves the way ALETHEIA explains missing pasted artifacts, empty batch blocks, English/Dutch calibration limits, public-data upload requirements, and CSV read failures. It does not change scoring, routing, receipts, signal logic, privacy scan behavior, AI Integrity scan behavior, World Lens math, external calls, telemetry, storage, certification, enforcement, or final-truth behavior. Human review remains required.
+## Patch 130 — Release Candidate Freeze
+
+Patch 130 records ALETHEIA as being in release-candidate refinement mode after the Patch 127-129 public polish sequence. The current behavior is the surface to preserve. Future work should be limited to bug fixes, copy/readability fixes, input clarity, test hygiene, documentation navigation, and small behavior-preserving cleanup.
+
+This is not expansion. No new modules, no new scoring, no new risk states, no live model calls, no agentic review, no enterprise workflow, no telemetry, no analytics, no storage or identity sync, no certification, no enforcement, no privacy guarantee, and no final-truth claim are introduced or planned by this freeze.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.

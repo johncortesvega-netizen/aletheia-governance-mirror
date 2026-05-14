@@ -1032,3 +1032,16 @@ This patch updates the About / Why ALETHEIA page, Trust Package page, Evidence L
 Patch 128 public wording note: the compliance mirage is a review concern, not a legal conclusion. ALETHEIA asks reviewers to look beyond paperwork toward power movement, appeal, hidden influence, and human review.
 
 Patch 128 public wording note: regulation as a floor means compliance is not treated as the final measure of integrity; the compliance mirage remains a review concern, not a legal conclusion.
+
+## Patch 129 — Input and Error Clarity Pass
+
+Patch 129 is a refinement-only patch. It centralizes selected empty-input, language-calibration, and upload/read-failure messages in `ui/input_clarity.py` so user guidance is clearer without expanding ALETHEIA.
+
+The patch clarifies that pasted AI Integrity artifacts are required, empty batch blocks are ignored, English and Dutch/Nederlands remain the strongest calibrated input languages, and uploaded public data or CSV files may need file-type, column-name, encoding, and country/year checks. It does not change scoring, routing, receipts, signal logic, privacy scan behavior, AI Integrity scan behavior, World Lens math, external calls, telemetry, storage, certification, enforcement, or final-truth behavior. Human review remains required.
+## Patch 130 — Release Candidate Freeze
+
+Patch 130 records ALETHEIA as being in release-candidate refinement mode after the Patch 127-129 public polish sequence. The current behavior is the surface to preserve. Future work should be limited to bug fixes, copy/readability fixes, input clarity, test hygiene, documentation navigation, and small behavior-preserving cleanup.
+
+This is not expansion. No new modules, no new scoring, no new risk states, no live model calls, no agentic review, no enterprise workflow, no telemetry, no analytics, no storage or identity sync, no certification, no enforcement, no privacy guarantee, and no final-truth claim are introduced or planned by this freeze.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.

@@ -233,3 +233,16 @@ The patch reinforces refinement mode, not expansion: no app runtime behavior, sc
 Patch 128 public wording note: the compliance mirage is a review concern, not a legal conclusion. ALETHEIA asks reviewers to look beyond paperwork toward power movement, appeal, hidden influence, and human review.
 
 Patch 128 public wording note: regulation as a floor means compliance is not treated as the final measure of integrity; the compliance mirage remains a review concern, not a legal conclusion.
+
+## Patch 129 - Input and Error Clarity Pass
+
+Patch 129 adds `ui/input_clarity.py` as a copy-only helper for selected user-facing input and upload messages. `app.py` still owns orchestration, interactive controls, session state, module routing, scoring calls, upload handling, receipt generation, and downloads.
+
+The helper only renders clearer empty-input, empty-batch, language-calibration, public-data upload, and direct CSV read-failure messages. This is a refinement-mode change, not expansion: no scoring, routing, receipt schema, signal, privacy-audit, AI Integrity scan, World Lens, external-call, telemetry, storage, certification, enforcement, privacy-guarantee, or final-truth behavior changes.
+## Patch 130 — Release Candidate Freeze
+
+Patch 130 records ALETHEIA as being in release-candidate refinement mode after the Patch 127-129 public polish sequence. The current behavior is the surface to preserve. Future work should be limited to bug fixes, copy/readability fixes, input clarity, test hygiene, documentation navigation, and small behavior-preserving cleanup.
+
+This is not expansion. No new modules, no new scoring, no new risk states, no live model calls, no agentic review, no enterprise workflow, no telemetry, no analytics, no storage or identity sync, no certification, no enforcement, no privacy guarantee, and no final-truth claim are introduced or planned by this freeze.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.

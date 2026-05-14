@@ -235,3 +235,16 @@ Changed surface: About / Why ALETHEIA, Trust Package page, Evidence Lab static i
 Patch 128 public wording note: the compliance mirage is a review concern, not a legal conclusion. ALETHEIA asks reviewers to look beyond paperwork toward power movement, appeal, hidden influence, and human review.
 
 Patch 128 public wording note: regulation as a floor means compliance is not treated as the final measure of integrity; the compliance mirage remains a review concern, not a legal conclusion.
+
+## Patch 129 - Input and Error Clarity Pass
+
+Patch 129 improves selected public input and error messages without changing ALETHEIA's behavior. It adds `ui/input_clarity.py` for copy-only guidance around empty AI Integrity input, empty batch artifacts, English/Dutch language-calibration caveats, public-data uploads, and direct CSV read failures.
+
+This patch keeps the machine in refinement mode: clearer messages, same mirror. No scoring, routing, receipts, signal logic, privacy scan behavior, AI Integrity scan behavior, World Lens math, external calls, telemetry, storage, certification, enforcement, or final-truth behavior changed. Human review remains required.
+## Patch 130 — Release Candidate Freeze
+
+Patch 130 records ALETHEIA as being in release-candidate refinement mode after the Patch 127-129 public polish sequence. The current behavior is the surface to preserve. Future work should be limited to bug fixes, copy/readability fixes, input clarity, test hygiene, documentation navigation, and small behavior-preserving cleanup.
+
+This is not expansion. No new modules, no new scoring, no new risk states, no live model calls, no agentic review, no enterprise workflow, no telemetry, no analytics, no storage or identity sync, no certification, no enforcement, no privacy guarantee, and no final-truth claim are introduced or planned by this freeze.
+
+Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
