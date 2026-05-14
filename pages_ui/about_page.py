@@ -35,15 +35,15 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
             paper while still carrying capture risk, consent pressure, hidden influence, weak appeal
             paths, or authority drift.
 
-            ALETHEIA treats regulation as a floor, not the final measure of integrity. It asks:
+            ALETHEIA treats compliance as a floor, not the final measure of integrity. It asks:
 
             - Where is power moving?
             - Who can appeal?
             - What is hidden?
             - Where is human review being weakened?
 
-            The mirror does not replace enterprise governance, legal review, security review, or
-            technical audit. It exists in the space those systems often miss: capture pressure,
+            ALETHEIA does not replace enterprise tools, legal review, security review, or
+            human judgment. It exists in the space those systems often miss: capture pressure,
             consent erosion, appeal failure, hidden influence, and authority drift.
             """
         )
@@ -119,6 +119,7 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
             | Mirror Check | Reviews documents and proposals for capture risk, missing safeguards, and repair questions. |
             | Stress Test | Simulates scenario pressure and asks repair questions. |
             | Boundary Cases | Tests difficult ethical scenarios before they become app logic or public claims. |
+            | AI Integrity Mirror | Reviews AI outputs, prompts, agent specs, and code for authority-boundary and governance-integrity risk. |
             | Evidence Lab | Reviews evidence status, source coverage, schema readiness, and extraordinary claims. |
             | World Lens | Reviews selected-year, population-weighted evidence exposure without real Global ID, a real 9k body, or sovereign authority. |
             | Protocol Guide | Explains the modules, safe language, internal taxonomy labels, and limitations. |
@@ -136,6 +137,7 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
             - **Have a document?** Use Mirror Check.
             - **Have a scenario?** Use Stress Test.
             - **Have an ethical edge case?** Use Boundary Cases.
+            - **Have an AI output, prompt, agent spec, or code artifact?** Use AI Integrity Mirror.
             - **Have a claim or source question?** Use Evidence Lab.
             - **Need selected-year impact framing?** Use World Lens.
             - **Need rules and limits?** Use Protocol Guide.
@@ -180,6 +182,15 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
             Stress Test models governance pressure through archetype agents with intelligence, power, ego, alignment, trust, grievances, alliances, and memory.
 
             It tracks **Stability**, **Trust**, **Alignment**, and **Ego** over time. These are simulation readings, not predictions, commands, or final judgments.
+            """
+        )
+
+    with st.expander("AI Integrity Mirror", expanded=True):
+        st.markdown(
+            """
+            AI Integrity Mirror reviews AI outputs, prompts, agent specs, and code snippets for authority-boundary and governance-integrity risk.
+
+            It does not certify an AI system, approve a vendor, guarantee safety, or replace technical, legal, security, enterprise, or human review.
             """
         )
 

@@ -288,3 +288,11 @@ Patch 139 keeps Aletheia Unit Preview as the single hook before the full app whi
 ## Patch 140 - Unit Preview Orientation Cleanup
 
 Patch 140 moves beginner orientation copy into Aletheia Unit Preview and removes repeated beginner onboarding from the full app after the user proceeds. It also moves Receipt Reader - Standard View out of the main module tab row and exposes it as a support utility near the footer. This preserves the structure: hook first, modules after. No scoring, routing, receipts, signals, AI Integrity behavior, Privacy Audit behavior, World Lens math, external calls, telemetry, storage, certification, enforcement, privacy guarantee, or final-truth behavior changes.
+
+## Patch 141 - V1 UI Placement and Receipt Reader Upload Cleanup
+
+Patch 141 converts Receipt Reader - Standard View from pasted-receipt intake to upload-only intake for ALETHEIA receipt files (`.txt`, `.md`, `.json`). The reader shows native receipt state, native values, plain-language explanation, Standard View band, human-review note, non-certification note, and parsing limits without rescoring, generating a new receipt, or overriding uploaded receipt values.
+
+It also renders packaged HTML reference previews side by side on the Unit Preview hook page, preserves AI Integrity Mirror visibility as a main work module, updates public V1 header/footer wording, refreshes Why ALETHEIA positioning, and raises the tree canopy as visual-only UI polish.
+
+Scope: UI placement, copy, support-utility intake, docs, and tests only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, external calls, telemetry, analytics, storage, certification, enforcement, or final-truth behavior changed. Human review remains required.

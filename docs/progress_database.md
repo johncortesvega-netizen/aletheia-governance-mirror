@@ -2821,3 +2821,13 @@ Patch 140 keeps the hook/meat structure: Aletheia Unit Preview is the first orie
 Receipt Reader - Standard View is no longer treated as a core module tab. It remains available as a support utility near the footer for users who already have an ALETHEIA receipt.
 
 Boundary preserved: placement and copy organization only. No scoring, routing, taxonomy, receipt schemas, receipt generation, signal regexes, signal weights, AI Integrity behavior, Privacy Audit behavior, World Lens math, uploads, downloads, external calls, telemetry, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed.
+
+## Patch 141 Notes - V1 UI Placement and Receipt Reader Upload Cleanup
+
+Current patch: Patch 141 - V1 UI Placement and Receipt Reader Upload Cleanup.
+
+Patch 141 makes Receipt Reader - Standard View upload-only. Users upload an ALETHEIA receipt file (`.txt`, `.md`, or `.json`) and receive a compact plain-language analysis that preserves native receipt state, native ALETHEIA values, Standard View review band, human-review note, non-certification note, and parsing limits. The pasted receipt textbox is removed from the active UI, and missing fields now say `Not found in uploaded receipt`.
+
+Patch 141 also keeps Aletheia Unit Preview as the hook page while rendering packaged local HTML references side by side when present, confirms AI Integrity Mirror remains visible as a main module and Unit Preview guidance example, updates public header/footer wording to `Aletheia V1 — Governance Mirror Final`, refreshes Why ALETHEIA V1 positioning, and moves the pulse tree canopy higher as visual-only polish.
+
+Boundary preserved: no scoring, verdict routing, taxonomy, SANCTUARY / THRESHOLD / ASYLUM logic, QUESTION_PROMPT logic, receipt schema, receipt generation, signal regex, signal weights, AI Integrity scan behavior, Privacy Audit scan behavior, World Lens math, external calls, live model calls, embeddings, telemetry, analytics, database/storage, Global ID sync, public ledger sync, certification, enforcement, approval, rejection, privacy guarantee, or final-truth behavior changed. Human review remains required.

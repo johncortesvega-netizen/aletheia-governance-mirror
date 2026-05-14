@@ -3050,3 +3050,15 @@ python tools\run_patch_checks.py 139
 python tools\run_patch_checks.py 138
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+## Patch 141 - V1 UI Placement and Receipt Reader Upload Cleanup
+
+Status: READY FOR LOCAL REVIEW.
+
+Patch 141 makes Receipt Reader - Standard View upload-only and removes the pasted receipt textbox from the active UI. Uploaded `.txt`, `.md`, and `.json` ALETHEIA receipt files are parsed for obvious native receipt fields only. Missing values show `Not found in uploaded receipt`; missing values are not inferred.
+
+The reader displays native receipt state, native ALETHEIA values, a plain-language explanation, Standard View review band, human-review note, non-certification note, and parsing limits. It does not rescore, certify, approve, reject, create a new receipt, or override the uploaded receipt.
+
+Additional UI placement updates: Unit Preview renders packaged local HTML references side by side when present; AI Integrity Mirror remains visible as a main module and appears in Unit Preview guidance; public header/footer wording includes `Aletheia V1 — Governance Mirror Final`; Why ALETHEIA matches current V1 positioning; the pulse canopy/tree visual sits higher as visual-only polish.
+
+Boundary preserved: no scoring, no verdict routing, no taxonomy, no receipt schema, no receipt generation, no signal regex/weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no external calls, no telemetry, no analytics, no storage, no certification, no enforcement, no privacy guarantee, and no final-truth claim. Human review remains required.

@@ -273,3 +273,9 @@ Patch 139 keeps `ui/unit_preview.py` as the only active pre-module entry hook, b
 ## Patch 140 Orientation Placement
 
 Patch 140 clarifies the UX architecture: Aletheia Unit Preview is the orientation hook; the module tabs are the working surface. Beginner guidance and the practical `How to use this` examples live in `ui/unit_preview.py`, before the user enters the full app. Receipt Reader - Standard View is treated as a support utility near the footer rather than a core module tab. This is a placement/refinement change only and does not alter analysis engines, receipts, scoring, routing, signals, or privacy behavior.
+
+## Patch 141 Architecture Note - Receipt Reader Upload-Only Support Utility
+
+Receipt Reader - Standard View remains a support utility outside the main module tab row. In Patch 141 its active intake is upload-only for local ALETHEIA receipt files (`.txt`, `.md`, `.json`). It reads uploaded receipt text in the running session, extracts obvious fields, and displays a compact Standard View mapping. It does not rescore, route verdicts, infer missing values, generate receipts, override uploaded receipt values, store files, call external services, use live model calls, use embeddings, create telemetry, or claim certification.
+
+Aletheia Unit Preview remains the front-door hook. Packaged local HTML references may render side by side on that hook page when files exist; missing files are ignored calmly. AI Integrity Mirror remains one of the main work modules. The pulse tree canopy adjustment in Patch 141 is visual-only and does not touch scoring logic, receipt metrics, or verdict routing.

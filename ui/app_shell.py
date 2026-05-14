@@ -7,6 +7,8 @@ services, or mutate receipts.
 """
 from __future__ import annotations
 
+PUBLIC_V1_LABEL = "Aletheia V1 — Governance Mirror Final"
+
 
 def render_app_boundary_notices(supported_input_language_note: str, container=None) -> None:
     """Render the stable top-of-app boundary notices.
@@ -65,10 +67,10 @@ def render_app_header(mascot_logo_uri: str, app_version: str, container=None) ->
         <div class="botanical-frame hero">
             <div class="hero-grid">
                 <div>
-                    <div class="hero-kicker">Sydney Protocol · Local Mirror · Plain Words</div>
+                    <div class="hero-kicker">Aletheia V1 — Governance Mirror Final</div>
                     <div class="hero-title">ALETHEIA</div>
                     <div class="hero-sub">A mirror, not a throne.</div>
-                    <div class="caption">{app_version} · English + Nederlands/Dutch input supported · Spot control. Protect people. Keep truth visible.</div>
+                    <div class="caption">Aletheia V1 — Governance Mirror Final · English + Nederlands/Dutch input supported · Spot control. Protect people. Keep truth visible.</div>
                 </div>
                 <div class="hero-emblem" aria-hidden="true"><img class="aletheia-mascot-logo" src="{mascot_logo_uri}" alt="" /></div>
             </div>
@@ -225,7 +227,7 @@ def render_app_footer_banner(app_version: str, container=None) -> None:
         container = st
 
     container.markdown(
-        f"""<div class="footer-banner"><strong>ALETHEIA reflects.</strong> People decide. · {app_version}</div>""",
+        f"""<div class="footer-banner"><strong>ALETHEIA reflects.</strong> People decide. · Aletheia V1 — Governance Mirror Final · Mirror, not throne.</div>""",
         unsafe_allow_html=True,
     )
 

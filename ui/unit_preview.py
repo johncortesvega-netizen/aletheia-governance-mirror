@@ -6,6 +6,7 @@ score, route modules, create receipts, inspect files, or call module engines.
 from __future__ import annotations
 
 import re
+from pathlib import Path
 
 
 UNIT_PREVIEW_SESSION_KEY = "aletheia_unit_preview_passed"
@@ -60,6 +61,44 @@ def get_unit_preview_start_here_markdown() -> str:
 - the text involves legal, medical, political, institutional, or financial consequences;
 - you cannot explain the receipt in plain language to another reviewer.
 """
+
+
+def get_unit_preview_html_files(project_root: Path | None = None) -> list[tuple[str, Path]]:
+    """Return packaged HTML preview files for the Unit Preview hook page."""
+    root = project_root or Path(__file__).resolve().parents[1]
+    candidates = [
+        ("Sydney Protocol v3.2", root / "Sydney_Protocol_v3.2.html"),
+        ("GPA v8.2", root / "GPA_v8.2.html"),
+    ]
+    return [(title, path) for title, path in candidates if path.exists()]
+
+
+def render_unit_preview_html_reference(container=None, project_root: Path | None = None) -> None:
+    """Render packaged HTML previews side by side when present.
+
+    This stays on the Unit Preview hook page and uses packaged local files only.
+    Missing files are ignored calmly.
+    """
+    if container is None:
+        import streamlit as st  # type: ignore
+
+        container = st
+
+    html_files = get_unit_preview_html_files(project_root)
+    if not html_files:
+        return
+
+    container.markdown("### Reference previews")
+    container.caption("Packaged local HTML references. These are orientation aids, not final authority.")
+    import streamlit.components.v1 as components  # type: ignore
+
+    columns = container.columns(len(html_files))
+    for index, ((title, path), column) in enumerate(zip(html_files, columns), start=1):
+        with column:
+            column.markdown(f"**{title}**")
+            column.caption(f"Local file: `{path.name}`")
+            html_text = path.read_text(encoding="utf-8", errors="ignore")
+            components.html(html_text, height=420, scrolling=True)
 
 
 def suggest_review_path(text: str) -> dict[str, str]:
@@ -129,6 +168,7 @@ def render_unit_preview(container=None) -> bool:
     )
     container.info(get_unit_preview_boundary_text())
     container.markdown(get_unit_preview_how_to_use_markdown())
+    render_unit_preview_html_reference(container)
     with container.expander("Start here: try this first", expanded=False):
         container.markdown(get_unit_preview_start_here_markdown())
 
