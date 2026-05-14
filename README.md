@@ -1074,3 +1074,7 @@ Boundary preserved: no scoring, no verdict routing, no taxonomy change, no recei
 ### Patch 137 validation alignment
 
 Patch 137 is a test/check hygiene patch. It aligns older Start Page validation with the current Aletheia Unit Preview front door. It changes validation only; app behavior, scoring, receipts, signal logic, privacy scan behavior, AI Integrity behavior, and World Lens math remain unchanged.
+
+### Patch 138 note: single Unit Preview entry
+
+ALETHEIA now uses Aletheia Unit Preview as the single pre-app entry surface. The old Start Page is no longer an active gate. Unit Preview suggests where to begin; it does not score, certify, approve, reject, or replace the full modules.

@@ -2799,3 +2799,7 @@ Current patch: Patch 137 - Validation Alignment After Unit Preview.
 Patch 137 fixes stale validation from the Patch 131/132 start-page sequence after Patch 135/136 replaced the front door with Aletheia Unit Preview. The older tests now accept the current Unit Preview session-state gate while still enforcing the same boundary: pre-app suggestion only, no scoring, no routing decision, no receipt mutation, no storage, no external calls, and no authority claim.
 
 Status: READY FOR LOCAL REVIEW.
+
+### Patch 138 — Single Unit Preview Entry Hotfix
+
+Patch 138 corrects the pre-app entry flow after Unit Preview. ALETHEIA now has one active entry gate: Aletheia Unit Preview. The retired Start Page helper remains only as a compatibility wrapper that delegates to Unit Preview. This prevents the old page from appearing before or flashing alongside the current Unit Preview. No scoring, routing, receipts, signals, privacy, AI Integrity, World Lens, telemetry, storage, or authority-boundary behavior changed.

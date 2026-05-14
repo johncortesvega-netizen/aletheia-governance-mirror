@@ -261,3 +261,7 @@ Human review remains required. ALETHEIA surfaces signals; humans keep the judgme
 ## Patch 137 validation note
 
 Patch 137 does not alter the architecture. It records that the current entry gate is Aletheia Unit Preview (`ui/unit_preview.py`) and updates older validation to check the session-state-only pre-app gate boundary rather than the superseded exact `ui.start_page` import. `app.py` remains the orchestrator and all analysis modules remain unchanged.
+
+### Patch 138 note — Single pre-app entry surface
+
+Aletheia Unit Preview is the only active pre-app entry gate. The older Start Page helper is retained only as a compatibility wrapper and must not be called by `app.py`. This prevents double-gate behavior while preserving a session-only, non-authoritative entry flow.

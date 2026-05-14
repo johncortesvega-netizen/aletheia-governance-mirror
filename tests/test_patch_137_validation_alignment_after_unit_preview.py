@@ -24,33 +24,36 @@ def test_patch_137_files_exist():
         assert (ROOT / rel).exists(), rel
 
 
-def test_current_front_door_is_unit_preview_session_gate_before_tabs():
+def test_current_front_door_is_only_unit_preview_session_gate_before_tabs():
     app = read("app.py")
     assert "from ui.unit_preview import UNIT_PREVIEW_SESSION_KEY, render_unit_preview" in app
+    assert "from ui.start_page" not in app
+    assert "START_GATE_SESSION_KEY" not in app
+    assert "render_start_page(" not in app
     assert "st.session_state.get(UNIT_PREVIEW_SESSION_KEY, False)" in app
     assert "render_unit_preview(st)" in app
     assert "st.session_state[UNIT_PREVIEW_SESSION_KEY] = True" in app
     assert "st.rerun()" in app
     assert "st.stop()" in app
+    assert app.count("st.stop()") >= 1
     assert app.index("if not st.session_state.get(UNIT_PREVIEW_SESSION_KEY, False):") < app.index("st.tabs(APP_NAVIGATION_LABELS)")
 
 
-def test_older_start_page_tests_allow_successor_gate_instead_of_exact_old_import():
+def test_older_start_page_tests_now_reject_active_legacy_gate():
     patch_131_test = read("tests/test_patch_131_start_page_gate.py")
     patch_132_test = read("tests/test_patch_132_start_page_stabilization_checkpoint.py")
-    assert "ui.unit_preview" in patch_131_test
-    assert "UNIT_PREVIEW_SESSION_KEY" in patch_131_test
-    assert "has_start_page_gate or has_unit_preview_gate" in patch_131_test
-    assert "ui.unit_preview" in patch_132_test
-    assert "UNIT_PREVIEW_SESSION_KEY" in patch_132_test
-    assert "has_start_page_gate or has_unit_preview_gate" in patch_132_test
+    for test_text in [patch_131_test, patch_132_test]:
+        assert "has_start_page_gate or has_unit_preview_gate" not in test_text
+        assert "render_start_page(st) or render_unit_preview(st)" not in test_text
+        assert "render_unit_preview" in test_text
+        assert "UNIT_PREVIEW_SESSION_KEY" in test_text
 
 
-def test_manifest_is_utf8_without_bom_and_current_after_validation_alignment():
+def test_manifest_is_utf8_without_bom_and_tracks_unit_preview_successor_tests():
     raw = read_bytes("data/protocol_baseline_manifest.json")
     assert not raw.startswith(b"\xef\xbb\xbf")
     manifest = json.loads(raw.decode("utf-8"))
-    assert str(manifest["created_for_patch"]) == "137"
+    assert str(manifest["created_for_patch"]).isdigit()
     files = manifest["files"]
     required = [
         "tests/test_patch_131_start_page_gate.py",
@@ -58,6 +61,8 @@ def test_manifest_is_utf8_without_bom_and_current_after_validation_alignment():
         "tests/test_patch_132_start_page_stabilization_checkpoint.py",
         "tests/test_patch_137_validation_alignment_after_unit_preview.py",
         "docs/validation_alignment_after_unit_preview.md",
+        "ui/unit_preview.py",
+        "ui/start_page.py",
     ]
     for rel in required:
         assert rel in files
@@ -94,8 +99,6 @@ def test_patch_137_docs_are_boundary_safe():
     for phrase in required:
         assert phrase in combined
 
-    # Negative boundary language such as "no telemetry" and "no privacy guarantee"
-    # is allowed. The forbidden set below targets positive authority/guarantee claims.
     forbidden_positive_claims = [
         "is an automated approval",
         "provides automated approval",

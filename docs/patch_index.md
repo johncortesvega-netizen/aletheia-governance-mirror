@@ -278,3 +278,5 @@ Patch 131 belongs to release-candidate refinement. It adds a Start Page / How to
 Patch 137 is a test/check hygiene patch after the Patch 131-136 entry-flow sequence. It aligns older Patch 131/132 validation with the current Aletheia Unit Preview implementation by checking the structural invariant instead of the old exact Start Page import.
 
 Scope: validation and documentation only. No runtime behavior change, no scoring change, no verdict routing change, no taxonomy change, no receipt schema or receipt generation change, no signal regex or signal weight change, no AI Integrity scan behavior change, no Privacy Audit scan behavior change, no World Lens math change, no uploads/downloads or batch behavior change, no external calls, no telemetry, no analytics, no storage or identity sync, no certification, no enforcement, no privacy guarantee, and no final-truth behavior changed. Humans keep the judgment.
+
+- **Patch 138 — Single Unit Preview Entry Hotfix**: retires the old Start Page as an active gate and keeps Aletheia Unit Preview as the single pre-app entry surface; validation-only/wiring hotfix with no scoring or module behavior changes.

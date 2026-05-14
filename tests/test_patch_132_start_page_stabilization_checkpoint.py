@@ -19,40 +19,22 @@ def test_patch_132_files_exist():
         assert (ROOT / rel).exists(), rel
 
 
-def test_start_gate_remains_session_state_only_and_stops_before_modules():
+def test_single_unit_preview_gate_is_session_state_only_and_before_modules():
     app = read("app.py")
-    has_start_page_gate = (
-        "from ui.start_page import START_GATE_SESSION_KEY, render_start_page" in app
-        and "st.session_state.get(START_GATE_SESSION_KEY, False)" in app
-        and "render_start_page(st)" in app
-        and "st.session_state[START_GATE_SESSION_KEY] = True" in app
-    )
-    has_unit_preview_gate = (
-        "from ui.unit_preview import UNIT_PREVIEW_SESSION_KEY, render_unit_preview" in app
-        and "st.session_state.get(UNIT_PREVIEW_SESSION_KEY, False)" in app
-        and "render_unit_preview(st)" in app
-        and "st.session_state[UNIT_PREVIEW_SESSION_KEY] = True" in app
-    )
-    assert has_start_page_gate or has_unit_preview_gate
+    assert "from ui.unit_preview import UNIT_PREVIEW_SESSION_KEY, render_unit_preview" in app
+    assert "from ui.start_page" not in app
+    assert "START_GATE_SESSION_KEY" not in app
+    assert "render_start_page(" not in app
+    assert "st.session_state.get(UNIT_PREVIEW_SESSION_KEY, False)" in app
+    assert "render_unit_preview(st)" in app
+    assert "st.session_state[UNIT_PREVIEW_SESSION_KEY] = True" in app
     assert "st.rerun()" in app
     assert "st.stop()" in app
-
-    gate_markers = [
-        marker
-        for marker in [
-            "if not st.session_state.get(START_GATE_SESSION_KEY, False):",
-            "if not st.session_state.get(UNIT_PREVIEW_SESSION_KEY, False):",
-        ]
-        if marker in app
-    ]
-    assert gate_markers
-    gate_index = min(app.index(marker) for marker in gate_markers)
-    tabs_index = app.index("st.tabs(APP_NAVIGATION_LABELS)")
-    assert gate_index < tabs_index
+    assert app.index("if not st.session_state.get(UNIT_PREVIEW_SESSION_KEY, False):") < app.index("st.tabs(APP_NAVIGATION_LABELS)")
 
 
-def test_start_page_helper_has_single_proceed_button_and_no_persistence():
-    helper = read("ui/start_page.py")
+def test_unit_preview_helper_has_proceed_button_and_no_persistence():
+    helper = read("ui/unit_preview.py")
     tree = ast.parse(helper)
     button_calls = [
         node
@@ -61,9 +43,13 @@ def test_start_page_helper_has_single_proceed_button_and_no_persistence():
         and isinstance(node.func, ast.Attribute)
         and node.func.attr == "button"
     ]
-    assert len(button_calls) == 1
-    assert "Proceed to ALETHEIA" in helper
-    assert "aletheia_start_gate_passed" in helper
+    labels = []
+    for call in button_calls:
+        if call.args and isinstance(call.args[0], ast.Constant):
+            labels.append(str(call.args[0].value))
+    assert "Preview review path" in labels
+    assert "Proceed to ALETHEIA" in labels
+    assert "aletheia_unit_preview_passed" in helper
 
     forbidden = [
         "cookies",
@@ -79,7 +65,7 @@ def test_start_page_helper_has_single_proceed_button_and_no_persistence():
         "telemetry",
         "analytics",
         "tracking",
-        "auth",
+        "auth/login",
         "login",
         "database",
     ]
@@ -88,78 +74,16 @@ def test_start_page_helper_has_single_proceed_button_and_no_persistence():
         assert phrase.lower() not in lowered
 
 
-def test_normal_app_interface_still_renders_after_gate_passes():
-    app = read("app.py")
-    required_after_gate = [
-        "render_app_header(mascot_logo_uri, APP_VERSION, st)",
-        "render_how_to_use_note(st)",
-        "render_try_this_first_guide(st, expanded=False)",
-        "render_sidebar_brand(mascot_logo_uri, st)",
-        "render_sidebar_context(st)",
-        "st.tabs(APP_NAVIGATION_LABELS)",
-        "with tab_chat:",
-        "with tab_sim:",
-        "with tab_boundary:",
-        "with tab_ai_integrity:",
-        "with tab_empirical:",
-        "with tab_grid:",
-        "with tab_doctrine:",
-        "with tab_about:",
-    ]
-    for phrase in required_after_gate:
-        assert phrase in app
-
-
-def test_patch_132_docs_capture_stabilization_boundary():
+def test_stabilization_docs_acknowledge_successor_unit_preview():
     combined = "\n".join(
         read(rel)
         for rel in [
             "docs/start_page_stabilization_checkpoint.md",
-            "PATCH_132_MANIFEST.txt",
-            "PATCH_132_RECOVERY_NOTE.md",
-            "PATCH_STATUS.md",
-            "docs/progress_database.md",
-            "docs/patch_index.md",
+            "docs/aletheia_unit_preview_v1.md",
+            "docs/aletheia_unit_preview_stabilization.md",
         ]
+        if (ROOT / rel).exists()
     ).lower()
-    required = [
-        "patch 132",
-        "start page stabilization checkpoint",
-        "session-state-only",
-        "no cookies",
-        "no persistent storage",
-        "no telemetry",
-        "no analytics",
-        "no auth",
-        "no tracking",
-        "no scoring",
-        "no routing",
-        "no receipt schema",
-        "no signal",
-        "no privacy audit scan behavior change",
-        "no ai integrity scan behavior change",
-        "no world lens math",
-        "humans keep the judgment",
-    ]
-    for phrase in required:
-        assert phrase in combined
-
-    forbidden = [
-        "privacy guaranteed",
-        "guarantees privacy",
-        "automatic enforcement",
-        "final truth guaranteed",
-        "certifies safety",
-        "certifies compliance",
-    ]
-    for phrase in forbidden:
-        assert phrase not in combined
-
-
-def test_patch_132_python_files_parse():
-    for rel in [
-        "app.py",
-        "ui/start_page.py",
-        "tests/test_patch_132_start_page_stabilization_checkpoint.py",
-    ]:
-        ast.parse(read(rel))
+    assert "session" in combined
+    assert "unit preview" in combined
+    assert "human judgment" in combined

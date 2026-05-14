@@ -3017,3 +3017,9 @@ python tools\run_patch_checks.py 130
 python tools\run_patch_checks.py 129
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+## Patch 138 — Single Unit Preview Entry Hotfix
+
+Status: Ready for local review.
+
+Patch 138 keeps Aletheia Unit Preview as the single active pre-app gate and retires the old Start Page as an active UI path. The legacy helper now delegates to Unit Preview so stale imports cannot revive the old page. No runtime analysis behavior, scoring, routing, receipts, signals, privacy scan behavior, AI Integrity behavior, World Lens math, external calls, telemetry, storage, certification, enforcement, privacy guarantee, or final-truth behavior changed.
