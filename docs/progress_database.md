@@ -2937,37 +2937,19 @@ Boundary notes:
 - No receipt generation was added to Boundary Cases.
 - No scoring, verdict routing, taxonomy, receipt schema/generation, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, upload/download behavior, external calls, telemetry/storage, certification, enforcement, or final-truth behavior changed.
 
+## Patch 146 - Unit Preview Receipt Route + World Lens Context Copy
 
-## Patch 143 - Public Repository Hygiene / Reviewer Onboarding
-
-Patch 143 responds to external reviewer-readiness feedback without changing ALETHEIA's engine. The patch adds a cleaner public doorway: reviewer-start documentation, a plain-language glossary, validation/precision framing, a guide for reviewing ALETHEIA without trusting ALETHEIA, and patch-archive navigation.
-
-Implementation notes:
-- `docs/reviewer_start_here.md` gives a first path through the repository.
-- `docs/glossary.md` explains 9k, Sydney Protocol, V-Axis, World Lens, Receipt Reader, Standard View, Unit Preview, taxonomy labels, and related boundary terms.
-- `docs/validation_and_precision.md` clarifies that numerical values are internal review aids, not independent validation or final truth.
-- `docs/how_to_review_aletheia_without_trusting_it.md` makes self-audit and no-telemetry review explicit.
-- `docs/patch_archive/README.md`, `docs/patch_archive/root_patch_artifact_index.md`, and `tools/archive_root_patch_artifacts.py` support archive-style cleanup without deleting the audit trail.
+Patch 146 clarifies two remaining V1 UI/copy issues. Unit Preview no longer presents its active text box as a receipt reader; it now labels the input as short text, question, or scenario while still detecting receipt-like text and suggesting Receipt Reader as the correct upload-only support utility. World Lens copy now frames the scenario box as an optional context note and replaces the old simulation-report wording with a bounded World Lens context reflection and review-pressure lens.
 
 Boundary notes:
-- Reviewer-readiness is not mass-adoption polish and not a philosophical correction.
-- No app behavior, scoring, verdict routing, taxonomy, QUESTION_PROMPT logic, receipt schema/generation, signal regex/weights, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, upload/download behavior, external calls, telemetry/storage, certification, enforcement, or final-truth behavior changed.
+- Unit Preview may suggest Receipt Reader, but Receipt Reader remains the only active receipt-reading utility.
+- World Lens context controls do not change country-year data, World Lens math, 9k allocation, receipts, scoring, or verdict routing.
+- No scoring, taxonomy, receipt schema/generation, signal behavior, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, external calls, telemetry/storage, certification, enforcement, approval/rejection, or final-truth behavior changed.
 
-## Patch 144 - README 60-Second Clarity / Reviewer Path Polish
+Validation commands:
 
-Patch 144 follows Patch 143's public repository/reviewer doorway work with a sharper first-time explanation layer. It adds a top-of-README "ALETHEIA in 60 Seconds" section, a New Reviewer Path, Typical Use Cases, a `docs/for-reviewers/` quick-start folder, glossary examples with Dutch/Nederlands equivalents, and a stronger validation-gap / numerical-precision explanation.
-
-This is reviewer-readiness and public clarity work only. It does not simplify the engine, cut scope, alter modules, or change scoring. The goal is to let a first-time reviewer understand what ALETHEIA is, what it is not, how to start, and how to inspect it without trusting it.
-
-Boundary preserved: documentation/readability only. No app behavior, scoring, routing, taxonomy, receipt, World Lens math, AI Integrity, Privacy Audit, upload/download, telemetry/storage, certification, enforcement, or final-authority behavior changed.
-
-
-## Patch 145 — Tool Comparison / Unit Preview GitHub Link
-
-Status: READY FOR LOCAL REVIEW.
-
-Patch 145 improves public reviewer positioning by adding a comparison document for ALETHEIA versus XAI tools, enterprise governance platforms, and runtime guardrails. The comparison emphasizes that ALETHEIA is a complementary governance mirror layer for human review, local receipts, evidence context, and repair-oriented thinking.
-
-The patch also adds a small GitHub repository link button to Aletheia Unit Preview. This is a user-clicked public source link only; it does not add telemetry, background calls, integrations, or app-side external processing.
-
-Boundary preserved: docs/readability and link placement only. No scoring, routing, taxonomy, receipt, signal, World Lens math, AI Integrity, Privacy Audit, Stress Test, upload/download, telemetry, storage, certification, enforcement, or final-truth behavior changed.
+```text
+python tools\run_patch_checks.py 146
+python tools\run_patch_checks.py 142_16
+python tools\run_protocol_baseline_self_audit.py
+```

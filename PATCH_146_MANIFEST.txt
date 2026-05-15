@@ -1,0 +1,27 @@
+PATCH 146 MANIFEST — Unit Preview Receipt Route + World Lens Context Copy
+
+Files changed:
+- app.py
+- ui/unit_preview.py
+- tests/test_patch_146_unit_preview_receipt_route_world_lens_context.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- data/protocol_baseline_manifest.json
+- PATCH_146_MANIFEST.txt
+- PATCH_146_RECOVERY_NOTE.md
+
+Purpose:
+- Clarify that Unit Preview can suggest Receipt Reader but does not itself read receipts.
+- Remove receipt from the active Unit Preview text-area label.
+- Keep deterministic receipt-text detection so pasted receipt-like text routes to Receipt Reader.
+- Make World Lens context controls read as an optional human-review lens, not a scenario simulation form.
+- Rename World Lens context output from Simulation report to World Lens context reflection.
+
+Hard boundaries:
+- No World Lens math changes.
+- No 9k allocation changes.
+- No receipt generation or receipt schema changes.
+- No scoring, verdict routing, taxonomy, signal regex, or signal weight changes.
+- No Stress Test, Mirror Check, AI Integrity, Privacy Audit, or Receipt Reader behavior changes.
+- No external calls, telemetry, analytics, storage, Global ID sync, public ledger sync, certification, enforcement, approval/rejection, legal authority, official authority, or final-truth claims.

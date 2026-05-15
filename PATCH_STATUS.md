@@ -3237,55 +3237,19 @@ python tools\run_patch_checks.py 142_13
 python tools\run_protocol_baseline_self_audit.py
 ```
 
+## Patch 146 - Unit Preview Receipt Route + World Lens Context Copy
 
-## Patch 143 - Public Repository Hygiene / Reviewer Onboarding
+Patch 146 clarifies two remaining V1 UI/copy issues. Unit Preview no longer presents its active text box as a receipt reader; it now labels the input as short text, question, or scenario while still detecting receipt-like text and suggesting Receipt Reader as the correct upload-only support utility. World Lens copy now frames the scenario box as an optional context note and replaces the old simulation-report wording with a bounded World Lens context reflection and review-pressure lens.
 
-Status: READY FOR LOCAL REVIEW
+Boundary notes:
+- Unit Preview may suggest Receipt Reader, but Receipt Reader remains the only active receipt-reading utility.
+- World Lens context controls do not change country-year data, World Lens math, 9k allocation, receipts, scoring, or verdict routing.
+- No scoring, taxonomy, receipt schema/generation, signal behavior, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, external calls, telemetry/storage, certification, enforcement, approval/rejection, or final-truth behavior changed.
 
-Patch 143 adds a reviewer-readiness doorway for the public repository. It adds reviewer-start documentation, a plain-language glossary, validation/precision framing, a self-audit invitation, patch-archive navigation, and a local helper for archiving root-level patch artifacts without deleting the audit trail.
+Validation commands:
 
-Validation targets:
-
-```bat
-python tools\run_patch_checks.py 143
+```text
+python tools\run_patch_checks.py 146
 python tools\run_patch_checks.py 142_16
-python tools\run_patch_checks.py 142_15
-python tools\run_protocol_baseline_self_audit.py
-```
-
-Boundary preserved: documentation/structure only. No scoring, verdict routing, taxonomy, QUESTION_PROMPT logic, receipt schema/generation, signal regex/weights, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, upload/download behavior, app navigation, external calls, telemetry/storage, certification, enforcement, or final-truth behavior changed.
-
-## Patch 144 - README 60-Second Clarity / Reviewer Path Polish
-
-Status: READY FOR LOCAL REVIEW
-
-Patch 144 improves the public first-entry path for reviewers. It adds an "ALETHEIA in 60 Seconds" section at the top of the README, a shorter New Reviewer Path, concrete Typical Use Cases, a `docs/for-reviewers/` quick-start doorway, glossary examples with Dutch/Nederlands equivalents, and stronger validation-gap / false-precision framing.
-
-Boundary preserved: documentation/readability only. No app behavior, scoring, verdict routing, taxonomy, QUESTION_PROMPT logic, receipt schema/generation, signal regex/weights, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, Receipt Reader behavior, upload/download behavior, app navigation, external calls, telemetry/storage, certification, enforcement, or final-truth behavior changed.
-
-Validation targets:
-
-```bat
-python tools\run_patch_checks.py 144
-python tools\run_patch_checks.py 143
-python tools\run_patch_checks.py 142_16
-python tools\run_protocol_baseline_self_audit.py
-```
-
-
-## Patch 145 - Tool Comparison / Unit Preview GitHub Link
-
-Status: READY FOR LOCAL REVIEW
-
-Patch 145 adds a reviewer-facing comparison document that positions ALETHEIA beside XAI tools, enterprise governance platforms, and runtime guardrails rather than as a replacement for them. It also adds a small GitHub repository link button to Aletheia Unit Preview so first-time users can reach the public source repository from the front door.
-
-Boundary preserved: documentation/readability and a user-clicked public source link only. No scoring, verdict routing, taxonomy, QUESTION_PROMPT logic, receipt schema/generation, signal regex/weights, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, Receipt Reader behavior, upload/download behavior, telemetry/storage, certification, enforcement, or final-truth behavior changed.
-
-Validation targets:
-
-```bat
-python tools\run_patch_checks.py 145
-python tools\run_patch_checks.py 144
-python tools\run_patch_checks.py 143
 python tools\run_protocol_baseline_self_audit.py
 ```

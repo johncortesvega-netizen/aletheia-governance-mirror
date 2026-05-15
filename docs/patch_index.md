@@ -371,36 +371,19 @@ Patch 142.4 reformats Receipt Reader into a clearer narrative Standard View. It 
 - Removes stale AI Integrity delimiter-separated batch wording from quick guidance.
 - Preserves all no-scoring-change, no-receipt-change, no-taxonomy-change, no-telemetry, no-storage, no-certification, no-enforcement, and no-final-truth boundaries.
 
-## Patch 143 — Public Repository Hygiene / Reviewer Onboarding
+## Patch 146 - Unit Preview Receipt Route + World Lens Context Copy
 
-Patch 143 adds a reviewer-readiness doorway for ALETHEIA's public repository. It introduces:
+Patch 146 clarifies two remaining V1 UI/copy issues. Unit Preview no longer presents its active text box as a receipt reader; it now labels the input as short text, question, or scenario while still detecting receipt-like text and suggesting Receipt Reader as the correct upload-only support utility. World Lens copy now frames the scenario box as an optional context note and replaces the old simulation-report wording with a bounded World Lens context reflection and review-pressure lens.
 
-- `docs/reviewer_start_here.md` for first-time reviewers;
-- `docs/glossary.md` for 9k, Sydney Protocol, V-Axis, World Lens, Receipt Reader, Standard View, Unit Preview, and taxonomy terms;
-- `docs/validation_and_precision.md` for false-precision and external-validation framing;
-- `docs/how_to_review_aletheia_without_trusting_it.md` for local-run, self-audit, receipt-comparison, no-telemetry, and boundary-inspection steps;
-- `docs/patch_archive/README.md` and `tools/archive_root_patch_artifacts.py` for root patch-artifact cleanup without deleting the audit trail.
+Boundary notes:
+- Unit Preview may suggest Receipt Reader, but Receipt Reader remains the only active receipt-reading utility.
+- World Lens context controls do not change country-year data, World Lens math, 9k allocation, receipts, scoring, or verdict routing.
+- No scoring, taxonomy, receipt schema/generation, signal behavior, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, external calls, telemetry/storage, certification, enforcement, approval/rejection, or final-truth behavior changed.
 
-Boundary preserved: documentation/structure only. No app behavior, scoring, routing, taxonomy, receipt schema/generation, signal behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, upload/download behavior, external calls, telemetry/storage, certification, enforcement, or final-truth behavior changed.
+Validation commands:
 
-## Patch 144 — README 60-Second Clarity / Reviewer Path Polish
-
-Patch 144 refines the public doorway introduced in Patch 143. It adds:
-
-- `README.md` top section: **ALETHEIA in 60 Seconds**;
-- a New Reviewer Path and concrete Typical Use Cases;
-- `docs/for-reviewers/quick_start.md` and `docs/for-reviewers/README.md`;
-- glossary examples with Dutch/Nederlands equivalents;
-- stronger validation-gap, numerical-precision, and external-validation framing;
-- philosophy-first contributor wording.
-
-Runtime behavior: no app behavior change. Documentation/readability only. The patch preserves scoring, verdict routing, taxonomy, receipt behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, upload/download behavior, external-call posture, telemetry/storage boundaries, and mirror-not-throne authority limits.
-
-
-## Patch 145 — Tool Comparison / Unit Preview GitHub Link
-
-Patch 145 adds `docs/for-reviewers/tool_comparison.md`, a concise reviewer-facing comparison that places ALETHEIA beside XAI tools, enterprise governance platforms, and runtime guardrails. It clarifies that ALETHEIA is a complementary governance-risk reflection layer, not a replacement for model explainability, compliance enforcement, or runtime safety systems.
-
-The patch also adds a small user-clicked GitHub repository link button to Aletheia Unit Preview so reviewers can reach the public source repository from the app's first page.
-
-Boundary preserved: documentation/readability and source-link placement only. No app analysis behavior, scoring, routing, taxonomy, receipt behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, telemetry/storage, certification, enforcement, or final-truth behavior changed.
+```text
+python tools\run_patch_checks.py 146
+python tools\run_patch_checks.py 142_16
+python tools\run_protocol_baseline_self_audit.py
+```

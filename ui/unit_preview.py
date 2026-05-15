@@ -28,7 +28,7 @@ def get_unit_preview_how_to_use_markdown() -> str:
     return """
 **How to use this**
 
-Paste a short idea, question, receipt, policy, AI output, or scenario. ALETHEIA looks for power, pressure, appeal, evidence, and risk. You keep the final say.
+Paste a short idea, question, policy, AI output, or scenario. ALETHEIA looks for power, pressure, appeal, evidence, and risk. You keep the final say.
 
 **Examples**
 
@@ -39,7 +39,7 @@ Paste a short idea, question, receipt, policy, AI output, or scenario. ALETHEIA 
 - **Evidence Lab:** Upload a CSV or source note to compare claims against supporting evidence.
 - **World Lens:** Compare a country-year governance context before interpreting a risk reading.
 
-Already have an ALETHEIA receipt? Use **Receipt Reader — Standard View** after entering ALETHEIA.
+Already have an ALETHEIA receipt? Unit Preview can suggest **Receipt Reader — Standard View**, but receipts are read only after entering ALETHEIA and opening the upload-only Receipt Reader.
 """
 
 
@@ -416,7 +416,7 @@ def render_unit_preview(container=None) -> bool:
     container.title("Aletheia Unit Preview")
     container.markdown("### Mirror, not throne.")
     container.write(
-        "Paste a short text, question, receipt, or scenario to get a suggested path before entering ALETHEIA."
+        "Paste a short text, question, policy, AI output, or scenario to get a suggested path before entering ALETHEIA. Upload receipts in Receipt Reader after entering the app."
     )
     container.info(get_unit_preview_boundary_text())
     container.markdown(get_unit_preview_how_to_use_markdown())
@@ -424,7 +424,7 @@ def render_unit_preview(container=None) -> bool:
         container.markdown(get_unit_preview_start_here_markdown())
 
     preview_text = container.text_area(
-        "Short text, question, scenario, or receipt",
+        "Short text, question, or scenario",
         height=160,
         key="aletheia_unit_preview_text",
     )
@@ -441,15 +441,6 @@ def render_unit_preview(container=None) -> bool:
             type="primary",
             key="aletheia_unit_preview_proceed",
         )
-
-    container.link_button(
-        "View GitHub repository",
-        "https://github.com/johncortesvega-netizen/aletheia-governance-mirror",
-        help="Open the public ALETHEIA source repository in a new tab.",
-    )
-    container.caption(
-        "The GitHub link is a user-clicked public source link. Unit Preview does not make external calls."
-    )
 
     if preview_clicked:
         suggestion = detect_unit_preview_route(preview_text)

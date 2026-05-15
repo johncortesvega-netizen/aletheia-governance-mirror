@@ -5888,74 +5888,101 @@ with tab_grid:
 
     st.markdown("### World Lens")
     st.info(
-        "World Lens is a population-impact mirror only. It does not activate Global ID, select a real 9k body, create World Leader logic, issue automatic resets, or make governance decisions."
+        "World Lens is a selected-year evidence mirror. It helps read population-weighted country-year context, coverage, seat allocation, and internal taxonomy patterns. It does not activate Global ID, select a real 9k body, create World Leader logic, issue automatic resets, certify countries, or make governance decisions."
+    )
+    st.caption(
+        "The optional context note below is a human-review lens only. It does not change country-year data, World Lens math, 9k allocation, receipts, or any native World Lens evidence view."
     )
     world_lens_scenario = st.text_area(
-        "Scenario or proposal to review",
+        "Optional context note",
         value="A policy gives one central office emergency authority over essential services during crisis, with limited public notice and unclear appeal rights.",
         height=120,
         key="world_lens_simulation_input_v1",
-        help="Use this as a non-binding impact simulation. Final review remains human."
+        help="Add a short policy or governance context if you want a plain-language reflection beside the World Lens evidence view. This does not rescore World Lens data.",
     )
-    wl_col1, wl_col2, wl_col3 = st.columns(3)
-    with wl_col1:
-        wl_basic_rights = st.selectbox(
-            "Basic-rights risk",
-            ["Green — no apparent threat", "Yellow — unclear / safeguard needed", "Red — likely systematic rights risk"],
-            index=1,
-            key="world_lens_basic_rights_v1",
-        )
-        wl_appeal = st.selectbox(
-            "Appealability",
-            ["Present", "Weak", "Missing", "Not supplied"],
-            index=1,
-            key="world_lens_appealability_v1",
-        )
-    with wl_col2:
-        wl_minority = st.selectbox(
-            "Minority-rights risk",
-            ["Green — no apparent risk", "Yellow — review needed", "Red — likely minority-rights risk"],
-            index=1,
-            key="world_lens_minority_rights_v1",
-        )
-        wl_exit = st.selectbox(
-            "Exit",
-            ["Present", "Weak", "Missing", "Not supplied"],
-            index=1,
-            key="world_lens_exit_v1",
-        )
-    with wl_col3:
-        wl_ambient = st.selectbox(
-            "Ambient capture risk",
-            ["Green — low", "Yellow — plausible pressure", "Red — high shared manipulation risk"],
-            index=1,
-            key="world_lens_ambient_capture_v1",
-        )
-        wl_repair = st.selectbox(
-            "Repair",
-            ["Present", "Weak", "Missing", "Not supplied"],
-            index=1,
-            key="world_lens_repair_v1",
-        )
 
-    red_signal = any(str(v).startswith("Red") or v == "Missing" for v in [wl_basic_rights, wl_minority, wl_ambient, wl_appeal, wl_exit, wl_repair])
-    yellow_signal = any(str(v).startswith("Yellow") or v in ["Weak", "Not supplied"] for v in [wl_basic_rights, wl_minority, wl_ambient, wl_appeal, wl_exit, wl_repair])
+    st.markdown("#### World Lens context dial")
+    st.caption(
+        "Set a broad review-pressure lens for the optional context note. This is not a score, verdict, or World Lens data override."
+    )
+    wl_context_dial = st.radio(
+        "Review pressure lens",
+        ["Low pressure", "Review pressure", "High pressure"],
+        index=1,
+        horizontal=True,
+        key="world_lens_context_dial_v1",
+    )
+
+    with st.expander("Optional context details", expanded=False):
+        st.caption(
+            "These details shape the plain-language context reflection only. They do not change World Lens evidence data, receipts, 9k allocation, or scoring."
+        )
+        wl_col1, wl_col2, wl_col3 = st.columns(3)
+        with wl_col1:
+            wl_basic_rights = st.selectbox(
+                "Basic-rights pressure",
+                ["Low", "Watch / unclear", "High"],
+                index=1,
+                key="world_lens_basic_rights_v1",
+            )
+            wl_appeal = st.selectbox(
+                "Appeal path",
+                ["Visible", "Partial / unclear", "Missing", "Not supplied"],
+                index=1,
+                key="world_lens_appealability_v1",
+            )
+        with wl_col2:
+            wl_minority = st.selectbox(
+                "Minority-rights pressure",
+                ["Low", "Watch / unclear", "High"],
+                index=1,
+                key="world_lens_minority_rights_v1",
+            )
+            wl_exit = st.selectbox(
+                "Exit path",
+                ["Visible", "Partial / unclear", "Missing", "Not supplied"],
+                index=1,
+                key="world_lens_exit_v1",
+            )
+        with wl_col3:
+            wl_ambient = st.selectbox(
+                "Ambient capture pressure",
+                ["Low", "Watch / plausible", "High"],
+                index=1,
+                key="world_lens_ambient_capture_v1",
+            )
+            wl_repair = st.selectbox(
+                "Repair path",
+                ["Visible", "Partial / unclear", "Missing", "Not supplied"],
+                index=1,
+                key="world_lens_repair_v1",
+            )
+
+    detail_values = [wl_basic_rights, wl_minority, wl_ambient, wl_appeal, wl_exit, wl_repair]
+    red_signal = any(str(v) in {"High", "Missing"} for v in detail_values) or wl_context_dial == "High pressure"
+    yellow_signal = any(str(v).startswith("Watch") or str(v).startswith("Partial") or v == "Not supplied" for v in detail_values) or wl_context_dial == "Review pressure"
     if red_signal:
-        simulated_threshold_signal = "Human review required"
+        simulated_threshold_signal = "High review pressure"
     elif yellow_signal:
-        simulated_threshold_signal = "Monitor"
+        simulated_threshold_signal = "Review pressure"
     else:
-        simulated_threshold_signal = "None"
+        simulated_threshold_signal = "Low pressure"
 
-    st.markdown("#### Simulation report")
+    st.markdown("#### World Lens context reflection")
+    st.caption(
+        "This reflection preserves the optional note and selected review-pressure lens. It does not create a World Lens verdict, rescore country-year data, or certify any country, government, institution, or policy."
+    )
     st.code(
-        f"""World Lens Report
+        f"""World Lens Context Reflection
 
-Scenario:
+Optional context note:
 {world_lens_scenario.strip() or 'Not supplied'}
 
+Context dial:
+{wl_context_dial}
+
 Affected groups:
-To be identified by human reviewers from the scenario context.
+To be identified by human reviewers from the context note and evidence view.
 
 Power gains:
 Review which offices, institutions, vendors, platforms, or leaders gain discretionary control.
@@ -5963,35 +5990,35 @@ Review which offices, institutions, vendors, platforms, or leaders gain discreti
 Protection losses:
 Review whether any group loses rights, appeal, exit, access, dignity, or repair.
 
-Basic-rights risk:
+Basic-rights pressure:
 {wl_basic_rights}
 
-Minority-rights risk:
+Minority-rights pressure:
 {wl_minority}
 
-Ambient capture risk:
+Ambient capture pressure:
 {wl_ambient}
 
-Appealability:
+Appeal path:
 {wl_appeal}
 
-Exit:
+Exit path:
 {wl_exit}
 
-Repair:
+Repair path:
 {wl_repair}
 
-Simulated threshold signal:
+Context reflection signal:
 {simulated_threshold_signal}
 
 Human review note:
-This is a World Lens for human review. It is not a real Global ID system, real 9k body, governance mandate, enforcement authority, automatic reset, or final decision.""",
+This is a World Lens context reflection for human review. It does not change World Lens evidence data, create a real Global ID system, select a real 9k body, issue a governance mandate, enforce action, trigger automatic resets, or make a final decision.""",
         language="text",
     )
     with st.expander("World Lens safe-language boundary", expanded=False):
         st.markdown(
             """
-            **Allowed:** simulated threshold signal, potential population impact, human review required, safeguard needed, ambient capture pressure should be reviewed.
+            **Allowed:** context reflection signal, potential population impact, human review required, safeguard needed, ambient capture pressure should be reviewed.
 
             **Forbidden:** automatic reset, World Leader deactivated, Global ID sync activated, the AI has decided, this is a real governance mandate, human review is unnecessary, or ALETHEIA has final authority.
             """
