@@ -662,6 +662,135 @@ def _friendly_evidence_table_name(filename: str) -> str:
     return stem.replace("_", " ").strip().title() or basename
 
 
+def _world_lens_summary_rows(summary: dict[str, Any]) -> list[dict[str, str]]:
+    """Render summary JSON metadata as a narrow readable key/value table."""
+    labels = [
+        ("filename", "Metadata file"),
+        ("selected_year", "Selected year"),
+        ("grid_source_state", "Grid source state"),
+        ("active_selected_year_seats", "Active selected-year seats"),
+        ("allocated_country_rows", "Allocated country rows"),
+        ("weighted_integrity", "Weighted integrity"),
+        ("weighted_friction", "Weighted friction"),
+        ("weighted_collapse_probability", "Weighted collapse probability"),
+        ("average_empirical_coverage", "Average empirical coverage"),
+        ("trust_raw_coverage", "Raw trust survey coverage"),
+        ("trust_prior_coverage", "Trust prior coverage"),
+        ("interpretation_warning", "Interpretation warning"),
+    ]
+    rows: list[dict[str, str]] = []
+    for key, label in labels:
+        value = summary.get(key, MISSING_VALUE)
+        if value == MISSING_VALUE or value is None:
+            continue
+        rows.append({"Field": label, "Value": str(value)})
+    return rows
+
+
+def _world_lens_table_description(table_name: str) -> str:
+    key = (table_name or "").lower()
+    if "coverage gap" in key:
+        return "Rows where evidence coverage is incomplete or should be inspected."
+    if "coverage" == key or key.startswith("coverage"):
+        return "Coverage basis for selected-year evidence sources."
+    if "high impact" in key:
+        return "Countries with high allocation plus low integrity or high collapse pressure signals."
+    if "highest collapse" in key:
+        return "Highest collapse-pressure rows from the uploaded evidence table."
+    if "highest integrity" in key:
+        return "Highest integrity rows from the uploaded evidence table."
+    if "largest allocation" in key:
+        return "Largest 9k seat allocations in the selected-year evidence view."
+    if "lowest integrity" in key:
+        return "Lowest integrity rows from the uploaded evidence table."
+    if "sensitivity" in key:
+        return "Rows that may need extra interpretation because of coverage, allocation, or risk sensitivity."
+    if "taxonomy" in key:
+        return "Seat and country distribution by internal taxonomy label."
+    if "all rows" in key:
+        return "Full selected-year country evidence table; shown with curated columns by default."
+    return "Supporting World Lens evidence table from the uploaded bundle."
+
+
+def _first_existing_column(columns: list[str], *candidates: str) -> str | None:
+    for candidate in candidates:
+        if candidate in columns:
+            return candidate
+    return None
+
+
+def _world_lens_curated_columns(table_name: str, columns: list[str]) -> list[str]:
+    """Select readable World Lens columns so previews avoid 100-column raw dumps."""
+    key = (table_name or "").lower()
+
+    def pick(*groups: tuple[str, ...]) -> list[str]:
+        selected: list[str] = []
+        for group in groups:
+            found = _first_existing_column(columns, *group)
+            if found and found not in selected:
+                selected.append(found)
+        return selected
+
+    country_fields = (("friendly_country_name", "country"), ("iso3",), ("year", "grid_selected_year"))
+    if "coverage gap" in key:
+        wanted = pick(
+            *country_fields,
+            ("seats", "seats_9k", "_seats"),
+            ("missing_raw_trust", "_missing_raw_trust"),
+            ("missing_trust_prior", "_missing_trust_prior"),
+            ("missing_wgi", "_missing_wgi"),
+            ("missing_vdem", "_missing_vdem"),
+            ("coverage_gap_count", "_coverage_gap_count"),
+        )
+    elif "taxonomy" in key:
+        wanted = pick(
+            ("internal_taxonomy_label", "raw_verdict"),
+            ("countries",),
+            ("seats", "seat_share"),
+            ("avg_integrity", "average_integrity"),
+            ("avg_collapse_probability", "average_collapse_probability"),
+            ("avg_empirical_coverage", "average_empirical_coverage"),
+            ("humility_note",),
+        )
+    elif "coverage" == key or key.startswith("coverage"):
+        wanted = pick(("source",), ("rows_present",), ("rows_missing",), ("coverage",))
+    else:
+        wanted = pick(
+            *country_fields,
+            ("seats_9k", "_seats", "seats"),
+            ("internal_taxonomy_label", "raw_aletheia_verdict", "raw_verdict"),
+            ("aletheia_empirical_integrity", "_integrity", "integrity"),
+            ("aletheia_empirical_friction", "_friction", "friction"),
+            ("aletheia_empirical_collapse_probability", "_collapse", "collapse_probability"),
+            ("empirical_completeness", "_coverage", "empirical_coverage"),
+            ("raw_trust", "_trust_raw", "wvs_generalized_trust"),
+            ("empirical_trust_prior", "_trust_prior", "trust_prior"),
+            ("coverage_gap_count", "_coverage_gap_count"),
+            ("humility_note",),
+        )
+    if wanted:
+        return wanted[:12]
+    return columns[: min(8, len(columns))]
+
+
+def _curated_preview_rows(table: dict[str, Any], *, max_rows: int = 10) -> list[dict[str, str]]:
+    columns = table.get("columns") or []
+    selected_columns = _world_lens_curated_columns(str(table.get("table_name", "")), list(columns))
+    rows: list[dict[str, str]] = []
+    for row in (table.get("preview_rows") or [])[:max_rows]:
+        rows.append({column: str(row.get(column, "")) for column in selected_columns})
+    return rows
+
+
+def _preview_field_label(table: dict[str, Any]) -> str:
+    fields = _world_lens_curated_columns(str(table.get("table_name", "")), list(table.get("columns") or []))
+    if not fields:
+        return "Curated preview fields not found"
+    if len(fields) <= 5:
+        return ", ".join(fields)
+    return ", ".join(fields[:5]) + f" + {len(fields) - 5} more"
+
+
 def _summarize_world_lens_summary_json(filename: str, text: str) -> dict[str, Any]:
     try:
         data = json.loads(text)
@@ -879,6 +1008,13 @@ def _render_world_lens_bundle(container: Any, parsed: dict[str, Any]) -> None:
     container.markdown("### World Lens Evidence Bundle")
     container.write(f"Uploaded evidence bundle: {parsed.get('name')}")
     container.write(f"Native receipt files read: {parsed.get('receipt_count', 0)}")
+    details = parsed.get("bundle_details") or {}
+    summary_files = details.get("summary_files") or []
+    evidence_tables = details.get("evidence_tables") or []
+    if summary_files:
+        container.write(f"Structured metadata files: {len(summary_files)}")
+    if evidence_tables:
+        container.write(f"Supporting evidence tables: {len(evidence_tables)}")
     container.caption(
         "World Lens ZIP uploads are treated as evidence bundles: the receipt document is the narrative source, "
         "summary JSON is metadata, and CSV files are supporting evidence tables."
@@ -888,21 +1024,30 @@ def _render_world_lens_bundle(container: Any, parsed: dict[str, Any]) -> None:
     if distribution:
         container.table([{"Native Evidence View": key, "Receipt Count": value} for key, value in sorted(distribution.items())])
 
-    details = parsed.get("bundle_details") or {}
-    summary_files = details.get("summary_files") or []
-    if summary_files:
-        container.markdown("#### Structured Summary Metadata")
-        container.table(summary_files)
+    views = parsed.get("views") or []
+    if views:
+        first_name, first_view = views[0]
+        with container.expander(f"Inspect native World Lens receipt: {first_name}", expanded=True) as expander:
+            _render_single_view(expander, first_view)
 
-    evidence_tables = details.get("evidence_tables") or []
+    if summary_files:
+        container.markdown("### Structured Summary Metadata")
+        container.caption("Selected key/value metadata from uploaded summary JSON. Raw summary files are not treated as receipts.")
+        container.table(_world_lens_summary_rows(summary_files[0]))
+        if len(summary_files) > 1:
+            container.caption(f"Additional summary metadata files: {len(summary_files) - 1}")
+
     if evidence_tables:
-        container.markdown("#### Supporting Evidence Tables")
+        container.markdown("### Supporting CSV Evidence Tables")
+        container.caption(
+            "CSV files are supporting evidence tables. The list below stays compact; full raw tables are hidden in the advanced section."
+        )
         container.table([
             {
                 "Table": table.get("table_name"),
-                "File": table.get("filename"),
                 "Rows": table.get("row_count"),
-                "Columns": ", ".join(table.get("columns") or []),
+                "Purpose": _world_lens_table_description(str(table.get("table_name", ""))),
+                "Preview Fields": _preview_field_label(table),
             }
             for table in evidence_tables
         ])
@@ -917,20 +1062,29 @@ def _render_world_lens_bundle(container: Any, parsed: dict[str, Any]) -> None:
             selected = labels[0] if labels else None
         if selected:
             selected_index = labels.index(selected)
-            preview_rows = evidence_tables[selected_index].get("preview_rows") or []
-            container.caption("First rows only. The table is shown as uploaded and is not rescored or reinterpreted.")
-            if preview_rows:
-                container.table(preview_rows)
+            selected_table = evidence_tables[selected_index]
+            curated_rows = _curated_preview_rows(selected_table)
+            container.caption(
+                "Curated first rows only. Values are copied from the uploaded CSV and are not rescored or reinterpreted."
+            )
+            if curated_rows:
+                container.table(curated_rows)
             else:
                 container.write("No preview rows found in this supporting evidence table.")
+            with container.expander("Advanced: show raw uploaded table preview", expanded=False) as raw_expander:
+                raw_expander.caption(
+                    "Raw uploaded columns are shown only here to avoid turning the main evidence reader into a wide spreadsheet."
+                )
+                raw_rows = selected_table.get("preview_rows") or []
+                if raw_rows:
+                    raw_expander.table(raw_rows)
+                else:
+                    raw_expander.write("No raw preview rows found in this supporting evidence table.")
 
-    container.info("World Lens Evidence Bundle reading preserves uploaded information only. It does not rescore, merge verdicts, certify countries or governments, or create a new receipt.")
-
-    views = parsed.get("views") or []
-    if views:
-        first_name, first_view = views[0]
-        with container.expander(f"Inspect native World Lens receipt: {first_name}", expanded=False) as expander:
-            _render_single_view(expander, first_view)
+    container.info(
+        "World Lens Evidence Bundle reading preserves uploaded information only. It does not rescore, merge verdicts, "
+        "certify countries or governments, or create a new receipt."
+    )
 
 
 def _render_batch_zip(container: Any, parsed: dict[str, Any]) -> None:

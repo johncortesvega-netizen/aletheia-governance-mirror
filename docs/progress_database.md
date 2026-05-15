@@ -2874,3 +2874,9 @@ Scope is Receipt Reader presentation/parsing only. It does not rescore, merge ve
 Patch 142.10 fixes the remaining display-semantics issue in Receipt Reader batch handling. QUESTION_PROMPT receipts are intentionally unscored review-tool outputs, so their missing metrics should not look like parser failures. The selected receipt view now replaces the standard scored metric table with a not-applicable explanation, and the batch index shows `Not applicable` for QUESTION_PROMPT metric cells.
 
 Scope is Receipt Reader presentation/parsing only. It preserves upload-only behavior and does not rescore, merge verdicts, create receipts, change schemas, change scoring, change verdict routing, alter taxonomy, change World Lens math, alter AI Integrity or Privacy Audit behavior, add external calls, add telemetry/storage, or introduce authority/certification/final-truth claims.
+
+## Patch 142.11 - Receipt Reader World Lens Evidence Bundle Layout Polish
+
+Patch 142.11 keeps World Lens ZIP uploads as evidence bundles but makes the view readable: the native World Lens receipt is shown before supporting CSV evidence tables, CSV inventory is compact, curated preview columns are used by default, and raw wide CSV previews are hidden behind an advanced expander.
+
+Scope is Receipt Reader presentation/readability only. It does not change World Lens math, scoring, verdict routing, taxonomy, receipt schema/generation, AI Integrity behavior, Privacy Audit behavior, Stress Test scoring behavior, telemetry/storage, external calls, certification, enforcement, or final-truth behavior.

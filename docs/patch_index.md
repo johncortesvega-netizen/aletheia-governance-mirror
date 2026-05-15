@@ -330,3 +330,10 @@ Patch 142.4 reformats Receipt Reader into a clearer narrative Standard View. It 
 - Updates batch Receipt Index rows to show `Not applicable` for suppressed QUESTION_PROMPT scored metrics.
 - Shortens batch index columns from `Collapse Probability` to `Collapse` and `Repair Questions` to `Repairs`.
 - No scoring, routing, taxonomy, receipt generation/schema, telemetry, storage, certification, enforcement, or final-truth behavior changed.
+
+## Patch 142.11 - Receipt Reader World Lens Evidence Bundle Layout Polish
+
+- Moves supporting CSV evidence tables below the native World Lens receipt Standard View.
+- Removes huge inline CSV column dumps from the main evidence-table inventory.
+- Adds curated readable CSV previews by default, with raw uploaded previews hidden in an advanced expander.
+- Keeps World Lens evidence bundle parsing from Patch 142.8 and preserves all no-rescore/no-certification boundaries.
