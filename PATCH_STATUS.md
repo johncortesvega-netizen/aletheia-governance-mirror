@@ -3161,3 +3161,20 @@ python tools\run_patch_checks.py 142_10
 python tools\run_patch_checks.py 142_8
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+## Patch 142.12 - Receipt Reader Standard View Copy Polish
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 142.12 polishes Receipt Reader Standard View labels and interpretations after the module-specific receipt reader stabilization sequence. Mirror Check receipts now use bounded receipt-reading language instead of operational reliability language. Stress Test receipts use a scenario-specific state heading and Collapse Pressure display label. World Lens evidence receipts use Evidence View language and shorter curated CSV preview labels.
+
+Boundary preserved: Receipt Reader presentation/copy only. No parsing behavior required for scoring, no scoring changes, no verdict routing changes, no taxonomy changes, no QUESTION_PROMPT logic changes, no receipt schema or generation changes, no World Lens math changes, no AI Integrity/Privacy Audit/Stress Test behavior changes, no external calls, no live model calls, no embeddings, no telemetry, no analytics, no storage, no Global ID sync, no public ledger sync, no certification, enforcement, official-authority, privacy-guarantee, security-guarantee, or final-truth claim.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 142_12
+python tools\run_patch_checks.py 142_11
+python tools\run_patch_checks.py 142_10
+python tools\run_protocol_baseline_self_audit.py
+```

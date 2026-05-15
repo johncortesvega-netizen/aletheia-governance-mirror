@@ -2880,3 +2880,13 @@ Scope is Receipt Reader presentation/parsing only. It preserves upload-only beha
 Patch 142.11 keeps World Lens ZIP uploads as evidence bundles but makes the view readable: the native World Lens receipt is shown before supporting CSV evidence tables, CSV inventory is compact, curated preview columns are used by default, and raw wide CSV previews are hidden behind an advanced expander.
 
 Scope is Receipt Reader presentation/readability only. It does not change World Lens math, scoring, verdict routing, taxonomy, receipt schema/generation, AI Integrity behavior, Privacy Audit behavior, Stress Test scoring behavior, telemetry/storage, external calls, certification, enforcement, or final-truth behavior.
+
+## Patch 142.12 - Receipt Reader Standard View Copy Polish
+
+Patch 142.12 is a display-language polish patch for Receipt Reader after the World Lens evidence-bundle and batch-index work. It keeps the connected parsers intact and improves the Standard View copy so each module family reads more accurately:
+
+- Mirror Check uses `Native Receipt State` and bounded uploaded-receipt interpretations.
+- Stress Test / Simulation uses `Scenario Receipt State`, `Scenario Review Metrics`, and `Collapse Pressure` display wording.
+- World Lens uses `Evidence View`, `Weighted Collapse Pressure`, shortened CSV preview labels, and explicit first-row preview language.
+
+The patch does not alter any engine output. It does not change scoring, verdict routing, taxonomy, receipt schema/generation, signal behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, Stress Test scoring/tree behavior, external calls, telemetry/storage, certification, enforcement, or final-truth boundaries.

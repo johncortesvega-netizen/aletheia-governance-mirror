@@ -154,10 +154,10 @@ def test_world_lens_csv_preview_uses_curated_columns_by_default():
     curated = _curated_preview_rows(all_rows_table)
     assert curated
     first = curated[0]
-    assert "country" in first
-    assert "iso3" in first
-    assert "aletheia_empirical_integrity" in first
-    assert "aletheia_empirical_collapse_probability" in first
+    assert "Country" in first
+    assert "ISO3" in first
+    assert "Integrity" in first
+    assert "Collapse" in first
     assert "__source_wgi_voice_accountability" not in first
     assert len(first) <= 12
 

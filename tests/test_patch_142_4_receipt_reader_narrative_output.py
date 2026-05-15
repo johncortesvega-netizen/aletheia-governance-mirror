@@ -63,7 +63,7 @@ def test_patch_142_4_receipt_reader_uses_narrative_system_status_shape():
     assert "without generating a new verdict" in view["core_logic_text"]
     assert "Trust Index" in [row["Metric"] for row in view["metric_rows"]]
     assert any(row["Value"] == "0.9800" for row in view["metric_rows"])
-    assert any(row["Interpretation"] == "Near-total reliability." for row in view["metric_rows"])
+    assert any(row["Interpretation"] == "High trust-index reading in the uploaded receipt." for row in view["metric_rows"])
     assert "low" in view["summary"].lower()
     assert "What appeal path exists" in view["repair_questions"][0]
 

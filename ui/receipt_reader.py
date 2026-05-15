@@ -54,11 +54,71 @@ TEXT_FIELD_PATTERNS = {
     "ego": [r"(?im)^\s*ego\s*:\s*(.+?)\s*$"],
 }
 
+
+WORLD_LENS_PREVIEW_COLUMN_LABELS = {
+    "friendly_country_name": "Country",
+    "country": "Country",
+    "iso3": "ISO3",
+    "year": "Year",
+    "grid_selected_year": "Year",
+    "seats_9k": "Seats",
+    "_seats": "Seats",
+    "seats": "Seats",
+    "internal_taxonomy_label": "State",
+    "raw_aletheia_verdict": "State",
+    "raw_verdict": "State",
+    "aletheia_empirical_integrity": "Integrity",
+    "_integrity": "Integrity",
+    "integrity": "Integrity",
+    "aletheia_empirical_friction": "Friction",
+    "_friction": "Friction",
+    "friction": "Friction",
+    "aletheia_empirical_collapse_probability": "Collapse",
+    "_collapse": "Collapse",
+    "collapse_probability": "Collapse",
+    "empirical_completeness": "Coverage",
+    "_coverage": "Coverage",
+    "empirical_coverage": "Coverage",
+    "raw_trust": "Raw Trust",
+    "_trust_raw": "Raw Trust",
+    "wvs_generalized_trust": "Raw Trust",
+    "empirical_trust_prior": "Trust Prior",
+    "_trust_prior": "Trust Prior",
+    "trust_prior": "Trust Prior",
+    "coverage_gap_count": "Coverage Gaps",
+    "_coverage_gap_count": "Coverage Gaps",
+    "missing_raw_trust": "Missing Raw Trust",
+    "_missing_raw_trust": "Missing Raw Trust",
+    "missing_trust_prior": "Missing Trust Prior",
+    "_missing_trust_prior": "Missing Trust Prior",
+    "missing_wgi": "Missing WGI",
+    "_missing_wgi": "Missing WGI",
+    "missing_vdem": "Missing V-Dem",
+    "_missing_vdem": "Missing V-Dem",
+    "source": "Source",
+    "rows_present": "Rows Present",
+    "rows_missing": "Rows Missing",
+    "coverage": "Coverage",
+    "countries": "Countries",
+    "seat_share": "Seat Share",
+    "avg_integrity": "Avg Integrity",
+    "average_integrity": "Avg Integrity",
+    "avg_collapse_probability": "Avg Collapse",
+    "average_collapse_probability": "Avg Collapse",
+    "avg_empirical_coverage": "Avg Coverage",
+    "average_empirical_coverage": "Avg Coverage",
+    "humility_note": "Humility Note",
+}
+
+
+def _world_lens_display_column_label(column: str) -> str:
+    return WORLD_LENS_PREVIEW_COLUMN_LABELS.get(column, column.replace("_", " ").strip().title())
+
 METRIC_ORDER = [
     ("trust", "Trust Index"),
     ("alignment", "Alignment"),
     ("integrity", "Integrity"),
-    ("collapse_probability", "Collapse Probability"),
+    ("collapse_probability", "Collapse Pressure"),
     ("friction", "Friction"),
     ("ego", "Ego"),
 ]
@@ -204,7 +264,7 @@ def _world_lens_metric_rows(world: dict[str, Any]) -> list[dict[str, str]]:
     return [
         {"Metric": "Weighted Integrity", "Value": world.get("weighted_integrity", MISSING_VALUE), "Interpretation": "Year-level weighted governance integrity from the uploaded World Lens receipt."},
         {"Metric": "Weighted Friction", "Value": world.get("weighted_friction", MISSING_VALUE), "Interpretation": "Year-level weighted friction pressure from the uploaded receipt."},
-        {"Metric": "Weighted Collapse Probability", "Value": world.get("weighted_collapse_probability", MISSING_VALUE), "Interpretation": "Year-level weighted collapse-pressure context, not a prediction or certification."},
+        {"Metric": "Weighted Collapse Pressure", "Value": world.get("weighted_collapse_probability", MISSING_VALUE), "Interpretation": "Native weighted collapse-probability field shown as collapse-pressure context, not a prediction or certification."},
         {"Metric": "Average Empirical Coverage", "Value": world.get("average_empirical_coverage", MISSING_VALUE), "Interpretation": "Coverage reported by the uploaded World Lens receipt."},
         {"Metric": "Active Selected-Year Seats", "Value": world.get("active_selected_year_seats", MISSING_VALUE), "Interpretation": "9k allocation basis recorded in the uploaded receipt."},
         {"Metric": "Allocated Country Rows", "Value": world.get("allocated_country_rows", MISSING_VALUE), "Interpretation": "Country rows included in the selected-year evidence view."},
@@ -372,13 +432,13 @@ def _interpret_metric(key: str, value: str, native_state: str) -> str:
         return "Not available in uploaded receipt."
     if key == "trust":
         if number >= 0.9:
-            return "Near-total reliability."
+            return "High trust-index reading in the uploaded receipt."
         if number >= 0.75:
-            return "Strong reliability; still requires human review."
-        return "Reliability pressure is visible."
+            return "Strong trust-index reading; still requires human review."
+        return "Trust-index pressure is visible in the uploaded receipt."
     if key == "alignment":
         if number >= 0.9:
-            return "High synergy with core objectives."
+            return "High alignment reading in the uploaded receipt."
         if number >= 0.75:
             return "Generally aligned with review objectives."
         return "Alignment pressure needs review."
@@ -404,7 +464,7 @@ def _interpret_metric(key: str, value: str, native_state: str) -> str:
         return "Friction requires review."
     if key == "ego":
         if number <= 0.01:
-            return "Effectively neutralized."
+            return "Very low ego-pressure reading."
         if number <= 0.15:
             return "Low ego pressure."
         return "Ego pressure requires review."
@@ -425,8 +485,8 @@ def _summary_for_state(native_state: str, fields: dict[str, str]) -> str:
         )
     if native_state == "SANCTUARY":
         return (
-            f"The uploaded receipt is operating in a {risk} risk state with friction {friction}. "
-            f"Trust ({trust}) and alignment ({alignment}) are strong in the native values, and collapse probability "
+            f"The uploaded receipt records a {risk} risk reading with friction {friction}. "
+            f"Trust ({trust}) and alignment ({alignment}) are strong in the native values, and the collapse-pressure reading "
             f"({collapse}) is low. This is a Standard View translation only; it does not create a new verdict."
         )
     if native_state == "THRESHOLD":
@@ -672,7 +732,7 @@ def _world_lens_summary_rows(summary: dict[str, Any]) -> list[dict[str, str]]:
         ("allocated_country_rows", "Allocated country rows"),
         ("weighted_integrity", "Weighted integrity"),
         ("weighted_friction", "Weighted friction"),
-        ("weighted_collapse_probability", "Weighted collapse probability"),
+        ("weighted_collapse_probability", "Weighted collapse pressure"),
         ("average_empirical_coverage", "Average empirical coverage"),
         ("trust_raw_coverage", "Raw trust survey coverage"),
         ("trust_prior_coverage", "Trust prior coverage"),
@@ -778,7 +838,10 @@ def _curated_preview_rows(table: dict[str, Any], *, max_rows: int = 10) -> list[
     selected_columns = _world_lens_curated_columns(str(table.get("table_name", "")), list(columns))
     rows: list[dict[str, str]] = []
     for row in (table.get("preview_rows") or [])[:max_rows]:
-        rows.append({column: str(row.get(column, "")) for column in selected_columns})
+        rows.append({
+            _world_lens_display_column_label(column): str(row.get(column, ""))
+            for column in selected_columns
+        })
     return rows
 
 
@@ -786,9 +849,10 @@ def _preview_field_label(table: dict[str, Any]) -> str:
     fields = _world_lens_curated_columns(str(table.get("table_name", "")), list(table.get("columns") or []))
     if not fields:
         return "Curated preview fields not found"
-    if len(fields) <= 5:
-        return ", ".join(fields)
-    return ", ".join(fields[:5]) + f" + {len(fields) - 5} more"
+    display_fields = [_world_lens_display_column_label(field) for field in fields]
+    if len(display_fields) <= 5:
+        return ", ".join(display_fields)
+    return ", ".join(display_fields[:5]) + f" + {len(display_fields) - 5} more"
 
 
 def _summarize_world_lens_summary_json(filename: str, text: str) -> dict[str, Any]:
@@ -931,9 +995,19 @@ def _display_module_source(view: dict[str, Any]) -> str:
     return fields.get("module_source", MISSING_VALUE)
 
 
+def _view_status_heading(view: dict[str, Any]) -> str:
+    family = view.get("module_family")
+    state = view.get("system_status", MISSING_VALUE)
+    if family == "World Lens":
+        return f"Evidence View: {state}"
+    if family == "Stress Test / Simulation":
+        return f"Scenario Receipt State: {state}"
+    return f"Native Receipt State: {state}"
+
+
 def _render_single_view(container: Any, view: dict[str, Any]) -> None:
     fields = view["fields"]
-    container.markdown(f"### System Status: {view['system_status']}")
+    container.markdown(f"### {_view_status_heading(view)}")
     container.write(view["status_line"])
 
     container.markdown(
@@ -1065,7 +1139,7 @@ def _render_world_lens_bundle(container: Any, parsed: dict[str, Any]) -> None:
             selected_table = evidence_tables[selected_index]
             curated_rows = _curated_preview_rows(selected_table)
             container.caption(
-                "Curated first rows only. Values are copied from the uploaded CSV and are not rescored or reinterpreted."
+                "Showing first 10 uploaded rows only. Values are copied from the uploaded CSV and are not rescored or reinterpreted."
             )
             if curated_rows:
                 container.table(curated_rows)
@@ -1082,7 +1156,7 @@ def _render_world_lens_bundle(container: Any, parsed: dict[str, Any]) -> None:
                     raw_expander.write("No raw preview rows found in this supporting evidence table.")
 
     container.info(
-        "World Lens Evidence Bundle reading preserves uploaded information only. It does not rescore, merge verdicts, "
+        "World Lens Evidence Bundle reading preserves uploaded receipt, metadata, and CSV evidence tables. It does not rescore, merge verdicts, "
         "certify countries or governments, or create a new receipt."
     )
 

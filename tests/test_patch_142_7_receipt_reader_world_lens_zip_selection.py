@@ -100,7 +100,7 @@ def test_world_lens_zip_inspects_actual_md_receipt_not_summary_json():
     values = {row["Metric"]: row["Value"] for row in first_view["metric_rows"]}
     assert values["Weighted Integrity"] == "0.446"
     assert values["Weighted Friction"] == "0.306"
-    assert values["Weighted Collapse Probability"] == "0.443"
+    assert values["Weighted Collapse Pressure"] == "0.443"
     assert values["Average Empirical Coverage"] == "84.7%"
     assert values["Active Selected-Year Seats"] == "9,000"
 

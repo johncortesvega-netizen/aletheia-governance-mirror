@@ -337,3 +337,11 @@ Patch 142.4 reformats Receipt Reader into a clearer narrative Standard View. It 
 - Removes huge inline CSV column dumps from the main evidence-table inventory.
 - Adds curated readable CSV previews by default, with raw uploaded previews hidden in an advanced expander.
 - Keeps World Lens evidence bundle parsing from Patch 142.8 and preserves all no-rescore/no-certification boundaries.
+
+## Patch 142.12 - Receipt Reader Standard View Copy Polish
+
+- Replaces generic Receipt Reader `System Status` wording with module-aware labels: `Native Receipt State`, `Scenario Receipt State`, and `Evidence View`.
+- Softens Mirror Check metric interpretations so they remain bounded to uploaded receipt values.
+- Uses `Collapse Pressure` / `Weighted Collapse Pressure` as display labels while preserving the native collapse probability fields.
+- Shortens curated World Lens CSV preview labels and adds explicit first-row preview language.
+- Preserves all no-rescore, no-new-verdict, no-certification, no-enforcement, no-telemetry, no-storage, and no-final-truth boundaries.
