@@ -3179,22 +3179,19 @@ python tools\run_patch_checks.py 142_10
 python tools\run_protocol_baseline_self_audit.py
 ```
 
-## Patch 142.13 - AI Integrity Single Artifact Result Focus
+## Patch 142.14 - Receipt Reader Verbal Standard View Polish
 
 Status: READY FOR LOCAL REVIEW
 
-Patch 142.13 simplifies the visible AI Integrity V1 workflow. The active UI now treats AI Integrity as a single pasted-artifact review: paste one AI output, system prompt, policy, workflow description, model-card excerpt, or code snippet and run one static review. The visible batch-review checkbox and split-artifact instructions are removed from the V1 screen.
+Patch 142.14 shifts Receipt Reader Standard View from table-first analysis toward a warmer verbal witness-style reading. Uploaded receipt values remain native and unchanged, but the user now sees a verbal brief first, followed by metric observations and a native-values details expander. Repair questions are framed as human-review questions to strengthen the reading before reliance.
 
-The result view now foregrounds the actual AI Integrity reading: a Triggered signals count appears with the main reading cards, Highest pressure signals and triggered-signal categories appear before optional static boundary checks, and repair questions remain near the main review result. Privacy Boundary Audit and Code Integrity Static Scan are kept as optional collapsed checks when they have no detections, so empty secondary panels no longer dominate the result page.
-
-Boundary preserved: UI/result presentation only. No AI Integrity scoring, signal regex/weight, receipt schema/generation, Privacy Audit behavior, Code Integrity behavior, Mirror Check behavior, Stress Test behavior, World Lens math, Receipt Reader behavior, external calls, live model calls, embeddings, telemetry, analytics, storage, Global ID sync, public ledger sync, certification, approval, enforcement, legal authority, official authority, security guarantee, privacy guarantee, model-safety proof, or final-truth claim changed.
+Boundary preserved: Receipt Reader presentation only. No scoring, verdict routing, taxonomy, QUESTION_PROMPT logic, receipt schema, receipt generation, signal behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, Stress Test scoring/tree behavior, external calls, live model calls, embeddings, telemetry, analytics, storage, Global ID sync, public ledger sync, certification, approval, rejection, enforcement, official-authority, privacy-guarantee, security-guarantee, or final-truth behavior changed.
 
 Validation targets:
 
 ```bat
-python tools\run_patch_checks.py 142_13
+python tools\run_patch_checks.py 142_14
 python tools\run_patch_checks.py 142_12
 python tools\run_patch_checks.py 142_11
-python tools\run_patch_checks.py 142_10
 python tools\run_protocol_baseline_self_audit.py
 ```

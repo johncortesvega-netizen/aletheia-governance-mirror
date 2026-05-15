@@ -1,0 +1,45 @@
+PATCH 142.14 — Receipt Reader Verbal Standard View Polish
+
+Purpose
+- Shift Receipt Reader Standard View from primarily analytical/table-first display toward a warmer verbal witness-style reading.
+- Preserve uploaded receipt values and native states while presenting a concise verbal brief, insight-card observations, and human-review questions.
+
+Files changed
+- ui/receipt_reader.py
+- tests/test_patch_142_14_receipt_reader_verbal_standard_view.py
+- PATCH_142_14_MANIFEST.txt
+- PATCH_142_14_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- data/protocol_baseline_manifest.json
+
+Behavior
+- Adds a verbal brief beginning with “The mirror reflects…” for Sanctuary, Threshold, Asylum, QUESTION_PROMPT, and World Lens evidence views.
+- Shows metric observations as verbal insight cards before the native-value table.
+- Keeps exact native values available in a details expander for scored/evidence receipts.
+- Renames repair-question presentation to “Human-review questions” and frames them as questions to strengthen the reading.
+- Keeps QUESTION_PROMPT metrics marked as not applicable.
+- Keeps World Lens evidence-bundle behavior intact.
+
+Boundaries preserved
+- No scoring changes.
+- No verdict routing changes.
+- No taxonomy changes.
+- No QUESTION_PROMPT logic changes.
+- No receipt schema changes.
+- No receipt generation changes.
+- No signal regex or weight changes.
+- No AI Integrity scan behavior changes.
+- No Privacy Audit scan behavior changes.
+- No World Lens math changes.
+- No upload/download behavior changes.
+- No external calls, live model calls, embeddings, telemetry, analytics, database/storage, Global ID sync, or public ledger sync.
+- No certification, approval, rejection, enforcement, official-authority, privacy-guarantee, security-guarantee, or final-truth claim introduced.
+
+Validation
+- python tools\run_patch_checks.py 142_14
+- python tools\run_patch_checks.py 142_12
+- python tools\run_patch_checks.py 142_11
+- python tools\run_patch_checks.py 142_10
+- python tools\run_protocol_baseline_self_audit.py
