@@ -3075,3 +3075,19 @@ Validation targets:
 python tools\run_patch_checks.py 142_4
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+## Patch 142.7 - Receipt Reader World Lens ZIP Selection Fix
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 142.7 fixes Receipt Reader ZIP selection for World Lens exports. The batch/ZIP reader now treats `*_summary.json`, `*_summary.txt`, `*_index.json`, and index-style files as summary/index artifacts rather than inspectable receipts. The inspect panel uses the actual World Lens receipt document, such as `aletheia_world_lens_receipt_2024.md`, so native World Lens fields and weighted metrics populate from the real receipt body.
+
+Boundary preserved: upload-only Receipt Reader display/parsing only. No World Lens math, scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, external calls, live model calls, embeddings, telemetry, analytics, database/storage, Global ID sync, public ledger sync, certification, enforcement, approval/rejection, privacy guarantee, security guarantee, or final-truth behavior changed.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 142_7
+python tools\run_patch_checks.py 142_6
+python tools\run_protocol_baseline_self_audit.py
+```

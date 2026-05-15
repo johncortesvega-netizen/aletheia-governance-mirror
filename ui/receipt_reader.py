@@ -545,14 +545,58 @@ def _read_uploaded_text(uploaded_file: Any) -> tuple[str, str]:
 
 
 def _is_batch_index_file(filename: str) -> bool:
+    """Batch index files are used only as indexes; they are not inspected as receipts."""
     lower = filename.lower().rsplit("/", 1)[-1]
     return lower.startswith("batch_index") or lower in {"index.txt", "index.json"}
+
+
+def _is_batch_index_name(filename: str) -> bool:
+    """Compatibility alias for tests and older patch notes."""
+    return _is_batch_index_file(filename)
+
+
+def _is_receipt_summary_or_index_file(filename: str) -> bool:
+    """Return True for ZIP summary/index artifacts that must not be inspected as receipts."""
+    lower = filename.lower().rsplit("/", 1)[-1]
+    stem = re.sub(r"\.(txt|md|json)$", "", lower)
+    if _is_batch_index_file(lower):
+        return True
+    return (
+        stem.endswith("_summary")
+        or stem.endswith("-summary")
+        or stem.endswith("_index")
+        or stem.endswith("-index")
+        or lower in {"summary.txt", "summary.md", "summary.json"}
+    )
+
+
+def _is_actual_receipt_candidate(filename: str, text: str) -> bool:
+    """Classify inspectable uploaded receipts without treating summary files as receipts."""
+    lower = filename.lower()
+    if _is_receipt_summary_or_index_file(lower):
+        return False
+    content = (text or "").lower()
+    if _is_world_lens_receipt(text):
+        return True
+    if "aletheia local witness receipt" in content or "ai integrity receipt" in content:
+        return True
+    basename = lower.rsplit("/", 1)[-1]
+    if basename.startswith("receipt_") or basename.startswith("receipt-"):
+        return True
+    if basename.startswith("aletheia_world_lens_receipt_") and not _is_receipt_summary_or_index_file(basename):
+        return True
+    return False
 
 
 def _receipt_sort_key(item: tuple[str, str]) -> tuple[int, str]:
     filename = item[0].lower()
     basename = filename.rsplit("/", 1)[-1]
-    preferred = 0 if basename.endswith(".json") else 1
+    if basename.endswith(".json"):
+        preferred = 0
+    elif basename.endswith(".md"):
+        preferred = 1
+    else:
+        preferred = 2
     match = re.search(r"receipt[_-]?(\d+)", basename)
     number = int(match.group(1)) if match else 999999
     return (number, f"{preferred}:{filename}")
@@ -562,13 +606,15 @@ def _dedupe_receipt_pairs(receipts: list[tuple[str, str]]) -> list[tuple[str, st
     by_stem: dict[str, tuple[str, str]] = {}
     for filename, text in sorted(receipts, key=_receipt_sort_key):
         lower = filename.lower()
-        if _is_batch_index_file(lower):
-            continue
-        if not ("receipt" in lower or _is_world_lens_receipt(text) or "aletheia local witness receipt" in text.lower() or "ai integrity receipt" in text.lower()):
+        if not _is_actual_receipt_candidate(lower, text):
             continue
         stem = re.sub(r"\.(txt|md|json)$", "", lower.rsplit("/", 1)[-1])
         current = by_stem.get(stem)
-        if current is None or lower.endswith(".json"):
+        if current is None:
+            by_stem[stem] = (filename, text)
+            continue
+        current_lower = current[0].lower()
+        if lower.endswith(".json") or (lower.endswith(".md") and not current_lower.endswith(".json")):
             by_stem[stem] = (filename, text)
     return sorted(by_stem.values(), key=_receipt_sort_key)
 
@@ -594,11 +640,19 @@ def parse_uploaded_receipt_file(uploaded_file: Any) -> dict[str, Any]:
         receipts, zip_name = _read_zip_receipts(uploaded_file)
         views = [(filename, parse_receipt_standard_view(text)) for filename, text in receipts]
         distribution = Counter(view.get("native_state", MISSING_VALUE) for _, view in views)
+        risk_distribution = Counter(
+            (view.get("fields") or {}).get("risk_state", MISSING_VALUE) for _, view in views
+        )
+        module_distribution = Counter(
+            (view.get("fields") or {}).get("module_source", MISSING_VALUE) for _, view in views
+        )
         return {
             "kind": "batch_zip",
             "name": zip_name,
             "receipt_count": len(views),
             "distribution": dict(distribution),
+            "risk_distribution": dict(risk_distribution),
+            "module_distribution": dict(module_distribution),
             "views": views,
         }
     text, filename = _read_uploaded_text(uploaded_file)

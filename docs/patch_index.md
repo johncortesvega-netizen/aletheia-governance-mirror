@@ -300,3 +300,9 @@ Patch 140 moves beginner orientation copy into Aletheia Unit Preview and removes
 ## Patch 142.4 - Receipt Reader Narrative Standard View Output
 
 Patch 142.4 reformats Receipt Reader into a clearer narrative Standard View. It shows System Status, Native State, Review Pressure, Protocol Label, Module Source, Performance & Risk Metrics, Core Logic, Summary for the Reader, and repair questions while preserving native uploaded receipt values. It remains upload-only, parses obvious fields without inference, and does not rescore, override, certify, approve, reject, enforce, generate receipts, call external services, use models or embeddings, store data, collect telemetry, or claim final truth.
+
+## Patch 142.7 - Receipt Reader World Lens ZIP Selection Fix
+
+- Fixes World Lens ZIP receipt selection so summary/index artifacts such as `*_summary.json` are not inspected as receipts.
+- Keeps the batch ZIP reader focused on uploaded receipts only, without rescoring, merging verdicts, or generating new receipts.
+- Adds regression tests for a World Lens ZIP containing both an actual `.md` receipt and a `*_summary.json` companion file.

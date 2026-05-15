@@ -2837,3 +2837,15 @@ Current patch: Patch 142.4 - Receipt Reader Narrative Standard View Output.
 Receipt Reader now presents uploaded receipts in a more readable narrative Standard View: System Status, Native State, Review Pressure, Protocol Label, Module Source, Performance & Risk Metrics, Core Logic, Summary for the Reader, and repair questions. The parser still prioritizes machine-readable receipt JSON when present and falls back to obvious text fields without inferring missing values.
 
 The reader remains a support utility. It translates uploaded receipt values verbally and maps them into a secondary review band for clarity. It does not rescore, override, certify, approve, reject, enforce, generate a new receipt, or claim final truth. Batch ZIP summaries remain descriptive counts of uploaded receipts only.
+
+## Patch 142.7 — Receipt Reader World Lens ZIP Selection Fix
+
+Patch 142.7 resolves the World Lens ZIP inspection mismatch found during manual review. The Receipt Reader ZIP path no longer uses `*_summary.json` or index-style files as the representative receipt. Summary files may exist in an uploaded World Lens export, but the inspection panel must select an actual receipt document, for example `aletheia_world_lens_receipt_2024.md`.
+
+Expected behavior after the patch:
+- World Lens batch ZIP summary does not count summary/index artifacts as receipts.
+- `Inspect first receipt` does not point at `*_summary.json`.
+- The inspected World Lens view shows `WORLD_LENS_EVIDENCE_VIEW`, `World Lens`, the evidence allocation status, weighted integrity/friction/collapse probability, average empirical coverage, active selected-year seats, allocated country rows, and trust raw/prior coverage from the actual receipt body.
+- Missing values are still not inferred.
+
+Boundary: parsing/display only. No World Lens math, scoring, routing, receipt schema/generation, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, telemetry/storage, external calls, certification, enforcement, or final-truth claim changed.
