@@ -1,0 +1,33 @@
+PATCH 142.16 — Boundary Cases Navigation Placement Polish
+
+Scope:
+- Moves Boundary Cases behind World Lens in the main app navigation row.
+- Keeps Boundary Cases available as a reference/calibration layer.
+- Updates the navigation map and quick guidance so primary work modules appear first.
+- Removes stale visible guidance that described AI Integrity as delimiter-separated batch review.
+- Updates navigation documentation and tests.
+
+Patched files:
+- app.py
+- tests/test_patch_142_16_boundary_cases_navigation_placement.py
+- tests/test_tab_name_contract.py
+- docs/app_navigation_smoke.md
+- docs/release_candidate_checklist.md
+- README.md
+- PATCH_142_16_MANIFEST.txt
+- PATCH_142_16_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- data/protocol_baseline_manifest.json
+
+Validation:
+- python tools/run_patch_checks.py 142_16
+- python tools/run_patch_checks.py 142_15
+- python tools/run_patch_checks.py 142_13
+- python tools/run_protocol_baseline_self_audit.py
+
+Boundaries:
+- No Boundary Cases behavior changed.
+- No receipt generation was added to Boundary Cases.
+- No scoring, verdict routing, taxonomy, receipt schema, signal behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, upload/download behavior, telemetry, storage, Global ID sync, public ledger sync, certification, enforcement, official-authority, or final-truth behavior changed.

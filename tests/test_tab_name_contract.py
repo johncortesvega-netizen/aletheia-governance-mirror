@@ -4,7 +4,7 @@ Patch 11: Tab Name Cleanup
 
 Purpose:
     Verify that the top-level module tabs use the clearer public names while
-    preserving the same module order and definitions.
+    preserving clear public names and keeping reference modules behind the main work modules.
 
 Scope:
     Content-level UI contract checks only. This test must not execute Streamlit.
@@ -22,12 +22,12 @@ APP_TEXT = APP_PATH.read_text(encoding="utf-8")
 
 def test_top_level_tabs_use_public_friendly_names():
     expected = [
-        "💬 Mirror Check",
+        "🪞 Mirror Check",
         "🚀 Stress Test",
-        "🧭 Boundary Cases",
         "🤖 AI Integrity Mirror",
         "📊 Evidence Lab",
         "🌐 World Lens",
+        "🧭 Boundary Cases",
         "📜 Protocol Guide",
         "ℹ️ Why ALETHEIA",
     ]

@@ -3217,3 +3217,22 @@ python tools\run_patch_checks.py 142_11
 python tools\run_patch_checks.py 142_10
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+## Patch 142.16 - Boundary Cases Navigation Placement Polish
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 142.16 moves Boundary Cases behind World Lens in the main module row. The primary work surfaces now appear first: Mirror Check, Stress Test, AI Integrity Mirror, Evidence Lab, and World Lens. Boundary Cases remains available as a reference/calibration layer after those main work modules.
+
+The patch also updates navigation guidance to remove stale AI Integrity batch-review wording from the quick path and to describe Boundary Cases as a reference layer rather than a primary receipt-producing work surface.
+
+Boundary preserved: placement/copy/test/docs only. No Boundary Cases behavior, receipt behavior, scoring, verdict routing, taxonomy, AI Integrity scan behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, upload/download behavior, external calls, telemetry, storage, Global ID sync, public ledger sync, certification, enforcement, official-authority, or final-truth behavior changed.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 142_16
+python tools\run_patch_checks.py 142_15
+python tools\run_patch_checks.py 142_13
+python tools\run_protocol_baseline_self_audit.py
+```

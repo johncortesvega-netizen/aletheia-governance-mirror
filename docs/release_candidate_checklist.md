@@ -74,7 +74,7 @@ Forbidden output language:
 Before release, a reviewer should run this manual path:
 
 1. Start the app with `streamlit run app.py`.
-2. Confirm the visible navigation includes Mirror Check, Stress Test, Boundary Cases, Evidence Lab, World Lens, Protocol Guide, and Why ALETHEIA.
+2. Confirm the visible navigation includes Mirror Check, Stress Test, AI Integrity Mirror, Evidence Lab, World Lens, Boundary Cases, Protocol Guide, and Why ALETHEIA.
 3. Open Why ALETHEIA and confirm the mirror-not-throne framing is visible.
 4. Open Protocol Guide and confirm the module map is understandable.
 5. Open sample reports and confirm examples are marked as demonstration artifacts.

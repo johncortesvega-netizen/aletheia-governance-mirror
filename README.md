@@ -575,15 +575,16 @@ tools\run_patch_checks.bat 46
 
 ## App navigation smoke test
 
-Patch 47 makes the visible v0.1 app path explicit:
+Patch 47 made the original visible v0.1 app path explicit. Patch 142.16 places Boundary Cases after World Lens so the primary work modules come first:
 
 1. Mirror Check
 2. Stress Test
-3. Boundary Cases
+3. AI Integrity Mirror
 4. Evidence Lab
 5. World Lens
-6. Protocol Guide
-7. Why ALETHEIA
+6. Boundary Cases
+7. Protocol Guide
+8. Why ALETHEIA
 
 The navigation map is documented in `docs/app_navigation_smoke.md`. Every tab reflects, explains, stress-tests, or documents. No tab commands, enforces, validates spiritual authority, replaces legal review, replaces human judgment, activates Global ID, selects a real 9k, removes a leader, issues an automatic reset, or makes final governance decisions.
 
@@ -646,7 +647,7 @@ Patch 52 adds `docs/ux_polish.md` and short first-use guidance:
 
 - Have a document? Use Mirror Check.
 - Have a scenario? Use Stress Test.
-- Have an ethical edge case? Use Boundary Cases.
+- Have an ethical edge case? Use Boundary Cases as a reference layer after the main work modules.
 - Have a claim or source question? Use Evidence Lab.
 - Need impact framing? Use World Lens.
 - Need rules and limits? Use Protocol Guide.

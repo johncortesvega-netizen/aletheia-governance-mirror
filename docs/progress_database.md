@@ -2922,3 +2922,17 @@ Implementation notes:
 
 Boundary notes:
 - No scoring, verdict routing, taxonomy, QUESTION_PROMPT logic, receipt schema, receipt generation, signal behavior, AI Integrity behavior, Privacy Audit behavior, Stress Test scoring/tree behavior, World Lens math, external calls, telemetry/storage, certification, enforcement, or final-truth behavior changed.
+
+## Patch 142.16 - Boundary Cases Navigation Placement Polish
+
+Patch 142.16 moves Boundary Cases behind World Lens in the main module row. The main receipt/review work surfaces now appear first: Mirror Check, Stress Test, AI Integrity Mirror, Evidence Lab, and World Lens. Boundary Cases remains available after those modules as a reference/calibration layer for hard edge cases.
+
+Implementation notes:
+- `APP_NAVIGATION_LABELS` and the Streamlit tab-variable unpacking were reordered together.
+- `APP_NAVIGATION_MAP`, quick guidance, README navigation text, release checklist, and app navigation smoke documentation were aligned to the new order.
+- Stale visible AI Integrity wording about delimiter-separated batch review was removed from quick guidance.
+
+Boundary notes:
+- No Boundary Cases logic, score, receipt, or module behavior changed.
+- No receipt generation was added to Boundary Cases.
+- No scoring, verdict routing, taxonomy, receipt schema/generation, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, upload/download behavior, external calls, telemetry/storage, certification, enforcement, or final-truth behavior changed.

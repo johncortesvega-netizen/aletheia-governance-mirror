@@ -362,3 +362,11 @@ Patch 142.4 reformats Receipt Reader into a clearer narrative Standard View. It 
 - Presents metrics as observation cards first, with exact native receipt values preserved behind a Native receipt values expander.
 - Renames the final narrative section to Reader Brief and repair prompts to Human-review questions.
 - Preserves all no-rescore, no-new-verdict, no-receipt-generation, no-certification, no-enforcement, no-telemetry, no-storage, and no-final-truth boundaries.
+
+## Patch 142.16 - Boundary Cases Navigation Placement Polish
+
+- Moves Boundary Cases behind World Lens in the main module row.
+- Keeps Boundary Cases available as a reference/calibration layer.
+- Aligns navigation map, quick guidance, README navigation copy, release checklist, and app navigation smoke docs.
+- Removes stale AI Integrity delimiter-separated batch wording from quick guidance.
+- Preserves all no-scoring-change, no-receipt-change, no-taxonomy-change, no-telemetry, no-storage, no-certification, no-enforcement, and no-final-truth boundaries.

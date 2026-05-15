@@ -285,10 +285,10 @@ TOTAL_9K = 9000
 APP_NAVIGATION_LABELS = [
     "🪞 Mirror Check",
     "🚀 Stress Test",
-    "🧭 Boundary Cases",
     "🤖 AI Integrity Mirror",
     "📊 Evidence Lab",
     "🌐 World Lens",
+    "🧭 Boundary Cases",
     "📜 Protocol Guide",
     "ℹ️ Why ALETHEIA",
 ]
@@ -296,10 +296,10 @@ APP_NAVIGATION_LABELS = [
 APP_NAVIGATION_MAP = [
     ("Mirror Check", "Audit a document or proposal for capture risk, missing safeguards, and repair questions."),
     ("Stress Test", "Try a scenario under pressure and inspect stability, trust, friction, and repair needs."),
-    ("Boundary Cases", "Test edge cases such as consent pressure, free agency, ambient capture, and self-audit."),
-    ("AI Integrity Mirror", "Review pasted AI outputs, prompts, agent specs, or code for authority-boundary and governance-integrity risk."),
+    ("AI Integrity Mirror", "Review one pasted AI output, prompt, agent spec, policy, workflow, or code snippet for authority-boundary and governance-integrity risk."),
     ("Evidence Lab", "Separate evidence from claims and park extraordinary claims as unverified until review."),
-    ("World Lens", "Simulate population-impact risk without Global ID, real 9k body, or sovereign authority."),
+    ("World Lens", "Read selected-year country evidence, coverage, and allocation context without Global ID, real 9k body, or sovereign authority."),
+    ("Boundary Cases", "Reference difficult edge cases such as consent pressure, free agency, ambient capture, and self-audit."),
     ("Protocol Guide", "Read the v0.1 operating guide, safe-language rules, and module boundaries."),
     ("Why ALETHEIA", "Understand the v1.0 public MVP, release boundary, examples, and research direction."),
 ]
@@ -307,9 +307,10 @@ APP_NAVIGATION_MAP = [
 APP_UX_POLISH_SUMMARY = [
     "Start with Mirror Check when you have a document.",
     "Use Stress Test when you have a scenario.",
-    "Use Boundary Cases when the ethical edge case is unclear.",
-    "Use AI Integrity Mirror when reviewing one AI answer or a delimiter-separated batch of AI artifacts.",
+    "Use AI Integrity Mirror when reviewing one AI answer, prompt, policy, workflow, or code snippet.",
     "Use Evidence Lab when a claim needs source-quality review.",
+    "Use World Lens when you need selected-year country evidence and allocation context.",
+    "Use Boundary Cases as a reference layer when the ethical edge case is unclear.",
     "Use Protocol Guide when you need the operating rules.",
 ]
 
@@ -3459,7 +3460,7 @@ def render_audit_module_integrity_panel(*, expanded: bool = False):
 
 render_sydney_protocol_self_check_gate()
 
-tab_chat, tab_sim, tab_boundary, tab_ai_integrity, tab_empirical, tab_grid, tab_doctrine, tab_about = st.tabs(APP_NAVIGATION_LABELS)
+tab_chat, tab_sim, tab_ai_integrity, tab_empirical, tab_grid, tab_boundary, tab_doctrine, tab_about = st.tabs(APP_NAVIGATION_LABELS)
 
 with tab_sim:
     st.subheader("Stress Test — Try an Idea")
