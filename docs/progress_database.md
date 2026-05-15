@@ -2936,3 +2936,19 @@ Boundary notes:
 - No Boundary Cases logic, score, receipt, or module behavior changed.
 - No receipt generation was added to Boundary Cases.
 - No scoring, verdict routing, taxonomy, receipt schema/generation, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, upload/download behavior, external calls, telemetry/storage, certification, enforcement, or final-truth behavior changed.
+
+
+## Patch 143 - Public Repository Hygiene / Reviewer Onboarding
+
+Patch 143 responds to external reviewer-readiness feedback without changing ALETHEIA's engine. The patch adds a cleaner public doorway: reviewer-start documentation, a plain-language glossary, validation/precision framing, a guide for reviewing ALETHEIA without trusting ALETHEIA, and patch-archive navigation.
+
+Implementation notes:
+- `docs/reviewer_start_here.md` gives a first path through the repository.
+- `docs/glossary.md` explains 9k, Sydney Protocol, V-Axis, World Lens, Receipt Reader, Standard View, Unit Preview, taxonomy labels, and related boundary terms.
+- `docs/validation_and_precision.md` clarifies that numerical values are internal review aids, not independent validation or final truth.
+- `docs/how_to_review_aletheia_without_trusting_it.md` makes self-audit and no-telemetry review explicit.
+- `docs/patch_archive/README.md`, `docs/patch_archive/root_patch_artifact_index.md`, and `tools/archive_root_patch_artifacts.py` support archive-style cleanup without deleting the audit trail.
+
+Boundary notes:
+- Reviewer-readiness is not mass-adoption polish and not a philosophical correction.
+- No app behavior, scoring, verdict routing, taxonomy, QUESTION_PROMPT logic, receipt schema/generation, signal regex/weights, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, upload/download behavior, external calls, telemetry/storage, certification, enforcement, or final-truth behavior changed.

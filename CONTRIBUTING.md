@@ -84,6 +84,19 @@ ALETHEIA uses transparent rule-based and heuristic signal detection in key revie
 
 Do not describe signal readings as verdicts, proof, certification, automated approval, legal findings, or final truth. Use `docs/SIGNAL_DICTIONARY.md` as a reviewer-facing glossary only; it is not a scoring specification and must not be used to invent untested weights.
 
+
+## Reviewer-readiness path
+
+Before proposing code changes, use the reviewer path introduced in Patch 143:
+
+1. Read `docs/reviewer_start_here.md`.
+2. Read `docs/glossary.md` for project-specific terms before interpreting scores or module names.
+3. Run `python tools/run_protocol_baseline_self_audit.py` and treat any difference as a human-review prompt, not as an automated release decision.
+4. Use `docs/how_to_review_aletheia_without_trusting_it.md` to inspect the boundary claims directly.
+5. Use `docs/validation_and_precision.md` before making claims about scores, precision, or validation.
+
+Contributions should improve reviewability without turning ALETHEIA into a certification, enforcement, approval, rejection, ranking, surveillance, or final-decision system.
+
 ## Patch workflow
 
 ALETHEIA uses small reviewable patches. A patch should normally include:

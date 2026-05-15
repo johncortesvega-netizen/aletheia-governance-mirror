@@ -370,3 +370,15 @@ Patch 142.4 reformats Receipt Reader into a clearer narrative Standard View. It 
 - Aligns navigation map, quick guidance, README navigation copy, release checklist, and app navigation smoke docs.
 - Removes stale AI Integrity delimiter-separated batch wording from quick guidance.
 - Preserves all no-scoring-change, no-receipt-change, no-taxonomy-change, no-telemetry, no-storage, no-certification, no-enforcement, and no-final-truth boundaries.
+
+## Patch 143 — Public Repository Hygiene / Reviewer Onboarding
+
+Patch 143 adds a reviewer-readiness doorway for ALETHEIA's public repository. It introduces:
+
+- `docs/reviewer_start_here.md` for first-time reviewers;
+- `docs/glossary.md` for 9k, Sydney Protocol, V-Axis, World Lens, Receipt Reader, Standard View, Unit Preview, and taxonomy terms;
+- `docs/validation_and_precision.md` for false-precision and external-validation framing;
+- `docs/how_to_review_aletheia_without_trusting_it.md` for local-run, self-audit, receipt-comparison, no-telemetry, and boundary-inspection steps;
+- `docs/patch_archive/README.md` and `tools/archive_root_patch_artifacts.py` for root patch-artifact cleanup without deleting the audit trail.
+
+Boundary preserved: documentation/structure only. No app behavior, scoring, routing, taxonomy, receipt schema/generation, signal behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, upload/download behavior, external calls, telemetry/storage, certification, enforcement, or final-truth behavior changed.

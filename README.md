@@ -7,6 +7,29 @@ ALETHEIA is a **mirror, not a throne**. It can surface governance-risk patterns 
 ALETHEIA is also **privacy-by-design inside this repository**: no built-in telemetry, trackers, analytics SDKs, backend upload endpoint, public ledger sync, Global ID sync, or central user-input database. Inputs are processed in the running app session, and receipts are user-held downloads. Third-party hosting layers may still have their own server or access logs outside ALETHEIA's application code.
 
 
+## Start here for reviewers
+
+Patch 143 adds a reviewer-readiness path for people inspecting ALETHEIA from the repository rather than from the live app. Start with:
+
+1. `docs/reviewer_start_here.md` — plain-language reviewer path, local run, receipt inspection, and trust boundaries.
+2. `docs/glossary.md` — 9k, Sydney Protocol, V-Axis, World Lens, local witness receipts, Standard View, Unit Preview, and core taxonomy terms.
+3. `docs/how_to_review_aletheia_without_trusting_it.md` — self-audit, local-run, receipt-comparison, no-telemetry, and boundary-inspection steps.
+4. `docs/validation_and_precision.md` — why numerical readings are internal review aids, not independent validation or final truth.
+5. `docs/patch_index.md` and `docs/patch_archive/README.md` — how to navigate the patch trail without confusing auditability for certification.
+
+Reviewer-readiness is not mass-adoption polish. The goal is to preserve ALETHEIA's audit trail and **mirror, not throne** identity while giving outsiders a cleaner public doorway into the project.
+
+Current V1 public modules and support surfaces:
+
+- Aletheia Unit Preview — calm first-use and beginner path.
+- Mirror Check — governance-language and authority-boundary review.
+- Stress Test — governance scenario pressure review.
+- AI Integrity Mirror — static artifact review for pasted AI outputs, prompts, policies, workflows, model-card excerpts, and code snippets.
+- Evidence Lab — evidence/context review support.
+- World Lens — selected-year country evidence views and coverage/allocation context.
+- Receipt Reader — upload-only Standard View for ALETHEIA local witness receipts and evidence bundles; it does not rescore or override uploaded receipts.
+- Boundary Cases, Protocol Guide, and Why ALETHEIA — reference and orientation layers.
+
 
 ## Patch 131 - Start Page / How to Start Gate
 

@@ -322,3 +322,12 @@ Scenario-shaped prompts include visible governance or pressure patterns such as 
 The compact button row is a layout-only adjustment on the Unit Preview page. It does not affect module behavior.
 
 Boundary: no scoring, no verdict routing, no taxonomy changes, no QUESTION_PROMPT changes, no receipt schema changes, no receipt generation changes, no signal regex or weight changes, no AI Integrity scan behavior changes, no Privacy Audit scan behavior changes, no World Lens math changes, no external calls, no telemetry, no analytics, no storage, no certification, no enforcement, and no final-truth claim. Human review remains required.
+
+
+## Patch 143 — Reviewer onboarding and public repository hygiene
+
+Patch 143 is a documentation/structure patch for reviewer-readiness. It adds a clearer reviewer path, a plain-language glossary, validation/precision framing, a self-audit invitation, and patch-archive navigation.
+
+This does not change app behavior. It does not change scoring, verdict routing, taxonomy, receipt schemas, receipt generation, module behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, upload/download behavior, external calls, telemetry, storage, certification, enforcement, or final-truth behavior.
+
+The repository doorway should become cleaner without weakening the audit trail. Root-level patch files may be archived with `tools/archive_root_patch_artifacts.py`; archiving preserves review history and is not a substitute for Git history or human review.

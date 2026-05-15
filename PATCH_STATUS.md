@@ -3236,3 +3236,21 @@ python tools\run_patch_checks.py 142_15
 python tools\run_patch_checks.py 142_13
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+
+## Patch 143 - Public Repository Hygiene / Reviewer Onboarding
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 143 adds a reviewer-readiness doorway for the public repository. It adds reviewer-start documentation, a plain-language glossary, validation/precision framing, a self-audit invitation, patch-archive navigation, and a local helper for archiving root-level patch artifacts without deleting the audit trail.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 143
+python tools\run_patch_checks.py 142_16
+python tools\run_patch_checks.py 142_15
+python tools\run_protocol_baseline_self_audit.py
+```
+
+Boundary preserved: documentation/structure only. No scoring, verdict routing, taxonomy, QUESTION_PROMPT logic, receipt schema/generation, signal regex/weights, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, upload/download behavior, app navigation, external calls, telemetry/storage, certification, enforcement, or final-truth behavior changed.
