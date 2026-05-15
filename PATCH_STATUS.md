@@ -3127,3 +3127,20 @@ python tools\run_patch_checks.py 142_8
 python tools\run_patch_checks.py 142_7
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+## Patch 142.10 - Receipt Reader QUESTION_PROMPT Display Polish
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 142.10 polishes Receipt Reader display behavior for QUESTION_PROMPT receipts. QUESTION_PROMPT is a review-tool mode, not a scored scenario, so selected detail views now explain that scored metrics are intentionally not applicable instead of showing repeated “Not found in uploaded receipt” rows. Normal batch ZIP Receipt Index rows also mark QUESTION_PROMPT Integrity, Collapse, and Trust Index as `Not applicable` and use shorter columns (`Collapse`, `Repairs`) for readability.
+
+Boundary preserved: Receipt Reader presentation/parsing only. No scoring, verdict routing, taxonomy, QUESTION_PROMPT logic, receipt schema, receipt generation, signal behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, Stress Test scoring behavior, external calls, live model calls, embeddings, telemetry, analytics, database/storage, Global ID sync, public ledger sync, certification, approval, rejection, enforcement, official-authority, privacy-guarantee, security-guarantee, or final-truth behavior changed.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 142_10
+python tools\run_patch_checks.py 142_9
+python tools\run_patch_checks.py 142_8
+python tools\run_protocol_baseline_self_audit.py
+```

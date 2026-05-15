@@ -67,9 +67,11 @@ def test_batch_reader_builds_one_index_row_per_receipt_without_rescoring():
     assert rows[0]["Native State"] == "QUESTION_PROMPT"
     assert rows[0]["Review Pressure"] == "Not scored / review-tool mode"
     assert rows[0]["Protocol Label"] == "Audit Question / Review Tool"
-    assert rows[0]["Integrity"] == "Not found in uploaded receipt"
+    assert rows[0]["Integrity"] == "Not applicable"
+    assert rows[0]["Collapse"] == "Not applicable"
+    assert rows[0]["Trust Index"] == "Not applicable"
     assert rows[1]["Native State"] == "THRESHOLD"
-    assert rows[1]["Repair Questions"] == "1"
+    assert rows[1]["Repairs"] == "1"
     assert rows[2]["Protocol Label"] == "MEI7 Ethics Gate / Asylum"
 
 

@@ -20,6 +20,7 @@ RECEIPT_READER_BOUNDARY = (
 )
 
 MISSING_VALUE = "Not found in uploaded receipt"
+NOT_APPLICABLE = "Not applicable"
 
 STANDARD_BANDS = {
     "SANCTUARY": "Low (Standard Band)",
@@ -61,6 +62,20 @@ METRIC_ORDER = [
     ("friction", "Friction"),
     ("ego", "Ego"),
 ]
+
+
+def _is_question_prompt_state(native_state: str) -> bool:
+    return str(native_state or "").upper() == "QUESTION_PROMPT"
+
+
+def _question_prompt_metric_rows() -> list[dict[str, str]]:
+    return [
+        {
+            "Metric": "Scored Metrics",
+            "Value": NOT_APPLICABLE,
+            "Interpretation": "QUESTION_PROMPT receipts are review-tool prompts, not scored scenario receipts.",
+        }
+    ]
 
 
 def _first_match(text: str, patterns: list[str]) -> str:
@@ -495,7 +510,9 @@ def parse_receipt_standard_view(receipt_text: str) -> dict[str, Any]:
             "positive_review_signals": _first_match(text, [r"(?im)^\s*Positive review signals\s*:\s*(.+?)\s*$"]),
         }
 
-    if module_family == "World Lens":
+    if native_state == "QUESTION_PROMPT":
+        metric_rows = _question_prompt_metric_rows()
+    elif module_family == "World Lens":
         metric_rows = _world_lens_metric_rows(world_lens_fields)
     else:
         metric_rows = [
@@ -753,6 +770,8 @@ def parse_uploaded_receipt_file(uploaded_file: Any) -> dict[str, Any]:
 
 
 def _metric_section_title(view: dict[str, Any]) -> str:
+    if _is_question_prompt_state(view.get("native_state", "")):
+        return "Review-Tool Metrics"
     family = view.get("module_family")
     if family == "World Lens":
         return "World Lens Evidence Metrics"
@@ -764,6 +783,8 @@ def _metric_section_title(view: dict[str, Any]) -> str:
 
 
 def _metric_section_caption(view: dict[str, Any]) -> str:
+    if _is_question_prompt_state(view.get("native_state", "")):
+        return "QUESTION_PROMPT receipts intentionally suppress scored metrics."
     family = view.get("module_family")
     if family == "World Lens":
         return "Selected-year evidence values from the uploaded World Lens receipt; no new verdict is generated."
@@ -795,7 +816,13 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
 
     container.markdown(f"### {_metric_section_title(view)}")
     container.caption(_metric_section_caption(view))
-    container.table(view["metric_rows"])
+    if _is_question_prompt_state(view.get("native_state", "")):
+        container.info(
+            "Not applicable — QUESTION_PROMPT receipts are review-tool prompts and do not carry "
+            "scored integrity, collapse, trust, alignment, friction, or ego metrics."
+        )
+    else:
+        container.table(view["metric_rows"])
 
     world_distribution = (view.get("world_lens_fields") or {}).get("taxonomy_distribution") or []
     if world_distribution:
@@ -827,6 +854,13 @@ def _batch_receipt_index_rows(parsed: dict[str, Any]) -> list[dict[str, str]]:
         review_pressure = view.get("standard_band", MISSING_VALUE)
         if native_state == "QUESTION_PROMPT":
             review_pressure = "Not scored / review-tool mode"
+            integrity = NOT_APPLICABLE
+            collapse = NOT_APPLICABLE
+            trust = NOT_APPLICABLE
+        else:
+            integrity = fields.get("integrity", MISSING_VALUE)
+            collapse = fields.get("collapse_probability", MISSING_VALUE)
+            trust = fields.get("trust", MISSING_VALUE)
         rows.append({
             "#": str(index),
             "File": filename,
@@ -834,10 +868,10 @@ def _batch_receipt_index_rows(parsed: dict[str, Any]) -> list[dict[str, str]]:
             "Native State": native_state,
             "Review Pressure": review_pressure,
             "Protocol Label": fields.get("protocol_label", MISSING_VALUE),
-            "Integrity": fields.get("integrity", MISSING_VALUE),
-            "Collapse Probability": fields.get("collapse_probability", MISSING_VALUE),
-            "Trust Index": fields.get("trust", MISSING_VALUE),
-            "Repair Questions": str(len(view.get("repair_questions") or [])),
+            "Integrity": integrity,
+            "Collapse": collapse,
+            "Trust Index": trust,
+            "Repairs": str(len(view.get("repair_questions") or [])),
         })
     return rows
 
@@ -918,7 +952,7 @@ def _render_batch_zip(container: Any, parsed: dict[str, Any]) -> None:
 
     rows = _batch_receipt_index_rows(parsed)
     container.markdown("### Receipt Index")
-    container.caption("One compact row per uploaded receipt. Values are copied from each native receipt; missing fields are not inferred.")
+    container.caption("One compact row per uploaded receipt. Values are copied from each native receipt; QUESTION_PROMPT metrics are marked not applicable, not missing.")
     container.table(rows)
 
     labels = [

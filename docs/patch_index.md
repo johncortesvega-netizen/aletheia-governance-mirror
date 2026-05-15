@@ -322,3 +322,11 @@ Patch 142.4 reformats Receipt Reader into a clearer narrative Standard View. It 
 - Adds selectable receipt inspection so users are not limited to the first uploaded receipt.
 - Preserves World Lens Evidence Bundle behavior from Patch 142.8.
 - No scoring, routing, receipt generation, schema, telemetry, storage, certification, enforcement, or final-truth behavior changed.
+
+## Patch 142.10 - Receipt Reader QUESTION_PROMPT Display Polish
+
+- Treats QUESTION_PROMPT metrics as intentionally not applicable rather than missing.
+- Replaces selected QUESTION_PROMPT detail metric table with a review-tool mode explanation.
+- Updates batch Receipt Index rows to show `Not applicable` for suppressed QUESTION_PROMPT scored metrics.
+- Shortens batch index columns from `Collapse Probability` to `Collapse` and `Repair Questions` to `Repairs`.
+- No scoring, routing, taxonomy, receipt generation/schema, telemetry, storage, certification, enforcement, or final-truth behavior changed.

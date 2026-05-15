@@ -2868,3 +2868,9 @@ No World Lens math, scoring, routing, taxonomy, receipt schema, receipt generati
 Patch 142.9 adds a per-receipt index for normal Receipt Reader batch ZIP uploads. Batch ZIPs now keep the top-level distribution and also show one compact row per uploaded receipt so a user can review the whole batch without opening each receipt manually. A selectable inspection view replaces the earlier first-receipt-only behavior.
 
 Scope is Receipt Reader presentation/parsing only. It does not rescore, merge verdicts, create receipts, change schemas, change scoring, change verdict routing, alter taxonomy, change World Lens math, alter AI Integrity or Privacy Audit behavior, add external calls, add telemetry/storage, or introduce authority/certification/final-truth claims.
+
+## Patch 142.10 - Receipt Reader QUESTION_PROMPT Display Polish
+
+Patch 142.10 fixes the remaining display-semantics issue in Receipt Reader batch handling. QUESTION_PROMPT receipts are intentionally unscored review-tool outputs, so their missing metrics should not look like parser failures. The selected receipt view now replaces the standard scored metric table with a not-applicable explanation, and the batch index shows `Not applicable` for QUESTION_PROMPT metric cells.
+
+Scope is Receipt Reader presentation/parsing only. It preserves upload-only behavior and does not rescore, merge verdicts, create receipts, change schemas, change scoring, change verdict routing, alter taxonomy, change World Lens math, alter AI Integrity or Privacy Audit behavior, add external calls, add telemetry/storage, or introduce authority/certification/final-truth claims.
