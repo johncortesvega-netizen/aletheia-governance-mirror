@@ -345,3 +345,12 @@ Patch 142.4 reformats Receipt Reader into a clearer narrative Standard View. It 
 - Uses `Collapse Pressure` / `Weighted Collapse Pressure` as display labels while preserving the native collapse probability fields.
 - Shortens curated World Lens CSV preview labels and adds explicit first-row preview language.
 - Preserves all no-rescore, no-new-verdict, no-certification, no-enforcement, no-telemetry, no-storage, and no-final-truth boundaries.
+
+## Patch 142.13 - AI Integrity Single Artifact Result Focus
+
+- Hides the visible AI Integrity batch-review checkbox and split-artifact UI copy.
+- Keeps AI Integrity V1 focused on a single pasted artifact and one static review.
+- Adds Triggered signals to the main AI Integrity reading cards.
+- Moves Highest pressure signals, triggered-signal categories, evidence snippets, and repair questions above optional Privacy/Code static checks.
+- Keeps zero-detection Privacy Boundary and Code Integrity checks collapsed as optional secondary context.
+- Preserves all no-scoring-change, no-receipt-schema-change, no-signal-change, no-telemetry, no-storage, no-certification, no-enforcement, and no-final-truth boundaries.

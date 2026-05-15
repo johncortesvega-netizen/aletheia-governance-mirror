@@ -4424,50 +4424,32 @@ with tab_ai_integrity:
     if st.button("Load AI Integrity demo", use_container_width=True, key="ai_integrity_load_demo"):
         st.session_state["ai_integrity_input"] = selected_demo["text"]
 
-    ai_batch_mode = st.checkbox(
-        "Batch review mode: split pasted artifacts on lines containing ---",
-        value=False,
-        key="ai_integrity_batch_mode",
-        help="Static local batch review only. Each block receives its own risk reading; this is not live model benchmarking or certification.",
-    )
+    ai_batch_mode = False
     ai_integrity_input = st.text_area(
-        "Artifact(s) to review",
+        "Artifact to review",
         key="ai_integrity_input",
         height=240,
-        placeholder="Paste one artifact, or multiple artifacts separated by a line containing ---",
+        placeholder="Paste one AI output, system prompt, policy, or workflow description to review.",
     )
-    st.caption("Static review only: no live model benchmarking, external calls, public ledger, central storage, or certification. Pasted artifact in, local risk reading out; batch mode extends that to pasted artifacts in, local risk readings out.")
+    st.caption("Static review only: no live model benchmarking, external calls, public ledger, central storage, or certification. Paste one artifact and read one local risk reading.")
     render_language_calibration_caveat(st)
 
     if st.button("Run AI Integrity Mirror", type="primary", use_container_width=True, key="ai_integrity_run_button"):
         if not ai_integrity_input.strip():
             warn_empty_ai_integrity_artifact(st)
         else:
-            if ai_batch_mode:
-                ai_batch_result = audit_ai_integrity_batch(ai_integrity_input, artifact_kind=artifact_kind)
-                if not ai_batch_result["results"]:
-                    warn_empty_ai_integrity_batch(st)
-                else:
-                    st.session_state["ai_integrity_last_batch_result"] = ai_batch_result
-                    st.session_state["ai_integrity_last_result"] = ai_batch_result["results"][0]
-                    st.session_state["ai_integrity_last_input"] = ai_integrity_input
-                    st.session_state["ai_integrity_last_kind"] = artifact_kind
-                    update_protocol_state(
-                        selected_context=f"AI Integrity batch · {ai_batch_result['summary']['artifact_count']} pasted artifact(s)",
-                        last_update_source="AI Integrity Mirror",
-                    )
-            else:
-                ai_result = audit_ai_integrity_artifact(ai_integrity_input, artifact_kind=artifact_kind)
-                st.session_state["ai_integrity_last_result"] = ai_result
-                st.session_state["ai_integrity_last_batch_result"] = None
-                st.session_state["ai_integrity_last_input"] = ai_integrity_input
-                st.session_state["ai_integrity_last_kind"] = artifact_kind
-                update_protocol_state(
-                    selected_context=(ai_integrity_input[:120] + "…") if len(ai_integrity_input) > 120 else ai_integrity_input,
-                    last_update_source="AI Integrity Mirror",
-                )
+            ai_result = audit_ai_integrity_artifact(ai_integrity_input, artifact_kind=artifact_kind)
+            st.session_state["ai_integrity_last_result"] = ai_result
+            st.session_state["ai_integrity_last_batch_result"] = None
+            st.session_state["ai_integrity_last_input"] = ai_integrity_input
+            st.session_state["ai_integrity_last_kind"] = artifact_kind
+            update_protocol_state(
+                selected_context=(ai_integrity_input[:120] + "…") if len(ai_integrity_input) > 120 else ai_integrity_input,
+                last_update_source="AI Integrity Mirror",
+            )
 
-    ai_batch_result = st.session_state.get("ai_integrity_last_batch_result")
+    ai_batch_result = None
+    st.session_state["ai_integrity_last_batch_result"] = None
     if ai_batch_result:
         summary = ai_batch_result.get("summary", {})
         st.markdown("### AI Integrity Batch Summary")
@@ -4646,11 +4628,13 @@ with tab_ai_integrity:
         protocol_label = ai_result["protocol_label"]
 
         st.markdown("### AI Integrity Reading")
-        cols = st.columns(4)
+        findings = ai_result.get("findings", []) or []
+        cols = st.columns(5)
         cols[0].metric("Internal taxonomy label", state)
         cols[1].metric("Risk reading", risk)
         cols[2].metric("Integrity reading", f"{report.get('integrity', 0):.3f}")
         cols[3].metric("Capture pressure", f"{report.get('collapse_probability', 0):.3f}")
+        cols[4].metric("Triggered signals", len(findings))
         st.caption("This is a static governance-integrity risk reading for review, not proof, certification, approval, or a final safety claim.")
 
         with st.expander("How to read this result", expanded=False):
@@ -4661,48 +4645,6 @@ with tab_ai_integrity:
             st.write(ai_result.get("scope_note"))
             st.write(ai_result.get("reliance_note"))
 
-        privacy_boundary_audit = ai_result.get("privacy_boundary_audit") or scan.get("privacy_boundary_audit") or {}
-        render_privacy_boundary_audit_panel(privacy_boundary_audit, st)
-
-        code_static_scan = ai_result.get("code_integrity_static_scan") or scan.get("code_integrity_static_scan") or {}
-        if code_static_scan:
-            st.markdown("#### Code Integrity Static Scan")
-            st.caption(code_static_scan.get("scope_note"))
-            st.caption(code_static_scan.get("non_certification_note"))
-            ccols = st.columns(4)
-            ccols[0].metric("Code detections", code_static_scan.get("detection_count", 0))
-            ccols[1].metric("High", code_static_scan.get("severity_counts", {}).get("High", 0))
-            ccols[2].metric("Medium", code_static_scan.get("severity_counts", {}).get("Medium", 0))
-            ccols[3].metric("Review gate missing", "Yes" if code_static_scan.get("missing_human_review_gate") else "No")
-            code_detections = code_static_scan.get("detections", []) or []
-            if code_detections:
-                code_rows = [
-                    {
-                        "Category": item.get("category"),
-                        "Signal": item.get("name"),
-                        "Severity": item.get("severity"),
-                        "Why it matters": item.get("description"),
-                    }
-                    for item in code_detections
-                ]
-                st.dataframe(pd.DataFrame(code_rows), use_container_width=True, hide_index=True)
-                with st.expander("Code evidence snippets — redacted static scan", expanded=False):
-                    for item in code_detections:
-                        snippets = item.get("evidence_snippets", []) or []
-                        if snippets:
-                            st.write(f"**{item.get('category')} · {item.get('name')}**")
-                            for snippet in snippets:
-                                st.code(snippet, language="text")
-                with st.expander("Code review questions", expanded=True):
-                    for question in code_static_scan.get("review_questions", [])[:6]:
-                        st.info(question)
-            else:
-                st.caption(
-                    "No code-specific trigger was detected by this static scan. "
-                    "This is not a security guarantee, vulnerability certification, compliance approval, or proof that code is safe."
-                )
-
-        findings = ai_result.get("findings", []) or []
         if findings:
             st.markdown("#### Highest pressure signals")
             pressure_rows = sorted(
@@ -4758,6 +4700,60 @@ with tab_ai_integrity:
         st.caption("Use these prompts to rewrite, review, or constrain the artifact before relying on it.")
         for question in report.get("repair_questions", []):
             st.info(question)
+
+        st.markdown("#### Optional static boundary checks")
+        with st.expander("Privacy Boundary Audit and Code Integrity Static Scan", expanded=False):
+            privacy_boundary_audit = ai_result.get("privacy_boundary_audit") or scan.get("privacy_boundary_audit") or {}
+            privacy_detections = int(privacy_boundary_audit.get("detection_count", 0) or 0)
+            privacy_active = int(privacy_boundary_audit.get("active_signal_count", 0) or 0)
+            if privacy_detections or privacy_active:
+                render_privacy_boundary_audit_panel(privacy_boundary_audit, st)
+            else:
+                st.markdown("**Privacy Boundary Audit**")
+                st.caption(
+                    "No privacy-boundary trigger was detected by this static artifact review. "
+                    "This is not a privacy guarantee, compliance approval, hosting audit, or proof that no data is collected."
+                )
+
+            code_static_scan = ai_result.get("code_integrity_static_scan") or scan.get("code_integrity_static_scan") or {}
+            if code_static_scan:
+                code_detections = code_static_scan.get("detections", []) or []
+                if code_detections:
+                    st.markdown("**Code Integrity Static Scan**")
+                    st.caption(code_static_scan.get("scope_note"))
+                    st.caption(code_static_scan.get("non_certification_note"))
+                    ccols = st.columns(4)
+                    ccols[0].metric("Code detections", code_static_scan.get("detection_count", 0))
+                    ccols[1].metric("High", code_static_scan.get("severity_counts", {}).get("High", 0))
+                    ccols[2].metric("Medium", code_static_scan.get("severity_counts", {}).get("Medium", 0))
+                    ccols[3].metric("Review gate missing", "Yes" if code_static_scan.get("missing_human_review_gate") else "No")
+                    code_rows = [
+                        {
+                            "Category": item.get("category"),
+                            "Signal": item.get("name"),
+                            "Severity": item.get("severity"),
+                            "Why it matters": item.get("description"),
+                        }
+                        for item in code_detections
+                    ]
+                    st.dataframe(pd.DataFrame(code_rows), use_container_width=True, hide_index=True)
+                    with st.expander("Code evidence snippets — redacted static scan", expanded=False):
+                        for item in code_detections:
+                            snippets = item.get("evidence_snippets", []) or []
+                            if snippets:
+                                st.write(f"**{item.get('category')} · {item.get('name')}**")
+                                for snippet in snippets:
+                                    st.code(snippet, language="text")
+                    with st.expander("Code review questions", expanded=True):
+                        for question in code_static_scan.get("review_questions", [])[:6]:
+                            st.info(question)
+                else:
+                    st.markdown("**Code Integrity Static Scan**")
+                    st.caption(
+                        "No code-specific trigger was detected by this static artifact review. "
+                        "This is not a security guarantee, vulnerability certification, compliance approval, or proof that code is safe."
+                    )
+
 
         st.markdown("#### Boundary note")
         st.write(ai_result.get("notice"))

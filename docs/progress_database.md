@@ -2890,3 +2890,21 @@ Patch 142.12 is a display-language polish patch for Receipt Reader after the Wor
 - World Lens uses `Evidence View`, `Weighted Collapse Pressure`, shortened CSV preview labels, and explicit first-row preview language.
 
 The patch does not alter any engine output. It does not change scoring, verdict routing, taxonomy, receipt schema/generation, signal behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, Stress Test scoring/tree behavior, external calls, telemetry/storage, certification, enforcement, or final-truth boundaries.
+
+## Patch 142.13 - AI Integrity Single Artifact Result Focus
+
+Patch 142.13 records a UI-result focus change for AI Integrity Mirror. The visible V1 workflow is now single-artifact first: one artifact text box, one static review, and the AI Integrity findings near the top of the result.
+
+Implementation notes:
+- Removed visible batch-review checkbox and split-artifact helper copy from the AI Integrity screen.
+- Changed the text area label to `Artifact to review` and the placeholder to a single-artifact instruction.
+- Kept backend batch helpers in place for internal/future compatibility, but the V1 UI does not expose that workflow.
+- Added a Triggered signals metric to the main AI Integrity reading row.
+- Moved Highest pressure signals, triggered-signal categories, evidence snippets, and repair questions above optional Privacy/Code static checks.
+- Collapsed zero-detection Privacy Boundary and Code Integrity checks under optional static boundary checks.
+
+Boundary notes:
+- No AI Integrity scoring, signal regex, signal weights, receipt schema, or receipt generation changed.
+- No Privacy Audit or Code Integrity scan behavior changed.
+- No Mirror Check, Stress Test, World Lens, or Receipt Reader behavior changed.
+- No external calls, live model calls, embeddings, telemetry, analytics, storage, Global ID sync, public ledger sync, certification, approval, enforcement, legal authority, official authority, privacy/security guarantee, model-safety proof, or final-truth claim added.
