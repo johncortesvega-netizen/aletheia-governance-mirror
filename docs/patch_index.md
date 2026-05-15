@@ -387,3 +387,11 @@ python tools\run_patch_checks.py 146
 python tools\run_patch_checks.py 142_16
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+## Patch 146.1 - Unit Preview GitHub Link + AI Audit Evidence Availability
+
+- Restores the Unit Preview GitHub link as a small user-clicked source link.
+- Adds local AI audit-loop proof-of-concept evidence assets and a reviewer-facing evidence document.
+- Makes Grok, Claude, and Gemini audit-loop screenshots available from a collapsed Unit Preview section.
+- Preserves the boundary that these are human-reviewed evidence examples, not official verdicts, certification, legal findings, or final proof.
+- No scoring, receipt, World Lens math, AI Integrity, Privacy Audit, Stress Test, Mirror Check, telemetry/storage, or authority behavior changed.

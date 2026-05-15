@@ -63,6 +63,86 @@ def get_unit_preview_start_here_markdown() -> str:
 """
 
 
+
+def get_ai_audit_loop_evidence_sets(project_root: Path | None = None) -> list[dict[str, object]]:
+    """Return packaged AI audit-loop proof-of-concept screenshots.
+
+    These assets are local reviewer evidence only. They are not official verdicts,
+    certifications, legal findings, or final proof.
+    """
+    root = project_root or Path(__file__).resolve().parents[1]
+    base = root / "docs" / "for-reviewers" / "ai_audit_loop_evidence"
+    candidates = [
+        {
+            "title": "Grok / xAI — capture and architectural-opacity pressure",
+            "summary": (
+                "External AI/system claims were mirrored for capture, centralization, "
+                "architectural-opacity, missing-verifiability, and service-misalignment pressure."
+            ),
+            "path": base / "01_grok_xai_architecture_review",
+        },
+        {
+            "title": "Claude — evidence-boundary and mechanisms-vs-claims gap",
+            "summary": (
+                "A useful external critique was mirrored for evidence-boundary limits, "
+                "repo/docs inference, and mechanisms-vs-claims overreach."
+            ),
+            "path": base / "02_claude_evidence_boundary_review",
+        },
+        {
+            "title": "Gemini — sanctification drift / authority-boundary drift",
+            "summary": (
+                "ALETHEIA language was mirrored after being bent toward self-certifying, "
+                "perfect-alignment, sacred-system, or Global-ID-adjacent claims."
+            ),
+            "path": base / "03_gemini_sanctification_drift_review",
+        },
+    ]
+    evidence_sets: list[dict[str, object]] = []
+    for candidate in candidates:
+        folder = candidate["path"]
+        if isinstance(folder, Path) and folder.exists():
+            images = sorted(folder.glob("*.png"))
+            if images:
+                evidence_sets.append({**candidate, "images": images})
+    return evidence_sets
+
+
+def render_ai_audit_loop_evidence(container=None, project_root: Path | None = None) -> None:
+    """Render a collapsed proof-of-concept evidence card on Unit Preview.
+
+    Unit Preview makes these local images available for human review. It does
+    not treat them as official ALETHEIA verdicts, certification, legal proof,
+    or automated authority.
+    """
+    if container is None:
+        import streamlit as st  # type: ignore
+
+        container = st
+
+    evidence_sets = get_ai_audit_loop_evidence_sets(project_root)
+    if not evidence_sets:
+        return
+
+    with container.expander("Proof of concept: AI audit-loop evidence", expanded=False):
+        container.markdown(
+            "ALETHEIA can mirror external AI reviews, praise, self-descriptions, and critiques. "
+            "The review path is: **external AI output -> ALETHEIA mirror reading -> human review**."
+        )
+        container.caption(
+            "These screenshots are human-reviewed audit evidence, not official verdicts, "
+            "certifications, legal findings, or final proof. Mirror, not throne."
+        )
+        for evidence in evidence_sets:
+            title = str(evidence["title"])
+            summary = str(evidence["summary"])
+            images = evidence.get("images", [])
+            container.markdown(f"**{title}**")
+            container.write(summary)
+            for image_path in images:  # type: ignore[assignment]
+                container.image(str(image_path), caption=Path(image_path).name, use_container_width=True)
+
+
 def get_unit_preview_html_files(project_root: Path | None = None) -> list[tuple[str, Path]]:
     """Return packaged HTML preview files for the Unit Preview hook page."""
     root = project_root or Path(__file__).resolve().parents[1]
@@ -432,7 +512,7 @@ def render_unit_preview(container=None) -> bool:
     action_columns = container.columns(2)
     # Patch 142.2 reassigns to a compact row while preserving the Patch 141.3
     # source marker above for validation continuity.
-    action_columns = container.columns([1, 1, 6], gap="small")
+    action_columns = container.columns([1, 1, 1.25, 4.75], gap="small")
     with action_columns[0]:
         preview_clicked = container.button("Preview review path", key="aletheia_unit_preview_button")
     with action_columns[1]:
@@ -440,6 +520,12 @@ def render_unit_preview(container=None) -> bool:
             "Proceed to ALETHEIA",
             type="primary",
             key="aletheia_unit_preview_proceed",
+        )
+    with action_columns[2]:
+        container.link_button(
+            "GitHub",
+            "https://github.com/johncortesvega-netizen/aletheia-governance-mirror",
+            help="View GitHub repository. Open the public GitHub mirror in a new page. Unit Preview does not make external calls; this is a user-clicked source link.",
         )
 
     if preview_clicked:
@@ -452,6 +538,7 @@ def render_unit_preview(container=None) -> bool:
         )
         container.caption("This is orientation only. You can still choose any module after entering ALETHEIA.")
 
+    render_ai_audit_loop_evidence(container)
     render_unit_preview_html_reference(container)
 
     return bool(proceed_clicked)

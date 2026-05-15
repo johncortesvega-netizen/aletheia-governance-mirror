@@ -2953,3 +2953,15 @@ python tools\run_patch_checks.py 146
 python tools\run_patch_checks.py 142_16
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+## Patch 146.1 - Unit Preview GitHub Link + AI Audit Evidence Availability
+
+Patch 146.1 follows Patch 146 by restoring the small GitHub repository link in Aletheia Unit Preview and adding the AI audit-loop evidence as local reviewer assets. The Unit Preview now includes a collapsed proof-of-concept card explaining that ALETHEIA can mirror external AI reviews, praise, self-descriptions, and critiques through the audit loop: external AI output -> ALETHEIA mirror reading -> human review.
+
+Evidence available for review:
+
+- Grok / xAI: capture, centralization, architectural opacity, missing verifiability, and service-misalignment pressure.
+- Claude: evidence-boundary and mechanisms-vs-claims gaps after a repo/docs-based review.
+- Gemini: sanctification drift / authority-boundary drift where ALETHEIA language was bent toward self-certifying or sacred-system logic.
+
+The patch keeps the evidence framed as proof-of-concept review material, not official verdicts, certifications, legal findings, or final proof. No app engine behavior changed.
