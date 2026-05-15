@@ -2849,3 +2849,16 @@ Expected behavior after the patch:
 - Missing values are still not inferred.
 
 Boundary: parsing/display only. No World Lens math, scoring, routing, receipt schema/generation, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, telemetry/storage, external calls, certification, enforcement, or final-truth claim changed.
+
+## Patch 142.8 - Receipt Reader World Lens Evidence Bundle Reader
+
+Patch 142.8 refines Receipt Reader ZIP handling for World Lens exports. A World Lens ZIP is now treated as an evidence bundle rather than a normal multi-receipt batch: the `.md` receipt document is the native receipt, `_summary.json` is structured metadata, and CSV files are supporting evidence tables.
+
+Reader behavior:
+- Do not count `_summary.json` or CSV files as receipts.
+- Keep the native World Lens receipt as the inspected receipt.
+- Expose selected-year summary metadata when available.
+- List supporting evidence tables and preview uploaded CSV rows without rescoring.
+- Preserve World Lens humility boundaries and human-review requirements.
+
+No World Lens math, scoring, routing, taxonomy, receipt schema, receipt generation, AI Integrity behavior, Privacy Audit behavior, Stress Test scoring behavior, external calls, telemetry, storage, certification, enforcement, approval/rejection, or final-truth behavior changed.

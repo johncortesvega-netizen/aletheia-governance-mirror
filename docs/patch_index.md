@@ -306,3 +306,11 @@ Patch 142.4 reformats Receipt Reader into a clearer narrative Standard View. It 
 - Fixes World Lens ZIP receipt selection so summary/index artifacts such as `*_summary.json` are not inspected as receipts.
 - Keeps the batch ZIP reader focused on uploaded receipts only, without rescoring, merging verdicts, or generating new receipts.
 - Adds regression tests for a World Lens ZIP containing both an actual `.md` receipt and a `*_summary.json` companion file.
+
+## Patch 142.8 - Receipt Reader World Lens Evidence Bundle Reader
+
+- Treats World Lens ZIP exports as evidence bundles rather than generic receipt batches.
+- Uses the `.md` World Lens receipt as the native inspected receipt.
+- Treats `_summary.json` as metadata and CSV files as supporting evidence tables.
+- Prevents summary/CSV files from being counted as separate receipts or producing missing-state rows.
+- Adds regression tests for World Lens bundle parsing, evidence table inventory, and non-certification boundaries.

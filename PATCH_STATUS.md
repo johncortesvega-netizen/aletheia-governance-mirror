@@ -3091,3 +3091,22 @@ python tools\run_patch_checks.py 142_7
 python tools\run_patch_checks.py 142_6
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+## Patch 142.8 - Receipt Reader World Lens Evidence Bundle Reader
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 142.8 changes World Lens ZIP handling from a generic batch receipt summary into a World Lens evidence bundle reader. The uploaded `.md` World Lens receipt remains the native inspected receipt. Companion `_summary.json` files are treated as structured metadata, and CSV files are shown as supporting evidence tables rather than counted as additional receipts.
+
+The reader now preserves the full World Lens bundle more readably: selected-year metadata, weighted metrics, evidence table inventory, CSV previews, and the native receipt Standard View are kept separate. Summary and CSV files do not create a new state, verdict, or receipt.
+
+Boundary preserved: Receipt Reader display/parsing only. No World Lens math, scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, AI Integrity behavior, Privacy Audit behavior, Stress Test scoring behavior, external calls, live model calls, embeddings, telemetry, analytics, database/storage, Global ID sync, public ledger sync, certification, approval, rejection, enforcement, official-authority, privacy-guarantee, security-guarantee, or final-truth behavior changed.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 142_8
+python tools\run_patch_checks.py 142_7
+python tools\run_patch_checks.py 142_6
+python tools\run_protocol_baseline_self_audit.py
+```

@@ -5,6 +5,7 @@ approve, reject, certify, enforce, override, or change the original receipt.
 """
 from __future__ import annotations
 
+import csv
 import io
 import json
 import re
@@ -376,15 +377,15 @@ def _interpret_metric(key: str, value: str, native_state: str) -> str:
         return "Low structural consistency."
     if key == "collapse_probability":
         if number <= 0.1:
-            return "Minimal risk of system failure."
+            return "Low collapse-pressure reading in the uploaded receipt."
         if number <= 0.3:
             return "Reviewable collapse pressure."
         return "High collapse pressure."
     if key == "friction":
         if number <= 0.01:
-            return "Zero operational resistance."
+            return "Zero review friction in the uploaded receipt."
         if number <= 0.15:
-            return "Low operational resistance."
+            return "Low review friction in the uploaded receipt."
         return "Friction requires review."
     if key == "ego":
         if number <= 0.01:
@@ -614,30 +615,118 @@ def _dedupe_receipt_pairs(receipts: list[tuple[str, str]]) -> list[tuple[str, st
             by_stem[stem] = (filename, text)
             continue
         current_lower = current[0].lower()
-        if lower.endswith(".json") or (lower.endswith(".md") and not current_lower.endswith(".json")):
+        # For World Lens evidence bundles the Markdown receipt is the readable
+        # source of truth. JSON companions are often summaries, not receipts.
+        if _is_world_lens_receipt(text) and lower.endswith(".md"):
+            by_stem[stem] = (filename, text)
+        elif lower.endswith(".json") and not _is_world_lens_receipt(text):
+            by_stem[stem] = (filename, text)
+        elif lower.endswith(".md") and not current_lower.endswith((".json", ".md")):
             by_stem[stem] = (filename, text)
     return sorted(by_stem.values(), key=_receipt_sort_key)
 
 
-def _read_zip_receipts(uploaded_file: Any) -> tuple[list[tuple[str, str]], str]:
+def _is_world_lens_bundle_filename(filename: str) -> bool:
+    lower = filename.lower().rsplit("/", 1)[-1]
+    return lower.startswith("aletheia_world_lens_receipt_") or lower.startswith("world_lens")
+
+
+def _csv_preview(text: str, *, max_rows: int = 10) -> tuple[list[str], list[dict[str, str]], int]:
+    rows = list(csv.DictReader(io.StringIO(text)))
+    fieldnames = list(rows[0].keys()) if rows else []
+    preview = [{key: str(value or "") for key, value in row.items()} for row in rows[:max_rows]]
+    return fieldnames, preview, len(rows)
+
+
+def _friendly_evidence_table_name(filename: str) -> str:
+    basename = filename.rsplit("/", 1)[-1]
+    stem = re.sub(r"\.csv$", "", basename, flags=re.IGNORECASE)
+    stem = re.sub(r"^aletheia_world_lens_receipt_\d{4}_", "", stem)
+    return stem.replace("_", " ").strip().title() or basename
+
+
+def _summarize_world_lens_summary_json(filename: str, text: str) -> dict[str, Any]:
+    try:
+        data = json.loads(text)
+    except Exception:
+        return {"filename": filename, "parse_status": "summary JSON could not be parsed"}
+    if not isinstance(data, dict):
+        return {"filename": filename, "parse_status": "summary JSON was not an object"}
+    keys = [
+        "selected_year",
+        "grid_source_state",
+        "active_selected_year_seats",
+        "allocated_country_rows",
+        "weighted_integrity",
+        "weighted_friction",
+        "weighted_collapse_probability",
+        "average_empirical_coverage",
+        "trust_raw_coverage",
+        "trust_prior_coverage",
+        "interpretation_warning",
+    ]
+    return {"filename": filename, **{key: data.get(key, MISSING_VALUE) for key in keys}}
+
+
+def _world_lens_bundle_details(all_files: list[tuple[str, str]]) -> dict[str, Any]:
+    summaries: list[dict[str, Any]] = []
+    evidence_tables: list[dict[str, Any]] = []
+    support_files: list[dict[str, str]] = []
+    for filename, text in sorted(all_files, key=lambda item: item[0].lower()):
+        lower = filename.lower()
+        basename = lower.rsplit("/", 1)[-1]
+        if lower.endswith(".json") and _is_receipt_summary_or_index_file(basename):
+            summaries.append(_summarize_world_lens_summary_json(filename, text))
+        elif lower.endswith(".csv"):
+            columns, preview, row_count = _csv_preview(text)
+            evidence_tables.append({
+                "filename": filename,
+                "table_name": _friendly_evidence_table_name(filename),
+                "row_count": row_count,
+                "columns": columns,
+                "preview_rows": preview,
+            })
+        elif not _is_actual_receipt_candidate(filename, text):
+            support_files.append({"filename": filename, "role": "supporting file"})
+    return {
+        "summary_files": summaries,
+        "evidence_tables": evidence_tables,
+        "support_files": support_files,
+    }
+
+
+def _is_world_lens_evidence_bundle(all_files: list[tuple[str, str]], receipts: list[tuple[str, str]]) -> bool:
+    if any(_is_world_lens_receipt(text) for _, text in receipts):
+        return True
+    if any(_is_world_lens_bundle_filename(filename) for filename, _ in all_files):
+        return True
+    return False
+
+
+def _read_zip_receipts(uploaded_file: Any) -> tuple[list[tuple[str, str]], str, list[tuple[str, str]], dict[str, Any]]:
     name = getattr(uploaded_file, "name", "uploaded receipts.zip") or "uploaded receipts.zip"
     raw = uploaded_file.getvalue()
-    receipts: list[tuple[str, str]] = []
+    all_files: list[tuple[str, str]] = []
+    receipt_candidates: list[tuple[str, str]] = []
     with zipfile.ZipFile(io.BytesIO(bytes(raw))) as archive:
         for info in archive.infolist():
             lower = info.filename.lower()
-            if info.is_dir() or not lower.endswith((".txt", ".md", ".json")):
+            if info.is_dir() or not lower.endswith((".txt", ".md", ".json", ".csv")):
                 continue
             text = archive.read(info).decode("utf-8", errors="replace")
-            receipts.append((info.filename, text))
-    return _dedupe_receipt_pairs(receipts), name
+            all_files.append((info.filename, text))
+            if lower.endswith((".txt", ".md", ".json")) and _is_actual_receipt_candidate(info.filename, text):
+                receipt_candidates.append((info.filename, text))
+    receipts = _dedupe_receipt_pairs(receipt_candidates)
+    bundle_details = _world_lens_bundle_details(all_files) if _is_world_lens_evidence_bundle(all_files, receipts) else {}
+    return receipts, name, all_files, bundle_details
 
 
 def parse_uploaded_receipt_file(uploaded_file: Any) -> dict[str, Any]:
     """Parse one uploaded receipt file or a ZIP of receipt text files."""
     name = getattr(uploaded_file, "name", "") or ""
     if name.lower().endswith(".zip"):
-        receipts, zip_name = _read_zip_receipts(uploaded_file)
+        receipts, zip_name, all_files, bundle_details = _read_zip_receipts(uploaded_file)
         views = [(filename, parse_receipt_standard_view(text)) for filename, text in receipts]
         distribution = Counter(view.get("native_state", MISSING_VALUE) for _, view in views)
         risk_distribution = Counter(
@@ -646,17 +735,50 @@ def parse_uploaded_receipt_file(uploaded_file: Any) -> dict[str, Any]:
         module_distribution = Counter(
             (view.get("fields") or {}).get("module_source", MISSING_VALUE) for _, view in views
         )
+        is_world_lens_bundle = _is_world_lens_evidence_bundle(all_files, receipts)
         return {
             "kind": "batch_zip",
+            "bundle_type": "world_lens_evidence_bundle" if is_world_lens_bundle else "receipt_batch",
             "name": zip_name,
             "receipt_count": len(views),
             "distribution": dict(distribution),
             "risk_distribution": dict(risk_distribution),
             "module_distribution": dict(module_distribution),
             "views": views,
+            "bundle_details": bundle_details,
+            "zip_file_count": len(all_files),
         }
     text, filename = _read_uploaded_text(uploaded_file)
     return {"kind": "single", "name": filename, "view": parse_receipt_standard_view(text)}
+
+
+def _metric_section_title(view: dict[str, Any]) -> str:
+    family = view.get("module_family")
+    if family == "World Lens":
+        return "World Lens Evidence Metrics"
+    if family == "Stress Test / Simulation":
+        return "Scenario Review Metrics"
+    if family == "AI Integrity Mirror":
+        return "Artifact Review Metrics"
+    return "Performance & Risk Metrics"
+
+
+def _metric_section_caption(view: dict[str, Any]) -> str:
+    family = view.get("module_family")
+    if family == "World Lens":
+        return "Selected-year evidence values from the uploaded World Lens receipt; no new verdict is generated."
+    if family == "Stress Test / Simulation":
+        return "Uploaded scenario receipt values, shown without rerunning the scenario."
+    if family == "AI Integrity Mirror":
+        return "Uploaded static artifact review values; this does not test a live model or vendor."
+    return "Quantitative values copied from the uploaded receipt."
+
+
+def _display_module_source(view: dict[str, Any]) -> str:
+    fields = view.get("fields") or {}
+    if view.get("module_family") == "Stress Test / Simulation":
+        return "Stress Test / Simulation"
+    return fields.get("module_source", MISSING_VALUE)
 
 
 def _render_single_view(container: Any, view: dict[str, Any]) -> None:
@@ -668,11 +790,11 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
         f"**Native State:** {view['native_state']}  \n"
         f"**Review Pressure:** {view['standard_band']}  \n"
         f"**Protocol Label:** {fields.get('protocol_label', MISSING_VALUE)}  \n"
-        f"**Module Source:** {fields.get('module_source', MISSING_VALUE)}"
+        f"**Module Source:** {_display_module_source(view)}"
     )
 
-    container.markdown("### Performance & Risk Metrics")
-    container.caption("Quantitative analysis of uploaded receipt health and alignment.")
+    container.markdown(f"### {_metric_section_title(view)}")
+    container.caption(_metric_section_caption(view))
     container.table(view["metric_rows"])
 
     world_distribution = (view.get("world_lens_fields") or {}).get("taxonomy_distribution") or []
@@ -695,7 +817,69 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
             container.markdown(f"- {question}")
 
 
+def _render_world_lens_bundle(container: Any, parsed: dict[str, Any]) -> None:
+    container.markdown("### World Lens Evidence Bundle")
+    container.write(f"Uploaded evidence bundle: {parsed.get('name')}")
+    container.write(f"Native receipt files read: {parsed.get('receipt_count', 0)}")
+    container.caption(
+        "World Lens ZIP uploads are treated as evidence bundles: the receipt document is the narrative source, "
+        "summary JSON is metadata, and CSV files are supporting evidence tables."
+    )
+
+    distribution = parsed.get("distribution") or {}
+    if distribution:
+        container.table([{"Native Evidence View": key, "Receipt Count": value} for key, value in sorted(distribution.items())])
+
+    details = parsed.get("bundle_details") or {}
+    summary_files = details.get("summary_files") or []
+    if summary_files:
+        container.markdown("#### Structured Summary Metadata")
+        container.table(summary_files)
+
+    evidence_tables = details.get("evidence_tables") or []
+    if evidence_tables:
+        container.markdown("#### Supporting Evidence Tables")
+        container.table([
+            {
+                "Table": table.get("table_name"),
+                "File": table.get("filename"),
+                "Rows": table.get("row_count"),
+                "Columns": ", ".join(table.get("columns") or []),
+            }
+            for table in evidence_tables
+        ])
+        labels = [f"{table.get('table_name')} — {table.get('filename')}" for table in evidence_tables]
+        try:
+            selected = container.selectbox(
+                "Preview supporting evidence table",
+                labels,
+                key="receipt_reader_world_lens_evidence_table_preview",
+            )
+        except Exception:
+            selected = labels[0] if labels else None
+        if selected:
+            selected_index = labels.index(selected)
+            preview_rows = evidence_tables[selected_index].get("preview_rows") or []
+            container.caption("First rows only. The table is shown as uploaded and is not rescored or reinterpreted.")
+            if preview_rows:
+                container.table(preview_rows)
+            else:
+                container.write("No preview rows found in this supporting evidence table.")
+
+    container.info("World Lens Evidence Bundle reading preserves uploaded information only. It does not rescore, merge verdicts, certify countries or governments, or create a new receipt.")
+
+    views = parsed.get("views") or []
+    if views:
+        first_name, first_view = views[0]
+        with container.expander(f"Inspect native World Lens receipt: {first_name}", expanded=False) as expander:
+            _render_single_view(expander, first_view)
+
+
 def _render_batch_zip(container: Any, parsed: dict[str, Any]) -> None:
+    if parsed.get("bundle_type") == "world_lens_evidence_bundle":
+        _render_world_lens_bundle(container, parsed)
+        return
+
     container.markdown("### Batch Receipt Summary")
     container.write(f"Uploaded batch file: {parsed.get('name')}")
     container.write(f"Receipts read: {parsed.get('receipt_count', 0)}")
