@@ -9,5 +9,6 @@ Recommended order:
 3. `../glossary.md` — plain-language terms, examples, and Dutch equivalents where useful.
 4. `../validation_and_precision.md` — validation gap, false precision, and external-validation roadmap.
 5. `../how_to_review_aletheia_without_trusting_it.md` — direct inspection path.
+6. `tool_comparison.md` — how ALETHEIA sits beside XAI, enterprise governance, and runtime guardrail tools.
 
 This folder is a doorway, not a replacement for code review. ALETHEIA remains a mirror for human review, not a certification or authority system.

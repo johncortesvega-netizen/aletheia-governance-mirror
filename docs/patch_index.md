@@ -395,3 +395,12 @@ Patch 144 refines the public doorway introduced in Patch 143. It adds:
 - philosophy-first contributor wording.
 
 Runtime behavior: no app behavior change. Documentation/readability only. The patch preserves scoring, verdict routing, taxonomy, receipt behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, upload/download behavior, external-call posture, telemetry/storage boundaries, and mirror-not-throne authority limits.
+
+
+## Patch 145 — Tool Comparison / Unit Preview GitHub Link
+
+Patch 145 adds `docs/for-reviewers/tool_comparison.md`, a concise reviewer-facing comparison that places ALETHEIA beside XAI tools, enterprise governance platforms, and runtime guardrails. It clarifies that ALETHEIA is a complementary governance-risk reflection layer, not a replacement for model explainability, compliance enforcement, or runtime safety systems.
+
+The patch also adds a small user-clicked GitHub repository link button to Aletheia Unit Preview so reviewers can reach the public source repository from the app's first page.
+
+Boundary preserved: documentation/readability and source-link placement only. No app analysis behavior, scoring, routing, taxonomy, receipt behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, telemetry/storage, certification, enforcement, or final-truth behavior changed.

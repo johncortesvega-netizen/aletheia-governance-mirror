@@ -442,6 +442,15 @@ def render_unit_preview(container=None) -> bool:
             key="aletheia_unit_preview_proceed",
         )
 
+    container.link_button(
+        "View GitHub repository",
+        "https://github.com/johncortesvega-netizen/aletheia-governance-mirror",
+        help="Open the public ALETHEIA source repository in a new tab.",
+    )
+    container.caption(
+        "The GitHub link is a user-clicked public source link. Unit Preview does not make external calls."
+    )
+
     if preview_clicked:
         suggestion = detect_unit_preview_route(preview_text)
         container.markdown("### Suggested path")

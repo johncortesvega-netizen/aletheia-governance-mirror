@@ -3271,3 +3271,21 @@ python tools\run_patch_checks.py 143
 python tools\run_patch_checks.py 142_16
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+
+## Patch 145 - Tool Comparison / Unit Preview GitHub Link
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 145 adds a reviewer-facing comparison document that positions ALETHEIA beside XAI tools, enterprise governance platforms, and runtime guardrails rather than as a replacement for them. It also adds a small GitHub repository link button to Aletheia Unit Preview so first-time users can reach the public source repository from the front door.
+
+Boundary preserved: documentation/readability and a user-clicked public source link only. No scoring, verdict routing, taxonomy, QUESTION_PROMPT logic, receipt schema/generation, signal regex/weights, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, Receipt Reader behavior, upload/download behavior, telemetry/storage, certification, enforcement, or final-truth behavior changed.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 145
+python tools\run_patch_checks.py 144
+python tools\run_patch_checks.py 143
+python tools\run_protocol_baseline_self_audit.py
+```

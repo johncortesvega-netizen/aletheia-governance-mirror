@@ -53,9 +53,16 @@ Reviewer-readiness is not mass-adoption polish. The goal is to preserve ALETHEIA
 - **Receipt Reader** — upload-only Standard View for ALETHEIA local witness receipts and evidence bundles; it does not rescore or override uploaded receipts.
 - **Boundary Cases, Protocol Guide, and Why ALETHEIA** — reference and orientation layers.
 
+## How ALETHEIA compares to other tools
+
+ALETHEIA is not an XAI library, enterprise compliance platform, or runtime guardrail. It is a complementary governance mirror layer for human review: it reflects governance-risk patterns in proposals, policies, scenarios, static AI artifacts, public-data evidence views, and local witness receipts.
+
+Use ALETHEIA beside other tools, not instead of them. See `docs/for-reviewers/tool_comparison.md` for a focused comparison.
+
 ## Where to go next
 
 - `docs/for-reviewers/quick_start.md` — 5-minute reviewer path.
+- `docs/for-reviewers/tool_comparison.md` — how ALETHEIA differs from XAI tools, enterprise governance platforms, and runtime guardrails.
 - `docs/reviewer_start_here.md` — fuller reviewer-start guide.
 - `docs/glossary.md` — plain-language terms, Dutch equivalents where useful, and short examples.
 - `docs/validation_and_precision.md` — validation gap, false precision, and external-validation roadmap.

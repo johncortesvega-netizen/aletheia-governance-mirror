@@ -2960,3 +2960,14 @@ Patch 144 follows Patch 143's public repository/reviewer doorway work with a sha
 This is reviewer-readiness and public clarity work only. It does not simplify the engine, cut scope, alter modules, or change scoring. The goal is to let a first-time reviewer understand what ALETHEIA is, what it is not, how to start, and how to inspect it without trusting it.
 
 Boundary preserved: documentation/readability only. No app behavior, scoring, routing, taxonomy, receipt, World Lens math, AI Integrity, Privacy Audit, upload/download, telemetry/storage, certification, enforcement, or final-authority behavior changed.
+
+
+## Patch 145 — Tool Comparison / Unit Preview GitHub Link
+
+Status: READY FOR LOCAL REVIEW.
+
+Patch 145 improves public reviewer positioning by adding a comparison document for ALETHEIA versus XAI tools, enterprise governance platforms, and runtime guardrails. The comparison emphasizes that ALETHEIA is a complementary governance mirror layer for human review, local receipts, evidence context, and repair-oriented thinking.
+
+The patch also adds a small GitHub repository link button to Aletheia Unit Preview. This is a user-clicked public source link only; it does not add telemetry, background calls, integrations, or app-side external processing.
+
+Boundary preserved: docs/readability and link placement only. No scoring, routing, taxonomy, receipt, signal, World Lens math, AI Integrity, Privacy Audit, Stress Test, upload/download, telemetry, storage, certification, enforcement, or final-truth behavior changed.
