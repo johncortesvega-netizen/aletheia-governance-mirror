@@ -1,3 +1,20 @@
+## Patch 147 — Root Patch Hygiene / Latest Patch Only
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 147 establishes the standing GitHub hygiene rule: only the latest/current patch manifest and recovery note remain visible at the repository root; older patch artifacts are archived under `docs/patch_archive/` without deleting the audit trail. The archive helper now supports `--current-patch` so future updates can repeat the same pattern deliberately.
+
+Boundary preserved: repository hygiene, documentation, and local helper-script only. No app behavior, scoring, routing, taxonomy, receipt schema/generation, signal regex/weights, World Lens math, AI Integrity behavior, Privacy Audit behavior, upload/download behavior, external calls, telemetry, storage, Global ID sync, public ledger sync, certification, enforcement, approval, rejection, legal authority, official authority, or final-truth behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 147
+python tools\run_patch_checks.py 146_1
+python tools\run_patch_checks.py 146
+python tools\run_protocol_baseline_self_audit.py
+```
+
 ## Patch 142.6 — Receipt Reader World Lens Binding Fix
 
 Status: READY FOR LOCAL REVIEW

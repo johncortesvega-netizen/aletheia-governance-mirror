@@ -1,8 +1,14 @@
 # Patch Archive Navigation
 
-ALETHEIA has a long patch trail because changes are kept small and reviewable. The patch trail is part of the project's human-auditable record, but root-level patch files can make the repository harder for new reviewers to enter.
+ALETHEIA keeps a long patch trail because changes are intentionally small, reviewable, and recoverable. That audit trail is part of the project record, but keeping every patch manifest and recovery note in the repository root makes the public front door harder to read.
 
-Patch 143 introduces this archive navigation layer and a one-time helper script for maintainers who want to move historical patch artifacts into an archive structure without deleting them.
+Patch 147 establishes the standing repository hygiene rule:
+
+```text
+Only the latest/current patch manifest and recovery note stay visible at the repository root.
+Older patch artifacts move into docs/patch_archive/.
+The audit trail is archived, indexed, and preserved — not deleted.
+```
 
 Suggested archive layout:
 
@@ -11,19 +17,26 @@ docs/patch_archive/
   manifests/
   recovery_notes/
   other_patch_artifacts/
+  root_patch_artifact_index.md
 ```
 
-The audit trail should be preserved. Archiving is for navigability only; it does not certify ALETHEIA, prove integrity, or replace Git history.
+## Standard update workflow
 
-## One-time helper
-
-Use this only when intentionally cleaning a full repository checkout:
+Before a GitHub update, keep the newest patch visible and archive older root patch files:
 
 ```bash
-python tools/archive_root_patch_artifacts.py --dry-run
-python tools/archive_root_patch_artifacts.py
+python tools/archive_root_patch_artifacts.py --dry-run --current-patch 147
+python tools/archive_root_patch_artifacts.py --current-patch 147
 ```
 
-The helper moves root-level historical `PATCH_*_MANIFEST.txt` and `PATCH_*_RECOVERY_NOTE.md` files into the archive folders. It does not delete them.
+Replace `147` with the current patch id. For hotfix ids, use underscores, for example:
 
-Patched-items-only zip users may need to run the helper after extracting the patch because zip extraction cannot remove old root files by itself.
+```bash
+python tools/archive_root_patch_artifacts.py --current-patch 146_1
+```
+
+## Boundary
+
+Archiving improves readability only. It does not certify ALETHEIA, prove integrity, replace Git history, guarantee privacy/security, or create authority. Patch history remains review evidence for humans.
+
+Patched-items-only zip users may need to run the helper after extracting a patch because ordinary zip extraction cannot remove old root files by itself.

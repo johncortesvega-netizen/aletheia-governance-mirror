@@ -1,0 +1,10 @@
+docs/self_audit_mode.md
+prompts/self_audit_prompt.md
+tests/test_patch_39_self_audit.py
+PATCH_39_MANIFEST.txt
+PATCH_39_RECOVERY_NOTE.md
+PATCH_STATUS.md
+docs/progress_database.md
+README.md
+about_page.py
+app.py

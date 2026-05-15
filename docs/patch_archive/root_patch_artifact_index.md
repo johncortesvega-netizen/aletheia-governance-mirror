@@ -1,388 +1,414 @@
 # Root Patch Artifact Index
+Patch 147 refreshes this index after applying the latest-patch-only root hygiene rule. Historical root patch artifacts are preserved here for review.
 
-Generated for Patch 143 reviewer onboarding. These files are historical review artifacts and should be archived, not deleted.
+Current root rule:
 
-- `PATCH_100_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_100_MANIFEST.txt`
-- `PATCH_100_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_100_RECOVERY_NOTE.md`
-- `PATCH_101_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_101_MANIFEST.txt`
-- `PATCH_101_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_101_RECOVERY_NOTE.md`
-- `PATCH_102_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_102_MANIFEST.txt`
-- `PATCH_102_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_102_RECOVERY_NOTE.md`
-- `PATCH_103_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_103_MANIFEST.txt`
-- `PATCH_103_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_103_RECOVERY_NOTE.md`
-- `PATCH_104_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_104_MANIFEST.txt`
-- `PATCH_104_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_104_RECOVERY_NOTE.md`
-- `PATCH_105_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_105_MANIFEST.txt`
-- `PATCH_105_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_105_RECOVERY_NOTE.md`
-- `PATCH_106_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_106_MANIFEST.txt`
-- `PATCH_106_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_106_RECOVERY_NOTE.md`
-- `PATCH_107_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_107_MANIFEST.txt`
-- `PATCH_107_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_107_RECOVERY_NOTE.md`
-- `PATCH_108_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_108_MANIFEST.txt`
-- `PATCH_108_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_108_RECOVERY_NOTE.md`
-- `PATCH_109_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_109_MANIFEST.txt`
-- `PATCH_109_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_109_RECOVERY_NOTE.md`
-- `PATCH_110_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_110_MANIFEST.txt`
-- `PATCH_110_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_110_RECOVERY_NOTE.md`
-- `PATCH_111_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_111_MANIFEST.txt`
-- `PATCH_111_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_111_RECOVERY_NOTE.md`
-- `PATCH_112_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_112_MANIFEST.txt`
-- `PATCH_112_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_112_RECOVERY_NOTE.md`
-- `PATCH_113_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_113_MANIFEST.txt`
-- `PATCH_113_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_113_RECOVERY_NOTE.md`
-- `PATCH_114_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_114_MANIFEST.txt`
-- `PATCH_114_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_114_RECOVERY_NOTE.md`
-- `PATCH_115_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_115_MANIFEST.txt`
-- `PATCH_115_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_115_RECOVERY_NOTE.md`
-- `PATCH_116_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_116_MANIFEST.txt`
-- `PATCH_116_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_116_RECOVERY_NOTE.md`
-- `PATCH_117_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_117_MANIFEST.txt`
-- `PATCH_117_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_117_RECOVERY_NOTE.md`
-- `PATCH_118_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_118_MANIFEST.txt`
-- `PATCH_118_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_118_RECOVERY_NOTE.md`
-- `PATCH_119_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_119_MANIFEST.txt`
-- `PATCH_119_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_119_RECOVERY_NOTE.md`
-- `PATCH_120_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_120_MANIFEST.txt`
-- `PATCH_120_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_120_RECOVERY_NOTE.md`
-- `PATCH_121_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_121_MANIFEST.txt`
-- `PATCH_121_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_121_RECOVERY_NOTE.md`
-- `PATCH_122_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_122_MANIFEST.txt`
-- `PATCH_122_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_122_RECOVERY_NOTE.md`
-- `PATCH_123_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_123_MANIFEST.txt`
-- `PATCH_123_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_123_RECOVERY_NOTE.md`
-- `PATCH_124_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_124_MANIFEST.txt`
-- `PATCH_124_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_124_RECOVERY_NOTE.md`
-- `PATCH_125_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_125_MANIFEST.txt`
-- `PATCH_125_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_125_RECOVERY_NOTE.md`
-- `PATCH_126_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_126_MANIFEST.txt`
-- `PATCH_126_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_126_RECOVERY_NOTE.md`
-- `PATCH_127_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_127_MANIFEST.txt`
-- `PATCH_127_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_127_RECOVERY_NOTE.md`
-- `PATCH_128_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_128_MANIFEST.txt`
-- `PATCH_128_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_128_RECOVERY_NOTE.md`
-- `PATCH_129_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_129_MANIFEST.txt`
-- `PATCH_129_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_129_RECOVERY_NOTE.md`
-- `PATCH_130_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_130_MANIFEST.txt`
-- `PATCH_130_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_130_RECOVERY_NOTE.md`
-- `PATCH_131_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_131_MANIFEST.txt`
-- `PATCH_131_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_131_RECOVERY_NOTE.md`
-- `PATCH_132_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_132_MANIFEST.txt`
-- `PATCH_132_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_132_RECOVERY_NOTE.md`
-- `PATCH_133_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_133_MANIFEST.txt`
-- `PATCH_133_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_133_RECOVERY_NOTE.md`
-- `PATCH_134_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_134_MANIFEST.txt`
-- `PATCH_134_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_134_RECOVERY_NOTE.md`
-- `PATCH_135_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_135_MANIFEST.txt`
-- `PATCH_135_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_135_RECOVERY_NOTE.md`
-- `PATCH_136_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_136_MANIFEST.txt`
-- `PATCH_136_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_136_RECOVERY_NOTE.md`
-- `PATCH_137_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_137_MANIFEST.txt`
-- `PATCH_137_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_137_RECOVERY_NOTE.md`
-- `PATCH_138_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_138_MANIFEST.txt`
-- `PATCH_138_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_138_RECOVERY_NOTE.md`
-- `PATCH_139_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_139_MANIFEST.txt`
-- `PATCH_139_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_139_RECOVERY_NOTE.md`
-- `PATCH_13_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_13_RECOVERY_NOTE.md`
-- `PATCH_140_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_140_MANIFEST.txt`
-- `PATCH_140_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_140_RECOVERY_NOTE.md`
-- `PATCH_141_1_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_141_1_MANIFEST.txt`
-- `PATCH_141_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_141_1_RECOVERY_NOTE.md`
-- `PATCH_141_2_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_141_2_MANIFEST.txt`
-- `PATCH_141_2_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_141_2_RECOVERY_NOTE.md`
-- `PATCH_141_3_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_141_3_MANIFEST.txt`
-- `PATCH_141_3_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_141_3_RECOVERY_NOTE.md`
-- `PATCH_141_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_141_MANIFEST.txt`
-- `PATCH_141_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_141_RECOVERY_NOTE.md`
-- `PATCH_142_10_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_10_MANIFEST.txt`
-- `PATCH_142_10_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_10_RECOVERY_NOTE.md`
-- `PATCH_142_11_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_11_MANIFEST.txt`
-- `PATCH_142_11_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_11_RECOVERY_NOTE.md`
-- `PATCH_142_12_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_12_MANIFEST.txt`
-- `PATCH_142_12_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_12_RECOVERY_NOTE.md`
-- `PATCH_142_13_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_13_MANIFEST.txt`
-- `PATCH_142_13_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_13_RECOVERY_NOTE.md`
-- `PATCH_142_14_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_14_MANIFEST.txt`
-- `PATCH_142_14_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_14_RECOVERY_NOTE.md`
-- `PATCH_142_15_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_15_MANIFEST.txt`
-- `PATCH_142_15_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_15_RECOVERY_NOTE.md`
-- `PATCH_142_16_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_16_MANIFEST.txt`
-- `PATCH_142_16_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_16_RECOVERY_NOTE.md`
-- `PATCH_142_1_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_1_MANIFEST.txt`
-- `PATCH_142_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_1_RECOVERY_NOTE.md`
-- `PATCH_142_2_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_2_MANIFEST.txt`
-- `PATCH_142_2_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_2_RECOVERY_NOTE.md`
-- `PATCH_142_3_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_3_MANIFEST.txt`
-- `PATCH_142_3_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_3_RECOVERY_NOTE.md`
-- `PATCH_142_4_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_4_MANIFEST.txt`
-- `PATCH_142_4_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_4_RECOVERY_NOTE.md`
-- `PATCH_142_5_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_5_MANIFEST.txt`
-- `PATCH_142_5_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_5_RECOVERY_NOTE.md`
-- `PATCH_142_6_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_6_MANIFEST.txt`
-- `PATCH_142_6_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_6_RECOVERY_NOTE.md`
-- `PATCH_142_7_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_7_MANIFEST.txt`
-- `PATCH_142_7_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_7_RECOVERY_NOTE.md`
-- `PATCH_142_8_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_8_MANIFEST.txt`
-- `PATCH_142_8_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_8_RECOVERY_NOTE.md`
-- `PATCH_142_9_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_9_MANIFEST.txt`
-- `PATCH_142_9_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_9_RECOVERY_NOTE.md`
-- `PATCH_142_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_142_MANIFEST.txt`
-- `PATCH_142_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_142_RECOVERY_NOTE.md`
-- `PATCH_19A_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_19A_RECOVERY_NOTE.md`
-- `PATCH_19B_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_19B_RECOVERY_NOTE.md`
-- `PATCH_20_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_20_1_RECOVERY_NOTE.md`
-- `PATCH_20_2_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_20_2_RECOVERY_NOTE.md`
-- `PATCH_20_3_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_20_3_RECOVERY_NOTE.md`
-- `PATCH_20_4_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_20_4_RECOVERY_NOTE.md`
-- `PATCH_20_5_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_20_5_RECOVERY_NOTE.md`
-- `PATCH_20_6_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_20_6_RECOVERY_NOTE.md`
-- `PATCH_20_7_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_20_7_RECOVERY_NOTE.md`
-- `PATCH_20_8_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_20_8_RECOVERY_NOTE.md`
-- `PATCH_20_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_20_RECOVERY_NOTE.md`
-- `PATCH_21_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_21_1_RECOVERY_NOTE.md`
-- `PATCH_21_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_21_RECOVERY_NOTE.md`
-- `PATCH_22_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_22_1_RECOVERY_NOTE.md`
-- `PATCH_22_2_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_22_2_RECOVERY_NOTE.md`
-- `PATCH_22_3_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_22_3_RECOVERY_NOTE.md`
-- `PATCH_22_4_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_22_4_RECOVERY_NOTE.md`
-- `PATCH_22_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_22_RECOVERY_NOTE.md`
-- `PATCH_23A_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_23A_RECOVERY_NOTE.md`
-- `PATCH_23B_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_23B_RECOVERY_NOTE.md`
-- `PATCH_27A_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_27A_RECOVERY_NOTE.md`
-- `PATCH_27B_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_27B_RECOVERY_NOTE.md`
-- `PATCH_28_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_28_1_RECOVERY_NOTE.md`
-- `PATCH_28_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_28_RECOVERY_NOTE.md`
-- `PATCH_29_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_29_1_RECOVERY_NOTE.md`
-- `PATCH_29_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_29_RECOVERY_NOTE.md`
-- `PATCH_30_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_30_1_RECOVERY_NOTE.md`
-- `PATCH_30_2_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_30_2_RECOVERY_NOTE.md`
-- `PATCH_30_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_30_RECOVERY_NOTE.md`
-- `PATCH_31_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_31_1_RECOVERY_NOTE.md`
-- `PATCH_31_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_31_RECOVERY_NOTE.md`
-- `PATCH_32_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_32_1_RECOVERY_NOTE.md`
-- `PATCH_32_2_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_32_2_RECOVERY_NOTE.md`
-- `PATCH_32_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_32_RECOVERY_NOTE.md`
-- `PATCH_33_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_33_RECOVERY_NOTE.md`
-- `PATCH_34_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_34_RECOVERY_NOTE.md`
-- `PATCH_35_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_35_RECOVERY_NOTE.md`
-- `PATCH_36_1_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_36_1_MANIFEST.txt`
-- `PATCH_36_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_36_1_RECOVERY_NOTE.md`
-- `PATCH_36_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_36_MANIFEST.txt`
-- `PATCH_36_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_36_RECOVERY_NOTE.md`
-- `PATCH_37_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_37_MANIFEST.txt`
-- `PATCH_37_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_37_RECOVERY_NOTE.md`
-- `PATCH_38_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_38_MANIFEST.txt`
-- `PATCH_38_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_38_RECOVERY_NOTE.md`
-- `PATCH_39_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_39_MANIFEST.txt`
-- `PATCH_39_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_39_RECOVERY_NOTE.md`
-- `PATCH_40_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_40_MANIFEST.txt`
-- `PATCH_40_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_40_RECOVERY_NOTE.md`
-- `PATCH_41_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_41_MANIFEST.txt`
-- `PATCH_41_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_41_RECOVERY_NOTE.md`
-- `PATCH_42_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_42_MANIFEST.txt`
-- `PATCH_42_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_42_RECOVERY_NOTE.md`
-- `PATCH_43_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_43_MANIFEST.txt`
-- `PATCH_43_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_43_RECOVERY_NOTE.md`
-- `PATCH_44_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_44_MANIFEST.txt`
-- `PATCH_44_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_44_RECOVERY_NOTE.md`
-- `PATCH_45_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_45_MANIFEST.txt`
-- `PATCH_45_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_45_RECOVERY_NOTE.md`
-- `PATCH_46_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_46_MANIFEST.txt`
-- `PATCH_46_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_46_RECOVERY_NOTE.md`
-- `PATCH_47_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_47_MANIFEST.txt`
-- `PATCH_47_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_47_RECOVERY_NOTE.md`
-- `PATCH_48_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_48_MANIFEST.txt`
-- `PATCH_48_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_48_RECOVERY_NOTE.md`
-- `PATCH_49_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_49_MANIFEST.txt`
-- `PATCH_49_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_49_RECOVERY_NOTE.md`
-- `PATCH_50_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_50_MANIFEST.txt`
-- `PATCH_50_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_50_RECOVERY_NOTE.md`
-- `PATCH_51_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_51_MANIFEST.txt`
-- `PATCH_51_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_51_RECOVERY_NOTE.md`
-- `PATCH_52_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_52_MANIFEST.txt`
-- `PATCH_52_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_52_RECOVERY_NOTE.md`
-- `PATCH_53_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_53_MANIFEST.txt`
-- `PATCH_53_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_53_RECOVERY_NOTE.md`
-- `PATCH_54_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_54_MANIFEST.txt`
-- `PATCH_54_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_54_RECOVERY_NOTE.md`
-- `PATCH_55_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_55_MANIFEST.txt`
-- `PATCH_55_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_55_RECOVERY_NOTE.md`
-- `PATCH_56_60_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_56_60_MANIFEST.txt`
-- `PATCH_56_60_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_56_60_RECOVERY_NOTE.md`
-- `PATCH_61A_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_61A_MANIFEST.txt`
-- `PATCH_61A_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_61A_RECOVERY_NOTE.md`
-- `PATCH_61B_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_61B_MANIFEST.txt`
-- `PATCH_61B_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_61B_RECOVERY_NOTE.md`
-- `PATCH_61C_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_61C_MANIFEST.txt`
-- `PATCH_61C_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_61C_RECOVERY_NOTE.md`
-- `PATCH_61D_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_61D_MANIFEST.txt`
-- `PATCH_61D_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_61D_RECOVERY_NOTE.md`
-- `PATCH_61E_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_61E_MANIFEST.txt`
-- `PATCH_61E_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_61E_RECOVERY_NOTE.md`
-- `PATCH_62_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_62_MANIFEST.txt`
-- `PATCH_62_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_62_RECOVERY_NOTE.md`
-- `PATCH_63_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_63_MANIFEST.txt`
-- `PATCH_63_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_63_RECOVERY_NOTE.md`
-- `PATCH_64_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_64_MANIFEST.txt`
-- `PATCH_64_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_64_RECOVERY_NOTE.md`
-- `PATCH_65_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_65_MANIFEST.txt`
-- `PATCH_65_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_65_RECOVERY_NOTE.md`
-- `PATCH_66_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_66_MANIFEST.txt`
-- `PATCH_66_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_66_RECOVERY_NOTE.md`
-- `PATCH_67_1_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_67_1_MANIFEST.txt`
-- `PATCH_67_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_67_1_RECOVERY_NOTE.md`
-- `PATCH_67_2_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_67_2_MANIFEST.txt`
-- `PATCH_67_2_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_67_2_RECOVERY_NOTE.md`
-- `PATCH_67_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_67_MANIFEST.txt`
-- `PATCH_67_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_67_RECOVERY_NOTE.md`
-- `PATCH_68_1_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_68_1_MANIFEST.txt`
-- `PATCH_68_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_68_1_RECOVERY_NOTE.md`
-- `PATCH_68_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_68_MANIFEST.txt`
-- `PATCH_68_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_68_RECOVERY_NOTE.md`
-- `PATCH_69_1_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_69_1_MANIFEST.txt`
-- `PATCH_69_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_69_1_RECOVERY_NOTE.md`
-- `PATCH_69_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_69_MANIFEST.txt`
-- `PATCH_69_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_69_RECOVERY_NOTE.md`
-- `PATCH_70_1_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_70_1_MANIFEST.txt`
-- `PATCH_70_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_70_1_RECOVERY_NOTE.md`
-- `PATCH_70_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_70_MANIFEST.txt`
-- `PATCH_70_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_70_RECOVERY_NOTE.md`
-- `PATCH_71_10_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_71_10_MANIFEST.txt`
-- `PATCH_71_10_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_71_10_RECOVERY_NOTE.md`
-- `PATCH_71_11_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_71_11_MANIFEST.txt`
-- `PATCH_71_11_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_71_11_RECOVERY_NOTE.md`
-- `PATCH_71_12_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_71_12_MANIFEST.txt`
-- `PATCH_71_12_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_71_12_RECOVERY_NOTE.md`
-- `PATCH_71_1_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_71_1_MANIFEST.txt`
-- `PATCH_71_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_71_1_RECOVERY_NOTE.md`
-- `PATCH_71_2_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_71_2_MANIFEST.txt`
-- `PATCH_71_2_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_71_2_RECOVERY_NOTE.md`
-- `PATCH_71_3_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_71_3_MANIFEST.txt`
-- `PATCH_71_3_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_71_3_RECOVERY_NOTE.md`
-- `PATCH_71_4_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_71_4_MANIFEST.txt`
-- `PATCH_71_4_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_71_4_RECOVERY_NOTE.md`
-- `PATCH_71_5_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_71_5_MANIFEST.txt`
-- `PATCH_71_5_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_71_5_RECOVERY_NOTE.md`
-- `PATCH_71_6_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_71_6_MANIFEST.txt`
-- `PATCH_71_6_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_71_6_RECOVERY_NOTE.md`
-- `PATCH_71_7_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_71_7_MANIFEST.txt`
-- `PATCH_71_7_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_71_7_RECOVERY_NOTE.md`
-- `PATCH_71_8_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_71_8_MANIFEST.txt`
-- `PATCH_71_8_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_71_8_RECOVERY_NOTE.md`
-- `PATCH_71_9_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_71_9_MANIFEST.txt`
-- `PATCH_71_9_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_71_9_RECOVERY_NOTE.md`
-- `PATCH_71_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_71_MANIFEST.txt`
-- `PATCH_71_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_71_RECOVERY_NOTE.md`
-- `PATCH_72_10_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_10_MANIFEST.txt`
-- `PATCH_72_10_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_10_RECOVERY_NOTE.md`
-- `PATCH_72_11_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_11_MANIFEST.txt`
-- `PATCH_72_11_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_11_RECOVERY_NOTE.md`
-- `PATCH_72_12_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_12_MANIFEST.txt`
-- `PATCH_72_12_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_12_RECOVERY_NOTE.md`
-- `PATCH_72_13_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_13_MANIFEST.txt`
-- `PATCH_72_13_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_13_RECOVERY_NOTE.md`
-- `PATCH_72_14_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_14_MANIFEST.txt`
-- `PATCH_72_14_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_14_RECOVERY_NOTE.md`
-- `PATCH_72_15_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_15_MANIFEST.txt`
-- `PATCH_72_15_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_15_RECOVERY_NOTE.md`
-- `PATCH_72_16_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_16_MANIFEST.txt`
-- `PATCH_72_16_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_16_RECOVERY_NOTE.md`
-- `PATCH_72_17_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_17_MANIFEST.txt`
-- `PATCH_72_17_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_17_RECOVERY_NOTE.md`
-- `PATCH_72_18_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_18_MANIFEST.txt`
-- `PATCH_72_18_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_18_RECOVERY_NOTE.md`
-- `PATCH_72_19_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_19_MANIFEST.txt`
-- `PATCH_72_19_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_19_RECOVERY_NOTE.md`
-- `PATCH_72_1_HOTFIX_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_1_HOTFIX_MANIFEST.txt`
-- `PATCH_72_1_HOTFIX_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_1_HOTFIX_RECOVERY_NOTE.md`
-- `PATCH_72_1_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_1_MANIFEST.txt`
-- `PATCH_72_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_1_RECOVERY_NOTE.md`
-- `PATCH_72_20_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_20_MANIFEST.txt`
-- `PATCH_72_20_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_20_RECOVERY_NOTE.md`
-- `PATCH_72_24_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_24_MANIFEST.txt`
-- `PATCH_72_24_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_24_RECOVERY_NOTE.md`
-- `PATCH_72_25_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_25_MANIFEST.txt`
-- `PATCH_72_25_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_25_RECOVERY_NOTE.md`
-- `PATCH_72_27_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_27_MANIFEST.txt`
-- `PATCH_72_27_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_27_RECOVERY_NOTE.md`
-- `PATCH_72_28_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_28_MANIFEST.txt`
-- `PATCH_72_28_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_28_RECOVERY_NOTE.md`
-- `PATCH_72_29_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_29_MANIFEST.txt`
-- `PATCH_72_29_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_29_RECOVERY_NOTE.md`
-- `PATCH_72_2_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_2_MANIFEST.txt`
-- `PATCH_72_2_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_2_RECOVERY_NOTE.md`
-- `PATCH_72_30_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_30_MANIFEST.txt`
-- `PATCH_72_30_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_30_RECOVERY_NOTE.md`
-- `PATCH_72_31_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_31_MANIFEST.txt`
-- `PATCH_72_31_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_31_RECOVERY_NOTE.md`
-- `PATCH_72_3_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_3_MANIFEST.txt`
-- `PATCH_72_3_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_3_RECOVERY_NOTE.md`
-- `PATCH_72_4_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_4_MANIFEST.txt`
-- `PATCH_72_4_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_4_RECOVERY_NOTE.md`
-- `PATCH_72_5_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_5_MANIFEST.txt`
-- `PATCH_72_5_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_5_RECOVERY_NOTE.md`
-- `PATCH_72_6_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_6_MANIFEST.txt`
-- `PATCH_72_6_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_6_RECOVERY_NOTE.md`
-- `PATCH_72_7_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_7_MANIFEST.txt`
-- `PATCH_72_7_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_7_RECOVERY_NOTE.md`
-- `PATCH_72_8_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_8_MANIFEST.txt`
-- `PATCH_72_8_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_8_RECOVERY_NOTE.md`
-- `PATCH_72_9_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_9_MANIFEST.txt`
-- `PATCH_72_9_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_9_RECOVERY_NOTE.md`
-- `PATCH_72_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_72_MANIFEST.txt`
-- `PATCH_72_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_72_RECOVERY_NOTE.md`
-- `PATCH_73_1_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_73_1_MANIFEST.txt`
-- `PATCH_73_1_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_73_1_RECOVERY_NOTE.md`
-- `PATCH_73_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_73_MANIFEST.txt`
-- `PATCH_73_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_73_RECOVERY_NOTE.md`
-- `PATCH_74_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_74_MANIFEST.txt`
-- `PATCH_74_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_74_RECOVERY_NOTE.md`
-- `PATCH_75_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_75_MANIFEST.txt`
-- `PATCH_75_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_75_RECOVERY_NOTE.md`
-- `PATCH_76_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_76_MANIFEST.txt`
-- `PATCH_76_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_76_RECOVERY_NOTE.md`
-- `PATCH_77_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_77_MANIFEST.txt`
-- `PATCH_77_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_77_RECOVERY_NOTE.md`
-- `PATCH_78_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_78_MANIFEST.txt`
-- `PATCH_78_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_78_RECOVERY_NOTE.md`
-- `PATCH_79_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_79_MANIFEST.txt`
-- `PATCH_79_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_79_RECOVERY_NOTE.md`
-- `PATCH_80_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_80_MANIFEST.txt`
-- `PATCH_80_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_80_RECOVERY_NOTE.md`
-- `PATCH_81_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_81_MANIFEST.txt`
-- `PATCH_81_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_81_RECOVERY_NOTE.md`
-- `PATCH_82_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_82_MANIFEST.txt`
-- `PATCH_82_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_82_RECOVERY_NOTE.md`
-- `PATCH_83_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_83_MANIFEST.txt`
-- `PATCH_83_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_83_RECOVERY_NOTE.md`
-- `PATCH_84_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_84_MANIFEST.txt`
-- `PATCH_84_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_84_RECOVERY_NOTE.md`
-- `PATCH_85_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_85_MANIFEST.txt`
-- `PATCH_85_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_85_RECOVERY_NOTE.md`
-- `PATCH_86_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_86_MANIFEST.txt`
-- `PATCH_86_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_86_RECOVERY_NOTE.md`
-- `PATCH_87_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_87_MANIFEST.txt`
-- `PATCH_87_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_87_RECOVERY_NOTE.md`
-- `PATCH_88_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_88_MANIFEST.txt`
-- `PATCH_88_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_88_RECOVERY_NOTE.md`
-- `PATCH_89_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_89_MANIFEST.txt`
-- `PATCH_89_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_89_RECOVERY_NOTE.md`
-- `PATCH_90_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_90_MANIFEST.txt`
-- `PATCH_90_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_90_RECOVERY_NOTE.md`
-- `PATCH_91_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_91_MANIFEST.txt`
-- `PATCH_91_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_91_RECOVERY_NOTE.md`
-- `PATCH_92_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_92_MANIFEST.txt`
-- `PATCH_92_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_92_RECOVERY_NOTE.md`
-- `PATCH_93_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_93_MANIFEST.txt`
-- `PATCH_93_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_93_RECOVERY_NOTE.md`
-- `PATCH_94_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_94_MANIFEST.txt`
-- `PATCH_94_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_94_RECOVERY_NOTE.md`
-- `PATCH_95_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_95_MANIFEST.txt`
-- `PATCH_95_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_95_RECOVERY_NOTE.md`
-- `PATCH_96_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_96_MANIFEST.txt`
-- `PATCH_96_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_96_RECOVERY_NOTE.md`
-- `PATCH_97_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_97_MANIFEST.txt`
-- `PATCH_97_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_97_RECOVERY_NOTE.md`
-- `PATCH_98_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_98_MANIFEST.txt`
-- `PATCH_98_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_98_RECOVERY_NOTE.md`
-- `PATCH_99_MANIFEST.txt` -> `docs/patch_archive/manifests/PATCH_99_MANIFEST.txt`
-- `PATCH_99_RECOVERY_NOTE.md` -> `docs/patch_archive/recovery_notes/PATCH_99_RECOVERY_NOTE.md`
+```text
+Keep the latest patch manifest/recovery note at root. Archive older patch artifacts here.
+```
+
+## Archived manifests
+
+- `docs/patch_archive/manifests/PATCH_100_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_101_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_102_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_103_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_104_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_105_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_106_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_107_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_108_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_109_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_110_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_111_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_112_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_113_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_114_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_115_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_116_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_117_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_118_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_119_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_120_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_121_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_122_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_123_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_124_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_125_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_126_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_127_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_128_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_129_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_130_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_131_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_132_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_133_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_134_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_135_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_136_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_137_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_138_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_139_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_140_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_141_1_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_141_2_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_141_3_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_141_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_10_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_11_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_12_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_13_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_14_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_15_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_16_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_1_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_2_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_3_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_4_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_5_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_6_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_7_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_8_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_9_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_142_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_143_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_144_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_145_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_146_1_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_146_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_36_1_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_36_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_37_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_38_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_39_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_40_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_41_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_42_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_43_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_44_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_45_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_46_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_47_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_48_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_49_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_50_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_51_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_52_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_53_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_54_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_55_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_56_60_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_61A_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_61B_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_61C_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_61D_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_61E_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_62_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_63_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_64_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_65_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_66_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_67_1_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_67_2_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_67_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_68_1_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_68_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_69_1_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_69_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_70_1_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_70_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_71_10_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_71_11_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_71_12_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_71_1_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_71_2_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_71_3_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_71_4_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_71_5_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_71_6_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_71_7_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_71_8_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_71_9_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_71_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_10_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_11_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_12_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_13_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_14_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_15_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_16_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_17_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_18_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_19_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_1_HOTFIX_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_1_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_20_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_24_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_25_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_27_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_28_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_29_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_2_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_30_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_31_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_3_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_4_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_5_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_6_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_7_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_8_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_9_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_72_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_73_1_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_73_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_74_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_75_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_76_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_77_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_78_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_79_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_80_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_81_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_82_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_83_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_84_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_85_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_86_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_87_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_88_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_89_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_90_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_91_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_92_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_93_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_94_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_95_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_96_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_97_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_98_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_99_MANIFEST.txt`
+
+## Archived recovery notes
+
+- `docs/patch_archive/recovery_notes/PATCH_100_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_101_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_102_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_103_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_104_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_105_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_106_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_107_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_108_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_109_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_110_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_111_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_112_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_113_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_114_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_115_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_116_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_117_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_118_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_119_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_120_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_121_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_122_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_123_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_124_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_125_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_126_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_127_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_128_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_129_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_130_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_131_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_132_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_133_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_134_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_135_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_136_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_137_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_138_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_139_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_13_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_140_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_141_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_141_2_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_141_3_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_141_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_10_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_11_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_12_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_13_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_14_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_15_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_16_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_2_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_3_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_4_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_5_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_6_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_7_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_8_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_9_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_142_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_143_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_144_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_145_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_146_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_146_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_19A_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_19B_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_20_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_20_2_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_20_3_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_20_4_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_20_5_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_20_6_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_20_7_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_20_8_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_20_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_21_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_21_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_22_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_22_2_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_22_3_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_22_4_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_22_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_23A_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_23B_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_27A_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_27B_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_28_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_28_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_29_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_29_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_30_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_30_2_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_30_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_31_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_31_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_32_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_32_2_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_32_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_33_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_34_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_35_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_36_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_36_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_37_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_38_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_39_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_40_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_41_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_42_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_43_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_44_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_45_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_46_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_47_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_48_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_49_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_50_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_51_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_52_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_53_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_54_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_55_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_56_60_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_61A_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_61B_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_61C_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_61D_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_61E_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_62_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_63_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_64_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_65_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_66_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_67_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_67_2_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_67_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_68_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_68_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_69_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_69_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_70_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_70_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_71_10_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_71_11_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_71_12_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_71_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_71_2_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_71_3_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_71_4_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_71_5_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_71_6_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_71_7_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_71_8_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_71_9_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_71_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_10_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_11_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_12_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_13_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_14_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_15_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_16_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_17_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_18_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_19_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_1_HOTFIX_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_20_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_24_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_25_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_27_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_28_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_29_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_2_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_30_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_31_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_3_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_4_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_5_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_6_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_7_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_8_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_9_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_72_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_73_1_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_73_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_74_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_75_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_76_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_77_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_78_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_79_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_80_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_81_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_82_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_83_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_84_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_85_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_86_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_87_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_88_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_89_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_90_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_91_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_92_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_93_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_94_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_95_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_96_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_97_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_98_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_99_RECOVERY_NOTE.md`
+
+## Other archived patch artifacts
+
+- `docs/patch_archive/other_patch_artifacts/PATCH_README.md`
+- `docs/patch_archive/other_patch_artifacts/PATCH_README_DIRECT_MASTER_GRID.md`
+- `docs/patch_archive/other_patch_artifacts/PATCH_README_GLOBAL_GRID_STATE.md`

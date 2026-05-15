@@ -1,0 +1,33 @@
+Patch 88 - AI Integrity Mirror Signal Evidence Snippets
+
+Status: READY FOR LOCAL TESTING
+
+Summary:
+- Adds review-facing signal categories to AI Integrity Mirror findings.
+- Adds short evidence snippets showing why each deterministic signal triggered.
+- Redacts credential-like values before snippets are exposed in UI tables or receipt metadata.
+- Updates the AI Integrity Mirror app table with Category and Evidence snippet columns.
+- Updates AI Integrity documentation and progress ledgers.
+
+Boundary preserved:
+- Static pasted-artifact review only.
+- Evidence snippets are local excerpts, not external verification.
+- No live model benchmarking, external calls, repository crawler, public ledger, Global ID sync, central storage, enforcement, certification, vendor approval, legal authority, political authority, religious authority, medical authority, moral finality, or final safety claim.
+- No scoring-math change and no verdict-routing change.
+
+Files changed:
+- core/ai_integrity_mirror.py
+- app.py
+- docs/ai_integrity_mirror.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- tests/test_patch_88_ai_integrity_signal_evidence.py
+- PATCH_88_MANIFEST.txt
+- PATCH_88_RECOVERY_NOTE.md
+
+Verification:
+
+tools\run_patch_checks.bat 88
+tools\run_patch_checks.bat 87
+tools\run_patch_checks.bat 86
+tools\run_patch_checks.bat 85

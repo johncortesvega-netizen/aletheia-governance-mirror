@@ -1,0 +1,43 @@
+PATCH 72 MANIFEST - Threshold Mapping Layer
+
+Patch ID: 72
+Patch name: Threshold Mapping Layer
+Owner/User: Johnny Cortes Vega
+Project: ALETHEIA v1.0 - Governance Mirror
+
+Purpose:
+- Add a receipt-only Threshold Mapping Layer that makes the middle zone less opaque.
+- Map THRESHOLD readings between captured logic and distributed resilience.
+- Record direction, Z-axis position, repair index, integrity gap, and component readings without changing the canonical verdict.
+
+Files changed:
+- core/witness.py
+- tests/test_patch_72_threshold_mapping_layer.py
+- docs/threshold_mapping_layer.md
+- PATCH_72_MANIFEST.txt
+- PATCH_72_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Behavioral changes:
+- Local witness receipts now include `threshold_mapping_layer`.
+- Readable receipts print `THRESHOLD MAPPING LAYER` between Raw Metrics Before Ethics and Scanner Features.
+- The layer records:
+  - threshold_direction
+  - z_axis_position
+  - integrity_gap
+  - repair_index
+  - component_readings for Power balance, Correction, and Access
+  - asylum_pressure_signals
+  - sanctuary_growth_signals
+
+Non-goals:
+- No new canonical taxonomy state.
+- No scoring logic change.
+- No verdict-routing change.
+- No UI tree visual change.
+- No Stress Test logic change.
+- No Boundary Cases change.
+- No World Lens change.
+- No authority-boundary change.
+- No public ledger, Global ID sync, central storage, or automated authority behavior.

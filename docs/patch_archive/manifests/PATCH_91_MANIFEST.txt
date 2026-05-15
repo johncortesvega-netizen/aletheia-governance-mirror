@@ -1,0 +1,43 @@
+PATCH 91 — AI Integrity Receipt Export Polish
+
+Status: READY FOR LOCAL TESTING
+
+Updated files:
+- core/ai_integrity_mirror.py
+- app.py
+- tests/test_patch_91_ai_integrity_receipt_export_polish.py
+- docs/ai_integrity_mirror.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_91_MANIFEST.txt
+- PATCH_91_RECOVERY_NOTE.md
+
+Summary:
+- Added AI_INTEGRITY_RECEIPT_VERSION.
+- Added AI Integrity-specific receipt context builder.
+- Added readable receipt-context renderer for receipt exports.
+- Receipt export now prefixes the generic local witness receipt with AI Integrity scope, privacy boundary, non-certification note, reliance boundary, redacted evidence snippets, and repair questions.
+- Batch-mode receipt export can include batch summary context without becoming a model ranking or benchmark.
+
+Boundary preserved:
+- Static pasted-artifact review only.
+- No scoring-math change.
+- No verdict-routing change.
+- No live model benchmarking.
+- No external calls.
+- No repository crawler.
+- No storage layer.
+- No public ledger sync.
+- No Global ID sync.
+- No enforcement.
+- No vendor ranking.
+- No model certification, approval, or final safety claim.
+
+Verification:
+- tools\run_patch_checks.bat 91
+- tools\run_patch_checks.bat 90
+- tools\run_patch_checks.bat 89
+- tools\run_patch_checks.bat 88
+- tools\run_patch_checks.bat 87
+- tools\run_patch_checks.bat 86
+- tools\run_patch_checks.bat 85

@@ -1,0 +1,13 @@
+# Patch 118 — Beginner UX Polish v2
+README.md
+docs/architecture.md
+docs/patch_index.md
+docs/public_trust_package.md
+docs/beginner_ux.md
+ui/beginner_guide.py
+PATCH_STATUS.md
+docs/progress_database.md
+data/protocol_baseline_manifest.json
+tests/test_patch_118_beginner_ux_polish_v2.py
+PATCH_118_MANIFEST.txt
+PATCH_118_RECOVERY_NOTE.md

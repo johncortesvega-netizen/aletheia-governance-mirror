@@ -1,0 +1,39 @@
+PATCH 71.9 MANIFEST — Mirror Check Review Band Display
+
+Patch ID: 71.9
+Patch name: Mirror Check Review Band Display
+Owner/User: Johnny Cortes Vega
+Project: ALETHEIA v1.0 — Governance Mirror
+
+Purpose:
+- Apply the Patch 71.7 user-friendly Threshold review band display to Mirror Check latest-reading cards.
+- Keep the canonical taxonomy unchanged: ASYLUM / THRESHOLD / SANCTUARY.
+- Keep this patch display-only.
+
+Files changed:
+- app.py
+- tests/test_patch_71_9_mirror_check_review_band_display.py
+- PATCH_71_9_MANIFEST.txt
+- PATCH_71_9_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Behavioral changes:
+- Mirror Check result cards now compute the same display-only review band used by Stress Test.
+- For THRESHOLD Mirror Check outputs, the card can show:
+  - Needs Repair
+  - Needs Review
+  - Near Sanctuary
+- Mirror Check latest-reading call now passes simulation metrics to the result card so the review band can be computed consistently.
+
+Non-goals:
+- No receipt schema change.
+- No scoring logic change.
+- No verdict-routing change.
+- No taxonomy expansion.
+- No tree visual change.
+- No Stress Test change.
+- No Boundary Cases change.
+- No World Lens change.
+- No authority-boundary change.
+- No public ledger, Global ID sync, central storage, or automated authority behavior.

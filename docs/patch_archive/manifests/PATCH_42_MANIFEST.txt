@@ -1,0 +1,10 @@
+docs/world_lens_simulation.md
+prompts/world_lens_prompt.md
+tests/test_patch_42_world_lens.py
+PATCH_42_MANIFEST.txt
+PATCH_42_RECOVERY_NOTE.md
+PATCH_STATUS.md
+docs/progress_database.md
+README.md
+about_page.py
+app.py

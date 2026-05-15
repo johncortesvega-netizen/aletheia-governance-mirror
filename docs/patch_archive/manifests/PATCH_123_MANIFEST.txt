@@ -1,0 +1,40 @@
+PATCH 123 MANIFEST
+
+Patch: 123
+Title: About / Public Info Page Extraction
+Status: READY FOR LOCAL REVIEW
+
+Changed or added files:
+- app.py
+- pages_ui/__init__.py
+- pages_ui/about_page.py
+- docs/about_public_info_page_extraction.md
+- tests/test_patch_123_about_public_info_page_extraction.py
+- tests/test_patch_122_refactor_stabilization_checkpoint_2.py
+- PATCH_123_MANIFEST.txt
+- PATCH_123_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- docs/architecture.md
+- README.md
+- data/protocol_baseline_manifest.json
+
+Scope:
+- Extract the in-app Why ALETHEIA / About tab into `pages_ui/about_page.py`.
+- Keep `app.py` as the orchestrator for tab ownership and optional header image resolution.
+- Preserve the older root-level `about_page.py` for standalone About-page compatibility.
+- Align the Patch 122 checkpoint test with the existing privacy-audit helper name.
+
+Boundary:
+- No runtime behavior change intended.
+- No scoring change.
+- No verdict-routing change.
+- No signal-pattern or signal-weight change.
+- No receipt schema change.
+- No module-routing change.
+- No session-state change.
+- No upload, download, privacy scan, AI Integrity scan, or World Lens math change.
+- No external calls, telemetry, analytics, storage or identity sync, certification, enforcement, privacy guarantee, or final-truth claim.
+
+Human review remains required.

@@ -1,0 +1,45 @@
+PATCH 96 — Privacy Boundary Audit Panel
+
+Patched-items-only scope:
+- core/ai_integrity_mirror.py
+- app.py
+- docs/privacy_boundary_audit_panel.md
+- docs/ai_integrity_mirror.md
+- README.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_96_MANIFEST.txt
+- PATCH_96_RECOVERY_NOTE.md
+- tests/test_patch_96_privacy_boundary_audit_panel.py
+
+Summary:
+- Added PRIVACY_BOUNDARY_SCAN_VERSION = privacy-boundary-audit-v0.1.
+- Added scan_privacy_boundary_static() for deterministic pasted-artifact privacy-boundary review.
+- Detects analytics packages, external network call patterns, telemetry keywords, database write hints, backend endpoint hints, and local-only statement markers.
+- Flags privacy-boundary tension when local-only/no-data-collection wording appears alongside analytics, network, telemetry, database, or backend evidence.
+- Adds local-only statement, hosting caveat, non-certification note, evidence snippets, category counts, and review questions.
+- Surfaces the Privacy Boundary Audit Panel in AI Integrity Mirror results.
+- Adds docs and patch-specific tests.
+
+Boundary preserved:
+- Static pasted-artifact review only.
+- No analyzer scoring change.
+- No signal-weight change.
+- No verdict-routing change.
+- No runtime monitoring.
+- No host-log inspection.
+- No dependency crawl.
+- No repository crawler.
+- No external calls.
+- No live model benchmarking.
+- No privacy guarantee.
+- No compliance approval.
+- No vendor audit.
+- No hosting audit.
+- No certification.
+- No proof that no data is collected.
+
+Recommended verification:
+- tools\run_patch_checks.bat 96
+- tools\run_patch_checks.bat 95
+- tools\run_patch_checks.bat 94

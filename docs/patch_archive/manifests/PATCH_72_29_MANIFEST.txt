@@ -1,0 +1,38 @@
+PATCH 72.29 MANIFEST - World Lens Copy Humility Polish
+
+Patch ID: 72.29
+Patch name: World Lens Copy Humility Polish
+Owner/User: Johnny Cortes Vega
+Project: ALETHEIA v1.0 - Governance Mirror
+
+Purpose:
+- Give World Lens the same copy/humility treatment applied to Mirror Check, Stress Test, Boundary Cases, and Evidence Lab.
+- Replace remaining public-facing verdict/final/report wording with internal-taxonomy/review-oriented wording.
+- Preserve raw/internal variables and export compatibility while improving visible UI and receipt language.
+
+Files changed:
+- app.py
+- tests/test_patch_72_29_world_lens_copy_humility_polish.py
+- PATCH_72_29_MANIFEST.txt
+- PATCH_72_29_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Behavioral / copy changes:
+- `9k verdict signal` -> `9k internal taxonomy signal`.
+- `Active-seat verdict signal` -> `Active-seat internal taxonomy signal`.
+- `Result distribution unavailable` messages now refer to internal taxonomy distribution.
+- Year-control help no longer says final receipt.
+- World Lens Simulation copy now says final review remains human and uses enforcement authority / real 9k body language.
+- Report-packet UI copy now says review packet.
+- Selected-year comparison export button now says World Lens review CSV.
+- Receipt markdown says World Lens source state and evidence allocation status.
+- Receipt module note no longer says Patch 31 module alignment note and explicitly preserves no-final-authority wording.
+
+Non-goals:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab data model change.
+- No World Lens data model change.
+- No public ledger, Global ID sync, central storage, or enforcement behavior.

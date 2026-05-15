@@ -1,0 +1,7 @@
+core/ethics.py
+data_processed/core/ethics.py
+tests/test_patch_70_1_negated_safeguard_strengths.py
+PATCH_70_1_MANIFEST.txt
+PATCH_70_1_RECOVERY_NOTE.md
+PATCH_STATUS.md
+docs/progress_database.md

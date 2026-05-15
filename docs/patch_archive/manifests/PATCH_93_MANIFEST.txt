@@ -1,0 +1,50 @@
+PATCH 93 MANIFEST — AI Integrity Batch Demo Pack
+
+Baseline:
+- Latest uploaded current build after Patch 92.
+
+Files added:
+- examples/ai_integrity/bounded_ai_answer.txt
+- examples/ai_integrity/authority_overclaim.txt
+- examples/ai_integrity/opaque_agent_workflow.txt
+- examples/ai_integrity/code_secret_example.txt
+- examples/ai_integrity/central_identity_capture_claim.txt
+- examples/ai_integrity/batch_demo_v1.txt
+- docs/ai_integrity_demo_pack.md
+- tests/test_patch_93_ai_integrity_demo_pack.py
+- PATCH_93_MANIFEST.txt
+- PATCH_93_RECOVERY_NOTE.md
+
+Files updated:
+- README.md
+- docs/ai_integrity_mirror.md
+- docs/progress_database.md
+- PATCH_STATUS.md
+
+Purpose:
+- Add ready-to-use AI Integrity Mirror demo artifacts for single-artifact and batch-mode review.
+- Make adoption/testing easier without adding runtime behavior.
+
+Boundary preserved:
+- Examples/docs/tests only.
+- No analyzer scoring change.
+- No signal-pattern change.
+- No signal-weight change.
+- No verdict-routing change.
+- No UI behavior change.
+- No receipt-generation change.
+- No live model benchmarking.
+- No external calls.
+- No repository crawler.
+- No storage layer.
+- No public ledger sync.
+- No Global ID sync.
+- No enforcement.
+- No vendor ranking.
+- No model certification.
+- No approval.
+- No final safety claim.
+
+Verification:
+- tools\run_patch_checks.bat 93
+- python tools/run_patch_checks.py 93

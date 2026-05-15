@@ -1,0 +1,11 @@
+README.md
+about_page.py
+app.py
+docs/capture_risk_framework.md
+docs/public_test_cases.md
+docs/progress_database.md
+examples/evaluation_cases/regulatory_capture_revolving_door_en.txt
+PATCH_STATUS.md
+PATCH_77_MANIFEST.txt
+PATCH_77_RECOVERY_NOTE.md
+tests/test_patch_77_capture_risk_framework.py

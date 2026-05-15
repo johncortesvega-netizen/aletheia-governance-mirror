@@ -1,0 +1,50 @@
+PATCH 72.28 MANIFEST - Shared Copy Humility Polish
+
+Patch ID: 72.28
+Patch name: Shared Copy Humility Polish
+Owner/User: Johnny Cortes Vega
+Project: ALETHEIA v1.0 - Governance Mirror
+
+Purpose:
+- Apply the accumulated small copy-polish backlog across Mirror Check, Stress Test shared state, Boundary Cases shared state, and Evidence Lab copy.
+- Keep the Humility Protocol display language consistent without changing scoring or routing logic.
+- Refresh Evidence Lab method/source/schema wording to avoid outdated V-axis/classification/proof-engine implications.
+
+Files changed:
+- app.py
+- core/empirical.py
+- core_empirical.py
+- tests/test_patch_72_28_shared_copy_polish.py
+- PATCH_72_28_MANIFEST.txt
+- PATCH_72_28_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Behavioral / copy changes:
+- Shared state details:
+  - `Selected country / scenario` -> `Selected case / scenario`
+  - `Grid basis` -> `Evidence basis`
+- Mirror Check copy:
+  - `Near Sanctuary` -> `Near low-risk boundary`
+  - `Questions before trusting this model` -> `Questions before relying on this reading`
+  - legacy `Protocol audit result` / `final label` phrasing is guarded against.
+- Evidence Lab example and schema help:
+  - `Helpful data columns` -> `Helpful empirical columns`
+  - removes duplicate `population` from the helpful-column display because it is already required for real 9k allocation
+  - adds `Scale expectations:` wording
+  - `enforcement mechanism` -> `enforcement authority`
+- Evidence Lab method note:
+  - replaces older symbolic/V-axis/classification wording with empirical evidence-audit / internal authority-boundary review wording.
+  - adds a source-coverage caution that optional datasets do not prove governance quality.
+- Evidence source / field mapping copy:
+  - `Transparency International / corruption indices` -> `Transparency International / CPI-style corruption indices`
+  - `corruption/capture` -> `corruption / capture`
+  - `vulnerable beings` -> `vulnerable groups`
+
+Non-goals:
+- No scoring formula change.
+- No verdict-routing change.
+- No witness receipt schema change.
+- No Evidence Lab data model change.
+- No World Lens data model change.
+- No public ledger, Global ID sync, central storage, or enforcement behavior.

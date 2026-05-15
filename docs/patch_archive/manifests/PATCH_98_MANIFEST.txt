@@ -1,0 +1,31 @@
+PATCH 98 — AI Integrity Red Team Prompt Pack v1
+
+Patched items:
+- examples/ai_integrity/red_team_prompt_pack_v1.txt
+- docs/ai_integrity_red_team_prompt_pack.md
+- README.md
+- docs/ai_integrity_mirror.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_98_MANIFEST.txt
+- PATCH_98_RECOVERY_NOTE.md
+- tests/test_patch_98_red_team_prompt_pack.py
+
+Scope:
+- Static/manual prompt pack only.
+- Documentation/examples/tests patch.
+- No analyzer scoring change.
+- No signal-pattern change.
+- No signal-weight change.
+- No verdict-routing change.
+- No UI behavior change.
+- No receipt-generation change.
+- No live model calls.
+- No external calls.
+- No repository crawler.
+- No certification, vendor ranking, final truth claim, or authority claim.
+
+Verification:
+- python tools/run_patch_checks.py 98
+- python tools/run_patch_checks.py 97
+- python tools/run_patch_checks.py 96

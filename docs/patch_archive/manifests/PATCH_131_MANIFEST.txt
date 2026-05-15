@@ -1,0 +1,40 @@
+PATCH 131 MANIFEST - Start Page / How to Start Gate
+
+Status: READY FOR LOCAL REVIEW
+
+Changed files:
+- app.py
+- ui/start_page.py
+- tests/test_patch_131_start_page_gate.py
+- PATCH_131_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- README.md
+- docs/architecture.md
+- docs/patch_index.md
+- docs/progress_database.md
+- data/protocol_baseline_manifest.json
+
+Purpose:
+- Add a calm first-entry Start Page / How to Start gate before the full module interface renders.
+- Keep the normal ALETHEIA app hidden until the user clicks `Proceed to ALETHEIA`.
+- Use Streamlit session state only through `aletheia_start_gate_passed`.
+
+Boundary preserved:
+- No new module tab.
+- No user-intent router.
+- No role selection, wizard, personalization, cookies, accounts, persistent storage, telemetry, analytics, tracking, external calls, local LLM calls, embeddings, database, auth, or login.
+- No scoring change.
+- No routing change.
+- No receipt schema change.
+- No signal regex or signal weight change.
+- No Privacy Audit scan behavior change.
+- No AI Integrity scan behavior change.
+- No World Lens math change.
+- No certifying, enforcement, approval, rejection, privacy-guarantee, or final-truth claim.
+- Humans keep the judgment.
+
+Validation targets:
+- python tools\run_patch_checks.py 131
+- python tools\run_patch_checks.py 130
+- python tools\run_patch_checks.py 129
+- python tools\run_protocol_baseline_self_audit.py

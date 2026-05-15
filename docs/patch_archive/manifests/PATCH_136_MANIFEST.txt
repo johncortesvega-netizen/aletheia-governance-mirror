@@ -1,0 +1,41 @@
+PATCH 136 MANIFEST - Aletheia Unit Preview Stabilization
+
+Status: READY FOR LOCAL REVIEW
+
+Changed files:
+- docs/aletheia_unit_preview_stabilization.md
+- tests/test_patch_136_aletheia_unit_preview_stabilization.py
+- PATCH_136_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- docs/architecture.md
+- data/protocol_baseline_manifest.json
+
+Purpose:
+- Stabilize the Patch 135 Aletheia Unit Preview.
+- Confirm the preview remains a session-only suggestion layer.
+- Confirm the normal app interface still exists after the gate passes.
+- Confirm no scoring, routing, receipt, privacy, AI Integrity, or World Lens behavior drift.
+
+Boundary preserved:
+- Test/check/docs patch only.
+- No new UI feature.
+- No new modules.
+- No scoring changes.
+- No verdict routing changes.
+- No receipt schema or receipt generation changes.
+- No signal regex or signal weight changes.
+- No AI Integrity scan behavior change.
+- No Privacy Audit scan behavior change.
+- No World Lens math change.
+- No uploads/downloads or batch behavior change.
+- No external calls, telemetry, analytics, tracking, cookies, accounts, persistent storage, database, Global ID sync, or public ledger sync.
+- No certification, enforcement, final-truth, approval/rejection, or privacy-guarantee claim.
+- Human review remains required.
+
+Validation targets:
+- python tools\run_patch_checks.py 136
+- python tools\run_patch_checks.py 135
+- python tools\run_patch_checks.py 134
+- python tools\run_protocol_baseline_self_audit.py

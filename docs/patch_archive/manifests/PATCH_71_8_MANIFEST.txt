@@ -1,0 +1,36 @@
+PATCH 71.8 MANIFEST — Stress Test Review Band Card Polish
+
+Patch ID: 71.8
+Patch name: Stress Test Review Band Card Polish
+Owner/User: Johnny Cortes Vega
+Project: ALETHEIA v1.0 — Governance Mirror
+
+Purpose:
+- Polish the Stress Test result card so the review band displays cleanly on its own line.
+- Keep Patch 71.7 review-band behavior display-only.
+
+Files changed:
+- app.py
+- tests/test_patch_71_8_stress_review_band_card_polish.py
+- PATCH_71_8_MANIFEST.txt
+- PATCH_71_8_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Behavioral changes:
+- Result card helper text now renders:
+  Safety risk: Medium
+  Review band: Needs Review
+- Removes the awkward single-line `Safety risk: Medium · Review band: Needs Review` wrapping.
+
+Non-goals:
+- No receipt schema change.
+- No scoring logic change.
+- No verdict-routing change.
+- No taxonomy expansion.
+- No Mirror Check change.
+- No tree visual change.
+- No Boundary Cases change.
+- No World Lens change.
+- No authority-boundary change.
+- No public ledger, Global ID sync, central storage, or automated authority behavior.

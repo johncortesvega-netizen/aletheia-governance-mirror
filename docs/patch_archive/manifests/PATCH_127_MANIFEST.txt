@@ -1,0 +1,43 @@
+PATCH 127 — Encoding Cleanup and Tab Icon Restore
+
+Purpose:
+- Repair visible UTF-8 mojibake in the public app surface.
+- Restore Streamlit tab icons and normal Unicode punctuation.
+- Add a regression guard against common mojibake tokens in public UI files.
+- Keep the Patch 126 stabilization test compatible with later baseline manifests.
+
+Changed files:
+- app.py
+- pages_ui/about_page.py
+- docs/progress_database.md
+- docs/encoding_cleanup_tab_icon_restore.md
+- tests/test_patch_127_encoding_cleanup_tab_icon_restore.py
+- tests/test_patch_126_final_structural_simplification_freeze.py
+- README.md
+- docs/architecture.md
+- docs/patch_index.md
+- PATCH_STATUS.md
+- PATCH_127_MANIFEST.txt
+- PATCH_127_RECOVERY_NOTE.md
+- data/protocol_baseline_manifest.json
+
+Boundary preserved:
+- No scoring change.
+- No verdict-routing change.
+- No signal-pattern or signal-weight change.
+- No receipt schema change.
+- No module-routing change.
+- No session-state change.
+- No upload or download handling change.
+- No privacy scan behavior change.
+- No AI Integrity scan behavior change.
+- No World Lens math change.
+- No external calls.
+- No telemetry or analytics.
+- No central storage, Global ID sync, or public ledger sync.
+- No privacy guarantee, certification, enforcement, or final-truth behavior.
+
+Validation targets:
+- tools\run_patch_checks.bat 127
+- tools\run_patch_checks.bat 126
+- python tools\run_protocol_baseline_self_audit.py

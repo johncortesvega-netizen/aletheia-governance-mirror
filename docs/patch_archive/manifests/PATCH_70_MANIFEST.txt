@@ -1,0 +1,21 @@
+PATCH 70 MANIFEST — Tree Visual Calibration
+
+Patched / added items:
+- app.py
+- about_page.py
+- README.md
+- docs/tree_visual_calibration.md
+- docs/progress_database.md
+- PATCH_STATUS.md
+- PATCH_70_MANIFEST.txt
+- PATCH_70_RECOVERY_NOTE.md
+- tests/test_patch_70_tree_visual_calibration.py
+
+Purpose:
+- Clarify Mirror Check tree vs Stress Test tree.
+- Show QUESTION_PROMPT as Review Tool Mode, not as a Sanctuary/Threshold/Asylum score.
+- Label tree score as a visual tree score, separate from protocol-adjusted integrity.
+- Preserve safe-language: signal, review, safeguards, repair, human review.
+
+Check:
+- tools\run_patch_checks.bat 70

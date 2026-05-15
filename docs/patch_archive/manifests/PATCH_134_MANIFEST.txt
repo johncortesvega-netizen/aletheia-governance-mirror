@@ -1,0 +1,41 @@
+PATCH 134 MANIFEST - Receipt Reader Standard View v1
+
+Status: READY FOR LOCAL REVIEW
+
+Changed files:
+- app.py
+- ui/receipt_reader.py
+- docs/receipt_reader_standard_view_v1.md
+- tests/test_patch_134_receipt_reader_standard_view_v1.py
+- PATCH_134_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- docs/architecture.md
+- data/protocol_baseline_manifest.json
+
+Purpose:
+- Add a simple Receipt Reader - Standard View for pasted ALETHEIA receipts.
+- Show native receipt values, plain-language standard review bands, human-review note, non-certification note, and parsing limits.
+- Handle missing fields calmly as `Not found in pasted receipt`.
+
+Boundary preserved:
+- No new scoring.
+- No recalculation of risk state.
+- No changing receipt schema.
+- No modifying existing receipt generation.
+- No external calls.
+- No LLM calls.
+- No embeddings.
+- No database or storage.
+- No telemetry.
+- No compliance certification.
+- No legal, medical, political, or institutional authority claim.
+- No final-truth claim.
+- Human review remains required.
+
+Validation targets:
+- python tools\run_patch_checks.py 134
+- python tools\run_patch_checks.py 133
+- python tools\run_patch_checks.py 132
+- python tools\run_protocol_baseline_self_audit.py

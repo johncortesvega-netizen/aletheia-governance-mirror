@@ -1,0 +1,43 @@
+ALETHEIA PATCH 116 MANIFEST
+
+Patch title: App Shell Router Refactor Step 5
+Patch type: Static app-shell extraction / maintenance
+Status: READY FOR LOCAL TESTING
+
+Changed files:
+- app.py
+- ui/app_shell.py
+- tests/test_patch_116_app_shell_router_refactor_step_5.py
+- PATCH_116_MANIFEST.txt
+- PATCH_116_RECOVERY_NOTE.md
+- README.md
+- docs/architecture.md
+- docs/patch_index.md
+- docs/public_trust_package.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- data/protocol_baseline_manifest.json
+
+Purpose:
+- Continue the gradual app.py router/shell refactor after Patch 115.
+- Extract the stable footer banner into ui/app_shell.py as a copy-only helper.
+- Keep app.py as the runtime orchestrator for interactive controls, session state, module routing, scoring, receipts, downloads, and analysis behavior.
+
+Boundary preserved:
+- No scoring change.
+- No verdict-routing change.
+- No signal-pattern change.
+- No signal-weight change.
+- No receipt schema change.
+- No module-routing change.
+- No external calls or live model calls.
+- No telemetry or analytics.
+- No central storage, Global ID sync, or public ledger sync.
+- No privacy guarantee, certification, enforcement, or final-truth behavior.
+- Humans keep the judgment.
+
+Validation:
+- tools\run_patch_checks.bat 116
+- tools\run_patch_checks.bat 115
+- tools\run_patch_checks.bat 114
+- python tools\run_protocol_baseline_self_audit.py

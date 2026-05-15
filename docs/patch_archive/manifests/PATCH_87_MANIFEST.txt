@@ -1,0 +1,10 @@
+# Patch 87 - AI Integrity Mirror Demo Examples and Static Smoke Coverage
+# Boundary: not certification; AI Integrity Mirror does not certify models, vendors, codebases, prompts, agents, or outputs.
+core/ai_integrity_mirror.py
+app.py
+docs/ai_integrity_mirror.md
+tests/test_patch_87_ai_integrity_demo_examples.py
+PATCH_87_MANIFEST.txt
+PATCH_87_RECOVERY_NOTE.md
+PATCH_STATUS.md
+docs/progress_database.md

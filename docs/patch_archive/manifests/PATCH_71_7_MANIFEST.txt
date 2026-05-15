@@ -1,0 +1,39 @@
+PATCH 71.7 MANIFEST — Threshold Review Band Display
+
+Patch ID: 71.7
+Patch name: Threshold Review Band Display
+Owner/User: Johnny Cortes Vega
+Project: ALETHEIA v1.0 — Governance Mirror
+
+Purpose:
+- Add a small, user-friendly display layer for nuance inside THRESHOLD.
+- Preserve canonical risk taxonomy: ASYLUM / THRESHOLD / SANCTUARY.
+- Show THRESHOLD as one of:
+  - Needs Repair
+  - Needs Review
+  - Near Sanctuary
+
+Files changed:
+- app.py
+- tests/test_patch_71_7_threshold_review_band_display.py
+- PATCH_71_7_MANIFEST.txt
+- PATCH_71_7_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Behavioral changes:
+- Adds `review_band_for_state(...)` display helper.
+- Stress Test result card now shows a user-friendly Review band when state is THRESHOLD.
+- Stress Test batch summary includes a Review band column.
+- No new canonical protocol states are introduced.
+
+Non-goals:
+- No receipt schema change.
+- No scoring logic change.
+- No Stress Test verdict-routing change.
+- No Mirror Check logic change.
+- No tree visual change.
+- No Boundary Cases logic change.
+- No World Lens change.
+- No authority-boundary change.
+- No public ledger, Global ID sync, central storage, or automated authority behavior.

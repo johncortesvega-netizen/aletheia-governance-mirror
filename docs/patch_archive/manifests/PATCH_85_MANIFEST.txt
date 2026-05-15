@@ -1,0 +1,41 @@
+PATCH 85 — AI Integrity Mirror Scaffold
+
+Status: READY FOR LOCAL TESTING
+
+Files added:
+- core/ai_integrity_mirror.py
+- docs/ai_integrity_mirror.md
+- tests/test_patch_85_ai_integrity_mirror.py
+- PATCH_85_MANIFEST.txt
+- PATCH_85_RECOVERY_NOTE.md
+
+Files updated:
+- app.py
+- docs/app_navigation_smoke.md
+- tests/test_patch_47_app_navigation_smoke.py
+- tests/test_tab_name_contract.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Summary:
+- Added AI Integrity Mirror as a new Streamlit tab in the existing ALETHEIA app.
+- Added a deterministic static analyzer for pasted AI outputs, prompts, agent specs, model-card claims, and code snippets.
+- Added authority-overreach, no-review, enforcement, opacity, coercion, surveillance, and code-risk signal detection.
+- Added AI Integrity readings with internal taxonomy label, risk, integrity, collapse pressure, repair questions, and local witness receipt download.
+- Updated navigation and Protocol Guide copy so AI Integrity Mirror is presented as a review mirror, not a certification authority.
+- Added documentation and tests for the new module and preserved boundaries.
+
+Boundary preserved:
+- No live model benchmarking.
+- No external API calls.
+- No scoring changes to Mirror Check, Stress Test, Evidence Lab, or World Lens.
+- No public ledger, Global ID sync, central storage, enforcement, certification, punishment, legal authority, political authority, religious authority, medical authority, moral finality, or final judgment.
+- AI Integrity Mirror produces static internal governance-integrity risk readings only.
+
+Verification:
+- python -m py_compile app.py core/ai_integrity_mirror.py
+- pytest tests/test_patch_85_ai_integrity_mirror.py
+- tools\run_patch_checks.bat 85
+
+
+Boundary sentence: AI Integrity Mirror does not certify models, vendors, prompts, agents, outputs, or codebases.

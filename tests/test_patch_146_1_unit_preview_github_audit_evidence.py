@@ -8,7 +8,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def read(path: str) -> str:
-    return (ROOT / path).read_text(encoding="utf-8")
+    direct = ROOT / path
+    if direct.exists():
+        return direct.read_text(encoding="utf-8")
+    name = Path(path).name
+    if name.endswith("_MANIFEST.txt"):
+        archived = ROOT / "docs" / "patch_archive" / "manifests" / name
+    elif name.endswith("_RECOVERY_NOTE.md"):
+        archived = ROOT / "docs" / "patch_archive" / "recovery_notes" / name
+    else:
+        archived = direct
+    return archived.read_text(encoding="utf-8")
 
 
 def test_unit_preview_restores_small_github_link_without_background_calls():

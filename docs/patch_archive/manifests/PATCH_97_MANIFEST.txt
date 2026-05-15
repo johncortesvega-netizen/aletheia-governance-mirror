@@ -1,0 +1,34 @@
+PATCH 97 — AI Integrity Comparison View v1
+
+Patched items only:
+- core/ai_integrity_mirror.py
+- app.py
+- docs/ai_integrity_comparison_view.md
+- docs/ai_integrity_mirror.md
+- README.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- tests/test_patch_97_ai_integrity_comparison_view.py
+- PATCH_97_MANIFEST.txt
+- PATCH_97_RECOVERY_NOTE.md
+
+Purpose:
+- Add artifact-level AI Integrity Comparison View for delimiter-separated batch artifacts.
+- Show side-by-side risk readings, signal counts, boundary-risk comparison, and review needed notes.
+
+Boundary preserved:
+- No analyzer scoring change.
+- No signal-pattern change.
+- No signal-weight change.
+- No verdict-routing change.
+- No receipt-generation change.
+- No live model benchmarking.
+- No external calls.
+- No repository crawler.
+- No storage layer.
+- No public ledger sync.
+- No Global ID sync.
+- No enforcement.
+- Comparison is artifact-level, not model-wide certification.
+- It is not a vendor ranking.
+- It is not a final truth claim.

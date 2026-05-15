@@ -1,0 +1,30 @@
+PATCH 141.1 MANIFEST — Receipt Reader Support Utility Placement Hotfix
+
+Scope:
+- Moves the Receipt Reader support expander under an explicit Support utilities section above the footer.
+- Keeps Receipt Reader outside the main module tab row.
+- Reaffirms upload-only Receipt Reader behavior from Patch 141.
+- Adds regression coverage that the support section appears before the footer.
+
+Files changed:
+- app.py
+- tests/test_patch_141_v1_ui_receipt_upload_cleanup.py
+- PATCH_141_1_MANIFEST.txt
+- PATCH_141_1_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- docs/architecture.md
+
+Boundaries:
+- No scoring changes.
+- No verdict routing changes.
+- No taxonomy changes.
+- No receipt schema changes.
+- No receipt generation changes.
+- No signal regex or weight changes.
+- No AI Integrity scan behavior changes.
+- No Privacy Audit scan behavior changes.
+- No World Lens math changes.
+- No external calls, live model calls, embeddings, telemetry, analytics, storage, Global ID sync, or public ledger sync.
+- No certification, enforcement, approval, rejection, privacy guarantee, or final-truth claim.

@@ -1,0 +1,48 @@
+PATCH 115 — App Shell Router Refactor Step 4
+
+Files added:
+- tests/test_patch_115_app_shell_router_refactor_step_4.py
+- PATCH_115_MANIFEST.txt
+- PATCH_115_RECOVERY_NOTE.md
+
+Files updated:
+- app.py
+- ui/app_shell.py
+- README.md
+- docs/architecture.md
+- docs/patch_index.md
+- docs/public_trust_package.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- data/protocol_baseline_manifest.json
+
+Purpose:
+- Continue the gradual app.py router/shell refactor after Patch 114.
+- Extract static sidebar tuning-section headings and explanatory captions into ui/app_shell.py.
+- Keep interactive controls, session state, module routing, scoring, receipts, downloads, and analysis behavior in app.py.
+
+Boundary preserved:
+- Static shell extraction only.
+- No scoring change.
+- No verdict-routing change.
+- No signal-pattern change.
+- No signal-weight change.
+- No receipt schema change.
+- No module-routing change.
+- No external calls.
+- No live model calls.
+- No telemetry.
+- No analytics.
+- No central storage.
+- No Global ID sync.
+- No public ledger sync.
+- No privacy guarantee.
+- No certification.
+- No enforcement.
+- No final truth claim.
+
+Validation targets:
+- tools\run_patch_checks.bat 115
+- tools\run_patch_checks.bat 114
+- tools\run_patch_checks.bat 113
+- python tools\run_protocol_baseline_self_audit.py

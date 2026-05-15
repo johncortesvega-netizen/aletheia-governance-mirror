@@ -1,0 +1,36 @@
+PATCH 72.11 MANIFEST - Mascot Logo Replacement
+
+Patch ID: 72.11
+Patch name: Mascot Logo Replacement
+Owner/User: Johnny Cortes Vega
+Project: ALETHEIA v1.0 - Governance Mirror
+
+Purpose:
+- Replace the dove corner logos in the ALETHEIA app UI with the new cardboard Aletheia robot mascot wearing the green laurel/leaf crown.
+- Keep the replacement visual-only and preserve the existing header/sidebar layout and boundary language.
+
+Files changed:
+- app.py
+- assets/aletheia_robot_laurel_logo.png
+- tests/test_patch_72_11_mascot_logo_replacement.py
+- PATCH_72_11_MANIFEST.txt
+- PATCH_72_11_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Behavioral changes:
+- Header right circular emblem now embeds the mascot logo image.
+- Sidebar top circular emblem now embeds the same mascot logo image.
+- Dove emoji logo references are removed from app.py.
+- Asset is embedded as a PNG data URI for reliable display inside Streamlit markdown HTML.
+
+Non-goals:
+- No scoring formula change.
+- No verdict-routing change.
+- No Evidence Lab logic change.
+- No Stress Test logic change.
+- No Mirror Check logic change.
+- No Boundary Cases logic change.
+- No World Lens logic change.
+- No receipt schema change.
+- No public ledger, Global ID sync, central storage, or enforcement behavior.

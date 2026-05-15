@@ -1,0 +1,35 @@
+PATCH 141.2 MANIFEST — Unit Preview Reference Placement Hotfix
+
+Scope:
+- Moves packaged local HTML reference previews so they render directly under the Unit Preview prompt on the first app page.
+- Keeps the reference previews on the Aletheia Unit Preview hook page, not inside the full module app.
+- Keeps the references local-only and graceful when packaged files are missing.
+- Adds regression coverage for prompt-before-reference placement.
+
+Files changed:
+- ui/unit_preview.py
+- tests/test_patch_141_v1_ui_receipt_upload_cleanup.py
+- tests/test_patch_141_2_unit_preview_reference_placement_hotfix.py
+- PATCH_141_2_MANIFEST.txt
+- PATCH_141_2_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- docs/architecture.md
+- data/protocol_baseline_manifest.json
+
+Boundaries:
+- No scoring changes.
+- No verdict routing changes.
+- No taxonomy changes.
+- No SANCTUARY / THRESHOLD / ASYLUM logic changes.
+- No QUESTION_PROMPT logic changes.
+- No receipt schema changes.
+- No receipt generation changes.
+- No signal regex or weight changes.
+- No AI Integrity scan behavior changes.
+- No Privacy Audit scan behavior changes.
+- No World Lens math changes.
+- No upload/download behavior changes.
+- No external calls, live model calls, embeddings, telemetry, analytics, storage, Global ID sync, or public ledger sync.
+- No certification, enforcement, approval, rejection, privacy guarantee, or final-truth claim.

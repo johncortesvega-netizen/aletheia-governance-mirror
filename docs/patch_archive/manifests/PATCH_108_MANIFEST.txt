@@ -1,0 +1,50 @@
+PATCH 108 — App Shell Router Refactor Step 1
+
+Status: READY FOR LOCAL TESTING
+
+Purpose:
+- Start the gradual app.py router/shell refactor with the smallest safe extraction.
+- Move the repeated top-of-app boundary notices into `ui/app_shell.py`.
+- Keep `app.py` responsible for orchestration while moving static UI copy into a reviewable helper.
+
+Files changed:
+- app.py
+- ui/__init__.py
+- ui/app_shell.py
+- tests/test_patch_108_app_shell_router_refactor.py
+- PATCH_108_MANIFEST.txt
+- PATCH_108_RECOVERY_NOTE.md
+- README.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- data/protocol_baseline_manifest.json
+
+Behavior changes:
+- Gradual app.py router/shell refactor only: top-of-app boundary notices are rendered through `render_app_boundary_notices(...)`.
+- Visible copy is intended to remain equivalent.
+
+Boundary preserved:
+- No scoring change.
+- No verdict-routing change.
+- No signal-pattern change.
+- No signal-weight change.
+- No receipt schema change.
+- No external calls.
+- No live model calls.
+- No telemetry.
+- No analytics.
+- No backend upload endpoint.
+- No central storage.
+- No Global ID sync.
+- No public ledger sync.
+- No privacy guarantee.
+- No security guarantee.
+- No certification.
+- No enforcement.
+- No final truth claim.
+
+Suggested verification:
+- tools\run_patch_checks.bat 108
+- tools\run_patch_checks.bat 107
+- tools\run_patch_checks.bat 106
+- python tools\run_protocol_baseline_self_audit.py

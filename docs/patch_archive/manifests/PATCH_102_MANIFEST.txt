@@ -1,0 +1,41 @@
+PATCH 102 — Structural Improvement Entry Point
+
+Purpose:
+- Start the external-review improvement roadmap with the structurally safest first patch: documentation architecture and contributor entry before any large `app.py` refactor.
+
+Files added:
+- CONTRIBUTING.md
+- docs/structural_improvement_entrypoint.md
+- docs/architecture.md
+- docs/new_contributor_start_here.md
+- tests/test_patch_102_structural_improvement_entrypoint.py
+- PATCH_102_MANIFEST.txt
+- PATCH_102_RECOVERY_NOTE.md
+
+Files updated:
+- README.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- data/protocol_baseline_manifest.json
+
+Behavior changes:
+- None.
+
+Boundary preserved:
+- No scoring change.
+- No verdict-routing change.
+- No receipt schema change.
+- No Streamlit behavior change.
+- No `app.py` refactor.
+- No LLM calls.
+- No external calls.
+- No telemetry.
+- No central storage.
+- No Global ID sync.
+- No public ledger authority.
+- No certification, enforcement, or final truth claim.
+- Human review remains required.
+
+Recommended verification:
+- tools\run_patch_checks.bat 102
+- tools\run_patch_checks.bat 101

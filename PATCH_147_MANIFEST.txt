@@ -1,0 +1,44 @@
+PATCH 147 MANIFEST — Root Patch Hygiene / Latest Patch Only
+
+Purpose:
+- Keep ALETHEIA's public repository front door readable by showing only the current/latest patch at root.
+- Preserve the audit trail by archiving older patch artifacts into docs/patch_archive/.
+- Make the archive workflow repeatable for future GitHub updates.
+
+Files changed or added:
+- PATCH_147_MANIFEST.txt
+- PATCH_147_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- docs/patch_archive/README.md
+- docs/patch_archive/root_patch_artifact_index.md
+- docs/patch_archive/patch_147_archive_move_map.md
+- docs/patch_archive/manifests/*
+- docs/patch_archive/recovery_notes/*
+- docs/patch_archive/other_patch_artifacts/*
+- tools/archive_root_patch_artifacts.py
+- tests/test_patch_147_root_patch_hygiene.py
+- data/protocol_baseline_manifest.json
+
+Archived root patch artifacts:
+- Historical PATCH_*_MANIFEST.txt files moved to docs/patch_archive/manifests/.
+- Historical PATCH_*_RECOVERY_NOTE.md files moved to docs/patch_archive/recovery_notes/.
+- Older PATCH_README* files moved to docs/patch_archive/other_patch_artifacts/.
+
+Boundary preserved:
+- Repository hygiene / documentation / helper-script patch only.
+- No app behavior change.
+- No scoring change.
+- No verdict routing change.
+- No SANCTUARY / THRESHOLD / ASYLUM taxonomy change.
+- No QUESTION_PROMPT logic change.
+- No receipt schema or receipt generation change.
+- No signal regex or signal weight change.
+- No AI Integrity, Privacy Audit, World Lens, Stress Test, Mirror Check, Receipt Reader, upload/download, telemetry, storage, network, Global ID sync, public ledger, certification, enforcement, approval, rejection, legal authority, official authority, or final-truth behavior change.
+
+Validation:
+- python tools/run_patch_checks.py 147
+- python tools/run_patch_checks.py 146_1
+- python tools/run_patch_checks.py 146
+- python tools/run_protocol_baseline_self_audit.py

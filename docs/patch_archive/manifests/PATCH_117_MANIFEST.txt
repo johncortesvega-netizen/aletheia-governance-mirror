@@ -1,0 +1,12 @@
+# Patch 117 — Refactor Stabilization Checkpoint
+README.md
+docs/architecture.md
+docs/patch_index.md
+docs/public_trust_package.md
+docs/refactor_stabilization_checkpoint.md
+PATCH_STATUS.md
+docs/progress_database.md
+data/protocol_baseline_manifest.json
+tests/test_patch_117_refactor_stabilization_checkpoint.py
+PATCH_117_MANIFEST.txt
+PATCH_117_RECOVERY_NOTE.md

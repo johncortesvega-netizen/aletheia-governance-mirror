@@ -1,0 +1,39 @@
+PATCH 72.19 MANIFEST - Evidence Lab Humility Alignment
+
+Patch ID: 72.19
+Patch name: Evidence Lab Humility Alignment
+Owner/User: Johnny Cortes Vega
+Project: ALETHEIA v1.0 - Governance Mirror
+
+Purpose:
+- Align Evidence Lab technical tables and methodology copy with the Humility Protocol / Sanctuary-as-Asymptote standard.
+- Preserve raw/internal `SANCTUARY`, `THRESHOLD`, and `ASYLUM` taxonomy labels for compatibility while adding humble display fields.
+- Prevent Evidence Lab tables from presenting SANCTUARY as final safety, final Sanctuary, or an authority claim.
+
+Files changed:
+- app.py
+- core/empirical.py
+- core_empirical.py
+- tests/test_patch_72_19_evidence_lab_humility_alignment.py
+- PATCH_72_19_MANIFEST.txt
+- PATCH_72_19_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Behavioral changes:
+- Evidence Lab group-average section now says `Group averages by internal taxonomy`.
+- Evidence Lab technical tables add display fields:
+  - `empirical_pattern_display`
+  - `internal_taxonomy_label`
+  - `humility_note`
+- Protocol detail and full empirical tables sanitize old `SANCTUARY evidence pattern` narrative text in the UI display layer.
+- Methodology copy now explains that SANCTUARY is a low-risk internal reading, not final safety, final Sanctuary, or authority.
+
+Non-goals:
+- No scoring formula change.
+- No verdict-routing change.
+- No 9k allocation formula change.
+- No Evidence Lab data model change.
+- No World Lens data model change.
+- No receipt schema logic change.
+- No public ledger, Global ID sync, central storage, or enforcement behavior.

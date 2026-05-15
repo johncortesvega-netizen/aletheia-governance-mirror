@@ -1,0 +1,21 @@
+PATCH 73 - Layered Scope Clarification
+
+Changed files:
+- README.md
+- about_page.py
+- app.py
+- docs/scope_layers.md
+- docs/progress_database.md
+- PATCH_STATUS.md
+- PATCH_73_MANIFEST.txt
+- PATCH_73_RECOVERY_NOTE.md
+- tests/test_patch_73_layered_scope_clarification.py
+
+Purpose:
+Clarify that ALETHEIA's current operational layer is a corruption-pattern and governance-risk detection framework for human review, while the incorruptible-system language remains a long-term theoretical horizon.
+
+Authority boundary:
+Documentation/copy only. No scoring, routing, storage, World Lens data model, Evidence Lab data model, receipt schema, public ledger, Global ID sync, real 9k body, authority, or enforcement behavior changed.
+
+Recommended check:
+tools\run_patch_checks.bat 73

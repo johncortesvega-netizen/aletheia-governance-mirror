@@ -1,0 +1,8 @@
+docs/post_61_regression_smoke.md
+tests/test_patch_62_post_61_regression_smoke.py
+PATCH_62_MANIFEST.txt
+PATCH_62_RECOVERY_NOTE.md
+PATCH_STATUS.md
+docs/progress_database.md
+README.md
+about_page.py

@@ -1,3 +1,11 @@
+## Patch 147 — Root Patch Hygiene / Latest Patch Only
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 147 makes the repository front door cleaner by archiving historical root-level patch artifacts while keeping the latest patch visible at root. This is now the standing rule for future GitHub updates: latest patch visible, older patch artifacts archived and indexed, audit trail preserved.
+
+Scope: repository hygiene, documentation, and local helper-script only. No runtime/app behavior changed. No scoring, routing, taxonomy, receipt, signal, World Lens, AI Integrity, Privacy Audit, upload/download, telemetry, storage, Global ID sync, public ledger sync, certification, enforcement, or final-truth behavior changed.
+
 ## Patch 142.6 — Receipt Reader World Lens Binding Fix
 
 Status: READY FOR LOCAL REVIEW

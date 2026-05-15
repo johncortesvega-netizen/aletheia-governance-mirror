@@ -1,0 +1,47 @@
+PATCH 126 MANIFEST
+
+Patch: 126
+Title: Final Structural Simplification Freeze
+Status: READY FOR LOCAL REVIEW
+
+Changed or added files:
+- docs/final_structural_simplification_freeze.md
+- tests/test_patch_126_final_structural_simplification_freeze.py
+- tests/test_patch_119_app_shell_router_refactor_step_6.py
+- tests/test_patch_122_refactor_stabilization_checkpoint_2.py
+- PATCH_126_MANIFEST.txt
+- PATCH_126_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- docs/architecture.md
+- README.md
+- data/protocol_baseline_manifest.json
+
+Scope:
+- Record that ALETHEIA is now in refinement mode, not expansion mode.
+- Replace the forward expansion posture with a freeze principle.
+- Document allowed cleanup-only work: moving existing UI code, removing duplication, consolidating repeated copy, improving docs navigation, tightening tests, and locking behavior.
+
+Boundary:
+- No app runtime behavior change.
+- No UI feature addition.
+- No new module.
+- No new scoring.
+- No new panel.
+- No new analysis mode.
+- No new intelligence.
+- No authority-claim expansion.
+- No receipt schema change.
+- No module-routing change.
+- No session-state change.
+- No privacy scan, AI Integrity scan, or World Lens math change.
+- No external calls, telemetry, analytics, storage or identity sync, certification, enforcement, privacy guarantee, or final-truth claim.
+
+Human review remains required.
+
+Local-review stabilization note:
+- Relaxed stale Patch 119 import-string check so grouped module-intro imports remain valid.
+- Updated Patch 122 stabilization expectations for current helper signatures and privacy-scan ownership.
+- Resaved data/protocol_baseline_manifest.json as UTF-8 without BOM and refreshed watched-file hashes.
+- Relaxed Patch 126 public-status wording check to be case-insensitive while preserving the same boundary requirements.

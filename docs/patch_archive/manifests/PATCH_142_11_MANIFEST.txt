@@ -1,0 +1,32 @@
+PATCH 142.11 — Receipt Reader World Lens Evidence Bundle Layout Polish
+
+Files changed:
+- ui/receipt_reader.py
+- tests/test_patch_142_11_world_lens_evidence_bundle_layout.py
+- PATCH_142_11_MANIFEST.txt
+- PATCH_142_11_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+- data/protocol_baseline_manifest.json
+
+Purpose:
+- Move World Lens supporting CSV evidence tables below the native World Lens receipt Standard View.
+- Keep the native World Lens receipt as the readable front page of the evidence bundle.
+- Replace huge inline CSV column dumps with compact evidence-table descriptions and curated preview fields.
+- Keep raw uploaded CSV previews behind an advanced expander.
+
+Boundaries preserved:
+- No World Lens math changes.
+- No scoring changes.
+- No verdict routing changes.
+- No taxonomy changes.
+- No receipt schema or receipt generation changes.
+- No AI Integrity, Privacy Audit, Mirror Check, or Stress Test scoring behavior changes.
+- No external calls, telemetry, analytics, storage, Global ID sync, public ledger sync, certification, enforcement, official-authority, privacy-guarantee, security-guarantee, or final-truth claim.
+
+Validation targets:
+- python tools/run_patch_checks.py 142_11
+- python tools/run_patch_checks.py 142_10
+- python tools/run_patch_checks.py 142_8
+- python tools/run_protocol_baseline_self_audit.py

@@ -1,20 +1,27 @@
-## Patch 142.6 — Receipt Reader World Lens Binding Fix
-
-Status: READY FOR LOCAL REVIEW
-
-Patch 142.6 fixes Receipt Reader binding for World Lens receipts. World Lens evidence receipts are now parsed from their World Lens section before generic/local-witness fallback, so embedded Simulation/Mirror Check fallback lines cannot overwrite the module source or protocol label. Batch ZIP inspection continues to use actual receipt files rather than batch index files and prefers JSON over duplicate TXT receipt pairs.
-
-Boundary preserved: parser/Standard View display only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal regex/weights, World Lens math, Stress Test scoring/tree logic, AI Integrity scan behavior, Privacy Audit scan behavior, external calls, live model calls, embeddings, telemetry, analytics, storage, Global ID sync, public ledger sync, certification, enforcement, approval, rejection, legal authority, official authority, privacy guarantee, or final-truth behavior changed. Human review remains required.
-
 # ALETHEIA Patch Index
 
 **Version:** v1.0  
-**Updated for:** Patch 117 — Refactor Stabilization Checkpoint  
-**Last updated:** 2026-05-13
+**Updated for:** Patch 147 — Root Patch Hygiene / Latest Patch Only  
+**Last updated:** 2026-05-16
 
-This index is a navigation layer for ALETHEIA's iterative patch history. It does not replace patch manifests, recovery notes, tests, or human review. Its purpose is to make the project easier to enter without hiding the fact that ALETHEIA has been developed through many small, reviewable patches.
+This index is a navigation layer for ALETHEIA's iterative patch history. Patch 147 establishes the standing root-hygiene rule: keep the latest/current patch visible at the repository root and archive older patch artifacts under `docs/patch_archive/` without deleting the audit trail.
 
 ALETHEIA remains a **mirror, not a throne**. Patch history is evidence for review, not proof of truth, safety, legality, ethics, privacy, security, or legitimacy.
+
+## Current repository hygiene rule
+
+```text
+Latest patch visible at root.
+Older patch manifests/recovery notes archived under docs/patch_archive/.
+Audit trail preserved; root clutter reduced.
+```
+
+For future updates, run:
+
+```bash
+python tools/archive_root_patch_artifacts.py --dry-run --current-patch <patch_id>
+python tools/archive_root_patch_artifacts.py --current-patch <patch_id>
+```
 
 ## How to read the patch history
 
