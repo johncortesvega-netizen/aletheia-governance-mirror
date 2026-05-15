@@ -2862,3 +2862,9 @@ Reader behavior:
 - Preserve World Lens humility boundaries and human-review requirements.
 
 No World Lens math, scoring, routing, taxonomy, receipt schema, receipt generation, AI Integrity behavior, Privacy Audit behavior, Stress Test scoring behavior, external calls, telemetry, storage, certification, enforcement, approval/rejection, or final-truth behavior changed.
+
+## Patch 142.9 - Receipt Reader Batch Per-Receipt Summary
+
+Patch 142.9 adds a per-receipt index for normal Receipt Reader batch ZIP uploads. Batch ZIPs now keep the top-level distribution and also show one compact row per uploaded receipt so a user can review the whole batch without opening each receipt manually. A selectable inspection view replaces the earlier first-receipt-only behavior.
+
+Scope is Receipt Reader presentation/parsing only. It does not rescore, merge verdicts, create receipts, change schemas, change scoring, change verdict routing, alter taxonomy, change World Lens math, alter AI Integrity or Privacy Audit behavior, add external calls, add telemetry/storage, or introduce authority/certification/final-truth claims.

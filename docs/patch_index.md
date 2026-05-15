@@ -314,3 +314,11 @@ Patch 142.4 reformats Receipt Reader into a clearer narrative Standard View. It 
 - Treats `_summary.json` as metadata and CSV files as supporting evidence tables.
 - Prevents summary/CSV files from being counted as separate receipts or producing missing-state rows.
 - Adds regression tests for World Lens bundle parsing, evidence table inventory, and non-certification boundaries.
+
+## Patch 142.9 - Receipt Reader Batch Per-Receipt Summary
+
+- Adds a compact Receipt Index for normal batch ZIP uploads.
+- Shows one row per receipt with file, module, native state, review pressure, protocol label, key metrics, and repair-question count.
+- Adds selectable receipt inspection so users are not limited to the first uploaded receipt.
+- Preserves World Lens Evidence Bundle behavior from Patch 142.8.
+- No scoring, routing, receipt generation, schema, telemetry, storage, certification, enforcement, or final-truth behavior changed.

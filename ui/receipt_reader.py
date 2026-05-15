@@ -817,6 +817,30 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
             container.markdown(f"- {question}")
 
 
+
+def _batch_receipt_index_rows(parsed: dict[str, Any]) -> list[dict[str, str]]:
+    """Build one compact summary row per uploaded receipt in a batch ZIP."""
+    rows: list[dict[str, str]] = []
+    for index, (filename, view) in enumerate(parsed.get("views") or [], start=1):
+        fields = view.get("fields") or {}
+        native_state = view.get("native_state", MISSING_VALUE)
+        review_pressure = view.get("standard_band", MISSING_VALUE)
+        if native_state == "QUESTION_PROMPT":
+            review_pressure = "Not scored / review-tool mode"
+        rows.append({
+            "#": str(index),
+            "File": filename,
+            "Module": _display_module_source(view),
+            "Native State": native_state,
+            "Review Pressure": review_pressure,
+            "Protocol Label": fields.get("protocol_label", MISSING_VALUE),
+            "Integrity": fields.get("integrity", MISSING_VALUE),
+            "Collapse Probability": fields.get("collapse_probability", MISSING_VALUE),
+            "Trust Index": fields.get("trust", MISSING_VALUE),
+            "Repair Questions": str(len(view.get("repair_questions") or [])),
+        })
+    return rows
+
 def _render_world_lens_bundle(container: Any, parsed: dict[str, Any]) -> None:
     container.markdown("### World Lens Evidence Bundle")
     container.write(f"Uploaded evidence bundle: {parsed.get('name')}")
@@ -887,11 +911,33 @@ def _render_batch_zip(container: Any, parsed: dict[str, Any]) -> None:
     if distribution:
         container.table([{"Native State": key, "Count": value} for key, value in sorted(distribution.items())])
     container.info("Batch ZIP reading summarizes uploaded receipts only. It does not rescore, merge verdicts, or create a new receipt.")
+
     views = parsed.get("views") or []
-    if views:
-        first_name, first_view = views[0]
-        with container.expander(f"Inspect first receipt: {first_name}", expanded=False) as expander:
-            _render_single_view(expander, first_view)
+    if not views:
+        return
+
+    rows = _batch_receipt_index_rows(parsed)
+    container.markdown("### Receipt Index")
+    container.caption("One compact row per uploaded receipt. Values are copied from each native receipt; missing fields are not inferred.")
+    container.table(rows)
+
+    labels = [
+        f"{row['#']}. {row['File']} — {row['Native State']}"
+        for row in rows
+    ]
+    try:
+        selected_label = container.selectbox(
+            "Inspect receipt",
+            labels,
+            key="receipt_reader_batch_receipt_selector",
+        )
+        selected_index = labels.index(selected_label) if selected_label in labels else 0
+    except Exception:
+        selected_index = 0
+
+    selected_name, selected_view = views[selected_index]
+    with container.expander(f"Inspect selected receipt: {selected_name}", expanded=False) as expander:
+        _render_single_view(expander, selected_view)
 
 
 def render_receipt_reader_standard_view(container=None) -> None:

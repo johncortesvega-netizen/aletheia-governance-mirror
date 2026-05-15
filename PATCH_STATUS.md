@@ -3110,3 +3110,20 @@ python tools\run_patch_checks.py 142_7
 python tools\run_patch_checks.py 142_6
 python tools\run_protocol_baseline_self_audit.py
 ```
+
+## Patch 142.9 - Receipt Reader Batch Per-Receipt Summary
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 142.9 improves normal batch ZIP uploads in Receipt Reader. Instead of only showing the batch distribution and the first receipt, the reader now renders a compact Receipt Index with one row per uploaded receipt: file, module, native state, review pressure, protocol label, key metrics, and repair-question count. A selectable inspection control lets the user inspect any receipt in the uploaded batch without displaying all full receipts at once.
+
+Boundary preserved: Receipt Reader display/parsing only. No scoring, verdict routing, taxonomy, receipt schema, receipt generation, signal behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, Stress Test scoring behavior, external calls, live model calls, embeddings, telemetry, analytics, database/storage, Global ID sync, public ledger sync, certification, approval, rejection, enforcement, official-authority, privacy-guarantee, security-guarantee, or final-truth behavior changed.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 142_9
+python tools\run_patch_checks.py 142_8
+python tools\run_patch_checks.py 142_7
+python tools\run_protocol_baseline_self_audit.py
+```
