@@ -30,12 +30,29 @@ STANDARD_BANDS = {
     "WORLD_LENS_EVIDENCE_VIEW": "Evidence context (World Lens)",
 }
 
+
+STATE_DEFINITIONS = {
+    "SANCTUARY": "a low-review internal reading where the uploaded receipt records comparatively strong integrity, low pressure, and human review still remains required.",
+    "THRESHOLD": "a review-needed internal reading where unresolved safeguards, appeal paths, or transparency signals should be inspected before reliance.",
+    "ASYLUM": "a high-pressure internal reading where escalation-level human review and safeguard inspection should come before any reliance.",
+    "QUESTION_PROMPT": "a review-tool prompt rather than a scored scenario receipt; it preserves a question for human inspection.",
+    "WORLD_LENS_EVIDENCE_VIEW": "a selected-year evidence view for country-year coverage and allocation context, not a country certification or government rating.",
+}
+
+STATE_BRIEF_PREFIX = {
+    "SANCTUARY": "The mirror reflects a Sanctuary pattern",
+    "THRESHOLD": "The mirror reflects a Threshold pattern",
+    "ASYLUM": "The mirror reflects an Asylum-pressure pattern",
+    "QUESTION_PROMPT": "The mirror reflects a review-tool prompt",
+    "WORLD_LENS_EVIDENCE_VIEW": "The mirror reflects a selected-year evidence view",
+}
+
 STATUS_LINES = {
-    "SANCTUARY": "The uploaded receipt maps to a stable low-review operating context.",
-    "THRESHOLD": "The uploaded receipt maps to an elevated-review context that needs human inspection.",
-    "ASYLUM": "The uploaded receipt maps to high review pressure and requires careful human escalation review.",
-    "QUESTION_PROMPT": "The uploaded receipt is a review-tool or question-prompt reading, not a scored scenario.",
-    "WORLD_LENS_EVIDENCE_VIEW": "The uploaded receipt is a World Lens evidence-context receipt, not a single scenario verdict.",
+    "SANCTUARY": "The uploaded receipt records a low-review internal reading. The pattern should still be checked by a human before reliance.",
+    "THRESHOLD": "The uploaded receipt records a review-needed internal reading. Safeguards, appealability, and transparency deserve closer inspection.",
+    "ASYLUM": "The uploaded receipt records high review pressure. Human review and safeguard inspection should come before any reliance.",
+    "QUESTION_PROMPT": "The uploaded receipt is a review-tool prompt, not a scored scenario receipt.",
+    "WORLD_LENS_EVIDENCE_VIEW": "The uploaded receipt is a World Lens selected-year evidence view, not a single scenario verdict or country certification.",
 }
 
 TEXT_FIELD_PATTERNS = {
@@ -432,77 +449,75 @@ def _interpret_metric(key: str, value: str, native_state: str) -> str:
         return "Not available in uploaded receipt."
     if key == "trust":
         if number >= 0.9:
-            return "High trust-index reading in the uploaded receipt."
+            return "Trust is high in the uploaded receipt, indicating a strong review baseline while human review remains required."
         if number >= 0.75:
-            return "Strong trust-index reading; still requires human review."
-        return "Trust-index pressure is visible in the uploaded receipt."
+            return "Trust is solid in the uploaded receipt, but the reading still needs human review before reliance."
+        return "Trust-index pressure is visible in the uploaded receipt and should be reviewed alongside repair questions."
     if key == "alignment":
         if number >= 0.9:
-            return "High alignment reading in the uploaded receipt."
+            return "Alignment is high in the uploaded receipt, suggesting the reading is close to the stated review objectives."
         if number >= 0.75:
-            return "Generally aligned with review objectives."
-        return "Alignment pressure needs review."
+            return "Alignment is generally holding, with room for human review of context and safeguards."
+        return "Alignment pressure is visible and should be inspected before relying on the reading."
     if key == "integrity":
         if number >= 0.9:
-            return "Very strong structural consistency."
+            return "The integrity reading is robust, showing a clear and consistent pattern in the uploaded receipt."
         if number >= 0.7:
-            return "Solid structural consistency."
+            return "The integrity reading is solid, with enough structure to support review but not final reliance."
         if number >= 0.5:
-            return "Mixed structural consistency."
-        return "Low structural consistency."
+            return "The integrity reading is mixed, so safeguards and repair questions matter more."
+        return "The integrity reading is low and should be treated as a serious review signal."
     if key == "collapse_probability":
         if number <= 0.1:
-            return "Low collapse-pressure reading in the uploaded receipt."
+            return "Collapse pressure is low in the uploaded receipt; this is context for review, not a prediction."
         if number <= 0.3:
-            return "Reviewable collapse pressure."
-        return "High collapse pressure."
+            return "Collapse pressure is reviewable and should be read with safeguards, appealability, and repair paths."
+        return "Collapse pressure is high enough to require careful human review before any reliance."
     if key == "friction":
         if number <= 0.01:
-            return "Zero review friction in the uploaded receipt."
+            return "Review friction is essentially absent in the uploaded receipt."
         if number <= 0.15:
-            return "Low review friction in the uploaded receipt."
-        return "Friction requires review."
+            return "Review friction is low; the path looks relatively unobstructed in this receipt."
+        return "Friction is visible and should be inspected as possible review resistance."
     if key == "ego":
         if number <= 0.01:
-            return "Very low ego-pressure reading."
+            return "The very low reading suggests the logic is not being driven by self-serving or authority-heavy pressure."
         if number <= 0.15:
-            return "Low ego pressure."
-        return "Ego pressure requires review."
+            return "The low reading suggests the logic is centered more on the receipt evidence than on institutional authority."
+        return "Ego pressure is visible and should be checked for self-serving or authority-heavy logic."
     return "Shown as recorded in the uploaded receipt."
-
 
 def _summary_for_state(native_state: str, fields: dict[str, str]) -> str:
     risk = fields.get("risk_state", MISSING_VALUE)
     trust = fields.get("trust", MISSING_VALUE)
-    alignment = fields.get("alignment", MISSING_VALUE)
+    integrity = fields.get("integrity", MISSING_VALUE)
     friction = fields.get("friction", MISSING_VALUE)
     collapse = fields.get("collapse_probability", MISSING_VALUE)
 
     if native_state == "WORLD_LENS_EVIDENCE_VIEW":
         return (
-            "The uploaded receipt is a World Lens selected-year evidence view. Read it as aggregate country-year "
-            "context with 9k allocation and empirical coverage notes, not as a single scenario verdict or country certification."
+            "Reader brief: this is a selected-year evidence bundle. It preserves country-year coverage, allocation, "
+            "and weighted evidence values so a human can inspect the World Lens context without turning it into a country certification."
         )
     if native_state == "SANCTUARY":
         return (
-            f"The uploaded receipt records a {risk} risk reading with friction {friction}. "
-            f"Trust ({trust}) and alignment ({alignment}) are strong in the native values, and the collapse-pressure reading "
-            f"({collapse}) is low. This is a Standard View translation only; it does not create a new verdict."
+            f"Reader brief: the uploaded receipt records a {risk} risk reading. The strongest signals are integrity "
+            f"({integrity}) and trust ({trust}), while friction ({friction}) and collapse pressure ({collapse}) remain low in this receipt. "
+            "Use this as a reflection for review, not as a final command."
         )
     if native_state == "THRESHOLD":
         return (
-            f"The uploaded receipt is in {native_state} with {risk} risk pressure. The values should be read as a "
-            "human-review checkpoint: inspect repair questions, appealability, transparency, and safeguards before relying on it."
+            f"Reader brief: the uploaded receipt records a {native_state} / {risk} reading. Treat it as a checkpoint: "
+            "inspect safeguards, appealability, transparency, and the human-review questions before relying on it."
         )
     if native_state == "ASYLUM":
         return (
-            "The uploaded receipt carries high review pressure. Treat the repair questions and human-review boundary as central; "
-            "do not use this reader as approval, rejection, enforcement, or certification."
+            "Reader brief: the uploaded receipt records high review pressure. The repair questions and human-review boundary are central; "
+            "this reader does not approve, reject, enforce, or certify anything."
         )
     if native_state == "QUESTION_PROMPT":
-        return "The uploaded receipt is a review-tool prompt rather than a scored scenario. Use it to guide human inspection."
-    return "The uploaded receipt could not be mapped into a native state without inferring missing values."
-
+        return "Reader brief: this is a review-tool prompt, not a scored receipt. Use it as a question for human inspection."
+    return "Reader brief: the uploaded receipt could not be mapped into a native state without inferring missing values."
 
 def _core_logic_title(module_family: str) -> str:
     if module_family == "Mirror Check":
@@ -962,117 +977,6 @@ def parse_uploaded_receipt_file(uploaded_file: Any) -> dict[str, Any]:
     return {"kind": "single", "name": filename, "view": parse_receipt_standard_view(text)}
 
 
-
-def _verbal_brief(view: dict[str, Any]) -> str:
-    """Return a warm, bounded receipt-reading brief without changing native values."""
-    native_state = str(view.get("native_state", MISSING_VALUE))
-    family = str(view.get("module_family", "Uploaded Receipt"))
-    fields = view.get("fields") or {}
-    risk = fields.get("risk_state", MISSING_VALUE)
-    integrity = fields.get("integrity", MISSING_VALUE)
-    alignment = fields.get("alignment", MISSING_VALUE)
-    friction = fields.get("friction", MISSING_VALUE)
-    collapse = fields.get("collapse_probability", MISSING_VALUE)
-
-    if native_state == "WORLD_LENS_EVIDENCE_VIEW":
-        world = view.get("world_lens_fields") or {}
-        year = world.get("selected_year", MISSING_VALUE)
-        seats = world.get("active_selected_year_seats", MISSING_VALUE)
-        coverage = world.get("average_empirical_coverage", MISSING_VALUE)
-        return (
-            f"The mirror reflects a selected-year World Lens evidence view for {year}. "
-            f"It gathers coverage and 9k allocation context from the uploaded receipt "
-            f"({seats} seats, {coverage} average empirical coverage) without creating a country verdict, "
-            "certification, or new score."
-        )
-    if native_state == "QUESTION_PROMPT":
-        return (
-            "The mirror reflects a review-tool prompt. This uploaded receipt is not a scored scenario; "
-            "it preserves a question or audit prompt meant to guide human inspection."
-        )
-    if native_state == "SANCTUARY":
-        if family == "AI Integrity Mirror":
-            return (
-                "The mirror reflects a low-risk internal reading for this static artifact. "
-                f"Integrity ({integrity}) and alignment ({alignment}) hold in the uploaded receipt, "
-                f"while friction ({friction}) and collapse pressure ({collapse}) remain low. "
-                "This is review evidence only, not approval or proof of safety."
-            )
-        return (
-            "The mirror reflects a Sanctuary pattern. "
-            f"The uploaded receipt records a {risk} risk reading with low review pressure; "
-            f"integrity ({integrity}) and alignment ({alignment}) are holding while friction ({friction}) remains low. "
-            "This Standard View explains the receipt without creating a new verdict."
-        )
-    if native_state == "THRESHOLD":
-        return (
-            "The mirror reflects a Threshold pattern. "
-            f"The uploaded receipt records a {risk} risk reading where safeguards, appeal paths, transparency, "
-            "or repair questions need closer human inspection before reliance."
-        )
-    if native_state == "ASYLUM":
-        return (
-            "The mirror reflects an Asylum-pressure pattern. "
-            "The uploaded receipt carries high review pressure; human review, appealability, and safeguard inspection "
-            "should come before any reliance. ALETHEIA does not enforce action."
-        )
-    return "The mirror reflects only what could be read from the uploaded receipt; missing values are not inferred."
-
-
-def _metric_observation(metric: str, value: str, interpretation: str, view: dict[str, Any]) -> str:
-    if value in {MISSING_VALUE, NOT_APPLICABLE}:
-        return interpretation
-    native_state = str(view.get("native_state", ""))
-    family = str(view.get("module_family", ""))
-    metric_lower = metric.lower()
-    if native_state == "WORLD_LENS_EVIDENCE_VIEW":
-        return interpretation
-    if "trust" in metric_lower:
-        return f"Trust is recorded at {value}; read it as the receipt's trust-index signal, with human review still required."
-    if "alignment" in metric_lower:
-        return f"Alignment is recorded at {value}; the uploaded receipt shows how closely the reading stays with its review objective."
-    if "integrity" in metric_lower:
-        return f"Integrity is recorded at {value}; this reflects the structural consistency preserved in the uploaded receipt."
-    if "collapse" in metric_lower:
-        return f"Collapse pressure is recorded at {value}; this is receipt context, not a prediction or certification."
-    if "friction" in metric_lower:
-        return f"Friction is recorded at {value}; this describes review resistance in the uploaded reading."
-    if "ego" in metric_lower:
-        return f"Ego pressure is recorded at {value}; this helps show whether self-serving or authority-heavy pressure is present."
-    if family == "World Lens":
-        return interpretation
-    return interpretation
-
-
-def _render_insight_cards(container: Any, view: dict[str, Any]) -> None:
-    """Render verbal metric cards before the native record table."""
-    rows = view.get("metric_rows") or []
-    if not rows:
-        return
-    if _is_question_prompt_state(view.get("native_state", "")):
-        container.info(
-            "Not applicable — QUESTION_PROMPT receipts are review-tool prompts and do not carry "
-            "scored integrity, collapse, trust, alignment, friction, or ego metrics."
-        )
-        return
-    for row in rows:
-        metric = str(row.get("Metric", MISSING_VALUE))
-        value = str(row.get("Value", MISSING_VALUE))
-        interpretation = str(row.get("Interpretation", "Shown as recorded in the uploaded receipt."))
-        observation = _metric_observation(metric, value, interpretation, view)
-        container.markdown(f"**{metric}: {value}**  \nObservation: {observation}")
-
-
-def _native_values_expander_label(view: dict[str, Any]) -> str:
-    family = view.get("module_family")
-    if family == "World Lens":
-        return "Native World Lens values"
-    if family == "AI Integrity Mirror":
-        return "Native AI Integrity values"
-    if family == "Stress Test / Simulation":
-        return "Native scenario receipt values"
-    return "Native receipt values"
-
 def _metric_section_title(view: dict[str, Any]) -> str:
     if _is_question_prompt_state(view.get("native_state", "")):
         return "Review-Tool Metrics"
@@ -1097,6 +1001,61 @@ def _metric_section_caption(view: dict[str, Any]) -> str:
     if family == "AI Integrity Mirror":
         return "Uploaded static artifact review values; this does not test a live model or vendor."
     return "Quantitative values copied from the uploaded receipt."
+
+
+def _state_definition(native_state: str) -> str:
+    return STATE_DEFINITIONS.get(native_state, "an uploaded receipt state that should be read only from native receipt values.")
+
+
+def _verbal_brief(view: dict[str, Any]) -> str:
+    native_state = str(view.get("native_state", MISSING_VALUE))
+    prefix = STATE_BRIEF_PREFIX.get(native_state, "The mirror reflects the uploaded receipt")
+    definition = _state_definition(native_state)
+    fields = view.get("fields") or {}
+    family = view.get("module_family")
+    if family == "World Lens":
+        return f"{prefix} — {definition} The evidence bundle is preserved for readable human inspection; no new World Lens verdict is created."
+    if family == "AI Integrity Mirror":
+        artifact = (view.get("ai_integrity_fields") or {}).get("artifact_type", MISSING_VALUE)
+        return f"{prefix} — {definition} This is a static artifact review for {artifact}; it does not test a live model or vendor."
+    if family == "Stress Test / Simulation":
+        return f"{prefix} — {definition} The scenario receipt is translated here without rerunning the stress test or changing tree logic."
+    if native_state == "QUESTION_PROMPT":
+        return f"{prefix} — {definition} Metrics are intentionally not applicable."
+    risk = fields.get("risk_state", MISSING_VALUE)
+    return f"{prefix} — {definition} The uploaded receipt records review pressure as {risk}; human review remains required."
+
+
+def _native_values_rows(view: dict[str, Any]) -> list[dict[str, str]]:
+    fields = view.get("fields") or {}
+    rows = [
+        {"Field": "Native State", "Value": str(view.get("native_state", MISSING_VALUE))},
+        {"Field": "Review Pressure", "Value": str(view.get("standard_band", MISSING_VALUE))},
+        {"Field": "Protocol Label", "Value": fields.get("protocol_label", MISSING_VALUE)},
+        {"Field": "Module Source", "Value": _display_module_source(view)},
+    ]
+    for row in view.get("metric_rows") or []:
+        rows.append({"Field": str(row.get("Metric", MISSING_VALUE)), "Value": str(row.get("Value", MISSING_VALUE))})
+    return rows
+
+
+def _render_metric_observation_cards(container: Any, view: dict[str, Any]) -> None:
+    for row in view.get("metric_rows") or []:
+        metric = str(row.get("Metric", MISSING_VALUE))
+        value = str(row.get("Value", MISSING_VALUE))
+        interpretation = str(row.get("Interpretation", "Shown as recorded in the uploaded receipt."))
+        container.markdown(f"**{metric}: {value}**")
+        container.write(f"Observation: {interpretation}")
+
+
+def _render_native_values_expander(container: Any, view: dict[str, Any]) -> None:
+    rows = _native_values_rows(view)
+    if hasattr(container, "expander"):
+        with container.expander("Native receipt values", expanded=False) as expander:
+            expander.caption("Exact values copied from the uploaded receipt. Missing values are not inferred.")
+            expander.table(rows)
+    else:
+        container.table(rows)
 
 
 def _display_module_source(view: dict[str, Any]) -> str:
@@ -1130,15 +1089,14 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
 
     container.markdown(f"### {_metric_section_title(view)}")
     container.caption(_metric_section_caption(view))
-    _render_insight_cards(container, view)
-
-    if not _is_question_prompt_state(view.get("native_state", "")):
-        try:
-            with container.expander(_native_values_expander_label(view), expanded=False) as values_expander:
-                values_expander.caption("Exact values copied from the uploaded receipt; no missing value is inferred.")
-                values_expander.table(view["metric_rows"])
-        except Exception:
-            container.table(view["metric_rows"])
+    if _is_question_prompt_state(view.get("native_state", "")):
+        container.info(
+            "Not applicable — QUESTION_PROMPT receipts are review-tool prompts and do not carry "
+            "scored integrity, collapse, trust, alignment, friction, or ego metrics."
+        )
+    else:
+        _render_metric_observation_cards(container, view)
+        _render_native_values_expander(container, view)
 
     world_distribution = (view.get("world_lens_fields") or {}).get("taxonomy_distribution") or []
     if world_distribution:
@@ -1148,9 +1106,9 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
     container.markdown(f"### {view['core_logic_title']}")
     container.write(view["core_logic_text"])
 
-    container.markdown("### Summary for the Reader")
+    container.markdown("### Reader Brief")
     container.write(view["summary"])
-    container.info("Remember: this is a reflection for human review, not certification, approval, rejection, enforcement, or final truth.")
+    container.info("This is a reflection for human review, not certification, approval, rejection, enforcement, or final truth.")
     container.caption(view["parsing_limits"])
 
     questions = view.get("repair_questions") or []

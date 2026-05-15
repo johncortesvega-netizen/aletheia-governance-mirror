@@ -168,9 +168,9 @@ def test_mirror_check_standard_view_uses_bounded_receipt_copy():
     headings = [value for kind, value in dummy.events if kind == "markdown"]
 
     assert "### Native Receipt State: SANCTUARY" in headings
-    assert rows["Trust Index"]["Interpretation"] == "High trust-index reading in the uploaded receipt."
-    assert rows["Alignment"]["Interpretation"] == "High alignment reading in the uploaded receipt."
-    assert rows["Ego"]["Interpretation"] == "Very low ego-pressure reading."
+    assert "Trust is high in the uploaded receipt" in rows["Trust Index"]["Interpretation"]
+    assert "Alignment is high in the uploaded receipt" in rows["Alignment"]["Interpretation"]
+    assert "low reading" in rows["Ego"]["Interpretation"].lower() or "very low" in rows["Ego"]["Interpretation"].lower()
     assert "records a Low risk reading" in view["summary"]
     assert "operating in a Low risk state" not in view["summary"]
 
@@ -187,8 +187,8 @@ def test_stress_test_standard_view_uses_scenario_receipt_copy():
     assert "### Scenario Receipt State: THRESHOLD" in headings
     assert "### Scenario Review Metrics" in headings
     assert "Collapse Pressure" in rows
-    assert rows["Collapse Pressure"]["Interpretation"] == "Reviewable collapse pressure."
-    assert rows["Trust Index"]["Interpretation"] == "Strong trust-index reading; still requires human review."
+    assert "Collapse pressure is reviewable" in rows["Collapse Pressure"]["Interpretation"]
+    assert "Trust is solid" in rows["Trust Index"]["Interpretation"]
 
 
 def test_world_lens_standard_view_uses_evidence_view_and_softened_collapse_label():

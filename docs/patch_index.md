@@ -346,10 +346,19 @@ Patch 142.4 reformats Receipt Reader into a clearer narrative Standard View. It 
 - Shortens curated World Lens CSV preview labels and adds explicit first-row preview language.
 - Preserves all no-rescore, no-new-verdict, no-certification, no-enforcement, no-telemetry, no-storage, and no-final-truth boundaries.
 
-## Patch 142.14 - Receipt Reader Verbal Standard View Polish
+## Patch 142.13 - AI Integrity Single Artifact Result Focus
 
-- Adds a verbal “The mirror reflects...” brief to Receipt Reader Standard View.
-- Presents uploaded metric values as insight-style observations before the native record table.
-- Moves exact native values into a details expander for scored/evidence receipts.
-- Reframes repair questions as human-review questions.
-- Keeps all no-rescore, no-new-verdict, no-certification, no-enforcement, no-telemetry, no-storage, and no-final-truth boundaries.
+- Hides the visible AI Integrity batch-review checkbox and split-artifact UI copy.
+- Keeps AI Integrity V1 focused on a single pasted artifact and one static review.
+- Adds Triggered signals to the main AI Integrity reading cards.
+- Moves Highest pressure signals, triggered-signal categories, evidence snippets, and repair questions above optional Privacy/Code static checks.
+- Keeps zero-detection Privacy Boundary and Code Integrity checks collapsed as optional secondary context.
+- Preserves all no-scoring-change, no-receipt-schema-change, no-signal-change, no-telemetry, no-storage, no-certification, no-enforcement, and no-final-truth boundaries.
+
+## Patch 142.15 - Receipt Reader Verbal Micro-Polish Across Receipts
+
+- Adds state definitions for SANCTUARY, THRESHOLD, ASYLUM, QUESTION_PROMPT, and WORLD_LENS_EVIDENCE_VIEW inside Receipt Reader Standard View.
+- Adds “The mirror reflects...” verbal briefs across Mirror Check, Stress Test / Simulation, AI Integrity Mirror, QUESTION_PROMPT, and World Lens evidence-view receipts.
+- Presents metrics as observation cards first, with exact native receipt values preserved behind a Native receipt values expander.
+- Renames the final narrative section to Reader Brief and repair prompts to Human-review questions.
+- Preserves all no-rescore, no-new-verdict, no-receipt-generation, no-certification, no-enforcement, no-telemetry, no-storage, and no-final-truth boundaries.
