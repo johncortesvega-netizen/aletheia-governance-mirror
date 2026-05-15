@@ -1,34 +1,66 @@
 # ALETHEIA v1.0 — Governance Mirror
 
-ALETHEIA is a Streamlit governance-risk research prototype aligned with the Sydney Protocol / ALETHEIA concept. It combines symbolic governance auditing, V-Axis simulation, empirical country-year evidence processing, and a population-weighted Global Grid.
+## ALETHEIA in 60 Seconds
 
-ALETHEIA is a **mirror, not a throne**. It can surface governance-risk patterns for review, but it does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment.
+**ALETHEIA is a mirror, not a throne.** It shows governance-risk signals for human review — nothing more.
 
-ALETHEIA is also **privacy-by-design inside this repository**: no built-in telemetry, trackers, analytics SDKs, backend upload endpoint, public ledger sync, Global ID sync, or central user-input database. Inputs are processed in the running app session, and receipts are user-held downloads. Third-party hosting layers may still have their own server or access logs outside ALETHEIA's application code.
+ALETHEIA helps reviewers inspect proposals, policies, systems, doctrines, AI artifacts, and public-data patterns for signals such as capture pressure, weak appeal paths, evidence gaps, consent pressure, service misalignment, hidden influence, and authority overreach.
 
+ALETHEIA does **not** decide, certify, approve, reject, enforce, govern, vote, or replace law, evidence, accountability, expertise, or human judgment.
+
+Start here:
+
+1. Open **Aletheia Unit Preview** for a guided first look.
+2. Use **Mirror Check** or **Stress Test** for governance text and scenarios.
+3. Use **AI Integrity Mirror** for static AI artifacts such as prompts, policies, model-card excerpts, workflow descriptions, or AI outputs.
+4. Use **Evidence Lab** and **World Lens** for evidence context and selected-year country evidence views.
+5. Use **Receipt Reader** to read ALETHEIA local witness receipts in Standard View without rescoring or overriding them.
+
+Privacy posture: the repository is local-first by design and includes no built-in telemetry, trackers, analytics SDKs, backend upload endpoint, public ledger sync, Global ID sync, or central user-input database. Inputs are processed in the running app session, and receipts are user-held downloads. Hosted deployments may still have platform-level logs outside ALETHEIA's application-code boundary.
 
 ## Start here for reviewers
 
-Patch 143 adds a reviewer-readiness path for people inspecting ALETHEIA from the repository rather than from the live app. Start with:
+### New reviewer path
 
-1. `docs/reviewer_start_here.md` — plain-language reviewer path, local run, receipt inspection, and trust boundaries.
-2. `docs/glossary.md` — 9k, Sydney Protocol, V-Axis, World Lens, local witness receipts, Standard View, Unit Preview, and core taxonomy terms.
-3. `docs/how_to_review_aletheia_without_trusting_it.md` — self-audit, local-run, receipt-comparison, no-telemetry, and boundary-inspection steps.
-4. `docs/validation_and_precision.md` — why numerical readings are internal review aids, not independent validation or final truth.
-5. `docs/patch_index.md` and `docs/patch_archive/README.md` — how to navigate the patch trail without confusing auditability for certification.
+If you are reviewing ALETHEIA cold, use this short path instead of trying to read the full patch history first:
+
+1. **Understand the boundary:** read this README section and `docs/reviewer_start_here.md`.
+2. **Open the app gently:** use **Aletheia Unit Preview**, the app-side counterpart to this cleaner repository doorway.
+3. **Learn the project language:** read `docs/glossary.md` for 9k, Sydney Protocol, V-Axis, World Lens, local witness receipts, Standard View, Unit Preview, and taxonomy terms.
+4. **Review without trust:** follow `docs/how_to_review_aletheia_without_trusting_it.md` for local-run, self-audit, receipt comparison, no-telemetry review, and boundary inspection.
+5. **Read numbers carefully:** use `docs/validation_and_precision.md` before interpreting scores, Z-axis values, World Lens coverage, or trust-prior fields.
+6. **Navigate the audit trail:** use `docs/patch_index.md` and `docs/patch_archive/README.md` when you need patch-specific detail.
 
 Reviewer-readiness is not mass-adoption polish. The goal is to preserve ALETHEIA's audit trail and **mirror, not throne** identity while giving outsiders a cleaner public doorway into the project.
 
-Current V1 public modules and support surfaces:
+## Typical use cases
 
-- Aletheia Unit Preview — calm first-use and beginner path.
-- Mirror Check — governance-language and authority-boundary review.
-- Stress Test — governance scenario pressure review.
-- AI Integrity Mirror — static artifact review for pasted AI outputs, prompts, policies, workflows, model-card excerpts, and code snippets.
-- Evidence Lab — evidence/context review support.
-- World Lens — selected-year country evidence views and coverage/allocation context.
-- Receipt Reader — upload-only Standard View for ALETHEIA local witness receipts and evidence bundles; it does not rescore or override uploaded receipts.
-- Boundary Cases, Protocol Guide, and Why ALETHEIA — reference and orientation layers.
+- Review an AI company's public safety policy for overclaim, opacity, missing appeal paths, or authority drift.
+- Stress-test a proposed governance system before relying on it.
+- Inspect a policy, doctrine, or institutional workflow for capture pressure, weak safeguards, consent pressure, service misalignment, or evidence gaps.
+- Review static AI outputs, prompts, model-card excerpts, code snippets, or workflow descriptions through AI Integrity Mirror.
+- Explore World Lens selected-year evidence views while keeping country certification outside ALETHEIA's claim.
+- Upload a local witness receipt and read it in Standard View without rescoring, overriding, or creating a new verdict.
+
+## Current V1 surfaces
+
+- **Aletheia Unit Preview** — calm first-use and beginner path.
+- **Mirror Check** — governance-language and authority-boundary review.
+- **Stress Test** — governance scenario pressure review.
+- **AI Integrity Mirror** — static artifact review for pasted AI outputs, prompts, policies, workflows, model-card excerpts, and code snippets.
+- **Evidence Lab** — evidence/context review support.
+- **World Lens** — selected-year country evidence views and coverage/allocation context.
+- **Receipt Reader** — upload-only Standard View for ALETHEIA local witness receipts and evidence bundles; it does not rescore or override uploaded receipts.
+- **Boundary Cases, Protocol Guide, and Why ALETHEIA** — reference and orientation layers.
+
+## Where to go next
+
+- `docs/for-reviewers/quick_start.md` — 5-minute reviewer path.
+- `docs/reviewer_start_here.md` — fuller reviewer-start guide.
+- `docs/glossary.md` — plain-language terms, Dutch equivalents where useful, and short examples.
+- `docs/validation_and_precision.md` — validation gap, false precision, and external-validation roadmap.
+- `docs/how_to_review_aletheia_without_trusting_it.md` — direct inspection path for skeptical reviewers.
+- `CONTRIBUTING.md` — philosophy-first contribution rules.
 
 
 ## Patch 131 - Start Page / How to Start Gate

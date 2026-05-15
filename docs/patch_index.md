@@ -382,3 +382,16 @@ Patch 143 adds a reviewer-readiness doorway for ALETHEIA's public repository. It
 - `docs/patch_archive/README.md` and `tools/archive_root_patch_artifacts.py` for root patch-artifact cleanup without deleting the audit trail.
 
 Boundary preserved: documentation/structure only. No app behavior, scoring, routing, taxonomy, receipt schema/generation, signal behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, upload/download behavior, external calls, telemetry/storage, certification, enforcement, or final-truth behavior changed.
+
+## Patch 144 — README 60-Second Clarity / Reviewer Path Polish
+
+Patch 144 refines the public doorway introduced in Patch 143. It adds:
+
+- `README.md` top section: **ALETHEIA in 60 Seconds**;
+- a New Reviewer Path and concrete Typical Use Cases;
+- `docs/for-reviewers/quick_start.md` and `docs/for-reviewers/README.md`;
+- glossary examples with Dutch/Nederlands equivalents;
+- stronger validation-gap, numerical-precision, and external-validation framing;
+- philosophy-first contributor wording.
+
+Runtime behavior: no app behavior change. Documentation/readability only. The patch preserves scoring, verdict routing, taxonomy, receipt behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, upload/download behavior, external-call posture, telemetry/storage boundaries, and mirror-not-throne authority limits.

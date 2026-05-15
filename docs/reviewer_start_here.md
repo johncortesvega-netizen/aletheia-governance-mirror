@@ -6,6 +6,7 @@ ALETHEIA is a **mirror, not a throne**. It does not decide, certify, approve, re
 
 ## Fast reviewer path
 
+0. Read `docs/for-reviewers/quick_start.md` and the `ALETHEIA in 60 Seconds` section at the top of `README.md`.
 1. Read this page first.
 2. Read `docs/glossary.md` for project-specific terms.
 3. Read `docs/BOUNDARY.md`, `docs/privacy_boundary.md`, and `docs/hosting_limits.md`.
@@ -37,6 +38,17 @@ Local execution is recommended for sensitive work. The repository is designed wi
 - **Receipt Reader** — upload ALETHEIA local witness receipts and read them in Standard View. It does not rescore, override, or create a new verdict.
 - **Boundary Cases** — reference/calibration layer for hard edge cases.
 - **Protocol Guide / Why ALETHEIA** — orientation and public-boundary explanations.
+
+
+## Typical first reviews
+
+Good first review tasks are deliberately small:
+
+- Paste a public AI safety policy into **AI Integrity Mirror** and inspect whether the output stays bounded as a static artifact review.
+- Paste a governance proposal into **Mirror Check** and inspect the authority-boundary and repair questions.
+- Run one **Stress Test** scenario and confirm the receipt says human review remains required.
+- Open **World Lens** and check that selected-year evidence is not framed as country certification.
+- Upload one local witness receipt into **Receipt Reader** and confirm Standard View does not rescore or override it.
 
 ## How to inspect a receipt
 

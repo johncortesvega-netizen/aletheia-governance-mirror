@@ -2,6 +2,28 @@
 
 This glossary explains project-specific language in plain terms. Each term is a reviewer aid, not an authority claim.
 
+
+## How to use this glossary
+
+Read these terms as orientation aids. They explain project language so reviewers can inspect ALETHEIA more easily. They do not create new scoring rules, authority claims, or module behavior.
+
+## Quick examples and Dutch equivalents
+
+| Term | Dutch / Nederlands | Short example |
+| --- | --- | --- |
+| Mirror, not throne | Spiegel, geen troon | ALETHEIA can reflect capture pressure in a policy, but it cannot approve or reject the policy. |
+| Human review required | Menselijke beoordeling vereist | A receipt can show THRESHOLD; a human still decides what the reading means in context. |
+| Aletheia Unit Preview | Aletheia Unit Preview / startpad | A new reviewer types a question and receives a suggested module path. |
+| Local witness receipt | Lokaal getuigenisbewijs / lokaal ontvangstbewijs | A downloaded receipt records what ALETHEIA showed in that session. |
+| Receipt Reader | Bonlezer / ontvangstbewijslezer | Upload a receipt to read it verbally without rescoring it. |
+| Standard View | Standaardweergave | A warmer explanation of native receipt values, with exact values still available. |
+| 9k | 9k drempelraamwerk | A World Lens allocation scaffold, not a parliament or authority. |
+| Sydney Protocol | Sydney Protocol / grensprotocol | The humility and boundary layer that keeps ALETHEIA from becoming a throne. |
+| V-Axis | V-as | A review-axis concept for pressure and boundary movement, not a proven scientific scale. |
+| World Lens | Wereldlens | A selected-year country evidence view, not a country certification. |
+| Repair prompt | Herstelvraag / reviewvraag | A question that helps humans inspect safeguards, appeal paths, or missing evidence. |
+| QUESTION_PROMPT | Vraagprompt / review-toolmodus | A question receipt that is intentionally not scored as SANCTUARY, THRESHOLD, or ASYLUM. |
+
 ## Mirror, not throne
 
 **Plain meaning:** ALETHEIA reflects patterns for human review; it does not rule.

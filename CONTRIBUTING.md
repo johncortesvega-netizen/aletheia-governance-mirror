@@ -2,6 +2,17 @@
 
 ALETHEIA welcomes careful contributions that preserve the core boundary: it is a governance mirror, not an authority.
 
+
+## Philosophy first, code second
+
+Before changing code, confirm the change preserves the project boundary:
+
+> ALETHEIA reflects. Humans review. Power stays accountable.
+
+A useful contribution should make the mirror clearer, easier to inspect, easier to run locally, or easier to review. It should not make ALETHEIA more authoritative, more hidden, more centralized, or more like an approval system.
+
+For first-time contributors, start with `docs/for-reviewers/quick_start.md` and `docs/reviewer_start_here.md` before reading the full patch trail.
+
 ## Before contributing
 
 Read these first:

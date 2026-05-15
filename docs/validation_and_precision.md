@@ -26,6 +26,30 @@ World Lens distinguishes raw trust survey evidence from trust-prior/fallback cov
 
 Internal correlation checks, baseline checks, fixture tests, and receipt comparisons are useful for reviewability. They do not become independent external validation when ALETHEIA's own fields or assumptions are part of the target being checked.
 
+
+## Validation gap and current credibility boundary
+
+ALETHEIA currently provides structured heuristic readings with interpretive value. Internal consistency checks, patch tests, self-audits, and repeated receipt comparisons can show whether the repository is behaving consistently. They do not prove that the readings predict future institutional outcomes or independently measure governance reality.
+
+The remaining validation gap is therefore explicit: independent comparison against external datasets and real-world governance outcomes remains future work. This gap should be visible in public explanations because hiding it would be less trustworthy than naming it.
+
+## Reader guidance for numerical outputs
+
+When a reviewer sees a precise value such as `0.6692`, `0.4456`, or `Z=0.9999`, the correct reading is:
+
+- this is a native ALETHEIA display value;
+- it supports repeatability, receipt comparison, and internal review;
+- it is not a claim of scientific certainty at that decimal level;
+- it is not a legal, political, compliance, safety, privacy, or country-certification finding.
+
+## Typical validation questions reviewers should ask
+
+- Which source fields or signal rules produced this reading?
+- Is this an internal consistency check or an independent external validation check?
+- Could the same source variables be contributing to both the reading and the comparison target?
+- What false positives and false negatives would challenge the rubric?
+- Does the output preserve human review, or does it accidentally sound like a verdict?
+
 ## External validation roadmap
 
 Future independent validation work should remain separate from internal consistency checks. Useful directions include:

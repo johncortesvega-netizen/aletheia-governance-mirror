@@ -2952,3 +2952,11 @@ Implementation notes:
 Boundary notes:
 - Reviewer-readiness is not mass-adoption polish and not a philosophical correction.
 - No app behavior, scoring, verdict routing, taxonomy, QUESTION_PROMPT logic, receipt schema/generation, signal regex/weights, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, upload/download behavior, external calls, telemetry/storage, certification, enforcement, or final-truth behavior changed.
+
+## Patch 144 - README 60-Second Clarity / Reviewer Path Polish
+
+Patch 144 follows Patch 143's public repository/reviewer doorway work with a sharper first-time explanation layer. It adds a top-of-README "ALETHEIA in 60 Seconds" section, a New Reviewer Path, Typical Use Cases, a `docs/for-reviewers/` quick-start folder, glossary examples with Dutch/Nederlands equivalents, and a stronger validation-gap / numerical-precision explanation.
+
+This is reviewer-readiness and public clarity work only. It does not simplify the engine, cut scope, alter modules, or change scoring. The goal is to let a first-time reviewer understand what ALETHEIA is, what it is not, how to start, and how to inspect it without trusting it.
+
+Boundary preserved: documentation/readability only. No app behavior, scoring, routing, taxonomy, receipt, World Lens math, AI Integrity, Privacy Audit, upload/download, telemetry/storage, certification, enforcement, or final-authority behavior changed.
