@@ -1,3 +1,20 @@
+## Patch 149 — Unit Preview DAO Proof-of-Concept Pairing
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 149 puts the DAO/Lido governance proof-of-concept cases side by side with the existing AI audit-loop proof-of-concept on the Aletheia Unit Preview first page. The new DAO card summarizes four baseline locks: major DAO governance tools, the Lido Snapshot proposal-threshold case, Lido DAO meta-governance risks, and Lido Dual Governance mechanics.
+
+Boundary preserved: Unit Preview presentation and reviewer documentation only. No app scoring change, no verdict routing change, no taxonomy change, no receipt schema or receipt generation change, no signal regex or signal weight change, no World Lens math change, no AI Integrity scoring behavior change, no Privacy Audit behavior change, no upload/download behavior change, no external calls, no telemetry, no storage, no Global ID sync, no public ledger sync, no certification, no enforcement, no approval/rejection authority, no official authority, and no final-truth behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python toolsun_patch_checks.py 149
+python toolsun_patch_checks.py 148
+python toolsun_patch_checks.py 146_1
+python toolsun_protocol_baseline_self_audit.py
+```
+
 ## Patch 148 — Unit Preview AI Audit-Loop Fourth Evidence
 
 Status: READY FOR LOCAL REVIEW

@@ -157,6 +157,112 @@ def render_ai_audit_loop_evidence(container=None, project_root: Path | None = No
                 container.image(str(image_path), caption=Path(image_path).name, use_container_width=True)
 
 
+
+def get_dao_governance_proof_of_concept_cases() -> list[dict[str, str]]:
+    """Return DAO/Lido governance proof-of-concept case summaries.
+
+    These are conceptual ALETHEIA-style review examples for human review.
+    They are not live DAO readings, official receipts, certifications, legal
+    findings, investment advice, or final verdicts.
+    """
+    return [
+        {
+            "name": "Major DAO governance tools",
+            "reading": "THRESHOLD",
+            "focus": "Snapshot, Tally, Aragon, DAOhaus, and Colony as operation layers.",
+            "finding": (
+                "DAO tools coordinate proposals, votes, delegation, execution, and exit, "
+                "but persistent risks remain around token-weighted power, low turnout, "
+                "delegate/whale concentration, platform dependency, proposal-code evidence gaps, "
+                "and human-review needs."
+            ),
+        },
+        {
+            "name": "Lido Snapshot proposal-threshold change",
+            "reading": "THRESHOLD",
+            "focus": "Meta-governance access: raising the LDO threshold to create Snapshot proposals.",
+            "finding": (
+                "The proposal had clear structure and anti-spam intent, but changing proposal access "
+                "can concentrate voice among larger holders and shift soft authority toward vetting layers. "
+                "The core tension is spam/noise reduction versus accessibility/inclusivity."
+            ),
+        },
+        {
+            "name": "Lido DAO meta-governance risks",
+            "reading": "THRESHOLD / ASYLUM pressure under capture stress",
+            "focus": "Forum -> Snapshot -> on-chain voting -> Dual Governance, Easy Track, committees, delegation.",
+            "finding": (
+                "Lido has meaningful safeguards, including Dual Governance, but token-weighted control, "
+                "delegation concentration, committee/multisig authority, layered complexity, legal pressure, "
+                "and systemic staking exposure keep human review essential."
+            ),
+        },
+        {
+            "name": "Lido Dual Governance mechanics",
+            "reading": "THRESHOLD",
+            "focus": "Dynamic timelock, stETH veto signaling, and rage-quit safeguard for staker protection.",
+            "finding": (
+                "Dual Governance is an innovative anti-capture mechanism that reduces LDO/stETH misalignment, "
+                "but it remains reactive, coordination-dependent, parameter-sensitive, and vulnerable to "
+                "liquidity costs, veto abuse, UI opacity, or extreme opposition scenarios."
+            ),
+        },
+    ]
+
+
+def render_dao_governance_proof_of_concept(container=None) -> None:
+    """Render DAO/Lido governance proof-of-concept cases on Unit Preview.
+
+    This is first-page orientation content only. It does not call governance
+    tools, score proposals, fetch live DAO data, create receipts, or assert
+    authority over DAOs.
+    """
+    if container is None:
+        import streamlit as st  # type: ignore
+
+        container = st
+
+    cases = get_dao_governance_proof_of_concept_cases()
+    with container.expander("Proof of concept: DAO governance mirror cases", expanded=False):
+        container.markdown(
+            "ALETHEIA can sit beside DAO tools as a reflection layer: "
+            "**DAO tools propose/vote/execute; ALETHEIA mirrors pressure before and after action**."
+        )
+        container.caption(
+            "These are conceptual human-review case studies, not live DAO readings, official receipts, "
+            "certifications, legal or investment advice, or final verdicts. Mirror, not throne."
+        )
+        for case in cases:
+            container.markdown(f"### {case['name']}")
+            container.markdown(f"**Internal reading:** {case['reading']}")
+            container.markdown(f"**Focus:** {case['focus']}")
+            container.write(case["finding"])
+        container.markdown(
+            "**Shared finding:** DAO governance has improved mechanically, but capture pressure, "
+            "authority drift, evidence gaps, and participation limits remain review-required. "
+            "The recurring reading is **THRESHOLD — not failed, not safe, human review required**."
+        )
+
+
+def render_unit_preview_proof_concepts_side_by_side(container=None) -> None:
+    """Render AI audit-loop and DAO governance proof-of-concept cards side by side."""
+    if container is None:
+        import streamlit as st  # type: ignore
+
+        container = st
+
+    container.markdown("### Proof-of-concept mirrors")
+    container.caption(
+        "Two first-page examples of ALETHEIA as a reflection layer: external AI outputs on one side, "
+        "DAO governance structures on the other. Both remain human-review evidence only."
+    )
+    ai_column, dao_column = container.columns(2)
+    with ai_column:
+        # Regression marker: render_ai_audit_loop_evidence(container)
+        render_ai_audit_loop_evidence(ai_column)
+    with dao_column:
+        render_dao_governance_proof_of_concept(dao_column)
+
 def get_unit_preview_html_files(project_root: Path | None = None) -> list[tuple[str, Path]]:
     """Return packaged HTML preview files for the Unit Preview hook page."""
     root = project_root or Path(__file__).resolve().parents[1]
@@ -552,7 +658,7 @@ def render_unit_preview(container=None) -> bool:
         )
         container.caption("This is orientation only. You can still choose any module after entering ALETHEIA.")
 
-    render_ai_audit_loop_evidence(container)
+    render_unit_preview_proof_concepts_side_by_side(container)
     render_unit_preview_html_reference(container)
 
     return bool(proceed_clicked)

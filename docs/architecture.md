@@ -331,3 +331,7 @@ Patch 143 is a documentation/structure patch for reviewer-readiness. It adds a c
 This does not change app behavior. It does not change scoring, verdict routing, taxonomy, receipt schemas, receipt generation, module behavior, World Lens math, AI Integrity behavior, Privacy Audit behavior, upload/download behavior, external calls, telemetry, storage, certification, enforcement, or final-truth behavior.
 
 The repository doorway should become cleaner without weakening the audit trail. Root-level patch files may be archived with `tools/archive_root_patch_artifacts.py`; archiving preserves review history and is not a substitute for Git history or human review.
+
+## Patch 149 architecture note — Unit Preview DAO proof-of-concept pairing
+
+Aletheia Unit Preview now renders two proof-of-concept mirrors side by side on the first page: the existing AI audit-loop evidence card and a new DAO/Lido governance mirror case card. This is orientation content only. It does not call DAO tools, fetch live governance data, score proposals, create receipts, change module routing, alter taxonomy, touch scoring engines, change World Lens math, add telemetry, add storage, add external calls, or assert certification/authority. The DAO card frames DAO tooling as the operation layer and ALETHEIA as the reflection layer for human review.

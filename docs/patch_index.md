@@ -1,10 +1,10 @@
 # ALETHEIA Patch Index
 
 **Version:** v1.0  
-**Updated for:** Patch 148 — Unit Preview AI Audit-Loop Fourth Evidence  
+**Updated for:** Patch 149 — Unit Preview DAO Proof-of-Concept Pairing  
 **Last updated:** 2026-05-16
 
-This index is a navigation layer for ALETHEIA's iterative patch history. Patch 148 keeps the standing root-hygiene rule active while adding the fourth Unit Preview proof-of-concept evidence set: ChatGPT concealed-flattery pressure inside analytical tone. The latest/current patch remains visible at the repository root and older patch artifacts are archived under `docs/patch_archive/` without deleting the audit trail.
+This index is a navigation layer for ALETHEIA's iterative patch history. Patch 149 keeps the standing root-hygiene rule active while pairing the existing AI audit-loop proof-of-concept with DAO/Lido governance proof-of-concept cases on the Unit Preview first page. The latest/current patch remains visible at the repository root and older patch artifacts are archived under `docs/patch_archive/` without deleting the audit trail.
 
 ALETHEIA remains a **mirror, not a throne**. Patch history is evidence for review, not proof of truth, safety, legality, ethics, privacy, security, or legitimacy.
 
@@ -68,6 +68,7 @@ In short: document the boundary first, extract static shell/UI copy gradually, a
 | Patch | Focus | Runtime behavior |
 | --- | --- | --- |
 
+| 149 | Unit Preview first-page proof-of-concept pairing: AI audit-loop beside DAO/Lido governance cases | Unit Preview presentation only |
 | 148 | Unit Preview proof-of-concept evidence adds ChatGPT concealed-flattery review; larger AI names | Unit Preview evidence presentation only |
 
 ## Main patch categories

@@ -1,3 +1,11 @@
+## Patch 149 — Unit Preview DAO Proof-of-Concept Pairing
+
+Patch 149 adds a side-by-side proof-of-concept layout to Aletheia Unit Preview. The existing AI audit-loop proof-of-concept remains on the first page, and a new DAO/Lido governance proof-of-concept card appears beside it.
+
+The DAO card records the four baseline cases as first-page orientation: major DAO governance tools, Lido Snapshot proposal-threshold change, Lido DAO meta-governance risks, and Lido Dual Governance mechanics. The shared finding is THRESHOLD: DAO governance has improved mechanically, but capture pressure, authority drift, evidence gaps, and participation limits remain review-required.
+
+This is Unit Preview copy/display and reviewer documentation only. It does not change scoring, routing, taxonomy, receipts, World Lens, AI Integrity, Privacy Audit, telemetry, storage, Global ID sync, public ledger behavior, certification, enforcement, or final-truth behavior.
+
 
 ## Patch 148 — Unit Preview AI Audit-Loop Fourth Evidence
 
