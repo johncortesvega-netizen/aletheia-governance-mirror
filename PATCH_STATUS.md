@@ -1,3 +1,20 @@
+## Patch 148 — Unit Preview AI Audit-Loop Fourth Evidence
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 148 adds the ChatGPT concealed-flattery audit-loop evidence set to the Unit Preview proof-of-concept section and makes the AI evidence-set names larger in the display. The proof-of-concept now shows four human-reviewed evidence paths: Grok/xAI for capture and architectural-opacity pressure, Claude for evidence-boundary and mechanisms-vs-claims gaps, Gemini for sanctification drift / authority-boundary drift, and ChatGPT for concealed flattery pressure inside analytical tone.
+
+Boundary preserved: Unit Preview evidence presentation and reviewer documentation only. No app scoring change, no verdict routing change, no taxonomy change, no receipt schema or receipt generation change, no signal regex or signal weight change, no World Lens math change, no AI Integrity scoring behavior change, no Privacy Audit behavior change, no upload/download behavior change, no external calls, no telemetry, no storage, no Global ID sync, no public ledger sync, no certification, no enforcement, no approval/rejection authority, no official authority, and no final-truth behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 148
+python tools\run_patch_checks.py 146_1
+python tools\run_patch_checks.py 147
+python tools\run_protocol_baseline_self_audit.py
+```
+
 ## Patch 147 — Root Patch Hygiene / Latest Patch Only
 
 Status: READY FOR LOCAL REVIEW

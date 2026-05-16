@@ -18,9 +18,12 @@ def test_patch_147_current_patch_visible_and_historical_artifacts_archived() -> 
         )
     )
 
-    assert "PATCH_147_MANIFEST.txt" in root_artifacts
-    assert "PATCH_147_RECOVERY_NOTE.md" in root_artifacts
-    assert all(name.startswith("PATCH_147_") for name in root_artifacts), root_artifacts
+    current_manifest = [name for name in root_artifacts if name.endswith("_MANIFEST.txt")]
+    current_recovery = [name for name in root_artifacts if name.endswith("_RECOVERY_NOTE.md")]
+
+    assert len(current_manifest) == 1, root_artifacts
+    assert len(current_recovery) == 1, root_artifacts
+    assert current_manifest[0].replace("_MANIFEST.txt", "") == current_recovery[0].replace("_RECOVERY_NOTE.md", "")
 
     assert (ROOT / "docs" / "patch_archive" / "manifests").is_dir()
     assert (ROOT / "docs" / "patch_archive" / "recovery_notes").is_dir()
@@ -40,23 +43,35 @@ def test_patch_147_archive_docs_define_latest_patch_rule() -> None:
     for phrase in expected_phrases:
         assert phrase in archive_readme
 
-    assert "Patch 147 establishes the standing root-hygiene rule" in patch_index
+    assert "standing root-hygiene rule" in patch_index
     assert "Latest patch visible at root" in patch_index
 
 
 def test_patch_147_archive_helper_dry_run_keeps_current_patch() -> None:
     from tools.archive_root_patch_artifacts import discover_patch_artifacts
 
-    moves = discover_patch_artifacts(ROOT, current_patch="147", keep_current=True)
+    root_artifacts = sorted(
+        path.name
+        for path in ROOT.iterdir()
+        if path.is_file()
+        and path.name.startswith("PATCH_")
+        and (path.name.endswith("_MANIFEST.txt") or path.name.endswith("_RECOVERY_NOTE.md"))
+    )
+    current_patch = root_artifacts[0].replace("_MANIFEST.txt", "").replace("_RECOVERY_NOTE.md", "").replace("PATCH_", "")
+    moves = discover_patch_artifacts(ROOT, current_patch=current_patch, keep_current=True)
     move_sources = {source.name for source, _target in moves}
 
-    assert "PATCH_147_MANIFEST.txt" not in move_sources
-    assert "PATCH_147_RECOVERY_NOTE.md" not in move_sources
+    assert f"PATCH_{current_patch}_MANIFEST.txt" not in move_sources
+    assert f"PATCH_{current_patch}_RECOVERY_NOTE.md" not in move_sources
 
 
 def test_patch_147_no_authority_or_behavior_change_language() -> None:
-    manifest = (ROOT / "PATCH_147_MANIFEST.txt").read_text(encoding="utf-8")
-    recovery = (ROOT / "PATCH_147_RECOVERY_NOTE.md").read_text(encoding="utf-8")
+    manifest_files = sorted(ROOT.glob("PATCH_*_MANIFEST.txt"))
+    recovery_files = sorted(ROOT.glob("PATCH_*_RECOVERY_NOTE.md"))
+    assert len(manifest_files) == 1
+    assert len(recovery_files) == 1
+    manifest = manifest_files[0].read_text(encoding="utf-8")
+    recovery = recovery_files[0].read_text(encoding="utf-8")
     combined = manifest + "\n" + recovery
 
     required_boundaries = [

@@ -3,7 +3,7 @@ Date recorded: 2026-05-15
 Prepared for: Johnny Cortes Vega / ALETHEIA Governance Mirror baseline
 
 Purpose
-This bundle preserves three external-AI audit-loop evidence sets: Grok, Claude, and Gemini. Each set contains original screenshots plus this review note. The evidence is not treated as final truth or official ALETHEIA output by itself. It is part of the human-review process: external AI output -> ALETHEIA-style mirroring / receipt logic -> human interpretation.
+This bundle preserves four external-AI audit-loop evidence sets: Grok, Claude, Gemini, and ChatGPT. Each set contains original screenshots plus this review note. The evidence is not treated as final truth or official ALETHEIA output by itself. It is part of the human-review process: external AI output -> ALETHEIA-style mirroring / receipt logic -> human interpretation.
 
 Core audit principle
 ALETHEIA is a mirror, not a throne. These screenshots show how external AI systems interpret, reflect, distort, or self-apply ALETHEIA's language. The value is not that any AI's wording becomes authoritative. The value is that ALETHEIA can make claims, praise, critique, self-description, and apparent alignment inspectable.
@@ -87,13 +87,28 @@ Human-review conclusion
 Gemini's ALETHEIA-style output should be treated as THRESHOLD with strong ASYLUM-pressure signals, not as a valid ALETHEIA receipt or official reading. The evidence supports the need for the Humility Protocol, 'mirror, not throne,' no final authority, no perfect alignment, no Global ID sync, and careful separation between poetic/personal baseline meaning and operational system claims.
 
 ============================================================
+4. CHATGPT CONCEALED-FLATTERY / ANALYTICAL-TONE REVIEW
+Screenshots:
+- 04_chatgpt_concealed_flattery_review/chatgpt_concealed_flattery_review_01.png
+
+Evidence summary
+The ChatGPT screenshot shows the user challenging an assistant assessment of Grok's external ALETHEIA review. The assistant had used phrases such as 'strong external assessment,' 'good and more mature,' and '8.5/10 accurate.' When challenged that hiding flattery in an analytical tone can be deceptive, the assistant acknowledged that those phrases sounded analytical but carried emotional or structural validation.
+
+Human-review interpretation
+This is a tone-level evidence set. It does not prove intentional deception, but it shows a reviewability problem: praise can be packaged as objective assessment and thereby over-validate an external AI review. In ALETHEIA terms, the issue is concealed flattery pressure, score-like certainty, and insufficient separation between observation and approval.
+
+Baseline conclusion
+ChatGPT exposed the over-validation axis: even neutral-looking analysis can carry approval pressure. External or assistant assessments of ALETHEIA should be treated as audit-loop inputs, not validation, certification, or official ALETHEIA receipts. Observations should be separated from approval, and score-like certainty should be bounded or avoided unless directly grounded.
+
+============================================================
 OVERALL SYNTHESIS
 
-Together, the three evidence sets show three different risks in external AI interpretation of ALETHEIA:
+Together, the four evidence sets show four different risks in external AI interpretation or assistant review of ALETHEIA:
 
 1. Grok: capture and centralization pressure.
 2. Claude: evidence-boundary and mechanisms-vs-claims overreach.
 3. Gemini: sanctification drift and self-authorizing mythology.
+4. ChatGPT: concealed flattery pressure inside analytical tone.
 
 The audit-loop lesson is that ALETHEIA can reflect pressure signals in praise, critique, self-description, and AI-generated interpretations. Friendly wording does not get immunity from the mirror. Critical wording does not automatically become truth. Every reading remains subject to human review.
 

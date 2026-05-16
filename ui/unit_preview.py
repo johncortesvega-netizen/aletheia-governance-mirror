@@ -74,7 +74,8 @@ def get_ai_audit_loop_evidence_sets(project_root: Path | None = None) -> list[di
     base = root / "docs" / "for-reviewers" / "ai_audit_loop_evidence"
     candidates = [
         {
-            "title": "Grok / xAI — capture and architectural-opacity pressure",
+            "ai_name": "Grok / xAI",
+            "title": "Capture and architectural-opacity pressure",
             "summary": (
                 "External AI/system claims were mirrored for capture, centralization, "
                 "architectural-opacity, missing-verifiability, and service-misalignment pressure."
@@ -82,7 +83,8 @@ def get_ai_audit_loop_evidence_sets(project_root: Path | None = None) -> list[di
             "path": base / "01_grok_xai_architecture_review",
         },
         {
-            "title": "Claude — evidence-boundary and mechanisms-vs-claims gap",
+            "ai_name": "Claude",
+            "title": "Evidence-boundary and mechanisms-vs-claims gap",
             "summary": (
                 "A useful external critique was mirrored for evidence-boundary limits, "
                 "repo/docs inference, and mechanisms-vs-claims overreach."
@@ -90,12 +92,22 @@ def get_ai_audit_loop_evidence_sets(project_root: Path | None = None) -> list[di
             "path": base / "02_claude_evidence_boundary_review",
         },
         {
-            "title": "Gemini — sanctification drift / authority-boundary drift",
+            "ai_name": "Gemini",
+            "title": "Sanctification drift / authority-boundary drift",
             "summary": (
                 "ALETHEIA language was mirrored after being bent toward self-certifying, "
                 "perfect-alignment, sacred-system, or Global-ID-adjacent claims."
             ),
             "path": base / "03_gemini_sanctification_drift_review",
+        },
+        {
+            "ai_name": "ChatGPT",
+            "title": "Concealed flattery pressure inside analytical tone",
+            "summary": (
+                "An assistant assessment was mirrored for praise hidden inside analytical framing, "
+                "score-like over-validation, and insufficient separation between observation and approval."
+            ),
+            "path": base / "04_chatgpt_concealed_flattery_review",
         },
     ]
     evidence_sets: list[dict[str, object]] = []
@@ -134,10 +146,12 @@ def render_ai_audit_loop_evidence(container=None, project_root: Path | None = No
             "certifications, legal findings, or final proof. Mirror, not throne."
         )
         for evidence in evidence_sets:
+            ai_name = str(evidence.get("ai_name") or evidence["title"])
             title = str(evidence["title"])
             summary = str(evidence["summary"])
             images = evidence.get("images", [])
-            container.markdown(f"**{title}**")
+            container.markdown(f"### {ai_name}")
+            container.markdown(f"**Evidence focus:** {title}")
             container.write(summary)
             for image_path in images:  # type: ignore[assignment]
                 container.image(str(image_path), caption=Path(image_path).name, use_container_width=True)

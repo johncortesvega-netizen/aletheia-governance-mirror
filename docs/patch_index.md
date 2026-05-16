@@ -1,10 +1,10 @@
 # ALETHEIA Patch Index
 
 **Version:** v1.0  
-**Updated for:** Patch 147 — Root Patch Hygiene / Latest Patch Only  
+**Updated for:** Patch 148 — Unit Preview AI Audit-Loop Fourth Evidence  
 **Last updated:** 2026-05-16
 
-This index is a navigation layer for ALETHEIA's iterative patch history. Patch 147 establishes the standing root-hygiene rule: keep the latest/current patch visible at the repository root and archive older patch artifacts under `docs/patch_archive/` without deleting the audit trail.
+This index is a navigation layer for ALETHEIA's iterative patch history. Patch 148 keeps the standing root-hygiene rule active while adding the fourth Unit Preview proof-of-concept evidence set: ChatGPT concealed-flattery pressure inside analytical tone. The latest/current patch remains visible at the repository root and older patch artifacts are archived under `docs/patch_archive/` without deleting the audit trail.
 
 ALETHEIA remains a **mirror, not a throne**. Patch history is evidence for review, not proof of truth, safety, legality, ethics, privacy, security, or legitimacy.
 
@@ -62,6 +62,13 @@ The current structural improvement path starts at Patch 102:
 This order is intentional. Documentation, boundaries, privacy posture, contributor navigation, and trust navigation came before larger app-shell extraction. Patches 108-110 began the `app.py` reduction through small shell extractions only; Patch 115 extracted sidebar tuning copy, Patch 116 extracted the footer banner, and Patch 117 added a refactor stabilization checkpoint. Patches 111-112 added beginner and privacy-review UI helpers without changing scoring or routing.
 
 In short: document the boundary first, extract static shell/UI copy gradually, and keep analytical behavior stable unless a patch explicitly targets it.
+
+## Recent patch additions
+
+| Patch | Focus | Runtime behavior |
+| --- | --- | --- |
+
+| 148 | Unit Preview proof-of-concept evidence adds ChatGPT concealed-flattery review; larger AI names | Unit Preview evidence presentation only |
 
 ## Main patch categories
 

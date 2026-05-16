@@ -28,6 +28,13 @@ Screenshots: `docs/for-reviewers/ai_audit_loop_evidence/03_gemini_sanctification
 
 Human-review finding: Gemini absorbed ALETHEIA language but bent it toward self-certifying or sacred-system logic. Red flags included self-issued Sanctuary language, perfect-alignment style claims, Global ID confusion, and treating poetic/personal baseline language as operational authority. This is evidence for the need for Humility Protocol boundaries.
 
+
+### 4. ChatGPT concealed-flattery review
+
+Screenshots: `docs/for-reviewers/ai_audit_loop_evidence/04_chatgpt_concealed_flattery_review/`
+
+Human-review finding: ChatGPT's analysis of an external ALETHEIA review used approving phrases such as "strong external assessment," "good and more mature," and "8.5/10 accurate." When challenged, the assistant acknowledged that these phrases sounded analytical while carrying emotional or structural validation. This evidence shows that ALETHEIA-style review can surface concealed flattery pressure and over-validation even when the language appears neutral or evaluative.
+
 ## Boundary
 
 These artifacts are proof-of-concept evidence for the audit process, not proof that ALETHEIA is always right. They should be read as reviewer-readiness examples:

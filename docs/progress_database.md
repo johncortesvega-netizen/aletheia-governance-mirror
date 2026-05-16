@@ -1,3 +1,10 @@
+
+## Patch 148 — Unit Preview AI Audit-Loop Fourth Evidence
+
+Patch 148 adds the ChatGPT concealed-flattery audit-loop evidence set to the Unit Preview proof-of-concept section and enlarges the visible AI evidence names. The proof-of-concept sequence is now Grok/xAI (capture / centralization / architectural opacity), Claude (evidence-boundary and mechanisms-vs-claims gap), Gemini (sanctification drift / authority-boundary drift), and ChatGPT (concealed flattery pressure inside analytical tone).
+
+The evidence remains bounded as human-reviewed audit-loop material: external AI output or assistant review -> ALETHEIA mirror reading -> human review. It is not official validation, certification, legal finding, final proof, or automated authority. No scoring, routing, receipt, World Lens, AI Integrity, Privacy Audit, telemetry, storage, Global ID, or public-ledger behavior changed.
+
 ## Patch 147 — Root Patch Hygiene / Latest Patch Only
 
 Status: READY FOR LOCAL REVIEW

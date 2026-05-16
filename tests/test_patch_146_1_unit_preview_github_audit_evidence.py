@@ -40,17 +40,26 @@ def test_ai_audit_loop_evidence_assets_are_available_for_unit_preview_review():
     assert "Grok" in evidence_doc
     assert "Claude" in evidence_doc
     assert "Gemini" in evidence_doc
+    assert "ChatGPT" in evidence_doc
+    assert "concealed-flattery" in evidence_doc
     assert "not official verdicts" in evidence_doc
     assert "Mirror, not throne" in evidence_doc
 
     evidence_sets = get_ai_audit_loop_evidence_sets(ROOT)
+    assert [item["ai_name"] for item in evidence_sets] == [
+        "Grok / xAI",
+        "Claude",
+        "Gemini",
+        "ChatGPT",
+    ]
     assert [item["title"] for item in evidence_sets] == [
-        "Grok / xAI — capture and architectural-opacity pressure",
-        "Claude — evidence-boundary and mechanisms-vs-claims gap",
-        "Gemini — sanctification drift / authority-boundary drift",
+        "Capture and architectural-opacity pressure",
+        "Evidence-boundary and mechanisms-vs-claims gap",
+        "Sanctification drift / authority-boundary drift",
+        "Concealed flattery pressure inside analytical tone",
     ]
     image_counts = [len(item["images"]) for item in evidence_sets]
-    assert image_counts == [2, 3, 6]
+    assert image_counts == [2, 3, 6, 1]
 
 
 def test_unit_preview_renders_proof_of_concept_card_but_not_as_authority():
@@ -59,6 +68,8 @@ def test_unit_preview_renders_proof_of_concept_card_but_not_as_authority():
     assert "external AI output -> ALETHEIA mirror reading -> human review" in source
     assert "not official verdicts" in source
     assert "certifications, legal findings, or final proof" in source
+    assert "### {ai_name}" in source
+    assert "**Evidence focus:**" in source
     assert "render_ai_audit_loop_evidence(container)" in source
 
 
