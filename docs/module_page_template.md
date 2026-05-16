@@ -59,3 +59,15 @@ Boundary preserved: this is copy/layout polish only. It does not change scoring,
 Patch 158 applies the shared module-page scaffold to Receipt Reader - Standard View. Receipt Reader keeps its inherent content: upload-only local receipt reading, native state/status explanation, copied metric observations, reader brief, human-review questions, parsing limits, failure-mode review signals, and the boundary that Receipt Reader does not rescore, certify, approve, reject, enforce, override, or create receipts.
 
 This is copy/layout polish only. It does not change receipt parsing, receipt schema, upload handling, scoring, routing, protocol logic, batch ZIP logic, World Lens evidence-bundle behavior, external calls, telemetry/storage, certification, enforcement, approval/rejection, or final-truth behavior.
+
+## Patch 159 — Remaining Module Page Polish
+
+Patch 159 applies the shared module-page scaffold to the remaining staged Patch E surfaces: **Boundary Cases**, **Evidence Lab**, and **World Lens**.
+
+Each module keeps its inherent content:
+
+- Boundary Cases remains a calibration/reference surface for consent pressure, free agency, emergency misuse, ambient capture, failure typing, and repair paths.
+- Evidence Lab remains an evidence-quality and coverage-review surface for claims, source quality, empirical table preparation, and extraordinary/unverified claim handling.
+- World Lens remains a selected-year empirical evidence mirror for country-year context, coverage diagnostics, allocation context, internal taxonomy distribution, weighted integrity, and collapse-pressure signals.
+
+Boundary preserved: this is copy/layout polish only. It does not change scoring, routing, taxonomy labels, empirical math, World Lens allocation, receipt schema or generation, receipt parsing, protocol logic, batch behavior, upload/download behavior, external calls, telemetry/storage, certification, enforcement, official authority, ranking, approval/rejection, or final-truth behavior. Human review remains required.

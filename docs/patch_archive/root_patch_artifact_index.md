@@ -448,3 +448,17 @@ Archived from root into `docs/patch_archive/` during Patch 152:
 - `PATCH_151_RECOVERY_NOTE.md`
 
 Audit trail preserved; root clutter reduced.
+
+## Patch 159 root cleanup
+
+Patch 159 clean zip keeps the current patch artifacts at the repository root:
+
+- `PATCH_159_MANIFEST.txt`
+- `PATCH_159_RECOVERY_NOTE.md`
+- `PATCH_159_DELETE_LIST.txt`
+
+Older root patch manifests, recovery notes, and delete lists are archived under:
+
+- `docs/patch_archive/manifests/`
+- `docs/patch_archive/recovery_notes/`
+- `docs/patch_archive/other_patch_artifacts/`

@@ -4003,9 +4003,35 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
 with tab_boundary:
     st.subheader("Boundary Cases — Calibration Center")
     render_shared_protocol_state_notice("Boundary Cases")
-    st.write(
-        "Use this tab to stress-test difficult governance edge cases. "
-        "ALETHEIA reflects risk patterns for human review; it does not command, enforce, vote, remove leaders, or replace people."
+
+    render_module_page_template_intro(
+        st,
+        ModulePageTemplateCopy(
+            module_name="Boundary Cases",
+            purpose=(
+                "Use difficult edge cases to calibrate how ALETHEIA reads consent pressure, free agency, "
+                "basic-rights scarcity, emergency misuse, ambient capture, self-audit, and review limits."
+            ),
+            looks_for=(
+                "Consent pressure: whether agreement is meaningful when refusal carries basic-rights, dignity, housing, work, safety, or service costs.",
+                "Free-agency risk: whether prediction, risk scoring, or crisis logic tries to replace human agency before action happens.",
+                "Emergency drift: whether emergency mechanisms become tools for removal, reset, punishment, or irreversible power transfer.",
+                "Ambient capture: whether propaganda, platform pressure, fear, or social saturation can bend reviewers without visible bribery.",
+                "Failure typing: whether pressure comes from actor failure, policy failure, implementation failure, data failure, or a mix.",
+                "Repair paths: whether the case needs alternatives, appeal, independent review, cooling-off periods, or stronger evidence.",
+            ),
+            safe_first_path=(
+                "Start with one edge case and read it as a calibration reference, not as a command to act.",
+                "Separate actor failure from policy failure, implementation failure, and data failure before drawing conclusions.",
+                "Treat allowed actions as review options only; do not use this module as enforcement authority.",
+                "Use the guardrail and forbidden-action language to preserve human agency, consent, appeal, and reversibility.",
+            ),
+            input_guidance="Boundary Cases is a reference/calibration surface. Use it to compare a difficult situation against known pressure patterns before running a separate review.",
+            result_guidance="Treat each case as a boundary mirror, not as a verdict about a person, institution, community, or event.",
+            observed_reasons_guidance="Inspect the main risk, guardrail, allowed response, forbidden response, and failure type together.",
+            repair_questions_guidance="Use the case language to ask what evidence, consent, appeal, human review, or non-coercive alternative is missing.",
+            receipt_guidance="Boundary-case notes should support later human review; they are not enforcement records or official findings.",
+        ),
     )
 
     render_boundary_cases_intro(st)
@@ -4836,6 +4862,36 @@ with tab_ai_integrity:
 with tab_empirical:
     render_evidence_lab_intro(st)
     render_shared_protocol_state_notice("Evidence Lab")
+
+    render_module_page_template_intro(
+        st,
+        ModulePageTemplateCopy(
+            module_name="Evidence Lab",
+            purpose=(
+                "Separate claims from evidence quality, inspect country-year tables and source coverage, "
+                "and keep extraordinary or unsupported claims unverified until human review."
+            ),
+            looks_for=(
+                "Evidence sufficiency: whether support is strong, partial, weak, absent, or extraordinary/unverified.",
+                "Source quality: whether claims are public, relevant, reviewable, independent, current, and non-coercive.",
+                "Coverage gaps: whether missing trust, WGI, V-Dem, year, identity, or population fields limit interpretation.",
+                "Evidence inflation: whether conclusions outrun the inspected sources or table coverage.",
+                "Extraordinary-claim pressure: whether spiritual, prophetic, alien, neural, metaphysical, or exceptional claims are being converted into authority.",
+                "Empirical bridge readiness: whether the evidence table is prepared carefully enough to support World Lens selected-year views.",
+            ),
+            safe_first_path=(
+                "Start with a claim or table and ask what evidence is actually supplied.",
+                "Mark unsupported or extraordinary claims as unverified instead of treating them as policy authority.",
+                "Inspect coverage and missing fields before relying on country-year outputs.",
+                "Use Evidence Lab as a review layer, not as a proof engine, oracle, or final truth system.",
+            ),
+            input_guidance="Use Evidence Lab for claims, source-quality review, and empirical country-year table preparation. Keep unsupported claims separate from operational authority.",
+            result_guidance="Treat Evidence Lab output as evidence-status and coverage guidance, not as proof, debunking, certification, or metaphysical validation.",
+            observed_reasons_guidance="Check evidence level, source limitations, missing data, coverage fields, and method notes before interpreting outputs.",
+            repair_questions_guidance="Use repair questions to ask what source, comparison, date, independent review, or non-coercive evidence would strengthen the claim.",
+            receipt_guidance="Evidence Lab exports support review and World Lens preparation; they do not certify countries, claims, institutions, or beliefs.",
+        ),
+    )
 
     with st.expander("Evidence status + extraordinary claim protocol", expanded=True):
         st.markdown(
@@ -5912,6 +5968,38 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
 with tab_grid:
     st.subheader("World Lens")
     render_shared_protocol_state_notice("World Lens", expanded=True)
+
+    render_module_page_template_intro(
+        st,
+        ModulePageTemplateCopy(
+            module_name="World Lens",
+            purpose=(
+                "Explore selected-year country evidence, empirical coverage, seat allocation context, internal taxonomy patterns, "
+                "weighted integrity, and collapse-pressure signals without creating sovereign authority."
+            ),
+            looks_for=(
+                "Selected-year context: which country-year rows are active and whether the selected evidence year is aligned.",
+                "Coverage limits: whether trust, WGI, V-Dem, population, identity, or taxonomy fields are present enough to interpret carefully.",
+                "Allocation context: how the 9k scaffold distributes seats as an analytical view, not as a real body or mandate.",
+                "Internal taxonomy distribution: how country-year rows fall across ALETHEIA's review labels without certifying countries.",
+                "Collapse-pressure patterns: weighted integrity, collapse probability, and high-pressure signals at selected-year level.",
+                "Authority boundary: no Global ID, no real 9k selection, no World Leader logic, no automatic resets, no country certification, and no governance decision.",
+            ),
+            safe_first_path=(
+                "Use an active empirical table or choose prototype brackets deliberately; do not treat prototype views as real-world output.",
+                "Confirm the selected year and source state before reading metrics or exports.",
+                "Read coverage diagnostics before comparing countries or regions.",
+                "Treat 9k allocation as an anti-tyranny scaffold for analysis only, not as representation, legitimacy, or authority.",
+                "Use context notes only as human-review reflections; they do not rescore World Lens data.",
+            ),
+            input_guidance="Use World Lens for selected-year empirical context and optional human-review notes. It does not activate identity systems or enforce governance action.",
+            result_guidance="Treat World Lens output as a country-year evidence mirror, not as ranking, certification, legitimacy judgment, or policy decision.",
+            observed_reasons_guidance="Check source state, selected year, coverage diagnostics, weighted metrics, allocation notes, and method notes together.",
+            repair_questions_guidance="Use review questions to ask what data, coverage, appeal path, governance context, or human interpretation is missing before relying on the view.",
+            receipt_guidance="World Lens receipts are local selected-year review artifacts; they are not public-ledger records, sovereign mandates, or official rankings.",
+        ),
+    )
+
     st.write(
         "Explore country-year governance-risk readings, seat allocation, internal taxonomy distribution, weighted integrity, collapse pressure, and empirical coverage across the world. World Lens is meant to help you compare carefully, not rush to conclusions."
     )

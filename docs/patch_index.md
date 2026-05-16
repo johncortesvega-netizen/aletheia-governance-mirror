@@ -490,3 +490,10 @@ UI/copy layout refinement. Start Here now uses two optional side-by-side expande
 - Applies the shared Patch 155 module-page scaffold to Receipt Reader - Standard View.
 - Adds receipt-reader-specific calm page guidance for upload-only local receipt reading, native values, reader brief, failure-mode signals, human-review questions, and parsing limits.
 - Preserves existing Receipt Reader parsing and behavior; no scoring, routing, protocol, receipt schema/generation, batch ZIP, upload/download, certification, enforcement, or final-truth logic changes.
+
+## Patch 159 — Remaining Module Page Polish
+
+- Applies the shared Patch 155 module-page scaffold to Boundary Cases, Evidence Lab, and World Lens.
+- Keeps module-specific content intact: boundary calibration, evidence-quality review, and selected-year empirical World Lens context.
+- Adds explicit calm page guidance for what each module looks for, safe first path, input area, result/mirror-reading interpretation, observed reasons, repair questions, and receipt/export boundaries.
+- Preserves existing module behavior; no scoring, routing, protocol, receipt, empirical math, World Lens allocation, batch, upload/download, certification, enforcement, ranking, official-authority, or final-truth logic changes.

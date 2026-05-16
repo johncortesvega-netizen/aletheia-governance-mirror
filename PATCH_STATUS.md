@@ -3477,3 +3477,27 @@ python tools\run_patch_checks.py 158
 python tools\run_patch_checks.py 157
 python tools\run_patch_checks.py 155
 ```
+
+## Patch 159 — Remaining Module Page Polish
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 159 is Patch E in the staged module-page unification work. It applies the shared Patch 155 page-like scaffold to Boundary Cases, Evidence Lab, and World Lens while preserving each module's inherent content.
+
+Boundary Cases now has calm page guidance for consent pressure, free agency, emergency drift, ambient capture, failure typing, and repair paths.
+
+Evidence Lab now has calm page guidance for evidence sufficiency, source quality, coverage gaps, evidence inflation, extraordinary-claim pressure, and empirical bridge readiness.
+
+World Lens now has calm page guidance for selected-year context, coverage limits, allocation context, internal taxonomy distribution, collapse-pressure patterns, and explicit no-sovereign-authority boundaries.
+
+Boundary: copy/layout only. No scoring, routing, taxonomy, receipt schema/generation, receipt parsing, empirical math, World Lens allocation, batch behavior, upload/download behavior, protocol logic, external calls, telemetry/storage, certification, enforcement, approval/rejection, ranking, official authority, or final-truth behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 159
+python tools\run_patch_checks.py 158
+python tools\run_patch_checks.py 157
+python tools\run_patch_checks.py 156
+python tools\run_patch_checks.py 155
+```

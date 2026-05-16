@@ -3089,3 +3089,11 @@ This continues the staged layout-unification path without changing scoring, rout
 ## Patch 158 — Receipt Reader Page Polish
 
 Patch D in the module-page unification sequence applied the shared page scaffold to Receipt Reader - Standard View. The reader now starts with clear page-like guidance while remaining upload-only and explanatory. It preserves native receipt values, metric observations, reader brief, human-review questions, parsing limits, failure-mode review signals, and batch/evidence-bundle boundaries. No scoring, routing, receipt schema, parsing, upload behavior, batch logic, protocol logic, telemetry/storage, certification, enforcement, or final-truth behavior changed.
+
+## Patch 159 — Remaining Module Page Polish
+
+Patch 159 completed Patch E of the staged module-page unification track. Boundary Cases, Evidence Lab, and World Lens now use the shared Patch 155 module-page scaffold, matching the calmer page-like orientation already applied to Mirror Check, Stress Test, and Receipt Reader.
+
+The patch is copy/layout only. It does not alter scoring, routing, taxonomy, receipt schema/generation, receipt parsing, empirical math, World Lens allocation, protocol logic, batch behavior, upload/download behavior, telemetry/storage, certification, enforcement, ranking, official authority, or final-truth behavior.
+
+Validation target: `python tools\run_patch_checks.py 159`.
