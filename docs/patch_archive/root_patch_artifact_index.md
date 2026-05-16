@@ -424,3 +424,15 @@ Archived from root into `docs/patch_archive/` during Patch 150:
 - Patch 149, 149.1, 149.2, 149.3, and 149.4 manifests/recovery notes
 
 Audit trail preserved; root clutter reduced.
+
+## Patch 151 root hygiene update
+
+Latest root artifacts after Patch 151:
+- `PATCH_151_MANIFEST.txt`
+- `PATCH_151_RECOVERY_NOTE.md`
+
+Archived from root into `docs/patch_archive/` during Patch 151:
+- `PATCH_150_MANIFEST.txt`
+- `PATCH_150_RECOVERY_NOTE.md`
+
+Audit trail preserved; root clutter reduced.

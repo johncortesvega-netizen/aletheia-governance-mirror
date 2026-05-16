@@ -70,7 +70,7 @@ def render_app_header(mascot_logo_uri: str, app_version: str, container=None) ->
                     <div class="hero-kicker">Aletheia V1 — Governance Mirror Final</div>
                     <div class="hero-title">ALETHEIA</div>
                     <div class="hero-sub">A mirror, not a throne.</div>
-                    <div class="caption">Aletheia V1 — Governance Mirror Final · English + Nederlands/Dutch input supported · Spot control. Protect people. Keep truth visible.</div>
+                    <div class="caption">Aletheia V1 — Governance Mirror Final · English-first; Dutch batch-test examples only · Spot control. Protect people. Keep truth visible.</div>
                 </div>
                 <div class="hero-emblem" aria-hidden="true"><img class="aletheia-mascot-logo" src="{mascot_logo_uri}" alt="" /></div>
             </div>
@@ -143,7 +143,7 @@ def render_sidebar_context(container=None) -> None:
 
     container.header("Reading controls")
     container.caption("Choose how alert the review should be to pressure, trust, and fit.")
-    container.caption("Input scope: English + Nederlands/Dutch are calibrated across modules.")
+    container.caption("Input scope: English-first. Dutch/Nederlands examples may be used for batch testing, not as a general app-wide compatibility claim.")
     container.caption(
         "Privacy boundary: no built-in telemetry, trackers, analytics SDKs, backend upload endpoint, "
         "public ledger sync, Global ID sync, or central user-input database."

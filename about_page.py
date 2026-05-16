@@ -15,7 +15,7 @@ def _header_image() -> str | None:
 
 def render_about():
     st.subheader("Why ALETHEIA")
-    st.info("ALETHEIA helps people review governance risk, evidence gaps, and safeguard needs. It reflects; people decide. Calibrated input language support is English and Nederlands/Dutch.")
+    st.info("ALETHEIA helps people review governance risk, evidence gaps, and safeguard needs. It reflects; people decide. ALETHEIA is English-first; Dutch/Nederlands examples are used for batch testing, not as a general app-wide language-compatibility claim.")
     st.caption("ALETHEIA v1.0 AI Integrity Preview: public adoption docs, demo path, release boundary, and stabilization checks are documented.")
 
     header = _header_image()
@@ -32,7 +32,7 @@ def render_about():
             - **World Lens** — simulate population-impact risk without authority.
             - **Protocol Guide** — read the operating rules and limits.
             
-            **Input language scope:** English and Nederlands/Dutch are calibrated across the app. Other languages may be pasted as text, but risk lexicons are not validated for them yet.
+            **Input language scope:** ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing. This is not a general app-wide language-compatibility claim; human review remains required.
             """
         )
 
@@ -321,7 +321,7 @@ PATCH_66_STRESS_TEST_RISK_SENSITIVITY_NOTE = "Patch 66 raises Stress Test sensit
 PATCH_67_1_NOTE = "Patch 67.1 adds Dutch Stress Test lexicon calibration so Dutch governance stress scenarios route to Needs Safeguards instead of being washed into Sanctuary."
 
 
-PATCH_67_2_NOTE = "Patch 67.2 closes Dutch Stress Test lexicon gaps and adds app-wide English/Nederlands input-scope wording."
+PATCH_67_2_NOTE = "Patch 67.2 closes Dutch Stress Test lexicon gaps. Later public copy clarifies that Dutch/Nederlands remains a batch-testing/example scope, not a general app-wide compatibility claim."
 
 
 PATCH_68_ADVANCED_ENGLISH_STRESS_NOTE = "Patch 68 adds advanced English Stress Test calibration and Asylum metric enforcement so advanced high-risk scenarios do not wash into Sanctuary."

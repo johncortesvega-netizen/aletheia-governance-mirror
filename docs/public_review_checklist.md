@@ -24,7 +24,7 @@ It is a checklist, not a certification. Completing it does not prove truth, safe
 ## 3. Signal-basis check
 
 - Are rule-based and heuristic limits visible?
-- Are English/Dutch calibration limits visible where relevant?
+- Is the English-first language scope visible where relevant, with Dutch/Nederlands examples framed as batch-test fixtures rather than general compatibility?
 - Are possible false positives and missed nuance acknowledged?
 - Are signal outputs treated as internal governance-risk readings rather than verdicts or certifications?
 

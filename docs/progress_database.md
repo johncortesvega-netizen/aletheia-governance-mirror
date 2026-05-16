@@ -499,7 +499,7 @@ Patch 67.2 closes the remaining Dutch Stress Test calibration gaps discovered af
 - Humanitarian aid prioritizing efficiency over appeal rights.
 - Revolutionary leadership promising repair without independent audit trail.
 
-The patch also adds app-wide input-language scope wording: English and Nederlands/Dutch are calibrated across the app. Other languages may be pasted as text but are not validated by the calibrated risk lexicon.
+Later public copy clarifies the safer language scope: ALETHEIA is English-first, and Dutch/Nederlands examples may be used for batch testing but are not a general app-wide language-compatibility claim.
 
 Boundary unchanged: local mirror only, no authority claim, no enforcement, no public ledger, no Global ID sync, no central storage, and human review required.
 
@@ -2449,7 +2449,7 @@ tools\run_patch_checks.bat 101
 Patch 103 documents the signal-detection posture identified in external review: ALETHEIA uses transparent rule-based and heuristic signal detection in key review paths. The patch makes this a trust asset rather than a hidden limitation.
 
 Implemented:
-- Added `docs/signal_detection.md` with the signal basis, strengths, known limits, English/Dutch calibration note, suggested receipt language, and contributor rule.
+- Added `docs/signal_detection.md` with the signal basis, strengths, known limits, English-first language-scope note, suggested receipt language, and contributor rule.
 - Updated README with a public pointer to signal transparency.
 - Updated `docs/architecture.md` to point to the dedicated signal-basis document.
 - Updated `CONTRIBUTING.md` with signal-detection contribution boundaries.
@@ -2474,7 +2474,7 @@ Patch 102 started the reviewable structural path with docs-first architecture/on
 
 ## Patch 103 — Signal Detection Transparency Documentation
 
-Patch 103 documented ALETHEIA's transparent rule-based and heuristic signal-detection basis. It clarified explainability/privacy strengths, English/Dutch calibration limits, and the requirement that signal outputs remain internal governance-risk readings rather than verdicts or certifications.
+Patch 103 documented ALETHEIA's transparent rule-based and heuristic signal-detection basis. It clarified explainability/privacy strengths, English-first language-scope limits, and the requirement that signal outputs remain internal governance-risk readings rather than verdicts or certifications.
 
 ## Patch 104 — Boundary, Privacy, and Hosted-Use Transparency
 
@@ -2774,7 +2774,7 @@ Patch 128 public wording note: regulation as a floor means compliance is not tre
 
 Patch 129 adds a small copy-only input clarity layer. The patch centralizes selected empty-input, language-calibration, and upload/read-failure messages in `ui/input_clarity.py` and wires those helpers into `app.py` where the same input checks already existed.
 
-Structural intent: refinement, not expansion. The patch improves the way ALETHEIA explains missing pasted artifacts, empty batch blocks, English/Dutch calibration limits, public-data upload requirements, and CSV read failures. It does not change scoring, routing, receipts, signal logic, privacy scan behavior, AI Integrity scan behavior, World Lens math, external calls, telemetry, storage, certification, enforcement, or final-truth behavior. Human review remains required.
+Structural intent: refinement, not expansion. The patch improves the way ALETHEIA explains missing pasted artifacts, empty batch blocks, English-first language-scope limits, public-data upload requirements, and CSV read failures. It does not change scoring, routing, receipts, signal logic, privacy scan behavior, AI Integrity scan behavior, World Lens math, external calls, telemetry, storage, certification, enforcement, or final-truth behavior. Human review remains required.
 ## Patch 130 — Release Candidate Freeze
 
 Patch 130 records ALETHEIA as being in release-candidate refinement mode after the Patch 127-129 public polish sequence. The current behavior is the surface to preserve. Future work should be limited to bug fixes, copy/readability fixes, input clarity, test hygiene, documentation navigation, and small behavior-preserving cleanup.
@@ -3030,4 +3030,19 @@ Summary: Patch 150 makes the Unit Preview `Proceed to ALETHEIA` button visually 
 Boundary notes:
 - UI/copy/documentation and receipt text only.
 - No scoring, routing, module-engine, receipt schema, receipt hash, World Lens math, Evidence Lab math, AI Integrity scoring, telemetry, storage, Global ID sync, public ledger, certification, enforcement, official authority, or final-truth behavior changed.
+- Human review remains required.
+
+## Patch 151 — English-First Language Scope Copy Clarification
+
+Date: 2026-05-16
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 151 is a copy-only transparency patch. It removes public-facing language that could be read as a general Dutch/Nederlands app-wide compatibility claim and replaces it with the safer boundary: ALETHEIA is English-first; Dutch/Nederlands examples may be used for batch testing; this is not a general app-wide language-compatibility claim.
+
+Files updated include the public app copy, About / Why ALETHEIA copy, app-shell captions, input-clarity caveats, README, contributor/reviewer docs, signal-detection docs, trust package copy, the Dutch gap-fix doc, patch index/status/progress records, and related copy assertions in tests.
+
+Boundary notes:
+- Dutch/Nederlands batch fixtures and Dutch stress-test rules are not removed.
+- The patch does not change scoring, routing, taxonomy, receipt schema/generation, signal regex/weights, Stress Test behavior, Mirror Check behavior, AI Integrity behavior, Privacy Audit behavior, World Lens math, external calls, telemetry, storage, Global ID sync, public ledger sync, certification, enforcement, official authority, or final-truth behavior.
 - Human review remains required.

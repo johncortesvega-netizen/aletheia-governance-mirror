@@ -2,7 +2,7 @@
 
 ## Summary
 
-Closes remaining Dutch Stress Test lexicon gaps after Patch 67.1 and adds app-wide input-language scope wording.
+Closes remaining Dutch Stress Test lexicon gaps after Patch 67.1. Later public copy clarifies that Dutch/Nederlands examples are batch-test fixtures, not a general app-wide language-compatibility claim.
 
 ## Fixed
 
@@ -16,7 +16,7 @@ The following Dutch patterns now route to `THRESHOLD / Needs Safeguards`:
 
 ## Language scope
 
-The app now states at the header/control level that calibrated input support is English and Nederlands/Dutch only. Other languages may be pasted, but risk lexicons are not validated for them yet.
+Current public copy clarifies: ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim. Human review remains required.
 
 ## Boundary
 

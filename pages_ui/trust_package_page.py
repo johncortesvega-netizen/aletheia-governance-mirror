@@ -29,7 +29,7 @@ TRUST_PACKAGE_REVIEW_PATH = [
     (
         "Signal basis and limits",
         ["docs/signal_detection.md", "docs/SIGNAL_DICTIONARY.md"],
-        "Review rule-based and heuristic limits, including English/Dutch calibration boundaries.",
+        "Review rule-based and heuristic limits, including English-first language-scope boundaries.",
     ),
     (
         "Architecture and maintainability",

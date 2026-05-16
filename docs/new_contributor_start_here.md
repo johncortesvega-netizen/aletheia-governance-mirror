@@ -33,7 +33,7 @@ Start with:
 
 ## Understand the signal posture
 
-ALETHEIA uses transparent rule-based and heuristic signal detection in key places. That makes the system explainable and reviewable, but not all-knowing. It may miss nuance, implicit context, irony, culturally specific meaning, or language outside the strongest English/Dutch calibration.
+ALETHEIA uses transparent rule-based and heuristic signal detection in key places. That makes the system explainable and reviewable, but not all-knowing. It may miss nuance, implicit context, irony, culturally specific meaning, or language outside the English-first review scope.
 
 ## Understand the patch files
 

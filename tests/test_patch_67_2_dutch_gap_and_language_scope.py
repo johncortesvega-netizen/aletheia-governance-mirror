@@ -63,10 +63,11 @@ def test_patch_67_2_app_wide_language_scope_is_visible():
     about_text = Path("about_page.py").read_text(encoding="utf-8")
     combined = app_text + "\n" + about_text
     assert "SUPPORTED_INPUT_LANGUAGE_NOTE" in app_text
-    assert "English + Nederlands/Dutch input supported" in app_text
+    assert "English-first" in app_text
+    assert "Dutch/Nederlands examples may be used for batch testing" in combined
     assert "Input language scope" in app_text
-    assert "English and Nederlands/Dutch" in combined
-    assert "risk lexicon" in combined or "risk lexicons" in combined
+    assert "general app-wide language-compatibility claim" in combined
+    assert "human review remains required" in combined.lower()
 
 
 def test_patch_67_2_docs_and_manifest_exist():

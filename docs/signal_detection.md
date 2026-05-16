@@ -44,7 +44,7 @@ Rule-based and heuristic detection can miss or misread:
 - benign uses of words that usually indicate pressure;
 - languages outside the strongest calibration path.
 
-Current calibration is strongest for English and Dutch/Nederlands. Other languages may produce incomplete, noisy, or less reliable readings and require extra human review.
+ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim. Other languages may produce incomplete, noisy, or less reliable readings and require extra human review.
 
 ## Why ALETHEIA does not simply replace this with LLM analysis
 

@@ -91,7 +91,7 @@ Examples of prohibited claims or directions:
 
 ## Signal-detection transparency
 
-ALETHEIA uses transparent rule-based and heuristic signal detection in key review paths. This is a reviewability and privacy choice, not a claim that the system understands all nuance. Contributors should preserve the public signal basis: strongest calibration is English and Dutch/Nederlands, subtle context may be missed, and human review remains required.
+ALETHEIA uses transparent rule-based and heuristic signal detection in key review paths. This is a reviewability and privacy choice, not a claim that the system understands all nuance. Contributors should preserve the public signal basis: ALETHEIA is English-first; Dutch/Nederlands examples may be used for batch testing; subtle context may be missed; and human review remains required.
 
 Do not describe signal readings as verdicts, proof, certification, automated approval, legal findings, or final truth. Use `docs/SIGNAL_DICTIONARY.md` as a reviewer-facing glossary only; it is not a scoring specification and must not be used to invent untested weights.
 

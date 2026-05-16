@@ -26,7 +26,7 @@ External review correctly identified that ALETHEIA's signal detection is rule-ba
 
 - transparent and explainable;
 - local-first and privacy-preserving;
-- strongest in English and Dutch/Nederlands;
+- English-first, with Dutch/Nederlands examples treated as batch-test fixtures rather than a general compatibility claim;
 - limited with irony, coded language, cultural context, and subtle multilingual meaning;
 - always subordinate to human review.
 

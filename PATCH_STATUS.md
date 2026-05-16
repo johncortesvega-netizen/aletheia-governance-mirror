@@ -265,7 +265,7 @@ Status: READY FOR LOCAL TESTING
 
 Summary:
 - Adds `docs/signal_detection.md` to document ALETHEIA's transparent rule-based and heuristic signal-detection posture.
-- Frames rule-based detection as explainable, local-first, and reviewable while clearly naming limits around nuance, irony, coded language, cultural context, and languages outside the strongest English/Dutch calibration path.
+- Frames rule-based detection as explainable, local-first, and reviewable while clearly naming limits around nuance, irony, coded language, cultural context, and languages outside the English-first review scope.
 - Updates README, architecture, and contributor docs with the signal-basis pointer.
 - Updates the Patch 101 baseline manifest hashes for changed watched docs so the human-auditable baseline remains explicit and reviewable.
 - No scoring, verdict-routing, signal-pattern, signal-weight, receipt schema, Streamlit behavior, external-call, telemetry, storage, or authority-boundary logic changed.
@@ -613,7 +613,7 @@ tools\run_patch_checks.bat 67_1
 
 Status: Ready for local verification.
 
-Closes five remaining Dutch Stress Test false-SANCTUARY patterns and adds app-wide English/Nederlands input-scope wording in the header/control surface. This patch remains diagnostic only: no enforcement, no authority claim, no Global ID sync, no public ledger, and no central storage.
+Closes five remaining Dutch Stress Test false-SANCTUARY patterns. Current public copy clarifies that Dutch/Nederlands examples are batch-test fixtures, not a general app-wide language-compatibility claim. This patch remains diagnostic only: no enforcement, no authority claim, no Global ID sync, no public ledger, and no central storage.
 
 Check command:
 
@@ -2508,7 +2508,7 @@ Boundary preserved: documentation/tests only; no runtime behavior, scoring, verd
 
 Status: PASSED BY USER / READY FOR NEXT PATCH
 
-Patch 103 documents ALETHEIA's transparent rule-based and heuristic signal-detection posture, including English/Dutch calibration limits and human-review requirements.
+Patch 103 documents ALETHEIA's transparent rule-based and heuristic signal-detection posture, including English-first language-scope limits and human-review requirements.
 
 Boundary preserved: documentation/tests only; no scoring, verdict routing, signal-pattern, signal-weight, receipt schema, telemetry, storage, external-call behavior, or authority-claim changes.
 
@@ -3016,7 +3016,7 @@ Status: READY FOR LOCAL TESTING
 
 Summary:
 - Adds `ui/input_clarity.py` as a copy-only helper for selected input and upload messages.
-- Clarifies empty AI Integrity input, empty batch artifacts, English/Dutch language-calibration limits, public-data upload requirements, and direct CSV read failures.
+- Clarifies empty AI Integrity input, empty batch artifacts, English-first language-scope limits, public-data upload requirements, and direct CSV read failures.
 - Keeps this as refinement mode only: clearer user guidance, same mirror behavior.
 - No scoring, verdict-routing, signal-pattern, signal-weight, receipt schema, module-routing, privacy-scan behavior, AI Integrity scan behavior, World Lens math, external-call, telemetry, analytics, storage, privacy-guarantee, certification, enforcement, or final-truth behavior changed.
 
@@ -3372,4 +3372,19 @@ python tools\run_patch_checks.py 146_1
 python tools\run_patch_checks.py 146
 python tools\run_patch_checks.py 145
 python tools\run_protocol_baseline_self_audit.py
+```
+
+## Patch 151 — English-First Language Scope Copy Clarification
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 151 removes public-facing wording that could imply general Dutch/Nederlands app-wide compatibility. The replacement copy states that ALETHEIA is English-first and that Dutch/Nederlands examples may be used for batch testing, but are not a general app-wide language-compatibility claim.
+
+Boundary preserved: copy/documentation/tests only. Dutch/Nederlands batch fixtures and Dutch stress-test rules remain available for testing. No scoring, routing, taxonomy, receipt schema/generation, signal regex/weights, Stress Test behavior, Mirror Check behavior, AI Integrity behavior, Privacy Audit behavior, World Lens math, external calls, telemetry, storage, Global ID sync, public ledger sync, certification, enforcement, official authority, or final-truth behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 151
+python tools\run_patch_checks.py 150
 ```

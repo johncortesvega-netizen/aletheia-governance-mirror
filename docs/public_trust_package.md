@@ -51,7 +51,7 @@ Read:
 - `docs/signal_detection.md`
 - `docs/SIGNAL_DICTIONARY.md`
 
-Review question: are the visible signals useful as review prompts, while remembering that rule-based and heuristic detection may miss nuance, irony, coded language, cultural context, domain shorthand, or languages outside the strongest English/Dutch calibration path?
+Review question: are the visible signals useful as review prompts, while remembering that rule-based and heuristic detection may miss nuance, irony, coded language, cultural context, domain shorthand, or languages outside the English-first review scope?
 
 ### 4. Architecture and maintainability
 

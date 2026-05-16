@@ -15,7 +15,7 @@ This catalog prevents confusion between:
 
 ## Official question-bank files
 
-All official question-bank files are Dutch/Nederlands (`NL`) and are intended for Mirror Check or Stress Test batch validation of audit-question handling. Each file contains exactly 50 numbered lines. Expected receipt behavior is `Input status: QUESTION_PROMPT`, `Protocol-adjusted state: QUESTION_PROMPT`, `Risk: Review Tool`, and `Protocol label: Audit Question / Review Tool`.
+The Dutch/Nederlands (`NL`) question-bank files are test fixtures for Mirror Check or Stress Test batch validation of audit-question handling. They are not a general app-wide language-compatibility claim. Each file contains exactly 50 numbered lines. Expected receipt behavior is `Input status: QUESTION_PROMPT`, `Protocol-adjusted state: QUESTION_PROMPT`, `Risk: Review Tool`, and `Protocol label: Audit Question / Review Tool`.
 
 | Official file | Language | Lines | Purpose | Expected distribution |
 |---|---:|---:|---|---|

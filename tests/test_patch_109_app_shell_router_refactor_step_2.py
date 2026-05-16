@@ -63,7 +63,8 @@ def test_patch_109_app_shell_renders_sidebar_copy_without_streamlit_runtime():
     assert "ALETHEIA" in combined
     assert "A mirror, not a throne." in combined
     assert "Reading controls" in combined
-    assert "English + Nederlands/Dutch" in combined
+    assert "English-first" in combined
+    assert "Dutch/Nederlands examples may be used for batch testing" in combined
     assert "Privacy boundary" in combined
     assert "no built-in telemetry" in combined
 

@@ -7,7 +7,7 @@ Patch 129 is a refinement-only pass. It makes selected user-facing input and upl
 - Added `ui/input_clarity.py` for copy-only input and error messages.
 - Clarified empty AI Integrity artifact input.
 - Clarified empty AI Integrity batch input.
-- Clarified the English/Dutch input-language calibration caveat near pasted artifact review.
+- Clarified the English-first language-scope caveat near pasted artifact review, while keeping Dutch/Nederlands examples as batch-test fixtures only.
 - Clarified public-data upload failure and direct CSV read failure messages.
 
 ## Boundary

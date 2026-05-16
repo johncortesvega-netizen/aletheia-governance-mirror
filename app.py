@@ -272,7 +272,7 @@ def enforce_missing_safeguard_threshold_route(
 
 
 APP_VERSION = "v1.0-governance-mirror-final"
-SUPPORTED_INPUT_LANGUAGE_NOTE = "Input language support: English and Nederlands/Dutch only. Other languages may be reviewed as text, but the calibrated risk lexicon is not validated for them yet."
+SUPPORTED_INPUT_LANGUAGE_NOTE = "Language scope: ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim. Human review remains required."
 PROJECT_ROOT = Path(__file__).resolve().parent
 ABOUT_HEADER_IMAGE = PROJECT_ROOT / "assets" / "about_header.png"
 MASCOT_LOGO_IMAGE = PROJECT_ROOT / "assets" / "aletheia_robot_laurel_logo.png"
@@ -3581,7 +3581,7 @@ with tab_sim:
     with st.expander("How to write good Stress Test scenarios", expanded=False):
         st.markdown(
             """
-Stress Test works best when you write a **scenario as a governance pattern**, not as a personal accusation. Use English or Nederlands/Dutch; other languages are not calibrated yet.
+Stress Test works best when you write a **scenario as a governance pattern**, not as a personal accusation. ALETHEIA is English-first; Dutch/Nederlands examples may appear in batch-test fixtures, but that is not a general language-compatibility claim.
 
 Include: who gains power, how power is obtained, what can go wrong, what safeguards exist or are missing, and whether affected people can appeal, exit, or request correction.
 
@@ -7639,7 +7639,7 @@ with tab_chat:
     render_audit_module_integrity_panel()
 
     st.info(
-        "Bring one idea at a time. English and Nederlands/Dutch inputs are calibrated. ALETHEIA checks how power moves, where appeal is protected, and where review is needed. You keep the judgment."
+        "Bring one idea at a time. ALETHEIA is English-first; Dutch/Nederlands examples may be used for batch testing, not as a general app-wide compatibility claim. ALETHEIA checks how power moves, where appeal is protected, and where review is needed. You keep the judgment."
     )
 
     with st.expander("What Mirror Check looks for", expanded=False):

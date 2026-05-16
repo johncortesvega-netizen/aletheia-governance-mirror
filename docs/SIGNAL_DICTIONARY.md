@@ -18,7 +18,7 @@ They should not be read as verdicts, proof, automated approval, legal findings, 
 
 ALETHEIA uses transparent rule-based and heuristic signal detection in key review paths. That means signal families may be based on explicit words, phrase patterns, regex-style markers, structural cues, score guards, and protocol rules that can be inspected and tested.
 
-This improves explainability and local-first review, but it can miss subtle context, irony, coded language, translation nuance, domain shorthand, and meaning that depends on material outside the submitted artifact. Current calibration is strongest for English and Dutch/Nederlands.
+This improves explainability and local-first review, but it can miss subtle context, irony, coded language, translation nuance, domain shorthand, and meaning that depends on material outside the submitted artifact. ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing; this is not a general app-wide language-compatibility claim.
 
 ## How to read the fields
 
@@ -156,7 +156,7 @@ No entry is a final judgment. A signal can be present in legitimate text, educat
 
 ## Language calibration
 
-Current signal language is strongest for English and Dutch/Nederlands. Other languages should be treated with extra caution. A translated artifact may alter pressure cues, soften authority claims, or miss culturally specific coercion.
+ALETHEIA signal language is English-first. Dutch/Nederlands examples may be used for batch testing; other languages should be treated with extra caution. A translated artifact may alter pressure cues, soften authority claims, or miss culturally specific coercion.
 
 For multilingual review, keep the original text when possible and use translation as a bridge, not a replacement for human review.
 

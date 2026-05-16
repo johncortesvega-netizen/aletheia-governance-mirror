@@ -65,7 +65,7 @@ The current structural improvement path starts at Patch 102:
 | Patch | Focus | Runtime behavior |
 | --- | --- | --- |
 | 102 | Structural improvement entry point, architecture docs, contributor start | No runtime behavior change |
-| 103 | Signal-detection transparency and English/Dutch calibration limits | No runtime behavior change |
+| 103 | Signal-detection transparency and English-first language-scope limits | No runtime behavior change |
 | 104 | Boundary, privacy, and hosted-use transparency | No Streamlit page wiring change |
 | 105 | Patch-history and public-trust navigation | No runtime behavior change |
 | 106 | Signal dictionary and glossary for reviewer-facing signal families | No runtime behavior change |
@@ -282,7 +282,7 @@ Patch 128 public wording note: regulation as a floor means compliance is not tre
 
 ## Patch 129 - Input and Error Clarity Pass
 
-Patch 129 improves selected public input and error messages without changing ALETHEIA's behavior. It adds `ui/input_clarity.py` for copy-only guidance around empty AI Integrity input, empty batch artifacts, English/Dutch language-calibration caveats, public-data uploads, and direct CSV read failures.
+Patch 129 improves selected public input and error messages without changing ALETHEIA's behavior. It adds `ui/input_clarity.py` for copy-only guidance around empty AI Integrity input, empty batch artifacts, English-first language-scope caveats, public-data uploads, and direct CSV read failures.
 
 This patch keeps the machine in refinement mode: clearer messages, same mirror. No scoring, routing, receipts, signal logic, privacy scan behavior, AI Integrity scan behavior, World Lens math, external calls, telemetry, storage, certification, enforcement, or final-truth behavior changed. Human review remains required.
 ## Patch 130 — Release Candidate Freeze

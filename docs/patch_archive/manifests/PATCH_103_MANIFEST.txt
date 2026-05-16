@@ -4,7 +4,7 @@ Status: READY FOR LOCAL TESTING
 
 Purpose:
 - Document ALETHEIA's rule-based and heuristic signal-detection posture before larger technical refactors.
-- Make explainability, English/Dutch calibration limits, privacy/local-first tradeoffs, and human-review requirements explicit.
+- Make explainability, English-first language-scope limits, privacy/local-first tradeoffs, and human-review requirements explicit.
 - Convert the external-review observation about regex/heuristic limits into a public contributor-facing trust asset.
 
 Files added:

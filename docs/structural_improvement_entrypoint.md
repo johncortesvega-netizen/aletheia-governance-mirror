@@ -32,7 +32,7 @@ Create public documentation that says what ALETHEIA is, what it is not, how modu
 
 ### 2. Signal transparency documentation
 
-Document the rule-based heuristic nature of the signal system. This is a transparency strength, but it has limits: nuance, irony, culturally specific meaning, and languages outside the calibrated English/Dutch path may require extra human review.
+Document the rule-based heuristic nature of the signal system. This is a transparency strength, but it has limits: nuance, irony, culturally specific meaning, and languages outside the English-first review scope may require extra human review. Dutch/Nederlands examples may be used for batch testing, not as a general compatibility claim.
 
 ### 3. Privacy and hosting-limit documentation
 

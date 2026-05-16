@@ -71,7 +71,7 @@ def test_public_review_checklist_covers_required_review_domains():
         "public ledger sync",
         "external model calls",
         "rule-based and heuristic limits",
-        "English/Dutch calibration",
+        "English-first language-scope",
         "readings rather than verdicts or certifications",
         "more human review",
     ]

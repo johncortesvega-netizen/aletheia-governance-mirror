@@ -10,9 +10,9 @@ from typing import Any
 
 
 INPUT_LANGUAGE_CALIBRATION_CAVEAT = (
-    "Language calibration: ALETHEIA is strongest for English and Dutch/Nederlands. "
-    "Other languages may still be reviewed as text, but the calibrated signal lexicon "
-    "is not validated for them yet. Human review remains required."
+    "Language scope: ALETHEIA is English-first. "
+    "Dutch/Nederlands examples may be used for batch testing, but this is not a "
+    "general app-wide language-compatibility claim. Human review remains required."
 )
 
 EMPTY_AI_INTEGRITY_ARTIFACT_MESSAGE = (

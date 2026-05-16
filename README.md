@@ -131,7 +131,7 @@ Boundary preserved: Patch 102 changes documentation and tests only. It does not 
 
 Patch 103 documents ALETHEIA's transparent rule-based and heuristic signal-detection posture. The signal system is intentionally reviewable and local-first: it uses inspectable patterns, bounded rules, and protocol guardrails rather than live model calls or opaque external analysis.
 
-This is a strength for explainability and privacy, but it has limits. It may miss or misread irony, coded language, indirect coercion, culturally specific meaning, domain shorthand, long context-dependent arguments, or languages outside the strongest English/Dutch calibration path.
+This is a strength for explainability and privacy, but it has limits. It may miss or misread irony, coded language, indirect coercion, culturally specific meaning, domain shorthand, long context-dependent arguments, or languages outside the English-first review scope.
 
 Read: `docs/signal_detection.md`
 
@@ -891,7 +891,7 @@ tools\run_patch_checks.bat 67_1
 
 Patch 67.2 closes the remaining Dutch Stress Test lexicon gaps after Patch 67.1. DAO tokenholder concentration, emergency-law bypass without audit trail, term-limit removal, efficiency over appeal rights, and revolutionary power without independent audit now route to `THRESHOLD / Needs Safeguards` instead of `SANCTUARY`.
 
-The app also now states globally that calibrated input support is **English and Nederlands/Dutch**. Other languages may be pasted as text, but the risk lexicons are not validated for them yet.
+Current public copy clarifies the safer scope: **ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim.** Human review remains required.
 
 Run:
 
@@ -1125,7 +1125,7 @@ Patch 128 public wording note: regulation as a floor means compliance is not tre
 
 Patch 129 is a refinement-only patch. It centralizes selected empty-input, language-calibration, and upload/read-failure messages in `ui/input_clarity.py` so user guidance is clearer without expanding ALETHEIA.
 
-The patch clarifies that pasted AI Integrity artifacts are required, empty batch blocks are ignored, English and Dutch/Nederlands remain the strongest calibrated input languages, and uploaded public data or CSV files may need file-type, column-name, encoding, and country/year checks. It does not change scoring, routing, receipts, signal logic, privacy scan behavior, AI Integrity scan behavior, World Lens math, external calls, telemetry, storage, certification, enforcement, or final-truth behavior. Human review remains required.
+The patch clarifies that pasted AI Integrity artifacts are required, empty batch blocks are ignored, ALETHEIA is English-first and Dutch/Nederlands examples remain batch-test fixtures, not a general language-compatibility claim, and uploaded public data or CSV files may need file-type, column-name, encoding, and country/year checks. It does not change scoring, routing, receipts, signal logic, privacy scan behavior, AI Integrity scan behavior, World Lens math, external calls, telemetry, storage, certification, enforcement, or final-truth behavior. Human review remains required.
 ## Patch 130 — Release Candidate Freeze
 
 Patch 130 records ALETHEIA as being in release-candidate refinement mode after the Patch 127-129 public polish sequence. The current behavior is the surface to preserve. Future work should be limited to bug fixes, copy/readability fixes, input clarity, test hygiene, documentation navigation, and small behavior-preserving cleanup.

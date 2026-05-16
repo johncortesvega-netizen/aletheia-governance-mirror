@@ -1,0 +1,14 @@
+Patch 151 root hygiene delete list
+
+After confirming the archived copies exist, remove these older root-level patch artifacts from the project root to keep only the latest patch visible:
+
+- PATCH_150_MANIFEST.txt
+- PATCH_150_RECOVERY_NOTE.md
+
+Do not delete:
+
+- docs/patch_archive/manifests/PATCH_150_MANIFEST.txt
+- docs/patch_archive/recovery_notes/PATCH_150_RECOVERY_NOTE.md
+- PATCH_151_MANIFEST.txt
+- PATCH_151_RECOVERY_NOTE.md
+- PATCH_151_DELETE_LIST.txt

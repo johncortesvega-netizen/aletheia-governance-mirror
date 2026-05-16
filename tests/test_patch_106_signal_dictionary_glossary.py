@@ -27,7 +27,7 @@ def test_patch_106_dictionary_is_glossary_not_scoring_specification():
         "review prompts",
         "not be read as verdicts",
         "transparent rule-based and heuristic signal detection",
-        "Current calibration is strongest for English and Dutch/Nederlands",
+        "ALETHEIA is English-first",
         "Possible false positives",
         "Repair direction",
         "ALETHEIA surfaces signals. Humans keep the judgment.",

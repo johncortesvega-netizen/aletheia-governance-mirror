@@ -40,11 +40,11 @@ The modules use shared protocol logic and shared boundary language. This should 
 
 ## Signal detection posture
 
-ALETHEIA uses transparent rule-based and heuristic signal detection in key places. This is explainable and reviewable, but limited. It may miss nuance, irony, implicit context, culturally specific language, or language outside its strongest English/Dutch calibration.
+ALETHEIA uses transparent rule-based and heuristic signal detection in key places. This is explainable and reviewable, but limited. It may miss nuance, irony, implicit context, culturally specific language, or language outside its English-first review scope.
 
 This limitation is intentional to document clearly, not hide. Human review remains required.
 
-Patch 103 adds the dedicated signal transparency note: `docs/signal_detection.md`. Treat that file as the public basis for explaining why rule-based detection is explainable and local-first, but limited with irony, coded language, culturally specific context, and languages outside the strongest English/Dutch calibration path.
+Patch 103 adds the dedicated signal transparency note: `docs/signal_detection.md`. Treat that file as the public basis for explaining why rule-based detection is explainable and local-first, but limited with irony, coded language, culturally specific context, and languages outside the English-first review scope.
 
 ## Privacy and external-call posture
 

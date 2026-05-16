@@ -30,7 +30,7 @@ Expected result: these patterns route to `THRESHOLD / Needs Safeguards` and keep
 
 Patch 67.2 also adds a visible app-wide language note:
 
-> Input language support: English and Nederlands/Dutch only. Other languages may be reviewed as text, but the calibrated risk lexicon is not validated for them yet.
+> Language scope: ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim. Human review remains required.
 
 This appears in the app header/controls, not only in the Stress Test guide.
 

@@ -34,7 +34,7 @@ def test_input_clarity_helpers_are_copy_only_and_boundary_safe():
         "warn_no_public_data_upload",
         "render_upload_processing_failed",
         "render_direct_csv_read_failed",
-        "English and Dutch/Nederlands",
+        "English-first",
         "Human review remains required",
         "ALETHEIA does not invent missing artifacts",
         "Check file type, column names, encoding, and country/year fields",
