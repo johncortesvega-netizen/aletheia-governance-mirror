@@ -1,3 +1,7 @@
+# Patch 153 - Unit Preview Start Here Failure-Mode Side-by-Side Expansion
+
+Patch 153 adds the failure-mode vocabulary directly to the Aletheia Unit Preview Start Here expander. The expander now presents a side-by-side layout: **What ALETHEIA looks for** and **Seven failure-mode review signals**. This is an in-place expansion, not a new tab. No scoring, routing, receipt schema, protocol logic, Receipt Reader logic, or World Lens math changed. Human review remains required.
+
 ## Patch 152 — Receipt Reader Failure-Mode Verbalization
 
 Status: READY FOR LOCAL REVIEW

@@ -1,0 +1,7 @@
+# PATCH 153 DELETE LIST
+# Root patch hygiene suggestion only. Do not delete audit history.
+# After applying Patch 153, older root-visible patch artifacts may be moved into docs/patch_archive/.
+
+PATCH_152_MANIFEST.txt
+PATCH_152_RECOVERY_NOTE.md
+PATCH_152_DELETE_LIST.txt

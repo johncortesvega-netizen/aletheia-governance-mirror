@@ -1,0 +1,32 @@
+ALETHEIA PATCH 153 MANIFEST
+===========================
+
+Patch title: Unit Preview Start Here Failure-Mode Side-by-Side Expansion
+
+Purpose:
+- Add the failure-mode vocabulary directly to the Start here expander on Aletheia Unit Preview.
+- Present the copy side by side: "What ALETHEIA looks for" and "Seven failure-mode review signals".
+- Keep the change as an in-place expansion, not a new tab.
+
+Changed files:
+- ui/unit_preview.py
+- tests/test_patch_153_unit_preview_failure_mode_start_here.py
+- PATCH_153_MANIFEST.txt
+- PATCH_153_RECOVERY_NOTE.md
+- PATCH_153_DELETE_LIST.txt
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+
+Behavior boundaries:
+- No scoring change.
+- No routing change.
+- No receipt schema change.
+- No protocol logic change.
+- No Receipt Reader logic change.
+- No World Lens math change.
+- No new tab.
+- Human review remains required.
+
+Validation:
+- python tools/run_patch_checks.py 153

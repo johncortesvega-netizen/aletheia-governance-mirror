@@ -1,3 +1,7 @@
+## Patch 153 - Unit Preview Start Here Failure-Mode Side-by-Side Expansion
+
+Patch 153 places the failure-mode vocabulary into the existing Unit Preview Start Here expander. The layout is side by side: "What ALETHEIA looks for" and the seven failure-mode review signals. It is not a new tab and does not change scoring, routing, receipt schema, protocol logic, or module behavior.
+
 ## Patch 149.2 — Unit Preview PoC Dropdown Restore Hotfix
 
 Latest root artifacts: PATCH_150_MANIFEST.txt and PATCH_150_RECOVERY_NOTE.md. Patch 148/149 root artifacts archived under docs/patch_archive/. Scope: red/high-contrast entry button, cleaner audit-loop proof copy, public boundary boxes, safer taxonomy language, and stronger receipt boundary wording.

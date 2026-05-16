@@ -1,3 +1,5 @@
+Patch 153 adds the seven failure-mode review signals to the Aletheia Unit Preview Start Here expander as a side-by-side verbalization layer: "What ALETHEIA looks for" next to "Seven failure-mode review signals." The change is copy/layout only and does not alter scoring, routing, receipt schema, protocol logic, Receipt Reader behavior, or World Lens math. Human review remains required.
+
 ## Patch 152 — Receipt Reader Failure-Mode Verbalization
 
 Patch 152 adds the expanded failure-mode verbalization as a visible review layer in Receipt Reader for all uploaded receipts and mirrors the wording into README, About / Why ALETHEIA, Signal Dictionary, Receipt Reader docs, and AI audit-loop reviewer notes. The named review signals are authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, and no-appeal automation.

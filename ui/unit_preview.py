@@ -64,6 +64,30 @@ def get_unit_preview_start_here_markdown() -> str:
 
 
 
+def get_unit_preview_failure_mode_markdown() -> str:
+    """Return the seven failure-mode signals for the Start Here expander."""
+    return """
+- **Authority drift** — when a system starts sounding like it can decide, certify, command, legitimize, rank, punish, or replace human judgment.
+- **Evidence inflation** — when claims become stronger than the evidence actually inspected.
+- **Flattery pressure** — when approval, reassurance, or validation is disguised as neutral analysis.
+- **Capture pressure** — when power concentrates in one actor, platform, institution, token group, committee, model owner, funder, or technical gatekeeper.
+- **Sanctification drift** — when poetic, religious, moral, symbolic, or higher-truth language gets turned into operational authority.
+- **False neutrality** — when provider-shaped assumptions, institutional preferences, or hidden defaults are presented as objective reasoning.
+- **No-appeal automation** — when people are affected by a decision without review, contestation, explanation, or repair path.
+"""
+
+
+def get_unit_preview_what_aletheia_looks_for_markdown() -> str:
+    """Return concise Start Here orientation for ALETHEIA's review lens."""
+    return """
+ALETHEIA looks for pressure patterns that can make a system appear more legitimate, neutral, certain, or authoritative than the evidence supports.
+
+It watches for signals around power, evidence, appeal, capture, language, and human-review needs. These signals are not verdicts or proof of wrongdoing. They are prompts for review.
+
+Use them to ask better questions before relying on a reading, receipt, AI output, policy, governance proposal, or institutional process.
+"""
+
+
 def get_unit_preview_proceed_button_style() -> str:
     """Return CSS that makes the proceed button visually distinct and high-contrast."""
     return """
@@ -721,6 +745,13 @@ def render_unit_preview(container=None) -> bool:
     container.markdown(get_unit_preview_how_to_use_markdown())
     with container.expander("Start here: try this first", expanded=False):
         container.markdown(get_unit_preview_start_here_markdown())
+        start_columns = container.columns(2, gap="large")
+        with start_columns[0]:
+            container.markdown("#### What ALETHEIA looks for")
+            container.markdown(get_unit_preview_what_aletheia_looks_for_markdown())
+        with start_columns[1]:
+            container.markdown("#### Seven failure-mode review signals")
+            container.markdown(get_unit_preview_failure_mode_markdown())
 
     preview_text = container.text_area(
         "Short text, question, or scenario",
