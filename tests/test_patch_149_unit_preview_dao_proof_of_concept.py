@@ -45,11 +45,13 @@ def test_patch_149_puts_dao_cases_inside_side_by_side_proof_of_concept_dropdowns
 
     assert "Proof-of-concept mirrors" in source
     assert "render_unit_preview_proof_concepts_side_by_side(container)" in source
-    assert "render_ai_audit_loop_evidence(ai_column)" in source
-    assert "render_dao_governance_proof_of_concept(dao_column)" in source
+    assert "render_ai_audit_loop_evidence(ai_expander)" in source
+    assert "render_dao_governance_proof_of_concept(dao_expander)" in source
     assert "container.columns(2)" in source
-    assert 'with ai_column.expander("Proof of concept: AI audit-loop evidence", expanded=False):' in source
-    assert 'with dao_column.expander("Proof of concept: DAO governance mirror cases", expanded=False):' in source
+    assert 'ai_expander = ai_column.expander("Proof of concept: AI audit-loop evidence", expanded=False)' in source
+    assert 'with ai_expander:' in source
+    assert 'dao_expander = dao_column.expander("Proof of concept: DAO governance mirror cases", expanded=False)' in source
+    assert 'with dao_expander:' in source
     assert "DAO tools propose / vote / delegate / execute" in source
     assert "Strengths / useful design signals" in source
     assert "Risk signals / review pressure" in source

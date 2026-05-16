@@ -1,0 +1,47 @@
+PATCH 149.2 MANIFEST — UNIT PREVIEW POC DROPDOWN RESTORE HOTFIX
+
+Scope
+- Restore the Unit Preview proof-of-concept mirrors to side-by-side dropdown/expander presentation.
+- Keep the richer DAO/Lido proof-of-concept case content introduced in Patch 149.1.
+- Keep both proof-of-concept handles visible on the first page while hiding detailed evidence until the reviewer opens a dropdown.
+
+Updated files
+- ui/unit_preview.py
+  - Restores two side-by-side Streamlit expanders:
+    - Proof of concept: AI audit-loop evidence
+    - Proof of concept: DAO governance mirror cases
+  - Keeps expanded DAO/Lido case content inside the DAO dropdown.
+  - Keeps AI audit-loop screenshots/content inside the AI dropdown.
+  - Preserves non-authority boundary copy.
+
+- docs/for-reviewers/dao_governance_proof_of_concept.md
+  - Corrects the first-page display rule from always-visible content to side-by-side proof-of-concept dropdowns.
+  - Clarifies that detailed screenshots, DAO/Lido case bullets, and Grok-comparison notes remain inside dropdowns.
+
+- tests/test_patch_149_unit_preview_dao_proof_of_concept.py
+  - Updates regression checks to require side-by-side expanders/dropdowns.
+  - Preserves checks for four DAO/Lido baseline cases, Grok-comparison lens, and non-authority boundaries.
+
+- PATCH_STATUS.md
+  - Adds Patch 149.2 status note.
+
+- docs/progress_database.md
+  - Adds Patch 149.2 progress entry.
+
+- docs/patch_index.md
+  - Adds Patch 149.2 archive/status note.
+
+Archived prior patch artifacts
+- docs/patch_archive/manifests/PATCH_149_1_MANIFEST.txt
+- docs/patch_archive/recovery_notes/PATCH_149_1_RECOVERY_NOTE.md
+
+Behavior boundaries
+- No scoring logic change.
+- No route detection change.
+- No receipt schema or receipt generation change.
+- No World Lens math change.
+- No AI Integrity, Evidence Lab, Stress Test, or Mirror Check engine change.
+- No external calls.
+- No telemetry, database, central storage, public ledger, or Global ID sync.
+- No certification, legal/investment advice, DAO authority, or final verdict claim.
+- Human review remains required.

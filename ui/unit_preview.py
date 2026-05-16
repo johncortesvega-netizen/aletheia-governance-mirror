@@ -317,11 +317,13 @@ def render_unit_preview_proof_concepts_side_by_side(container=None) -> None:
     )
     ai_column, dao_column = container.columns(2)
     with ai_column:
-        with ai_column.expander("Proof of concept: AI audit-loop evidence", expanded=False):
-            render_ai_audit_loop_evidence(ai_column)
+        ai_expander = ai_column.expander("Proof of concept: AI audit-loop evidence", expanded=False)
+        with ai_expander:
+            render_ai_audit_loop_evidence(ai_expander)
     with dao_column:
-        with dao_column.expander("Proof of concept: DAO governance mirror cases", expanded=False):
-            render_dao_governance_proof_of_concept(dao_column)
+        dao_expander = dao_column.expander("Proof of concept: DAO governance mirror cases", expanded=False)
+        with dao_expander:
+            render_dao_governance_proof_of_concept(dao_expander)
 
 def get_unit_preview_html_files(project_root: Path | None = None) -> list[tuple[str, Path]]:
     """Return packaged HTML preview files for the Unit Preview hook page."""

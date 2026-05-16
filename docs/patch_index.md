@@ -423,3 +423,10 @@ python tools\run_protocol_baseline_self_audit.py
 - Makes Grok, Claude, and Gemini audit-loop screenshots available from a collapsed Unit Preview section.
 - Preserves the boundary that these are human-reviewed evidence examples, not official verdicts, certification, legal findings, or final proof.
 - No scoring, receipt, World Lens math, AI Integrity, Privacy Audit, Stress Test, Mirror Check, telemetry/storage, or authority behavior changed.
+
+## Patch 149.3 — Unit Preview PoC Expander Container Fix
+
+- Fixes the first-page proof-of-concept mirror expanders by passing each renderer its own expander container instead of the parent column.
+- Prevents detailed AI audit-loop evidence from showing before the left dropdown is opened.
+- Keeps DAO/Lido governance proof-of-concept content in the matching right dropdown.
+- Preserves all no-scoring-change, no-receipt-change, no-telemetry, no-storage, no-certification, no-enforcement, and no-final-truth boundaries.

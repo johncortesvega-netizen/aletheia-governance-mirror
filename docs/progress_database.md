@@ -2998,3 +2998,12 @@ Evidence available for review:
 - Gemini: sanctification drift / authority-boundary drift where ALETHEIA language was bent toward self-certifying or sacred-system logic.
 
 The patch keeps the evidence framed as proof-of-concept review material, not official verdicts, certifications, legal findings, or final proof. No app engine behavior changed.
+
+## Patch 149.3 - Unit Preview PoC Expander Container Fix
+
+Patch 149.3 fixes a Streamlit container-binding issue in the Unit Preview proof-of-concept mirrors. The previous hotfix restored expander handles, but the AI audit-loop renderer was still passed the parent column container instead of the expander container, causing detailed AI evidence to appear before expansion. Patch 149.3 passes the expander containers directly to both proof-of-concept renderers.
+
+Boundary notes:
+- Presentation/container wiring only.
+- No scoring, verdict routing, taxonomy, receipt schema/generation, signal behavior, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, Evidence Lab behavior, upload/download behavior, external calls, telemetry/storage, certification, enforcement, approval/rejection, or final-truth behavior changed.
+- Both AI audit-loop and DAO/Lido proof-of-concept sections remain human-review evidence only.

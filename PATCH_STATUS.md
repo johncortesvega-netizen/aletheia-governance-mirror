@@ -1,3 +1,7 @@
+## Patch 149.3 — Unit Preview PoC Expander Container Fix
+
+Status: ready for local review. Corrects the Unit Preview proof-of-concept dropdown wiring so both first-page proof-of-concept mirrors render their detailed content inside their own collapsed expander containers. This fixes the AI audit-loop content leaking visibly outside the left dropdown while the DAO/Lido side remained collapsed. No scoring, receipt, World Lens, engine, external-call, telemetry, storage, or authority behavior changed. Human review remains required.
+
 ## Patch 149.2 — Unit Preview PoC Dropdown Restore Hotfix
 
 Status: ready for local review. Restores the first-page proof-of-concept mirrors to side-by-side dropdowns while keeping the richer DAO/Lido baseline content inside the DAO dropdown. No scoring, receipt, World Lens, engine, external-call, telemetry, storage, or authority behavior changed. Human review remains required.
