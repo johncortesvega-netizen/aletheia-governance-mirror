@@ -1,9 +1,0 @@
-docs/post_62_release_refresh.md
-docs/public_release_notes.md
-docs/progress_database.md
-PATCH_STATUS.md
-README.md
-about_page.py
-tests/test_patch_63_release_refresh.py
-PATCH_63_MANIFEST.txt
-PATCH_63_RECOVERY_NOTE.md

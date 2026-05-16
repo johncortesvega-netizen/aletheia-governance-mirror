@@ -1,9 +1,0 @@
-docs/app_navigation_smoke.md
-tests/test_patch_47_app_navigation_smoke.py
-PATCH_47_MANIFEST.txt
-PATCH_47_RECOVERY_NOTE.md
-PATCH_STATUS.md
-docs/progress_database.md
-README.md
-about_page.py
-app.py

@@ -1,9 +1,0 @@
-docs/ux_polish.md
-tests/test_patch_52_ux_polish.py
-PATCH_52_MANIFEST.txt
-PATCH_52_RECOVERY_NOTE.md
-PATCH_STATUS.md
-docs/progress_database.md
-README.md
-about_page.py
-app.py

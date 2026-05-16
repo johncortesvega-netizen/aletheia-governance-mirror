@@ -1,9 +1,0 @@
-docs/patch_workflow.md
-docs/progress_database.md
-PATCH_STATUS.md
-tests/test_patch_44_progress_database.py
-PATCH_44_MANIFEST.txt
-PATCH_44_RECOVERY_NOTE.md
-README.md
-about_page.py
-app.py

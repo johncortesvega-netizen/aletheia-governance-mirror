@@ -1,9 +1,0 @@
-docs/final_v01_smoke_release.md
-tests/test_patch_53_final_v01_smoke_release.py
-PATCH_53_MANIFEST.txt
-PATCH_53_RECOVERY_NOTE.md
-PATCH_STATUS.md
-docs/progress_database.md
-README.md
-about_page.py
-app.py

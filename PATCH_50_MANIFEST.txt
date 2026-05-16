@@ -1,9 +1,0 @@
-docs/v01_release_package.md
-docs/public_release_notes.md
-README.md
-about_page.py
-PATCH_STATUS.md
-docs/progress_database.md
-tests/test_patch_50_v01_release_package.py
-PATCH_50_MANIFEST.txt
-PATCH_50_RECOVERY_NOTE.md

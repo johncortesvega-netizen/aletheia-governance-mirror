@@ -1,8 +1,0 @@
-docs/release_candidate_checklist.md
-tests/test_patch_48_release_candidate_checklist.py
-PATCH_48_MANIFEST.txt
-PATCH_48_RECOVERY_NOTE.md
-PATCH_STATUS.md
-docs/progress_database.md
-README.md
-about_page.py
