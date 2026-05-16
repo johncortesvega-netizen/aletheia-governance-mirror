@@ -3452,3 +3452,11 @@ Validation targets:
 python tools\run_patch_checks.py 156
 python tools\run_patch_checks.py 155
 ```
+
+## Patch 157 — Stress Test Page Polish
+
+Status: PASS
+
+Patch 157 is Patch C in the staged module-page unification work. It applies the shared Patch 155 page-like scaffold to Stress Test only, using Stress Test's inherent content: scenario pressure, safeguard gaps, governance stress, capture pressure, failure-mode pressure, repair needs, safe scan/manual guidance, receipt/export boundary, and the standard non-authority note.
+
+Boundary: copy/layout only. No scoring, routing, receipt schema, batch behavior, upload/download behavior, or protocol logic changed.

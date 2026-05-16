@@ -1,0 +1,16 @@
+Patch 157 — Stress Test Page Polish
+
+Changed files:
+- app.py
+- tests/test_patch_157_stress_test_page_polish.py
+- PATCH_STATUS.md
+- docs/patch_index.md
+- docs/progress_database.md
+- PATCH_157_MANIFEST.txt
+- PATCH_157_RECOVERY_NOTE.md
+- PATCH_157_DELETE_LIST.txt
+
+Summary:
+- Applies the shared Patch 155 module-page scaffold to Stress Test as Patch C in the staged module-page unification work.
+- Adds Stress Test-specific page copy for scenario pressure, safeguards, governance stress, capture pressure, failure-mode pressure, and repair needs.
+- Keeps the existing Stress Test controls, scan/manual modes, batch testing, receipts, scoring, routing, and protocol behavior unchanged.

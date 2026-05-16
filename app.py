@@ -3466,7 +3466,39 @@ tab_chat, tab_sim, tab_ai_integrity, tab_empirical, tab_grid, tab_boundary, tab_
 with tab_sim:
     st.subheader("Stress Test — Try an Idea")
     render_shared_protocol_state_notice("Stress Test")
-    st.write("Start with your own scenario, load a demo on purpose, or use the Manual test. ALETHEIA does not read examples by default. You lead.")
+
+    render_module_page_template_intro(
+        st,
+        ModulePageTemplateCopy(
+            module_name="Stress Test",
+            purpose=(
+                "Try a governance scenario under pressure and inspect stability, trust, friction, "
+                "safeguards, collapse risk, and repair needs. ALETHEIA is English-first; "
+                "Dutch/Nederlands examples may appear as batch-test fixtures, not as a general "
+                "app-wide language-compatibility claim."
+            ),
+            looks_for=(
+                "Power under pressure: who gains authority, how quickly, and under what constraints.",
+                "Safeguard gaps: whether term limits, independent review, appeal, exit, or correction paths are missing.",
+                "Governance stress: whether trust, friction, grievance, alignment, and ego pressure could destabilize the scenario.",
+                "Capture pressure: whether one leader, committee, platform, institution, token group, or emergency process can dominate.",
+                "Failure-mode pressure: authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, or no-appeal automation.",
+                "Repair needs: what would make the scenario more reviewable, bounded, reversible, and accountable.",
+            ),
+            safe_first_path=(
+                "Write one scenario as a governance pattern, not a personal accusation.",
+                "Use fictional roles or the Invisibility Filter when names and titles may bias the reading.",
+                "Use Scan my idea for text-derived features; use Manual test only when you deliberately want sliders to shape the run.",
+                "Read the result as a stress reading, not as proof that a person, group, or institution is good or bad.",
+                "Inspect repair questions before relying on the internal taxonomy label or metrics.",
+            ),
+            input_guidance="Start with your own scenario, load a demo on purpose, or use Manual test. ALETHEIA does not read examples by default. You lead.",
+            result_guidance="Treat Stress Test output as a scenario-pressure reading, not as prediction, accusation, certification, or final verdict.",
+            observed_reasons_guidance="Check the visible stress signals, feature values, tree, and protocol notes before interpreting the reading.",
+            repair_questions_guidance="Use repair questions to add safeguards, appeal paths, review limits, transparency, and exit/correction options.",
+            receipt_guidance="Stress Test receipts are local review artifacts for a scenario run; they are not public-ledger records or official decisions.",
+        ),
+    )
 
     input_mode = st.radio(
         "How do you want to work?",

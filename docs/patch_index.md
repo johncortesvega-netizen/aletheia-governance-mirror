@@ -477,3 +477,9 @@ UI/copy layout refinement. Start Here now uses two optional side-by-side expande
 - Gives Mirror Check the same calm page-like structure as Unit Preview while preserving module-specific content.
 - Adds Mirror Check-specific copy for purpose, what it looks for, safe first path, input guidance, result guidance, observed reasons, repair questions, and receipt/export.
 - Does not alter scoring, routing, receipt generation/schema, protocol logic, batch behavior, telemetry/storage, certification, enforcement, or final-truth behavior.
+
+## Patch 157 — Stress Test Page Polish
+
+- Applies the shared Patch 155 module-page scaffold to Stress Test.
+- Adds Stress Test-specific calm page guidance for scenario pressure, safeguards, governance stress, capture pressure, failure-mode pressure, repair needs, and local receipt boundaries.
+- Preserves existing Stress Test controls and behavior; no scoring, routing, protocol, receipt, or batch logic changes.

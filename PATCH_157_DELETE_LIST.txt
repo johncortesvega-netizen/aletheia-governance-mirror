@@ -1,0 +1,4 @@
+Patch 157 root/public hygiene note
+
+After Patch 157 is applied, keep only current Patch 157 root artifacts visible if publishing a clean root.
+Older PATCH_150 through PATCH_156 manifests, recovery notes, and delete lists may be moved into the archive folder/map without deleting the audit trail.

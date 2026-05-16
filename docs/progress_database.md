@@ -3078,3 +3078,9 @@ Patch 156 applies the shared module-page template scaffold to Mirror Check as th
 Design intent: make Mirror Check easier to understand without changing what it does. The module now foregrounds plain-language purpose, review signals, safe first path, bounded input guidance, mirror-reading guidance, observed reasons, repair questions, receipt/export framing, and non-authority boundary language.
 
 Boundary preserved: no scoring change, no routing change, no receipt schema/generation change, no protocol logic change, no batch behavior change, no upload/download behavior change, no external calls, no telemetry/storage, no Global ID sync, no public ledger sync, no certification, no enforcement, no official authority, and no final-truth behavior. Human review remains required.
+
+## Patch 157 — Stress Test Page Polish
+
+Patch 157 applies the shared module-page template scaffold to Stress Test as the second active module-page polish after Mirror Check. It keeps Stress Test scenario-specific: governance scenario pressure, safeguards, trust/friction/grievance/alignment/ego stress, capture pressure, failure-mode signals, repair questions, and local receipt boundary.
+
+This continues the staged layout-unification path without changing scoring, routing, receipts, batch behavior, or protocol logic.
