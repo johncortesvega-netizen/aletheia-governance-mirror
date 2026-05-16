@@ -1,6 +1,6 @@
 # DAO Governance Proof of Concept
 
-Patch 149.1 updates the Unit Preview proof-of-concept mirrors so they appear directly on the first page instead of hiding behind dropdown expanders. The DAO/Lido side is also expanded from a short summary into a compact reviewer-facing case set.
+Patch 149.2 corrects the Unit Preview proof-of-concept mirrors so the first page shows two side-by-side dropdown handles. The detailed AI audit-loop and DAO/Lido material opens inside those dropdowns, keeping the first page clean while preserving the richer reviewer-facing case set.
 
 The purpose is to show that ALETHEIA can mirror governance structures as well as AI outputs. DAO tools remain the operation layer; ALETHEIA remains the reflection layer.
 
@@ -9,13 +9,13 @@ DAO tools: propose / vote / delegate / execute
 ALETHEIA: Mirror Check / Stress Test / Evidence Lab / human-review questions
 ```
 
-## First-page display rule
+## First-page dropdown rule
 
-The proof-of-concept mirrors should be visible without extra clicks:
+The proof-of-concept mirrors should be present as side-by-side first-page proof-of-concept dropdowns:
 
-- no collapsed proof-of-concept dropdown;
-- AI audit-loop evidence appears as the left-side proof-of-concept mirror;
-- DAO/Lido governance cases appear as the right-side proof-of-concept mirror;
+- the first page shows a left dropdown for AI audit-loop evidence;
+- the first page shows a right dropdown for DAO/Lido governance mirror cases;
+- detailed screenshots, DAO/Lido case bullets, and Grok-comparison notes remain inside the dropdowns;
 - both sides keep the same non-authority boundary: human-review evidence only.
 
 ## Four baseline DAO/Lido cases

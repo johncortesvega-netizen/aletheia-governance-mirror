@@ -1,3 +1,7 @@
+## Patch 149.2 — Unit Preview PoC Dropdown Restore Hotfix
+
+Corrected Patch 149.1 presentation: AI audit-loop evidence and DAO/Lido governance proof-of-concept cases now appear as two side-by-side Unit Preview dropdown handles, with detailed content inside. Preserves the four DAO/Lido baseline cases and Grok-comparison lens. Scope is UI/content only; no scoring or authority change.
+
 ## Patch 149 — Unit Preview DAO Proof-of-Concept Pairing
 
 Patch 149 adds a side-by-side proof-of-concept layout to Aletheia Unit Preview. The existing AI audit-loop proof-of-concept remains on the first page, and a new DAO/Lido governance proof-of-concept card appears beside it.

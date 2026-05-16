@@ -1,3 +1,7 @@
+## Patch 149.2 — Unit Preview PoC Dropdown Restore Hotfix
+
+Latest root artifacts: PATCH_149_2_MANIFEST.txt and PATCH_149_2_RECOVERY_NOTE.md. Patch 149.1 artifacts archived under docs/patch_archive/. Scope: restore side-by-side proof-of-concept dropdowns on Unit Preview while retaining richer DAO/Lido case content.
+
 # ALETHEIA Patch Index
 
 **Version:** v1.0  

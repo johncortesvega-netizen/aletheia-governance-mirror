@@ -1,3 +1,7 @@
+## Patch 149.2 — Unit Preview PoC Dropdown Restore Hotfix
+
+Status: ready for local review. Restores the first-page proof-of-concept mirrors to side-by-side dropdowns while keeping the richer DAO/Lido baseline content inside the DAO dropdown. No scoring, receipt, World Lens, engine, external-call, telemetry, storage, or authority behavior changed. Human review remains required.
+
 ## Patch 149.1 — Unit Preview Proof-of-Concept Visibility Hotfix
 
 Status: READY FOR LOCAL REVIEW

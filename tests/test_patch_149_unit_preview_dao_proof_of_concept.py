@@ -40,7 +40,7 @@ def test_patch_149_adds_four_elaborated_dao_baseline_cases() -> None:
         assert "Grok-style" in str(case["grok_compare"])
 
 
-def test_patch_149_puts_visible_dao_cases_side_by_side_with_ai_proof_of_concept() -> None:
+def test_patch_149_puts_dao_cases_inside_side_by_side_proof_of_concept_dropdowns() -> None:
     source = read("ui/unit_preview.py")
 
     assert "Proof-of-concept mirrors" in source
@@ -48,24 +48,24 @@ def test_patch_149_puts_visible_dao_cases_side_by_side_with_ai_proof_of_concept(
     assert "render_ai_audit_loop_evidence(ai_column)" in source
     assert "render_dao_governance_proof_of_concept(dao_column)" in source
     assert "container.columns(2)" in source
+    assert 'with ai_column.expander("Proof of concept: AI audit-loop evidence", expanded=False):' in source
+    assert 'with dao_column.expander("Proof of concept: DAO governance mirror cases", expanded=False):' in source
     assert "DAO tools propose / vote / delegate / execute" in source
     assert "Strengths / useful design signals" in source
     assert "Risk signals / review pressure" in source
     assert "Grok-comparison lens" in source
-    assert 'with container.expander("Proof of concept: DAO governance mirror cases"' not in source
-    assert 'with container.expander("Proof of concept: AI audit-loop evidence"' not in source
 
 
 def test_patch_149_documents_dao_boundary_without_authority_claim() -> None:
     doc = read("docs/for-reviewers/dao_governance_proof_of_concept.md")
-    combined = doc + "\n" + read("PATCH_149_MANIFEST.txt") + "\n" + read("PATCH_149_RECOVERY_NOTE.md")
+    combined = doc + "\n" + read("PATCH_149_2_MANIFEST.txt") + "\n" + read("PATCH_149_2_RECOVERY_NOTE.md")
 
     assert "Major DAO governance tools" in doc
     assert "Lido Snapshot proposal-threshold change" in doc
     assert "Lido DAO meta-governance risks" in doc
     assert "Lido Dual Governance mechanics" in doc
     assert "THRESHOLD — not failed, not safe, human review required" in doc
-    assert "no collapsed proof-of-concept dropdown" in doc
+    assert "proof-of-concept dropdowns" in doc
     assert "Grok-comparison lens" in doc
     assert "not live DAO readings" in combined
     assert "not official ALETHEIA receipts" in combined
@@ -74,8 +74,8 @@ def test_patch_149_documents_dao_boundary_without_authority_claim() -> None:
 
 
 def test_patch_149_preserves_behavior_boundaries() -> None:
-    manifest = read("PATCH_149_MANIFEST.txt")
-    recovery = read("PATCH_149_RECOVERY_NOTE.md")
+    manifest = read("PATCH_149_2_MANIFEST.txt")
+    recovery = read("PATCH_149_2_RECOVERY_NOTE.md")
     combined = manifest + "\n" + recovery
 
     assert "ui/unit_preview.py" in manifest

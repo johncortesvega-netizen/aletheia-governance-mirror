@@ -121,11 +121,12 @@ def get_ai_audit_loop_evidence_sets(project_root: Path | None = None) -> list[di
 
 
 def render_ai_audit_loop_evidence(container=None, project_root: Path | None = None) -> None:
-    """Render always-visible proof-of-concept evidence on Unit Preview.
+    """Render AI audit-loop proof-of-concept evidence inside a Unit Preview dropdown.
 
     Unit Preview makes these local images available for human review. It does
     not treat them as official ALETHEIA verdicts, certification, legal proof,
-    or automated authority.
+    or automated authority. The first page shows the dropdown handle; the
+    detailed evidence opens only when the reviewer expands it.
     """
     if container is None:
         import streamlit as st  # type: ignore
@@ -252,7 +253,7 @@ def get_dao_governance_proof_of_concept_cases() -> list[dict[str, object]]:
 
 
 def _render_compact_bullets(container, title: str, values: object) -> None:
-    """Render a short bullet group without requiring Streamlit expanders."""
+    """Render a short bullet group inside a proof-of-concept dropdown."""
     items = list(values) if isinstance(values, list) else [str(values)]
     container.markdown(f"**{title}**")
     for item in items:
@@ -260,11 +261,12 @@ def _render_compact_bullets(container, title: str, values: object) -> None:
 
 
 def render_dao_governance_proof_of_concept(container=None) -> None:
-    """Render always-visible DAO/Lido governance proof-of-concept cases on Unit Preview.
+    """Render DAO/Lido governance proof-of-concept cases inside a Unit Preview dropdown.
 
     This is first-page orientation content only. It does not call governance
     tools, score proposals, fetch live DAO data, create receipts, or assert
-    authority over DAOs.
+    authority over DAOs. The first page shows the dropdown handle; the detailed
+    case material opens only when the reviewer expands it.
     """
     if container is None:
         import streamlit as st  # type: ignore
@@ -302,7 +304,7 @@ def render_dao_governance_proof_of_concept(container=None) -> None:
 
 
 def render_unit_preview_proof_concepts_side_by_side(container=None) -> None:
-    """Render AI audit-loop and DAO governance proof-of-concept cards side by side."""
+    """Render paired proof-of-concept dropdowns side by side on the first page."""
     if container is None:
         import streamlit as st  # type: ignore
 
@@ -310,15 +312,16 @@ def render_unit_preview_proof_concepts_side_by_side(container=None) -> None:
 
     container.markdown("### Proof-of-concept mirrors")
     container.caption(
-        "Two first-page examples of ALETHEIA as a reflection layer: external AI outputs on one side, "
+        "Two first-page dropdown examples of ALETHEIA as a reflection layer: external AI outputs on one side, "
         "DAO governance structures on the other. Both remain human-review evidence only."
     )
     ai_column, dao_column = container.columns(2)
     with ai_column:
-        # Regression marker: render_ai_audit_loop_evidence(container)
-        render_ai_audit_loop_evidence(ai_column)
+        with ai_column.expander("Proof of concept: AI audit-loop evidence", expanded=False):
+            render_ai_audit_loop_evidence(ai_column)
     with dao_column:
-        render_dao_governance_proof_of_concept(dao_column)
+        with dao_column.expander("Proof of concept: DAO governance mirror cases", expanded=False):
+            render_dao_governance_proof_of_concept(dao_column)
 
 def get_unit_preview_html_files(project_root: Path | None = None) -> list[tuple[str, Path]]:
     """Return packaged HTML preview files for the Unit Preview hook page."""
