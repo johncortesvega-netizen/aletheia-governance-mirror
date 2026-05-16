@@ -1,17 +1,25 @@
 ## Patch 149.2 — Unit Preview PoC Dropdown Restore Hotfix
 
-Latest root artifacts: PATCH_149_2_MANIFEST.txt and PATCH_149_2_RECOVERY_NOTE.md. Patch 149.1 artifacts archived under docs/patch_archive/. Scope: restore side-by-side proof-of-concept dropdowns on Unit Preview while retaining richer DAO/Lido case content.
+Latest root artifacts: PATCH_150_MANIFEST.txt and PATCH_150_RECOVERY_NOTE.md. Patch 148/149 root artifacts archived under docs/patch_archive/. Scope: red/high-contrast entry button, cleaner audit-loop proof copy, public boundary boxes, safer taxonomy language, and stronger receipt boundary wording.
 
 # ALETHEIA Patch Index
 
 **Version:** v1.0  
-**Updated for:** Patch 149.1 — Unit Preview Proof-of-Concept Visibility Hotfix  
+**Updated for:** Patch 150 — Entry Button + Boundary Copy Polish  
 **Last updated:** 2026-05-16
 
-This index is a navigation layer for ALETHEIA's iterative patch history. Patch 149.1 keeps the standing root-hygiene rule active while making the Unit Preview proof-of-concept mirrors visible without dropdowns and elaborating the DAO/Lido governance cases beside the AI audit-loop proof-of-concept. The latest/current patch remains visible at the repository root and older patch artifacts are archived under `docs/patch_archive/` without deleting the audit trail.
+This index is a navigation layer for ALETHEIA's iterative patch history. Patch 150 keeps the standing root-hygiene rule active while polishing the Unit Preview app-entry button, public audit-loop proof copy, public boundary copy, taxonomy-label language, and receipt boundary wording. The latest/current patch remains visible at the repository root and older patch artifacts are archived under `docs/patch_archive/` without deleting the audit trail.
 
 ALETHEIA remains a **mirror, not a throne**. Patch history is evidence for review, not proof of truth, safety, legality, ethics, privacy, security, or legitimacy.
 
+
+## Patch 150 — Entry Button + Boundary Copy Polish
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 150 makes the Unit Preview `Proceed to ALETHEIA` button visually distinct with a high-contrast red primary-button style and readable white text. It also adds cleaner AI audit-loop proof-of-concept wording, public `What this is / is not` boundary copy, safer internal-taxonomy label language, and stronger receipt boundary wording.
+
+Scope: UI styling, public copy, reviewer documentation, and receipt text only. No scoring, routing, taxonomy behavior, receipt schema/hash contract, World Lens math, AI Integrity scoring, Privacy Audit behavior, Evidence Lab behavior, telemetry, storage, Global ID, public ledger, certification, enforcement, or final-truth behavior changed.
 
 ## Patch 149.1 — Unit Preview Proof-of-Concept Visibility Hotfix
 

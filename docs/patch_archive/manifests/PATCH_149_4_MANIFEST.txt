@@ -1,0 +1,45 @@
+PATCH 149.4 MANIFEST — Unit Preview DAO Grok Comparison Intro Hotfix
+
+Scope
+- Small UI/copy hotfix for the Aletheia Unit Preview proof-of-concept mirrors.
+- Clarifies the intro inside the DAO governance proof-of-concept dropdown.
+- Explicitly frames Grok-style review as a comparison lens / external reviewer pressure input, not validation, certification, or final authority.
+
+Files changed
+- ui/unit_preview.py
+  - Expands the DAO proof-of-concept introduction to mention Grok-style review as a comparison lens / external reviewer pressure input.
+  - Keeps both proof-of-concept mirrors inside side-by-side collapsed expanders.
+
+- docs/for-reviewers/dao_governance_proof_of_concept.md
+  - Adds the same boundary to reviewer documentation.
+  - Preserves the four DAO/Lido baseline cases and non-authority framing.
+
+- tests/test_patch_149_unit_preview_dao_proof_of_concept.py
+  - Existing tests continue to validate dropdown structure, DAO/Lido baseline cases, Grok-comparison lens presence, and non-authority boundaries.
+
+- PATCH_STATUS.md
+  - Records Patch 149.4 status.
+
+- docs/progress_database.md
+  - Records Patch 149.4 in the project progress database.
+
+- docs/patch_index.md
+  - Adds Patch 149.4 entry and records archival of Patch 149.3 artifacts.
+
+- docs/patch_archive/manifests/PATCH_149_3_MANIFEST.txt
+- docs/patch_archive/recovery_notes/PATCH_149_3_RECOVERY_NOTE.md
+  - Archives previous visible Patch 149.3 root artifacts.
+
+Files added at root
+- PATCH_149_4_MANIFEST.txt
+- PATCH_149_4_RECOVERY_NOTE.md
+
+Behavior boundaries
+- No app scoring change.
+- No receipt schema or receipt generation change.
+- No World Lens math change.
+- No Stress Test, Mirror Check, Evidence Lab, AI Integrity, or Receipt Reader engine change.
+- No external calls.
+- No storage, telemetry, identity, ledger, or synchronization change.
+- No certification, legal advice, investment advice, or automated authority.
+- Human review remains required.

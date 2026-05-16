@@ -1,0 +1,39 @@
+PATCH 150 MANIFEST — Entry Button + Boundary Copy Polish
+
+Scope:
+- Make the Unit Preview "Proceed to ALETHEIA" / app-entry button visually distinct with a high-contrast red primary-button treatment.
+- Add cleaner AI audit-loop proof-of-concept wording: external AI output -> ALETHEIA-style mirror reading -> human review -> failure mode identified.
+- Add public "What this is / is not" boundary copy to README and About / Why ALETHEIA.
+- Clarify that internal taxonomy labels are review-workflow labels, not claims of truth, purity, safety, legitimacy, morality, or final status.
+- Strengthen receipt-facing boundary language while preserving receipt schema and scoring behavior.
+
+Files changed:
+- ui/unit_preview.py
+- README.md
+- pages_ui/about_page.py
+- docs/for-reviewers/ai_audit_loop_evidence.md
+- core/witness.py
+- core/ai_integrity_mirror.py
+- app.py
+- tests/test_patch_150_ui_and_boundary_copy.py
+- PATCH_150_MANIFEST.txt
+- PATCH_150_RECOVERY_NOTE.md
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_index.md
+
+Behavior boundaries:
+- No app scoring change.
+- No routing change.
+- No module-engine change.
+- No receipt schema change.
+- No hash-contract change.
+- No World Lens math change.
+- No Evidence Lab math or parser change.
+- No AI Integrity scoring change.
+- No telemetry, backend, database, account, public ledger, Global ID, or central storage added.
+- Human review remains required.
+
+Validation:
+- python -m py_compile ui/unit_preview.py core/witness.py core/ai_integrity_mirror.py pages_ui/about_page.py app.py
+- pytest tests/test_patch_150_ui_and_boundary_copy.py

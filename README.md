@@ -8,6 +8,14 @@ ALETHEIA helps reviewers inspect proposals, policies, systems, doctrines, AI art
 
 ALETHEIA does **not** decide, certify, approve, reject, enforce, govern, vote, or replace law, evidence, accountability, expertise, or human judgment.
 
+## What this is / is not
+
+**This is:** a mirror for pressure, authority drift, evidence gaps, capture risk, consent pressure, weak appeal paths, and human-review needs.
+
+**This is not:** a judge, oracle, certification engine, truth machine, legal authority, political authority, religious authority, medical authority, investment authority, or automated decision system.
+
+Internal taxonomy labels such as **SANCTUARY**, **THRESHOLD**, and **ASYLUM** are review-workflow labels only. They do not claim truth, purity, safety, legitimacy, moral authority, or final status. Public copy should prefer plain terms such as low-risk reading, review-required reading, high-pressure reading, internal taxonomy label, current mirror reading, and protocol-adjusted reading.
+
 Start here:
 
 1. Open **Aletheia Unit Preview** for a guided first look.

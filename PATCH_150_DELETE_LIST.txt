@@ -1,0 +1,16 @@
+Patch 150 root-hygiene delete list
+
+After applying Patch 150, these older root patch artifacts should be removed from the repository root if they are still present there. Their archive copies live under docs/patch_archive/manifests/ and docs/patch_archive/recovery_notes/.
+
+PATCH_148_MANIFEST.txt
+PATCH_148_RECOVERY_NOTE.md
+PATCH_149_MANIFEST.txt
+PATCH_149_RECOVERY_NOTE.md
+PATCH_149_1_MANIFEST.txt
+PATCH_149_1_RECOVERY_NOTE.md
+PATCH_149_2_MANIFEST.txt
+PATCH_149_2_RECOVERY_NOTE.md
+PATCH_149_3_MANIFEST.txt
+PATCH_149_3_RECOVERY_NOTE.md
+PATCH_149_4_MANIFEST.txt
+PATCH_149_4_RECOVERY_NOTE.md

@@ -8,6 +8,12 @@ external AI output -> ALETHEIA mirror reading -> human review
 
 The examples are not official verdicts, certifications, legal findings, or final proof. They are review evidence showing how ALETHEIA can help a human reviewer inspect AI claims without trusting either the AI or the mirror blindly.
 
+**Stronger proof claim:** external AI output showed a pressure pattern -> ALETHEIA-style mirror logic identified the pattern -> the AI or reviewer context exposed/acknowledged the same failure mode when challenged -> human review confirmed the boundary issue.
+
+**What this is:** proof-of-concept evidence that the audit loop can surface capture pressure, evidence-boundary gaps, sanctification drift, and concealed flattery pressure.
+
+**What this is not:** proof that ALETHEIA is always right, AI validation of ALETHEIA, model approval, legal proof, certification, or an official ALETHEIA receipt. External AI agreement, disagreement, or self-correction is treated only as review evidence.
+
 ## Evidence sets
 
 ### 1. Grok / xAI architecture review
@@ -42,4 +48,5 @@ These artifacts are proof-of-concept evidence for the audit process, not proof t
 - ALETHEIA reflects.
 - Humans review.
 - Power stays accountable.
+- External AI agreement, disagreement, or self-correction is not validation of ALETHEIA.
 - Mirror, not throne: no model, reviewer, receipt, or screenshot becomes a throne.

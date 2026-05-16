@@ -4399,7 +4399,7 @@ Central storage: {receipt_example['central_storage']}
 Authority claim: {receipt_example['authority_claim']}
 Human review required: {receipt_example['human_review_required']}
 
-Disclaimer: This receipt is a local witness artifact for human review. It is not legal proof, policy command, enforcement, extraordinary-claim validation, public ledger proof, or a replacement for human judgment.""",
+Disclaimer: This receipt is a structured mirror reading for human review. It does not certify truth, safety, legality, legitimacy, morality, institutional fitness, extraordinary claims, or policy commands. It is not public ledger proof or a replacement for human judgment. Human review remains required; the reading may be incomplete, wrong, or sensitive to missing evidence.""",
         language="text",
     )
 
@@ -6852,7 +6852,9 @@ Evidence Lab empirical country-year scoring feeds World Lens selected-year metri
 
 ## Sydney Protocol note
 
-This receipt is a reproducible view artifact. It is a protocol interpretation, not a legal, political, medical, religious, or moral determination.
+This receipt is a structured mirror reading and reproducible view artifact. It does not certify truth, safety, legality, legitimacy, morality, or institutional fitness. Human review remains required. The reading may be incomplete, wrong, or sensitive to missing evidence.
+
+External AI agreement, disagreement, or self-correction is not validation of ALETHEIA. It is treated only as review evidence.
 
 The overlay remains: mirror, not throne; anti-capture; non-divinization; appealability; transparency; evidence humility; no final authority.
 """

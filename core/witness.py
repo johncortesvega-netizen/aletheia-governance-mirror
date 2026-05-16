@@ -384,6 +384,18 @@ def _json_safe(value: Any) -> Any:
     return str(value)
 
 
+RECEIPT_BOUNDARY_NOTICE = (
+    "This receipt is a structured mirror reading. It does not certify truth, safety, "
+    "legality, legitimacy, morality, or institutional fitness. Human review remains "
+    "required. The reading may be incomplete, wrong, or sensitive to missing evidence."
+)
+
+AI_AUDIT_LOOP_RECEIPT_NOTICE = (
+    "External AI agreement, disagreement, or self-correction is not validation of "
+    "ALETHEIA. It is treated only as review evidence."
+)
+
+
 def _receipt_safe(value: Any) -> Any:
     """Return JSON-safe receipt values with readable float precision."""
     value = _json_safe(value)
@@ -1248,6 +1260,8 @@ Invisibility Filter applied: {receipt.get('invisibility_filter_applied')}{demo_g
 
 NOTICE
 {receipt.get('notice')}
+Receipt boundary notice: {RECEIPT_BOUNDARY_NOTICE}
+AI audit-loop notice: {AI_AUDIT_LOOP_RECEIPT_NOTICE}
 Dataflow boundary: {receipt.get('dataflow')}
 
 HASHES
@@ -1316,6 +1330,10 @@ SILENT OPERATOR REPAIR QUESTIONS
 
 RECOVERY NOTE
 {receipt.get('recovery_note')}
+
+BOUNDARY FOOTER
+{RECEIPT_BOUNDARY_NOTICE}
+{AI_AUDIT_LOOP_RECEIPT_NOTICE}
 
 MACHINE-READABLE RECEIPT JSON
 {json.dumps(receipt, indent=2, ensure_ascii=False, sort_keys=True)}

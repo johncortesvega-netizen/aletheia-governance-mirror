@@ -980,7 +980,7 @@ def build_ai_integrity_receipt_context(
         "protocol_label": result.get("protocol_label"),
         "static_review_scope": AI_INTEGRITY_SCOPE_NOTE,
         "privacy_boundary": "Pasted AI Integrity artifacts are processed in the running app session. ALETHEIA includes no built-in telemetry, trackers, analytics SDKs, backend upload endpoint, public ledger sync, Global ID sync, or central user-input database.",
-        "non_certification_note": "This receipt records a reviewable risk reading for a pasted artifact. It is not AI certification, vendor approval, model approval, benchmark proof, legal advice, medical advice, enforcement, or proof of safety.",
+        "non_certification_note": "This receipt is a structured mirror reading for a pasted artifact. It does not certify truth, safety, legality, legitimacy, morality, institutional fitness, vendor quality, model quality, benchmark proof, legal advice, medical advice, enforcement, or proof of safety. Human review remains required. The reading may be incomplete, wrong, or sensitive to missing evidence.",
         "reliance_boundary": AI_INTEGRITY_RELIANCE_NOTE,
         "finding_count": len(findings),
         "finding_rows": _finding_receipt_rows(findings),

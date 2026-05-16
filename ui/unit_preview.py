@@ -64,6 +64,32 @@ def get_unit_preview_start_here_markdown() -> str:
 
 
 
+def get_unit_preview_proceed_button_style() -> str:
+    """Return CSS that makes the proceed button visually distinct and high-contrast."""
+    return """
+<style>
+/* Patch 150: make the app-entry action unmistakable without changing routing. */
+div[data-testid="stButton"] button[kind="primary"] {
+    background: #b91c1c !important;
+    border: 2px solid #7f1d1d !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.01em !important;
+    box-shadow: 0 0 0 1px rgba(127, 29, 29, 0.25), 0 4px 14px rgba(127, 29, 29, 0.28) !important;
+}
+div[data-testid="stButton"] button[kind="primary"]:hover {
+    background: #991b1b !important;
+    border-color: #450a0a !important;
+    color: #ffffff !important;
+}
+div[data-testid="stButton"] button[kind="primary"]:focus {
+    outline: 3px solid rgba(248, 113, 113, 0.7) !important;
+    outline-offset: 2px !important;
+}
+</style>
+"""
+
+
 def get_ai_audit_loop_evidence_sets(project_root: Path | None = None) -> list[dict[str, object]]:
     """Return packaged AI audit-loop proof-of-concept screenshots.
 
@@ -136,15 +162,22 @@ def render_ai_audit_loop_evidence(container=None, project_root: Path | None = No
     evidence_sets = get_ai_audit_loop_evidence_sets(project_root)
     container.markdown("#### Proof of concept: AI audit-loop evidence")
     container.markdown(
-        "**Path:** external AI output -> ALETHEIA mirror reading -> human review."
+        "**Path:** external AI output -> ALETHEIA-style mirror reading -> human review -> failure mode identified."
     )
     container.markdown(
-        "**What it shows:** ALETHEIA can mirror friendly, critical, self-confident, or "
-        "self-descriptive AI outputs without treating praise or critique as validation."
+        "**What it shows:** ALETHEIA can surface pressure patterns in friendly, critical, "
+        "self-confident, or self-descriptive AI outputs without treating AI agreement, disagreement, "
+        "or self-correction as validation of ALETHEIA."
+    )
+    container.info(
+        "**This is:** reviewer-readiness evidence that the audit loop can expose capture pressure, "
+        "evidence-boundary gaps, sanctification drift, and concealed flattery pressure.\n\n"
+        "**This is not:** validation, certification, final proof, legal proof, model approval, "
+        "or an official ALETHEIA receipt."
     )
     container.caption(
-        "Human-reviewed audit evidence only — not official verdicts, certifications, "
-        "legal findings, or final proof. Mirror, not throne."
+        "External AI agreement, disagreement, or self-correction is not validation of ALETHEIA. "
+        "It is treated only as review evidence. Mirror, not throne."
     )
 
     if not evidence_sets:
@@ -156,7 +189,8 @@ def render_ai_audit_loop_evidence(container=None, project_root: Path | None = No
         title = str(evidence["title"])
         summary = str(evidence["summary"])
         images = evidence.get("images", [])
-        container.markdown(f"**{ai_name} — {title}**")
+        container.markdown(f"### {ai_name}")
+        container.markdown(f"**Evidence focus:** {title}")
         container.markdown(f"- {summary}")
         for image_path in images:  # type: ignore[assignment]
             container.image(str(image_path), caption=Path(image_path).name, use_container_width=True)
@@ -677,6 +711,7 @@ def render_unit_preview(container=None) -> bool:
 
         container = st
 
+    container.markdown(get_unit_preview_proceed_button_style(), unsafe_allow_html=True)
     container.title("Aletheia Unit Preview")
     container.markdown("### Mirror, not throne.")
     container.write(

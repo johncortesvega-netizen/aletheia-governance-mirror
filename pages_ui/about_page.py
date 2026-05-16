@@ -61,6 +61,17 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
         """
     )
 
+    with st.expander("What this is / is not", expanded=True):
+        st.markdown(
+            """
+            **This is:** a mirror for pressure, authority drift, evidence gaps, capture risk, consent pressure, weak appeal paths, and human-review needs.
+
+            **This is not:** a judge, oracle, certification engine, truth machine, legal authority, political authority, religious authority, medical authority, investment authority, or automated decision system.
+
+            Internal taxonomy labels such as **SANCTUARY**, **THRESHOLD**, and **ASYLUM** are review-workflow labels only. They do not claim truth, purity, safety, legitimacy, moral authority, or final status. Public-facing language should keep the reading operational: low-risk reading, review-required reading, high-pressure reading, current mirror reading, internal taxonomy label, and protocol-adjusted reading.
+            """
+        )
+
     with st.expander("Scope layers: tool, research, vision, out of scope", expanded=False):
         st.markdown(
             """

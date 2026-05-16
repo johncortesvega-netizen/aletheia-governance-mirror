@@ -3017,3 +3017,17 @@ Boundary notes:
 - First-page proof-of-concept mirrors remain side-by-side collapsed dropdowns.
 - No scoring, verdict routing, taxonomy, receipt schema/generation, signal behavior, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, Evidence Lab behavior, upload/download behavior, external calls, telemetry/storage, certification, enforcement, approval/rejection, or final-truth behavior changed.
 - Human review remains required.
+
+
+## Patch 150 — Entry Button + Boundary Copy Polish
+
+Date: 2026-05-16
+
+Status: READY FOR LOCAL REVIEW
+
+Summary: Patch 150 makes the Unit Preview `Proceed to ALETHEIA` button visually distinct with a high-contrast red primary-button treatment and readable white text. It adds cleaner AI audit-loop proof-of-concept wording, public `What this is / is not` boundary copy in README and About / Why ALETHEIA, safer public taxonomy-language guidance, and stronger receipt boundary wording. Suggestion 5 / expanded failure-mode verbalization remains deliberately deferred to a later patch.
+
+Boundary notes:
+- UI/copy/documentation and receipt text only.
+- No scoring, routing, module-engine, receipt schema, receipt hash, World Lens math, Evidence Lab math, AI Integrity scoring, telemetry, storage, Global ID sync, public ledger, certification, enforcement, official authority, or final-truth behavior changed.
+- Human review remains required.

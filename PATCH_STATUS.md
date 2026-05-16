@@ -1,3 +1,19 @@
+## Patch 150 — Entry Button + Boundary Copy Polish
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 150 makes the Unit Preview `Proceed to ALETHEIA` button visually distinct with a high-contrast red primary-button treatment and readable white text. It also adds cleaner AI audit-loop proof-of-concept copy, public `What this is / is not` boundary copy in README and About / Why ALETHEIA, safer taxonomy-label language, and stronger receipt boundary wording. Patch 150 keeps suggestion 5 / expanded failure-mode verbalization for a later patch.
+
+Boundary preserved: UI/copy/documentation and receipt text only. No scoring, routing, module engine, receipt schema, receipt hash contract, World Lens math, Evidence Lab math, AI Integrity scoring, external calls, telemetry, storage, Global ID sync, public ledger sync, certification, enforcement, approval/rejection authority, official authority, or final-truth behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python -m py_compile ui\unit_preview.py core\witness.py core\ai_integrity_mirror.py pages_ui\about_page.py app.py
+pytest tests\test_patch_150_ui_and_boundary_copy.py
+python tools\run_protocol_baseline_self_audit.py
+```
+
 ## Patch 149.4 — Unit Preview DAO Grok Comparison Intro Hotfix
 
 Status: ready for local review. Clarifies the expanded DAO governance proof-of-concept intro so Grok-style review is named as a comparison lens / external reviewer pressure input, not as validation, certification, or a final judge. Keeps the first-page proof-of-concept mirrors collapsed in side-by-side dropdowns. No scoring, receipt, World Lens, engine, external-call, telemetry, storage, or authority behavior changed. Human review remains required.

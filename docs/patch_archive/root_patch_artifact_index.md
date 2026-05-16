@@ -412,3 +412,15 @@ Keep the latest patch manifest/recovery note at root. Archive older patch artifa
 - `docs/patch_archive/other_patch_artifacts/PATCH_README.md`
 - `docs/patch_archive/other_patch_artifacts/PATCH_README_DIRECT_MASTER_GRID.md`
 - `docs/patch_archive/other_patch_artifacts/PATCH_README_GLOBAL_GRID_STATE.md`
+
+## Patch 150 root hygiene update
+
+Latest root artifacts after Patch 150:
+- `PATCH_150_MANIFEST.txt`
+- `PATCH_150_RECOVERY_NOTE.md`
+
+Archived from root into `docs/patch_archive/` during Patch 150:
+- Patch 148 manifest/recovery note
+- Patch 149, 149.1, 149.2, 149.3, and 149.4 manifests/recovery notes
+
+Audit trail preserved; root clutter reduced.
