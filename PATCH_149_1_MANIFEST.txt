@@ -1,0 +1,78 @@
+# PATCH 149.1 MANIFEST — Unit Preview Proof-of-Concept Visibility Hotfix
+
+## Purpose
+
+Patch 149.1 corrects the Patch 149 Unit Preview proof-of-concept layout. The AI audit-loop and DAO/Lido governance proof-of-concept mirrors now appear directly on the first page instead of being hidden behind collapsed dropdown expanders. The DAO/Lido side is also elaborated with compact bullet groups for strengths, risk signals, and a Grok-comparison lens.
+
+## Changed files
+
+- `ui/unit_preview.py`
+  - Removed collapsed proof-of-concept expander behavior for the AI audit-loop and DAO/Lido proof-of-concept renderers.
+  - Keeps the side-by-side first-page layout.
+  - Adds always-visible DAO/Lido detail: strengths/useful design signals, risk/review-pressure signals, and Grok-comparison lens for all four baseline cases.
+  - Adds a fallback caption when packaged AI audit-loop screenshots are not present in a checkout.
+
+- `docs/for-reviewers/dao_governance_proof_of_concept.md`
+  - Updates the reviewer note to state that proof-of-concept mirrors should be visible without extra clicks.
+  - Expands the four DAO/Lido baseline cases in compact bullet form.
+  - Preserves the boundary that cases are human-review evidence only.
+
+- `tests/test_patch_149_unit_preview_dao_proof_of_concept.py`
+  - Updates checks to require always-visible proof-of-concept content.
+  - Verifies DAO cases include strengths, risks, and Grok-comparison fields.
+  - Verifies the proof-of-concept renderers no longer use collapsed expander wrappers.
+
+- `PATCH_STATUS.md`
+  - Adds Patch 149.1 status entry.
+
+- `docs/progress_database.md`
+  - Adds Patch 149.1 progress entry.
+
+- `docs/patch_index.md`
+  - Updates current patch pointer to Patch 149.1.
+
+- `docs/patch_archive/manifests/PATCH_149_MANIFEST.txt`
+  - Archives Patch 149 manifest under the patch archive.
+
+- `docs/patch_archive/recovery_notes/PATCH_149_RECOVERY_NOTE.md`
+  - Archives Patch 149 recovery note under the patch archive.
+
+## Explicit non-changes
+
+- No scoring change.
+- No verdict routing change.
+- No taxonomy change.
+- No receipt schema or receipt generation change.
+- No signal regex or signal weight change.
+- No World Lens math change.
+- No AI Integrity scoring behavior change.
+- No Privacy Audit behavior change.
+- No Evidence Lab behavior change.
+- No upload/download behavior change.
+- No external calls.
+- No telemetry.
+- No storage.
+- No Global ID sync.
+- No public ledger sync.
+- No certification.
+- No enforcement.
+- No approval/rejection authority.
+- No official authority.
+- No final-truth behavior.
+
+Human review remains required.
+
+## Suggested validation
+
+```bat
+python tools\run_patch_checks.py 149
+python -m py_compile ui\unit_preview.py
+```
+
+Optional continuity checks:
+
+```bat
+python tools\run_patch_checks.py 148
+python tools\run_patch_checks.py 146_1
+python tools\run_protocol_baseline_self_audit.py
+```

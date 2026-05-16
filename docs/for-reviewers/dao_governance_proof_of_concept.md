@@ -1,6 +1,6 @@
 # DAO Governance Proof of Concept
 
-Patch 149 adds a compact DAO/Lido governance proof-of-concept card to the Aletheia Unit Preview first page, side by side with the existing AI audit-loop proof-of-concept card.
+Patch 149.1 updates the Unit Preview proof-of-concept mirrors so they appear directly on the first page instead of hiding behind dropdown expanders. The DAO/Lido side is also expanded from a short summary into a compact reviewer-facing case set.
 
 The purpose is to show that ALETHEIA can mirror governance structures as well as AI outputs. DAO tools remain the operation layer; ALETHEIA remains the reflection layer.
 
@@ -9,7 +9,16 @@ DAO tools: propose / vote / delegate / execute
 ALETHEIA: Mirror Check / Stress Test / Evidence Lab / human-review questions
 ```
 
-## Four baseline cases
+## First-page display rule
+
+The proof-of-concept mirrors should be visible without extra clicks:
+
+- no collapsed proof-of-concept dropdown;
+- AI audit-loop evidence appears as the left-side proof-of-concept mirror;
+- DAO/Lido governance cases appear as the right-side proof-of-concept mirror;
+- both sides keep the same non-authority boundary: human-review evidence only.
+
+## Four baseline DAO/Lido cases
 
 ### 1. Major DAO governance tools
 
@@ -17,7 +26,21 @@ Exploratory review of Snapshot, Tally, Aragon, DAOhaus, and Colony.
 
 Internal reading: **THRESHOLD**.
 
-Finding: DAO tools have matured and can coordinate proposals, votes, delegation, execution, and exit rights. They still preserve recurring governance risks: token-weighted power concentration, low turnout, whale/delegate dominance, platform dependency, proposal-code evidence gaps, authority drift, and continued need for human review.
+Useful design signals:
+
+- Snapshot lowers voting friction and makes broad off-chain signaling easier.
+- Tally improves on-chain visibility, delegation, and execution review.
+- Aragon supports modular DAO design, permissions, plugins, and upgrade paths.
+- DAOhaus keeps governance simpler and preserves exit/ragequit logic.
+- Colony explores contribution/reputation signals beyond pure token voting.
+
+Risk signals:
+
+- Token-weighted power, low turnout, whale/delegate dominance, and platform dependency remain common.
+- Proposal descriptions can diverge from executable code or multisig execution reality.
+- Complexity can move authority toward technical users, frontends, committees, or delegates.
+
+Grok-comparison lens: a Grok-style critique would likely attack whale power and tooling dependency directly; ALETHEIA keeps that critique bounded as review signals instead of treating it as a final verdict.
 
 ### 2. Lido Snapshot proposal-threshold change
 
@@ -25,7 +48,19 @@ Conceptual review of the Lido DAO proposal to raise the LDO threshold for creati
 
 Internal reading: **THRESHOLD**.
 
-Finding: the proposal had clear structure and a reasonable anti-spam motive, but it changed access to a governance entry point. That creates meta-governance pressure around gatekeeping, small-holder voice, DAO Ops vetting power, and the balance between spam/noise reduction and accessibility/inclusivity.
+Useful design signals:
+
+- The proposal had clear structure, comparative threshold data, explicit choices, and anti-spam intent.
+- It acknowledged exclusion trade-offs and named DAO Ops support as a mitigation.
+- The final human outcome rejected the change, showing community resistance to unnecessary gatekeeping.
+
+Risk signals:
+
+- Changing proposal access changes who can speak through formal governance channels.
+- Large holders and delegates gain relative advantage while smaller holders may lose initiative space.
+- Funded spam actors may bypass higher thresholds, while legitimate small proposers may be chilled.
+
+Grok-comparison lens: a Grok-style reading might frame it as a practical spam-vs-efficiency trade-off; ALETHEIA highlights the deeper boundary issue: proposal thresholds are access-to-governance controls.
 
 ### 3. Lido DAO meta-governance risks
 
@@ -33,7 +68,19 @@ High-level review of Lido DAO governance around forum discussion, Snapshot/off-c
 
 Internal reading: **THRESHOLD**, with **ASYLUM pressure** under coordinated capture, extreme misalignment, or systemic-staking stress.
 
-Finding: Lido has meaningful safeguards, including Dual Governance, but token-weighted control, delegation concentration, committee/multisig authority, layered complexity, legal pressure, and large Ethereum staking exposure keep human review essential.
+Useful design signals:
+
+- Lido documents the LDO-versus-stETH misalignment problem more explicitly than many large DAOs.
+- Dual Governance, objection periods, on-chain records, and public docs create meaningful safeguards.
+- Easy Track and committees reduce routine friction when bounded and visible.
+
+Risk signals:
+
+- LDO holders, delegates, core contributors, funds, and committees still influence meta-governance heavily.
+- stETH holders gain defensive veto/exit power, but not equal proactive proposal power.
+- Layered governance, legal exposure, and Lido's Ethereum staking share make failure systemically relevant.
+
+Grok-comparison lens: a Grok-style critique would likely press harder on Lido centralization and systemic Ethereum risk; ALETHEIA agrees those are pressure signals while preserving the fact that Lido has real mitigations.
 
 ### 4. Lido Dual Governance mechanics
 
@@ -41,7 +88,19 @@ Focused review of the dynamic timelock, stETH veto signaling, and rage-quit safe
 
 Internal reading: **THRESHOLD**.
 
-Finding: Dual Governance is an innovative anti-capture mechanism that reduces LDO/stETH misalignment, but it remains reactive, coordination-dependent, parameter-sensitive, and vulnerable to liquidity costs, veto abuse, UI opacity, or extreme opposition scenarios.
+Useful design signals:
+
+- Connects governance consequences to economic exposure through stETH/wstETH opposition signaling.
+- The first-seal delay and second-seal ragequit path give stakers time to negotiate or exit.
+- It meaningfully reduces the LDO-governor versus stETH-user principal-agent problem.
+
+Risk signals:
+
+- It is reactive rather than proactive: LDO governance moves first, stETH holders defend afterward.
+- Effective veto depends on coordination, threshold calibration, liquidity costs, and accessible monitoring.
+- Veto abuse, griefing, token borrowing, mass escrow pressure, or meta-changes to the mechanism remain stress points.
+
+Grok-comparison lens: a Grok-style analysis might admire the game theory but focus on practical attack paths; ALETHEIA reads it as a serious anti-capture mechanism that reduces risk without abolishing it.
 
 ## Shared finding
 

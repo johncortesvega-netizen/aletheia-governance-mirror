@@ -57,6 +57,12 @@ Boundary preserved: no scoring, verdict-routing, signal-pattern, signal-weight, 
 
 # ALETHEIA Progress Database
 
+## Patch 149.1 — Unit Preview Proof-of-Concept Visibility Hotfix
+
+Patch 149.1 updates the Unit Preview first-page proof-of-concept mirrors so the AI audit-loop evidence and DAO/Lido governance mirror cases are visible without pressing collapsed dropdowns. The DAO/Lido side now carries the four baseline locks in a denser but still compact reviewer format: internal reading, focus, useful design signals, risk/review-pressure signals, and Grok-comparison lens.
+
+This keeps the Patch 149 purpose but corrects presentation: proof-of-concept evidence should be visible as first-page orientation. No scoring, routing, taxonomy, receipt, signal-weight, World Lens, AI Integrity, Privacy Audit, Evidence Lab, telemetry, storage, Global ID, public-ledger, certification, enforcement, or final-truth behavior changed. Human review remains required.
+
 This file tracks current project progress inside the repo so patch continuity is not dependent on chat history alone.
 
 ## Current Status

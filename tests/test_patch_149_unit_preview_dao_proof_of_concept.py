@@ -19,7 +19,7 @@ def read(path: str) -> str:
     return direct.read_text(encoding="utf-8")
 
 
-def test_patch_149_adds_four_dao_baseline_cases() -> None:
+def test_patch_149_adds_four_elaborated_dao_baseline_cases() -> None:
     cases = get_dao_governance_proof_of_concept_cases()
 
     assert [case["name"] for case in cases] == [
@@ -34,9 +34,13 @@ def test_patch_149_adds_four_dao_baseline_cases() -> None:
         "THRESHOLD / ASYLUM pressure under capture stress",
         "THRESHOLD",
     ]
+    for case in cases:
+        assert case["strengths"]
+        assert case["risks"]
+        assert "Grok-style" in str(case["grok_compare"])
 
 
-def test_patch_149_puts_dao_cases_side_by_side_with_ai_proof_of_concept() -> None:
+def test_patch_149_puts_visible_dao_cases_side_by_side_with_ai_proof_of_concept() -> None:
     source = read("ui/unit_preview.py")
 
     assert "Proof-of-concept mirrors" in source
@@ -44,7 +48,12 @@ def test_patch_149_puts_dao_cases_side_by_side_with_ai_proof_of_concept() -> Non
     assert "render_ai_audit_loop_evidence(ai_column)" in source
     assert "render_dao_governance_proof_of_concept(dao_column)" in source
     assert "container.columns(2)" in source
-    assert "DAO tools propose/vote/execute; ALETHEIA mirrors pressure before and after action" in source
+    assert "DAO tools propose / vote / delegate / execute" in source
+    assert "Strengths / useful design signals" in source
+    assert "Risk signals / review pressure" in source
+    assert "Grok-comparison lens" in source
+    assert 'with container.expander("Proof of concept: DAO governance mirror cases"' not in source
+    assert 'with container.expander("Proof of concept: AI audit-loop evidence"' not in source
 
 
 def test_patch_149_documents_dao_boundary_without_authority_claim() -> None:
@@ -56,6 +65,8 @@ def test_patch_149_documents_dao_boundary_without_authority_claim() -> None:
     assert "Lido DAO meta-governance risks" in doc
     assert "Lido Dual Governance mechanics" in doc
     assert "THRESHOLD — not failed, not safe, human review required" in doc
+    assert "no collapsed proof-of-concept dropdown" in doc
+    assert "Grok-comparison lens" in doc
     assert "not live DAO readings" in combined
     assert "not official ALETHEIA receipts" in combined
     assert "legal or investment advice" in combined or "legal findings, investment advice" in combined

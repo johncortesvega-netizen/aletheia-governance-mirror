@@ -1,3 +1,21 @@
+## Patch 149.1 — Unit Preview Proof-of-Concept Visibility Hotfix
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 149.1 corrects the Unit Preview proof-of-concept layout so the AI audit-loop evidence and DAO/Lido governance mirror cases appear directly on the first page instead of hiding behind collapsed dropdowns. It also elaborates the DAO/Lido proof-of-concept cases with compact bullet groups for strengths, risk signals, and a Grok-comparison lens.
+
+Boundary preserved: Unit Preview presentation and reviewer documentation only. No app scoring change, no verdict routing change, no taxonomy change, no receipt schema or receipt generation change, no signal regex or signal weight change, no World Lens math change, no AI Integrity scoring behavior change, no Privacy Audit behavior change, no Evidence Lab behavior change, no upload/download behavior change, no external calls, no telemetry, no storage, no Global ID sync, no public ledger sync, no certification, no enforcement, no approval/rejection authority, no official authority, and no final-truth behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 149
+python -m py_compile ui\unit_preview.py
+python tools\run_patch_checks.py 148
+python tools\run_patch_checks.py 146_1
+python tools\run_protocol_baseline_self_audit.py
+```
+
 ## Patch 149 — Unit Preview DAO Proof-of-Concept Pairing
 
 Status: READY FOR LOCAL REVIEW
@@ -9,10 +27,14 @@ Boundary preserved: Unit Preview presentation and reviewer documentation only. N
 Validation targets:
 
 ```bat
-python toolsun_patch_checks.py 149
-python toolsun_patch_checks.py 148
-python toolsun_patch_checks.py 146_1
-python toolsun_protocol_baseline_self_audit.py
+python tools
+un_patch_checks.py 149
+python tools
+un_patch_checks.py 148
+python tools
+un_patch_checks.py 146_1
+python tools
+un_protocol_baseline_self_audit.py
 ```
 
 ## Patch 148 — Unit Preview AI Audit-Loop Fourth Evidence

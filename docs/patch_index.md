@@ -1,12 +1,21 @@
 # ALETHEIA Patch Index
 
 **Version:** v1.0  
-**Updated for:** Patch 149 — Unit Preview DAO Proof-of-Concept Pairing  
+**Updated for:** Patch 149.1 — Unit Preview Proof-of-Concept Visibility Hotfix  
 **Last updated:** 2026-05-16
 
-This index is a navigation layer for ALETHEIA's iterative patch history. Patch 149 keeps the standing root-hygiene rule active while pairing the existing AI audit-loop proof-of-concept with DAO/Lido governance proof-of-concept cases on the Unit Preview first page. The latest/current patch remains visible at the repository root and older patch artifacts are archived under `docs/patch_archive/` without deleting the audit trail.
+This index is a navigation layer for ALETHEIA's iterative patch history. Patch 149.1 keeps the standing root-hygiene rule active while making the Unit Preview proof-of-concept mirrors visible without dropdowns and elaborating the DAO/Lido governance cases beside the AI audit-loop proof-of-concept. The latest/current patch remains visible at the repository root and older patch artifacts are archived under `docs/patch_archive/` without deleting the audit trail.
 
 ALETHEIA remains a **mirror, not a throne**. Patch history is evidence for review, not proof of truth, safety, legality, ethics, privacy, security, or legitimacy.
+
+
+## Patch 149.1 — Unit Preview Proof-of-Concept Visibility Hotfix
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 149.1 corrects the Unit Preview proof-of-concept layout so the AI audit-loop evidence and DAO/Lido governance mirror cases appear directly on the first page instead of hiding behind collapsed dropdowns. The DAO/Lido side now includes compact strengths, risk-signal, and Grok-comparison bullets for all four baseline cases.
+
+Scope: Unit Preview copy/display and reviewer documentation only. No scoring, routing, taxonomy, receipts, World Lens, AI Integrity, Privacy Audit, Evidence Lab, telemetry, storage, Global ID, public ledger, certification, enforcement, or final-truth behavior changed.
 
 ## Current repository hygiene rule
 
