@@ -281,7 +281,9 @@ def render_dao_governance_proof_of_concept(container=None) -> None:
     )
     container.markdown(
         "**What it shows:** the same mirror can review governance tools, DAO proposals, "
-        "meta-governance design, and protective mechanisms without becoming a DAO authority."
+        "meta-governance design, and protective mechanisms without becoming a DAO authority. "
+        "Grok-style review is treated as a comparison lens / external reviewer pressure input, "
+        "not as validation or a final judge."
     )
     container.caption(
         "Conceptual human-review case studies only — not live DAO readings, official ALETHEIA receipts, "

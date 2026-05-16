@@ -430,3 +430,10 @@ python tools\run_protocol_baseline_self_audit.py
 - Prevents detailed AI audit-loop evidence from showing before the left dropdown is opened.
 - Keeps DAO/Lido governance proof-of-concept content in the matching right dropdown.
 - Preserves all no-scoring-change, no-receipt-change, no-telemetry, no-storage, no-certification, no-enforcement, and no-final-truth boundaries.
+
+## Patch 149.4 — Unit Preview DAO Grok Comparison Intro Hotfix
+
+- Clarifies the DAO/Lido proof-of-concept introduction so Grok-style review is visible as a comparison lens / external reviewer pressure input.
+- Keeps Grok bounded: not validation, not certification, not final judge.
+- Preserves side-by-side collapsed proof-of-concept dropdown behavior.
+- Archives Patch 149.3 root manifest and recovery note.

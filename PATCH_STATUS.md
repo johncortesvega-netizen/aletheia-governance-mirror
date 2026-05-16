@@ -1,3 +1,7 @@
+## Patch 149.4 — Unit Preview DAO Grok Comparison Intro Hotfix
+
+Status: ready for local review. Clarifies the expanded DAO governance proof-of-concept intro so Grok-style review is named as a comparison lens / external reviewer pressure input, not as validation, certification, or a final judge. Keeps the first-page proof-of-concept mirrors collapsed in side-by-side dropdowns. No scoring, receipt, World Lens, engine, external-call, telemetry, storage, or authority behavior changed. Human review remains required.
+
 ## Patch 149.3 — Unit Preview PoC Expander Container Fix
 
 Status: ready for local review. Corrects the Unit Preview proof-of-concept dropdown wiring so both first-page proof-of-concept mirrors render their detailed content inside their own collapsed expander containers. This fixes the AI audit-loop content leaking visibly outside the left dropdown while the DAO/Lido side remained collapsed. No scoring, receipt, World Lens, engine, external-call, telemetry, storage, or authority behavior changed. Human review remains required.

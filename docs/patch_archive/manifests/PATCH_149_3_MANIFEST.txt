@@ -1,0 +1,48 @@
+PATCH 149.3 — Unit Preview PoC Expander Container Fix
+
+Files changed:
+- ui/unit_preview.py
+  - Passes the AI proof-of-concept renderer the `ai_expander` container instead of the parent `ai_column`.
+  - Passes the DAO/Lido proof-of-concept renderer the `dao_expander` container instead of the parent `dao_column`.
+  - Keeps both first-page proof-of-concept mirrors as collapsed dropdowns by default.
+- tests/test_patch_149_unit_preview_dao_proof_of_concept.py
+  - Updates regression assertions to catch expander-container wiring, not only expander label presence.
+- PATCH_STATUS.md
+  - Adds Patch 149.3 status note.
+- docs/progress_database.md
+  - Records the container-binding hotfix and boundaries.
+- docs/patch_index.md
+  - Adds Patch 149.3 index entry.
+- docs/patch_archive/manifests/PATCH_149_2_MANIFEST.txt
+  - Archives the previous root manifest.
+- docs/patch_archive/recovery_notes/PATCH_149_2_RECOVERY_NOTE.md
+  - Archives the previous root recovery note.
+
+Boundary notes:
+- UI/container wiring only.
+- No app scoring change.
+- No verdict routing change.
+- No taxonomy change.
+- No receipt schema or receipt generation change.
+- No signal regex or signal weight change.
+- No World Lens math change.
+- No AI Integrity scoring behavior change.
+- No Privacy Audit behavior change.
+- No Stress Test behavior change.
+- No Evidence Lab behavior change.
+- No upload/download behavior change.
+- No external calls.
+- No telemetry.
+- No storage.
+- No Global ID sync.
+- No public ledger sync.
+- No certification.
+- No enforcement.
+- No approval/rejection authority.
+- No official authority.
+- No final-truth behavior changed.
+- Human review remains required.
+
+Validation targets:
+python -m py_compile ui/unit_preview.py
+PYTHONPATH=. pytest -q tests/test_patch_149_unit_preview_dao_proof_of_concept.py

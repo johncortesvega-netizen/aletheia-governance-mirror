@@ -3007,3 +3007,13 @@ Boundary notes:
 - Presentation/container wiring only.
 - No scoring, verdict routing, taxonomy, receipt schema/generation, signal behavior, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, Evidence Lab behavior, upload/download behavior, external calls, telemetry/storage, certification, enforcement, approval/rejection, or final-truth behavior changed.
 - Both AI audit-loop and DAO/Lido proof-of-concept sections remain human-review evidence only.
+
+## Patch 149.4 - Unit Preview DAO Grok Comparison Intro Hotfix
+
+Patch 149.4 clarifies the DAO/Lido proof-of-concept intro inside the Unit Preview first-page dropdown. The expanded DAO governance mirror cases now explicitly mention Grok-style review as a comparison lens / external reviewer pressure input: useful for sharpening centralization, capture, and hypocrisy concerns, but never treated as validation, certification, or a final judge.
+
+Boundary notes:
+- Copy/UI documentation only.
+- First-page proof-of-concept mirrors remain side-by-side collapsed dropdowns.
+- No scoring, verdict routing, taxonomy, receipt schema/generation, signal behavior, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, World Lens math, Evidence Lab behavior, upload/download behavior, external calls, telemetry/storage, certification, enforcement, approval/rejection, or final-truth behavior changed.
+- Human review remains required.

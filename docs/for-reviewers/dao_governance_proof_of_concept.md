@@ -2,7 +2,7 @@
 
 Patch 149.2 corrects the Unit Preview proof-of-concept mirrors so the first page shows two side-by-side dropdown handles. The detailed AI audit-loop and DAO/Lido material opens inside those dropdowns, keeping the first page clean while preserving the richer reviewer-facing case set.
 
-The purpose is to show that ALETHEIA can mirror governance structures as well as AI outputs. DAO tools remain the operation layer; ALETHEIA remains the reflection layer.
+The purpose is to show that ALETHEIA can mirror governance structures as well as AI outputs. DAO tools remain the operation layer; ALETHEIA remains the reflection layer. Grok-style review is included only as a comparison lens / external reviewer pressure input: it can sharpen centralization, capture, and hypocrisy concerns, but it is not treated as validation, certification, or a final judge.
 
 ```text
 DAO tools: propose / vote / delegate / execute

@@ -56,6 +56,7 @@ def test_patch_149_puts_dao_cases_inside_side_by_side_proof_of_concept_dropdowns
     assert "Strengths / useful design signals" in source
     assert "Risk signals / review pressure" in source
     assert "Grok-comparison lens" in source
+    assert "external reviewer pressure input" in source
 
 
 def test_patch_149_documents_dao_boundary_without_authority_claim() -> None:
@@ -69,6 +70,7 @@ def test_patch_149_documents_dao_boundary_without_authority_claim() -> None:
     assert "THRESHOLD — not failed, not safe, human review required" in doc
     assert "proof-of-concept dropdowns" in doc
     assert "Grok-comparison lens" in doc
+    assert "external reviewer pressure input" in doc
     assert "not live DAO readings" in combined
     assert "not official ALETHEIA receipts" in combined
     assert "legal or investment advice" in combined or "legal findings, investment advice" in combined
