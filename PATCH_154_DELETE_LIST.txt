@@ -1,0 +1,7 @@
+# PATCH 154 DELETE LIST
+# Optional root cleanup after applying this patch.
+# Keep Patch 154 files visible as the current patch.
+# Move older root patch artifacts into your archive folder if present:
+PATCH_153_MANIFEST.txt
+PATCH_153_RECOVERY_NOTE.md
+PATCH_153_DELETE_LIST.txt

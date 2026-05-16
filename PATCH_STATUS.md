@@ -1,6 +1,6 @@
-# Patch 153 - Unit Preview Start Here Failure-Mode Side-by-Side Expansion
+# Patch 154 - Unit Preview Start Here Failure-Mode Side-by-Side Expansion
 
-Patch 153 adds the failure-mode vocabulary directly to the Aletheia Unit Preview Start Here expander. The expander now presents a side-by-side layout: **What ALETHEIA looks for** and **Seven failure-mode review signals**. This is an in-place expansion, not a new tab. No scoring, routing, receipt schema, protocol logic, Receipt Reader logic, or World Lens math changed. Human review remains required.
+Patch 154 adds the failure-mode vocabulary directly to the Aletheia Unit Preview Start Here expander. The expander now presents a side-by-side layout: **What ALETHEIA looks for** and **Seven failure-mode review signals**. This is an in-place expansion, not a new tab. No scoring, routing, receipt schema, protocol logic, Receipt Reader logic, or World Lens math changed. Human review remains required.
 
 ## Patch 152 — Receipt Reader Failure-Mode Verbalization
 
@@ -3408,3 +3408,12 @@ Validation targets:
 python tools\run_patch_checks.py 151
 python tools\run_patch_checks.py 150
 ```
+
+
+## Patch 154 — Unit Preview Start Here Nested Review Expanders
+
+Status: Ready.
+
+Scope: UI/copy layout only. Start Here now keeps the safe first path clean and places the review-lens copy in two optional side-by-side expanders: “What ALETHEIA looks for” and “Seven failure-mode review signals.”
+
+Boundaries: no scoring, routing, receipt schema, protocol logic, Receipt Reader logic, or new tab.

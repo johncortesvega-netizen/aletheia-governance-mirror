@@ -457,3 +457,8 @@ python tools\run_protocol_baseline_self_audit.py
 - Keeps Grok bounded: not validation, not certification, not final judge.
 - Preserves side-by-side collapsed proof-of-concept dropdown behavior.
 - Archives Patch 149.3 root manifest and recovery note.
+
+
+## Patch 154 — Unit Preview Start Here Nested Review Expanders
+
+UI/copy layout refinement. Start Here now uses two optional side-by-side expanders for the front-door review-lens language, avoiding a long visible text block in the safe-first-path section.

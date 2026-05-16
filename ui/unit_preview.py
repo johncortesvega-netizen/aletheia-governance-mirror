@@ -745,13 +745,19 @@ def render_unit_preview(container=None) -> bool:
     container.markdown(get_unit_preview_how_to_use_markdown())
     with container.expander("Start here: try this first", expanded=False):
         container.markdown(get_unit_preview_start_here_markdown())
+        container.caption(
+            "Open these review-lens notes only when you want extra orientation. "
+            "They are prompts for human review, not verdicts."
+        )
         start_columns = container.columns(2, gap="large")
         with start_columns[0]:
-            container.markdown("#### What ALETHEIA looks for")
-            container.markdown(get_unit_preview_what_aletheia_looks_for_markdown())
+            with start_columns[0].expander("What ALETHEIA looks for", expanded=False):
+                container.markdown("#### What ALETHEIA looks for")
+                container.markdown(get_unit_preview_what_aletheia_looks_for_markdown())
         with start_columns[1]:
-            container.markdown("#### Seven failure-mode review signals")
-            container.markdown(get_unit_preview_failure_mode_markdown())
+            with start_columns[1].expander("Seven failure-mode review signals", expanded=False):
+                container.markdown("#### Seven failure-mode review signals")
+                container.markdown(get_unit_preview_failure_mode_markdown())
 
     preview_text = container.text_area(
         "Short text, question, or scenario",

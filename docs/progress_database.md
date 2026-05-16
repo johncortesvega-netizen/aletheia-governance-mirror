@@ -3054,3 +3054,11 @@ Boundary notes:
 - Dutch/Nederlands batch fixtures and Dutch stress-test rules are not removed.
 - The patch does not change scoring, routing, taxonomy, receipt schema/generation, signal regex/weights, Stress Test behavior, Mirror Check behavior, AI Integrity behavior, Privacy Audit behavior, World Lens math, external calls, telemetry, storage, Global ID sync, public ledger sync, certification, enforcement, official authority, or final-truth behavior.
 - Human review remains required.
+
+
+## Patch 154 — Unit Preview Start Here Nested Review Expanders
+
+- Refined the Unit Preview Start Here section after Patch 153.
+- Kept the safe first path visible inside Start Here.
+- Moved the review-lens content into two side-by-side optional expanders: “What ALETHEIA looks for” and “Seven failure-mode review signals.”
+- Preserved engine boundaries: no scoring, routing, receipt schema, protocol logic, Receipt Reader logic, or new tab.
