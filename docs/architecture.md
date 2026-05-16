@@ -335,3 +335,11 @@ The repository doorway should become cleaner without weakening the audit trail. 
 ## Patch 149 architecture note — Unit Preview DAO proof-of-concept pairing
 
 Aletheia Unit Preview now renders two proof-of-concept mirrors side by side on the first page: the existing AI audit-loop evidence card and a new DAO/Lido governance mirror case card. This is orientation content only. It does not call DAO tools, fetch live governance data, score proposals, create receipts, change module routing, alter taxonomy, touch scoring engines, change World Lens math, add telemetry, add storage, add external calls, or assert certification/authority. The DAO card frames DAO tooling as the operation layer and ALETHEIA as the reflection layer for human review.
+
+## Patch 155 architecture note — Module Page Template Scaffold
+
+Patch 155 adds `ui/module_page_template.py` as a shared copy/layout scaffold for future page-like module polish. It is not imported by `app.py` and is not wired into active modules yet. Future patches may apply the scaffold one module at a time while preserving module-specific content and engine behavior.
+
+The scaffold standardizes only the explanatory structure: plain-language purpose, what the module looks for, safe first path, input area, result / mirror reading, observed reasons, repair questions, receipt / export, and boundary note.
+
+No scoring, verdict routing, taxonomy, receipt schema/generation, signal behavior, module-engine behavior, upload/download behavior, external calls, telemetry/storage, Global ID sync, public ledger sync, certification, enforcement, official authority, privacy guarantee, safety guarantee, or final-truth behavior changes.

@@ -3417,3 +3417,38 @@ Status: Ready.
 Scope: UI/copy layout only. Start Here now keeps the safe first path clean and places the review-lens copy in two optional side-by-side expanders: “What ALETHEIA looks for” and “Seven failure-mode review signals.”
 
 Boundaries: no scoring, routing, receipt schema, protocol logic, Receipt Reader logic, or new tab.
+
+## Patch 155 — Module Page Template Scaffold
+
+Date: 2026-05-16
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 155 starts the staged layout-unification direction as Patch A. It adds a shared page-like module template scaffold with the same calm structure as Unit Preview: plain-language purpose, what the module looks for, safe first path, input area, result / mirror reading, observed reasons, repair questions, receipt / export, and boundary note.
+
+This patch does not apply the template to active modules yet. It creates reusable copy/layout helpers and documentation so later patches can polish modules one at a time without changing their engine behavior.
+
+Boundary notes:
+- Copy/layout helper only.
+- No scoring, routing, taxonomy, receipt schema/generation, signal behavior, module-engine behavior, World Lens math, Evidence Lab behavior, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, upload/download behavior, external calls, telemetry/storage, Global ID sync, public ledger sync, certification, enforcement, approval/rejection, official authority, privacy guarantee, safety guarantee, or final-truth behavior changed.
+- Human review remains required.
+
+## Patch 156 — Mirror Check Page Polish
+
+Date: 2026-05-16
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 156 is Patch B in the staged module-page unification work. It applies the Patch 155 shared page-like module scaffold to Mirror Check only, using Mirror Check's inherent content: purpose, what it looks for, safe first path, bounded input guidance, result/mirror-reading guidance, observed reasons, repair questions, receipt/export, and non-authority boundary note.
+
+Boundary notes:
+- Copy/layout polish only.
+- No scoring, routing, taxonomy, receipt schema/generation, signal behavior, batch behavior, upload/download behavior, external calls, telemetry/storage, Global ID sync, public ledger sync, certification, enforcement, approval/rejection, official authority, privacy guarantee, safety guarantee, or final-truth behavior changed.
+- Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 156
+python tools\run_patch_checks.py 155
+```

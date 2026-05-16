@@ -1,0 +1,23 @@
+PATCH 156 — Mirror Check Page Polish
+
+Files changed:
+- app.py
+- tests/test_patch_155_module_page_template.py
+- tests/test_patch_156_mirror_check_page_polish.py
+- docs/module_page_template.md
+- PATCH_STATUS.md
+- docs/patch_index.md
+- docs/progress_database.md
+- PATCH_156_MANIFEST.txt
+- PATCH_156_RECOVERY_NOTE.md
+- PATCH_156_DELETE_LIST.txt
+
+Scope:
+- Applies the shared Patch 155 module-page scaffold to Mirror Check.
+- Adds module-specific copy for purpose, what Mirror Check looks for, safe first path, input guidance, result guidance, observed reasons, repair questions, receipt/export, and boundary note.
+- Updates tests and documentation.
+
+Boundary:
+- Copy/layout polish only.
+- No scoring, routing, taxonomy, receipt schema/generation, protocol logic, signal behavior, batch behavior, upload/download behavior, external calls, telemetry/storage, certification, enforcement, approval/rejection, or final-truth behavior changed.
+- Human review remains required.

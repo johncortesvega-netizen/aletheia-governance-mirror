@@ -3062,3 +3062,19 @@ Boundary notes:
 - Kept the safe first path visible inside Start Here.
 - Moved the review-lens content into two side-by-side optional expanders: “What ALETHEIA looks for” and “Seven failure-mode review signals.”
 - Preserved engine boundaries: no scoring, routing, receipt schema, protocol logic, Receipt Reader logic, or new tab.
+
+## Patch 155 — Module Page Template Scaffold
+
+Patch 155 records Patch A of the module-page unification direction. It adds a shared `ui/module_page_template.py` helper and `docs/module_page_template.md` so future modules can receive the Unit Preview-style page structure one at a time.
+
+The intended shared structure is: plain-language purpose, what this module looks for, safe first path, input area, result / mirror reading, observed reasons, repair questions, receipt / export, and boundary note.
+
+This patch is scaffold-only. It does not wire the helper into `app.py` or any active module. No scoring, routing, taxonomy, receipt schema/generation, signal behavior, module-engine behavior, external calls, telemetry/storage, certification, enforcement, or final-truth behavior changed.
+
+## Patch 156 — Mirror Check Page Polish
+
+Patch 156 applies the shared module-page template scaffold to Mirror Check as the first active module-page polish. This keeps the project on the staged layout-unification path: Unit Preview remains the front door, the Patch 155 scaffold defines the shared structure, and Mirror Check is the first module to receive that structure.
+
+Design intent: make Mirror Check easier to understand without changing what it does. The module now foregrounds plain-language purpose, review signals, safe first path, bounded input guidance, mirror-reading guidance, observed reasons, repair questions, receipt/export framing, and non-authority boundary language.
+
+Boundary preserved: no scoring change, no routing change, no receipt schema/generation change, no protocol logic change, no batch behavior change, no upload/download behavior change, no external calls, no telemetry/storage, no Global ID sync, no public ledger sync, no certification, no enforcement, no official authority, and no final-truth behavior. Human review remains required.

@@ -1,0 +1,3 @@
+Root patch-hygiene suggestion for maintainers after applying Patch 156:
+
+Archive older root patch artifacts if they are still visible at the repository root. Keep the latest patch manifest/recovery note visible and move previous patch artifacts into the established archive folder/map without deleting the audit trail.

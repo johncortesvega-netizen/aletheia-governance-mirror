@@ -462,3 +462,18 @@ python tools\run_protocol_baseline_self_audit.py
 ## Patch 154 — Unit Preview Start Here Nested Review Expanders
 
 UI/copy layout refinement. Start Here now uses two optional side-by-side expanders for the front-door review-lens language, avoiding a long visible text block in the safe-first-path section.
+
+## Patch 155 — Module Page Template Scaffold
+
+- Adds `ui/module_page_template.py` as a reusable page-like module scaffold.
+- Defines a shared section order: plain-language purpose, what this module looks for, safe first path, input area, result / mirror reading, observed reasons, repair questions, receipt / export, and boundary note.
+- Documents the scaffold in `docs/module_page_template.md`.
+- Does not wire the scaffold into active modules yet.
+- Preserves all no-scoring-change, no-routing-change, no-receipt-change, no-module-engine-change, no-telemetry, no-storage, no-certification, no-enforcement, and no-final-truth boundaries.
+
+## Patch 156 — Mirror Check Page Polish
+
+- Applies the shared Patch 155 module-page scaffold to Mirror Check.
+- Gives Mirror Check the same calm page-like structure as Unit Preview while preserving module-specific content.
+- Adds Mirror Check-specific copy for purpose, what it looks for, safe first path, input guidance, result guidance, observed reasons, repair questions, and receipt/export.
+- Does not alter scoring, routing, receipt generation/schema, protocol logic, batch behavior, telemetry/storage, certification, enforcement, or final-truth behavior.

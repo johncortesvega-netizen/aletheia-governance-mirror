@@ -1,0 +1,27 @@
+PATCH 155 MANIFEST — Module Page Template Scaffold
+
+Purpose:
+- Start Patch A of the module-page unification direction.
+- Add a shared page-like module scaffold matching the calm Unit Preview structure.
+- Prepare future one-module-at-a-time layout polish without changing active module behavior.
+
+Files added:
+- ui/module_page_template.py
+- docs/module_page_template.md
+- tests/test_patch_155_module_page_template.py
+
+Files updated:
+- PATCH_STATUS.md
+- docs/patch_index.md
+- docs/architecture.md
+- docs/progress_database.md
+
+Validation:
+- python tools/run_patch_checks.py 155
+- python tools/run_patch_checks.py 154
+
+Boundary:
+- Copy/layout scaffold only.
+- Not wired into app.py or active modules yet.
+- No scoring, routing, taxonomy, receipt schema/generation, signal behavior, module-engine behavior, World Lens math, Evidence Lab behavior, AI Integrity behavior, Privacy Audit behavior, Stress Test behavior, upload/download behavior, external calls, telemetry/storage, Global ID sync, public ledger sync, certification, enforcement, approval/rejection, official authority, privacy guarantee, safety guarantee, or final-truth behavior changed.
+- Human review remains required.

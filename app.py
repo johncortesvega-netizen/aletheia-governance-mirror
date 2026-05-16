@@ -31,6 +31,7 @@ from ui.module_intro import render_boundary_cases_intro, render_consent_audit_in
 from ui.privacy_audit_panel import render_privacy_boundary_audit_panel
 from ui.receipt_reader import render_receipt_reader_standard_view
 from ui.status_cards import render_ai_integrity_boundary_cards
+from ui.module_page_template import ModulePageTemplateCopy, render_module_page_template_intro
 from ui.input_clarity import (
     render_language_calibration_caveat,
     render_direct_csv_read_failed,
@@ -7638,17 +7639,38 @@ with tab_chat:
     render_shared_protocol_state_notice("Mirror Check")
     render_audit_module_integrity_panel()
 
-    st.info(
-        "Bring one idea at a time. ALETHEIA is English-first; Dutch/Nederlands examples may be used for batch testing, not as a general app-wide compatibility claim. ALETHEIA checks how power moves, where appeal is protected, and where review is needed. You keep the judgment."
+    render_module_page_template_intro(
+        st,
+        ModulePageTemplateCopy(
+            module_name="Mirror Check",
+            purpose=(
+                "Review one document, idea, proposal, policy text, or AI output for pressure signals, "
+                "missing safeguards, review needs, and repair questions. ALETHEIA is English-first; "
+                "Dutch/Nederlands examples may be used for batch testing, not as a general app-wide "
+                "language-compatibility claim."
+            ),
+            looks_for=(
+                "Care alignment: whether the idea protects people, dignity, consent, and non-harm.",
+                "Power language: whether soft wording hides control, coercion, ranking, punishment, or authority drift.",
+                "Evidence and reviewability: whether reasons, sources, and assumptions can be inspected by another human reviewer.",
+                "Appeal and repair: whether affected people have explanation, contestation, correction, and human-review paths.",
+                "Failure-mode pressure: authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, or no-appeal automation.",
+                "Witness receipt: whether a local review record is useful for later human inspection.",
+            ),
+            safe_first_path=(
+                "Paste one short item, not a whole archive of mixed cases.",
+                "Use optional demos only for orientation; they never run by themselves.",
+                "Read the protocol-adjusted reading as a suggestion, not a decision.",
+                "Inspect observed reasons, values, and repair questions before relying on the reading.",
+                "Download a receipt only when you want a local review record.",
+            ),
+            input_guidance="Use this module for one bounded text item. Use the batch-testing panel only for deliberate test batches.",
+            result_guidance="Treat the result as a mirror reading of pressure and review needs, not as approval, rejection, or truth certification.",
+            observed_reasons_guidance="Check which signals drove the reading before trusting any label, metric, or repair suggestion.",
+            repair_questions_guidance="Use repair questions to strengthen evidence, safeguards, appeal paths, and human review.",
+            receipt_guidance="Mirror Check receipts are local review artifacts held by the user; they are not public-ledger records or official verdicts.",
+        ),
     )
-
-    with st.expander("What Mirror Check looks for", expanded=False):
-        f1, f2, f3, f4, f5 = st.columns(5)
-        f1.markdown("**1. Care alignment**\n\nDoes the idea protect people?")
-        f2.markdown("**2. Power language**\n\nDoes soft wording hide control?")
-        f3.markdown("**3. Integrity check**\n\nCan the result be reviewed?")
-        f4.markdown("**4. Stability pattern**\n\nWhat happens under pressure?")
-        f5.markdown("**5. Witness receipt**\n\nA local record you hold.")
 
     if "chat_audit_history" not in st.session_state:
         st.session_state.chat_audit_history = []
