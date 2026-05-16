@@ -15,7 +15,7 @@ def _header_image() -> str | None:
 
 def render_about():
     st.subheader("Why ALETHEIA")
-    st.info("ALETHEIA helps people review governance risk, evidence gaps, and safeguard needs. It reflects; people decide. ALETHEIA is English-first; Dutch/Nederlands examples are used for batch testing, not as a general app-wide language-compatibility claim.")
+    st.info("ALETHEIA helps people review power, evidence, safeguards, and repair needs without turning the tool into an authority. It reflects; people decide. ALETHEIA is English-first; Dutch/Nederlands examples are used for batch testing, not as a general app-wide language-compatibility claim.")
     st.caption("ALETHEIA v1.0 AI Integrity Preview: public adoption docs, demo path, release boundary, and stabilization checks are documented.")
 
     header = _header_image()
@@ -52,13 +52,13 @@ def render_about():
 
     st.markdown(
         """
-        **ALETHEIA is a governance-risk research prototype with a gentle, practical tone.** It helps users examine governance ideas, simulate systemic pressure, and study how population-weighted exposure may interact with trust, stability, alignment, safeguards, and capture risk.
+        **ALETHEIA is a governance-risk research prototype with a gentle, practical tone.** It helps users examine governance ideas, stress-test scenarios, read evidence quality, inspect AI outputs, and interpret receipts with clearer boundaries.
 
-        It is not designed to rule, command, or replace human judgment. **ALETHEIA is a mirror, not a throne:** a careful way to ask whether a proposal strengthens service, transparency, dignity, accountability, repair, and stability — or whether it concentrates power, hides decisions, weakens appeal rights, or creates systemic capture.
+        It is not designed to rule, command, or replace human judgment. **ALETHEIA is a mirror, not a throne:** a careful way to ask whether a proposal strengthens service, transparency, dignity, accountability, appeal, repair, and stability — or whether it concentrates power, hides decisions, weakens appeal rights, or creates systemic capture.
 
         The public-safe baseline is explicit: ALETHEIA may identify risk patterns, evidence gaps, safeguard gaps, and repair questions, but it must not command, enforce, vote, govern, remove leaders, validate extraordinary authority claims, or replace human judgment.
 
-        The current doctrine style is neutral and friendly: soft voice, firm safeguards, evidence before certainty, and no final human or machine authority. The Humility Protocol keeps the Z-axis bounded: it marks the edge of what human and system tools may responsibly claim, not a perfection score.
+        The protocol style is neutral and friendly: soft voice, firm safeguards, evidence before certainty, and no final human or machine authority. The Humility Protocol keeps the Z-axis bounded: it marks the edge of what human and system tools may responsibly claim, not a perfection score.
         """
     )
 

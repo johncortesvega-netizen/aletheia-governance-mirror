@@ -4,7 +4,9 @@
 
 **ALETHEIA is a mirror, not a throne.** It shows governance-risk signals for human review — nothing more.
 
-ALETHEIA helps reviewers inspect proposals, policies, systems, doctrines, AI artifacts, and public-data patterns for signals such as capture pressure, weak appeal paths, evidence gaps, consent pressure, service misalignment, hidden influence, and authority overreach.
+ALETHEIA helps reviewers inspect proposals, policies, systems, doctrines, AI artifacts, receipts, and public-data patterns for signals such as capture pressure, weak appeal paths, evidence gaps, consent pressure, service misalignment, hidden influence, and authority overreach.
+
+Why it exists: many systems can look governed, compliant, neutral, or benevolent while still moving power out of reach. ALETHEIA does not answer that problem with more command. It answers with a restrained mirror: make pressure visible, name missing safeguards, and return the reading to human review.
 
 ALETHEIA does **not** decide, certify, approve, reject, enforce, govern, vote, or replace law, evidence, accountability, expertise, or human judgment.
 
@@ -1171,3 +1173,10 @@ Patch 139 keeps Aletheia Unit Preview as the app's single hook before the module
 ### Patch 140 orientation refinement
 
 Aletheia Unit Preview is the first orientation surface. It now carries the practical `How to use this` guidance and short examples before the user enters the full app. After proceeding, the module tabs remain the working surface. Receipt Reader - Standard View is available as a support utility rather than a main module tab.
+
+
+## Patch 160 — Why ALETHEIA + Protocol Guide Copy Polish
+
+Patch 160 polishes the public Why ALETHEIA and Protocol Guide wording so the purpose is clearer and less doctrine-heavy. Why ALETHEIA now emphasizes why the mirror exists: systems can appear compliant, neutral, or benevolent while still hiding capture pressure, appeal failure, evidence inflation, or authority drift. Protocol Guide now reads as an operating-boundary guide rather than a command layer.
+
+Boundary: copy/documentation only. No scoring, routing, taxonomy, receipt schema/generation, receipt parsing, empirical math, World Lens allocation, protocol logic, batch behavior, upload/download behavior, telemetry/storage, certification, enforcement, ranking, official authority, or final-truth behavior changed. Human review remains required.

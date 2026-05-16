@@ -1,20 +1,22 @@
-# ALETHEIA v0.1 — Protocol Guide
+# ALETHEIA v1.0 — Protocol Guide
 
-Status: Patch 43 consolidation  
-Function: User-facing operating guide for the v0.1 governance mirror  
+Status: Patch 160 copy polish over the Patch 43 consolidation  
+Function: User-facing operating guide for the v1.0 governance mirror  
 Authority level: Not authoritative above human review
 
 ## Core identity
 
 ALETHEIA reflects. People decide.
 
-ALETHEIA v0.1 is a governance mirror for human review. It helps users examine governance documents, policy proposals, institutional designs, public claims, and boundary-case scenarios for capture risk, coercion risk, manipulation risk, evidence gaps, safeguard gaps, consent pressure, performative ethics, repair gaps, and population-impact concerns.
+ALETHEIA v1.0 is a governance mirror for human review. It helps users examine governance documents, policy proposals, institutional designs, AI outputs, receipts, public claims, and boundary-case scenarios for capture risk, coercion risk, manipulation risk, evidence gaps, safeguard gaps, consent pressure, performative ethics, repair gaps, and population-impact concerns.
+
+The guide explains how the mirror should speak: careful, bounded, evidence-aware, and open to correction. It is not a command layer. It does not make the protocol sovereign.
 
 ALETHEIA does not command, enforce, vote, govern, remove leaders, validate spiritual authority, certify truth, or replace human judgment.
 
 ## Operating path
 
-The current v0.1 logic stack is:
+The current v1.0 logic stack is:
 
 ```text
 User input
@@ -26,17 +28,18 @@ User input
 → Mechanism-vs-Claim Scanner
 → Self-Audit Mode
 → Evidence Lab / Extraordinary Claim Protocol
+→ AI Integrity Mirror / Receipt Reader where relevant
 → World Lens Simulation
 → repair questions
 → Local Witness Receipt v2
 → human review
 ```
 
-Each layer is diagnostic and repair-oriented. No layer creates binding authority.
+Each layer is diagnostic and repair-oriented. No layer creates binding authority, certification, enforcement, or final truth.
 
-## 1. Baseline v0.1
+## 1. Baseline
 
-The baseline defines what ALETHEIA may and may not do.
+The baseline defines what ALETHEIA may and may not do. It keeps every module subordinate to human review.
 
 ALETHEIA may identify:
 
@@ -65,7 +68,7 @@ ALETHEIA may not:
 
 ## 2. Safe Language Layer
 
-ALETHEIA uses safe, non-sovereign language.
+ALETHEIA uses safe, non-sovereign language. The goal is not to soften real risk; the goal is to name risk without turning the tool into an authority.
 
 Use:
 

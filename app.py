@@ -8308,27 +8308,27 @@ with tab_chat:
 with tab_doctrine:
     st.subheader("Protocol Guide")
     st.info(
-        "ALETHEIA is a mirror, not a throne. This page keeps the tone clear, protective, practical, and open to review."
+        "The Protocol Guide explains the operating boundaries behind the mirror. It keeps the system useful, reviewable, and subordinate to human judgment."
     )
-    st.caption("ALETHEIA v1.0 is complete as a public MVP. Pick the tab that matches your task, read the boundary, and keep final review human.")
-    st.markdown("**Quick path:** Mirror Check for documents · Stress Test for scenarios · AI Integrity Mirror for AI/code artifacts · Evidence Lab for claims · Protocol Guide for rules.")
+    st.caption("Use this page to understand the rules, language limits, shared state, and review path. It is guidance, not authority.")
+    st.markdown("**Quick path:** choose the work module first; use Protocol Guide when you need the rules, limits, and shared operating frame.")
     render_public_trust_package_page(st)
     st.markdown(
         """
-        The Protocol Guide is the integrity frame for **ALETHEIA v1.0 — Governance Mirror**. It does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment. Its labels are internal review aids, not final claims.
+        The Protocol Guide is the operating frame for **ALETHEIA v1.0 — Governance Mirror**. It explains how the modules should speak, what they may reflect, and what they must never claim. It does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment. Its labels are internal review aids, not final claims.
 
-        **ALETHEIA is a careful mirror for power.** It helps people look at governance ideas, simulations, evidence, and World Lens with more clarity and less fear. Its job is to notice patterns, ask better questions, and keep hidden capture visible — not to command, condemn, or become final authority.
+        **ALETHEIA is a careful mirror for power.** It helps people look at governance ideas, AI outputs, scenarios, receipts, evidence, and World Lens context with more clarity and less fear. Its job is to notice pressure patterns, ask better questions, and keep hidden capture visible — not to command, condemn, certify, or become final authority.
 
-        In the updated tone, the Sydney Protocol is treated as a warm guardrail: it keeps power accountable, keeps intelligence gentle, keeps evidence visible, and keeps every output open to appeal. The 9k idea is treated as a human anti-tyranny scaffold / threshold steward, not a sovereign body, mandate, Sanctuary, or final legitimacy.
+        The Sydney Protocol is treated as a guardrail for review language: keep power accountable, keep intelligence gentle, keep evidence visible, keep refusal and appeal possible, and keep every output open to correction. The 9k idea is treated as a human anti-tyranny scaffold / threshold steward, not a sovereign body, mandate, Sanctuary, or final legitimacy.
 
-        Mirror Check, Stress Test, AI Integrity Mirror, Evidence Lab, and World Lens are synchronized views over a shared protocol state. Changes to empirical evidence, scoring calibration, doctrine thresholds, Sydney Protocol overlay, or selected evidence year may propagate across modules. This is intentional protocol-state propagation, not isolated tab behavior.
+        Mirror Check, Stress Test, AI Integrity Mirror, Evidence Lab, Receipt Reader, Boundary Cases, and World Lens are synchronized views over a shared protocol state. Changes to empirical evidence, scoring calibration, protocol thresholds, Sydney Protocol overlay, or selected evidence year may propagate across modules. This is intentional protocol-state propagation, not isolated tab behavior.
         """
     )
 
-    with st.expander("Plain doctrine summary", expanded=True):
+    with st.expander("Plain protocol summary", expanded=True):
         st.markdown(
             """
-            **The heart of the doctrine is care with boundaries.** ALETHEIA should help protect dignity without pretending it owns truth. It should make risk easier to see, not make people smaller.
+            **The heart of the protocol is care with boundaries.** ALETHEIA should help protect dignity without pretending it owns truth. It should make risk easier to see, not make people smaller.
 
             - **Mirror, not throne:** the system reflects risk patterns back to human review. It does not rule.
             - **Power as service:** healthy power protects, explains, repairs, and accepts appeal.
@@ -8391,7 +8391,7 @@ with tab_doctrine:
             """
             ALETHEIA modules are not fully isolated. They share a common protocol substrate.
 
-            Shared state may include empirical master data, scored country-year evidence, selected evidence year, scoring calibration, trust calibration, Sydney Protocol overlay, doctrine thresholds, prototype/demo state, and World Lens basis.
+            Shared state may include empirical master data, scored country-year evidence, selected evidence year, scoring calibration, trust calibration, Sydney Protocol overlay, protocol thresholds, prototype/demo state, and World Lens basis.
 
             This means a change in one module may affect another when both depend on the same protocol state.
 

@@ -21,30 +21,32 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
 
     st = container
     st.subheader("Why ALETHEIA")
-    st.info("Start here if you are new: ALETHEIA helps review governance risk, evidence gaps, and safeguard needs. It reflects; people decide.")
+    st.info("Start here if you are new: ALETHEIA helps people review power, evidence, safeguards, and repair needs without turning the tool into an authority. It reflects; people decide.")
 
-    with st.expander("A different position: restraint as strength", expanded=True):
+    with st.expander("Why ALETHEIA exists", expanded=True):
         st.markdown(
             """
-            ALETHEIA does not follow the normal AI-governance trend of adding more automation,
-            more intelligence, and more institutional control. Its strength is restraint.
+            ALETHEIA exists because many systems can look orderly while still moving power out of
+            reach. A policy can have compliance language and still hide appeal failure. An AI output
+            can sound neutral while carrying flattery pressure or provider-shaped assumptions. A
+            governance process can be documented while still concentrating power in a few actors.
 
-            Many enterprise governance tools focus on compliance workflows: regulatory readiness,
-            risk registers, model inventories, dashboards, and audit paperwork. Those tools can be
-            useful, but they can also create a **compliance mirage**: a system may look governed on
-            paper while still carrying capture risk, consent pressure, hidden influence, weak appeal
-            paths, or authority drift.
+            ALETHEIA's answer is not more command, automation, or institutional control. Its answer
+            is a restrained mirror: make pressure visible, name missing safeguards, and return the
+            reading to human review.
 
-            ALETHEIA treats compliance as a floor, not the final measure of integrity. It asks:
+            It asks practical questions:
 
             - Where is power moving?
-            - Who can appeal?
-            - What is hidden?
+            - What evidence was actually inspected?
+            - Who can appeal, exit, correct, or refuse?
+            - What is hidden behind clean language?
             - Where is human review being weakened?
 
-            ALETHEIA does not replace enterprise tools, legal review, security review, or
-            human judgment. It exists in the space those systems often miss: capture pressure,
-            consent erosion, appeal failure, hidden influence, and authority drift.
+            Compliance can be useful, but compliance is only a floor. ALETHEIA looks for the
+            review gaps that paperwork, dashboards, and confident AI language can miss: capture
+            pressure, consent erosion, weak appeal paths, hidden influence, evidence inflation,
+            and authority drift.
             """
         )
 
@@ -53,11 +55,11 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
 
     st.markdown(
         """
-        **ALETHEIA v1.0 is a governance-risk research prototype and public MVP.** It helps people examine governance ideas, simulate system pressure, review evidence quality, and study how population-weighted exposure may interact with trust, stability, alignment, and capture risk.
+        **ALETHEIA v1.0 is a governance-risk research prototype and public MVP.** It helps people examine governance ideas, stress-test scenarios, read evidence quality, inspect AI outputs, and interpret local receipts with clearer boundaries.
 
         It is not designed to rule, command, enforce, vote, govern, remove leaders, validate spiritual authority, confirm extraordinary claims, or replace human judgment. **ALETHEIA is a mirror:** a structured way to ask whether a proposal protects service, transparency, dignity, accountability, appeal, and repair — or whether it concentrates power, hides decisions, weakens appeal rights, or creates capture.
 
-        The v1.0 release package includes Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, World Lens, Local Witness Receipts, public limitations, examples, and deployment documentation. These layers help identify what needs review or repair without assigning blame, issuing commands, or claiming final authority.
+        The v1.0 package is strongest when read as a review aid, not a status machine. Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, World Lens, Local Witness Receipts, public limitations, examples, and deployment documentation all point back to the same rule: surface what needs review or repair without assigning blame, issuing commands, or claiming final authority.
         """
     )
 

@@ -497,3 +497,10 @@ UI/copy layout refinement. Start Here now uses two optional side-by-side expande
 - Keeps module-specific content intact: boundary calibration, evidence-quality review, and selected-year empirical World Lens context.
 - Adds explicit calm page guidance for what each module looks for, safe first path, input area, result/mirror-reading interpretation, observed reasons, repair questions, and receipt/export boundaries.
 - Preserves existing module behavior; no scoring, routing, protocol, receipt, empirical math, World Lens allocation, batch, upload/download, certification, enforcement, ranking, official-authority, or final-truth logic changes.
+
+## Patch 160 — Why ALETHEIA + Protocol Guide Copy Polish
+
+- Polishes the public Why ALETHEIA copy so the project purpose is clearer: ALETHEIA exists to reveal pressure patterns that can remain hidden beneath compliant, neutral, orderly, or benevolent language.
+- Polishes Protocol Guide copy so it reads as an operating-boundary guide, not a doctrine or command layer.
+- Preserves mirror-not-throne, human-review-required, no-certification, no-enforcement, and no-final-truth boundaries.
+- No scoring, routing, taxonomy, receipt schema/generation, receipt parsing, empirical math, World Lens allocation, protocol logic, batch behavior, upload/download behavior, telemetry/storage, official authority, or final-truth behavior changed.

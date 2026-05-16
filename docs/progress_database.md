@@ -3097,3 +3097,11 @@ Patch 159 completed Patch E of the staged module-page unification track. Boundar
 The patch is copy/layout only. It does not alter scoring, routing, taxonomy, receipt schema/generation, receipt parsing, empirical math, World Lens allocation, protocol logic, batch behavior, upload/download behavior, telemetry/storage, certification, enforcement, ranking, official authority, or final-truth behavior.
 
 Validation target: `python tools\run_patch_checks.py 159`.
+
+## Patch 160 — Why ALETHEIA + Protocol Guide Copy Polish
+
+Patch 160 refines the public purpose and guide wording after the module-page polish sequence. Why ALETHEIA now says more directly why the mirror exists: systems can look compliant, neutral, orderly, or benevolent while still moving power out of reach through capture pressure, weak appeal paths, evidence inflation, consent pressure, hidden influence, or authority drift.
+
+The Protocol Guide is polished as an operating-boundary guide. It explains how the mirror should speak, what modules may reflect, and what they must never claim. It is guidance, not authority, and not a command layer.
+
+This is copy/documentation only. No scoring, routing, taxonomy, receipt schema/generation, receipt parsing, empirical math, World Lens allocation, protocol logic, batch behavior, upload/download behavior, telemetry/storage, certification, enforcement, ranking, official authority, or final-truth behavior changed. Human review remains required.

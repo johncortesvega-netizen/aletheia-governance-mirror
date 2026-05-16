@@ -1,0 +1,5 @@
+# Patch 160 root cleanup suggestion
+# If maintaining a clean root, archive these older root patch files after applying Patch 160:
+PATCH_159_MANIFEST.txt
+PATCH_159_RECOVERY_NOTE.md
+PATCH_159_DELETE_LIST.txt

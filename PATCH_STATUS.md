@@ -3501,3 +3501,21 @@ python tools\run_patch_checks.py 157
 python tools\run_patch_checks.py 156
 python tools\run_patch_checks.py 155
 ```
+
+## Patch 160 — Why ALETHEIA + Protocol Guide Copy Polish
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 160 polishes the public Why ALETHEIA and Protocol Guide wording.
+
+Why ALETHEIA now explains the purpose more directly: ALETHEIA exists because systems can look compliant, neutral, orderly, or benevolent while still hiding capture pressure, appeal failure, evidence inflation, consent pressure, hidden influence, or authority drift. The answer is not more command or automation; it is a restrained mirror that makes pressure visible, names missing safeguards, and returns the reading to human review.
+
+Protocol Guide now reads more clearly as an operating-boundary guide. It explains how the mirror should speak, what modules may reflect, and what they must never claim. It is guidance, not authority, and not a command layer.
+
+Boundary: copy/documentation only. No scoring, routing, taxonomy, receipt schema/generation, receipt parsing, empirical math, World Lens allocation, protocol logic, batch behavior, upload/download behavior, telemetry/storage, certification, enforcement, ranking, official authority, or final-truth behavior changed. Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 160
+```
