@@ -1,3 +1,9 @@
+## Patch 152 — Receipt Reader Failure-Mode Verbalization
+
+Patch 152 adds the expanded failure-mode verbalization as a visible review layer in Receipt Reader for all uploaded receipts and mirrors the wording into README, About / Why ALETHEIA, Signal Dictionary, Receipt Reader docs, and AI audit-loop reviewer notes. The named review signals are authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, and no-appeal automation.
+
+This is an expansion of public vocabulary, not a new tab and not a new authority claim. The layer names pressure patterns that can make systems appear more legitimate, neutral, certain, or authoritative than the evidence supports. These signals are not verdicts, proof of wrongdoing, certification of deception, legal findings, or final truth. Receipt Reader still does not rescore, override, merge, or regenerate receipts. Human review remains required.
+
 ## Patch 149.2 — Unit Preview PoC Dropdown Restore Hotfix
 
 Corrected Patch 149.1 presentation: AI audit-loop evidence and DAO/Lido governance proof-of-concept cases now appear as two side-by-side Unit Preview dropdown handles, with detailed content inside. Preserves the four DAO/Lido baseline cases and Grok-comparison lens. Scope is UI/content only; no scoring or authority change.

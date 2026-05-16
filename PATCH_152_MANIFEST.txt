@@ -1,0 +1,41 @@
+ALETHEIA Patch 152 — Receipt Reader Failure-Mode Verbalization
+
+Status: READY FOR LOCAL REVIEW
+
+Purpose
+- Add suggestion 5 as an expanded verbalization layer, not a new tab.
+- Show failure-mode review signals in Receipt Reader for all uploaded receipts.
+- Update public and reviewer documentation so the same vocabulary is visible outside the app.
+
+Changed files
+- ui/receipt_reader.py
+- README.md
+- about_page.py
+- pages_ui/about_page.py
+- docs/receipt_reader_standard_view.md
+- docs/SIGNAL_DICTIONARY.md
+- docs/for-reviewers/ai_audit_loop_evidence.md
+- docs/patch_index.md
+- docs/progress_database.md
+- PATCH_STATUS.md
+- tests/test_patch_152_failure_mode_receipt_verbalization.py
+- docs/patch_archive/root_patch_artifact_index.md
+- docs/patch_archive/manifests/PATCH_151_MANIFEST.txt
+- docs/patch_archive/recovery_notes/PATCH_151_RECOVERY_NOTE.md
+
+New/updated wording
+- Authority drift
+- Evidence inflation
+- Flattery pressure
+- Capture pressure
+- Sanctification drift
+- False neutrality
+- No-appeal automation
+
+Boundary preserved
+- Copy/documentation and Receipt Reader display text only.
+- No scoring, routing, taxonomy behavior, receipt schema, receipt generation, receipt hash contract, signal regex/weights, World Lens math, Evidence Lab math, AI Integrity scoring, external calls, telemetry, storage, Global ID sync, public ledger sync, certification, enforcement, approval/rejection authority, official authority, or final-truth behavior changed.
+- Human review remains required.
+
+Validation
+- python tools/run_patch_checks.py 152

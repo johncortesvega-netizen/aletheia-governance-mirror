@@ -1,0 +1,15 @@
+Root hygiene after applying Patch 152:
+
+Delete or move from repository root after confirming Patch 152 is visible:
+- PATCH_151_MANIFEST.txt
+- PATCH_151_RECOVERY_NOTE.md
+- PATCH_151_DELETE_LIST.txt
+
+Archive copies included:
+- docs/patch_archive/manifests/PATCH_151_MANIFEST.txt
+- docs/patch_archive/recovery_notes/PATCH_151_RECOVERY_NOTE.md
+
+Keep at root:
+- PATCH_152_MANIFEST.txt
+- PATCH_152_RECOVERY_NOTE.md
+- PATCH_152_DELETE_LIST.txt

@@ -47,6 +47,44 @@ STATE_BRIEF_PREFIX = {
     "WORLD_LENS_EVIDENCE_VIEW": "The mirror reflects a selected-year evidence view",
 }
 
+
+FAILURE_MODE_REVIEW_SIGNALS = [
+    (
+        "Authority drift",
+        "when a system starts sounding like it can decide, certify, command, legitimize, rank, punish, or replace human judgment.",
+    ),
+    (
+        "Evidence inflation",
+        "when claims become stronger than the evidence actually inspected.",
+    ),
+    (
+        "Flattery pressure",
+        "when approval, reassurance, or validation is disguised as neutral analysis.",
+    ),
+    (
+        "Capture pressure",
+        "when power concentrates in one actor, platform, institution, token group, committee, model owner, funder, or technical gatekeeper.",
+    ),
+    (
+        "Sanctification drift",
+        "when poetic, religious, moral, symbolic, or higher-truth language gets turned into operational authority.",
+    ),
+    (
+        "False neutrality",
+        "when a system presents provider-shaped assumptions, institutional preferences, or hidden defaults as objective reasoning.",
+    ),
+    (
+        "No-appeal automation",
+        "when people are affected by a decision without review, contestation, explanation, or repair path.",
+    ),
+]
+
+FAILURE_MODE_REVIEW_BOUNDARY = (
+    "ALETHEIA watches for pressure patterns that can make systems appear more legitimate, neutral, certain, "
+    "or authoritative than the evidence supports. These failure modes are internal review signals, not proof "
+    "of wrongdoing, illegality, deception, or final truth. Human review remains required."
+)
+
 STATUS_LINES = {
     "SANCTUARY": "The uploaded receipt records a low-review internal reading. The pattern should still be checked by a human before reliance.",
     "THRESHOLD": "The uploaded receipt records a review-needed internal reading. Safeguards, appealability, and transparency deserve closer inspection.",
@@ -1048,6 +1086,14 @@ def _render_metric_observation_cards(container: Any, view: dict[str, Any]) -> No
         container.write(f"Observation: {interpretation}")
 
 
+
+def _render_failure_mode_review_signals(container: Any) -> None:
+    """Render failure-mode verbalization for every Receipt Reader view."""
+    container.markdown("### Failure-mode review signals")
+    container.write(FAILURE_MODE_REVIEW_BOUNDARY)
+    for label, explanation in FAILURE_MODE_REVIEW_SIGNALS:
+        container.markdown(f"- **{label}:** {explanation}")
+
 def _render_native_values_expander(container: Any, view: dict[str, Any]) -> None:
     rows = _native_values_rows(view)
     if hasattr(container, "expander"):
@@ -1108,6 +1154,7 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
 
     container.markdown("### Reader Brief")
     container.write(view["summary"])
+    _render_failure_mode_review_signals(container)
     container.info("This is a reflection for human review, not certification, approval, rejection, enforcement, or final truth.")
     container.caption(view["parsing_limits"])
 

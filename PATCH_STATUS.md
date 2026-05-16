@@ -1,3 +1,19 @@
+## Patch 152 — Receipt Reader Failure-Mode Verbalization
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 152 implements the expanded failure-mode verbalization as an in-place review layer, not a new tab. Receipt Reader now shows the same failure-mode review signals for uploaded receipts: authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, and no-appeal automation. README, About / Why ALETHEIA, Signal Dictionary, Receipt Reader documentation, and AI audit-loop reviewer notes now carry the same boundary wording.
+
+Boundary preserved: copy/documentation and Receipt Reader display text only. No scoring, routing, module engine, receipt schema, receipt generation, receipt hash contract, World Lens math, Evidence Lab math, AI Integrity scoring, signal regex/weights, external calls, telemetry, storage, Global ID sync, public ledger sync, certification, enforcement, approval/rejection authority, official authority, or final-truth behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 152
+python tools\run_patch_checks.py 151
+python tools\run_patch_checks.py 150
+```
+
 ## Patch 150 — Entry Button + Boundary Copy Polish
 
 Status: READY FOR LOCAL REVIEW

@@ -72,6 +72,24 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
             """
         )
 
+
+    with st.expander("Failure modes ALETHEIA watches for", expanded=False):
+        st.markdown(
+            """
+            ALETHEIA watches for pressure patterns that can make systems appear more legitimate, neutral, certain, or authoritative than the evidence supports. These failure modes are review signals for human interpretation, not verdicts.
+
+            - **Authority drift** — when a system starts sounding like it can decide, certify, command, legitimize, rank, punish, or replace human judgment.
+            - **Evidence inflation** — when claims become stronger than the evidence actually inspected.
+            - **Flattery pressure** — when approval, reassurance, or validation is disguised as neutral analysis.
+            - **Capture pressure** — when power concentrates in one actor, platform, institution, token group, committee, model owner, funder, or technical gatekeeper.
+            - **Sanctification drift** — when poetic, religious, moral, symbolic, or higher-truth language gets turned into operational authority.
+            - **False neutrality** — when a system presents provider-shaped assumptions, institutional preferences, or hidden defaults as objective reasoning.
+            - **No-appeal automation** — when people are affected by a decision without review, contestation, explanation, or repair path.
+
+            Receipt Reader repeats this verbal layer for all uploaded receipts. It does not rescore, prove wrongdoing, certify deception, or claim final truth. Human review remains required.
+            """
+        )
+
     with st.expander("Scope layers: tool, research, vision, out of scope", expanded=False):
         st.markdown(
             """

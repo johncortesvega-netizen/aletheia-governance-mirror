@@ -5,13 +5,21 @@ Latest root artifacts: PATCH_150_MANIFEST.txt and PATCH_150_RECOVERY_NOTE.md. Pa
 # ALETHEIA Patch Index
 
 **Version:** v1.0  
-**Updated for:** Patch 150 — Entry Button + Boundary Copy Polish  
+**Updated for:** Patch 152 — Receipt Reader Failure-Mode Verbalization  
 **Last updated:** 2026-05-16
 
-This index is a navigation layer for ALETHEIA's iterative patch history. Patch 150 keeps the standing root-hygiene rule active while polishing the Unit Preview app-entry button, public audit-loop proof copy, public boundary copy, taxonomy-label language, and receipt boundary wording. The latest/current patch remains visible at the repository root and older patch artifacts are archived under `docs/patch_archive/` without deleting the audit trail.
+This index is a navigation layer for ALETHEIA's iterative patch history. Patch 152 keeps the standing root-hygiene rule active while adding the failure-mode verbalization layer to Receipt Reader and public documentation. The latest/current patch remains visible at the repository root and older patch artifacts are archived under `docs/patch_archive/` without deleting the audit trail.
 
 ALETHEIA remains a **mirror, not a throne**. Patch history is evidence for review, not proof of truth, safety, legality, ethics, privacy, security, or legitimacy.
 
+
+## Patch 152 — Receipt Reader Failure-Mode Verbalization
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 152 adds the expanded failure-mode vocabulary to Receipt Reader and public docs as an in-place verbalization layer, not a new tab. The visible signals are authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, and no-appeal automation.
+
+Scope: Receipt Reader display copy and public/reviewer documentation only. No scoring, routing, taxonomy behavior, receipt schema/hash contract, World Lens math, AI Integrity scoring, Privacy Audit behavior, Evidence Lab behavior, signal regex/weights, telemetry, storage, Global ID, public ledger, certification, enforcement, or final-truth behavior changed. Human review remains required.
 
 ## Patch 150 — Entry Button + Boundary Copy Polish
 

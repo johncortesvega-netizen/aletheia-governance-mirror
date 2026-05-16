@@ -72,6 +72,20 @@ Receipt Reader - Standard View must not:
 
 Human review remains required.
 
+## Failure modes ALETHEIA watches for
+
+ALETHEIA watches for pressure patterns that can make systems appear more legitimate, neutral, certain, or authoritative than the evidence supports. These failure modes are not verdicts. They are review signals for human interpretation.
+
+- **Authority drift** — when a system starts sounding like it can decide, certify, command, legitimize, rank, punish, or replace human judgment.
+- **Evidence inflation** — when claims become stronger than the evidence actually inspected.
+- **Flattery pressure** — when approval, reassurance, or validation is disguised as neutral analysis.
+- **Capture pressure** — when power concentrates in one actor, platform, institution, token group, committee, model owner, funder, or technical gatekeeper.
+- **Sanctification drift** — when poetic, religious, moral, symbolic, or higher-truth language gets turned into operational authority.
+- **False neutrality** — when a system presents provider-shaped assumptions, institutional preferences, or hidden defaults as objective reasoning.
+- **No-appeal automation** — when people are affected by a decision without review, contestation, explanation, or repair path.
+
+Receipt Reader applies this wording to all uploaded receipts as a verbal review layer. It does not add a new tab, rescore the receipt, prove wrongdoing, certify deception, or claim final truth. Human review remains required.
+
 ## Parsing Limits
 
 Receipt formats may vary by module and patch history. The future reader should parse obvious fields only. If a value is missing, unclear, duplicated, or malformed, the reader should say that the field was not found or could not be read. It must not guess.

@@ -50,3 +50,8 @@ These artifacts are proof-of-concept evidence for the audit process, not proof t
 - Power stays accountable.
 - External AI agreement, disagreement, or self-correction is not validation of ALETHEIA.
 - Mirror, not throne: no model, reviewer, receipt, or screenshot becomes a throne.
+
+
+## Failure-mode vocabulary
+
+The audit-loop evidence should be read through review signals such as authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, and no-appeal automation. These are not final verdicts or proof of wrongdoing. They help reviewers name pressure patterns before human interpretation.
