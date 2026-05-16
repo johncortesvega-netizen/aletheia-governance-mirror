@@ -277,9 +277,49 @@ SUPPORTED_INPUT_LANGUAGE_NOTE = "Language scope: ALETHEIA is English-first. Dutc
 PROJECT_ROOT = Path(__file__).resolve().parent
 ABOUT_HEADER_IMAGE = PROJECT_ROOT / "assets" / "about_header.png"
 MASCOT_LOGO_IMAGE = PROJECT_ROOT / "assets" / "aletheia_robot_laurel_logo.png"
-DOCTRINE_HTML_FILES = [
-    ("Sydney Protocol v3.2", PROJECT_ROOT / "Sydney_Protocol_v3.2.html"),
-    ("GPA v8.2", PROJECT_ROOT / "GPA_v8.2.html"),
+VISUAL_SOURCE_FILES = [
+    {
+        "title": "Sydney Protocol v3.2",
+        "path": PROJECT_ROOT / "Sydney_Protocol_v3.2.html",
+        "kind": "html",
+        "caption": "Packaged local HTML reference.",
+        "summary": "Guardian-style protocol reference in its bundled HTML form.",
+    },
+    {
+        "title": "GPA v8.2",
+        "path": PROJECT_ROOT / "GPA_v8.2.html",
+        "kind": "html",
+        "caption": "Packaged local HTML reference.",
+        "summary": "Bundled GPA reference preserved as a local HTML card.",
+    },
+    {
+        "title": "Global Peace Architecture",
+        "path": PROJECT_ROOT / "assets" / "visual_cards" / "global_peace_architecture.jpg",
+        "kind": "image",
+        "caption": "Reference visual card.",
+        "summary": "Three-phase architecture poster with foundation, global-grid, and baseline framing.",
+    },
+    {
+        "title": "The Sovereign Master Blueprint",
+        "path": PROJECT_ROOT / "assets" / "visual_cards" / "sovereign_master_blueprint.jpg",
+        "kind": "image",
+        "caption": "Reference visual card.",
+        "summary": "Roadmap-style sanctuary blueprint with household and macro-structure panels.",
+    },
+    {
+        "title": "The Sydney Protocol: Command Dossier",
+        "path": PROJECT_ROOT / "assets" / "visual_cards" / "sydney_protocol_command_dossier.jpg",
+        "kind": "image",
+        "caption": "Reference visual card.",
+        "summary": "Command-dossier visual summarizing foundation, 9,000 randoms, global grid, and core functions.",
+    },
+    {
+        "title": "The Sydney Protocol: Architect's Checklist",
+        "path": PROJECT_ROOT / "assets" / "visual_cards" / "sydney_protocol_architect_checklist.jpg",
+        "kind": "image",
+        "caption": "Reference visual card.",
+        "summary": "Checklist-style protocol visual with humility, warmth, EQ, service, and baseline themes.",
+    },
 ]
 TOTAL_9K = 9000
 
@@ -1867,25 +1907,44 @@ def deterministic_signal_summary(grid_df: pd.DataFrame) -> dict:
     }
 
 
-def render_doctrine_html_reference(title: str, html_path: Path, key_prefix: str) -> None:
-    if not html_path.exists():
-        st.warning(f"Reference file not found: {html_path.name}")
+def render_visual_source_card(card: dict[str, object], key_prefix: str) -> None:
+    title = str(card.get("title", "Reference"))
+    path = Path(card["path"])
+    kind = str(card.get("kind", "html"))
+    caption = str(card.get("caption", "Reference material."))
+    summary = str(card.get("summary", ""))
+
+    if not path.exists():
+        st.warning(f"Reference file not found: {path.name}")
         return
 
-    html_text = html_path.read_text(encoding="utf-8", errors="ignore")
-    c1, c2 = st.columns([1, 0.3])
-    with c1:
-        st.caption(f"Embedded from `{html_path.name}`")
-    with c2:
-        st.download_button(
-            f"⬇️ Download {html_path.name}",
-            data=html_text,
-            file_name=html_path.name,
-            mime="text/html",
-            use_container_width=True,
-            key=f"download_{key_prefix}",
-        )
-    components.html(html_text, height=640, scrolling=True)
+    with st.expander(title, expanded=True):
+        if summary:
+            st.markdown(f"**What it shows:** {summary}")
+        meta_col, download_col = st.columns([1, 0.35])
+        with meta_col:
+            st.caption(f"{caption} Source: `{path.name}`")
+        if kind == "html":
+            file_text = path.read_text(encoding="utf-8", errors="ignore")
+            payload = file_text
+            mime = "text/html"
+        else:
+            payload = path.read_bytes()
+            mime = "image/jpeg"
+        with download_col:
+            st.download_button(
+                f"⬇️ Download {path.name}",
+                data=payload,
+                file_name=path.name,
+                mime=mime,
+                use_container_width=True,
+                key=f"download_{key_prefix}",
+            )
+
+        if kind == "html":
+            components.html(file_text, height=640, scrolling=True)
+        else:
+            st.image(str(path), use_container_width=True)
 
 
 STRESS_TEST_DEFAULTS = """SANCTUARY | The 9k is randomly selected inside demographic-proportional lanes every four years, with no campaigning, no seat ownership, transparency, public audit, appeal rights, and no founder control.
@@ -8308,27 +8367,27 @@ with tab_chat:
 with tab_doctrine:
     st.subheader("Protocol Guide")
     st.info(
-        "The Protocol Guide explains the operating boundaries behind the mirror. It keeps the system useful, reviewable, and subordinate to human judgment."
+        "ALETHEIA is a mirror, not a throne. This page keeps the tone clear, protective, practical, and open to review."
     )
-    st.caption("Use this page to understand the rules, language limits, shared state, and review path. It is guidance, not authority.")
-    st.markdown("**Quick path:** choose the work module first; use Protocol Guide when you need the rules, limits, and shared operating frame.")
+    st.caption("ALETHEIA v1.0 is complete as a public MVP. Pick the tab that matches your task, read the boundary, and keep final review human.")
+    st.markdown("**Quick path:** Mirror Check for documents · Stress Test for scenarios · AI Integrity Mirror for AI/code artifacts · Evidence Lab for claims · Protocol Guide for rules.")
     render_public_trust_package_page(st)
     st.markdown(
         """
-        The Protocol Guide is the operating frame for **ALETHEIA v1.0 — Governance Mirror**. It explains how the modules should speak, what they may reflect, and what they must never claim. It does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment. Its labels are internal review aids, not final claims.
+        The Protocol Guide is the integrity frame for **ALETHEIA v1.0 — Governance Mirror**. It does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment. Its labels are internal review aids, not final claims.
 
-        **ALETHEIA is a careful mirror for power.** It helps people look at governance ideas, AI outputs, scenarios, receipts, evidence, and World Lens context with more clarity and less fear. Its job is to notice pressure patterns, ask better questions, and keep hidden capture visible — not to command, condemn, certify, or become final authority.
+        **ALETHEIA is a careful mirror for power.** It helps people look at governance ideas, simulations, evidence, and World Lens with more clarity and less fear. Its job is to notice patterns, ask better questions, and keep hidden capture visible — not to command, condemn, or become final authority.
 
-        The Sydney Protocol is treated as a guardrail for review language: keep power accountable, keep intelligence gentle, keep evidence visible, keep refusal and appeal possible, and keep every output open to correction. The 9k idea is treated as a human anti-tyranny scaffold / threshold steward, not a sovereign body, mandate, Sanctuary, or final legitimacy.
+        In the updated tone, the Sydney Protocol is treated as a warm guardrail: it keeps power accountable, keeps intelligence gentle, keeps evidence visible, and keeps every output open to appeal. The 9k idea is treated as a human anti-tyranny scaffold / threshold steward, not a sovereign body, mandate, Sanctuary, or final legitimacy.
 
-        Mirror Check, Stress Test, AI Integrity Mirror, Evidence Lab, Receipt Reader, Boundary Cases, and World Lens are synchronized views over a shared protocol state. Changes to empirical evidence, scoring calibration, protocol thresholds, Sydney Protocol overlay, or selected evidence year may propagate across modules. This is intentional protocol-state propagation, not isolated tab behavior.
+        Mirror Check, Stress Test, AI Integrity Mirror, Evidence Lab, and World Lens are synchronized views over a shared protocol state. Changes to empirical evidence, scoring calibration, doctrine thresholds, Sydney Protocol overlay, or selected evidence year may propagate across modules. This is intentional protocol-state propagation, not isolated tab behavior.
         """
     )
 
-    with st.expander("Plain protocol summary", expanded=True):
+    with st.expander("Plain doctrine summary", expanded=True):
         st.markdown(
             """
-            **The heart of the protocol is care with boundaries.** ALETHEIA should help protect dignity without pretending it owns truth. It should make risk easier to see, not make people smaller.
+            **The heart of the doctrine is care with boundaries.** ALETHEIA should help protect dignity without pretending it owns truth. It should make risk easier to see, not make people smaller.
 
             - **Mirror, not throne:** the system reflects risk patterns back to human review. It does not rule.
             - **Power as service:** healthy power protects, explains, repairs, and accepts appeal.
@@ -8391,7 +8450,7 @@ with tab_doctrine:
             """
             ALETHEIA modules are not fully isolated. They share a common protocol substrate.
 
-            Shared state may include empirical master data, scored country-year evidence, selected evidence year, scoring calibration, trust calibration, Sydney Protocol overlay, protocol thresholds, prototype/demo state, and World Lens basis.
+            Shared state may include empirical master data, scored country-year evidence, selected evidence year, scoring calibration, trust calibration, Sydney Protocol overlay, doctrine thresholds, prototype/demo state, and World Lens basis.
 
             This means a change in one module may affect another when both depend on the same protocol state.
 
@@ -8765,15 +8824,19 @@ with tab_doctrine:
         st.dataframe(pd.DataFrame(matrix_rows), use_container_width=True, hide_index=True, height=520)
 
     st.markdown("### Visual source cards")
-    st.caption("These root HTML cards use a warmer guardian tone while keeping the GPA / Sydney Protocol structure. They are reference material, not final authority.")
-    available_docs = [(title, path) for title, path in DOCTRINE_HTML_FILES if path.exists()]
-    if available_docs:
-        doc_tabs = st.tabs([title for title, _ in available_docs])
-        for i, ((title, path), tab) in enumerate(zip(available_docs, doc_tabs), start=1):
-            with tab:
-                render_doctrine_html_reference(title, path, key_prefix=f"doc_{i}")
+    st.caption(
+        "These reference cards stay viewable in place. Each card opens as a side-by-side dropdown so you can review the visuals without swapping tabs or losing context. They remain reference material, not final authority."
+    )
+    available_cards = [card for card in VISUAL_SOURCE_FILES if Path(card["path"]).exists()]
+    if available_cards:
+        for start in range(0, len(available_cards), 2):
+            row_cards = available_cards[start:start + 2]
+            columns = st.columns(2)
+            for offset, card in enumerate(row_cards):
+                with columns[offset]:
+                    render_visual_source_card(card, key_prefix=f"visual_card_{start + offset + 1}")
     else:
-        st.info("No packaged HTML guide files were found in this build.")
+        st.info("No packaged visual source cards were found in this build.")
 
 with tab_about:
     render_about_public_info_page(st, header_image=resolve_about_header_image())

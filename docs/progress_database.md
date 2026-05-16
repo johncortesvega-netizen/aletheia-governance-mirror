@@ -1,3 +1,9 @@
+## Patch 161 — Visual Source Card Grid + Added Reference Posters
+
+Patch 161 changes the visual source card area from tab-swapping embeds into a side-by-side grid of dropdown cards that stay viewable in place. It preserves the bundled Sydney Protocol v3.2 and GPA v8.2 HTML references and adds four new poster-style reference visuals: Global Peace Architecture, The Sovereign Master Blueprint, The Sydney Protocol: Command Dossier, and The Sydney Protocol: Architect's Checklist.
+
+Scope: visual-reference presentation only. No scoring, routing, receipt schema, protocol logic, or authority boundary changed.
+
 Patch 153 adds the seven failure-mode review signals to the Aletheia Unit Preview Start Here expander as a side-by-side verbalization layer: "What ALETHEIA looks for" next to "Seven failure-mode review signals." The change is copy/layout only and does not alter scoring, routing, receipt schema, protocol logic, Receipt Reader behavior, or World Lens math. Human review remains required.
 
 ## Patch 152 — Receipt Reader Failure-Mode Verbalization
@@ -3097,11 +3103,3 @@ Patch 159 completed Patch E of the staged module-page unification track. Boundar
 The patch is copy/layout only. It does not alter scoring, routing, taxonomy, receipt schema/generation, receipt parsing, empirical math, World Lens allocation, protocol logic, batch behavior, upload/download behavior, telemetry/storage, certification, enforcement, ranking, official authority, or final-truth behavior.
 
 Validation target: `python tools\run_patch_checks.py 159`.
-
-## Patch 160 — Why ALETHEIA + Protocol Guide Copy Polish
-
-Patch 160 refines the public purpose and guide wording after the module-page polish sequence. Why ALETHEIA now says more directly why the mirror exists: systems can look compliant, neutral, orderly, or benevolent while still moving power out of reach through capture pressure, weak appeal paths, evidence inflation, consent pressure, hidden influence, or authority drift.
-
-The Protocol Guide is polished as an operating-boundary guide. It explains how the mirror should speak, what modules may reflect, and what they must never claim. It is guidance, not authority, and not a command layer.
-
-This is copy/documentation only. No scoring, routing, taxonomy, receipt schema/generation, receipt parsing, empirical math, World Lens allocation, protocol logic, batch behavior, upload/download behavior, telemetry/storage, certification, enforcement, ranking, official authority, or final-truth behavior changed. Human review remains required.
