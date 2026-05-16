@@ -52,3 +52,10 @@ Mirror Check now uses the shared page-like orientation structure while preservin
 - non-authority boundary note.
 
 Boundary preserved: this is copy/layout polish only. It does not change scoring, verdict routing, taxonomy labels, receipt schema or generation, protocol logic, batch behavior, upload/download behavior, telemetry/storage, certification, enforcement, approval/rejection, official authority, or final-truth behavior. Human review remains required.
+
+
+## Patch 158 — Receipt Reader Page Polish
+
+Patch 158 applies the shared module-page scaffold to Receipt Reader - Standard View. Receipt Reader keeps its inherent content: upload-only local receipt reading, native state/status explanation, copied metric observations, reader brief, human-review questions, parsing limits, failure-mode review signals, and the boundary that Receipt Reader does not rescore, certify, approve, reject, enforce, override, or create receipts.
+
+This is copy/layout polish only. It does not change receipt parsing, receipt schema, upload handling, scoring, routing, protocol logic, batch ZIP logic, World Lens evidence-bundle behavior, external calls, telemetry/storage, certification, enforcement, approval/rejection, or final-truth behavior.

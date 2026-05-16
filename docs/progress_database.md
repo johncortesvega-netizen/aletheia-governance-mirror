@@ -3084,3 +3084,8 @@ Boundary preserved: no scoring change, no routing change, no receipt schema/gene
 Patch 157 applies the shared module-page template scaffold to Stress Test as the second active module-page polish after Mirror Check. It keeps Stress Test scenario-specific: governance scenario pressure, safeguards, trust/friction/grievance/alignment/ego stress, capture pressure, failure-mode signals, repair questions, and local receipt boundary.
 
 This continues the staged layout-unification path without changing scoring, routing, receipts, batch behavior, or protocol logic.
+
+
+## Patch 158 — Receipt Reader Page Polish
+
+Patch D in the module-page unification sequence applied the shared page scaffold to Receipt Reader - Standard View. The reader now starts with clear page-like guidance while remaining upload-only and explanatory. It preserves native receipt values, metric observations, reader brief, human-review questions, parsing limits, failure-mode review signals, and batch/evidence-bundle boundaries. No scoring, routing, receipt schema, parsing, upload behavior, batch logic, protocol logic, telemetry/storage, certification, enforcement, or final-truth behavior changed.

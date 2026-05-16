@@ -483,3 +483,10 @@ UI/copy layout refinement. Start Here now uses two optional side-by-side expande
 - Applies the shared Patch 155 module-page scaffold to Stress Test.
 - Adds Stress Test-specific calm page guidance for scenario pressure, safeguards, governance stress, capture pressure, failure-mode pressure, repair needs, and local receipt boundaries.
 - Preserves existing Stress Test controls and behavior; no scoring, routing, protocol, receipt, or batch logic changes.
+
+
+## Patch 158 — Receipt Reader Page Polish
+
+- Applies the shared Patch 155 module-page scaffold to Receipt Reader - Standard View.
+- Adds receipt-reader-specific calm page guidance for upload-only local receipt reading, native values, reader brief, failure-mode signals, human-review questions, and parsing limits.
+- Preserves existing Receipt Reader parsing and behavior; no scoring, routing, protocol, receipt schema/generation, batch ZIP, upload/download, certification, enforcement, or final-truth logic changes.

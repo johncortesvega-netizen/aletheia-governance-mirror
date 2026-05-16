@@ -1,0 +1,33 @@
+ALETHEIA PATCH 158 — Receipt Reader Page Polish
+
+Changed files:
+- ui/receipt_reader.py
+- docs/module_page_template.md
+- docs/receipt_reader_standard_view.md
+- docs/patch_index.md
+- docs/progress_database.md
+- PATCH_STATUS.md
+- tests/test_patch_158_receipt_reader_page_polish.py
+- PATCH_158_MANIFEST.txt
+- PATCH_158_RECOVERY_NOTE.md
+
+Scope:
+- Applies the shared Patch 155 page-like module scaffold to Receipt Reader - Standard View.
+- Adds Receipt Reader-specific orientation copy for purpose, what it looks for, safe first path, upload guidance, result guidance, observed reasons, human-review questions, and receipt/export boundary.
+
+Preserved boundaries:
+- No scoring change.
+- No routing change.
+- No receipt schema or receipt generation change.
+- No receipt parsing change.
+- No upload/download behavior change.
+- No batch ZIP behavior change.
+- No World Lens evidence-bundle behavior change.
+- No protocol logic change.
+- No external calls, telemetry, storage, Global ID sync, or public ledger sync.
+- No certification, enforcement, approval/rejection, override behavior, or final-truth claim.
+
+Validation:
+- python tools/run_patch_checks.py 158
+- python tools/run_patch_checks.py 157
+- python tools/run_patch_checks.py 155

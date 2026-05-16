@@ -3460,3 +3460,20 @@ Status: PASS
 Patch 157 is Patch C in the staged module-page unification work. It applies the shared Patch 155 page-like scaffold to Stress Test only, using Stress Test's inherent content: scenario pressure, safeguard gaps, governance stress, capture pressure, failure-mode pressure, repair needs, safe scan/manual guidance, receipt/export boundary, and the standard non-authority note.
 
 Boundary: copy/layout only. No scoring, routing, receipt schema, batch behavior, upload/download behavior, or protocol logic changed.
+
+
+## Patch 158 — Receipt Reader Page Polish
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 158 is Patch D in the staged module-page unification work. It applies the shared Patch 155 page-like scaffold to Receipt Reader - Standard View, while preserving Receipt Reader's inherent upload-only content: existing local receipt explanation, native state/status, copied metric observations, reader brief, human-review questions, parsing limits, failure-mode review signals, and receipt/batch boundaries.
+
+Boundary: copy/layout only. No scoring, routing, receipt schema/generation, receipt parsing, upload/download behavior, batch ZIP behavior, World Lens evidence-bundle behavior, protocol logic, external calls, telemetry/storage, certification, enforcement, approval/rejection, override behavior, or final-truth behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 158
+python tools\run_patch_checks.py 157
+python tools\run_patch_checks.py 155
+```

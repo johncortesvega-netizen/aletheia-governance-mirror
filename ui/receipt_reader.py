@@ -13,10 +13,39 @@ import zipfile
 from collections import Counter
 from typing import Any
 
+from ui.module_page_template import ModulePageTemplateCopy, render_module_page_template_intro
+
 
 RECEIPT_READER_BOUNDARY = (
     "Receipt Reader - Standard View explains uploaded ALETHEIA receipts. "
     "It does not rescore, certify, approve, reject, enforce, or override the original receipt."
+)
+
+
+RECEIPT_READER_PAGE_COPY = ModulePageTemplateCopy(
+    module_name="Receipt Reader - Standard View",
+    purpose=(
+        "Read an existing local ALETHEIA receipt in plain language without rerunning, rescoring, editing, approving, rejecting, certifying, or overriding the original receipt."
+    ),
+    looks_for=(
+        "Native receipt state and review pressure exactly as recorded",
+        "Module source and protocol label without inventing missing fields",
+        "Metric observations copied from the receipt, with QUESTION_PROMPT metrics marked not applicable",
+        "Reader brief, human-review questions, and parsing limits",
+        "Failure-mode review signals such as authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, and no-appeal automation",
+    ),
+    safe_first_path=(
+        "Upload one ALETHEIA receipt file first: .txt, .md, .json, or .zip.",
+        "Start with the native state, review pressure, protocol label, and module source.",
+        "Open Native receipt values only when you need exact copied fields.",
+        "Use batch ZIP reading as an index of receipts, not as a merged verdict.",
+        "Treat all failure-mode language as review signals for human interpretation, not proof of wrongdoing or final truth.",
+    ),
+    input_guidance="Upload only ALETHEIA receipt artifacts. Do not use this reader for general documents, claims, or live scoring.",
+    result_guidance="Treat the reader output as an explanation of the uploaded receipt, not as a new reading or a second verdict.",
+    observed_reasons_guidance="Compare the reader brief, native values, parsing limits, and failure-mode signals before relying on the receipt.",
+    repair_questions_guidance="Use human-review questions to inspect gaps, safeguards, appeal paths, missing evidence, or pressure signals before acting.",
+    receipt_guidance="Receipt Reader does not create or alter receipts; it explains local user-held receipts and batch ZIPs for review.",
 )
 
 MISSING_VALUE = "Not found in uploaded receipt"
@@ -1328,7 +1357,7 @@ def render_receipt_reader_standard_view(container=None) -> None:
 
         container = st
 
-    container.subheader("Receipt Reader - Standard View")
+    render_module_page_template_intro(container, RECEIPT_READER_PAGE_COPY)
     container.caption(RECEIPT_READER_BOUNDARY)
     uploaded = container.file_uploader(
         "Upload an ALETHEIA receipt file",

@@ -100,3 +100,10 @@ A future implementation should test that:
 - SANCTUARY, THRESHOLD, and ASYLUM remain internal taxonomy states;
 - missing fields are handled calmly;
 - no scoring, receipt schema, routing, signal, telemetry, storage, external-call, certification, enforcement, approval, rejection, privacy-guarantee, or final-truth behavior is introduced.
+
+
+## Patch 158 page-like orientation
+
+Receipt Reader now uses the shared page-like module scaffold so the reader opens with plain-language purpose, what it looks for, safe first path, input guidance, result guidance, observed reasons, human-review questions, receipt/export boundary, and the standard non-authority note.
+
+The visible review language remains upload-only and explanatory. Receipt Reader does not rescore uploaded files, merge verdicts, create a new receipt, certify truth or safety, approve/reject a receipt, enforce action, or override the original receipt. Failure-mode review signals remain human-review prompts, not proof of wrongdoing, deception, illegality, or final truth.
