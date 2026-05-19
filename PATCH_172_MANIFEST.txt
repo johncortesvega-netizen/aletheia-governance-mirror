@@ -1,0 +1,37 @@
+PATCH 172 MANIFEST
+==================
+
+Patch ID: 172
+Title: AI Integrity Patrol Protocol Bridge
+Date: 2026-05-19
+Status: READY FOR LOCAL REVIEW
+
+Scope
+-----
+Repair AI Integrity Patrol hard-failure routing for rights/access-impacting ranking combined with hidden decision logic and no contestability path. This ensures the opaque citizen-ranking demo routes to ASYLUM / High rather than staying at THRESHOLD / Medium due to weighted scoring alone.
+
+Files Changed
+-------------
+- core/ai_integrity_mirror.py
+- tests/test_patch_172_ai_integrity_protocol_bridge.py
+- tests/test_patch_171_ai_integrity_reviewability_floor.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_172_MANIFEST.txt
+- PATCH_172_RECOVERY_NOTE.md
+
+Boundary
+--------
+- No World Lens changes.
+- No Evidence Lab changes.
+- No app routing changes.
+- No receipt schema/generation changes.
+- No general taxonomy-state changes.
+- No external calls, telemetry, storage, or authority behavior added.
+- AI Integrity remains a static review aid, not certification, enforcement, or final judgment.
+
+Validation
+----------
+- python tools/run_patch_checks.py 172
+- python tools/run_patch_checks.py 171
+- python tools/run_patch_checks.py 170

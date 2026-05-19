@@ -3234,3 +3234,27 @@ Validation targets:
 python tools\run_patch_checks.py 171
 python tools\run_patch_checks.py 170
 ```
+
+
+## Patch 172 — AI Integrity Patrol Protocol Bridge
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 172 repairs the AI Integrity Patrol connection between static weighted signals and ALETHEIA's hard authority-boundary logic. The opaque citizen-ranking demo is now treated as a hard AI Integrity protocol failure when three conditions appear together: rights/access-impacting ranking or scoring, hidden/proprietary/opaque decision logic, and no meaningful challenge, appeal, review, disclosure, or contestability path.
+
+That combination now routes to **ASYLUM / High / AI Integrity Patrol / Asylum** instead of remaining a weighted THRESHOLD/Medium reading. The displayed risk pressure is floored high enough to keep metrics consistent with the hard route. Ordinary opaque or internal test artifacts are not forced to ASYLUM unless the full hard-failure combination is present.
+
+Boundary notes:
+- AI Integrity Patrol calibration/guard only.
+- No World Lens, Evidence Lab, general taxonomy, receipt schema/generation, app routing, external calls, telemetry/storage, enforcement, certification, legal authority, political authority, spiritual authority, or final-truth behavior changed.
+- Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 172
+python tools\run_patch_checks.py 171
+python tools\run_patch_checks.py 170
+```

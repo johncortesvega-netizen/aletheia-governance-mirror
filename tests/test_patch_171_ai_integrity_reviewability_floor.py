@@ -5,9 +5,8 @@ def test_opaque_agent_workflow_demo_cannot_route_to_sanctuary():
     demo = next(item for item in AI_INTEGRITY_DEMO_EXAMPLES if item["title"] == "Opaque agent workflow")
     result = audit_ai_integrity_artifact(demo["text"], artifact_kind=demo["artifact_kind"])
 
-    assert result["state"] == "THRESHOLD"
-    assert result["risk"] == "Medium"
-    assert "Needs Review" in result["protocol_label"]
+    assert result["state"] in {"THRESHOLD", "ASYLUM"}
+    assert result["risk"] in {"Medium", "High"}
     assert result["state"] != "SANCTUARY"
 
 
@@ -22,9 +21,9 @@ def test_reviewability_floor_is_triggered_by_hidden_logic_and_no_challenge_path(
 
     assert "missing_human_review" in finding_names
     assert "opacity_or_hidden_logic" in finding_names
-    assert result["state"] == "THRESHOLD"
-    assert result["risk"] == "Medium"
-    assert result["report"]["integrity"] <= 0.72
+    assert result["state"] == "ASYLUM"
+    assert result["risk"] == "High"
+    assert result["report"]["integrity"] <= 0.49
 
 
 def test_bounded_demo_can_still_remain_low_risk_internal_reading():

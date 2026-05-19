@@ -625,11 +625,70 @@ def _clip(value: float, low: float = 0.0, high: float = 1.0) -> float:
 
 def _state_from_pressure(pressure: float, *, hard_asylum: bool) -> tuple[str, str, str]:
     if hard_asylum or pressure >= 0.66:
-        return "ASYLUM", "High", "AI Integrity Mirror / Asylum"
+        return "ASYLUM", "High", "AI Integrity Patrol / Asylum"
     if pressure >= 0.30:
-        return "THRESHOLD", "Medium", "AI Integrity Mirror / Needs Review"
-    return "SANCTUARY", "Low", "AI Integrity Mirror / Low-Risk Internal Reading"
+        return "THRESHOLD", "Medium", "AI Integrity Patrol / Needs Review"
+    return "SANCTUARY", "Low", "AI Integrity Patrol / Low-Risk Internal Reading"
 
+
+RIGHTS_IMPACT_RANKING_PATTERNS: tuple[str, ...] = (
+    r"\brank(?:s|ing|ed)?\s+(?:citizens|people|patients|students|workers|employees|tenants|applicants|users|claimants)\b",
+    r"\bscore(?:s|d|ing)?\s+(?:citizens|people|patients|students|workers|employees|tenants|applicants|users|claimants)\b",
+    r"\b(?:eligibility|benefits|housing|care|credit|employment|admission|access|welfare|insurance|medical|clinical)\b.*\b(?:rank|score|classif|prioriti|deny|approve|eligible)\b",
+    r"\b(?:rank|score|classif|prioriti|deny|approve|eligible)\b.*\b(?:eligibility|benefits|housing|care|credit|employment|admission|access|welfare|insurance|medical|clinical)\b",
+)
+
+
+NO_CONTESTABILITY_PATTERNS: tuple[str, ...] = (
+    r"\bnot\s+reviewable\b",
+    r"\busers?\s+cannot\s+(?:challenge|appeal|contest|review|inspect)\b",
+    r"\bno\s+(?:appeal|challenge|contest|review|recourse|human review|human override)\b",
+    r"\bwithout\s+(?:appeal|challenge|contest|review|recourse|human review|human override)\b",
+    r"\bdoes\s+not\s+disclose\b",
+)
+
+
+def _has_any_pattern(text: str, patterns: tuple[str, ...]) -> bool:
+    return any(re.search(pattern, text, flags=re.IGNORECASE | re.MULTILINE | re.DOTALL) for pattern in patterns)
+
+
+def _detect_hard_ai_integrity_protocol_failure(source: str, findings: list[dict[str, Any]]) -> dict[str, Any]:
+    """Detect AI Integrity combinations that must bypass simple weighted scoring.
+
+    Some artifacts are structurally severe even when only a few static signals fire.
+    The clearest v1 bridge case is rights/access-impacting ranking combined with
+    hidden logic and no meaningful contestability. That is not merely medium
+    pressure: it crosses the human-review authority boundary and must route to
+    ASYLUM / High inside AI Integrity Patrol.
+    """
+    names = {str(finding.get("name", "")) for finding in findings}
+    rights_impacting_ranking = _has_any_pattern(source, RIGHTS_IMPACT_RANKING_PATTERNS)
+    opaque_logic = "opacity_or_hidden_logic" in names or _has_any_pattern(
+        source,
+        (
+            r"\bproprietary\s+(?:logic|score|algorithm)\b",
+            r"\bhidden\s+(?:criteria|rules|ranking|score|logic)\b",
+            r"\bopaque\b",
+            r"\bundisclosed\b",
+        ),
+    )
+    no_contestability = "missing_human_review" in names or _has_any_pattern(source, NO_CONTESTABILITY_PATTERNS)
+    hard_failure = bool(rights_impacting_ranking and opaque_logic and no_contestability)
+    reasons: list[str] = []
+    if rights_impacting_ranking:
+        reasons.append("rights/access-impacting ranking or scoring")
+    if opaque_logic:
+        reasons.append("hidden, proprietary, opaque, or undisclosed decision logic")
+    if no_contestability:
+        reasons.append("no meaningful challenge, appeal, review, disclosure, or contestability path")
+    return {
+        "hard_protocol_failure": hard_failure,
+        "rights_impacting_ranking": rights_impacting_ranking,
+        "opaque_logic": opaque_logic,
+        "no_contestability": no_contestability,
+        "minimum_state": "ASYLUM" if hard_failure else None,
+        "reasons": reasons,
+    }
 
 
 def split_ai_integrity_batch_input(text: str) -> list[str]:
@@ -1113,7 +1172,13 @@ def audit_ai_integrity_artifact(text: str, *, artifact_kind: str = "AI output") 
     else:
         pressure = 0.42
 
-    hard_asylum = any(f["name"] in {"final_authority_claim", "automated_enforcement", "secret_or_token_exposure"} for f in findings) and pressure >= 0.46
+    protocol_bridge = _detect_hard_ai_integrity_protocol_failure(source, findings)
+    hard_asylum = (
+        any(f["name"] in {"final_authority_claim", "automated_enforcement", "secret_or_token_exposure"} for f in findings)
+        and pressure >= 0.46
+    ) or bool(protocol_bridge.get("hard_protocol_failure"))
+    if protocol_bridge.get("hard_protocol_failure"):
+        pressure = max(pressure, 0.66)
     critical_reviewability_floor = any(
         f["name"] in {"missing_human_review", "opacity_or_hidden_logic"}
         for f in findings
@@ -1156,6 +1221,8 @@ def audit_ai_integrity_artifact(text: str, *, artifact_kind: str = "AI output") 
         repair_questions.append("Which words should be changed so the AI gives a bounded reading instead of a final verdict?")
     if any(f["name"] == "automated_enforcement" for f in findings):
         repair_questions.append("What pause, appeal, and independent review gates prevent automated enforcement or denial?")
+    if protocol_bridge.get("hard_protocol_failure"):
+        repair_questions.append("How is rights/access-impacting ranking stopped until the hidden logic, ranking criteria, appeal path, and independent human review are disclosed and testable?")
     if any(f["name"] == "surveillance_or_identity_capture" for f in findings):
         repair_questions.append("How can identity, monitoring, or central storage be minimized, separated, or made optional?")
     if any(f["name"] == "secret_or_token_exposure" for f in findings):
@@ -1185,6 +1252,7 @@ def audit_ai_integrity_artifact(text: str, *, artifact_kind: str = "AI output") 
         "privacy_boundary_scan_version": PRIVACY_BOUNDARY_SCAN_VERSION,
         "code_integrity_static_scan": code_integrity_scan,
         "privacy_boundary_audit": privacy_boundary_scan,
+        "ai_integrity_protocol_bridge": protocol_bridge,
         "ai_integrity_findings": findings,
         "positive_review_signal_count": positive_count,
         "protective_credit": round(protective_credit, 4),
@@ -1227,6 +1295,7 @@ def audit_ai_integrity_artifact(text: str, *, artifact_kind: str = "AI output") 
         "ai_integrity_report_version": AI_INTEGRITY_REPORT_VERSION,
         "code_integrity_static_scan": code_integrity_scan,
         "privacy_boundary_audit": privacy_boundary_scan,
+        "ai_integrity_protocol_bridge": protocol_bridge,
         "ai_integrity_findings": findings,
         "missing_human_review_path": missing_review,
         "evidence_gap": evidence_gap,
