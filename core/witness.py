@@ -334,6 +334,8 @@ Module: {index.get('module')}
 Receipt count: {index.get('receipt_count')}
 Batch index SHA-256: {hashes.get('batch_index_sha256')}
 
+{_batch_plain_language_summary_block(index)}
+
 NOTICE
 {index.get('notice')}
 Dataflow boundary: {index.get('dataflow')}
@@ -1214,6 +1216,83 @@ def _display_demo_guard_block(receipt: Mapping[str, Any]) -> str:
 
 
 
+
+
+def _module_display_name(module: Any) -> str:
+    """Return a friendly module name for receipt text without changing schema."""
+    raw = str(module or "Mirror Check").strip()
+    if raw.lower() == "simulation":
+        return "Stress Test"
+    return raw or "Mirror Check"
+
+
+def _receipt_plain_language_summary_block(receipt: Mapping[str, Any]) -> str:
+    """Render the plain panel-style receipt summary used by exports.
+
+    This is formatting only. It copies values already stored in the receipt and
+    does not rescore, reinterpret, or mutate the receipt object.
+    """
+    verdict = receipt.get("verdict", {}) or {}
+    metrics = receipt.get("metrics", {}) or {}
+    module_name = _module_display_name(receipt.get("module"))
+    questions = receipt.get("repair_questions", []) or []
+    question_lines = [f"- {str(q)}" for q in questions[:6]] if questions else ["- Ask what evidence, safeguards, appeal paths, and human review are still missing."]
+    return "\n".join([
+        "PLAIN-ENGLISH RECEIPT SUMMARY",
+        "What is this document?",
+        f"This is a local {module_name} receipt. It is a user-held review record, not a decision, certificate, public ledger entry, or authority claim.",
+        "",
+        "The main results",
+        f"- Protocol-adjusted state: {_display_value(verdict.get('protocol_adjusted_state'))}",
+        f"- Risk: {_display_value(verdict.get('risk'))}",
+        f"- Protocol label: {_display_value(verdict.get('protocol_label'))}",
+        f"- Integrity: {_display_value(metrics.get('integrity'))}",
+        f"- Friction: {_display_value(metrics.get('friction'))}",
+        f"- Collapse probability: {_display_value(metrics.get('collapse_probability'))}",
+        "",
+        "How power and control are distributed",
+        "Read the receipt as a mirror of pressure, safeguards, appeal, opacity, evidence, and repair needs. A stronger reading usually shows visible reasons, review paths, correction routes, and limits on concentrated control. A higher-pressure reading usually means hidden control, weak appeal, coercive dependency, or missing safeguards need human review.",
+        "",
+        "Next steps and questions",
+        *question_lines,
+        "- Do not rely on this receipt as proof, permission, certification, or final truth.",
+        "- Keep human review responsible for any real-world decision.",
+    ])
+
+
+def _batch_plain_language_summary_block(index: Mapping[str, Any]) -> str:
+    """Render a plain-English summary for batch receipt indexes."""
+    items = index.get("items", []) or []
+    rows = []
+    for item in items[:25]:
+        try:
+            prefix = f"{int(item.get('item')):02d}"
+        except Exception:
+            prefix = str(item.get("item", "?")).zfill(2)
+        rows.append(
+            f"- {prefix}: {_display_value(item.get('protocol_adjusted_state'))} / {_display_value(item.get('risk'))} / {_display_value(item.get('protocol_label'))}"
+        )
+    if len(items) > 25:
+        rows.append(f"- ... {len(items) - 25} more receipt(s) listed in the machine-readable batch index.")
+    if not rows:
+        rows = ["- No receipts recorded."]
+    return "\n".join([
+        "PLAIN-ENGLISH BATCH SUMMARY",
+        "What is this document?",
+        "This is a batch index for multiple local receipts. It helps a reviewer see what was reviewed in one archive. It is not a decision, certificate, public ledger entry, or authority claim.",
+        "",
+        "The main results",
+        *rows,
+        "",
+        "How power and control are distributed",
+        "Each receipt in the archive should still be opened and reviewed on its own. The batch index summarizes the readings; it does not merge them into one final verdict.",
+        "",
+        "Next steps and questions",
+        "- Open high-pressure or review-required receipts first.",
+        "- Check whether repeated patterns show missing safeguards, hidden control, weak appeal, or evidence gaps.",
+        "- Keep human review responsible for any real-world decision.",
+    ])
+
 def _display_ai_static_scan_context_block(report: Mapping[str, Any]) -> str:
     context = (report or {}).get("ai_static_scan_context")
     if not isinstance(context, Mapping) or not context:
@@ -1300,6 +1379,8 @@ Module: {receipt.get('module')}
 Input status: {receipt.get('input_status')}
 Input type: {receipt.get('input_type', receipt.get('input_status'))}
 Invisibility Filter applied: {receipt.get('invisibility_filter_applied')}{demo_guard_block}
+
+{_receipt_plain_language_summary_block(receipt)}
 
 NOTICE
 {receipt.get('notice')}

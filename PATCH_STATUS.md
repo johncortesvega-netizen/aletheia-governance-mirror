@@ -3813,3 +3813,26 @@ Validation target:
 ```bat
 python tools\run_patch_checks.py 178
 ```
+
+
+## Patch 179 — Receipt Formatting Consistency
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 179 extends the newer plain-English receipt formatting beyond Mirror Check. Local Witness receipts now open with a plain-English summary section using the same human-readable structure: **What is this document?**, **The main results**, **How power and control are distributed**, and **Next steps and questions**. Because Mirror Check and Stress Test share the Local Witness receipt renderer, this also updates single Stress Test receipts and the individual receipt files inside Mirror Check / Stress Test batch ZIPs.
+
+Batch indexes now also include a plain-English batch summary so reviewers can see what the archive contains without treating the batch as one merged verdict. World Lens markdown receipts now include the same plain-English summary before the detailed tables, and Evidence Lab review/receipt examples use the same section language.
+
+Boundary notes:
+- Formatting/text only.
+- Existing receipt values, hashes, machine-readable JSON, CSV exports, schemas, scoring, routing, taxonomy, World Lens math, Evidence Lab calculations, AI static scan context, and protocol logic are preserved.
+- Batch receipts are updated because they are review artifacts too; the batch index summarizes items but does not merge them into a final verdict.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 179
+```

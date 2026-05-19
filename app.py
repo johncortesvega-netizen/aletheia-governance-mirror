@@ -4588,6 +4588,11 @@ Human review disclaimer: This self-audit is a governance mirror for human review
     st.code(
         f"""Local Witness Receipt v2
 
+Plain-English receipt summary
+What is this document?
+This is an example of a local witness receipt. It records a review artifact for human inspection. It does not publish, sync, enforce, certify, or create authority.
+
+The main results
 Receipt version: {receipt_example['receipt_version']}
 Document fingerprint: {receipt_example['document_fingerprint']}
 Processed document fingerprint: {receipt_example['processed_document_fingerprint']}
@@ -4602,6 +4607,12 @@ Global ID sync: {receipt_example['global_id_sync']}
 Central storage: {receipt_example['central_storage']}
 Authority claim: {receipt_example['authority_claim']}
 Human review required: {receipt_example['human_review_required']}
+
+How power and control are distributed
+This receipt keeps control with the user: stored locally, no public ledger, no Global ID sync, no central storage, no authority claim, and human review required.
+
+Next steps and questions
+Check the fingerprints, review the values, inspect evidence gaps, and ask whether any real-world decision still needs appeal, correction, source review, or independent human oversight.
 
 Disclaimer: This receipt is a structured mirror reading for human review. It does not certify truth, safety, legality, legitimacy, morality, institutional fitness, extraordinary claims, or policy commands. It is not public ledger proof or a replacement for human judgment. Human review remains required; the reading may be incomplete, wrong, or sensitive to missing evidence.""",
         language="text",
@@ -4633,9 +4644,19 @@ with tab_empirical:
         st.code(
             f"""Evidence Lab Review
 
+    Plain-English receipt summary
+    What is this document?
+    This is an Evidence Lab review note. It records a claim, the visible evidence status, evidence gaps, and review questions. It is not proof, certification, or authority.
+
+    The main results
     Claim reviewed: [insert claim]
     Evidence status: {selected_evidence_level}
     Reason: {evidence_examples[selected_evidence_level]}
+
+    How power and control are distributed
+    Evidence Lab asks whether a claim is supported by public, relevant, reviewable evidence or whether power is being moved through unsupported certainty, stale sources, hidden assumptions, or extraordinary claims without evidence.
+
+    Next steps and questions
     Evidence gaps: identify unsupported assertions, missing sources, stale data, self-referential sources, or unreviewable claims.
     Extraordinary claim handling: treat as unverified unless supported by public, testable, non-coercive evidence.
     Policy consequence audit: review effects on basic rights, free agency, coercion, transparency, appeal, accountability, and repair.
@@ -6622,6 +6643,34 @@ This is a World Lens context reflection for human review. It does not change Wor
                 all_rows_receipt = all_rows_receipt.rename(columns={"_allocation_role": "allocation_role"})
 
             md = f"""# ALETHEIA World Lens Receipt
+
+## Plain-English receipt summary
+
+### What is this document?
+
+This is a World Lens selected-year evidence receipt. It records how the active Evidence Lab country-year data appears in the selected World Lens view. It is a review artifact, not a country ranking, policy decision, certificate, public ledger record, or authority claim.
+
+### The main results
+
+- Selected year: **{int(selected_year)}**
+- World Lens source state: **{grid_state_label}**
+- Evidence allocation status: **{"full 9k evidence view" if is_full_grid else "partial / active-seat evidence view"}**
+- Allocated country rows: **{countries_scored:,}**
+- Active selected-year seats: **{total_seats:,}**
+- Weighted integrity: **{"—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}"}**
+- Weighted collapse probability: **{"—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}"}**
+- Average empirical coverage: **{"—" if pd.isna(avg_coverage) else f"{avg_coverage:.1%}"}**
+
+### How power and control are distributed
+
+World Lens uses population-weighted selected-year evidence to show where exposure, coverage gaps, allocation weight, and collapse-pressure signals may concentrate. The 9k view is an analytical anti-tyranny scaffold only. It does not create a real body, mandate, ranking, legitimacy claim, or decision about any country or institution.
+
+### Next steps and questions
+
+- Check coverage before relying on weighted metrics.
+- Inspect high-impact rows, coverage gaps, and sensitivity watchlists before drawing conclusions.
+- Compare Evidence Lab inputs against public sources and selected-year filters.
+- Keep human review responsible for any interpretation, policy discussion, or public communication.
 
 ## Scope
 
