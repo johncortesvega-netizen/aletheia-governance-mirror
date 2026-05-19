@@ -3125,3 +3125,26 @@ Validation target:
 ```bat
 python tools\run_patch_checks.py 166
 ```
+
+
+## Patch 167 — Patrol Guide Formatting Restore
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 167 restores the Patrol Guide formatting after the AI Patrol rebrand. The guide is again organized as an opt-in, compact panel layout: four side-by-side rows with eight collapsed panels, plus a collapsed Public Trust Package panel. The visible wording keeps the AI Patrol rebrand while preserving ALETHEIA's authority boundary.
+
+This patch also restores the Artificial Mind Formation Theory explainer into the Patrol Guide panel flow, including the line: “ALETHEIA cannot build the spark. It can inspect the hands reaching for it.”
+
+Boundary notes:
+- UI/copy/layout restoration only.
+- No scoring, routing, taxonomy, receipt schema/generation, AI Integrity scoring, World Lens math, protocol logic, external calls, telemetry/storage, certification, enforcement, approval/rejection, legal authority, political authority, spiritual authority, or final-truth behavior changed.
+- Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 167
+python tools\run_patch_checks.py 166
+```
