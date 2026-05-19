@@ -3556,3 +3556,14 @@ Status: READY FOR LOCAL REVIEW
 Patch 187 is a small visual-branding correction. It stacks the public brand so **AI PATROL sits underneath Aletheia** in the main app shell, sidebar brand card, and Preview Unit title. It also flips the full-app hero officer/logo horizontally so the officer faces left toward the title.
 
 Boundary preserved: visual branding/CSS only; no engine behavior, scoring, routing, taxonomy, receipt generation, World Lens math, Evidence Lab calculation, AI static scan logic, storage, certification, enforcement, or authority behavior changed. Human review remains required.
+
+## Patch 188 — Robot Officer Visual Integration
+
+Date: 2026-05-19
+Status: READY FOR LOCAL REVIEW
+
+Patch 188 integrates the friendly cardboard ALETHEIA robot officer visual language into the Preview Unit and regular app shell. It packages the new robot officer artwork, switches the main app mascot/logo asset to the robot officer holding STOP / GO signs, and adds a child-readable Preview Unit visual guide with pause/check/ask/proceed copy.
+
+Updated surfaces: `assets/ai_patrol_officer_stop_go.png`, `assets/ai_patrol_officer_preview.png`, `assets/ai_patrol_officer_character_sheet.png`, `app.py`, and `ui/unit_preview.py`.
+
+Boundary preserved: visual asset/UI copy/CSS only; no engine behavior, scoring, routing, taxonomy, receipt generation, World Lens math, Evidence Lab calculation, AI static scan logic, storage, certification, enforcement, or authority behavior changed. Human review remains required.

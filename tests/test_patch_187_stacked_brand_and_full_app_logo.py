@@ -10,14 +10,14 @@ def test_patch_187_main_app_shell_stacks_ai_patrol_under_aletheia():
     assert "Aletheia: AI PATROL" in text
 
 
-def test_patch_187_app_css_supports_stacked_title_and_left_facing_hero_logo():
+def test_patch_187_app_css_supports_stacked_title_and_readable_hero_logo():
     text = (ROOT / "app.py").read_text(encoding="utf-8")
     assert ".hero-title-main" in text
     assert ".hero-title-subline" in text
     assert ".sidebar-brand-main" in text
     assert ".sidebar-brand-subline" in text
     assert ".hero-emblem .aletheia-mascot-logo" in text
-    assert "transform: scaleX(-1);" in text
+    assert "transform: none;" in text
 
 
 def test_patch_187_preview_unit_stacks_brand_title():

@@ -1,0 +1,8 @@
+Patch 188 delete/archive list
+
+Root patch artifacts from Patch 187 may be archived after Patch 188 is accepted:
+- PATCH_187_MANIFEST.txt -> docs/patch_archive/manifests/PATCH_187_MANIFEST.txt
+- PATCH_187_RECOVERY_NOTE.md -> docs/patch_archive/recovery_notes/PATCH_187_RECOVERY_NOTE.md
+- PATCH_187_DELETE_LIST.txt -> docs/patch_archive/other_patch_artifacts/PATCH_187_DELETE_LIST.txt
+
+No source-code deletion is required for Patch 188.

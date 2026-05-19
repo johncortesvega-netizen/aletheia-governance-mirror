@@ -1,0 +1,33 @@
+Patch 188 — Robot Officer Visual Integration
+Date: 2026-05-19
+
+Purpose
+- Integrate the friendly cardboard ALETHEIA robot officer visual identity into the Preview Unit and regular app shell.
+- Make the first visual layer more child-readable without turning the app into a child-oriented product.
+- Keep STOP / GO lettering readable on the new sign-bearing mascot asset.
+
+Files changed
+- app.py
+- ui/unit_preview.py
+- tests/test_patch_187_stacked_brand_and_full_app_logo.py
+- tests/test_patch_188_robot_officer_visual_integration.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+
+Files added
+- assets/ai_patrol_officer_stop_go.png
+- assets/ai_patrol_officer_preview.png
+- assets/ai_patrol_officer_character_sheet.png
+- PATCH_188_MANIFEST.txt
+- PATCH_188_RECOVERY_NOTE.md
+- PATCH_188_DELETE_LIST.txt
+
+Behavior boundary
+- Visual asset/UI copy/CSS only.
+- No scoring, routing, taxonomy, receipt schema/generation, receipt values, batch behavior, Evidence Lab calculations, World Lens math, AI static scan logic, protocol logic, external calls, storage, certification, enforcement, or authority behavior changed.
+- Human review remains required.
+
+Validation
+- python tools\run_patch_checks.py 188
+- python -m pytest -q tests/test_patch_188_robot_officer_visual_integration.py tests/test_patch_187_stacked_brand_and_full_app_logo.py tests/test_patch_185_aletheia_ai_patrol_branding.py
+- python -m py_compile app.py ui/app_shell.py ui/unit_preview.py

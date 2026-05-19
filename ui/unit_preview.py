@@ -5,11 +5,30 @@ score, route modules, create receipts, inspect files, or call module engines.
 """
 from __future__ import annotations
 
+import base64
 import re
 from pathlib import Path
 
 
 UNIT_PREVIEW_SESSION_KEY = "aletheia_unit_preview_passed"
+
+
+def _asset_image_data_uri(path: Path) -> str:
+    """Return a local image asset as a data URI for the Preview Unit shell.
+
+    This helper only embeds packaged visual assets. It does not inspect user
+    input, call external services, or change preview routing.
+    """
+    suffix = path.suffix.lower().lstrip(".") or "png"
+    mime = "jpeg" if suffix in {"jpg", "jpeg"} else suffix
+    data = base64.b64encode(path.read_bytes()).decode("ascii")
+    return f"data:image/{mime};base64,{data}"
+
+
+def get_unit_preview_officer_image_uri(project_root: Path | None = None) -> str:
+    """Return the friendly cardboard robot officer asset for Unit Preview."""
+    root = project_root or Path(__file__).resolve().parents[1]
+    return _asset_image_data_uri(root / "assets" / "ai_patrol_officer_preview.png")
 
 
 def get_unit_preview_boundary_text() -> str:
@@ -135,6 +154,49 @@ div[data-testid="stButton"] button[kind="primary"]:focus {
 .hero-emblem .aletheia-mascot-logo {
     transform: scaleX(-1);
 }
+
+/* Patch 188: child-proof visual guide with the cardboard robot officer. */
+.unit-preview-officer-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(220px, 0.95fr);
+    gap: 1rem;
+    align-items: center;
+    border: 1px solid rgba(212,175,55,0.42);
+    background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(228,246,255,0.94));
+    border-radius: 24px;
+    padding: 1rem;
+    margin: 0.45rem 0 1rem;
+    box-shadow: 0 14px 30px rgba(31,95,143,0.12);
+}
+.unit-preview-officer-copy {
+    color: #17324a;
+    font-family: Georgia, 'Times New Roman', serif;
+}
+.unit-preview-officer-copy strong {
+    display: block;
+    color: #123d63;
+    font-size: 1.25rem;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.35rem;
+}
+.unit-preview-officer-copy span {
+    display: block;
+    margin-top: 0.32rem;
+    color: #2d668f;
+}
+.unit-preview-officer-image {
+    width: 100%;
+    max-height: 260px;
+    object-fit: cover;
+    object-position: left center;
+    border-radius: 20px;
+    border: 1px solid rgba(127,188,232,0.32);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.72);
+}
+@media (max-width: 760px) {
+    .unit-preview-officer-card { grid-template-columns: 1fr; }
+}
+
 </style>
 """
 
@@ -766,6 +828,20 @@ def render_unit_preview(container=None) -> bool:
         <div class="unit-preview-brand-title" role="heading" aria-level="1">
             <span class="unit-preview-brand-main">Aletheia:</span>
             <span class="unit-preview-brand-subline">AI PATROL</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    officer_image_uri = get_unit_preview_officer_image_uri()
+    container.markdown(
+        f"""
+        <div class="unit-preview-officer-card">
+            <div class="unit-preview-officer-copy">
+                <strong>Pause · Check · Ask · Proceed carefully.</strong>
+                <span>The ALETHEIA robot officer gives child-readable stop/go guidance while adults and reviewers keep responsibility.</span>
+                <span>It is a visual guide only: no certification, no command, no final authority.</span>
+            </div>
+            <img class="unit-preview-officer-image" src="{officer_image_uri}" alt="Friendly ALETHEIA robot officer holding stop and go signs" />
         </div>
         """,
         unsafe_allow_html=True,

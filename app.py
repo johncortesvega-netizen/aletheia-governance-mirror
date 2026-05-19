@@ -262,11 +262,11 @@ def enforce_missing_safeguard_threshold_route(
     )
 
 
-APP_VERSION = "v1.0-ai-patrol-sky-theme-p3"
+APP_VERSION = "v1.0-ai-patrol-officer-icons-p1"
 SUPPORTED_INPUT_LANGUAGE_NOTE = "Language scope: ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim. Human review remains required."
 PROJECT_ROOT = Path(__file__).resolve().parent
 ABOUT_HEADER_IMAGE = PROJECT_ROOT / "assets" / "about_header.png"
-MASCOT_LOGO_IMAGE = PROJECT_ROOT / "assets" / "aletheia_robot_laurel_logo.png"
+MASCOT_LOGO_IMAGE = PROJECT_ROOT / "assets" / "ai_patrol_officer_stop_go.png"
 VISUAL_SOURCE_FILES = [
     {
         "title": "Sydney Protocol v3.2",
@@ -1322,7 +1322,8 @@ st.markdown(
         margin-top: 0.06em;
     }
     .hero-emblem .aletheia-mascot-logo {
-        transform: scaleX(-1);
+        /* Patch 188: keep STOP / GO lettering readable on the new robot officer asset. */
+        transform: none;
     }
     .hero-sub { color: #2d668f !important; }
     .hero-kicker { color: #9a720d !important; }

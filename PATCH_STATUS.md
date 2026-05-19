@@ -4036,3 +4036,32 @@ python tools\run_patch_checks.py 187
 python -m pytest -q tests/test_patch_187_stacked_brand_and_full_app_logo.py tests/test_patch_185_aletheia_ai_patrol_branding.py tests/test_patch_166_ai_patrol_rebrand.py
 python -m py_compile app.py ui/app_shell.py ui/unit_preview.py
 ```
+
+## Patch 188 — Robot Officer Visual Integration
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 188 integrates the friendly cardboard ALETHEIA robot officer visual language into the Preview Unit and regular app shell. It packages the new robot officer artwork, switches the main app mascot/logo asset to the robot officer holding STOP / GO signs, and adds a child-readable Preview Unit visual guide with pause/check/ask/proceed copy.
+
+Updated surfaces:
+- Main app hero/sidebar mascot asset now uses `assets/ai_patrol_officer_stop_go.png`.
+- Preview Unit includes a friendly robot officer guidance card using `assets/ai_patrol_officer_preview.png`.
+- Packaged reference sheet: `assets/ai_patrol_officer_character_sheet.png`.
+- Full-app logo CSS now keeps STOP / GO lettering readable instead of mirroring the new sign-bearing asset.
+- App version label advances to `v1.0-ai-patrol-officer-icons-p1`.
+
+Boundary notes:
+- Visual asset/UI copy/CSS only.
+- No scoring, routing, taxonomy, receipt schema/generation, receipt values, batch behavior, Evidence Lab calculations, World Lens math, AI static scan logic, protocol logic, external calls, storage, certification, enforcement, or authority behavior changed.
+- The robot officer is a visual guide for child-readable first-layer meaning; adults/reviewers remain responsible for decisions.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 188
+python -m pytest -q tests/test_patch_188_robot_officer_visual_integration.py tests/test_patch_187_stacked_brand_and_full_app_logo.py tests/test_patch_185_aletheia_ai_patrol_branding.py
+python -m py_compile app.py ui/app_shell.py ui/unit_preview.py
+```
