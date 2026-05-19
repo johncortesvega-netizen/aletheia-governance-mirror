@@ -441,22 +441,109 @@ def _repair_questions_from_text(text: str) -> list[str]:
     return collected
 
 
+def _bullet_items_from_section(text: str) -> list[str]:
+    """Return bullet items from an already-isolated section."""
+    items: list[str] = []
+    for line in (text or "").splitlines():
+        stripped = line.strip()
+        if stripped.startswith(("-", "*")):
+            item = stripped[1:].strip()
+            if item and item.lower() != "none recorded":
+                items.append(item)
+    return items
+
+
+def _section_between_markers(text: str, start_marker: str, end_markers: list[str]) -> str:
+    """Return a plain-text receipt section without inferring missing values."""
+    if not text or start_marker not in text:
+        return ""
+    after = text.split(start_marker, 1)[1]
+    end_positions = [after.find(marker) for marker in end_markers if marker in after]
+    end_positions = [pos for pos in end_positions if pos >= 0]
+    section = after[: min(end_positions)] if end_positions else after
+    return section.strip()
+
+
+def _parse_ai_static_scan_context(text: str) -> dict[str, Any]:
+    """Parse the subordinate AI static scan receipt section, if present.
+
+    Patch 175 keeps this data below the primary Mirror Check / Stress Test
+    receipt. It is context, not a competing verdict.
+    """
+    section = _section_between_markers(
+        text or "",
+        "AI STATIC SCAN CONTEXT",
+        [
+            "SCANNER FEATURES",
+            "CONTEXTUAL ETHICS DIAGNOSTICS",
+            "HARD CAPTURE TRACE",
+            "COGNITIVE RESILIENCE DIAGNOSTICS",
+            "ETHICS ADJUSTMENT",
+            "SILENT OPERATOR REPAIR QUESTIONS",
+            "RECOVERY NOTE",
+            "BOUNDARY FOOTER",
+        ],
+    )
+    if not section or "No AI static scan context attached" in section:
+        return {}
+
+    fields = {
+        "role": _first_match(section, [r"(?im)^\s*Role\s*:\s*(.+?)\s*$"]),
+        "primary_protocol_path": _first_match(section, [r"(?im)^\s*Primary protocol path\s*:\s*(.+?)\s*$"]),
+        "static_scan_state": _first_match(section, [r"(?im)^\s*Static scan state\s*:\s*(.+?)\s*$"]),
+        "static_scan_risk": _first_match(section, [r"(?im)^\s*Static scan risk\s*:\s*(.+?)\s*$"]),
+        "static_scan_label": _first_match(section, [r"(?im)^\s*Static scan label\s*:\s*(.+?)\s*$"]),
+        "risk_pressure": _first_match(section, [r"(?im)^\s*Risk pressure\s*:\s*(.+?)\s*$"]),
+        "finding_count": _first_match(section, [r"(?im)^\s*Finding count\s*:\s*(.+?)\s*$"]),
+        "notice": _first_match(section, [r"(?im)^\s*Notice\s*:\s*(.+?)\s*$"]),
+    }
+
+    findings_section = _section_between_markers(section, "Findings:", ["Repair questions:"])
+    repair_section = _section_between_markers(section, "Repair questions:", [])
+    findings = _bullet_items_from_section(findings_section)
+    repair_questions = _bullet_items_from_section(repair_section)
+
+    return {
+        "present": True,
+        **fields,
+        "findings": findings,
+        "repair_questions": repair_questions,
+    }
+
+
 def _module_family(module: str, text: str = "") -> str:
     if _is_world_lens_receipt(text):
         return "World Lens"
+
+    module_value = (module or "").lower()
+    # Patch 175: honor explicit primary receipt modules before scanning the
+    # full text. Subordinate AI static-scan context may contain historical
+    # AI Integrity labels, but it must not reclassify a Mirror Check or
+    # Stress Test receipt as the removed standalone AI Integrity module.
+    if "simulation" in module_value or "stress test" in module_value:
+        return "Stress Test / Simulation"
+    if "mirror check" in module_value:
+        return "Mirror Check"
+    if "world lens" in module_value or "selected-year evidence" in module_value or "world_lens_evidence_view" in module_value:
+        return "World Lens"
+    if "privacy" in module_value:
+        return "Privacy Audit"
+    if "evidence lab" in module_value:
+        return "Evidence Lab"
+
     value = f"{module} {text}".lower()
     if "world lens" in value or "selected-year evidence" in value or "world_lens_evidence_view" in value:
         return "World Lens"
-    if "ai integrity" in value or "static artifact" in value:
-        return "AI Integrity Mirror"
     if "simulation" in value or "stress test" in value:
         return "Stress Test / Simulation"
+    if "mirror check" in value:
+        return "Mirror Check"
     if "privacy" in value:
         return "Privacy Audit"
     if "evidence lab" in value:
         return "Evidence Lab"
-    if "mirror check" in value:
-        return "Mirror Check"
+    if "ai integrity" in value or "static artifact" in value:
+        return "AI Integrity Mirror"
     return module if module and module != MISSING_VALUE else "Uploaded Receipt"
 
 
@@ -622,6 +709,7 @@ def parse_receipt_standard_view(receipt_text: str) -> dict[str, Any]:
     data = _json_after_marker(text)
     world_lens_fields: dict[str, Any] = {}
     ai_integrity_fields: dict[str, str] = {}
+    ai_static_scan_context = _parse_ai_static_scan_context(text)
 
     if _is_world_lens_receipt(text):
         fields, world_lens_fields = _fields_from_world_lens_text(text)
@@ -684,6 +772,7 @@ def parse_receipt_standard_view(receipt_text: str) -> dict[str, Any]:
         "fields": fields,
         "world_lens_fields": world_lens_fields,
         "ai_integrity_fields": ai_integrity_fields,
+        "ai_static_scan_context": ai_static_scan_context,
         "metric_rows": metric_rows,
         "repair_questions": repair_questions,
         "core_logic_title": _core_logic_title(module_family),
@@ -1140,6 +1229,43 @@ def _display_module_source(view: dict[str, Any]) -> str:
     return fields.get("module_source", MISSING_VALUE)
 
 
+def _render_ai_static_scan_context(container: Any, view: dict[str, Any]) -> None:
+    """Render subordinate AI static-scan context parsed from a receipt."""
+    context = view.get("ai_static_scan_context") or {}
+    if not isinstance(context, dict) or not context.get("present"):
+        return
+    if hasattr(container, "expander"):
+        with container.expander("AI static scan context — subordinate to primary receipt", expanded=False) as expander:
+            expander.caption(
+                "Parsed from the uploaded receipt. This context is subordinate to the primary "
+                "Mirror Check / Stress Test receipt and does not create a competing verdict."
+            )
+            expander.markdown(
+                f"**Role:** {context.get('role', MISSING_VALUE)}  \n"
+                f"**Primary protocol path:** {context.get('primary_protocol_path', MISSING_VALUE)}  \n"
+                f"**Static scan state:** {context.get('static_scan_state', MISSING_VALUE)}  \n"
+                f"**Static scan risk:** {context.get('static_scan_risk', MISSING_VALUE)}  \n"
+                f"**Static scan label:** {context.get('static_scan_label', MISSING_VALUE)}  \n"
+                f"**Risk pressure:** {context.get('risk_pressure', MISSING_VALUE)}  \n"
+                f"**Finding count:** {context.get('finding_count', MISSING_VALUE)}"
+            )
+            notice = context.get("notice")
+            if notice and notice != MISSING_VALUE:
+                expander.caption(str(notice))
+            findings = context.get("findings") or []
+            if findings:
+                expander.markdown("**AI-specific findings**")
+                for finding in findings:
+                    expander.markdown(f"- {finding}")
+            questions = context.get("repair_questions") or []
+            if questions:
+                expander.markdown("**AI static-scan repair questions**")
+                for question in questions:
+                    expander.markdown(f"- {question}")
+    else:
+        container.write(context)
+
+
 def _view_status_heading(view: dict[str, Any]) -> str:
     family = view.get("module_family")
     state = view.get("system_status", MISSING_VALUE)
@@ -1172,6 +1298,8 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
     else:
         _render_metric_observation_cards(container, view)
         _render_native_values_expander(container, view)
+
+    _render_ai_static_scan_context(container, view)
 
     world_distribution = (view.get("world_lens_fields") or {}).get("taxonomy_distribution") or []
     if world_distribution:

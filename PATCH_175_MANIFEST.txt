@@ -1,0 +1,36 @@
+PATCH 175 MANIFEST
+==================
+
+Patch ID: 175
+Title: Receipt Reader AI Static Scan Context Support
+Date: 2026-05-19
+Status: READY FOR LOCAL REVIEW
+
+Scope
+-----
+Parse AI STATIC SCAN CONTEXT from Mirror Check and Stress Test receipts as subordinate context inside Receipt Reader - Standard View. Preserve the primary receipt family and prevent subordinate AI static-scan label text from reclassifying the whole receipt as the removed standalone AI Integrity module.
+
+Files Changed
+-------------
+- ui/receipt_reader.py
+- tests/test_patch_175_receipt_reader_ai_static_scan_context.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_175_MANIFEST.txt
+- PATCH_175_RECOVERY_NOTE.md
+
+Boundary
+--------
+- No scoring changes.
+- No routing changes.
+- No taxonomy-state changes.
+- No World Lens changes.
+- No Evidence Lab changes.
+- No standalone AI Integrity module restoration.
+- No receipt schema break; parses an existing plain-text section.
+- No certification, enforcement, approval/rejection, or authority claim introduced.
+
+Validation
+----------
+- python tools/run_patch_checks.py 175
+- python tools/run_patch_checks.py 174
