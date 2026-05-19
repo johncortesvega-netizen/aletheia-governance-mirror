@@ -1,10 +1,10 @@
-# ALETHEIA v1.0 — Governance Mirror
+# AI Patrol — ALETHEIA v1.0
 
 ## ALETHEIA in 60 Seconds
 
-**ALETHEIA is a mirror, not a throne.** It shows governance-risk signals for human review — nothing more.
+**AI Patrol is the friendlier public face of ALETHEIA.** It is still a mirror, not a throne. It shows governance-risk signals for human review — nothing more.
 
-ALETHEIA helps reviewers inspect proposals, policies, systems, doctrines, AI artifacts, receipts, and public-data patterns for signals such as capture pressure, weak appeal paths, evidence gaps, consent pressure, service misalignment, hidden influence, and authority overreach.
+AI Patrol / ALETHEIA helps reviewers inspect proposals, policies, systems, doctrines, AI artifacts, receipts, and public-data patterns for signals such as capture pressure, weak appeal paths, evidence gaps, consent pressure, service misalignment, hidden influence, and authority overreach.
 
 Why it exists: many systems can look governed, compliant, neutral, or benevolent while still moving power out of reach. ALETHEIA does not answer that problem with more command. It answers with a restrained mirror: make pressure visible, name missing safeguards, and return the reading to human review.
 
@@ -34,9 +34,9 @@ Receipt Reader applies this wording to all uploaded receipts as a verbal review 
 
 Start here:
 
-1. Open **Aletheia Unit Preview** for a guided first look.
+1. Open **AI Patrol Preview Unit** for a guided first look.
 2. Use **Mirror Check** or **Stress Test** for governance text and scenarios.
-3. Use **AI Integrity Mirror** for static AI artifacts such as prompts, policies, model-card excerpts, workflow descriptions, or AI outputs.
+3. Use **AI Integrity Patrol** for static AI artifacts such as prompts, policies, model-card excerpts, workflow descriptions, or AI outputs.
 4. Use **Evidence Lab** and **World Lens** for evidence context and selected-year country evidence views.
 5. Use **Receipt Reader** to read ALETHEIA local witness receipts in Standard View without rescoring or overriding them.
 
@@ -49,7 +49,7 @@ Privacy posture: the repository is local-first by design and includes no built-i
 If you are reviewing ALETHEIA cold, use this short path instead of trying to read the full patch history first:
 
 1. **Understand the boundary:** read this README section and `docs/reviewer_start_here.md`.
-2. **Open the app gently:** use **Aletheia Unit Preview**, the app-side counterpart to this cleaner repository doorway.
+2. **Open the app gently:** use **AI Patrol Preview Unit**, the app-side counterpart to this cleaner repository doorway.
 3. **Learn the project language:** read `docs/glossary.md` for 9k, Sydney Protocol, V-Axis, World Lens, local witness receipts, Standard View, Unit Preview, and taxonomy terms.
 4. **Review without trust:** follow `docs/how_to_review_aletheia_without_trusting_it.md` for local-run, self-audit, receipt comparison, no-telemetry review, and boundary inspection.
 5. **Read numbers carefully:** use `docs/validation_and_precision.md` before interpreting scores, Z-axis values, World Lens coverage, or trust-prior fields.
@@ -68,14 +68,14 @@ Reviewer-readiness is not mass-adoption polish. The goal is to preserve ALETHEIA
 
 ## Current V1 surfaces
 
-- **Aletheia Unit Preview** — calm first-use and beginner path.
+- **AI Patrol Preview Unit** — calm first-use and beginner path.
 - **Mirror Check** — governance-language and authority-boundary review.
 - **Stress Test** — governance scenario pressure review.
-- **AI Integrity Mirror** — static artifact review for pasted AI outputs, prompts, policies, workflows, model-card excerpts, and code snippets.
+- **AI Integrity Patrol** — static artifact review for pasted AI outputs, prompts, policies, workflows, model-card excerpts, and code snippets.
 - **Evidence Lab** — evidence/context review support.
 - **World Lens** — selected-year country evidence views and coverage/allocation context.
 - **Receipt Reader** — upload-only Standard View for ALETHEIA local witness receipts and evidence bundles; it does not rescore or override uploaded receipts.
-- **Boundary Cases, Protocol Guide, and Why ALETHEIA** — reference and orientation layers.
+- **Boundary Cases, Patrol Guide, and Why AI Patrol** — reference and orientation layers.
 
 ## How ALETHEIA compares to other tools
 

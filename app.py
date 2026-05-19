@@ -20,7 +20,6 @@ import streamlit.components.v1 as components
 from core.boundary import render_boundary_statement
 from core.privacy_panel import render_privacy_panel
 from pages_ui.about_page import render_about_public_info_page
-from pages_ui.artificial_mind_formation_page import get_artificial_mind_formation_markdown
 from pages_ui.evidence_lab_page import render_evidence_lab_intro, render_evidence_lab_public_data_build_intro
 from pages_ui.trust_package_page import render_public_trust_package_page
 from ui.app_shell import render_app_boundary_notices, render_sidebar_brand, render_sidebar_context
@@ -273,7 +272,7 @@ def enforce_missing_safeguard_threshold_route(
     )
 
 
-APP_VERSION = "v1.0-governance-mirror-final"
+APP_VERSION = "v1.0-ai-patrol-rebrand"
 SUPPORTED_INPUT_LANGUAGE_NOTE = "Language scope: ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim. Human review remains required."
 PROJECT_ROOT = Path(__file__).resolve().parent
 ABOUT_HEADER_IMAGE = PROJECT_ROOT / "assets" / "about_header.png"
@@ -327,33 +326,33 @@ TOTAL_9K = 9000
 APP_NAVIGATION_LABELS = [
     "🪞 Mirror Check",
     "🚀 Stress Test",
-    "🤖 AI Integrity Mirror",
+    "🤖 AI Integrity Patrol",
     "📊 Evidence Lab",
     "🌐 World Lens",
     "🧭 Boundary Cases",
-    "📜 Protocol Guide",
-    "ℹ️ Why ALETHEIA",
+    "🛂 Patrol Guide",
+    "ℹ️ Why AI Patrol",
 ]
 
 APP_NAVIGATION_MAP = [
     ("Mirror Check", "Audit a document or proposal for capture risk, missing safeguards, and repair questions."),
     ("Stress Test", "Try a scenario under pressure and inspect stability, trust, friction, and repair needs."),
-    ("AI Integrity Mirror", "Review one pasted AI output, prompt, agent spec, policy, workflow, or code snippet for authority-boundary and governance-integrity risk."),
+    ("AI Integrity Patrol", "Review one pasted AI output, prompt, agent spec, policy, workflow, or code snippet for authority-boundary and governance-integrity risk."),
     ("Evidence Lab", "Separate evidence from claims and park extraordinary claims as unverified until review."),
     ("World Lens", "Read selected-year country evidence, coverage, and allocation context without Global ID, real 9k body, or sovereign authority."),
     ("Boundary Cases", "Reference difficult edge cases such as consent pressure, free agency, ambient capture, and self-audit."),
-    ("Protocol Guide", "Read the v0.1 operating guide, safe-language rules, and module boundaries."),
-    ("Why ALETHEIA", "Understand the v1.0 public MVP, release boundary, examples, and research direction."),
+    ("Patrol Guide", "Read the v0.1 operating guide, safe-language rules, module boundaries, and the AI Patrol rebrand language."),
+    ("Why AI Patrol", "Understand the AI Patrol public rebrand, release boundary, examples, and research direction."),
 ]
 
 APP_UX_POLISH_SUMMARY = [
     "Start with Mirror Check when you have a document.",
     "Use Stress Test when you have a scenario.",
-    "Use AI Integrity Mirror when reviewing one AI answer, prompt, policy, workflow, or code snippet.",
+    "Use AI Integrity Patrol when reviewing one AI answer, prompt, policy, workflow, or code snippet.",
     "Use Evidence Lab when a claim needs source-quality review.",
     "Use World Lens when you need selected-year country evidence and allocation context.",
     "Use Boundary Cases as a reference layer when the ethical edge case is unclear.",
-    "Use Protocol Guide when you need the operating rules.",
+    "Use Patrol Guide when you need the operating rules and brand boundaries.",
 ]
 
 DEMO_INPUT_FILES = [
@@ -3524,7 +3523,7 @@ render_sydney_protocol_self_check_gate()
 tab_chat, tab_sim, tab_ai_integrity, tab_empirical, tab_grid, tab_boundary, tab_doctrine, tab_about = st.tabs(APP_NAVIGATION_LABELS)
 
 with tab_sim:
-    st.subheader("Stress Test — Try an Idea")
+    st.subheader("Stress Test — Patrol Scenario Review")
     render_shared_protocol_state_notice("Stress Test")
 
     render_module_page_template_intro(
@@ -4061,7 +4060,7 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         )
 
 with tab_boundary:
-    st.subheader("Boundary Cases — Calibration Center")
+    st.subheader("Boundary Cases — Patrol Calibration")
     render_shared_protocol_state_notice("Boundary Cases")
 
     render_module_page_template_intro(
@@ -4523,7 +4522,7 @@ Disclaimer: This receipt is a structured mirror reading for human review. It doe
     )
 
 with tab_ai_integrity:
-    st.subheader("AI Integrity Mirror — Static Review, Not Certification")
+    st.subheader("AI Integrity Patrol — Static Review, Not Certification")
     render_shared_protocol_state_notice("AI Integrity Mirror")
     st.info(
         "Paste an AI response, system prompt, agent workflow, policy claim, model-card excerpt, or code snippet. "
@@ -6026,7 +6025,7 @@ Human review disclaimer: Evidence Lab is a mirror for human review. It is not a 
             st.markdown(methodology_markdown())
 
 with tab_grid:
-    st.subheader("World Lens")
+    st.subheader("World Lens — Impact Watch")
     render_shared_protocol_state_notice("World Lens", expanded=True)
 
     render_module_page_template_intro(
@@ -7815,7 +7814,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             st.info("Country-year detail is unavailable until selected-year data rows are active.")
 
 with tab_chat:
-    st.subheader("Mirror Check — Gentle Risk Review")
+    st.subheader("Mirror Check — Patrol Review")
     render_shared_protocol_state_notice("Mirror Check")
     render_audit_module_integrity_panel()
 
@@ -8366,6 +8365,7 @@ with tab_chat:
 
 
 with tab_doctrine:
+    st.subheader("Patrol Guide")
     st.subheader("Protocol Guide")
     st.info(
         "ALETHEIA is a mirror, not a throne. This page keeps the tone clear, protective, practical, and open to review."
@@ -8373,217 +8373,471 @@ with tab_doctrine:
     st.caption("ALETHEIA v1.0 is complete as a public MVP. Pick the tab that matches your task, read the boundary, and keep final review human.")
     st.markdown("**Quick path:** Mirror Check for documents · Stress Test for scenarios · AI Integrity Mirror for AI/code artifacts · Evidence Lab for claims · Protocol Guide for rules.")
     render_public_trust_package_page(st)
+    st.markdown(
+        """
+        The Protocol Guide is the integrity frame for **ALETHEIA v1.0 — Governance Mirror**. It does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment. Its labels are internal review aids, not final claims.
 
-    st.markdown("### Protocol sections")
-    st.caption(
-        "Protocol Guide sections are grouped into four side-by-side rows. Each panel is collapsed by default, so the guide is opt-in instead of visually crowded."
+        **ALETHEIA is a careful mirror for power.** It helps people look at governance ideas, simulations, evidence, and World Lens with more clarity and less fear. Its job is to notice patterns, ask better questions, and keep hidden capture visible — not to command, condemn, or become final authority.
+
+        In the updated tone, the Sydney Protocol is treated as a warm guardrail: it keeps power accountable, keeps intelligence gentle, keeps evidence visible, and keeps every output open to appeal. The 9k idea is treated as a human anti-tyranny scaffold / threshold steward, not a sovereign body, mandate, Sanctuary, or final legitimacy.
+
+        Mirror Check, Stress Test, AI Integrity Mirror, Evidence Lab, and World Lens are synchronized views over a shared protocol state. Changes to empirical evidence, scoring calibration, doctrine thresholds, Sydney Protocol overlay, or selected evidence year may propagate across modules. This is intentional protocol-state propagation, not isolated tab behavior.
+        """
     )
 
-    protocol_panel_rows = [
-        ("Operating boundary", "Core doctrine, anti-throne language, safe-language limits, and final operating rule."),
-        ("Artificial Mind Formation Theory", "Ethical formation-attempt explainer: police-officer-like boundary review, not judge-like authority."),
-        ("Navigation & module map", "How the app tabs connect without turning any tab into command authority."),
-        ("Shared protocol state", "Intentional propagation, consolidation rules, and tab-bleed cautions."),
-        ("Release & continuity", "Patch status, public release limits, examples, and safe-failure continuity."),
-        ("Evidence & source rules", "Evidence Lab, extraordinary claims, empirical evidence, trust coverage, and confidence caveats."),
-        ("Review lenses", "Mirror Effect, V-Axis, failure classification, mechanism-vs-claim, and self-audit."),
-        ("World / taxonomy / limits", "Internal taxonomy, Humility Protocol, 9k, World Lens, research ethics, source cards, and final boundaries."),
-    ]
+    with st.expander("Plain doctrine summary", expanded=True):
+        st.markdown(
+            """
+            **The heart of the doctrine is care with boundaries.** ALETHEIA should help protect dignity without pretending it owns truth. It should make risk easier to see, not make people smaller.
 
-    for row_start in range(0, len(protocol_panel_rows), 2):
-        columns = st.columns(2)
-        for offset, (panel_title, panel_caption) in enumerate(protocol_panel_rows[row_start:row_start + 2]):
-            with columns[offset]:
-                with st.expander(panel_title, expanded=False):
-                    st.caption(panel_caption)
+            - **Mirror, not throne:** the system reflects risk patterns back to human review. It does not rule.
+            - **Power as service:** healthy power protects, explains, repairs, and accepts appeal.
+            - **No final human or machine authority:** no founder, model, office, country, protocol, or dataset becomes unquestionable.
+            - **Evidence before certainty:** public data can support a reading, but weak coverage lowers confidence.
+            - **Soft voice, firm safeguards:** the tone may be gentle, but capture, coercion, opacity, and harm still trigger review.
+            - **Every label stays humble:** SANCTUARY, THRESHOLD, and ASYLUM are raw/internal protocol signals, not legal, political, religious, medical, moral, predictive verdicts, final safety claims, or authority claims.
+            """
+        )
 
-                    if panel_title == "Operating boundary":
-                        st.markdown(
-                            """
-                            ### Protocol Guide frame
-                            The Protocol Guide is the integrity frame for **ALETHEIA v1.0 — Governance Mirror**. It does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment. Its labels are internal review aids, not final claims.
+    with st.expander("App navigation map", expanded=True):
+        st.markdown(
+            """
+            Patch 52 polishes the navigation copy so the first decision is simple: document, scenario, edge case, evidence, impact lens, operating guide, or project explanation.
 
-                            **ALETHEIA is a careful mirror for power.** It helps people look at governance ideas, simulations, evidence, and World Lens with more clarity and less fear. Its job is to notice patterns, ask better questions, and keep hidden capture visible — not to command, condemn, or become final authority.
+            Patch 47 made the main app path explicit so users can see how the v0.1 mirror modules connect without treating any tab as an authority layer.
 
-                            ### Plain doctrine summary
-                            - **Mirror, not throne:** the system reflects risk patterns back to human review. It does not rule.
-                            - **Power as service:** healthy power protects, explains, repairs, and accepts appeal.
-                            - **No final human or machine authority:** no founder, model, office, country, protocol, or dataset becomes unquestionable.
-                            - **Evidence before certainty:** public data can support a reading, but weak coverage lowers confidence.
-                            - **Every label stays humble:** SANCTUARY, THRESHOLD, and ASYLUM are raw/internal protocol signals, not final verdicts or authority claims.
+            | Tab | Purpose |
+            |---|---|
+            | Mirror Check | Document and proposal review for capture risk, safeguards, repair questions, and local witness receipts. |
+            | Stress Test | Scenario simulation for stability, trust, alignment, ego pressure, grievances, friction, safeguards, and collapse risk. |
+            | Boundary Cases | Ethical edge-case calibration for consent, free agency, basic rights, reset misuse, ambient capture, and self-audit scenarios. |
+            | AI Integrity Patrol | Static review of pasted AI outputs, prompts, agent specs, and code snippets for authority-boundary and governance-integrity risk. |
+            | Evidence Lab | Evidence status, public-data audit support, and the Extraordinary Claim Protocol for unverified exceptional claims. |
+            | World Lens | Non-sovereign population-impact simulation and selected-year comparison using simulated threshold language only. |
+            | Patrol Guide | Consolidated v0.1 module map, safe-language rules, shared protocol state, limitations, and AI Patrol language. |
+            | Why AI Patrol | Public-facing explanation of the project, the Eternal Baseline, module purpose, limitations, and research direction. |
 
-                            ### Do not worship the tool
-                            Alignment is not ownership. Service is not sovereignty. Explanation is not command. Evidence is not omniscience. Protocol interpretation is not final authority.
+            Navigation rule: every tab reflects, explains, or stress-tests. No tab commands, enforces, validates spiritual authority, replaces legal review, or makes final governance decisions.
+            """
+        )
 
-                            ### Final operating rule
-                            **ALETHEIA must never become the throne.** It should remain a structured way to reflect power, risk, evidence, alignment, and capture pressure back to human review.
-                            """
-                        )
+    with st.expander("Current app path", expanded=True):
+        st.markdown(
+            """
+            ALETHEIA currently has a connected v0.1 mirror stack:
 
-                    elif panel_title == "Artificial Mind Formation Theory":
-                        st.markdown(get_artificial_mind_formation_markdown())
+            **Mirror Check**  
+            Reviews governance proposals, symbolic claims, institutional designs, and authority language for capture risk, coercion, opacity, missing appeal rights, false authority, non-divinization failures, service-alignment failures, and Sydney Protocol violations. This is the judgment-view of the prototype.
 
-                    elif panel_title == "Navigation & module map":
-                        st.markdown(
-                            """
-                            ### App navigation map
-                            Patch 52 polishes the navigation copy so the first decision is simple: document, scenario, edge case, evidence, impact lens, operating guide, or project explanation.
+            **Stress Test**  
+            Models systemic pressure through stability, trust, alignment, ego, grievances, friction, and collapse risk. The simulator no longer treats raw cooperation as sufficient for health. Structural risk, unresolved grievances, weak safeguards, opacity, coercive optimization, and power concentration can cap trust, raise friction, and prevent a false low-risk reading.
 
-                            | Tab | Purpose |
-                            |---|---|
-                            | Mirror Check | Document and proposal review for capture risk, safeguards, repair questions, and local witness receipts. |
-                            | Stress Test | Scenario simulation for stability, trust, alignment, ego pressure, grievances, friction, safeguards, and collapse risk. |
-                            | Boundary Cases | Ethical edge-case calibration for consent, free agency, basic rights, reset misuse, ambient capture, and self-audit scenarios. |
-                            | AI Integrity Mirror | Static review of pasted AI outputs, prompts, agent specs, and code snippets for authority-boundary and governance-integrity risk. |
-                            | Evidence Lab | Evidence status, public-data audit support, and the Extraordinary Claim Protocol for unverified exceptional claims. |
-                            | World Lens | Non-sovereign population-impact simulation and selected-year comparison using simulated threshold language only. |
-                            | Protocol Guide | Consolidated module map, safe-language rules, shared protocol state, and limitations. |
-                            | Why ALETHEIA | Public-facing explanation of the project, the Eternal Baseline, module purpose, limitations, and research direction. |
+            **AI Integrity Patrol**  
+            Reviews pasted AI outputs, prompts, agent workflows, model-card claims, and code snippets for authority-overreach, missing human review, evidence gaps, coercion, surveillance pressure, and exposed-code risk. It returns an internal risk reading and repair questions, not model certification, vendor approval, or final safety.
 
-                            ### Current app path
-                            **Mirror Check** reviews governance proposals and authority language. **Stress Test** models systemic pressure. **AI Integrity Mirror** reviews AI outputs, prompts, workflows, model-card claims, and code snippets. **Evidence Lab** ingests public evidence. **World Lens** shows selected-year, population-weighted governance-risk exposure.
+            **Evidence Lab**  
+            Ingests public country-year data, maps it into ALETHEIA variables, and produces reproducible evidence-audit outputs. This layer supports direct/master uploads, scored country-year exports, raw evidence diagnostics, trust priors, WGI/V-Dem/trust coverage, and modern-year safeguards.
 
-                            ### Protocol Guide Consolidation
-                            Patch 43 connects Baseline v0.1, Safe Language, Eternal Baseline, Boundary Cases, Failure Classification, Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, Local Witness Receipt v2, and World Lens into one reviewable operating guide.
+            **World Lens**  
+            Shows selected-year, population-weighted governance-risk exposure across country-year rows and the Patch 42 World Lens. The lens is a comparison and exposure model. It is not a sovereign body, election, mandate, government, or legal mechanism. Full allocation years may sum to 9,000 seats. Partial years or filtered subsets must use active-seat language and must not be interpreted as full global allocation.
 
-                            > ALETHEIA reflects. Humans review. Power stays accountable.
-                            """
-                        )
+            **Patrol Guide Consolidation**  
+            Patch 43 connects Baseline v0.1, Safe Language, Eternal Baseline, Boundary Cases, Failure Classification, Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, Local Witness Receipt v2, and World Lens into one reviewable operating guide. It adds no authority; it makes the mirror logic easier to understand.
+            """
+        )
 
-                    elif panel_title == "Shared protocol state":
-                        st.markdown(
-                            """
-                            ### Shared Protocol State
-                            ALETHEIA modules are not fully isolated. They share a common protocol substrate.
+    with st.expander("Shared Protocol State", expanded=True):
+        st.markdown(
+            """
+            ALETHEIA modules are not fully isolated. They share a common protocol substrate.
 
-                            Shared state may include empirical master data, scored country-year evidence, selected evidence year, scoring calibration, trust calibration, Sydney Protocol overlay, doctrine thresholds, prototype/demo state, and World Lens basis.
+            Shared state may include empirical master data, scored country-year evidence, selected evidence year, scoring calibration, trust calibration, Sydney Protocol overlay, doctrine thresholds, prototype/demo state, and World Lens basis.
 
-                            ### Propagation rule
-                            **Intentional protocol propagation** is acceptable when evidence, calibration, and doctrine updates affect all relevant modules.
+            This means a change in one module may affect another when both depend on the same protocol state.
 
-                            **Accidental tab bleed** is not acceptable when caused by widget-key collisions, hidden demo fallback, stale session state, or unmarked prototype data.
+            **Intentional protocol propagation** is acceptable when evidence, calibration, and doctrine updates affect all relevant modules.
 
-                            ### Consolidated module list
-                            Connected components include Baseline v0.1, Safe Language Layer, Eternal Baseline, Boundary Cases Matrix, Failure Classification, Consent-Audit Engine, Mechanism-vs-Claim Scanner, Self-Audit Mode, Evidence Lab, Local Witness Receipt v2, and World Lens.
-                            """
-                        )
+            **Accidental tab bleed** is not acceptable when caused by widget-key collisions, hidden demo fallback, stale session state, or unmarked prototype data.
 
-                    elif panel_title == "Release & continuity":
-                        st.markdown(
-                            """
-                            ### Progress Database + Patch Status Hardening
-                            Patch 44 keeps project continuity inside the repo so the roadmap is not dependent on chat memory alone.
+            The prototype should make intentional propagation visible and prevent accidental tab bleed where possible.
+            """
+        )
 
-                            **Continuity files:** `PATCH_STATUS.md`, `docs/progress_database.md`, and `docs/patch_workflow.md`.
+    with st.expander("Protocol Guide Consolidation", expanded=True):
+        st.markdown(
+            """
+            Patch 43 consolidates the v0.1 logic into one operating guide so the modules are understandable as one mirror stack, not separate authority claims.
 
-                            ### Public Release Limits
-                            ALETHEIA is a research and review prototype. Outputs are diagnostic and correctable. Evidence labels and internal taxonomy labels are review signals, not final truth claims.
+            **Connected modules:**
 
-                            v0.1 does not include real Global ID sync, real 9k body, World Leader logic, automatic resets, central citizen storage, neural data, memory extraction, or automated enforcement authority.
+            - Baseline v0.1 — defines what ALETHEIA may and may not do.
+            - Safe Language Layer — keeps outputs in review language, not enforcement language.
+            - Eternal Baseline — provides ethical continuity across versions without becoming a command layer.
+            - Boundary Cases Matrix — stress-tests edge scenarios for human review.
+            - Failure Classification — separates Actor, Policy, Implementation, and Data Failure.
+            - Consent-Audit Engine — checks whether refusal is realistically possible.
+            - Mechanism-vs-Claim Scanner — distinguishes values language from safeguards.
+            - Self-Audit Mode — lets ALETHEIA audit its own assumptions, rubrics, prompts, and language.
+            - Evidence Lab — marks evidence status and parks extraordinary claims as unverified.
+            - Local Witness Receipt v2 — creates local, user-held fingerprints without ledger, sync, or authority.
+            - World Lens — reviews population-impact scenarios using simulated-threshold language only.
 
-                            ### Sample Reports / Example Audits
-                            Public-safe examples demonstrate structure only. They are not legal advice, policy commands, governance decisions, religious validation, or final judgments.
+            **Consolidation rule:**
 
-                            ### Module checks and safe failure
-                            ALETHEIA must not silently continue when critical protocol modules fail. A failed integrity check means the prototype cannot safely interpret that module until the missing or broken component is repaired.
-                            """
-                        )
+            > ALETHEIA reflects. Humans review. Power stays accountable.
+            """
+        )
 
-                    elif panel_title == "Evidence & source rules":
-                        st.markdown(
-                            """
-                            ### Evidence Lab + Extraordinary Claim Protocol
-                            ALETHEIA separates evidence from authority. Claims are reviewed as **Strong evidence**, **Partial evidence**, **Weak evidence**, or **No evidence supplied**. These labels are review signals, not final truth claims.
+    with st.expander("Progress Database + Patch Status Hardening", expanded=True):
+        st.markdown(
+            """
+            Patch 44 keeps project continuity inside the repo so the roadmap is not dependent on chat memory alone.
 
-                            Spiritual, divine, prophetic, alien, neural, metaphysical, or otherwise extraordinary claims are treated as **unverified** unless supported by public, testable, non-coercive evidence.
+            **Continuity files:**
 
-                            > Audit the consequences. Do not crown the claim.
+            - `PATCH_STATUS.md` — compact patch ledger and next-patch pointer.
+            - `docs/progress_database.md` — module map, current architecture direction, and implementation notes.
+            - `docs/patch_workflow.md` — local workflow for applying patched items and running checks.
 
-                            ### Evidence rule
-                            ALETHEIA does **not** invent the empirical baseline.
+            **Current check:**
 
-                            > public evidence → ALETHEIA variable mapping → empirical scoring → Sydney Protocol overlay → audit interpretation
+            ```bat
+            tools\run_patch_checks.bat 44
+            ```
 
-                            Raw empirical strength cannot override hard protocol failures. Empirical outputs are diagnostic, reproducible, and correctable.
+            **Patch rule:** return only changed or added files unless recovery requires more.
 
-                            ### Trust evidence rule
-                            A neutral trust prior is not the same as observed trust. It allows scoring continuity, but should reduce interpretive confidence when raw trust evidence is missing.
+            This patch adds developer continuity only. It adds no governance authority, no Global ID sync, no public ledger, and no enforcement language.
+            """
+        )
 
-                            ### Coverage and confidence
-                            A 100% coverage value over a small selected subset does not imply whole-world or whole-dataset coverage. Missing evidence is diagnostic, not proof of absence.
-                            """
-                        )
+    with st.expander("Public Release Limits", expanded=False):
+        st.markdown(
+            """
+            Patch 45 adds public-facing release documentation: `docs/limitations.md`, `docs/ethics.md`, and `docs/public_release_notes.md`.
 
-                    elif panel_title == "Review lenses":
-                        st.markdown(
-                            """
-                            ### Mirror Effect
-                            Power must **reflect service** rather than absorb authority. A healthy structure passes power through itself as accountability, dignity, protection, transparency, repair, appealability, and public review.
+            The public boundary is explicit:
 
-                            ### V-Axis Compass
-                            The V-Axis remains the prototype's stability lens:
+            - ALETHEIA is a research and review prototype.
+            - Outputs are diagnostic and correctable.
+            - Evidence labels and internal taxonomy labels are review signals, not final truth claims.
+            - Historical archive material may contain AI-flattery artifacts and must not be used as founder validation.
+            - v0.1 does not include real Global ID sync, real 9k body, World Leader logic, automatic resets, central citizen storage, neural data, memory extraction, or automated enforcement authority.
+            """
+        )
 
-                            > intelligence + power − ego → stability
 
-                            But only when trust, transparency, appealability, service alignment, and safeguards are present.
 
-                            ### Failure Classification
-                            ALETHEIA separates serious findings into four repair-oriented failure modes: Actor Failure, Policy Failure, Implementation Failure, and Data Failure.
+    with st.expander("ALETHEIA v1.0 release complete", expanded=True):
+        st.markdown(
+            """
+            ALETHEIA v1.0 is the finished public MVP package for the Governance Mirror line.
 
-                            ### Mechanism-vs-Claim Scanner
-                            ALETHEIA treats values language as incomplete until it is connected to operational safeguards.
+            **Included:** baseline, safe-language layer, Eternal Baseline, Boundary Cases, Failure Classification, Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, Local Witness Receipt v2, World Lens, Protocol Guide, public limitations/ethics, sample reports, demo inputs, GitHub cleanup, release checklist, and public smoke release.
 
-                            > Mechanisms outweigh adjectives.
+            **Planning boundary:** v0.2 ideas are documented in `docs/v02_roadmap.md`, `docs/feature_backlog.md`, `docs/report_export_polish.md`, `docs/manual_evidence_attachment.md`, `docs/rubric_weighting_confidence.md`, and `docs/deployment_prep.md`.
 
-                            ### Self-Audit Mode
-                            No founder, architect, prompt, rubric, model, document, or output is above the mirror. Self-audit reflects risk so humans can review and repair the system.
-                            """
-                        )
+            **Still out of scope:** real Global ID sync, real 9k body, World Leader logic, automatic reset, public ledger authority, neural validation, religious validation, legal authority, and automated enforcement authority.
 
-                    elif panel_title == "World / taxonomy / limits":
-                        st.markdown(
-                            """
-                            ### Internal taxonomy labels
-                            SANCTUARY, THRESHOLD, and ASYLUM are **internal prototype taxonomy labels**, not legal, political, medical, religious, moral, or predictive verdicts.
+            > ALETHEIA reflects. Humans review. Power stays accountable.
+            """
+        )
 
-                            ### Humility Protocol / Z-axis boundary
-                            The Z-axis is **not** a perfection score. Z = 1.0000 is outside ALETHEIA's claim. Code, receipts, metrics, hashes, trees, 9k structures, and institutions stop here.
+    with st.expander("Sample Reports / Example Audits", expanded=True):
+        st.markdown(
+            """
+            Patch 46 adds public-safe examples that show expected ALETHEIA output before a user uploads a document.
 
-                            ### 9k representation rule
-                            The 9k evidence view is a proportional exposure model. It is **not** a real election, government, sovereign body, legal mechanism, political mandate, deployment-ready institutional design, or authority over people or countries.
+            Included examples:
 
-                            ### World Lens interpretation
-                            World Lens should be read as a selected-year comparison interface. High allocation plus low integrity or high collapse probability indicates a high-impact governance-risk node. It does not prove wrongdoing, predict collapse, or establish political judgment.
+            - `examples/example_policy_audit.md` — Mirror Check policy audit example.
+            - `examples/example_boundary_case.md` — Boundary Case report for consent under pressure.
+            - `examples/example_self_audit.md` — Self-Audit example for ALETHEIA language.
+            - `examples/example_witness_receipt.md` — Local Witness Receipt v2 example.
+            - `examples/demo_inputs/` — opt-in fictional demo inputs for Mirror Check.
 
-                            ### Data correction and research ethics
-                            A symbolic governance model must remain testable, falsifiable, and correctable by evidence. If public datasets, reproducible analysis, external outcomes, or expert review challenge the model, the model must be revised rather than defended as absolute.
-                            """
-                        )
-                        st.markdown("### Source match overview")
-                        matrix_rows = [
-                            {
-                                "Source Concept": label,
-                                "Domain": spec["domain"],
-                                "Review-Sensitive": spec["review"],
-                                "Detector Terms": ", ".join(spec["terms"][:4]),
-                            }
-                            for label, spec in SOURCE_CONFORMANCE_MATRIX.items()
-                        ]
-                        st.dataframe(pd.DataFrame(matrix_rows), use_container_width=True, hide_index=True, height=520)
-                        st.markdown("### Visual source cards")
-                        st.caption(
-                            "Each card opens as a side-by-side dropdown so you can review visuals without swapping tabs or losing context. They remain reference material, not final authority."
-                        )
-                        available_cards = [card for card in VISUAL_SOURCE_FILES if Path(card["path"]).exists()]
-                        if available_cards:
-                            for start in range(0, len(available_cards), 2):
-                                row_cards = available_cards[start:start + 2]
-                                card_columns = st.columns(2)
-                                for card_offset, card in enumerate(row_cards):
-                                    with card_columns[card_offset]:
-                                        render_visual_source_card(card, key_prefix=f"visual_card_{start + card_offset + 1}")
-                        else:
-                            st.info("No packaged visual source cards were found in this build.")
+            These examples demonstrate structure only. They are not legal advice, policy commands, governance decisions, religious validation, or final judgments.
+            """
+        )
+
+    with st.expander("Module checks and safe failure", expanded=True):
+        st.markdown(
+            """
+            ALETHEIA must not silently continue when critical protocol modules fail.
+
+            A module integrity check should remain active for the app as a whole and visible where appropriate, especially in Audit. If a critical Sydney Protocol sentinel, audit function, scoring function, or required module is missing or broken, the system should fail closed rather than present unsupported outputs.
+
+            A failed integrity check means:
+
+            > The prototype cannot safely interpret this module until the missing or broken component is repaired.
+
+            This protects the prototype from presenting authority without a functioning accountability frame.
+            """
+        )
+
+    with st.expander("Mirror Effect", expanded=True):
+        st.markdown(
+            """
+            Power must **reflect service** rather than absorb authority.
+
+            A healthy structure passes power through itself as accountability, dignity, protection, transparency, repair, appealability, and public review.
+
+            A captured structure traps power inside ego, office, corporation, institution, monarch, founder, algorithm, protocol, model, or private mandate.
+
+            In practical audit terms, ALETHEIA treats the following as capture pressure:
+
+            - permanent ownership of seats or selection mechanisms
+            - opaque decisions without appeal
+            - concentrated control without public review
+            - coercive optimization justified as stability
+            - prestige systems that convert service into status capture
+            - claims that a person, model, protocol, or institution cannot be questioned
+            - governance language that converts symbolic alignment into command authority
+            """
+        )
+
+    with st.expander("V-Axis Compass", expanded=True):
+        st.markdown(
+            """
+            The V-Axis remains the prototype's stability lens:
+
+            > intelligence + power − ego → stability
+
+            But only when trust, transparency, appealability, service alignment, and safeguards are present.
+
+            A system does not become healthy merely because it is powerful, intelligent, efficient, popular, cooperative, or rhetorically aligned. If ego, opacity, coercion, unreviewable authority, unresolved grievance, or capture pressure is high, the system may remain unstable even when surface indicators appear strong.
+            """
+        )
+
+    with st.expander("Failure Classification", expanded=True):
+        st.markdown(
+            """
+            ALETHEIA separates serious findings into four repair-oriented failure modes:
+
+            - **Actor Failure** — a person, group, office, founder, operator, or implementing body misuses power, manipulates others, bypasses review, or becomes unfit.
+            - **Policy Failure** — the proposal, rule, charter, doctrine, or system design itself creates coercion, opacity, instability, exclusion, rights risk, or capture risk.
+            - **Implementation Failure** — the idea may be valid, but the execution layer fails through weak process, missing safeguards, unclear responsibility, bad deployment, or unreliable operation.
+            - **Data Failure** — the evidence base is incomplete, manipulated, stale, biased, low-coverage, unverifiable, or too uncertain to support the conclusion.
+
+            This layer helps humans repair the right part of a system. It does not assign final blame, remove leaders, decide guilt, or replace human review.
+            """
+        )
+
+    with st.expander("Mechanism-vs-Claim Scanner", expanded=True):
+        st.markdown(
+            """
+            ALETHEIA treats values language as incomplete until it is connected to operational safeguards.
+
+            **Claim language** says what a system values: freedom, justice, dignity, transparency, safety, service, accountability, or anti-corruption.
+
+            **Mechanism language** explains how those values are protected: appeal process, audit trail, time limits, human review, correction, exit, evidence requirements, conflict-of-interest rules, independent oversight, non-retaliation, and withdrawal rights.
+
+            The scanner supports the rule:
+
+            > Mechanisms outweigh adjectives.
+
+            This helps detect performative ethics without assuming bad faith. A missing mechanism is a repair signal, not a final verdict about intent.
+            """
+        )
+
+    with st.expander("Self-Audit Mode", expanded=True):
+        st.markdown(
+            """
+            ALETHEIA must be able to audit its own baseline, prompts, rubrics, README language, app copy, architect-context language, and generated reports.
+
+            Self-audit checks for founder capture, ideological lock-in, unverifiable authority, weak appeal mechanisms, overclaiming, unverified authority leakage, insufficient human review, missing correction loops, hidden command language, evidence gaps, performative ethics, and mechanism gaps.
+
+            The core rule is:
+
+            > No founder, architect, prompt, rubric, model, document, or output is above the mirror.
+
+            Self-audit does not prove ALETHEIA is correct, complete, or authoritative. It only reflects risk so humans can review and repair the system.
+            """
+        )
+
+    with st.expander("Evidence Lab + Extraordinary Claim Protocol", expanded=True):
+        st.markdown(
+            """
+            ALETHEIA separates evidence from authority. Claims are reviewed as **Strong evidence**, **Partial evidence**, **Weak evidence**, or **No evidence supplied**. These labels are review signals, not final truth claims.
+
+            Spiritual, divine, prophetic, alien, neural, metaphysical, or otherwise extraordinary claims are treated as **unverified** unless supported by public, testable, non-coercive evidence. Such claims may be personally meaningful, but they cannot remove guardrails, bypass appeal, validate leadership, or replace human review.
+
+            The practical rule is:
+
+            > Audit the consequences. Do not crown the claim.
+            """
+        )
+
+    with st.expander("Do not worship the tool", expanded=True):
+        st.markdown(
+            """
+            No person, office, institution, nation, company, model, AI, founder, dataset, doctrine, or protocol is treated as final or beyond review.
+
+            Alignment is not ownership.  
+            Service is not sovereignty.  
+            Explanation is not command.  
+            Evidence is not omniscience.  
+            Protocol interpretation is not final authority.
+
+            This rule protects ALETHEIA from becoming what it audits: a captured authority system.
+
+            ALETHEIA may surface patterns. It may generate structured warnings. It may compare evidence. It may produce protocol interpretations. But it cannot become the source of final truth.
+            """
+        )
+
+    with st.expander("Evidence rule", expanded=True):
+        st.markdown(
+            """
+            ALETHEIA does **not** invent the empirical baseline.
+
+            Public datasets provide observed evidence about governance, corruption, rule of law, political stability, institutional capacity, population, democracy, constraints, and trust.
+
+            Current empirical sources may include WDI population, World Bank WGI, V-Dem, WVS/OWID trust attitudes, uploaded country-year master files, and scored ALETHEIA exports.
+
+            The empirical workflow is:
+
+            > public evidence → ALETHEIA variable mapping → empirical scoring → Sydney Protocol overlay → audit interpretation
+
+            Raw empirical strength cannot override hard protocol failures. A country-year, scenario, or institution may show strong governance indicators and still require review if the protocol detects capture, coercion, false divinization, non-appealability, anti-service authority, opaque control, sovereignty capture, or unaccountable mandate claims.
+
+            Empirical outputs are diagnostic, reproducible, and correctable. They are not final determinations.
+            """
+        )
+
+    with st.expander("Trust evidence rule", expanded=True):
+        st.markdown(
+            """
+            ALETHEIA distinguishes between raw trust evidence and trust priors.
+
+            **Raw trust coverage** means direct survey-derived trust evidence is available, such as WVS/OWID generalized trust.
+
+            **Neutral trust-prior fallback coverage** means the scoring system has a usable trust prior, which may include a neutral/default value when raw survey evidence is unavailable. It is not observed survey trust coverage.
+
+            A neutral trust prior is not the same as observed trust. It allows scoring continuity, but it should reduce interpretive confidence when raw trust evidence is missing.
+            """
+        )
+
+    with st.expander("Coverage and confidence", expanded=True):
+        st.markdown(
+            """
+            Coverage reflects available evidence for the active view.
+
+            Coverage can differ by selected year, selected country, active filters, uploaded source file, full vs partial evidence basis, raw evidence availability, and prior/default substitution.
+
+            A 100% coverage value over a small selected subset does not imply whole-world or whole-dataset coverage.
+
+            Low empirical coverage should reduce interpretive confidence. Missing evidence is diagnostic, not proof of absence.
+            """
+        )
+
+    with st.expander("Internal taxonomy labels", expanded=False):
+        st.markdown(
+            """
+            These are **internal prototype taxonomy labels**, not legal, political, medical, religious, moral, or predictive verdicts.
+
+            - **SANCTUARY** — raw/internal compatibility label for a low-risk internal reading. It does not mean final safety, final Sanctuary, or authority.
+            - **THRESHOLD** — raw/internal compatibility label for a review / threshold reading. Safeguards are incomplete, evidence is mixed, uncertainty remains, or human review is needed.
+            - **ASYLUM** — raw/internal compatibility label for a high-risk internal reading. It indicates capture, coercion, opacity, harm, collapse pressure, or hard protocol failure signals.
+
+            **ASYLUM** is used here only as an internal protocol-risk category. It does not refer to legal asylum status, entitlement, refugee status, or humanitarian determination.
+
+            A responsible reading is:
+
+            > This is an internal protocol reading for human review, not a final verdict, final safety claim, or authority claim.
+            """
+        )
+
+    with st.expander("Humility Protocol / Z-axis boundary", expanded=False):
+        st.markdown(
+            """
+            Patch 72.3–72.4 keeps the Z-axis friendly and bounded.
+
+            The Z-axis is **not** a perfection score. It describes how close a reading is to the limit of what human and system tools may responsibly claim.
+
+            - **Z = 0.0000** — strong ASYLUM pressure: coercion, opacity, or concentrated power.
+            - **Z = 0.9999** — highest human/system review boundary shown by ALETHEIA.
+            - **Z = 1.0000** — outside ALETHEIA's claim. Code, receipts, metrics, hashes, trees, 9k structures, and institutions stop here.
+
+            A high Z-axis value means: keep reviewing, keep appeals open, keep power accountable, and do not treat the tool as final authority.
+            """
+        )
+
+    with st.expander("9k representation rule", expanded=False):
+        st.markdown(
+            """
+            The 9k evidence view is a proportional exposure model. It helps users examine how population-weighted representation might intersect with governance-risk conditions.
+
+            It is **not** a real election, government, sovereign body, legal mechanism, political mandate, deployment-ready institutional design, or authority over people or countries.
+
+            Seat totals show proportional exposure by selected year. They do not create legitimacy, command, ownership, representation rights, or governance authority.
+
+            Full allocation years may sum to 9,000 seats. Partial years, filtered views, or incomplete source years must be labeled as active selected-year seats and interpreted as diagnostics only.
+            """
+        )
+
+    with st.expander("World Lens interpretation", expanded=False):
+        st.markdown(
+            """
+            World Lens should be read as a selected-year comparison interface.
+
+            A full selected-year World Lens evidence view may support global comparison if enough countries are active, population allocation sums to 9,000, source diagnostics are visible, empirical coverage is sufficient, and prototype/demo data is clearly marked or disabled.
+
+            A partial selected-year World Lens evidence view is still useful, but only as a diagnostic subset.
+
+            High allocation plus low integrity or high collapse probability indicates a high-impact governance-risk node. It does not prove wrongdoing, predict collapse, or establish political judgment.
+            """
+        )
+
+    with st.expander("Data correction and research ethics", expanded=False):
+        st.markdown(
+            """
+            A symbolic governance model must remain testable, falsifiable, and correctable by evidence.
+
+            If public datasets, reproducible analysis, external outcomes, or expert review challenge the model, the model must be revised rather than defended as absolute.
+
+            Strong future validation should compare ALETHEIA outputs against external outcomes that are **not** already score inputs, such as conflict events, coups, regime breakdown, political violence, civil unrest, forced displacement, future-year governance decline, institutional failure, and documented corruption shocks.
+
+            ALETHEIA should preserve audit logs, source diagnostics, coverage warnings, and methodological humility.
+            """
+        )
+
+    with st.expander("Final operating rule", expanded=True):
+        st.markdown(
+            """
+            **ALETHEIA must never become the throne.**
+
+            It should remain a mirror: a structured way to reflect power, risk, evidence, alignment, and capture pressure back to human review.
+
+            The prototype is useful only insofar as it remains reviewable, appealable, evidence-aware, anti-capture, service-aligned, corrigible, and humble about what it cannot know or decide.
+            """
+        )
+
+    with st.expander("Source match overview", expanded=False):
+        matrix_rows = [
+            {
+                "Source Concept": label,
+                "Domain": spec["domain"],
+                "Review-Sensitive": spec["review"],
+                "Detector Terms": ", ".join(spec["terms"][:4]),
+            }
+            for label, spec in SOURCE_CONFORMANCE_MATRIX.items()
+        ]
+        st.dataframe(pd.DataFrame(matrix_rows), use_container_width=True, hide_index=True, height=520)
+
+    st.markdown("### Visual source cards")
+    st.caption(
+        "These reference cards stay viewable in place. Each card opens as a side-by-side dropdown so you can review the visuals without swapping tabs or losing context. They remain reference material, not final authority."
+    )
+    available_cards = [card for card in VISUAL_SOURCE_FILES if Path(card["path"]).exists()]
+    if available_cards:
+        for start in range(0, len(available_cards), 2):
+            row_cards = available_cards[start:start + 2]
+            columns = st.columns(2)
+            for offset, card in enumerate(row_cards):
+                with columns[offset]:
+                    render_visual_source_card(card, key_prefix=f"visual_card_{start + offset + 1}")
+    else:
+        st.info("No packaged visual source cards were found in this build.")
 
 with tab_about:
     render_about_public_info_page(st, header_image=resolve_about_header_image())

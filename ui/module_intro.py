@@ -10,7 +10,7 @@ def render_stress_test_scan_intro(container=None) -> None:
         container = st
 
     container.info(
-        "Scan my idea is for your own text. Demo scenarios are there if you choose them, "
+        "Scan my idea is for your own text. AI Patrol reads only what you choose to submit. Demo scenarios are there if you choose them, "
         "but they never run by themselves."
     )
 
@@ -23,7 +23,7 @@ def render_boundary_cases_intro(container=None) -> None:
         container = st
 
     container.info(
-        "Boundary cases calibrate the review model. They do not create authority, "
+        "Boundary cases calibrate the patrol lens. They do not create authority, "
         "enforcement, or final decisions."
     )
 
@@ -37,7 +37,7 @@ def render_consent_audit_intro(container=None) -> None:
 
     container.markdown("### Consent-Audit Engine")
     container.write(
-        "Consent is treated as valid only when refusal is realistically possible. "
+        "AI Patrol treats consent as valid only when refusal is realistically possible. "
         "This check looks for structural pressure, basic-rights dependency, "
         "withdrawal gaps, and unclear alternatives."
     )

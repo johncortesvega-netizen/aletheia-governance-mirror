@@ -9,8 +9,8 @@ def render_ai_integrity_boundary_cards(container=None) -> None:
 
         container = st
 
-    container.caption("Boundary extension: It does not certify models, vendors, codebases, prompts, agents, or outputs as safe.")
-    container.caption("Demo risk examples include phrases such as certified safe only as trigger text, not as an ALETHEIA claim.")
+    container.caption("Patrol boundary: AI Integrity Patrol does not certify models, vendors, codebases, prompts, agents, or outputs as safe.")
+    container.caption("Demo risk examples may include phrases such as certified safe only as trigger text, not as an AI Patrol / ALETHEIA claim.")
     container.caption(
         "Scope boundary: no live model benchmarking, no external calls, no repository crawl, no public ledger, "
         "and no future-behavior guarantee."

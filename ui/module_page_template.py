@@ -12,7 +12,7 @@ from typing import Iterable, Sequence
 
 
 MODULE_PAGE_TEMPLATE_BOUNDARY_NOTE = (
-    "This module gives a structured mirror reading, not a verdict, certification, "
+    "This module gives a structured AI Patrol stop/go review signal, not a verdict, certification, "
     "approval, legal/medical/political finding, safety guarantee, or final-truth "
     "claim. Human review remains required."
 )

@@ -15,9 +15,9 @@ UNIT_PREVIEW_SESSION_KEY = "aletheia_unit_preview_passed"
 def get_unit_preview_boundary_text() -> str:
     """Return the stable non-authority boundary copy for the preview."""
     return (
-        "Aletheia Unit Preview suggests where to begin. It does not score, certify, "
+        "AI Patrol Preview Unit suggests where to begin. It does not score, certify, "
         "approve, reject, or replace the full modules.\n\n"
-        "ALETHEIA gives readings, not verdicts. Human judgment remains required.\n\n"
+        "AI Patrol gives stop/go review signals, not verdicts. Human judgment remains required.\n\n"
         "For sensitive material, run locally. Hosted deployments may have platform-level "
         "logs outside ALETHEIA's app-code boundary."
     )
@@ -28,7 +28,7 @@ def get_unit_preview_how_to_use_markdown() -> str:
     return """
 **How to use this**
 
-Paste a short idea, question, policy, AI output, or scenario. ALETHEIA looks for power, pressure, appeal, evidence, and risk. You keep the final say.
+Paste a short idea, question, policy, AI output, or scenario. AI Patrol looks for power, pressure, appeal, evidence, and risk. It gives a suggested stop/go direction for human review, and you keep the final say.
 
 **Examples**
 
@@ -39,7 +39,7 @@ Paste a short idea, question, policy, AI output, or scenario. ALETHEIA looks for
 - **Evidence Lab:** Upload a CSV or source note to compare claims against supporting evidence.
 - **World Lens:** Compare a country-year governance context before interpreting a risk reading.
 
-Already have an ALETHEIA receipt? Unit Preview can suggest **Receipt Reader — Standard View**, but receipts are read only after entering ALETHEIA and opening the upload-only Receipt Reader.
+Already have an ALETHEIA receipt? The Preview Unit can suggest **Receipt Reader — Standard View**, but receipts are read only after entering AI Patrol / ALETHEIA and opening the upload-only Receipt Reader.
 """
 
 
@@ -50,7 +50,7 @@ def get_unit_preview_start_here_markdown() -> str:
 
 1. Paste one short item into Unit Preview.
 2. Read the suggested path as a suggestion, not a decision.
-3. Enter ALETHEIA and choose the module yourself.
+3. Enter AI Patrol / ALETHEIA and choose the module yourself.
 4. Inspect observed reasons, values, and repair questions before relying on any reading.
 5. Download a receipt only when you want a local review record.
 
@@ -80,7 +80,7 @@ def get_unit_preview_failure_mode_markdown() -> str:
 def get_unit_preview_what_aletheia_looks_for_markdown() -> str:
     """Return concise Start Here orientation for ALETHEIA's review lens."""
     return """
-ALETHEIA looks for pressure patterns that can make a system appear more legitimate, neutral, certain, or authoritative than the evidence supports.
+AI Patrol looks for pressure patterns that can make a system appear more legitimate, neutral, certain, or authoritative than the evidence supports.
 
 It watches for signals around power, evidence, appeal, capture, language, and human-review needs. These signals are not verdicts or proof of wrongdoing. They are prompts for review.
 
@@ -736,10 +736,10 @@ def render_unit_preview(container=None) -> bool:
         container = st
 
     container.markdown(get_unit_preview_proceed_button_style(), unsafe_allow_html=True)
-    container.title("Aletheia Unit Preview")
-    container.markdown("### Mirror, not throne.")
+    container.title("AI Patrol Preview Unit")
+    container.markdown("### Friendly integrity patrol. Mirror, not throne.")
     container.write(
-        "Paste a short text, question, policy, AI output, or scenario to get a suggested path before entering ALETHEIA. Upload receipts in Receipt Reader after entering the app."
+        "Paste a short text, question, policy, AI output, or scenario to get a suggested patrol path before entering ALETHEIA. Upload receipts in Receipt Reader after entering the app."
     )
     container.info(get_unit_preview_boundary_text())
     container.markdown(get_unit_preview_how_to_use_markdown())
@@ -770,10 +770,10 @@ def render_unit_preview(container=None) -> bool:
     # source marker above for validation continuity.
     action_columns = container.columns([1, 1, 1.25, 4.75], gap="small")
     with action_columns[0]:
-        preview_clicked = container.button("Preview review path", key="aletheia_unit_preview_button")
+        preview_clicked = container.button("Preview patrol path", key="aletheia_unit_preview_button")
     with action_columns[1]:
         proceed_clicked = container.button(
-            "Proceed to ALETHEIA",
+            "Proceed to AI Patrol",
             type="primary",
             key="aletheia_unit_preview_proceed",
         )
@@ -786,13 +786,13 @@ def render_unit_preview(container=None) -> bool:
 
     if preview_clicked:
         suggestion = detect_unit_preview_route(preview_text)
-        container.markdown("### Suggested path")
+        container.markdown("### Suggested patrol path")
         container.info(
             f"**Suggested path:** {suggestion['module']}\n\n"
             f"**Why:** {suggestion['reason']}\n\n"
             f"**Next step:** {suggestion['next_step']}"
         )
-        container.caption("This is orientation only. You can still choose any module after entering ALETHEIA.")
+        container.caption("This is a stop/go orientation only. You can still choose any module after entering AI Patrol / ALETHEIA.")
 
     render_unit_preview_proof_concepts_side_by_side(container)
     render_unit_preview_html_reference(container)

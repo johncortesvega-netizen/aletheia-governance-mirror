@@ -20,22 +20,22 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
         container = st
 
     st = container
-    st.subheader("Why ALETHEIA")
-    st.info("Start here if you are new: ALETHEIA helps people review power, evidence, safeguards, and repair needs without turning the tool into an authority. It reflects; people decide.")
+    st.subheader("Why AI Patrol / ALETHEIA")
+    st.info("Start here if you are new: AI Patrol is the friendlier public face of ALETHEIA. It helps people review power, evidence, safeguards, and repair needs without turning the tool into an authority. It signals; people decide.")
 
     with st.expander("Why ALETHEIA exists", expanded=True):
         st.markdown(
             """
-            ALETHEIA exists because many systems can look orderly while still moving power out of
+            AI Patrol / ALETHEIA exists because many systems can look orderly while still moving power out of
             reach. A policy can have compliance language and still hide appeal failure. An AI output
             can sound neutral while carrying flattery pressure or provider-shaped assumptions. A
             governance process can be documented while still concentrating power in a few actors.
 
-            ALETHEIA's answer is not more command, automation, or institutional control. Its answer
+            AI Patrol's answer is not more command, automation, or institutional control. Its answer
             is a restrained mirror: make pressure visible, name missing safeguards, and return the
             reading to human review.
 
-            It asks practical questions:
+            It asks practical patrol questions:
 
             - Where is power moving?
             - What evidence was actually inspected?
@@ -55,9 +55,9 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
 
     st.markdown(
         """
-        **ALETHEIA v1.0 is a governance-risk research prototype and public MVP.** It helps people examine governance ideas, stress-test scenarios, read evidence quality, inspect AI outputs, and interpret local receipts with clearer boundaries.
+        **AI Patrol is the friendlier public face of ALETHEIA v1.0.** It is a governance-risk research prototype and public MVP that helps people examine governance ideas, stress-test scenarios, read evidence quality, inspect AI outputs, and interpret local receipts with clearer boundaries.
 
-        It is not designed to rule, command, enforce, vote, govern, remove leaders, validate spiritual authority, confirm extraordinary claims, or replace human judgment. **ALETHEIA is a mirror:** a structured way to ask whether a proposal protects service, transparency, dignity, accountability, appeal, and repair — or whether it concentrates power, hides decisions, weakens appeal rights, or creates capture.
+        It is not designed to rule, command, enforce, vote, govern, remove leaders, validate spiritual authority, confirm extraordinary claims, or replace human judgment. **AI Patrol / ALETHEIA is a mirror:** a structured stop/go review layer that asks whether a proposal protects service, transparency, dignity, accountability, appeal, and repair — or whether it concentrates power, hides decisions, weakens appeal rights, or creates capture.
 
         The v1.0 package is strongest when read as a review aid, not a status machine. Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, World Lens, Local Witness Receipts, public limitations, examples, and deployment documentation all point back to the same rule: surface what needs review or repair without assigning blame, issuing commands, or claiming final authority.
         """
@@ -66,7 +66,7 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
     with st.expander("What this is / is not", expanded=True):
         st.markdown(
             """
-            **This is:** a mirror for pressure, authority drift, evidence gaps, capture risk, consent pressure, weak appeal paths, and human-review needs.
+            **This is:** a friendly integrity patrol and mirror for pressure, authority drift, evidence gaps, capture risk, consent pressure, weak appeal paths, and human-review needs.
 
             **This is not:** a judge, oracle, certification engine, truth machine, legal authority, political authority, religious authority, medical authority, investment authority, or automated decision system.
 
@@ -150,13 +150,13 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
             | Mirror Check | Reviews documents and proposals for capture risk, missing safeguards, and repair questions. |
             | Stress Test | Simulates scenario pressure and asks repair questions. |
             | Boundary Cases | Tests difficult ethical scenarios before they become app logic or public claims. |
-            | AI Integrity Mirror | Reviews AI outputs, prompts, agent specs, and code for authority-boundary and governance-integrity risk. |
+            | AI Integrity Patrol | Reviews AI outputs, prompts, agent specs, and code for authority-boundary and governance-integrity risk. |
             | Evidence Lab | Reviews evidence status, source coverage, schema readiness, and extraordinary claims. |
             | World Lens | Reviews selected-year, population-weighted evidence exposure without real Global ID, a real 9k body, or sovereign authority. |
-            | Protocol Guide | Explains the modules, safe language, internal taxonomy labels, and limitations. |
-            | Why ALETHEIA | Explains the project, baseline, and public-safe purpose. |
+            | Patrol Guide | Explains the modules, safe language, internal taxonomy labels, and limitations. |
+            | Why AI Patrol | Explains the project, baseline, and public-safe purpose. |
 
-            All navigation remains non-authoritative: **ALETHEIA reflects. Humans review. Power stays accountable.**
+            All navigation remains non-authoritative: **AI Patrol signals. Humans review. Power stays accountable.**
             """
         )
 
@@ -168,12 +168,12 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
             - **Have a document?** Use Mirror Check.
             - **Have a scenario?** Use Stress Test.
             - **Have an ethical edge case?** Use Boundary Cases.
-            - **Have an AI output, prompt, agent spec, or code artifact?** Use AI Integrity Mirror.
+            - **Have an AI output, prompt, agent spec, or code artifact?** Use AI Integrity Patrol.
             - **Have a claim or source question?** Use Evidence Lab.
             - **Need selected-year impact framing?** Use World Lens.
-            - **Need rules and limits?** Use Protocol Guide.
+            - **Need rules and limits?** Use Patrol Guide.
 
-            The UX rule is simple: make the next step obvious while keeping every output reviewable.
+            The UX rule is simple: make the next patrol step obvious while keeping every output reviewable.
             """
         )
 
@@ -192,11 +192,11 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
 
             Historical archive material may contain AI-flattery artifacts or inflated validation language. Those materials are development context only, not independent proof, founder validation, or governance justification.
 
-            **ALETHEIA reflects. Humans review. Power stays accountable.**
+            **AI Patrol signals. Humans review. Power stays accountable.**
             """
         )
 
-    st.markdown("### What ALETHEIA does")
+    st.markdown("### What AI Patrol / ALETHEIA does")
 
     with st.expander("Mirror Check", expanded=True):
         st.markdown(
@@ -219,7 +219,7 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
     with st.expander("AI Integrity Mirror", expanded=True):
         st.markdown(
             """
-            AI Integrity Mirror reviews AI outputs, prompts, agent specs, and code snippets for authority-boundary and governance-integrity risk.
+            AI Integrity Patrol reviews AI outputs, prompts, agent specs, and code snippets for authority-boundary and governance-integrity risk.
 
             It does not certify an AI system, approve a vendor, guarantee safety, or replace technical, legal, security, enterprise, or human review.
             """

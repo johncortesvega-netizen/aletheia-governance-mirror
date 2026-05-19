@@ -1,19 +1,3 @@
-## Patch 165 — Protocol Guide Compact Panel Layout
-
-Status: READY FOR LOCAL REVIEW
-
-Patch 165 reorganizes the full Protocol Guide tab into four side-by-side opt-in rows / eight collapsed panels: Operating boundary, Artificial Mind Formation Theory, Navigation & module map, Shared protocol state, Release & continuity, Evidence & source rules, Review lenses, and World / taxonomy / limits.
-
-This responds to the clutter issue across the whole Protocol Guide, not only the Artificial Mind Formation explainer. The content remains explanatory and bounded; the tab now opens as a compact panel index, with users choosing which section to expand.
-
-Boundary preserved: layout/copy organization only. No scoring, routing, taxonomy, receipt schema/generation, World Lens logic, Evidence Lab math, AI Integrity behavior, external calls, telemetry/storage, Global ID sync, public ledger sync, certification, enforcement, official authority, or final-truth behavior changed. Human review remains required.
-
-Validation target:
-
-```bat
-python tools\run_patch_checks.py 165
-```
-
 ## Patch 161 - Visual Source Card Grid + Added Reference Posters
 
 Patch 161 replaces the tab-swapping visual source card view with a side-by-side grid of openable dropdown cards. The existing bundled HTML references remain, and four new poster-style visual references are added: Global Peace Architecture, The Sovereign Master Blueprint, The Sydney Protocol: Command Dossier, and The Sydney Protocol: Architect's Checklist.
@@ -3524,40 +3508,24 @@ python tools\run_patch_checks.py 156
 python tools\run_patch_checks.py 155
 ```
 
-## Patch 162 — Artificial Mind Formation Theory Explainer
 
-Status: READY FOR LOCAL REVIEW
-
-Patch 162 adds a static Protocol Guide explainer for ethical artificial-mind / sentient-AI formation attempts. It foregrounds the boundary line: “ALETHEIA cannot build the spark. It can inspect the hands reaching for it.”
-
-The explainer covers boundary statement, scale limits, formation over training, stimulus gates and pause states, memory boundaries, embodiment/friction, route-before-reach, corruption signals, human review/revocation/appeal, and the spark boundary.
-
-Boundary: conceptual explainer only. No scoring, taxonomy, World Lens logic, receipt schema/generation, routing, external calls, telemetry/storage, certification, enforcement, official authority, or final-truth behavior changed. ALETHEIA is not built to build sentient AI, is not a sentience detector, and does not certify consciousness, personhood, soul, life, legal status, safety, or spiritual authority. Human review remains required.
-
-Validation target: `python tools\run_patch_checks.py 162`.
-
-
-## Patch 163 — Artificial Mind Formation Boundary-Officer Rebrand
-
-Status: READY FOR LOCAL REVIEW
-
-Patch 163 refines the Patch 162 Artificial Mind Formation Theory explainer to make the role distinction explicit: ALETHEIA may be described as police-officer-like at the AI boundary, but not judge-like.
-
-The explainer now frames ALETHEIA as able to observe, inspect, preserve evidence, warn, and route/escalate concerns to human review. It explicitly preserves the boundary that ALETHEIA does not judge, punish, command, approve, reject, enforce, certify, decide final truth, or claim legal authority.
-
-Boundary: copy/documentation/test only. No scoring, taxonomy, World Lens logic, receipt schema/generation, routing, external calls, telemetry/storage, certification, enforcement, official authority, or final-truth behavior changed. Human review remains required.
-
-Validation target: `python tools\run_patch_checks.py 163`.
-
-## Patch 164 — Artificial Mind Formation Compact Opt-In Panels
+## Patch 166 — AI Patrol Public Rebrand
 
 Date: 2026-05-19
 
 Status: READY FOR LOCAL REVIEW
 
-Patch 164 reorganizes the Artificial Mind Formation Theory explainer inside the Protocol Guide so it is less cluttered and more explicitly opt-in. The main explainer remains collapsed by default, and its internal subsections are now presented as four compact side-by-side panel rows with nested expanders collapsed by default. Reviewers can open only the section they need: boundary/scale, formation/pause, memory/embodiment, route/corruption, or human-review/spark-boundary content.
+Patch 166 applies a visible public rebrand across the ALETHEIA app shell, navigation labels, About page, Unit Preview, shared module-page boundary copy, and mascot assets. The new public-facing identity is **AI Patrol**: a friendly integrity patrol for AI systems and governance review, using stop/go language for human review while preserving the core boundary **mirror, not throne**.
 
-Boundary preserved: layout/presentation only. No core scoring changes, no new taxonomy state, no World Lens changes, no receipt schema/generation changes, no routing changes, no external calls, no telemetry/storage, no certification, no enforcement, no official authority, and no final-truth behavior changed. Human review remains required.
+This patch updates the main mascot artwork to the new cardboard AI Patrol outfit, adds a packaged About-page header image, renames visible surfaces such as **AI Integrity Patrol**, **Patrol Guide**, and **Why AI Patrol**, and refreshes visible module wording so the rebrand appears throughout the app, including the Preview Unit.
 
-Validation target: `python tools\run_patch_checks.py 164`.
+Boundary notes:
+- Copy/UI/asset refresh only.
+- No scoring, routing, taxonomy, receipt schema/generation, AI Integrity scoring, World Lens math, protocol logic, external calls, telemetry/storage, certification, enforcement, approval/rejection, legal authority, political authority, spiritual authority, or final-truth behavior changed.
+- Human review remains required.
 
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 166
+```
