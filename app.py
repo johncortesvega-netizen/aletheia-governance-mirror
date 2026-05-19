@@ -60,6 +60,7 @@ from core.ai_integrity_mirror import (
     build_ai_integrity_comparison,
     build_ai_integrity_report,
     build_ai_integrity_receipt_context,
+    build_ai_static_scan_protocol_context,
     render_ai_integrity_receipt_context_text,
     render_ai_integrity_report_text,
 )
@@ -3852,6 +3853,9 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                             risk=risk,
                             protocol_label=label,
                         )
+                        ai_static_context = build_ai_static_scan_protocol_context(processed_item, source_module="Stress Test")
+                        stress_report["ai_static_scan_context"] = ai_static_context
+                        scan["ai_static_scan_context"] = ai_static_context
                         receipt = build_local_witness_receipt(
                             module="Simulation",
                             input_text=raw_item,
@@ -3957,6 +3961,13 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
             risk=risk,
             protocol_label=label,
         )
+        if last_input_mode == "Scan my idea":
+            ai_static_context = build_ai_static_scan_protocol_context(
+                st.session_state.get("last_query", display_query),
+                source_module="Stress Test",
+            )
+            report["ai_static_scan_context"] = ai_static_context
+            scan["ai_static_scan_context"] = ai_static_context
         st.session_state.last_report = report
         verdict_color = {"SANCTUARY": "#8fbc8f", "THRESHOLD": "#e5c36b", "ASYLUM": "#db7777"}.get(verdict, base_color)
         input_status_label = st.session_state.get("last_input_status", "MANUAL_INPUT" if last_input_mode == "Manual test" else "USER_INPUT")
@@ -4032,6 +4043,18 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                 target = rec.get("target", "System")
                 action = rec.get("action", "Review")
                 soft_card(f"{priority} · {target} · {action}", silent_operator_question(rec, context=str(target)))
+
+        ai_static_context = report.get("ai_static_scan_context") if isinstance(report, dict) else None
+        if isinstance(ai_static_context, dict):
+            with st.expander("AI static scan context — subordinate to Stress Test", expanded=False):
+                st.caption(ai_static_context.get("notice"))
+                st.markdown(
+                    f"**Static scan signal:** {ai_static_context.get('ai_static_scan_state')} · "
+                    f"{ai_static_context.get('ai_static_scan_risk')} · "
+                    f"{ai_static_context.get('finding_count')} finding(s)"
+                )
+                if ai_static_context.get("findings"):
+                    st.dataframe(pd.DataFrame(ai_static_context.get("findings")), use_container_width=True, hide_index=True)
 
         st.markdown("### Local witness receipt")
         st.caption("Creates a receipt you hold. It is not published, synced, or treated as authority.")
@@ -7928,6 +7951,10 @@ with tab_chat:
             scan=scan,
         )
 
+        ai_static_context = build_ai_static_scan_protocol_context(text_value, source_module="Mirror Check")
+        report["ai_static_scan_context"] = ai_static_context
+        scan["ai_static_scan_context"] = ai_static_context
+
         entry = {
             "query": text_value,
             "raw_query": raw_text_value,
@@ -8318,6 +8345,18 @@ with tab_chat:
                     st.dataframe(pd.DataFrame(source_hits), use_container_width=True, hide_index=True)
             else:
                 st.caption("Source match: no named source concept matched this idea in the current detector set.")
+
+            ai_static_context = latest.get("report", {}).get("ai_static_scan_context") if isinstance(latest.get("report"), dict) else None
+            if isinstance(ai_static_context, dict):
+                with st.expander("AI static scan context — subordinate to Mirror Check", expanded=False):
+                    st.caption(ai_static_context.get("notice"))
+                    st.markdown(
+                        f"**Static scan signal:** {ai_static_context.get('ai_static_scan_state')} · "
+                        f"{ai_static_context.get('ai_static_scan_risk')} · "
+                        f"{ai_static_context.get('finding_count')} finding(s)"
+                    )
+                    if ai_static_context.get("findings"):
+                        st.dataframe(pd.DataFrame(ai_static_context.get("findings")), use_container_width=True, hide_index=True)
 
             st.markdown("### Local witness receipt")
             st.caption("Creates a receipt you hold. It is not published, synced, or treated as authority.")

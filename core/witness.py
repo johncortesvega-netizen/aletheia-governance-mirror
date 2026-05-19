@@ -1093,6 +1093,7 @@ def build_local_witness_receipt(
             "collapse_risk": sim.get("collapse_risk"),
         },
         "raw_metrics_before_ethics": _receipt_safe(report.get("raw_metrics_before_ethics") or {}),
+        "report": _receipt_safe(report),
         "threshold_mapping_layer": threshold_mapping,
         "scanner_features": {
             "power_concentration": scan.get("power_concentration"),
@@ -1212,12 +1213,43 @@ def _display_demo_guard_block(receipt: Mapping[str, Any]) -> str:
     return f"\nDemo mode: True\nDemo warning: {warning}"
 
 
+
+def _display_ai_static_scan_context_block(report: Mapping[str, Any]) -> str:
+    context = (report or {}).get("ai_static_scan_context")
+    if not isinstance(context, Mapping) or not context:
+        return "No AI static scan context attached."
+    findings = context.get("findings") or []
+    finding_lines: list[str] = []
+    if isinstance(findings, list):
+        for finding in findings[:6]:
+            if isinstance(finding, Mapping):
+                finding_lines.append(
+                    f"- {finding.get('name')} ({finding.get('category')}): {finding.get('description')}"
+                )
+    questions = context.get("repair_questions") or []
+    question_lines = [f"- {q}" for q in questions[:5]] if isinstance(questions, list) else []
+    return "\n".join([
+        f"Role: {_display_value(context.get('role'))}",
+        f"Primary protocol path: {_display_value(context.get('primary_protocol_path'))}",
+        f"Static scan state: {_display_value(context.get('ai_static_scan_state'))}",
+        f"Static scan risk: {_display_value(context.get('ai_static_scan_risk'))}",
+        f"Static scan label: {_display_value(context.get('ai_static_scan_label'))}",
+        f"Risk pressure: {_display_value(context.get('risk_pressure'))}",
+        f"Finding count: {_display_value(context.get('finding_count'))}",
+        f"Notice: {_display_value(context.get('notice'))}",
+        "Findings:",
+        "\n".join(finding_lines) if finding_lines else "- None recorded",
+        "Repair questions:",
+        "\n".join(question_lines) if question_lines else "- None recorded",
+    ])
+
 def render_local_witness_receipt_text(receipt: Mapping[str, Any]) -> str:
     """Render a local witness receipt as a readable plain-text report."""
     receipt = _receipt_safe(receipt)
     hashes = receipt.get("hashes", {}) or {}
     verdict = receipt.get("verdict", {}) or {}
     metrics = receipt.get("metrics", {}) or {}
+    report_payload = receipt.get("report", {}) or {}
     features = receipt.get("scanner_features", {}) or {}
     boundary = receipt.get("authority_boundary", {}) or {}
     active_modules = receipt.get("active_modules", []) or []
@@ -1303,6 +1335,9 @@ RAW METRICS BEFORE ETHICS
 
 THRESHOLD MAPPING LAYER
 {_display_threshold_mapping_layer_block(threshold_mapping)}
+
+AI STATIC SCAN CONTEXT
+{_display_ai_static_scan_context_block(report_payload)}
 
 SCANNER FEATURES
 Power concentration: {_display_value(features.get('power_concentration'))}

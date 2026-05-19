@@ -691,6 +691,49 @@ def _detect_hard_ai_integrity_protocol_failure(source: str, findings: list[dict[
     }
 
 
+def build_ai_static_scan_protocol_context(text: str, *, source_module: str) -> dict[str, Any]:
+    """Return a subordinate AI static-scan context for core protocol modules.
+
+    Mirror Check and Stress Test remain the primary ALETHEIA protocol paths.
+    This helper reuses the AI Integrity static scan only as a signal extractor
+    so receipts can show AI-specific findings without creating a competing
+    verdict, taxonomy state, certification path, or authority claim.
+    """
+    result = audit_ai_integrity_artifact(text or "", artifact_kind=f"{source_module} protocol context")
+    findings = result.get("findings", []) or []
+    top_findings = [
+        {
+            "name": finding.get("name"),
+            "category": finding.get("category"),
+            "description": finding.get("description"),
+            "weight": finding.get("weight"),
+            "evidence_snippets": (finding.get("evidence_snippets") or [])[:2],
+        }
+        for finding in findings[:6]
+    ]
+    return {
+        "context_version": "ai-static-protocol-context-v0.1",
+        "source_module": source_module,
+        "role": "subordinate_signal_layer",
+        "primary_protocol_path": source_module,
+        "ai_static_scan_state": result.get("state"),
+        "ai_static_scan_risk": result.get("risk"),
+        "ai_static_scan_label": result.get("protocol_label"),
+        "risk_pressure": result.get("scan", {}).get("risk_pressure"),
+        "finding_count": len(findings),
+        "findings": top_findings,
+        "repair_questions": (result.get("report", {}).get("repair_questions") or [])[:5],
+        "protocol_bridge": result.get("scan", {}).get("ai_integrity_protocol_bridge") or {},
+        "notice": (
+            "AI static scan is attached as protocol context only. Mirror Check or Stress Test remains "
+            "the primary reading path; this context does not certify, override, enforce, or create "
+            "a separate AI Integrity verdict."
+        ),
+        "human_review_required": True,
+        "authority_claim": False,
+    }
+
+
 def split_ai_integrity_batch_input(text: str) -> list[str]:
     """Split pasted AI Integrity batch input into non-empty static artifacts.
 

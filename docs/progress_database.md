@@ -3258,3 +3258,34 @@ python tools\run_patch_checks.py 172
 python tools\run_patch_checks.py 171
 python tools\run_patch_checks.py 170
 ```
+
+
+## Patch 173 — AI Static Scan Protocol Context
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 173 integrates the AI Integrity static scan as a subordinate context layer inside the primary protocol modules, Mirror Check and Stress Test. This preserves the user's correction that Mirror Check and Stress Test are already the real AI integrity testers: the AI static scan now extracts AI-specific signals and attaches them to the main protocol path instead of acting like a competing mini-protocol.
+
+Changes:
+- Added `build_ai_static_scan_protocol_context(...)` to produce a receipt-safe AI static-scan context bundle.
+- Mirror Check attaches AI static scan context to the report/scan and displays it in a collapsed expander under the latest reading.
+- Stress Test attaches AI static scan context to scan-mode reports/receipts and displays it in a collapsed expander.
+- Stress Test batch receipts also include AI static scan context.
+- Local witness receipts now render an **AI STATIC SCAN CONTEXT** section when attached.
+
+Boundary notes:
+- AI static scan is subordinate evidence/context only. Mirror Check or Stress Test remains the primary protocol reading path.
+- No new taxonomy state was added.
+- No World Lens, Evidence Lab, general taxonomy, receipt authority boundary, or protocol-engine behavior changed.
+- No certification, enforcement, approval/rejection, legal/political/spiritual authority, telemetry, storage, or external-call behavior added.
+- Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 173
+python tools\run_patch_checks.py 172
+python tools\run_patch_checks.py 171
+```
