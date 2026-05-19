@@ -20,6 +20,7 @@ import streamlit.components.v1 as components
 from core.boundary import render_boundary_statement
 from core.privacy_panel import render_privacy_panel
 from pages_ui.about_page import render_about_public_info_page
+from pages_ui.artificial_mind_formation_page import render_artificial_mind_formation_page
 from pages_ui.evidence_lab_page import render_evidence_lab_intro, render_evidence_lab_public_data_build_intro
 from pages_ui.trust_package_page import render_public_trust_package_page
 from ui.app_shell import render_app_boundary_notices, render_sidebar_brand, render_sidebar_context
@@ -8372,6 +8373,7 @@ with tab_doctrine:
     st.caption("ALETHEIA v1.0 is complete as a public MVP. Pick the tab that matches your task, read the boundary, and keep final review human.")
     st.markdown("**Quick path:** Mirror Check for documents · Stress Test for scenarios · AI Integrity Mirror for AI/code artifacts · Evidence Lab for claims · Protocol Guide for rules.")
     render_public_trust_package_page(st)
+    render_artificial_mind_formation_page(st)
     st.markdown(
         """
         The Protocol Guide is the integrity frame for **ALETHEIA v1.0 — Governance Mirror**. It does not replace evidence, law, religion, medicine, politics, public accountability, or human judgment. Its labels are internal review aids, not final claims.

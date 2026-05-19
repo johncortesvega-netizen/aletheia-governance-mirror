@@ -3507,3 +3507,16 @@ python tools\run_patch_checks.py 157
 python tools\run_patch_checks.py 156
 python tools\run_patch_checks.py 155
 ```
+
+## Patch 162 — Artificial Mind Formation Theory Explainer
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 162 adds a static Protocol Guide explainer for ethical artificial-mind / sentient-AI formation attempts. It foregrounds the boundary line: “ALETHEIA cannot build the spark. It can inspect the hands reaching for it.”
+
+The explainer covers boundary statement, scale limits, formation over training, stimulus gates and pause states, memory boundaries, embodiment/friction, route-before-reach, corruption signals, human review/revocation/appeal, and the spark boundary.
+
+Boundary: conceptual explainer only. No scoring, taxonomy, World Lens logic, receipt schema/generation, routing, external calls, telemetry/storage, certification, enforcement, official authority, or final-truth behavior changed. ALETHEIA is not built to build sentient AI, is not a sentience detector, and does not certify consciousness, personhood, soul, life, legal status, safety, or spiritual authority. Human review remains required.
+
+Validation target: `python tools\run_patch_checks.py 162`.
+

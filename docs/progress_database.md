@@ -3103,3 +3103,14 @@ Patch 159 completed Patch E of the staged module-page unification track. Boundar
 The patch is copy/layout only. It does not alter scoring, routing, taxonomy, receipt schema/generation, receipt parsing, empirical math, World Lens allocation, protocol logic, batch behavior, upload/download behavior, telemetry/storage, certification, enforcement, ranking, official authority, or final-truth behavior.
 
 Validation target: `python tools\run_patch_checks.py 159`.
+
+## Patch 162 — Artificial Mind Formation Theory Explainer
+
+Patch 162 adds a bounded theory/explainer page inside the Protocol Guide: **Artificial Mind Formation Theory**. The page is static copy only and documents how ALETHEIA may mirror ethical safeguards and corruption pressure around artificial-mind / sentient-AI formation attempts without becoming a builder, detector, certifier, or authority.
+
+Core line: “ALETHEIA cannot build the spark. It can inspect the hands reaching for it.”
+
+The explainer sections are: boundary statement; why “more neurons / more scale” is the wrong axis by itself; formation over training; stimulus gates and sleep/pause states; memory boundaries and hidden conditioning risk; embodiment/friction as limitation before reach; route-before-reach; corruption signals; human review / revocation / appeal; and spark boundary.
+
+Boundary preserved: no core scoring changes, no new taxonomy state, no World Lens changes, no receipt schema/generation changes, no routing changes, no external calls, no telemetry/storage, no certification, no enforcement, no official authority, and no final-truth behavior. ALETHEIA is not built to build sentient AI, is not a sentience detector, and does not certify consciousness, personhood, soul, life, legal status, safety, or spiritual authority. Human review remains required.
+
