@@ -1,0 +1,41 @@
+PATCH 180 MANIFEST
+==================
+
+Patch ID: 180
+Title: Stress Test Receipt Value Display Guard
+Date: 2026-05-19
+Status: READY FOR LOCAL REVIEW
+
+Scope
+-----
+Fix misleading receipt display in Stress Test / Local Witness receipts after plain-English formatting. Diagnostic numeric metrics are now labeled as diagnostics and no longer appear to override protocol-adjusted state/risk/label. AI static scan context display now separates effective receipt-context values from raw static-scan values.
+
+Files Changed
+-------------
+- core/witness.py
+- tests/test_patch_180_stress_receipt_value_display_guard.py
+- tests/test_patch_179_receipt_format_consistency.py
+- tests/test_patch_178_ai_static_scan_protocol_alignment.py
+- tests/test_patch_173_ai_static_scan_protocol_context.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_180_MANIFEST.txt
+- PATCH_180_RECOVERY_NOTE.md
+
+Boundary
+--------
+- No scoring changes.
+- No routing changes.
+- No taxonomy changes.
+- No receipt schema changes.
+- No hash or machine-readable JSON value changes.
+- No World Lens math changes.
+- No Evidence Lab calculation changes.
+- No AI Integrity scan-logic changes.
+- No protocol-engine behavior changes.
+
+Validation
+----------
+- python tools/run_patch_checks.py 180
+- python tools/run_patch_checks.py 179
+- python tools/run_patch_checks.py 178

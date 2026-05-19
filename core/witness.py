@@ -1234,9 +1234,23 @@ def _receipt_plain_language_summary_block(receipt: Mapping[str, Any]) -> str:
     """
     verdict = receipt.get("verdict", {}) or {}
     metrics = receipt.get("metrics", {}) or {}
+    report_payload = receipt.get("report", {}) or {}
     module_name = _module_display_name(receipt.get("module"))
     questions = receipt.get("repair_questions", []) or []
     question_lines = [f"- {str(q)}" for q in questions[:6]] if questions else ["- Ask what evidence, safeguards, appeal paths, and human review are still missing."]
+    protocol_capture = verdict.get("protocol_capture_risk")
+    if protocol_capture is None and isinstance(report_payload, Mapping):
+        protocol_capture = report_payload.get("protocol_capture_risk")
+    diagnostic_label = "Stress Test diagnostic metric" if module_name == "Stress Test" else "Diagnostic metric"
+    metric_note = (
+        "The numeric metrics below are copied from the receipt as diagnostics. "
+        "They do not override the protocol-adjusted state, risk, or label."
+    )
+    if module_name == "Stress Test":
+        metric_note = (
+            "The numeric Stress Test metrics below are simulation diagnostics copied from the receipt. "
+            "Protocol guardrails may route the receipt to THRESHOLD or ASYLUM even when a raw simulation value looks moderate."
+        )
     return "\n".join([
         "PLAIN-ENGLISH RECEIPT SUMMARY",
         "What is this document?",
@@ -1246,9 +1260,11 @@ def _receipt_plain_language_summary_block(receipt: Mapping[str, Any]) -> str:
         f"- Protocol-adjusted state: {_display_value(verdict.get('protocol_adjusted_state'))}",
         f"- Risk: {_display_value(verdict.get('risk'))}",
         f"- Protocol label: {_display_value(verdict.get('protocol_label'))}",
-        f"- Integrity: {_display_value(metrics.get('integrity'))}",
-        f"- Friction: {_display_value(metrics.get('friction'))}",
-        f"- Collapse probability: {_display_value(metrics.get('collapse_probability'))}",
+        f"- Protocol capture risk: {_display_value(protocol_capture)}",
+        f"- Integrity ({diagnostic_label}): {_display_value(metrics.get('integrity'))}",
+        f"- Friction ({diagnostic_label}): {_display_value(metrics.get('friction'))}",
+        f"- Collapse probability ({diagnostic_label}): {_display_value(metrics.get('collapse_probability'))}",
+        f"- Metric note: {metric_note}",
         "",
         "How power and control are distributed",
         "Read the receipt as a mirror of pressure, safeguards, appeal, opacity, evidence, and repair needs. A stronger reading usually shows visible reasons, review paths, correction routes, and limits on concentrated control. A higher-pressure reading usually means hidden control, weak appeal, coercive dependency, or missing safeguards need human review.",
@@ -1316,14 +1332,14 @@ def _display_ai_static_scan_context_block(report: Mapping[str, Any]) -> str:
         f"Protocol context state: {_display_value(context.get('protocol_context_state'))}",
         f"Protocol context risk: {_display_value(context.get('protocol_context_risk'))}",
         f"Protocol context label: {_display_value(context.get('protocol_context_label'))}",
-        f"Static scan state: {_display_value(context.get('protocol_context_state') or context.get('ai_static_scan_state'))}",
-        f"Static scan risk: {_display_value(context.get('protocol_context_risk') or context.get('ai_static_scan_risk'))}",
-        f"Static scan label: {_display_value(context.get('protocol_context_label') or context.get('ai_static_scan_label'))}",
+        f"Effective receipt-context state: {_display_value(context.get('protocol_context_state') or context.get('ai_static_scan_state'))}",
+        f"Effective receipt-context risk: {_display_value(context.get('protocol_context_risk') or context.get('ai_static_scan_risk'))}",
+        f"Effective receipt-context label: {_display_value(context.get('protocol_context_label') or context.get('ai_static_scan_label'))}",
         f"Protocol alignment: {_display_value(context.get('protocol_alignment'))}",
         f"Alignment note: {_display_value(context.get('alignment_note'))}",
-        f"Raw static scan state: {_display_value(context.get('ai_static_scan_state'))}",
-        f"Raw static scan risk: {_display_value(context.get('ai_static_scan_risk'))}",
-        f"Raw static scan label: {_display_value(context.get('ai_static_scan_label'))}",
+        f"Static scan state: {_display_value(context.get('ai_static_scan_state'))}",
+        f"Static scan risk: {_display_value(context.get('ai_static_scan_risk'))}",
+        f"Static scan label: {_display_value(context.get('ai_static_scan_label'))}",
         f"Risk pressure: {_display_value(context.get('risk_pressure'))}",
         f"Finding count: {_display_value(context.get('finding_count'))}",
         f"Notice: {_display_value(context.get('notice'))}",

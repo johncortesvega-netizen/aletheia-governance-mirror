@@ -49,6 +49,7 @@ def test_patch_173_local_receipt_renders_ai_static_scan_context():
     assert "AI STATIC SCAN CONTEXT" in rendered
     assert "Role: subordinate_signal_layer" in rendered
     assert "Primary protocol path: Stress Test" in rendered
+    assert "Effective receipt-context state: ASYLUM" in rendered
     assert "Static scan state: ASYLUM" in rendered
     assert "Static scan risk: High" in rendered
     assert "No AI static scan context attached" not in rendered

@@ -3432,3 +3432,11 @@ Validation target:
 ```bat
 python tools\run_patch_checks.py 179
 ```
+
+## Patch 180 — Stress Test Receipt Value Display Guard
+
+Patch 180 fixes the receipt-formatting issue found in Stress Test batch receipts after the plain-English summary update. The problem was not that stored JSON values changed; the plain summary made diagnostic Stress Test metrics look like the controlling result beside ASYLUM / THRESHOLD labels.
+
+The Local Witness receipt summary now labels Stress Test integrity, friction, and collapse probability as diagnostic metrics and includes a note that protocol guardrails can route a receipt to THRESHOLD or ASYLUM even when raw simulation values appear moderate. The AI static scan context block now separates effective receipt-context values from raw static-scan values, avoiding a misleading display where the static scan appeared overwritten by the primary protocol state.
+
+Boundary preserved: display/text correction only; no scoring, routing, taxonomy, receipt schema, hashes, machine-readable JSON values, World Lens math, Evidence Lab calculations, AI Integrity scan logic, or protocol-engine logic changed.

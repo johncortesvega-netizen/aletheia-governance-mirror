@@ -56,8 +56,8 @@ def test_patch_178_local_receipt_renders_protocol_aligned_static_scan_context():
     assert "AI STATIC SCAN CONTEXT" in rendered
     assert "Primary protocol state: ASYLUM" in rendered
     assert "Protocol context state: ASYLUM" in rendered
-    assert "Static scan state: ASYLUM" in rendered
-    assert "Raw static scan state: SANCTUARY" in rendered
+    assert "Effective receipt-context state: ASYLUM" in rendered
+    assert "Static scan state: SANCTUARY" in rendered
     assert "Protocol alignment: primary_protocol_stronger" in rendered
 
 
@@ -81,14 +81,14 @@ Primary protocol label: MEI7 Ethics Gate / Asylum
 Protocol context state: ASYLUM
 Protocol context risk: High
 Protocol context label: MEI7 Ethics Gate / Asylum
-Static scan state: ASYLUM
-Static scan risk: High
-Static scan label: MEI7 Ethics Gate / Asylum
+Effective receipt-context state: ASYLUM
+Effective receipt-context risk: High
+Effective receipt-context label: MEI7 Ethics Gate / Asylum
 Protocol alignment: primary_protocol_stronger
 Alignment note: Primary protocol reading is stronger than the raw AI static scan; the primary receipt values control this reading.
-Raw static scan state: SANCTUARY
-Raw static scan risk: Low
-Raw static scan label: AI Integrity Patrol / Low-Risk Internal Reading
+Static scan state: SANCTUARY
+Static scan risk: Low
+Static scan label: AI Integrity Patrol / Low-Risk Internal Reading
 Risk pressure: 0.0000
 Finding count: 0
 Notice: AI static scan is attached as protocol context only.

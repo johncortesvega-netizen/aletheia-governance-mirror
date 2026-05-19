@@ -65,7 +65,7 @@ def test_patch_179_local_receipts_have_plain_english_sections_and_preserve_value
     assert "Protocol-adjusted state: ASYLUM" in text
     assert "Risk: High" in text
     assert "Protocol label: Test / Asylum" in text
-    assert "Integrity: 0.27" in text
+    assert "Integrity (Diagnostic metric): 0.2700" in text
     assert "MACHINE-READABLE RECEIPT JSON" in text
 
 
