@@ -3552,3 +3552,23 @@ Validation targets:
 python tools\run_patch_checks.py 167
 python tools\run_patch_checks.py 166
 ```
+
+
+## Patch 168 — Why AI Patrol Compact Panel Layout
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 168 applies the same opt-in panel approach used by Patrol Guide to the **Why AI Patrol / Why ALETHEIA** page. The page now opens with a short orientation and then presents the content as four side-by-side rows / eight collapsed panels: identity and visual theme, why it exists, what this is/is not, first-use path and navigation, failure modes watched, scope layers and anti-capture posture, module map, and research/developer notes.
+
+Boundary notes:
+- About-page UI/copy layout only.
+- No scoring, routing, taxonomy, receipt schema/generation, AI Integrity behavior, Evidence Lab behavior, World Lens math, protocol logic, external calls, telemetry/storage, certification, enforcement, approval/rejection, legal/political/spiritual authority, or final-truth behavior changed.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 168
+```

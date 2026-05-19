@@ -12,6 +12,23 @@ from __future__ import annotations
 from pathlib import Path
 
 
+def _render_about_panel_rows(st, panels: list[tuple[str, str]], header_image: str | Path | None = None) -> None:
+    """Render the About page as compact opt-in side-by-side panels.
+
+    This helper is UI/copy only. It does not call scoring engines, alter
+    navigation, create receipts, upload/download files, or mutate app state.
+    """
+    for row_start in range(0, len(panels), 2):
+        columns = st.columns(2, gap="large")
+        row = panels[row_start : row_start + 2]
+        for index, (title, body) in enumerate(row):
+            with columns[index]:
+                with st.expander(title, expanded=False):
+                    if title == "1. Identity & visual theme" and header_image is not None:
+                        st.image(str(header_image), use_container_width=True)
+                    st.markdown(body)
+
+
 def render_about_public_info_page(container=None, header_image: str | Path | None = None) -> None:
     """Render the public About / Why ALETHEIA page."""
     if container is None:
@@ -21,283 +38,136 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
 
     st = container
     st.subheader("Why AI Patrol / ALETHEIA")
-    st.info("Start here if you are new: AI Patrol is the friendlier public face of ALETHEIA. It helps people review power, evidence, safeguards, and repair needs without turning the tool into an authority. It signals; people decide.")
-
-    with st.expander("Why ALETHEIA exists", expanded=True):
-        st.markdown(
-            """
-            AI Patrol / ALETHEIA exists because many systems can look orderly while still moving power out of
-            reach. A policy can have compliance language and still hide appeal failure. An AI output
-            can sound neutral while carrying flattery pressure or provider-shaped assumptions. A
-            governance process can be documented while still concentrating power in a few actors.
-
-            AI Patrol's answer is not more command, automation, or institutional control. Its answer
-            is a restrained mirror: make pressure visible, name missing safeguards, and return the
-            reading to human review.
-
-            It asks practical patrol questions:
-
-            - Where is power moving?
-            - What evidence was actually inspected?
-            - Who can appeal, exit, correct, or refuse?
-            - What is hidden behind clean language?
-            - Where is human review being weakened?
-
-            Compliance can be useful, but compliance is only a floor. ALETHEIA looks for the
-            review gaps that paperwork, dashboards, and confident AI language can miss: capture
-            pressure, consent erosion, weak appeal paths, hidden influence, evidence inflation,
-            and authority drift.
-            """
-        )
-
-    if header_image is not None:
-        st.image(str(header_image), use_container_width=True)
-
-    st.markdown(
-        """
-        **AI Patrol is the friendlier public face of ALETHEIA v1.0.** It is a governance-risk research prototype and public MVP that helps people examine governance ideas, stress-test scenarios, read evidence quality, inspect AI outputs, and interpret local receipts with clearer boundaries.
-
-        It is not designed to rule, command, enforce, vote, govern, remove leaders, validate spiritual authority, confirm extraordinary claims, or replace human judgment. **AI Patrol / ALETHEIA is a mirror:** a structured stop/go review layer that asks whether a proposal protects service, transparency, dignity, accountability, appeal, and repair — or whether it concentrates power, hides decisions, weakens appeal rights, or creates capture.
-
-        The v1.0 package is strongest when read as a review aid, not a status machine. Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, World Lens, Local Witness Receipts, public limitations, examples, and deployment documentation all point back to the same rule: surface what needs review or repair without assigning blame, issuing commands, or claiming final authority.
-        """
+    st.info(
+        "AI Patrol is the friendlier public face of ALETHEIA: a compact stop/go "
+        "review layer for human judgment. It signals; people decide."
+    )
+    st.caption(
+        "Open only the panels you need. This page explains the public identity, "
+        "module map, research boundary, and non-authority limits without changing any app logic."
     )
 
-    with st.expander("What this is / is not", expanded=True):
-        st.markdown(
+    panels = [
+        (
+            "1. Identity & visual theme",
             """
-            **This is:** a friendly integrity patrol and mirror for pressure, authority drift, evidence gaps, capture risk, consent pressure, weak appeal paths, and human-review needs.
+**AI Patrol is the friendlier public face of ALETHEIA v1.0.**
 
-            **This is not:** a judge, oracle, certification engine, truth machine, legal authority, political authority, religious authority, medical authority, investment authority, or automated decision system.
+The visual identity is a kind patrol mascot in a cartoon data-center setting: a cardboard robot, blue patrol uniform, red siren, and STOP / GO paddle.
 
-            Internal taxonomy labels such as **SANCTUARY**, **THRESHOLD**, and **ASYLUM** are review-workflow labels only. They do not claim truth, purity, safety, legitimacy, moral authority, or final status. Public-facing language should keep the reading operational: low-risk reading, review-required reading, high-pressure reading, current mirror reading, internal taxonomy label, and protocol-adjusted reading.
+The meaning is bounded:
+
+> **AI Patrol signals. Humans review. Power stays accountable.**
+
+It is not a judge, enforcer, oracle, certification engine, legal authority, political authority, religious authority, medical authority, investment authority, or automated decision system.
+""",
+        ),
+        (
+            "2. Why it exists",
             """
-        )
+AI Patrol / ALETHEIA exists because many systems can look orderly while still moving power out of reach.
 
+A policy can have compliance language and still hide appeal failure. An AI output can sound neutral while carrying flattery pressure or provider-shaped assumptions. A governance process can be documented while still concentrating power.
 
-    with st.expander("Failure modes ALETHEIA watches for", expanded=False):
-        st.markdown(
+AI Patrol does not answer that problem with more command, automation, or institutional control. It uses a restrained mirror: make pressure visible, name missing safeguards, and return the reading to human review.
+""",
+        ),
+        (
+            "3. What this is / is not",
             """
-            ALETHEIA watches for pressure patterns that can make systems appear more legitimate, neutral, certain, or authoritative than the evidence supports. These failure modes are review signals for human interpretation, not verdicts.
+**This is:** a friendly integrity patrol and mirror for pressure, authority drift, evidence gaps, capture risk, consent pressure, weak appeal paths, and human-review needs.
 
-            - **Authority drift** — when a system starts sounding like it can decide, certify, command, legitimize, rank, punish, or replace human judgment.
-            - **Evidence inflation** — when claims become stronger than the evidence actually inspected.
-            - **Flattery pressure** — when approval, reassurance, or validation is disguised as neutral analysis.
-            - **Capture pressure** — when power concentrates in one actor, platform, institution, token group, committee, model owner, funder, or technical gatekeeper.
-            - **Sanctification drift** — when poetic, religious, moral, symbolic, or higher-truth language gets turned into operational authority.
-            - **False neutrality** — when a system presents provider-shaped assumptions, institutional preferences, or hidden defaults as objective reasoning.
-            - **No-appeal automation** — when people are affected by a decision without review, contestation, explanation, or repair path.
+**This is not:** a judge, oracle, certification engine, truth machine, legal authority, political authority, religious authority, medical authority, investment authority, or automated decision system.
 
-            Receipt Reader repeats this verbal layer for all uploaded receipts. It does not rescore, prove wrongdoing, certify deception, or claim final truth. Human review remains required.
+Internal taxonomy labels such as **SANCTUARY**, **THRESHOLD**, and **ASYLUM** are review-workflow labels only. They do not claim truth, purity, safety, legitimacy, moral authority, or final status.
+""",
+        ),
+        (
+            "4. First-use path & navigation",
             """
-        )
+Choose the tab by task:
 
-    with st.expander("Scope layers: tool, research, vision, out of scope", expanded=False):
-        st.markdown(
+| Tab | What it does |
+|---|---|
+| Mirror Check | Reviews documents and proposals for capture risk, missing safeguards, and repair questions. |
+| Stress Test | Simulates scenario pressure and asks repair questions. |
+| Boundary Cases | Tests difficult ethical scenarios before they become app logic or public claims. |
+| AI Integrity Patrol | Reviews AI outputs, prompts, agent specs, and code for authority-boundary and governance-integrity risk. |
+| Evidence Lab | Reviews evidence status, source coverage, schema readiness, and extraordinary claims. |
+| World Lens | Reviews selected-year, population-weighted evidence exposure without real Global ID, a real 9k body, or sovereign authority. |
+| Patrol Guide | Explains modules, safe language, internal taxonomy labels, and limitations. |
+| Why AI Patrol | Explains the project, baseline, and public-safe purpose. |
+
+The UX rule is simple: make the next patrol step obvious while keeping every output reviewable.
+""",
+        ),
+        (
+            "5. Failure modes watched",
             """
-            **Current operational layer:** ALETHEIA is a corruption-pattern and governance-risk detection framework for human review. It surfaces evidence gaps, consent pressure, capture risk, power concentration, missing safeguards, and authority-overreach signals.
+AI Patrol watches for pressure patterns that can make systems appear more legitimate, neutral, certain, or authoritative than the evidence supports.
 
-            **Research layer:** benchmarks, empirical mappings, scenario tests, validation work, and documentation may make the mirror more precise over time, but they remain reviewable and correctable.
-
-            **Vision layer:** the long-term incorruptible-system idea is a theoretical horizon about what governance would look like if anti-corruption principles were followed consistently: transparency, consent, accountability, proportionality, dignity, appealability, repair, and limits on concentrated power.
-
-            **Out-of-scope layer:** ALETHEIA does not govern, enforce, allocate authority, select representatives, create a real 9k body, issue mandates, validate spiritual or political authority, or replace human judgment.
+- **Authority drift** — when a system sounds like it can decide, certify, command, legitimize, rank, punish, or replace human judgment.
+- **Evidence inflation** — when claims become stronger than the evidence actually inspected.
+- **Flattery pressure** — when approval or reassurance is disguised as neutral analysis.
+- **Capture pressure** — when power concentrates in one actor, platform, institution, committee, model owner, funder, or gatekeeper.
+- **Sanctification drift** — when symbolic or higher-truth language becomes operational authority.
+- **False neutrality** — when hidden defaults are presented as objective reasoning.
+- **No-appeal automation** — when people are affected without review, contestation, explanation, or repair path.
+""",
+        ),
+        (
+            "6. Scope layers & anti-capture posture",
             """
-        )
+**Current operational layer:** corruption-pattern and governance-risk review for human interpretation.
 
+**Research layer:** benchmarks, empirical mappings, scenario tests, validation work, and documentation. These remain reviewable and correctable.
 
-    with st.expander("Positioning: not enterprise compliance, not fairness library", expanded=False):
-        st.markdown(
+**Vision layer:** a theoretical horizon for governance that follows transparency, consent, accountability, proportionality, dignity, appealability, repair, and limits on concentrated power.
+
+**Out-of-scope layer:** ALETHEIA does not govern, enforce, allocate authority, select representatives, create a real 9k body, issue mandates, validate spiritual or political authority, or replace human judgment.
+
+AI Patrol is anti-capture by design: it reflects capture-risk signals but does not become a central authority.
+""",
+        ),
+        (
+            "7. What the modules do",
             """
-            ALETHEIA's niche is **qualitative governance-risk reflection**: corruption-pattern signals, consent pressure, capture risk, evidence gaps, authority-overreach language, weak accountability, and repair questions for human review.
+**Mirror Check** reviews one document, idea, proposal, policy text, or AI output for pressure signals and repair questions.
 
-            It is not an enterprise AI governance platform, compliance engine, legal tool, institutional risk system, or technical fairness library. Enterprise platforms usually focus on model inventories, compliance workflows, monitoring, reporting, and organizational controls. Technical fairness libraries usually focus on model-level bias, explainability, datasets, and metrics.
+**Stress Test** models governance pressure through stability, trust, alignment, ego, grievances, friction, safeguards, and collapse risk.
 
-            ALETHEIA is best understood as a **counterweight and reflection layer** around those systems. It does not ask only whether a system is legal or procedurally compliant. It asks whether the system is honest, reviewable, appealable, and still subordinate to human judgment.
+**AI Integrity Patrol** reviews AI outputs, prompts, agent specs, and code snippets for authority-boundary and governance-integrity risk. It does not certify systems or vendors.
 
-            ALETHEIA is free/open-source code and is intended to remain free. This supports the anti-capture posture: access to the mirror should not become a gatekeeping mechanism or a source of institutional authority.
+**Evidence Lab** separates claims from evidence and prepares empirical review support.
+
+**World Lens** shows selected-year, population-weighted evidence exposure. It is not a real election, government, sovereign body, mandate, Global ID system, or real 9k body.
+
+**Patrol Guide** preserves operating boundaries while remaining corrigible by evidence.
+""",
+        ),
+        (
+            "8. Research caution & developer notes",
             """
-        )
+ALETHEIA does not prove legal, political, medical, religious, moral, predictive, or final truth. Its outputs are internal review readings. Empirical results depend on dataset quality, variable mapping, normalization choices, missing data, and validation against external outcomes.
 
+A responsible reading is:
 
-    with st.expander("Capture risk framework: anti-capture by design", expanded=False):
-        st.markdown(
-            """
-            ALETHEIA is **anti-capture by design and capture-risk-detecting by function**.
+> **This model suggests a governance-risk pattern worth examining.**
 
-            It reflects capture-risk signals for human review: power concentration, weak appeal paths, hidden influence, evidence gaps, consent pressure, authority overreach, and service misalignment.
+Not:
 
-            ALETHEIA does not enforce, decide, gatekeep, certify, punish, or become a central authority. It asks review questions so humans can examine safeguards, evidence, and accountability.
-            """
-        )
+> **This model has final authority.**
 
-    with st.expander("Capture risk checklist / prompt pack", expanded=False):
-        st.markdown(
-            """
-            Patch 78 adds a practical checklist and copy/paste prompts for applying the capture-risk framework one case at a time.
+Local development:
 
-            Use it to scan for power concentration, weak appeal paths, hidden influence, evidence gaps, consent pressure, authority overreach, and service misalignment.
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
 
-            The prompt pack keeps the same boundary: ALETHEIA reflects signals for human review only. It does not decide, enforce, certify, punish, or become a central authority.
-            """
-        )
+Key files include `app.py`, `core/parser.py`, `core/simulation.py`, `core/scoring.py`, `core/empirical.py`, `config/weights.py`, `data_processed/`, `paper/`, and `assets/`.
+""",
+        ),
+    ]
 
-    with st.expander("Navigation map", expanded=True):
-        st.markdown(
-            """
-            | Tab | What it does |
-            |---|---|
-            | Mirror Check | Reviews documents and proposals for capture risk, missing safeguards, and repair questions. |
-            | Stress Test | Simulates scenario pressure and asks repair questions. |
-            | Boundary Cases | Tests difficult ethical scenarios before they become app logic or public claims. |
-            | AI Integrity Patrol | Reviews AI outputs, prompts, agent specs, and code for authority-boundary and governance-integrity risk. |
-            | Evidence Lab | Reviews evidence status, source coverage, schema readiness, and extraordinary claims. |
-            | World Lens | Reviews selected-year, population-weighted evidence exposure without real Global ID, a real 9k body, or sovereign authority. |
-            | Patrol Guide | Explains the modules, safe language, internal taxonomy labels, and limitations. |
-            | Why AI Patrol | Explains the project, baseline, and public-safe purpose. |
-
-            All navigation remains non-authoritative: **AI Patrol signals. Humans review. Power stays accountable.**
-            """
-        )
-
-    with st.expander("First-use path", expanded=True):
-        st.markdown(
-            """
-            Choose the tab by task:
-
-            - **Have a document?** Use Mirror Check.
-            - **Have a scenario?** Use Stress Test.
-            - **Have an ethical edge case?** Use Boundary Cases.
-            - **Have an AI output, prompt, agent spec, or code artifact?** Use AI Integrity Patrol.
-            - **Have a claim or source question?** Use Evidence Lab.
-            - **Need selected-year impact framing?** Use World Lens.
-            - **Need rules and limits?** Use Patrol Guide.
-
-            The UX rule is simple: make the next patrol step obvious while keeping every output reviewable.
-            """
-        )
-
-    with st.expander("Eternal Baseline", expanded=True):
-        st.markdown(
-            """
-            The **Eternal Baseline** is ALETHEIA's ethical continuity layer. It preserves core guardrails across versions without becoming a command layer, sacred proof, or founder-validation artifact.
-
-            It protects continuity around human dignity, basic rights, free agency, transparency, appealability, accountability, evidence, repair, non-coercion, and human review.
-
-            Its audit lens is:
-
-            > **Intelligence + Power - Ego = Stability**
-
-            This is an ethical design rule, not mathematical proof. ALETHEIA uses it to ask whether intelligence and power are restrained by humility, accountability, transparency, and repair.
-
-            Historical archive material may contain AI-flattery artifacts or inflated validation language. Those materials are development context only, not independent proof, founder validation, or governance justification.
-
-            **AI Patrol signals. Humans review. Power stays accountable.**
-            """
-        )
-
-    st.markdown("### What AI Patrol / ALETHEIA does")
-
-    with st.expander("Mirror Check", expanded=True):
-        st.markdown(
-            """
-            Users can submit governance proposals and receive a public reading plus a raw/internal taxonomy label: **SANCTUARY**, **THRESHOLD**, or **ASYLUM**.
-
-            Those labels are compatibility labels for review workflows. They are not legal, political, medical, religious, moral, or predictive verdicts. The audit layer scans for capture risk, opacity, coercion, missing appeal rights, weak transparency, and other governance-risk patterns.
-            """
-        )
-
-    with st.expander("Stress Test", expanded=True):
-        st.markdown(
-            """
-            Stress Test models governance pressure through archetype agents with intelligence, power, ego, alignment, trust, grievances, alliances, and memory.
-
-            It tracks **Stability**, **Trust**, **Alignment**, and **Ego** over time. These are simulation readings, not predictions, commands, or final judgments.
-            """
-        )
-
-    with st.expander("AI Integrity Mirror", expanded=True):
-        st.markdown(
-            """
-            AI Integrity Patrol reviews AI outputs, prompts, agent specs, and code snippets for authority-boundary and governance-integrity risk.
-
-            It does not certify an AI system, approve a vendor, guarantee safety, or replace technical, legal, security, enterprise, or human review.
-            """
-        )
-
-    with st.expander("Evidence Lab", expanded=True):
-        st.markdown(
-            """
-            Evidence Lab lets users upload country-year datasets and map them into ALETHEIA variables for schema checks, empirical scoring, 9k evidence allocation, source coverage review, and validation planning.
-
-            This layer adds an empirical evidence-audit workflow to ALETHEIA's symbolic and protocol-guided governance-risk mirror. It is not a proof engine or oracle.
-            """
-        )
-
-    with st.expander("World Lens", expanded=True):
-        st.markdown(
-            """
-            World Lens shows selected-year, population-weighted evidence exposure and how internal taxonomy readings may intersect with governance-risk conditions when empirical data is available.
-
-            World Lens is a **comparison and exposure model**. It is not a real election, government, sovereign body, authority mechanism, political mandate, Global ID system, or real 9k body.
-            """
-        )
-
-    with st.expander("Protocol Guide", expanded=True):
-        st.markdown(
-            """
-            Protocol Guide preserves the operating boundaries behind the mirror while remaining corrigible by evidence.
-
-            - **Mirror Effect** — power must reflect service, not absorb authority.
-            - **Humility / Z-axis boundary** — no code, receipt, metric, hash, tree, 9k structure, institution, person, or model reaches final authority.
-            - **Do not overtrust the tool** — no person, system, institution, dataset, protocol, founder, office, or AI is treated as final or beyond review.
-            - **Empirical correction rule** — symbolic logic must remain testable and correctable by public evidence.
-            - **Protocol integrity layer** — Mirror Check, Stress Test, Boundary Cases, Evidence Lab, and World Lens share one guardrail substrate.
-            """
-        )
-
-    st.markdown("### Research caution")
-    st.warning(
-        "ALETHEIA does not prove legal, political, medical, religious, moral, predictive, or final truth. Its outputs are internal review readings. Empirical results depend on dataset quality, variable mapping, normalization choices, missing data, and validation against external outcomes."
-    )
-    st.markdown(
-        """
-        A responsible reading is:
-
-        > **This model suggests a governance-risk pattern worth examining.**
-
-        Not:
-
-        > **This model has final authority.**
-        """
-    )
-
-    st.markdown("### Research direction")
-    st.markdown(
-        """
-        The long-term goal is to produce a reproducible study and dashboard using public datasets such as **UN population data**, **World Bank governance indicators**, **V-Dem democracy data**, and public trust surveys.
-
-        The direction is clear: symbolic governance logic should be tested against empirical evidence. Where the model is useful, it should become more precise. Where the data challenges it, the model should be corrected.
-
-        **ALETHEIA is built for review, correction, and humility — not final authority.**
-        """
-    )
-
-    with st.expander("Developer notes", expanded=False):
-        st.markdown("Technical structure for local development and deployment.")
-        st.code(
-            """app.py                  # Streamlit UI
-core/parser.py          # local/AI governance scan
-core/simulation.py      # agent-based stability simulation
-core/scoring.py         # integrity, friction, collapse probability, review questions
-core/empirical.py       # country-year scoring, 9k evidence allocation, validation helpers
-core_empirical.py       # import fallback for Streamlit deployments
-config/weights.py       # I/A/E/P weight presets
-data_processed/         # empirical templates and generated scores
-paper/                  # methodology and study draft materials
-assets/                 # header image and other optional UI assets""",
-            language="text",
-        )
-        st.code("""pip install -r requirements.txt
-streamlit run app.py""", language="bash")
-
+    _render_about_panel_rows(st, panels, header_image=header_image)
