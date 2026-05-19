@@ -5,18 +5,18 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_patch_185_main_app_shell_uses_exact_requested_brand_label():
     text = (ROOT / "ui" / "app_shell.py").read_text(encoding="utf-8")
-    assert 'PUBLIC_V1_LABEL = "Aletheia: AI PATROL"' in text
-    assert '<div class="hero-kicker">Aletheia: AI PATROL</div>' in text
-    assert '<span class="hero-title-main">Aletheia:</span><span class="hero-title-subline">AI PATROL</span>' in text
-    assert '<span class="sidebar-brand-main">Aletheia:</span><span class="sidebar-brand-subline">AI PATROL</span>' in text
+    assert 'PUBLIC_V1_LABEL = "Aletheia AI PATROL"' in text
+    assert '<div class="hero-kicker">Aletheia AI PATROL</div>' in text
+    assert '<span class="hero-title-main">Aletheia</span><span class="hero-title-subline">AI PATROL</span>' in text
+    assert '<span class="sidebar-brand-main">Aletheia</span><span class="sidebar-brand-subline">AI PATROL</span>' in text
 
 
 def test_patch_185_preview_unit_uses_exact_requested_brand_label():
     text = (ROOT / "ui" / "unit_preview.py").read_text(encoding="utf-8")
     assert 'unit-preview-brand-title' in text
-    assert 'Proceed to Aletheia: AI PATROL' in text
-    assert 'before entering Aletheia: AI PATROL' in text
-    assert 'after entering Aletheia: AI PATROL' in text
+    assert 'Proceed to Aletheia AI PATROL' in text
+    assert 'before entering Aletheia AI PATROL' in text
+    assert 'after entering Aletheia AI PATROL' in text
 
 
 def test_patch_185_preview_unit_flips_entry_logo_only():

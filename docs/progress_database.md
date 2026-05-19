@@ -3567,3 +3567,16 @@ Patch 188 integrates the friendly cardboard ALETHEIA robot officer visual langua
 Updated surfaces: `assets/ai_patrol_officer_stop_go.png`, `assets/ai_patrol_officer_preview.png`, `assets/ai_patrol_officer_character_sheet.png`, `app.py`, and `ui/unit_preview.py`.
 
 Boundary preserved: visual asset/UI copy/CSS only; no engine behavior, scoring, routing, taxonomy, receipt generation, World Lens math, Evidence Lab calculation, AI static scan logic, storage, certification, enforcement, or authority behavior changed. Human review remains required.
+
+### Patch 189 — No-Colon Brand Titles
+
+Patch 189 is a small branding/copy patch on top of Patch 188. It removes the colon after `Aletheia` in the Preview Unit and main app public title surfaces, keeping the identity as `Aletheia AI PATROL` with the same stacked title layout. It also updates related public-label references and tests. No scoring, routing, taxonomy, receipt, Evidence Lab, World Lens, AI static scan, protocol engine, storage, or authority behavior changed.
+
+## Patch 189 — No-Colon Brand Titles, Raised Tree Canopy, Clean Full Zip
+
+Date: 2026-05-19
+Status: READY FOR LOCAL REVIEW
+
+Patch 189 removes the colon after `Aletheia` in the Preview Unit and main app stacked title surfaces, preserving the two-line public identity as `Aletheia` / `AI PATROL`. It also raises the visual-only explanatory tree canopy used by Mirror Check and Stress Test so the canopy does not sit too low. The delivered artifact is a clean full-project zip with older root patch artifacts archived into `docs/patch_archive/`.
+
+Boundary preserved: visual branding/tree-presentation only; no engine behavior, scoring, routing, taxonomy, receipt generation, World Lens math, Evidence Lab calculation, AI static scan logic, storage, certification, enforcement, or authority behavior changed. Human review remains required.

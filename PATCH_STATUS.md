@@ -4004,7 +4004,8 @@ Boundary notes:
 Validation target:
 
 ```bat
-python toolsun_patch_checks.py 186
+python tools
+un_patch_checks.py 186
 python -m pytest -q tests/test_patch_186_framework_balance_copy.py tests/test_patch_185_aletheia_ai_patrol_branding.py tests/test_patch_184_current_and_spark_theory_update.py
 python -m py_compile pages_ui/about_page.py pages_ui/artificial_mind_formation_page.py about_page.py app.py
 ```
@@ -4063,5 +4064,48 @@ Validation target:
 ```bat
 python tools\run_patch_checks.py 188
 python -m pytest -q tests/test_patch_188_robot_officer_visual_integration.py tests/test_patch_187_stacked_brand_and_full_app_logo.py tests/test_patch_185_aletheia_ai_patrol_branding.py
+python -m py_compile app.py ui/app_shell.py ui/unit_preview.py
+```
+
+## Patch 189 — No-Colon Brand Titles
+
+Status: ready for local review.
+
+Summary:
+- Removed the colon after `Aletheia` from the Preview Unit and main app stacked brand/title surfaces.
+- Updated related visible public-label references to `Aletheia AI PATROL`.
+- Preserved Patch 188 robot officer visuals and all engine behavior.
+
+Validation targets:
+- `python tools\run_patch_checks.py 189`
+- `python -m pytest -q tests/test_patch_189_no_colon_brand_titles.py tests/test_patch_188_robot_officer_visual_integration.py tests/test_patch_187_stacked_brand_and_full_app_logo.py tests/test_patch_185_aletheia_ai_patrol_branding.py tests/test_patch_166_ai_patrol_rebrand.py`
+- `python -m py_compile app.py ui/app_shell.py ui/unit_preview.py`
+
+## Patch 189 — No-Colon Brand Titles, Raised Tree Canopy, Clean Full Zip
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 189 is a small visual/branding cleanup on top of Patch 188. It removes the colon after `Aletheia` in the Preview Unit and main app title surfaces, keeping `AI PATROL` underneath as the stacked public identity. It also raises the visual-only explanatory tree canopy used by Mirror Check and Stress Test so the canopy no longer sits too low in the module tree visual.
+
+Updated surfaces:
+- Main app hero kicker/title and sidebar brand now use `Aletheia AI PATROL` without a colon.
+- Preview Unit title, proceed button, and entry wording now use `Aletheia AI PATROL` without a colon.
+- The shared `render_pulse_tree` canopy offsets were raised for both Mirror Check and Stress Test visual tree usage.
+- App version label advances to `v1.0-ai-patrol-officer-icons-p2`.
+- Older root patch artifacts are archived into `docs/patch_archive/` for a cleaner full-project zip.
+
+Boundary notes:
+- Visual branding/tree-presentation only.
+- No scoring, routing, taxonomy, receipt schema/generation, receipt values, batch behavior, Evidence Lab calculations, World Lens math, AI static scan logic, protocol logic, external calls, storage, certification, enforcement, or authority behavior changed.
+- The tree canopy adjustment does not alter any tree state or protocol value.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 189
+python -m pytest -q tests/test_patch_189_no_colon_brand_titles.py tests/test_patch_188_robot_officer_visual_integration.py tests/test_patch_187_stacked_brand_and_full_app_logo.py tests/test_patch_185_aletheia_ai_patrol_branding.py tests/test_patch_166_ai_patrol_rebrand.py
 python -m py_compile app.py ui/app_shell.py ui/unit_preview.py
 ```

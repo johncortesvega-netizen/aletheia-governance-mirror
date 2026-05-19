@@ -1,7 +1,0 @@
-# Patch 183 root hygiene delete list
-# After applying Patch 183, the following older root patch artifacts may be removed from the repository root
-# because their audit trail is archived under docs/patch_archive/.
-
-PATCH_182_MANIFEST.txt
-PATCH_182_RECOVERY_NOTE.md
-PATCH_182_DELETE_LIST.txt

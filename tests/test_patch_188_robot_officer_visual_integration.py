@@ -23,7 +23,7 @@ def test_patch_188_robot_officer_assets_are_packaged():
 def test_patch_188_main_app_uses_robot_officer_logo_with_readable_stop_go():
     text = (ROOT / "app.py").read_text(encoding="utf-8")
     assert 'MASCOT_LOGO_IMAGE = PROJECT_ROOT / "assets" / "ai_patrol_officer_stop_go.png"' in text
-    assert 'APP_VERSION = "v1.0-ai-patrol-officer-icons-p1"' in text
+    assert 'APP_VERSION = "v1.0-ai-patrol-officer-icons-p2"' in text
     assert "keep STOP / GO lettering readable" in text
     assert "transform: none;" in text
 

@@ -826,7 +826,7 @@ def render_unit_preview(container=None) -> bool:
     container.markdown(
         """
         <div class="unit-preview-brand-title" role="heading" aria-level="1">
-            <span class="unit-preview-brand-main">Aletheia:</span>
+            <span class="unit-preview-brand-main">Aletheia</span>
             <span class="unit-preview-brand-subline">AI PATROL</span>
         </div>
         """,
@@ -848,7 +848,7 @@ def render_unit_preview(container=None) -> bool:
     )
     container.markdown("### Preview Unit · Friendly integrity patrol. Mirror, not throne.")
     container.write(
-        "Paste a short text, question, policy, AI output, or scenario to get a suggested patrol path before entering Aletheia: AI PATROL. Upload receipts in Receipt Reader after entering the app."
+        "Paste a short text, question, policy, AI output, or scenario to get a suggested patrol path before entering Aletheia AI PATROL. Upload receipts in Receipt Reader after entering the app."
     )
     container.info(get_unit_preview_boundary_text())
     container.markdown(get_unit_preview_how_to_use_markdown())
@@ -882,7 +882,7 @@ def render_unit_preview(container=None) -> bool:
         preview_clicked = container.button("Preview patrol path", key="aletheia_unit_preview_button")
     with action_columns[1]:
         proceed_clicked = container.button(
-            "Proceed to Aletheia: AI PATROL",
+            "Proceed to Aletheia AI PATROL",
             type="primary",
             key="aletheia_unit_preview_proceed",
         )
@@ -901,7 +901,7 @@ def render_unit_preview(container=None) -> bool:
             f"**Why:** {suggestion['reason']}\n\n"
             f"**Next step:** {suggestion['next_step']}"
         )
-        container.caption("This is a stop/go orientation only. You can still choose any module after entering Aletheia: AI PATROL.")
+        container.caption("This is a stop/go orientation only. You can still choose any module after entering Aletheia AI PATROL.")
 
     render_unit_preview_proof_concepts_side_by_side(container)
     render_unit_preview_html_reference(container)

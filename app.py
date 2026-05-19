@@ -262,7 +262,7 @@ def enforce_missing_safeguard_threshold_route(
     )
 
 
-APP_VERSION = "v1.0-ai-patrol-officer-icons-p1"
+APP_VERSION = "v1.0-ai-patrol-officer-icons-p2"
 SUPPORTED_INPUT_LANGUAGE_NOTE = "Language scope: ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim. Human review remains required."
 PROJECT_ROOT = Path(__file__).resolve().parent
 ABOUT_HEADER_IMAGE = PROJECT_ROOT / "assets" / "about_header.png"
@@ -1887,9 +1887,11 @@ def render_pulse_tree(
     # canopy_sag = 0 if state == "SANCTUARY"
     # Patch 71.3 tightens/lower-centers the canopy while preserving the
     # explanatory-only contract from Patch 71.2.
+    # Patch 189 raises the visual-only canopy again so the Mirror Check and
+    # Stress Test module trees read as connected but not visually compressed.
     canopy_scale = 0.70 + (score * 0.18)
-    canopy_sag = 8 if state == "SANCTUARY" else (12 if state == "THRESHOLD" else 17)
-    canopy_y_offset = 2 if state == "SANCTUARY" else (6 if state == "THRESHOLD" else 11)
+    canopy_sag = 2 if state == "SANCTUARY" else (6 if state == "THRESHOLD" else 11)
+    canopy_y_offset = -8 if state == "SANCTUARY" else (-4 if state == "THRESHOLD" else 1)
     fallen_count = int(round(ego * 10)) if state != "QUESTION_PROMPT" else 0
 
     fallen_svg = ""
