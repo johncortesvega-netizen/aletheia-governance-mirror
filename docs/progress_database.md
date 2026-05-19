@@ -3365,3 +3365,23 @@ Validation targets:
 python tools\run_patch_checks.py 176
 python tools\run_patch_checks.py 175
 ```
+
+
+## Patch 177 — Mirror Check Plain Panel Formatting
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 177 reformats Mirror Check result output into a clearer plain-English, opt-in panel layout. It keeps the existing protocol-adjusted label and metric cards, then adds a human-readable review-summary section: what the reading is, main results, power/control distribution, threshold mapping, observed reasons, safeguard questions, reliance questions, and signal analysis. Source match hits and subordinate AI static scan context are also placed into a compact side-by-side support-context row.
+
+Boundary notes:
+- UI/formatting only.
+- No scoring, routing, taxonomy, receipt schema/generation, AI static scan logic, World Lens math, Evidence Lab behavior, protocol engine behavior, external calls, telemetry/storage, certification, enforcement, approval/rejection, or final-truth behavior changed.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 177
+```

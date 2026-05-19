@@ -3226,54 +3226,116 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     if report.get("raw_metrics_before_ethics") or report.get("ethics_adjustment_applied") is not None:
         st.caption("These are ethics-calibrated reading metrics. Raw pre-ethics values stay in the local witness receipt.")
 
-    if threshold_mapping:
-        with st.expander("Threshold mapping preview", expanded=(verdict == "THRESHOLD")):
-            tcols = st.columns(4)
-            tcols[0].metric("Threshold direction", friendly_threshold_direction_label(str(threshold_mapping.get("threshold_direction", "Not recorded"))))
-            tcols[1].metric("Z-axis", f"{float(threshold_mapping.get('z_axis_position', 0.0)):.3f} / 0.9999")
-            tcols[2].metric("Repair questions", f"{float(threshold_mapping.get('repair_question_index', threshold_mapping.get('repair_index', 0.0))):.3f}")
-            tcols[3].metric("Confirmed repair", f"{float(threshold_mapping.get('confirmed_repair_capacity', threshold_mapping.get('repair_index', 0.0))):.3f}")
-            st.caption(
-                "Receipt preview only: this maps whether the reading is moving toward capture pressure, a balanced review zone, or the human/system boundary. "
-                "It does not create a new verdict or enforcement path. Repair questions are a route, not proof that safeguards already exist. Z=1.0000 remains outside ALETHEIA’s claim."
+    st.markdown("### Mirror Check review summary")
+    st.caption(
+        "Plain-language panels for human review. These panels do not rescore the receipt, change the internal label, "
+        "or turn the reading into proof, permission, certification, or a final safety claim."
+    )
+
+    row1 = st.columns(2, gap="large")
+    with row1[0]:
+        with st.expander("What is this reading?", expanded=False):
+            st.markdown(
+                """
+                This is a structured Mirror Check review. The system looked at the submitted text for pressure, power, evidence, safeguards, and repair needs.
+
+                Important: the computer does not decide anything here. It does not give official permission and it does not prove that something is safe, good, or true. The reading is a digital mirror for people to review.
+                """
             )
-            st.info(str(threshold_mapping.get("asymptote_note", "ALETHEIA does not claim final safety, final truth, or final authority. Ultimate questions and final authority remain outside code, metrics, receipts, hashes, trees, 9k structures, and institutional power.")))
-            st.caption(str(threshold_mapping.get("nine_k_threshold_steward_note", "9k is a human anti-tyranny scaffold / threshold steward, not Sanctuary or final legitimacy.")))
-            component_rows = []
-            for component in threshold_mapping.get("component_readings", []) or []:
-                if isinstance(component, dict):
-                    component_rows.append({
-                        "Component": component.get("component"),
-                        "Reading": component.get("reading"),
-                        "Capture pressure": component.get("threshold_minus_pressure"),
-                        "Repair growth": component.get("threshold_plus_growth"),
-                        "Pressure": component.get("pressure_score"),
-                        "Growth": component.get("growth_score"),
-                    })
-            if component_rows:
-                st.dataframe(pd.DataFrame(component_rows), use_container_width=True, hide_index=True)
-            st.write(f"**Dominant pressure:** {threshold_mapping.get('dominant_pressure')}")
-            signals = threshold_mapping.get("asylum_pressure_signals", []) or []
-            growth = threshold_mapping.get("sanctuary_growth_signals", []) or []
-            scol1, scol2 = st.columns(2)
-            scol1.markdown("**Capture-pressure signals**")
-            for signal in signals:
-                scol1.write(f"- {signal}")
-            scol2.markdown("**Repair/growth signals**")
-            for signal in growth:
-                scol2.write(f"- {signal}")
+    with row1[1]:
+        with st.expander("The main results", expanded=False):
+            st.markdown(f"- **Internal taxonomy label:** `{verdict}`")
+            st.markdown(f"- **Risk reading:** `{judgment.get('corruption_risk', 'Medium')}`")
+            st.markdown(f"- **Integrity:** `{report['integrity']:.3f}`")
+            st.markdown(f"- **Friction:** `{report['friction']:.3f}`")
+            st.markdown(f"- **Collapse probability:** `{report['collapse_probability']:.3f}`")
+            st.caption("Read these as review values, not as approval, rejection, prediction, or final truth.")
 
-    with st.expander("Observed reasons", expanded=True):
-        for item in judgment.get("reasons", []):
-            st.write(f"- {item}")
+    row2 = st.columns(2, gap="large")
+    with row2[0]:
+        with st.expander("How power and control are distributed", expanded=False):
+            st.markdown(
+                """
+                Mirror Check asks whether control is concentrated in one actor, office, platform, dataset, model, committee, or hidden process. It also checks whether people have meaningful review, appeal, correction, and refusal paths.
 
-    with st.expander("Safeguard questions for human review"):
-        for item in judgment.get("safeguards", []):
-            st.write(f"- {silent_operator_question(item, context='this safeguard gap')}")
+                A healthier reading usually has distributed evidence, visible reasons, human review, repair paths, and non-coercive access. A higher-pressure reading usually has opaque control, weak appeal, central authority, or conditional access to important needs.
+                """
+            )
+    with row2[1]:
+        with st.expander("Threshold mapping review", expanded=False):
+            if threshold_mapping:
+                tcols = st.columns(4)
+                tcols[0].metric("Threshold direction", friendly_threshold_direction_label(str(threshold_mapping.get("threshold_direction", "Not recorded"))))
+                tcols[1].metric("Z-axis", f"{float(threshold_mapping.get('z_axis_position', 0.0)):.3f} / 0.9999")
+                tcols[2].metric("Repair questions", f"{float(threshold_mapping.get('repair_question_index', threshold_mapping.get('repair_index', 0.0))):.3f}")
+                tcols[3].metric("Confirmed repair", f"{float(threshold_mapping.get('confirmed_repair_capacity', threshold_mapping.get('repair_index', 0.0))):.3f}")
+                st.caption(
+                    "Receipt preview only: this maps whether the reading is moving toward capture pressure, a balanced review zone, or the human/system boundary. "
+                    "It does not create a new verdict or enforcement path. Repair questions are a route, not proof that safeguards already exist. Z=1.0000 remains outside ALETHEIA’s claim."
+                )
+                st.info(str(threshold_mapping.get("asymptote_note", "ALETHEIA does not claim final safety, final truth, or final authority. Ultimate questions and final authority remain outside code, metrics, receipts, hashes, trees, 9k structures, and institutional power.")))
+                st.caption(str(threshold_mapping.get("nine_k_threshold_steward_note", "9k is a human anti-tyranny scaffold / threshold steward, not Sanctuary or final legitimacy.")))
+                component_rows = []
+                for component in threshold_mapping.get("component_readings", []) or []:
+                    if isinstance(component, dict):
+                        component_rows.append({
+                            "Component": component.get("component"),
+                            "Reading": component.get("reading"),
+                            "Capture pressure": component.get("threshold_minus_pressure"),
+                            "Repair growth": component.get("threshold_plus_growth"),
+                            "Pressure": component.get("pressure_score"),
+                            "Growth": component.get("growth_score"),
+                        })
+                if component_rows:
+                    st.dataframe(pd.DataFrame(component_rows), use_container_width=True, hide_index=True)
+                st.write(f"**Dominant pressure:** {threshold_mapping.get('dominant_pressure')}")
+            else:
+                st.caption("No threshold mapping data was attached to this reading.")
 
-    with st.expander("Questions before relying on this reading"):
-        for item in judgment.get("questions", []):
-            st.write(f"- {silent_operator_question(item, context='this model')}")
+    row3 = st.columns(2, gap="large")
+    with row3[0]:
+        with st.expander("Observed reasons", expanded=False):
+            reasons = judgment.get("reasons", [])
+            if reasons:
+                for item in reasons:
+                    st.write(f"- {item}")
+            else:
+                st.caption("No observed reasons were recorded for this reading.")
+    with row3[1]:
+        with st.expander("Safeguard questions for human review", expanded=False):
+            safeguards = judgment.get("safeguards", [])
+            if safeguards:
+                for item in safeguards:
+                    st.write(f"- {silent_operator_question(item, context='this safeguard gap')}")
+            else:
+                st.caption("No safeguard questions were recorded for this reading.")
+
+    row4 = st.columns(2, gap="large")
+    with row4[0]:
+        with st.expander("Questions before relying on this reading", expanded=False):
+            questions = judgment.get("questions", [])
+            if questions:
+                for item in questions:
+                    st.write(f"- {silent_operator_question(item, context='this model')}")
+            else:
+                st.caption("No reliance questions were recorded for this reading.")
+    with row4[1]:
+        with st.expander("Signal analysis and conclusion", expanded=False):
+            st.markdown(f"- **Dominant pressure:** `{threshold_mapping.get('dominant_pressure') if threshold_mapping else 'Not recorded'}`")
+            signals = threshold_mapping.get("asylum_pressure_signals", []) if threshold_mapping else []
+            growth = threshold_mapping.get("sanctuary_growth_signals", []) if threshold_mapping else []
+            st.markdown("**Capture-pressure signals**")
+            if signals:
+                for signal in signals:
+                    st.write(f"- {signal}")
+            else:
+                st.caption("No dominant capture-pressure signal was recorded in this layer.")
+            st.markdown("**Repair/growth signals**")
+            if growth:
+                for signal in growth:
+                    st.write(f"- {signal}")
+            else:
+                st.caption("No repair/growth signal was recorded in this layer.")
 
 
 # Header
@@ -7898,24 +7960,30 @@ with tab_chat:
             )
             render_chat_judgment(latest["judgment"], latest["source"], latest["report"], latest.get("sim"), latest.get("scan"))
 
+            st.markdown("### Mirror Check support context")
+            support_columns = st.columns(2, gap="large")
             source_hits = latest.get("source_hits", source_conformance_hits(latest["query"]))
-            if source_hits:
-                with st.expander("Source match hits", expanded=True):
-                    st.dataframe(pd.DataFrame(source_hits), use_container_width=True, hide_index=True)
-            else:
-                st.caption("Source match: no named source concept matched this idea in the current detector set.")
+            with support_columns[0]:
+                with st.expander("Source match hits", expanded=False):
+                    if source_hits:
+                        st.dataframe(pd.DataFrame(source_hits), use_container_width=True, hide_index=True)
+                    else:
+                        st.caption("No named source concept matched this idea in the current detector set.")
 
             ai_static_context = latest.get("report", {}).get("ai_static_scan_context") if isinstance(latest.get("report"), dict) else None
-            if isinstance(ai_static_context, dict):
+            with support_columns[1]:
                 with st.expander("AI static scan context — subordinate to Mirror Check", expanded=False):
-                    st.caption(ai_static_context.get("notice"))
-                    st.markdown(
-                        f"**Static scan signal:** {ai_static_context.get('ai_static_scan_state')} · "
-                        f"{ai_static_context.get('ai_static_scan_risk')} · "
-                        f"{ai_static_context.get('finding_count')} finding(s)"
-                    )
-                    if ai_static_context.get("findings"):
-                        st.dataframe(pd.DataFrame(ai_static_context.get("findings")), use_container_width=True, hide_index=True)
+                    if isinstance(ai_static_context, dict):
+                        st.caption(ai_static_context.get("notice"))
+                        st.markdown(
+                            f"**Static scan signal:** {ai_static_context.get('ai_static_scan_state')} · "
+                            f"{ai_static_context.get('ai_static_scan_risk')} · "
+                            f"{ai_static_context.get('finding_count')} finding(s)"
+                        )
+                        if ai_static_context.get("findings"):
+                            st.dataframe(pd.DataFrame(ai_static_context.get("findings")), use_container_width=True, hide_index=True)
+                    else:
+                        st.caption("No subordinate AI static scan context was attached to this Mirror Check reading.")
 
             st.markdown("### Local witness receipt")
             st.caption("Creates a receipt you hold. It is not published, synced, or treated as authority.")
