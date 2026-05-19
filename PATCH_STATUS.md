@@ -1,3 +1,19 @@
+## Patch 165 — Protocol Guide Compact Panel Layout
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 165 reorganizes the full Protocol Guide tab into four side-by-side opt-in rows / eight collapsed panels: Operating boundary, Artificial Mind Formation Theory, Navigation & module map, Shared protocol state, Release & continuity, Evidence & source rules, Review lenses, and World / taxonomy / limits.
+
+This responds to the clutter issue across the whole Protocol Guide, not only the Artificial Mind Formation explainer. The content remains explanatory and bounded; the tab now opens as a compact panel index, with users choosing which section to expand.
+
+Boundary preserved: layout/copy organization only. No scoring, routing, taxonomy, receipt schema/generation, World Lens logic, Evidence Lab math, AI Integrity behavior, external calls, telemetry/storage, Global ID sync, public ledger sync, certification, enforcement, official authority, or final-truth behavior changed. Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 165
+```
+
 ## Patch 161 - Visual Source Card Grid + Added Reference Posters
 
 Patch 161 replaces the tab-swapping visual source card view with a side-by-side grid of openable dropdown cards. The existing bundled HTML references remain, and four new poster-style visual references are added: Global Peace Architecture, The Sovereign Master Blueprint, The Sydney Protocol: Command Dossier, and The Sydney Protocol: Architect's Checklist.

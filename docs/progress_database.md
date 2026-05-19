@@ -3133,3 +3133,18 @@ Patch 164 responds to the Protocol Guide clutter issue by changing the Artificia
 
 No scoring, routing, taxonomy, World Lens, receipt, telemetry, storage, certification, enforcement, or authority behavior changed.
 
+## Patch 165 — Protocol Guide Compact Panel Layout
+
+Patch 165 changes the Protocol Guide from a long stack of visible expanders into a compact panel index. The tab now presents four side-by-side rows / eight collapsed panels:
+
+1. Operating boundary
+2. Artificial Mind Formation Theory
+3. Navigation & module map
+4. Shared protocol state
+5. Release & continuity
+6. Evidence & source rules
+7. Review lenses
+8. World / taxonomy / limits
+
+This includes the Patch 162–164 Artificial Mind Formation Theory material inside the same Protocol Guide organization, so the whole tab follows the same opt-in structure. The patch is UI/copy organization only and does not change scoring, routing, taxonomy, receipts, World Lens logic, Evidence Lab math, AI Integrity behavior, external calls, telemetry/storage, Global ID sync, public ledger sync, certification, enforcement, or authority behavior. Human review remains required.
+

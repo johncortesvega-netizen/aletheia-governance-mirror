@@ -23,7 +23,7 @@ def test_patch_162_explainer_title_subtitle_and_core_line_are_present():
     assert ARTIFICIAL_MIND_FORMATION_SUBTITLE == "An ALETHEIA explainer on ethical formation attempts, safeguards, and corruption risk."
     assert ARTIFICIAL_MIND_FORMATION_CORE_LINE == "ALETHEIA cannot build the spark. It can inspect the hands reaching for it."
     assert ARTIFICIAL_MIND_FORMATION_CORE_LINE in markdown
-    assert "render_artificial_mind_formation_page(st)" in app
+    assert "get_artificial_mind_formation_markdown()" in app
 
 
 def test_patch_162_required_sections_are_stable_and_complete():
