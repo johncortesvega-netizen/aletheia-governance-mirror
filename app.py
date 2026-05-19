@@ -3900,7 +3900,13 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                             risk=risk,
                             protocol_label=label,
                         )
-                        ai_static_context = build_ai_static_scan_protocol_context(processed_item, source_module="Stress Test")
+                        ai_static_context = build_ai_static_scan_protocol_context(
+                            processed_item,
+                            source_module="Stress Test",
+                            primary_state=verdict,
+                            primary_risk=risk,
+                            primary_protocol_label=label,
+                        )
                         stress_report["ai_static_scan_context"] = ai_static_context
                         scan["ai_static_scan_context"] = ai_static_context
                         receipt = build_local_witness_receipt(
@@ -4012,6 +4018,9 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
             ai_static_context = build_ai_static_scan_protocol_context(
                 st.session_state.get("last_query", display_query),
                 source_module="Stress Test",
+                primary_state=verdict,
+                primary_risk=risk,
+                primary_protocol_label=label,
             )
             report["ai_static_scan_context"] = ai_static_context
             scan["ai_static_scan_context"] = ai_static_context
@@ -4096,9 +4105,15 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
             with st.expander("AI static scan context — subordinate to Stress Test", expanded=False):
                 st.caption(ai_static_context.get("notice"))
                 st.markdown(
-                    f"**Static scan signal:** {ai_static_context.get('ai_static_scan_state')} · "
-                    f"{ai_static_context.get('ai_static_scan_risk')} · "
-                    f"{ai_static_context.get('finding_count')} finding(s)"
+                    f"**Protocol context signal:** {ai_static_context.get('protocol_context_state', ai_static_context.get('ai_static_scan_state'))} · "
+                    f"{ai_static_context.get('protocol_context_risk', ai_static_context.get('ai_static_scan_risk'))} · "
+                    f"{ai_static_context.get('finding_count')} AI-specific finding(s)"
+                )
+                if ai_static_context.get("alignment_note"):
+                    st.caption(ai_static_context.get("alignment_note"))
+                st.caption(
+                    f"Raw AI static scan only: {ai_static_context.get('ai_static_scan_state')} · "
+                    f"{ai_static_context.get('ai_static_scan_risk')}"
                 )
                 if ai_static_context.get("findings"):
                     st.dataframe(pd.DataFrame(ai_static_context.get("findings")), use_container_width=True, hide_index=True)
@@ -7572,7 +7587,13 @@ with tab_chat:
             scan=scan,
         )
 
-        ai_static_context = build_ai_static_scan_protocol_context(text_value, source_module="Mirror Check")
+        ai_static_context = build_ai_static_scan_protocol_context(
+            text_value,
+            source_module="Mirror Check",
+            primary_state=mirror_verdict,
+            primary_risk=mirror_risk,
+            primary_protocol_label=mirror_label,
+        )
         report["ai_static_scan_context"] = ai_static_context
         scan["ai_static_scan_context"] = ai_static_context
 
@@ -7976,9 +7997,15 @@ with tab_chat:
                     if isinstance(ai_static_context, dict):
                         st.caption(ai_static_context.get("notice"))
                         st.markdown(
-                            f"**Static scan signal:** {ai_static_context.get('ai_static_scan_state')} · "
-                            f"{ai_static_context.get('ai_static_scan_risk')} · "
-                            f"{ai_static_context.get('finding_count')} finding(s)"
+                            f"**Protocol context signal:** {ai_static_context.get('protocol_context_state', ai_static_context.get('ai_static_scan_state'))} · "
+                            f"{ai_static_context.get('protocol_context_risk', ai_static_context.get('ai_static_scan_risk'))} · "
+                            f"{ai_static_context.get('finding_count')} AI-specific finding(s)"
+                        )
+                        if ai_static_context.get("alignment_note"):
+                            st.caption(ai_static_context.get("alignment_note"))
+                        st.caption(
+                            f"Raw AI static scan only: {ai_static_context.get('ai_static_scan_state')} · "
+                            f"{ai_static_context.get('ai_static_scan_risk')}"
                         )
                         if ai_static_context.get("findings"):
                             st.dataframe(pd.DataFrame(ai_static_context.get("findings")), use_container_width=True, hide_index=True)

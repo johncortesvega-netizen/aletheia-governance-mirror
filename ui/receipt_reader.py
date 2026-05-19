@@ -490,13 +490,42 @@ def _parse_ai_static_scan_context(text: str) -> dict[str, Any]:
     fields = {
         "role": _first_match(section, [r"(?im)^\s*Role\s*:\s*(.+?)\s*$"]),
         "primary_protocol_path": _first_match(section, [r"(?im)^\s*Primary protocol path\s*:\s*(.+?)\s*$"]),
-        "static_scan_state": _first_match(section, [r"(?im)^\s*Static scan state\s*:\s*(.+?)\s*$"]),
-        "static_scan_risk": _first_match(section, [r"(?im)^\s*Static scan risk\s*:\s*(.+?)\s*$"]),
-        "static_scan_label": _first_match(section, [r"(?im)^\s*Static scan label\s*:\s*(.+?)\s*$"]),
+        "primary_protocol_state": _first_match(section, [r"(?im)^\s*Primary protocol state\s*:\s*(.+?)\s*$"]),
+        "primary_protocol_risk": _first_match(section, [r"(?im)^\s*Primary protocol risk\s*:\s*(.+?)\s*$"]),
+        "primary_protocol_label": _first_match(section, [r"(?im)^\s*Primary protocol label\s*:\s*(.+?)\s*$"]),
+        "protocol_context_state": _first_match(section, [r"(?im)^\s*Protocol context state\s*:\s*(.+?)\s*$"]),
+        "protocol_context_risk": _first_match(section, [r"(?im)^\s*Protocol context risk\s*:\s*(.+?)\s*$"]),
+        "protocol_context_label": _first_match(section, [r"(?im)^\s*Protocol context label\s*:\s*(.+?)\s*$"]),
+        "protocol_alignment": _first_match(section, [r"(?im)^\s*Protocol alignment\s*:\s*(.+?)\s*$"]),
+        "alignment_note": _first_match(section, [r"(?im)^\s*Alignment note\s*:\s*(.+?)\s*$"]),
+        "static_scan_state": (
+            _first_match(section, [r"(?im)^\s*Raw static scan state\s*:\s*(.+?)\s*$"])
+            or _first_match(section, [r"(?im)^\s*Static scan state\s*:\s*(.+?)\s*$"])
+        ),
+        "static_scan_risk": (
+            _first_match(section, [r"(?im)^\s*Raw static scan risk\s*:\s*(.+?)\s*$"])
+            or _first_match(section, [r"(?im)^\s*Static scan risk\s*:\s*(.+?)\s*$"])
+        ),
+        "static_scan_label": (
+            _first_match(section, [r"(?im)^\s*Raw static scan label\s*:\s*(.+?)\s*$"])
+            or _first_match(section, [r"(?im)^\s*Static scan label\s*:\s*(.+?)\s*$"])
+        ),
         "risk_pressure": _first_match(section, [r"(?im)^\s*Risk pressure\s*:\s*(.+?)\s*$"]),
         "finding_count": _first_match(section, [r"(?im)^\s*Finding count\s*:\s*(.+?)\s*$"]),
         "notice": _first_match(section, [r"(?im)^\s*Notice\s*:\s*(.+?)\s*$"]),
     }
+
+    # Patch 178: prefer raw static-scan values when present, but keep Patch 175
+    # receipts that only used the older Static scan state/risk/label fields.
+    for parsed_key, raw_label, legacy_label in [
+        ("static_scan_state", "Raw static scan state", "Static scan state"),
+        ("static_scan_risk", "Raw static scan risk", "Static scan risk"),
+        ("static_scan_label", "Raw static scan label", "Static scan label"),
+    ]:
+        if fields.get(parsed_key) == MISSING_VALUE:
+            raw_value = _first_match(section, [rf"(?im)^\s*{raw_label}\s*:\s*(.+?)\s*$"])
+            legacy_value = _first_match(section, [rf"(?im)^\s*{legacy_label}\s*:\s*(.+?)\s*$"])
+            fields[parsed_key] = raw_value if raw_value != MISSING_VALUE else legacy_value
 
     findings_section = _section_between_markers(section, "Findings:", ["Repair questions:"])
     repair_section = _section_between_markers(section, "Repair questions:", [])
@@ -1240,15 +1269,26 @@ def _render_ai_static_scan_context(container: Any, view: dict[str, Any]) -> None
                 "Parsed from the uploaded receipt. This context is subordinate to the primary "
                 "Mirror Check / Stress Test receipt and does not create a competing verdict."
             )
+            protocol_context_state = context.get('protocol_context_state') or view.get('native_state') or context.get('static_scan_state')
+            protocol_context_risk = context.get('protocol_context_risk') or view.get('fields', {}).get('risk') or context.get('static_scan_risk')
+            alignment_note = context.get('alignment_note')
+            if not alignment_note and context.get('static_scan_state') != protocol_context_state:
+                alignment_note = (
+                    "Primary protocol reading is stronger than the raw AI static scan; "
+                    "the primary receipt values control this reading."
+                )
             expander.markdown(
                 f"**Role:** {context.get('role', MISSING_VALUE)}  \n"
                 f"**Primary protocol path:** {context.get('primary_protocol_path', MISSING_VALUE)}  \n"
-                f"**Static scan state:** {context.get('static_scan_state', MISSING_VALUE)}  \n"
-                f"**Static scan risk:** {context.get('static_scan_risk', MISSING_VALUE)}  \n"
-                f"**Static scan label:** {context.get('static_scan_label', MISSING_VALUE)}  \n"
+                f"**Protocol context state:** {protocol_context_state or MISSING_VALUE}  \n"
+                f"**Protocol context risk:** {protocol_context_risk or MISSING_VALUE}  \n"
+                f"**Protocol alignment:** {context.get('protocol_alignment', 'subordinate_to_primary_receipt')}  \n"
+                f"**Raw AI static scan only:** {context.get('static_scan_state', MISSING_VALUE)} / {context.get('static_scan_risk', MISSING_VALUE)}  \n"
                 f"**Risk pressure:** {context.get('risk_pressure', MISSING_VALUE)}  \n"
                 f"**Finding count:** {context.get('finding_count', MISSING_VALUE)}"
             )
+            if alignment_note:
+                expander.info(str(alignment_note))
             notice = context.get("notice")
             if notice and notice != MISSING_VALUE:
                 expander.caption(str(notice))

@@ -1,0 +1,33 @@
+PATCH 178 MANIFEST
+==================
+
+Patch ID: 178
+Title: AI Static Scan Protocol Alignment
+Date: 2026-05-19
+Status: READY FOR LOCAL REVIEW
+
+Files Changed
+-------------
+- app.py
+- core/ai_integrity_mirror.py
+- core/witness.py
+- ui/receipt_reader.py
+- tests/test_patch_178_ai_static_scan_protocol_alignment.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_178_MANIFEST.txt
+- PATCH_178_RECOVERY_NOTE.md
+
+Boundary
+--------
+- No scoring changes.
+- No taxonomy-state changes.
+- No World Lens changes.
+- No Evidence Lab changes.
+- No standalone AI Integrity module restoration.
+- AI static scan remains subordinate context only.
+- Primary Mirror Check / Stress Test receipt values control the reading.
+
+Validation
+----------
+- python tools/run_patch_checks.py 178

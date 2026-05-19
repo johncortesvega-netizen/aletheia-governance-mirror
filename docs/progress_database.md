@@ -3385,3 +3385,27 @@ Validation target:
 ```bat
 python tools\run_patch_checks.py 177
 ```
+
+
+## Patch 178 — AI Static Scan Protocol Alignment
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 178 aligns the subordinate AI static scan context with the primary Mirror Check / Stress Test protocol reading. The raw AI static scan remains visible as raw context, but when the primary protocol reading is stronger, the receipt and Receipt Reader now show a protocol-context state/risk/label controlled by the primary receipt.
+
+This prevents a misleading display where an ASYLUM Mirror Check receipt appears to contain a low-risk SANCTUARY AI static scan value without explaining that the primary receipt values control the reading.
+
+Boundary notes:
+- AI static scan remains subordinate context only.
+- Raw static scan values are preserved; they are not hidden or rewritten.
+- Primary protocol values control the receipt.
+- No scoring, taxonomy, receipt schema break, World Lens, Evidence Lab, or protocol-engine logic changed.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 178
+```

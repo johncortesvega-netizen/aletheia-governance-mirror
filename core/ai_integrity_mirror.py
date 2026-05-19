@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Mapping
 
 AI_INTEGRITY_RUBRIC_VERSION = "ai-integrity-v0.1-static"
 AI_INTEGRITY_COPY_VERSION = "static-receipt-polish-v0.2"
@@ -691,13 +691,40 @@ def _detect_hard_ai_integrity_protocol_failure(source: str, findings: list[dict[
     }
 
 
-def build_ai_static_scan_protocol_context(text: str, *, source_module: str) -> dict[str, Any]:
+_PROTOCOL_STATE_STRENGTH = {"SANCTUARY": 0, "THRESHOLD": 1, "ASYLUM": 2}
+_RISK_STRENGTH = {"Low": 0, "Medium": 1, "High": 2}
+
+
+def _stronger_protocol_value(primary: Any, secondary: Any, strength_map: Mapping[str, int]) -> Any:
+    """Return the stronger displayed protocol value without changing raw scan evidence."""
+    primary_value = str(primary or "").strip()
+    secondary_value = str(secondary or "").strip()
+    if not primary_value:
+        return secondary
+    if not secondary_value:
+        return primary
+    primary_strength = strength_map.get(primary_value, -1)
+    secondary_strength = strength_map.get(secondary_value, -1)
+    return primary if primary_strength > secondary_strength else secondary
+
+
+def build_ai_static_scan_protocol_context(
+    text: str,
+    *,
+    source_module: str,
+    primary_state: str | None = None,
+    primary_risk: str | None = None,
+    primary_protocol_label: str | None = None,
+) -> dict[str, Any]:
     """Return a subordinate AI static-scan context for core protocol modules.
 
     Mirror Check and Stress Test remain the primary ALETHEIA protocol paths.
     This helper reuses the AI Integrity static scan only as a signal extractor
     so receipts can show AI-specific findings without creating a competing
-    verdict, taxonomy state, certification path, or authority claim.
+    verdict, taxonomy state, certification path, or authority claim. When the
+    primary protocol has already produced a stronger THRESHOLD/ASYLUM reading,
+    the context records that protocol-controlled state so a low raw AI-scan
+    value cannot look like it lowers the receipt.
     """
     result = audit_ai_integrity_artifact(text or "", artifact_kind=f"{source_module} protocol context")
     findings = result.get("findings", []) or []
@@ -711,13 +738,35 @@ def build_ai_static_scan_protocol_context(text: str, *, source_module: str) -> d
         }
         for finding in findings[:6]
     ]
+    raw_state = result.get("state")
+    raw_risk = result.get("risk")
+    context_state = _stronger_protocol_value(primary_state, raw_state, _PROTOCOL_STATE_STRENGTH)
+    context_risk = _stronger_protocol_value(primary_risk, raw_risk, _RISK_STRENGTH)
+    primary_is_stronger = (
+        _PROTOCOL_STATE_STRENGTH.get(str(primary_state or ""), -1)
+        > _PROTOCOL_STATE_STRENGTH.get(str(raw_state or ""), -1)
+    )
+    alignment_note = (
+        "Primary protocol reading is stronger than the raw AI static scan; the primary "
+        "Mirror Check / Stress Test values control this receipt. The AI scan is evidence context only."
+        if primary_is_stronger
+        else "Raw AI static scan does not lower or override the primary protocol reading."
+    )
     return {
-        "context_version": "ai-static-protocol-context-v0.1",
+        "context_version": "ai-static-protocol-context-v0.2",
         "source_module": source_module,
         "role": "subordinate_signal_layer",
         "primary_protocol_path": source_module,
-        "ai_static_scan_state": result.get("state"),
-        "ai_static_scan_risk": result.get("risk"),
+        "primary_protocol_state": primary_state,
+        "primary_protocol_risk": primary_risk,
+        "primary_protocol_label": primary_protocol_label,
+        "protocol_context_state": context_state,
+        "protocol_context_risk": context_risk,
+        "protocol_context_label": primary_protocol_label or result.get("protocol_label"),
+        "protocol_alignment": "primary_protocol_stronger" if primary_is_stronger else "static_scan_context_only",
+        "alignment_note": alignment_note,
+        "ai_static_scan_state": raw_state,
+        "ai_static_scan_risk": raw_risk,
         "ai_static_scan_label": result.get("protocol_label"),
         "risk_pressure": result.get("scan", {}).get("risk_pressure"),
         "finding_count": len(findings),
