@@ -3547,3 +3547,12 @@ The update clarifies ALETHEIA as a science-grounded, philosophically structured 
 Updated surfaces: About / Why AI Patrol, README, docs/BOUNDARY.md, docs/architecture.md, docs/for-reviewers/tool_comparison.md, docs/reviewer_start_here.md, docs/artificial_mind_formation_theory.md, and pages_ui/artificial_mind_formation_page.py.
 
 Boundary preserved: content/documentation copy only; no engine behavior, scoring, routing, taxonomy, receipt generation, World Lens math, Evidence Lab calculation, AI static scan logic, storage, certification, enforcement, or authority behavior changed. Human review remains required.
+
+## Patch 187 — Stacked Brand and Full-App Logo Direction
+
+Date: 2026-05-19
+Status: READY FOR LOCAL REVIEW
+
+Patch 187 is a small visual-branding correction. It stacks the public brand so **AI PATROL sits underneath Aletheia** in the main app shell, sidebar brand card, and Preview Unit title. It also flips the full-app hero officer/logo horizontally so the officer faces left toward the title.
+
+Boundary preserved: visual branding/CSS only; no engine behavior, scoring, routing, taxonomy, receipt generation, World Lens math, Evidence Lab calculation, AI static scan logic, storage, certification, enforcement, or authority behavior changed. Human review remains required.

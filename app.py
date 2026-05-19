@@ -1311,6 +1311,19 @@ st.markdown(
         color: #123d63 !important;
         text-shadow: 0 2px 0 rgba(255,255,255,0.86), 0 0 18px rgba(127,188,232,0.28);
     }
+    .hero-title-main,
+    .hero-title-subline,
+    .sidebar-brand-main,
+    .sidebar-brand-subline {
+        display: block;
+    }
+    .hero-title-subline,
+    .sidebar-brand-subline {
+        margin-top: 0.06em;
+    }
+    .hero-emblem .aletheia-mascot-logo {
+        transform: scaleX(-1);
+    }
     .hero-sub { color: #2d668f !important; }
     .hero-kicker { color: #9a720d !important; }
     .hero-emblem,

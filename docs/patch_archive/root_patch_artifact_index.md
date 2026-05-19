@@ -569,3 +569,15 @@ Archived previous root artifacts:
 - docs/patch_archive/PATCH_185_MANIFEST.txt
 - docs/patch_archive/PATCH_185_RECOVERY_NOTE.md
 - docs/patch_archive/PATCH_185_DELETE_LIST.txt
+
+## Patch 187
+
+Current root-visible patch artifacts:
+- PATCH_187_MANIFEST.txt
+- PATCH_187_RECOVERY_NOTE.md
+- PATCH_187_DELETE_LIST.txt
+
+Archived previous root artifacts:
+- docs/patch_archive/PATCH_186_MANIFEST.txt
+- docs/patch_archive/PATCH_186_RECOVERY_NOTE.md
+- docs/patch_archive/PATCH_186_DELETE_LIST.txt

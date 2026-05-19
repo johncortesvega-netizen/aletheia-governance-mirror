@@ -7,13 +7,13 @@ def test_patch_185_main_app_shell_uses_exact_requested_brand_label():
     text = (ROOT / "ui" / "app_shell.py").read_text(encoding="utf-8")
     assert 'PUBLIC_V1_LABEL = "Aletheia: AI PATROL"' in text
     assert '<div class="hero-kicker">Aletheia: AI PATROL</div>' in text
-    assert '<div class="hero-title">Aletheia: AI PATROL</div>' in text
-    assert '<div class="sidebar-brand">Aletheia: AI PATROL</div>' in text
+    assert '<span class="hero-title-main">Aletheia:</span><span class="hero-title-subline">AI PATROL</span>' in text
+    assert '<span class="sidebar-brand-main">Aletheia:</span><span class="sidebar-brand-subline">AI PATROL</span>' in text
 
 
 def test_patch_185_preview_unit_uses_exact_requested_brand_label():
     text = (ROOT / "ui" / "unit_preview.py").read_text(encoding="utf-8")
-    assert 'container.title("Aletheia: AI PATROL")' in text
+    assert 'unit-preview-brand-title' in text
     assert 'Proceed to Aletheia: AI PATROL' in text
     assert 'before entering Aletheia: AI PATROL' in text
     assert 'after entering Aletheia: AI PATROL' in text
@@ -24,8 +24,6 @@ def test_patch_185_preview_unit_flips_entry_logo_only():
     assert '/* Patch 185: Preview Unit only; face the entry logo the other way. */' in text
     assert '.hero-emblem .aletheia-mascot-logo' in text
     assert 'transform: scaleX(-1);' in text
-    shell_text = (ROOT / "ui" / "app_shell.py").read_text(encoding="utf-8")
-    assert 'scaleX(-1)' not in shell_text
 
 
 def test_patch_185_is_branding_visual_only_documented():

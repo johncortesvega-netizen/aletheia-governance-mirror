@@ -1,0 +1,33 @@
+PATCH 187 — STACKED BRAND AND FULL-APP LOGO DIRECTION
+
+Scope:
+- Stack the visible Aletheia: AI PATROL brand so AI PATROL appears underneath Aletheia.
+- Flip the full-app hero officer/logo horizontally so it faces left toward the app title.
+- Preserve the exact public wording Aletheia: AI PATROL in copy while changing the visual title layout.
+
+Updated files:
+- app.py
+- ui/app_shell.py
+- ui/unit_preview.py
+- tests/test_patch_187_stacked_brand_and_full_app_logo.py
+- tests/test_patch_185_aletheia_ai_patrol_branding.py
+- tests/test_patch_166_ai_patrol_rebrand.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_archive/PATCH_186_MANIFEST.txt
+- docs/patch_archive/PATCH_186_RECOVERY_NOTE.md
+- docs/patch_archive/PATCH_186_DELETE_LIST.txt
+- docs/patch_archive/root_patch_artifact_index.md
+- PATCH_187_MANIFEST.txt
+- PATCH_187_RECOVERY_NOTE.md
+- PATCH_187_DELETE_LIST.txt
+
+Boundary:
+- Visual branding/CSS only.
+- No scoring, routing, taxonomy, receipts, batch behavior, Evidence Lab, World Lens, AI static scan, protocol engine, storage, telemetry, certification, enforcement, or authority behavior changed.
+- Human review remains required.
+
+Validation:
+- python tools\run_patch_checks.py 187
+- python -m pytest -q tests/test_patch_187_stacked_brand_and_full_app_logo.py tests/test_patch_185_aletheia_ai_patrol_branding.py tests/test_patch_166_ai_patrol_rebrand.py
+- python -m py_compile app.py ui/app_shell.py ui/unit_preview.py

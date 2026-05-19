@@ -17,7 +17,7 @@ def test_patch_166_app_shell_uses_ai_patrol_public_branding():
 
 def test_patch_166_unit_preview_rebrand_copy_is_present():
     text = (ROOT / "ui" / "unit_preview.py").read_text(encoding="utf-8")
-    assert 'container.title("Aletheia: AI PATROL")' in text
+    assert 'unit-preview-brand-title' in text
     assert 'Friendly integrity patrol. Mirror, not throne.' in text
     assert 'AI Patrol Preview Unit suggests where to begin.' in text
     assert 'AI Patrol gives stop/go review signals, not verdicts.' in text

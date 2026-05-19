@@ -1,0 +1,4 @@
+Root patch artifacts archived by this patch:
+- PATCH_186_MANIFEST.txt -> docs/patch_archive/PATCH_186_MANIFEST.txt
+- PATCH_186_RECOVERY_NOTE.md -> docs/patch_archive/PATCH_186_RECOVERY_NOTE.md
+- PATCH_186_DELETE_LIST.txt -> docs/patch_archive/PATCH_186_DELETE_LIST.txt

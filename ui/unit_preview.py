@@ -110,6 +110,27 @@ div[data-testid="stButton"] button[kind="primary"]:focus {
     outline: 3px solid rgba(248, 113, 113, 0.7) !important;
     outline-offset: 2px !important;
 }
+/* Patch 187: make Preview Unit brand read as Aletheia above AI PATROL. */
+.unit-preview-brand-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #123d63 !important;
+    letter-spacing: 0.14em;
+    line-height: 0.95;
+    margin: 0.2rem 0 0.5rem 0;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+.unit-preview-brand-main,
+.unit-preview-brand-subline {
+    display: block;
+}
+.unit-preview-brand-main {
+    font-size: clamp(2.35rem, 6vw, 4.6rem);
+}
+.unit-preview-brand-subline {
+    font-size: clamp(2.0rem, 5.2vw, 4.0rem);
+    margin-top: 0.08rem;
+}
 /* Patch 185: Preview Unit only; face the entry logo the other way. */
 .hero-emblem .aletheia-mascot-logo {
     transform: scaleX(-1);
@@ -740,7 +761,15 @@ def render_unit_preview(container=None) -> bool:
         container = st
 
     container.markdown(get_unit_preview_proceed_button_style(), unsafe_allow_html=True)
-    container.title("Aletheia: AI PATROL")
+    container.markdown(
+        """
+        <div class="unit-preview-brand-title" role="heading" aria-level="1">
+            <span class="unit-preview-brand-main">Aletheia:</span>
+            <span class="unit-preview-brand-subline">AI PATROL</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     container.markdown("### Preview Unit · Friendly integrity patrol. Mirror, not throne.")
     container.write(
         "Paste a short text, question, policy, AI output, or scenario to get a suggested patrol path before entering Aletheia: AI PATROL. Upload receipts in Receipt Reader after entering the app."

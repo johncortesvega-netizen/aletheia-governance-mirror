@@ -68,7 +68,7 @@ def render_app_header(mascot_logo_uri: str, app_version: str, container=None) ->
             <div class="hero-grid">
                 <div>
                     <div class="hero-kicker">Aletheia: AI PATROL</div>
-                    <div class="hero-title">Aletheia: AI PATROL</div>
+                    <div class="hero-title"><span class="hero-title-main">Aletheia:</span><span class="hero-title-subline">AI PATROL</span></div>
                     <div class="hero-sub">Friendly integrity patrol for human review.</div>
                     <div class="caption">Aletheia: AI PATROL is the friendlier public face of ALETHEIA · English-first; Dutch batch-test examples only · Stop / go signals. Protect people. Keep truth visible.</div>
                 </div>
@@ -120,7 +120,7 @@ def render_sidebar_brand(mascot_logo_uri: str, container=None) -> None:
         f"""
         <div class="sidebar-emblem-card">
             <div class="sidebar-emblem-mark"><img class="aletheia-mascot-logo" src="{mascot_logo_uri}" alt="" /></div>
-            <div class="sidebar-brand">Aletheia: AI PATROL</div>
+            <div class="sidebar-brand"><span class="sidebar-brand-main">Aletheia:</span><span class="sidebar-brand-subline">AI PATROL</span></div>
             <div class="sidebar-tagline">Friendly integrity patrol. Mirror, not throne.</div>
         </div>
         """,

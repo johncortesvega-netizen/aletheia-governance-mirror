@@ -4008,3 +4008,31 @@ python toolsun_patch_checks.py 186
 python -m pytest -q tests/test_patch_186_framework_balance_copy.py tests/test_patch_185_aletheia_ai_patrol_branding.py tests/test_patch_184_current_and_spark_theory_update.py
 python -m py_compile pages_ui/about_page.py pages_ui/artificial_mind_formation_page.py about_page.py app.py
 ```
+
+## Patch 187 — Stacked Brand and Full-App Logo Direction
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 187 is a small visual-branding correction on top of Patch 186. It changes the visible Aletheia: AI PATROL brand layout so **AI PATROL sits underneath Aletheia** instead of running on the same line, and it flips the shared full-app hero officer/logo horizontally so the officer faces left toward the app title.
+
+Updated surfaces:
+- Main app hero title now renders as stacked brand text: `Aletheia:` above `AI PATROL`.
+- Sidebar brand card uses the same stacked brand structure for better visual consistency.
+- Preview Unit title uses a stacked HTML brand heading instead of a single-line Streamlit title.
+- Full-app hero mascot/logo is flipped via CSS so the officer faces left.
+- Patch 166 / 185 branding regression tests were updated to accept the stacked brand title introduced in Patch 187.
+
+Boundary notes:
+- Visual branding/CSS only.
+- No scoring, routing, taxonomy, receipt schema/generation, receipt values, batch behavior, Evidence Lab calculations, World Lens math, AI static scan logic, protocol logic, external calls, storage, certification, enforcement, or authority behavior changed.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 187
+python -m pytest -q tests/test_patch_187_stacked_brand_and_full_app_logo.py tests/test_patch_185_aletheia_ai_patrol_branding.py tests/test_patch_166_ai_patrol_rebrand.py
+python -m py_compile app.py ui/app_shell.py ui/unit_preview.py
+```
