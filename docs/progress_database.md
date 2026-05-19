@@ -3517,3 +3517,19 @@ Saved theory anchors now visible in the app/docs:
 - ALETHEIA cannot build or certify the spark; it can inspect the hands reaching for it.
 
 Boundary preserved: content/documentation copy only; no engine behavior, scoring, routing, taxonomy, receipt generation, World Lens math, Evidence Lab calculation, AI static scan logic, storage, certification, enforcement, or authority behavior changed. Human review remains required.
+
+## Patch 185 — Aletheia AI Patrol Branding Alignment
+
+Date: 2026-05-19
+Status: READY FOR LOCAL REVIEW
+
+Patch 185 is a small branding/visual alignment patch on top of Patch 184. It updates the visible Preview Unit and main app-shell identity to the exact requested public label: **Aletheia: AI PATROL**.
+
+Updated surfaces:
+- Main app header kicker/title.
+- Sidebar brand card.
+- Preview Unit page title.
+- Preview Unit proceed button and entry wording.
+- Preview Unit-only mascot orientation CSS so the entry logo faces the other way.
+
+Boundary preserved: branding/copy/CSS only; no engine behavior, scoring, routing, taxonomy, receipt generation, World Lens math, Evidence Lab calculation, AI static scan logic, storage, certification, enforcement, or authority behavior changed. Human review remains required.

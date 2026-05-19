@@ -544,3 +544,15 @@ Patch 184 refreshed root hygiene after the Current and Spark theory update. Root
 - `PATCH_183_DELETE_LIST.txt`
 
 Boundary: archive movement only; no audit trail deletion is intended.
+
+## Patch 185 archive update
+
+Archived previous root patch artifacts so Patch 185 can be the current visible root patch set:
+- PATCH_184_MANIFEST.txt
+- PATCH_184_RECOVERY_NOTE.md
+- PATCH_184_DELETE_LIST.txt
+
+Current root patch artifacts after applying Patch 185:
+- PATCH_185_MANIFEST.txt
+- PATCH_185_RECOVERY_NOTE.md
+- PATCH_185_DELETE_LIST.txt

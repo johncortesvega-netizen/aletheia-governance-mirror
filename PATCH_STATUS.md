@@ -3952,3 +3952,32 @@ python tools\run_patch_checks.py 183
 python tools\run_patch_checks.py 182
 python tools\run_patch_checks.py 181
 ```
+
+## Patch 185 — Aletheia AI Patrol Branding Alignment
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 185 aligns the visible Preview Unit and main app-shell brand label to the exact requested wording: **Aletheia: AI PATROL**.
+
+Changes include:
+- Main header kicker/title now shows `Aletheia: AI PATROL`.
+- Sidebar brand card now shows `Aletheia: AI PATROL`.
+- Preview Unit title and proceed button now use `Aletheia: AI PATROL`.
+- Preview Unit injects a preview-only CSS rule to flip the header mascot horizontally so the logo faces the other way on the Preview Unit entry surface.
+- Patch 166 branding regression test was updated to accept the current exact brand label instead of the earlier rebrand phrase.
+
+Boundary notes:
+- Branding/copy/CSS only.
+- No scoring, routing, taxonomy, receipt schema/generation, receipt values, batch behavior, Evidence Lab calculations, World Lens math, AI static scan logic, protocol logic, external calls, storage, certification, enforcement, or authority behavior changed.
+- The logo flip is Preview Unit only; the shared app-shell helper is not changed to globally mirror the mascot.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 185
+python -m pytest -q tests/test_patch_166_ai_patrol_rebrand.py
+python -m py_compile app.py ui/app_shell.py ui/unit_preview.py
+```

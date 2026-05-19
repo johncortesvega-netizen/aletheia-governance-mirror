@@ -7,7 +7,7 @@ services, or mutate receipts.
 """
 from __future__ import annotations
 
-PUBLIC_V1_LABEL = "AI Patrol — ALETHEIA v1"
+PUBLIC_V1_LABEL = "Aletheia: AI PATROL"
 
 
 def render_app_boundary_notices(supported_input_language_note: str, container=None) -> None:
@@ -67,10 +67,10 @@ def render_app_header(mascot_logo_uri: str, app_version: str, container=None) ->
         <div class="botanical-frame hero">
             <div class="hero-grid">
                 <div>
-                    <div class="hero-kicker">AI Patrol — ALETHEIA v1</div>
-                    <div class="hero-title">AI PATROL</div>
+                    <div class="hero-kicker">Aletheia: AI PATROL</div>
+                    <div class="hero-title">Aletheia: AI PATROL</div>
                     <div class="hero-sub">Friendly integrity patrol for human review.</div>
-                    <div class="caption">AI Patrol is the friendlier public face of ALETHEIA · English-first; Dutch batch-test examples only · Stop / go signals. Protect people. Keep truth visible.</div>
+                    <div class="caption">Aletheia: AI PATROL is the friendlier public face of ALETHEIA · English-first; Dutch batch-test examples only · Stop / go signals. Protect people. Keep truth visible.</div>
                 </div>
                 <div class="hero-emblem" aria-hidden="true"><img class="aletheia-mascot-logo" src="{mascot_logo_uri}" alt="" /></div>
             </div>
@@ -120,7 +120,7 @@ def render_sidebar_brand(mascot_logo_uri: str, container=None) -> None:
         f"""
         <div class="sidebar-emblem-card">
             <div class="sidebar-emblem-mark"><img class="aletheia-mascot-logo" src="{mascot_logo_uri}" alt="" /></div>
-            <div class="sidebar-brand">AI PATROL</div>
+            <div class="sidebar-brand">Aletheia: AI PATROL</div>
             <div class="sidebar-tagline">Friendly integrity patrol. Mirror, not throne.</div>
         </div>
         """,

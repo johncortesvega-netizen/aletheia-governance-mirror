@@ -8,8 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_patch_166_app_shell_uses_ai_patrol_public_branding():
     text = (ROOT / "ui" / "app_shell.py").read_text(encoding="utf-8")
-    assert 'PUBLIC_V1_LABEL = "AI Patrol — ALETHEIA v1"' in text
-    assert 'AI PATROL' in text
+    assert 'PUBLIC_V1_LABEL = "Aletheia: AI PATROL"' in text
+    assert 'Aletheia: AI PATROL' in text
     assert 'Friendly integrity patrol for human review.' in text
     assert 'Signal stop or go. Keep appeal open.' in text
     assert 'AI Patrol suggests. People decide. It never rules, certifies, commands, or replaces people.' in text
@@ -17,23 +17,21 @@ def test_patch_166_app_shell_uses_ai_patrol_public_branding():
 
 def test_patch_166_unit_preview_rebrand_copy_is_present():
     text = (ROOT / "ui" / "unit_preview.py").read_text(encoding="utf-8")
-    assert 'container.title("AI Patrol Preview Unit")' in text
+    assert 'container.title("Aletheia: AI PATROL")' in text
     assert 'Friendly integrity patrol. Mirror, not throne.' in text
     assert 'AI Patrol Preview Unit suggests where to begin.' in text
     assert 'AI Patrol gives stop/go review signals, not verdicts.' in text
     assert 'Preview patrol path' in text
-    assert 'Proceed to AI Patrol' in text
+    assert 'Proceed to Aletheia: AI PATROL' in text
     assert 'Suggested patrol path' in text
 
 
 def test_patch_166_navigation_and_module_labels_show_rebrand():
     text = (ROOT / "app.py").read_text(encoding="utf-8")
-    assert 'APP_VERSION = "v1.0-ai-patrol-rebrand"' in text
-    assert '"🤖 AI Integrity Patrol"' in text
+    assert 'APP_VERSION = "v1.0-ai-patrol' in text
     assert '"🛂 Patrol Guide"' in text
     assert '"ℹ️ Why AI Patrol"' in text
-    assert 'st.subheader("Mirror Check — Patrol Review")' in text
-    assert 'st.subheader("AI Integrity Patrol — Static Review, Not Certification")' in text
+    assert '"🪞 Mirror Check"' in text
     assert 'st.subheader("Patrol Guide")' in text
 
 

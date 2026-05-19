@@ -110,6 +110,10 @@ div[data-testid="stButton"] button[kind="primary"]:focus {
     outline: 3px solid rgba(248, 113, 113, 0.7) !important;
     outline-offset: 2px !important;
 }
+/* Patch 185: Preview Unit only; face the entry logo the other way. */
+.hero-emblem .aletheia-mascot-logo {
+    transform: scaleX(-1);
+}
 </style>
 """
 
@@ -736,10 +740,10 @@ def render_unit_preview(container=None) -> bool:
         container = st
 
     container.markdown(get_unit_preview_proceed_button_style(), unsafe_allow_html=True)
-    container.title("AI Patrol Preview Unit")
-    container.markdown("### Friendly integrity patrol. Mirror, not throne.")
+    container.title("Aletheia: AI PATROL")
+    container.markdown("### Preview Unit · Friendly integrity patrol. Mirror, not throne.")
     container.write(
-        "Paste a short text, question, policy, AI output, or scenario to get a suggested patrol path before entering ALETHEIA. Upload receipts in Receipt Reader after entering the app."
+        "Paste a short text, question, policy, AI output, or scenario to get a suggested patrol path before entering Aletheia: AI PATROL. Upload receipts in Receipt Reader after entering the app."
     )
     container.info(get_unit_preview_boundary_text())
     container.markdown(get_unit_preview_how_to_use_markdown())
@@ -773,7 +777,7 @@ def render_unit_preview(container=None) -> bool:
         preview_clicked = container.button("Preview patrol path", key="aletheia_unit_preview_button")
     with action_columns[1]:
         proceed_clicked = container.button(
-            "Proceed to AI Patrol",
+            "Proceed to Aletheia: AI PATROL",
             type="primary",
             key="aletheia_unit_preview_proceed",
         )
@@ -792,7 +796,7 @@ def render_unit_preview(container=None) -> bool:
             f"**Why:** {suggestion['reason']}\n\n"
             f"**Next step:** {suggestion['next_step']}"
         )
-        container.caption("This is a stop/go orientation only. You can still choose any module after entering AI Patrol / ALETHEIA.")
+        container.caption("This is a stop/go orientation only. You can still choose any module after entering Aletheia: AI PATROL.")
 
     render_unit_preview_proof_concepts_side_by_side(container)
     render_unit_preview_html_reference(container)
