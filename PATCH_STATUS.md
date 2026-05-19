@@ -3594,3 +3594,24 @@ Validation target:
 ```bat
 python tools\run_patch_checks.py 169
 ```
+
+
+## Patch 170 — AI Integrity Patrol Result Formatting Repair
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 170 repairs the AI Integrity Patrol result layout after the AI Patrol rebrand. The single-artifact result readout now uses compact opt-in panels instead of opening long pressure-signal tables directly on the page. The top metrics remain visible, while explanatory text, highest-pressure signals, triggered categories, evidence snippets, repair questions, optional static boundary checks, boundary notes, and local receipt text are arranged as four side-by-side rows / eight collapsed panels.
+
+Boundary notes:
+- UI/layout/copy organization only.
+- No AI Integrity rubric, scoring, finding weights, batch logic, report builder, comparison view, receipt schema/generation, routing, taxonomy, protocol logic, World Lens math, Evidence Lab behavior, upload/download behavior, external calls, telemetry/storage, certification, enforcement, approval/rejection, or final-truth behavior changed.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 170
+python tools\run_patch_checks.py 169
+```

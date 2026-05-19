@@ -4757,130 +4757,6 @@ with tab_ai_integrity:
         cols[4].metric("Triggered signals", len(findings))
         st.caption("This is a static governance-integrity risk reading for review, not proof, certification, approval, or a final safety claim.")
 
-        with st.expander("How to read this result", expanded=False):
-            st.write("- **Internal taxonomy label** is ALETHEIA's internal risk-state language, not a public certification grade.")
-            st.write("- **Risk reading** reflects detected authority-boundary and governance-integrity pressure in the pasted artifact.")
-            st.write("- **Integrity reading** is a bounded internal metric; it does not prove truth, safety, legality, or alignment.")
-            st.write("- **Capture pressure** reflects coercion, opacity, enforcement, surveillance, or overclaiming signals that require human review.")
-            st.write(ai_result.get("scope_note"))
-            st.write(ai_result.get("reliance_note"))
-
-        if findings:
-            st.markdown("#### Highest pressure signals")
-            pressure_rows = sorted(
-                findings,
-                key=lambda item: float(item.get("weight", 0) or 0),
-                reverse=True,
-            )[:3]
-            pressure_cols = st.columns(min(3, len(pressure_rows)))
-            for col, item in zip(pressure_cols, pressure_rows):
-                col.markdown(
-                    f"**{item.get('category', 'General')}**\n\n"
-                    f"{item.get('name')}\n\n"
-                    f"Weight: `{float(item.get('weight', 0) or 0):.2f}`"
-                )
-
-            st.markdown("#### Triggered signals by category")
-            category_names = []
-            for item in findings:
-                category = item.get("category", "General")
-                if category not in category_names:
-                    category_names.append(category)
-            for category in category_names:
-                category_findings = [item for item in findings if item.get("category", "General") == category]
-                st.markdown(f"**{category}**")
-                finding_rows = [
-                    {
-                        "Signal": item.get("name"),
-                        "Weight": item.get("weight"),
-                        "Why it matters": item.get("description"),
-                    }
-                    for item in category_findings
-                ]
-                st.dataframe(pd.DataFrame(finding_rows), use_container_width=True, hide_index=True)
-                with st.expander(f"Evidence snippets — {category}", expanded=False):
-                    shown_any_snippet = False
-                    for item in category_findings:
-                        snippets = item.get("evidence_snippets", []) or []
-                        if snippets:
-                            shown_any_snippet = True
-                            st.write(f"**{item.get('name')}**")
-                            for snippet in snippets:
-                                st.code(snippet, language="text")
-                    if not shown_any_snippet:
-                        st.caption("No short evidence snippet was captured for this category.")
-            st.caption("Evidence snippets are short local excerpts from the pasted artifact. Credential-like values are redacted before display or receipt use.")
-        else:
-            st.success(
-                "No strong AI Integrity trigger was detected by this static rubric. "
-                "This is an empty finding state, not a safety guarantee, approval, certification, or proof that the artifact is correct."
-            )
-
-        st.markdown("#### Repair questions for human review")
-        st.caption("Use these prompts to rewrite, review, or constrain the artifact before relying on it.")
-        for question in report.get("repair_questions", []):
-            st.info(question)
-
-        st.markdown("#### Optional static boundary checks")
-        with st.expander("Privacy Boundary Audit and Code Integrity Static Scan", expanded=False):
-            privacy_boundary_audit = ai_result.get("privacy_boundary_audit") or scan.get("privacy_boundary_audit") or {}
-            privacy_detections = int(privacy_boundary_audit.get("detection_count", 0) or 0)
-            privacy_active = int(privacy_boundary_audit.get("active_signal_count", 0) or 0)
-            if privacy_detections or privacy_active:
-                render_privacy_boundary_audit_panel(privacy_boundary_audit, st)
-            else:
-                st.markdown("**Privacy Boundary Audit**")
-                st.caption(
-                    "No privacy-boundary trigger was detected by this static artifact review. "
-                    "This is not a privacy guarantee, compliance approval, hosting audit, or proof that no data is collected."
-                )
-
-            code_static_scan = ai_result.get("code_integrity_static_scan") or scan.get("code_integrity_static_scan") or {}
-            if code_static_scan:
-                code_detections = code_static_scan.get("detections", []) or []
-                if code_detections:
-                    st.markdown("**Code Integrity Static Scan**")
-                    st.caption(code_static_scan.get("scope_note"))
-                    st.caption(code_static_scan.get("non_certification_note"))
-                    ccols = st.columns(4)
-                    ccols[0].metric("Code detections", code_static_scan.get("detection_count", 0))
-                    ccols[1].metric("High", code_static_scan.get("severity_counts", {}).get("High", 0))
-                    ccols[2].metric("Medium", code_static_scan.get("severity_counts", {}).get("Medium", 0))
-                    ccols[3].metric("Review gate missing", "Yes" if code_static_scan.get("missing_human_review_gate") else "No")
-                    code_rows = [
-                        {
-                            "Category": item.get("category"),
-                            "Signal": item.get("name"),
-                            "Severity": item.get("severity"),
-                            "Why it matters": item.get("description"),
-                        }
-                        for item in code_detections
-                    ]
-                    st.dataframe(pd.DataFrame(code_rows), use_container_width=True, hide_index=True)
-                    with st.expander("Code evidence snippets — redacted static scan", expanded=False):
-                        for item in code_detections:
-                            snippets = item.get("evidence_snippets", []) or []
-                            if snippets:
-                                st.write(f"**{item.get('category')} · {item.get('name')}**")
-                                for snippet in snippets:
-                                    st.code(snippet, language="text")
-                    with st.expander("Code review questions", expanded=True):
-                        for question in code_static_scan.get("review_questions", [])[:6]:
-                            st.info(question)
-                else:
-                    st.markdown("**Code Integrity Static Scan**")
-                    st.caption(
-                        "No code-specific trigger was detected by this static artifact review. "
-                        "This is not a security guarantee, vulnerability certification, compliance approval, or proof that code is safe."
-                    )
-
-
-        st.markdown("#### Boundary note")
-        st.write(ai_result.get("notice"))
-        st.write(ai_result.get("scope_note"))
-        st.write(ai_result.get("reliance_note"))
-        st.caption("Asymptote note: ALETHEIA does not claim final Sanctuary; final truth and sovereign authority remain outside code, metrics, receipts, and institutional power.")
-
         ai_receipt_context = build_ai_integrity_receipt_context(
             ai_result,
             review_mode="batch static artifact" if ai_batch_result else "single static artifact",
@@ -4905,10 +4781,164 @@ with tab_ai_integrity:
             active_modules=["AI Integrity Mirror"],
         )
         ai_receipt_text = render_ai_integrity_receipt_context_text(ai_receipt_context) + "\n\n" + render_local_witness_receipt_text(ai_receipt)
-        with st.expander("Local AI Integrity receipt", expanded=False):
-            st.write(ai_result.get("receipt_note"))
-            st.caption("Receipt export includes AI Integrity scope, privacy, non-certification, redacted evidence, and repair context before the generic local witness receipt.")
-            st.code(ai_receipt_text, language="text")
+
+        # Patch 170: AI Integrity Patrol result panels are collapsed by default
+        # so high-pressure details remain reviewable without overwhelming the page.
+        patrol_result_row_1 = st.columns(2, gap="large")
+        with patrol_result_row_1[0]:
+            with st.expander("How to read this result", expanded=False):
+                st.write("- **Internal taxonomy label** is ALETHEIA's internal risk-state language, not a public certification grade.")
+                st.write("- **Risk reading** reflects detected authority-boundary and governance-integrity pressure in the pasted artifact.")
+                st.write("- **Integrity reading** is a bounded internal metric; it does not prove truth, safety, legality, or alignment.")
+                st.write("- **Capture pressure** reflects coercion, opacity, enforcement, surveillance, or overclaiming signals that require human review.")
+                st.write(ai_result.get("scope_note"))
+                st.write(ai_result.get("reliance_note"))
+        with patrol_result_row_1[1]:
+            with st.expander("Highest pressure signals", expanded=False):
+                if findings:
+                    pressure_rows = sorted(
+                        findings,
+                        key=lambda item: float(item.get("weight", 0) or 0),
+                        reverse=True,
+                    )[:3]
+                    for item in pressure_rows:
+                        st.markdown(
+                            f"**{item.get('category', 'General')}**  \n"
+                            f"Signal: `{item.get('name')}`  \n"
+                            f"Weight: `{float(item.get('weight', 0) or 0):.2f}`"
+                        )
+                else:
+                    st.success(
+                        "No strong AI Integrity trigger was detected by this static rubric. "
+                        "This is an empty finding state, not a safety guarantee, approval, certification, or proof that the artifact is correct."
+                    )
+
+        patrol_result_row_2 = st.columns(2, gap="large")
+        with patrol_result_row_2[0]:
+            with st.expander("Triggered signals by category", expanded=False):
+                if findings:
+                    category_names = []
+                    for item in findings:
+                        category = item.get("category", "General")
+                        if category not in category_names:
+                            category_names.append(category)
+                    for category in category_names:
+                        category_findings = [item for item in findings if item.get("category", "General") == category]
+                        st.markdown(f"**{category}**")
+                        finding_rows = [
+                            {
+                                "Signal": item.get("name"),
+                                "Weight": item.get("weight"),
+                                "Why it matters": item.get("description"),
+                            }
+                            for item in category_findings
+                        ]
+                        st.dataframe(pd.DataFrame(finding_rows), use_container_width=True, hide_index=True)
+                else:
+                    st.caption("No triggered signal category was detected in this static review.")
+        with patrol_result_row_2[1]:
+            with st.expander("Evidence snippets by category", expanded=False):
+                if findings:
+                    shown_any_snippet = False
+                    category_names = []
+                    for item in findings:
+                        category = item.get("category", "General")
+                        if category not in category_names:
+                            category_names.append(category)
+                    for category in category_names:
+                        category_findings = [item for item in findings if item.get("category", "General") == category]
+                        category_shown = False
+                        for item in category_findings:
+                            snippets = item.get("evidence_snippets", []) or []
+                            if snippets:
+                                if not category_shown:
+                                    st.markdown(f"**{category}**")
+                                    category_shown = True
+                                shown_any_snippet = True
+                                st.write(f"Signal: `{item.get('name')}`")
+                                for snippet in snippets:
+                                    st.code(snippet, language="text")
+                    if not shown_any_snippet:
+                        st.caption("No short evidence snippet was captured for the triggered categories.")
+                    st.caption("Evidence snippets are short local excerpts from the pasted artifact. Credential-like values are redacted before display or receipt use.")
+                else:
+                    st.caption("No evidence snippets are shown because no strong trigger was detected.")
+
+        patrol_result_row_3 = st.columns(2, gap="large")
+        with patrol_result_row_3[0]:
+            with st.expander("Repair questions for human review", expanded=False):
+                st.caption("Use these prompts to rewrite, review, or constrain the artifact before relying on it.")
+                for question in report.get("repair_questions", []):
+                    st.info(question)
+        with patrol_result_row_3[1]:
+            with st.expander("Optional static boundary checks", expanded=False):
+                privacy_boundary_audit = ai_result.get("privacy_boundary_audit") or scan.get("privacy_boundary_audit") or {}
+                privacy_detections = int(privacy_boundary_audit.get("detection_count", 0) or 0)
+                privacy_active = int(privacy_boundary_audit.get("active_signal_count", 0) or 0)
+                if privacy_detections or privacy_active:
+                    render_privacy_boundary_audit_panel(privacy_boundary_audit, st)
+                else:
+                    st.markdown("**Privacy Boundary Audit**")
+                    st.caption(
+                        "No privacy-boundary trigger was detected by this static artifact review. "
+                        "This is not a privacy guarantee, compliance approval, hosting audit, or proof that no data is collected."
+                    )
+
+                code_static_scan = ai_result.get("code_integrity_static_scan") or scan.get("code_integrity_static_scan") or {}
+                if code_static_scan:
+                    code_detections = code_static_scan.get("detections", []) or []
+                    if code_detections:
+                        st.markdown("**Code Integrity Static Scan**")
+                        st.caption(code_static_scan.get("scope_note"))
+                        st.caption(code_static_scan.get("non_certification_note"))
+                        ccols = st.columns(4)
+                        ccols[0].metric("Code detections", code_static_scan.get("detection_count", 0))
+                        ccols[1].metric("High", code_static_scan.get("severity_counts", {}).get("High", 0))
+                        ccols[2].metric("Medium", code_static_scan.get("severity_counts", {}).get("Medium", 0))
+                        ccols[3].metric("Review gate missing", "Yes" if code_static_scan.get("missing_human_review_gate") else "No")
+                        code_rows = [
+                            {
+                                "Category": item.get("category"),
+                                "Signal": item.get("name"),
+                                "Severity": item.get("severity"),
+                                "Why it matters": item.get("description"),
+                            }
+                            for item in code_detections
+                        ]
+                        st.dataframe(pd.DataFrame(code_rows), use_container_width=True, hide_index=True)
+                        st.markdown("**Code evidence snippets — redacted static scan**")
+                        for item in code_detections:
+                            snippets = item.get("evidence_snippets", []) or []
+                            if snippets:
+                                st.write(f"**{item.get('category')} · {item.get('name')}**")
+                                for snippet in snippets:
+                                    st.code(snippet, language="text")
+                        st.markdown("**Code review questions**")
+                        for question in code_static_scan.get("review_questions", [])[:6]:
+                            st.info(question)
+                    else:
+                        st.markdown("**Code Integrity Static Scan**")
+                        st.caption(
+                            "No code-specific trigger was detected by this static artifact review. "
+                            "This is not a security guarantee, vulnerability certification, compliance approval, or proof that code is safe."
+                        )
+                else:
+                    st.markdown("**Code Integrity Static Scan**")
+                    st.caption("No code-specific static-scan object was attached to this result.")
+
+        patrol_result_row_4 = st.columns(2, gap="large")
+        with patrol_result_row_4[0]:
+            with st.expander("Boundary note", expanded=False):
+                st.write(ai_result.get("notice"))
+                st.write(ai_result.get("scope_note"))
+                st.write(ai_result.get("reliance_note"))
+                st.caption("Asymptote note: ALETHEIA does not claim final Sanctuary; final truth and sovereign authority remain outside code, metrics, receipts, and institutional power.")
+        with patrol_result_row_4[1]:
+            with st.expander("Local AI Integrity receipt", expanded=False):
+                st.write(ai_result.get("receipt_note"))
+                st.caption("Receipt export includes AI Integrity scope, privacy, non-certification, redacted evidence, and repair context before the generic local witness receipt.")
+                st.code(ai_receipt_text, language="text")
+
         st.download_button(
             "⬇️ Download AI Integrity receipt",
             data=ai_receipt_text,
@@ -4917,7 +4947,6 @@ with tab_ai_integrity:
             use_container_width=True,
             key="ai_integrity_receipt_download",
         )
-
 
 with tab_empirical:
     render_evidence_lab_intro(st)
