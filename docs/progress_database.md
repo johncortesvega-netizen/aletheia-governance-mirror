@@ -3168,3 +3168,25 @@ Validation target:
 ```bat
 python tools\run_patch_checks.py 168
 ```
+
+
+## Patch 169 — Evidence Lab Compact Panel Formatting
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 169 applies the same compact opt-in panel formatting used by Patrol Guide and Why AI Patrol to Evidence Lab. The top of Evidence Lab now opens with an **Evidence Patrol** introduction and four side-by-side rows / eight collapsed panels covering the evidence boundary, evidence status protocol, public-source rule, data flow, needed columns, extraordinary claim rule, build/upload path, and Export / World Lens boundary.
+
+The previously long expanded evidence guidance is no longer open by default. The evidence status template and data-source map are collapsed by default, while the actual public-data upload workflow remains available below the orientation panels.
+
+Boundary notes:
+- UI/copy/layout only.
+- No empirical scoring, data ingestion, upload parsing, World Lens math, routing, taxonomy, receipt schema/generation, protocol logic, external calls, telemetry/storage, certification, enforcement, approval/rejection, or final-truth behavior changed.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 169
+```

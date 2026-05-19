@@ -4923,79 +4923,40 @@ with tab_empirical:
     render_evidence_lab_intro(st)
     render_shared_protocol_state_notice("Evidence Lab")
 
-    render_module_page_template_intro(
-        st,
-        ModulePageTemplateCopy(
-            module_name="Evidence Lab",
-            purpose=(
-                "Separate claims from evidence quality, inspect country-year tables and source coverage, "
-                "and keep extraordinary or unsupported claims unverified until human review."
-            ),
-            looks_for=(
-                "Evidence sufficiency: whether support is strong, partial, weak, absent, or extraordinary/unverified.",
-                "Source quality: whether claims are public, relevant, reviewable, independent, current, and non-coercive.",
-                "Coverage gaps: whether missing trust, WGI, V-Dem, year, identity, or population fields limit interpretation.",
-                "Evidence inflation: whether conclusions outrun the inspected sources or table coverage.",
-                "Extraordinary-claim pressure: whether spiritual, prophetic, alien, neural, metaphysical, or exceptional claims are being converted into authority.",
-                "Empirical bridge readiness: whether the evidence table is prepared carefully enough to support World Lens selected-year views.",
-            ),
-            safe_first_path=(
-                "Start with a claim or table and ask what evidence is actually supplied.",
-                "Mark unsupported or extraordinary claims as unverified instead of treating them as policy authority.",
-                "Inspect coverage and missing fields before relying on country-year outputs.",
-                "Use Evidence Lab as a review layer, not as a proof engine, oracle, or final truth system.",
-            ),
-            input_guidance="Use Evidence Lab for claims, source-quality review, and empirical country-year table preparation. Keep unsupported claims separate from operational authority.",
-            result_guidance="Treat Evidence Lab output as evidence-status and coverage guidance, not as proof, debunking, certification, or metaphysical validation.",
-            observed_reasons_guidance="Check evidence level, source limitations, missing data, coverage fields, and method notes before interpreting outputs.",
-            repair_questions_guidance="Use repair questions to ask what source, comparison, date, independent review, or non-coercive evidence would strengthen the claim.",
-            receipt_guidance="Evidence Lab exports support review and World Lens preparation; they do not certify countries, claims, institutions, or beliefs.",
-        ),
-    )
+    # Patch 169: Evidence Lab now uses compact opt-in panels from
+    # pages_ui.evidence_lab_page.render_evidence_lab_intro. Keep the
+    # interactive template and upload workflow below, but stop the top of the
+    # tab from opening long guidance blocks by default.
 
-    with st.expander("Evidence status + extraordinary claim protocol", expanded=True):
-        st.markdown(
-            """
-            Evidence Lab uses four review levels:
+    with st.expander("Evidence status template", expanded=False):
+        evidence_examples = {
+            "Strong evidence": "Multiple public, relevant, reviewable sources support the claim.",
+            "Partial evidence": "Some evidence exists, but coverage, independence, relevance, or completeness is limited.",
+            "Weak evidence": "The claim is mostly asserted, anecdotal, internally sourced, or insufficiently documented.",
+            "No evidence supplied": "No reviewable support is provided for the claim.",
+            "Unverified extraordinary claim": "The claim may be personally meaningful, but it is not used as policy authority without public, testable, non-coercive evidence and human review.",
+        }
+        selected_evidence_level = st.selectbox(
+            "Evidence status example",
+            list(evidence_examples.keys()),
+            key="evidence_status_example_selector",
+            help="Template-level calibration only. Evidence status is a review signal, not a final truth verdict.",
+        )
+        st.code(
+            f"""Evidence Lab Review
 
-            - **Strong evidence** — multiple public, relevant, reviewable sources support the claim.
-            - **Partial evidence** — some evidence exists, but coverage, independence, relevance, or completeness is limited.
-            - **Weak evidence** — the claim is mostly asserted, anecdotal, internally sourced, or insufficiently documented.
-            - **No evidence supplied** — no reviewable support is provided.
-
-            Extraordinary claims — including spiritual, prophetic, alien, neural, metaphysical, or otherwise exceptional claims — are treated as **unverified** unless supported by public, testable, non-coercive evidence.
-
-            ALETHEIA may audit the policy consequences of a claim for rights, coercion, transparency, accountability, appealability, and repair. It must not validate spiritual authority, confirm invisible sources, remove guardrails, or replace human review.
-            """
+    Claim reviewed: [insert claim]
+    Evidence status: {selected_evidence_level}
+    Reason: {evidence_examples[selected_evidence_level]}
+    Evidence gaps: identify unsupported assertions, missing sources, stale data, self-referential sources, or unreviewable claims.
+    Extraordinary claim handling: treat as unverified unless supported by public, testable, non-coercive evidence.
+    Policy consequence audit: review effects on basic rights, free agency, coercion, transparency, appeal, accountability, and repair.
+    Human review disclaimer: Evidence Lab is a mirror for human review. It is not a proof engine, oracle, legal judgment, religious authority, or enforcement authority.""",
+            language="text",
         )
 
-    evidence_examples = {
-        "Strong evidence": "Multiple public, relevant, reviewable sources support the claim.",
-        "Partial evidence": "Some evidence exists, but coverage, independence, relevance, or completeness is limited.",
-        "Weak evidence": "The claim is mostly asserted, anecdotal, internally sourced, or insufficiently documented.",
-        "No evidence supplied": "No reviewable support is provided for the claim.",
-        "Unverified extraordinary claim": "The claim may be personally meaningful, but it is not used as policy authority without public, testable, non-coercive evidence and human review.",
-    }
-    selected_evidence_level = st.selectbox(
-        "Evidence status example",
-        list(evidence_examples.keys()),
-        key="evidence_status_example_selector",
-        help="Template-level calibration only. Evidence status is a review signal, not a final truth verdict.",
-    )
-    st.code(
-        f"""Evidence Lab Review
 
-Claim reviewed: [insert claim]
-Evidence status: {selected_evidence_level}
-Reason: {evidence_examples[selected_evidence_level]}
-Evidence gaps: identify unsupported assertions, missing sources, stale data, self-referential sources, or unreviewable claims.
-Extraordinary claim handling: treat as unverified unless supported by public, testable, non-coercive evidence.
-Policy consequence audit: review effects on basic rights, free agency, coercion, transparency, appeal, accountability, and repair.
-Human review disclaimer: Evidence Lab is a mirror for human review. It is not a proof engine, oracle, legal judgment, religious authority, or enforcement authority.""",
-        language="text",
-    )
-
-    with st.expander("Data sources → ALETHEIA fields → Protocol view", expanded=True):
+    with st.expander("Data sources → ALETHEIA fields → Protocol view", expanded=False):
         st.markdown(
             "**Flow:** public evidence → variable mapping → scoring → protocol overlay → review."
         )
