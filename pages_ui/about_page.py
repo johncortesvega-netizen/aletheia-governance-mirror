@@ -38,6 +38,17 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
 
     st = container
     st.subheader("Why AI Patrol / ALETHEIA")
+    # Patch 182: visual-only sky/gold alignment anchor for the public Why page.
+    st.markdown(
+        """
+        <div class="sky-gold-page-anchor">
+            <strong><span class="pillar-pair"></span>Why AI Patrol</strong>
+            <span class="sky-gold-rule"></span>
+            <span>The rebrand uses sky-blue clarity, white civic structure, and gold emphasis while preserving the mirror-not-throne boundary.</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     st.info(
         "AI Patrol is the friendlier public face of ALETHEIA: a compact stop/go "
         "review layer for human judgment. It signals; people decide."

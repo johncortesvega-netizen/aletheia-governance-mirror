@@ -1,0 +1,35 @@
+PATCH 181 MANIFEST
+==================
+
+Patch ID: 181
+Title: AI Patrol Sky / Gold / White Pillars Theme
+Date: 2026-05-19
+Status: READY FOR LOCAL REVIEW
+
+Scope
+-----
+Visual-only theme update for the AI Patrol app shell: light sky-blue base, white card/pillar structure, gold accents, brighter panels, and refreshed button/sidebar/expander styling.
+
+Files Changed
+-------------
+- app.py
+- tests/test_patch_181_sky_gold_pillars_theme.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_181_MANIFEST.txt
+- PATCH_181_RECOVERY_NOTE.md
+
+Boundary
+--------
+- No scoring changes.
+- No routing changes.
+- No taxonomy changes.
+- No receipt schema, receipt values, or hash changes.
+- No batch behavior changes.
+- No AI Integrity, Evidence Lab, World Lens, or protocol-engine logic changes.
+- No telemetry/storage/network additions.
+- No certification, enforcement, or authority behavior added.
+
+Validation
+----------
+- python tools/run_patch_checks.py 181

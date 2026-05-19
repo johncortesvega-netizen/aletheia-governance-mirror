@@ -3880,3 +3880,26 @@ Validation target:
 ```bat
 python tools\run_patch_checks.py 181
 ```
+
+## Patch 182 — AI Patrol Sky/Gold Module Alignment
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 182 is the second visual-only pass for the AI Patrol sky/gold/white-structure theme. Patch 181 handled the global shell. This patch aligns Patrol Guide, Why AI Patrol / ALETHEIA, Evidence Lab, and subordinate AI static scan context panels with the same brighter civic visual language.
+
+Changes include small sky/gold page-anchor cards, improved review-expander styling, gold-accent quote rails, calmer table headers, and stronger visual continuity across the major explanatory/review surfaces.
+
+Boundary notes:
+- CSS/page-anchor styling only.
+- No scoring, routing, taxonomy, receipt schema/generation, receipt values, batch behavior, AI static scan logic, Evidence Lab calculations, World Lens math, protocol logic, external calls, telemetry/storage, certification, enforcement, or authority behavior changed.
+- AI static scan context remains subordinate to Mirror Check / Stress Test and does not become a standalone verdict path.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 182
+python tools\run_patch_checks.py 181
+```

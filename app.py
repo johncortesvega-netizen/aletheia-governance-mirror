@@ -262,7 +262,7 @@ def enforce_missing_safeguard_threshold_route(
     )
 
 
-APP_VERSION = "v1.0-ai-patrol-sky-theme"
+APP_VERSION = "v1.0-ai-patrol-sky-theme-p2"
 SUPPORTED_INPUT_LANGUAGE_NOTE = "Language scope: ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim. Human review remains required."
 PROJECT_ROOT = Path(__file__).resolve().parent
 ABOUT_HEADER_IMAGE = PROJECT_ROOT / "assets" / "about_header.png"
@@ -1393,6 +1393,75 @@ st.markdown(
 
     .footer-banner {
         color: #17324a !important;
+    }
+
+
+
+    /* Patch 182: AI Patrol sky/gold module alignment pass.
+       Visual/copy anchor only for Patrol Guide, Why AI Patrol, Evidence Lab, and subordinate AI Integrity panels. */
+    .sky-gold-page-anchor {
+        border: 1px solid rgba(212,175,55,0.42);
+        border-left: 6px solid var(--gold);
+        border-radius: 20px;
+        padding: 0.9rem 1rem 0.85rem 1rem;
+        margin: 0.35rem 0 1rem 0;
+        background:
+            linear-gradient(90deg, rgba(255,255,255,0.98), rgba(239,249,255,0.94)),
+            radial-gradient(circle at 96% 14%, rgba(212,175,55,0.14), rgba(212,175,55,0));
+        box-shadow: 0 10px 24px rgba(31,95,143,0.10);
+    }
+    .sky-gold-page-anchor strong {
+        color: #123d63;
+        letter-spacing: 0.02em;
+    }
+    .sky-gold-page-anchor span {
+        color: #577086;
+    }
+    .sky-gold-page-anchor .sky-gold-rule {
+        display: block;
+        width: 96px;
+        height: 3px;
+        margin: 0.45rem 0 0.5rem 0;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--gold), rgba(127,188,232,0.62));
+    }
+    .sky-gold-page-anchor .pillar-pair {
+        display: inline-block;
+        width: 28px;
+        height: 18px;
+        margin-right: 0.45rem;
+        vertical-align: -3px;
+        background:
+            linear-gradient(90deg, rgba(255,255,255,1) 0 38%, transparent 38% 62%, rgba(255,255,255,1) 62% 100%);
+        border-top: 1px solid rgba(212,175,55,0.42);
+        border-bottom: 1px solid rgba(212,175,55,0.42);
+        filter: drop-shadow(0 3px 5px rgba(31,95,143,0.08));
+    }
+    div[data-testid="stExpander"] details[open] {
+        background: linear-gradient(180deg, rgba(255,255,255,0.99), rgba(246,252,255,0.96));
+    }
+    div[data-testid="stExpander"] p,
+    div[data-testid="stExpander"] li,
+    div[data-testid="stExpander"] td {
+        color: #27465f;
+    }
+    div[data-testid="stExpander"] blockquote {
+        border-left: 4px solid var(--gold) !important;
+        background: rgba(216,240,255,0.34);
+        color: #17324a;
+    }
+    div[data-testid="stExpander"] table {
+        border: 1px solid rgba(127,188,232,0.24);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    div[data-testid="stExpander"] th {
+        background: rgba(216,240,255,0.48) !important;
+        color: #123d63 !important;
+        border-bottom: 1px solid rgba(212,175,55,0.30) !important;
+    }
+    div[data-testid="stExpander"] hr {
+        border-color: rgba(212,175,55,0.28) !important;
     }
 
     @media (max-width: 900px) {
@@ -4259,6 +4328,7 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                 soft_card(f"{priority} · {target} · {action}", silent_operator_question(rec, context=str(target)))
 
         ai_static_context = report.get("ai_static_scan_context") if isinstance(report, dict) else None
+        # Patch 182: AI static scan expanders inherit sky/gold expander and table styling; context remains subordinate.
         if isinstance(ai_static_context, dict):
             with st.expander("AI static scan context — subordinate to Stress Test", expanded=False):
                 st.caption(ai_static_context.get("notice"))
@@ -8199,6 +8269,7 @@ with tab_chat:
                         st.caption("No named source concept matched this idea in the current detector set.")
 
             ai_static_context = latest.get("report", {}).get("ai_static_scan_context") if isinstance(latest.get("report"), dict) else None
+            # Patch 182: AI static scan context uses the same sky/gold expander treatment as other aligned review panels.
             with support_columns[1]:
                 with st.expander("AI static scan context — subordinate to Mirror Check", expanded=False):
                     if isinstance(ai_static_context, dict):
@@ -8257,6 +8328,17 @@ with tab_chat:
 
 with tab_doctrine:
     st.subheader("Patrol Guide")
+    # Patch 182: visual-only sky/gold alignment anchor for the Patrol Guide surface.
+    st.markdown(
+        """
+        <div class="sky-gold-page-anchor">
+            <strong><span class="pillar-pair"></span>Patrol Guide</strong>
+            <span class="sky-gold-rule"></span>
+            <span>Sky-blue base, white structure, and gold emphasis frame the operating boundaries without adding authority.</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     st.markdown("### AI Patrol Guide")
     st.info(
         "AI Patrol is the friendlier public face of ALETHEIA: a stop/go integrity patrol for human review. "

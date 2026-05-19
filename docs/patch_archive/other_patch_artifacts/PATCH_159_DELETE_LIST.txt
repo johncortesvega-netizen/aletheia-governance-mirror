@@ -1,0 +1,13 @@
+Patch 159 root cleanup guidance:
+
+For a clean GitHub/root view, archive older root patch artifacts into docs/patch_archive/ and keep only the latest Patch 159 manifest/recovery/delete files at the root.
+
+Root current:
+- PATCH_159_MANIFEST.txt
+- PATCH_159_RECOVERY_NOTE.md
+- PATCH_159_DELETE_LIST.txt
+
+Archive older:
+- PATCH_*_MANIFEST.txt -> docs/patch_archive/manifests/
+- PATCH_*_RECOVERY_NOTE.md -> docs/patch_archive/recovery_notes/
+- PATCH_*_DELETE_LIST.txt -> docs/patch_archive/other_patch_artifacts/

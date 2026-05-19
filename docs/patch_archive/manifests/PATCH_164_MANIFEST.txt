@@ -1,0 +1,29 @@
+PATCH 164 — Artificial Mind Formation Compact Opt-In Panels
+
+Changed files:
+- pages_ui/artificial_mind_formation_page.py
+- docs/artificial_mind_formation_theory.md
+- tests/test_patch_164_artificial_mind_opt_in_panel_layout.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_164_MANIFEST.txt
+- PATCH_164_RECOVERY_NOTE.md
+
+Summary:
+- Reorganized the Artificial Mind Formation Theory explainer into compact opt-in panels.
+- Kept the main Protocol Guide explainer collapsed by default.
+- Added four side-by-side rows of nested collapsed subsection panels.
+- Preserved all Patch 162/163 boundary language and section content.
+
+Boundary:
+- Layout/presentation only.
+- No core scoring changes.
+- No new taxonomy state.
+- No World Lens changes.
+- No receipt schema/generation changes.
+- No routing changes.
+- No external calls, telemetry, storage, certification, enforcement, official authority, or final-truth behavior changes.
+- Human review remains required.
+
+Validation:
+- python tools\run_patch_checks.py 164

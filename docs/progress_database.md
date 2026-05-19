@@ -3460,3 +3460,20 @@ Validation target:
 ```bat
 python tools\run_patch_checks.py 181
 ```
+
+## Patch 182 — AI Patrol Sky/Gold Module Alignment
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 182 continues the visual rebrand as a small, reviewable UI patch. It does not change the engine. It adds sky/gold/white-structure page anchors to Patrol Guide, Why AI Patrol / ALETHEIA, and Evidence Lab, and extends the shared visual treatment to review expanders, table headers, blockquotes, and subordinate AI static scan context panels.
+
+Boundary preserved: visual/CSS and page-anchor copy only; no scoring, routing, taxonomy, receipts, batch behavior, Evidence Lab calculations, World Lens math, AI static scan logic, protocol logic, storage, telemetry, certification, enforcement, or authority behavior changed. Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 182
+python tools\run_patch_checks.py 181
+```

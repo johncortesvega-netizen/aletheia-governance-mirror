@@ -1,0 +1,36 @@
+PATCH 169 MANIFEST
+==================
+
+Patch ID: 169
+Title: Evidence Lab Compact Panel Formatting
+Date: 2026-05-19
+Status: READY FOR LOCAL REVIEW
+
+Scope
+-----
+Reformat Evidence Lab orientation into compact opt-in side-by-side panels matching the Patrol Guide / Why AI Patrol layout direction. Collapse long guidance by default while keeping the functional upload workflow visible and unchanged.
+
+Files Changed
+-------------
+- app.py
+- pages_ui/evidence_lab_page.py
+- tests/test_patch_169_evidence_lab_panel_layout.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_169_MANIFEST.txt
+- PATCH_169_RECOVERY_NOTE.md
+
+Boundary
+--------
+- No scoring changes.
+- No empirical ingestion or parsing changes.
+- No World Lens math changes.
+- No routing or taxonomy changes.
+- No receipt schema/generation changes.
+- No protocol logic changes.
+- No telemetry/storage/network additions.
+- No certification, enforcement, or authority-claim behavior introduced.
+
+Validation
+----------
+- python tools/run_patch_checks.py 169

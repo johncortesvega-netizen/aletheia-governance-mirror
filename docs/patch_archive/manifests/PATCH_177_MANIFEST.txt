@@ -1,0 +1,35 @@
+PATCH 177 MANIFEST
+==================
+
+Patch ID: 177
+Title: Mirror Check Plain Panel Formatting
+Date: 2026-05-19
+Status: READY FOR LOCAL REVIEW
+
+Scope
+-----
+Reformat Mirror Check result output into plain-English, opt-in panels matching the newer Receipt Reader tone and app formatting direction.
+
+Files Changed
+-------------
+- app.py
+- tests/test_patch_177_mirror_check_plain_panel_format.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_177_MANIFEST.txt
+- PATCH_177_RECOVERY_NOTE.md
+
+Boundary
+--------
+- No scoring changes.
+- No routing changes.
+- No taxonomy-state changes.
+- No receipt schema/generation changes.
+- No AI static scan logic changes.
+- No World Lens or Evidence Lab changes.
+- No protocol-engine changes.
+- No certification, enforcement, approval/rejection, or authority-claim behavior introduced.
+
+Validation
+----------
+- python tools/run_patch_checks.py 177

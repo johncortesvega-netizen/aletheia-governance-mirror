@@ -6,7 +6,7 @@ APP = ROOT / "app.py"
 
 def test_patch_181_app_version_marks_sky_theme():
     text = APP.read_text(encoding="utf-8")
-    assert 'APP_VERSION = "v1.0-ai-patrol-sky-theme"' in text
+    assert 'APP_VERSION = "v1.0-ai-patrol-sky-theme' in text
 
 
 def test_patch_181_sky_gold_theme_tokens_present():

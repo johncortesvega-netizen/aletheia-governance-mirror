@@ -462,3 +462,61 @@ Older root patch manifests, recovery notes, and delete lists are archived under:
 - `docs/patch_archive/manifests/`
 - `docs/patch_archive/recovery_notes/`
 - `docs/patch_archive/other_patch_artifacts/`
+
+## Patch 182 archive refresh
+
+Patch 182 refreshed root hygiene after the sky/gold visual patch. Root-level historical patch artifacts from Patch 159 through Patch 181 were moved into the archive so only the latest patch manifest/recovery note remains visible at root.
+
+### Patch 182 archived manifests
+- `docs/patch_archive/manifests/PATCH_159_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_160_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_161_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_162_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_163_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_164_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_165_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_166_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_167_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_168_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_169_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_170_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_171_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_172_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_173_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_174_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_175_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_176_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_177_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_178_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_179_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_180_MANIFEST.txt`
+- `docs/patch_archive/manifests/PATCH_181_MANIFEST.txt`
+
+### Patch 182 archived recovery notes
+- `docs/patch_archive/recovery_notes/PATCH_159_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_160_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_161_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_162_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_163_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_164_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_165_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_166_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_167_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_168_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_169_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_170_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_171_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_172_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_173_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_174_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_175_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_176_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_177_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_178_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_179_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_180_RECOVERY_NOTE.md`
+- `docs/patch_archive/recovery_notes/PATCH_181_RECOVERY_NOTE.md`
+
+### Patch 182 archived other patch artifacts
+- `docs/patch_archive/other_patch_artifacts/PATCH_159_DELETE_LIST.txt`
+- `docs/patch_archive/other_patch_artifacts/PATCH_160_DELETE_LIST.txt`

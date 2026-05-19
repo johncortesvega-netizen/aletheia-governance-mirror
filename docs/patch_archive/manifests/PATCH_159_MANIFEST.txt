@@ -1,0 +1,29 @@
+ALETHEIA PATCH 159 — REMAINING MODULE PAGE POLISH
+
+Changed files:
+- app.py
+- docs/module_page_template.md
+- docs/patch_index.md
+- docs/progress_database.md
+- PATCH_STATUS.md
+- tests/test_patch_159_module_page_remaining_surfaces.py
+- PATCH_159_MANIFEST.txt
+- PATCH_159_RECOVERY_NOTE.md
+- PATCH_159_DELETE_LIST.txt
+
+Purpose:
+- Complete Patch E of the staged module-page unification work.
+- Apply the shared Patch 155 page-like scaffold to Boundary Cases, Evidence Lab, and World Lens.
+- Keep each module's inherent content and boundaries intact.
+
+Boundary:
+- Copy/layout polish only.
+- No scoring, routing, taxonomy, receipt schema/generation, receipt parsing, empirical math, World Lens allocation, protocol logic, batch behavior, upload/download behavior, external calls, telemetry/storage, Global ID sync, public ledger behavior, certification, enforcement, ranking, official authority, approval/rejection, or final-truth behavior changed.
+- Human review remains required.
+
+Validation:
+- python tools\run_patch_checks.py 159
+- python tools\run_patch_checks.py 158
+- python tools\run_patch_checks.py 157
+- python tools\run_patch_checks.py 156
+- python tools\run_patch_checks.py 155
