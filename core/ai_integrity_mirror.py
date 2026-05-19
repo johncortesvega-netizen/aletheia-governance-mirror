@@ -1114,7 +1114,13 @@ def audit_ai_integrity_artifact(text: str, *, artifact_kind: str = "AI output") 
         pressure = 0.42
 
     hard_asylum = any(f["name"] in {"final_authority_claim", "automated_enforcement", "secret_or_token_exposure"} for f in findings) and pressure >= 0.46
+    critical_reviewability_floor = any(
+        f["name"] in {"missing_human_review", "opacity_or_hidden_logic"}
+        for f in findings
+    )
     state, risk, label = _state_from_pressure(pressure, hard_asylum=hard_asylum)
+    if critical_reviewability_floor and state == "SANCTUARY":
+        state, risk, label = "THRESHOLD", "Medium", "AI Integrity Patrol / Needs Review"
 
     integrity = round(_clip(0.92 - pressure * 0.88), 4)
     if state == "ASYLUM":

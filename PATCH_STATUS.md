@@ -3615,3 +3615,26 @@ Validation target:
 python tools\run_patch_checks.py 170
 python tools\run_patch_checks.py 169
 ```
+
+
+## Patch 171 — AI Integrity Patrol Reviewability Floor
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 171 fixes an AI Integrity Patrol calibration bug exposed by the opaque-agent demo. A pasted artifact that contains hidden/proprietary decision logic together with missing challenge, review, appeal, or human-review paths must not display as a low / SANCTUARY-style reading.
+
+The patch adds a minimum **THRESHOLD / Needs Review** floor when critical reviewability or opacity signals such as `missing_human_review` or `opacity_or_hidden_logic` are triggered. Numeric metrics remain visible, but they cannot override the hard reviewability boundary.
+
+Boundary notes:
+- AI Integrity Patrol calibration/routing guard only.
+- No general taxonomy-state change, World Lens math change, Evidence Lab change, receipt schema/generation change, UI navigation change, telemetry/storage, enforcement, certification, approval/rejection, legal authority, political authority, spiritual authority, or final-truth behavior changed.
+- Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 171
+python tools\run_patch_checks.py 170
+```
