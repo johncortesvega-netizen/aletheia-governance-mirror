@@ -1276,10 +1276,138 @@ def _view_status_heading(view: dict[str, Any]) -> str:
     return f"Native Receipt State: {state}"
 
 
+def _plain_state_name(native_state: str) -> str:
+    """Return a plain English state label without changing the receipt value."""
+    state = str(native_state or MISSING_VALUE).strip().upper()
+    if state == "SANCTUARY":
+        return "Sanctuary (low review pressure)"
+    if state == "THRESHOLD":
+        return "Threshold (review needed)"
+    if state == "ASYLUM":
+        return "Asylum pressure (high review pressure)"
+    if state == "QUESTION_PROMPT":
+        return "Question prompt (review-tool mode)"
+    if state == "WORLD_LENS_EVIDENCE_VIEW":
+        return "World Lens evidence view"
+    return str(native_state or MISSING_VALUE)
+
+
+def _plain_metric_value(fields: dict[str, str], key: str) -> str:
+    value = fields.get(key, MISSING_VALUE)
+    return value if value not in {None, ""} else MISSING_VALUE
+
+
+def _plain_power_distribution_rows(view: dict[str, Any]) -> list[dict[str, str]]:
+    """Return a simple component matrix for the plain-language Receipt Reader summary.
+
+    The rows do not rescore the receipt. They translate the native fields and
+    receipt questions into the same human-readable review categories used by
+    the app: power, correction, and access.
+    """
+    native_state = str(view.get("native_state", MISSING_VALUE))
+    standard_band = str(view.get("standard_band", MISSING_VALUE))
+    questions = view.get("repair_questions") or []
+    question_note = "Repair questions are present; review the appeal, correction, and safeguard path."
+    if not questions:
+        question_note = "No repair questions were parsed from this uploaded receipt. That does not prove that no review is needed."
+    return [
+        {
+            "Review area": "Power",
+            "What the reader checks": "Whether control, evidence, or decision authority appears concentrated or reviewable.",
+            "Receipt value used": f"Native state: {native_state}; review pressure: {standard_band}",
+        },
+        {
+            "Review area": "Correction",
+            "What the reader checks": "Whether people have a way to question, appeal, correct, pause, or review the process.",
+            "Receipt value used": question_note,
+        },
+        {
+            "Review area": "Access",
+            "What the reader checks": "Whether access to rights, services, basic needs, or participation appears conditional, coercive, or unclear.",
+            "Receipt value used": "Use the module source, protocol label, and repair questions as the receipt-level evidence. Missing fields are not inferred.",
+        },
+    ]
+
+
+def _plain_next_questions(view: dict[str, Any]) -> list[str]:
+    questions = [str(q).strip() for q in (view.get("repair_questions") or []) if str(q).strip()]
+    if questions:
+        return questions[:5]
+    return [
+        "Where can a person object, appeal, pause, or request human review if something goes wrong?",
+        "What prevents this system from becoming less transparent or more centralized over time?",
+        "Which evidence would another reviewer need before relying on this receipt?",
+    ]
+
+
+def _plain_receipt_summary_text(view: dict[str, Any]) -> str:
+    fields = view.get("fields") or {}
+    module = _display_module_source(view)
+    native_state = str(view.get("native_state", MISSING_VALUE))
+    standard_band = str(view.get("standard_band", MISSING_VALUE))
+    protocol_label = fields.get("protocol_label", MISSING_VALUE)
+    integrity = _plain_metric_value(fields, "integrity")
+    collapse = _plain_metric_value(fields, "collapse_probability")
+    trust = _plain_metric_value(fields, "trust")
+    alignment = _plain_metric_value(fields, "alignment")
+
+    return (
+        "This is a record of an ALETHEIA review, a kind of digital mirror. "
+        "The reader explains what the uploaded receipt says; it does not rerun the test, "
+        "change the values, approve the result, or decide whether something is truly safe, good, or true. "
+        "Real people must still review the receipt before relying on it.\n\n"
+        f"The receipt records **{_plain_state_name(native_state)}** with **{standard_band}**. "
+        f"The protocol label copied from the receipt is **{protocol_label}**, and the module source is **{module}**. "
+        f"Key copied values include integrity **{integrity}**, collapse pressure **{collapse}**, trust **{trust}**, and alignment **{alignment}**. "
+        "These values are shown as recorded; the Receipt Reader does not adjust them."
+    )
+
+
+def _render_plain_language_receipt_summary(container: Any, view: dict[str, Any]) -> None:
+    """Render the requested plain-English Receipt Reader summary tone."""
+    fields = view.get("fields") or {}
+    native_state = str(view.get("native_state", MISSING_VALUE))
+    standard_band = str(view.get("standard_band", MISSING_VALUE))
+
+    container.markdown("### Plain-English receipt summary")
+
+    with container.expander("What is this document?", expanded=True) as panel:
+        panel.write(_plain_receipt_summary_text(view))
+        panel.info(
+            "Important: this is a demo/review artifact unless the uploaded receipt says otherwise. "
+            "The computer does not decide anything here. It does not give official permission, "
+            "and it does not prove that something is truly safe, good, or true. Human review remains required."
+        )
+
+    with container.expander("The main results", expanded=True) as panel:
+        panel.markdown(f"- **Status:** {_plain_state_name(native_state)}")
+        panel.markdown(f"- **Review pressure:** {standard_band}")
+        panel.markdown(f"- **Protocol label:** {fields.get('protocol_label', MISSING_VALUE)}")
+        panel.markdown(f"- **Integrity:** {_plain_metric_value(fields, 'integrity')}")
+        panel.markdown(f"- **Collapse pressure:** {_plain_metric_value(fields, 'collapse_probability')}")
+        panel.markdown(f"- **Trust:** {_plain_metric_value(fields, 'trust')}")
+        panel.markdown(f"- **Alignment:** {_plain_metric_value(fields, 'alignment')}")
+        panel.caption("These are copied from the uploaded receipt. Receipt Reader does not change or rescore them.")
+
+    with container.expander("How is power distributed?", expanded=False) as panel:
+        panel.write(
+            "The reader looks at three practical review areas: power, correction, and access. "
+            "This is a plain-language translation layer; it does not add a new score."
+        )
+        panel.table(_plain_power_distribution_rows(view))
+
+    with container.expander("Next steps and questions", expanded=False) as panel:
+        panel.write(
+            "Even when a receipt looks positive, these are the questions a human reviewer should keep open."
+        )
+        for question in _plain_next_questions(view):
+            panel.markdown(f"- {question}")
+
 def _render_single_view(container: Any, view: dict[str, Any]) -> None:
     fields = view["fields"]
     container.markdown(f"### {_view_status_heading(view)}")
     container.write(_verbal_brief(view))
+    _render_plain_language_receipt_summary(container, view)
 
     container.markdown(
         f"**Native State:** {view['native_state']}  \n"

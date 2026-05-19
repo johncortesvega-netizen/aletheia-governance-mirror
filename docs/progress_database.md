@@ -3340,3 +3340,28 @@ Validation targets:
 python tools\run_patch_checks.py 175
 python tools\run_patch_checks.py 174
 ```
+
+
+## Patch 176 — Receipt Reader Plain-English Summary Tone
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 176 changes the Receipt Reader presentation tone to a clearer plain-English explanation modeled on the requested Dutch example. The reader now opens each single receipt with sections for **What is this document?**, **The main results**, **How is power distributed?**, and **Next steps and questions**.
+
+The new layer explains the uploaded receipt as a digital mirror / review artifact and states plainly that the computer does not decide, does not give official permission, and does not prove that something is truly safe, good, or true. It keeps human review required and says the copied values are not changed or rescored.
+
+Boundary notes:
+- Formatting / explanation layer only.
+- Native receipt values remain unchanged.
+- No scoring, routing, taxonomy, receipt schema, World Lens, Evidence Lab, AI static scan, or protocol logic changed.
+- AI static scan context from Patch 175 remains subordinate where present.
+- Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 176
+python tools\run_patch_checks.py 175
+```
