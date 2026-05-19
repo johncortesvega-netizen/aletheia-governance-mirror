@@ -262,7 +262,7 @@ def enforce_missing_safeguard_threshold_route(
     )
 
 
-APP_VERSION = "v1.0-ai-patrol-sky-theme-p2"
+APP_VERSION = "v1.0-ai-patrol-sky-theme-p3"
 SUPPORTED_INPUT_LANGUAGE_NOTE = "Language scope: ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim. Human review remains required."
 PROJECT_ROOT = Path(__file__).resolve().parent
 ABOUT_HEADER_IMAGE = PROJECT_ROOT / "assets" / "about_header.png"
@@ -1462,6 +1462,98 @@ st.markdown(
     }
     div[data-testid="stExpander"] hr {
         border-color: rgba(212,175,55,0.28) !important;
+    }
+
+
+
+    /* Patch 183: receipt visual styling pass.
+       Visual-only framing for local witness receipts and World Lens receipt downloads; no receipt schema or scoring changes. */
+    .receipt-sky-panel {
+        border: 1px solid rgba(212,175,55,0.46);
+        border-left: 6px solid var(--gold);
+        border-radius: 22px;
+        padding: 1rem 1.05rem;
+        margin: 0.65rem 0 0.9rem 0;
+        background:
+            linear-gradient(90deg, rgba(255,255,255,0.99), rgba(236,248,255,0.96)),
+            radial-gradient(circle at 96% 8%, rgba(212,175,55,0.16), rgba(212,175,55,0));
+        box-shadow: 0 12px 28px rgba(31,95,143,0.11), inset 0 0 0 1px rgba(255,255,255,0.72);
+        position: relative;
+        overflow: hidden;
+    }
+    .receipt-sky-panel::before,
+    .receipt-sky-panel::after {
+        content: "";
+        position: absolute;
+        top: 0.82rem;
+        bottom: 0.82rem;
+        width: 11px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, #ffffff, #f4fbff);
+        border: 1px solid rgba(212,175,55,0.30);
+        box-shadow: inset 0 0 0 2px rgba(255,255,255,0.72), 0 6px 14px rgba(31,95,143,0.08);
+    }
+    .receipt-sky-panel::before { right: 2.25rem; }
+    .receipt-sky-panel::after { right: 0.92rem; }
+    .receipt-kicker {
+        color: #9a720d !important;
+        font-size: 0.72rem;
+        font-weight: 900;
+        letter-spacing: 0.095em;
+        text-transform: uppercase;
+        margin-bottom: 0.25rem;
+    }
+    .receipt-title {
+        color: #123d63 !important;
+        font-weight: 900;
+        font-size: 1.08rem;
+        margin-bottom: 0.2rem;
+    }
+    .receipt-body {
+        color: #355d7a !important;
+        max-width: 78ch;
+        line-height: 1.55;
+    }
+    .receipt-boundary-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        margin-top: 0.7rem;
+    }
+    .receipt-boundary-pill {
+        border: 1px solid rgba(127,188,232,0.34);
+        background: rgba(255,255,255,0.78);
+        border-radius: 999px;
+        padding: 0.22rem 0.58rem;
+        color: #17496f !important;
+        font-size: 0.78rem;
+        font-weight: 800;
+    }
+    .receipt-hash-pill {
+        border-color: rgba(212,175,55,0.42);
+        color: #8a650a !important;
+    }
+    .receipt-download-note {
+        border: 1px dashed rgba(212,175,55,0.42);
+        border-radius: 18px;
+        padding: 0.74rem 0.9rem;
+        background: rgba(255,255,255,0.68);
+        color: #355d7a !important;
+        margin: 0.4rem 0 0.65rem 0;
+    }
+    .receipt-code-frame {
+        border: 1px solid rgba(212,175,55,0.36);
+        border-radius: 20px;
+        padding: 0.78rem 0.9rem;
+        margin: 0.65rem 0 0.6rem 0;
+        background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(239,249,255,0.88));
+        box-shadow: 0 9px 22px rgba(31,95,143,0.09);
+    }
+    .receipt-code-frame strong { color: #123d63 !important; }
+    [data-testid="stCodeBlock"] {
+        border: 1px solid rgba(212,175,55,0.30) !important;
+        border-radius: 18px !important;
+        box-shadow: 0 8px 18px rgba(31,95,143,0.08) !important;
     }
 
     @media (max-width: 900px) {
@@ -4346,8 +4438,24 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                 if ai_static_context.get("findings"):
                     st.dataframe(pd.DataFrame(ai_static_context.get("findings")), use_container_width=True, hide_index=True)
 
-        st.markdown("### Local witness receipt")
-        st.caption("Creates a receipt you hold. It is not published, synced, or treated as authority.")
+        # Patch 183: visual-only receipt framing; receipt payload and schema remain unchanged.
+        st.markdown(
+            """
+            <div class="receipt-sky-panel">
+              <div class="receipt-kicker">User-held review artifact</div>
+              <div class="receipt-title">Local witness receipt</div>
+              <div class="receipt-body">Creates a receipt you hold. It is not published, synced, enforced, or treated as authority.</div>
+              <div class="receipt-boundary-strip">
+                <span class="receipt-boundary-pill">Local only</span>
+                <span class="receipt-boundary-pill">No public ledger</span>
+                <span class="receipt-boundary-pill">No Global ID sync</span>
+                <span class="receipt-boundary-pill">Human review required</span>
+              </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        st.caption("Download text only. This visual card does not change the receipt content, schema, or authority boundary.")
         raw_query_for_receipt = st.session_state.get("last_query_raw", display_query)
         processed_query_for_receipt = st.session_state.get("last_query", display_query)
         receipt = build_local_witness_receipt(
@@ -4791,12 +4899,24 @@ Human review disclaimer: This self-audit is a governance mirror for human review
 
 
 
-    st.markdown("### Local Witness Receipt v2")
-    st.write(
-        "Local Witness Receipt v2 records a user-held fingerprint of an ALETHEIA review. "
-        "It documents the input, processed input, report fingerprint, app/rubric/prompt versions, active modules, and authority boundary. "
-        "It does not publish, sync, enforce, or create authority."
+    # Patch 183: visual-only example framing for receipt documentation.
+    st.markdown(
+        """
+        <div class="receipt-sky-panel">
+          <div class="receipt-kicker">Receipt example</div>
+          <div class="receipt-title">Local Witness Receipt v2</div>
+          <div class="receipt-body">Records a user-held fingerprint of an ALETHEIA review: input, processed input, report fingerprint, app/rubric/prompt versions, active modules, and authority boundary.</div>
+          <div class="receipt-boundary-strip">
+            <span class="receipt-boundary-pill receipt-hash-pill">SHA-256 fingerprints</span>
+            <span class="receipt-boundary-pill">Stored locally</span>
+            <span class="receipt-boundary-pill">No central storage</span>
+            <span class="receipt-boundary-pill">No authority claim</span>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
+    st.caption("Example styling only. The receipt remains a review artifact; it does not publish, sync, enforce, or create authority.")
     receipt_example = {
         "receipt_version": "local-witness-v2",
         "document_fingerprint": "SHA-256 of submitted document",
@@ -7570,10 +7690,22 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                     mime="text/csv",
                 )
 
-            st.markdown("#### Complete World Lens receipt")
-            st.write(
-                "Download a World Lens receipt ZIP for this selected year. It includes the overview, coverage, internal taxonomy distribution, "
-                "comparison tables, coverage gaps, all active rows, and a markdown summary for review."
+            # Patch 183: visual-only World Lens receipt download framing; ZIP contents remain unchanged.
+            st.markdown(
+                """
+                <div class="receipt-sky-panel">
+                  <div class="receipt-kicker">World Lens report artifact</div>
+                  <div class="receipt-title">Complete World Lens receipt</div>
+                  <div class="receipt-body">Download a selected-year receipt ZIP with overview, coverage, internal taxonomy distribution, comparison tables, coverage gaps, active rows, and a markdown summary for human review.</div>
+                  <div class="receipt-boundary-strip">
+                    <span class="receipt-boundary-pill">Selected-year view</span>
+                    <span class="receipt-boundary-pill">Evidence alignment required</span>
+                    <span class="receipt-boundary-pill">Not a ranking</span>
+                    <span class="receipt-boundary-pill">Not policy authority</span>
+                  </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
             )
 
             receipt_check_df = pd.DataFrame(empirical_grid_receipt_checks)
@@ -8290,8 +8422,24 @@ with tab_chat:
                     else:
                         st.caption("No subordinate AI static scan context was attached to this Mirror Check reading.")
 
-            st.markdown("### Local witness receipt")
-            st.caption("Creates a receipt you hold. It is not published, synced, or treated as authority.")
+            # Patch 183: visual-only Mirror Check receipt framing; receipt payload and schema remain unchanged.
+            st.markdown(
+                """
+                <div class="receipt-sky-panel">
+                  <div class="receipt-kicker">Mirror Check artifact</div>
+                  <div class="receipt-title">Local witness receipt</div>
+                  <div class="receipt-body">Creates a receipt you hold. It is not published, synced, enforced, or treated as authority.</div>
+                  <div class="receipt-boundary-strip">
+                    <span class="receipt-boundary-pill">User-held text file</span>
+                    <span class="receipt-boundary-pill">No central storage</span>
+                    <span class="receipt-boundary-pill">No public ledger</span>
+                    <span class="receipt-boundary-pill">Human review required</span>
+                  </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            st.caption("Download text only. This visual card does not change the receipt content, schema, or authority boundary.")
             mirror_receipt = build_mirror_receipt_for_entry(latest)
             mirror_receipt_text = render_local_witness_receipt_text(mirror_receipt)
             st.download_button(

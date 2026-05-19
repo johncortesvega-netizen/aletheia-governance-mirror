@@ -3903,3 +3903,27 @@ Validation target:
 python tools\run_patch_checks.py 182
 python tools\run_patch_checks.py 181
 ```
+
+## Patch 183 — AI Patrol Receipt Visual Styling
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 183 is the third small visual pass for the AI Patrol sky/gold/white-structure rebrand. Patch 181 handled the global shell and Patch 182 aligned the major explanatory/review surfaces. Patch 183 gives receipt surfaces a calmer, brighter review-artifact frame.
+
+Changes include sky/gold receipt cards, user-held boundary pills, subtle white-pillar receipt accents, and clearer visual framing around Local Witness receipts, the Local Witness Receipt v2 example, and the World Lens receipt ZIP setup.
+
+Boundary notes:
+- Visual/CSS and receipt-surface framing only.
+- No scoring, routing, taxonomy, receipt schema/generation, receipt values, receipt ZIP contents, batch behavior, AI static scan logic, Evidence Lab calculations, World Lens math, protocol logic, external calls, telemetry/storage, certification, enforcement, or authority behavior changed.
+- Receipts remain local review artifacts held by the user. They are not public-ledger proof, official determinations, policy authority, safety certification, or replacement for human judgment.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 183
+python tools\run_patch_checks.py 182
+python tools\run_patch_checks.py 181
+```

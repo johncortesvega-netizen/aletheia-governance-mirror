@@ -8,7 +8,7 @@ EVIDENCE = ROOT / "pages_ui" / "evidence_lab_page.py"
 
 def test_patch_182_version_marks_second_visual_pass():
     text = APP.read_text(encoding="utf-8")
-    assert 'APP_VERSION = "v1.0-ai-patrol-sky-theme-p2"' in text
+    assert 'APP_VERSION = "v1.0-ai-patrol-sky-theme-p' in text
 
 
 def test_patch_182_sky_gold_alignment_css_tokens_present():

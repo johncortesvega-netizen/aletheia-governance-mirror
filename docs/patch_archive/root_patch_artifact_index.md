@@ -520,3 +520,15 @@ Patch 182 refreshed root hygiene after the sky/gold visual patch. Root-level his
 ### Patch 182 archived other patch artifacts
 - `docs/patch_archive/other_patch_artifacts/PATCH_159_DELETE_LIST.txt`
 - `docs/patch_archive/other_patch_artifacts/PATCH_160_DELETE_LIST.txt`
+
+## Patch 183 archive refresh
+
+Patch 183 refreshed root hygiene after the receipt visual styling patch. Root-level Patch 182 artifacts were copied into this archive so the repository root can show the latest patch artifacts only.
+
+### Patch 183 archived Patch 182 root artifacts
+
+- `PATCH_182_MANIFEST.txt`
+- `PATCH_182_RECOVERY_NOTE.md`
+- `PATCH_182_DELETE_LIST.txt`
+
+Boundary: archive movement only; no audit trail deletion is intended.

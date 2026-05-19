@@ -1,0 +1,45 @@
+Patch 183 — AI Patrol Receipt Visual Styling
+Date: 2026-05-19
+Status: READY FOR LOCAL REVIEW
+
+Updated files:
+- app.py
+- tests/test_patch_183_receipt_visual_styling.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- docs/patch_archive/root_patch_artifact_index.md
+- PATCH_183_MANIFEST.txt
+- PATCH_183_RECOVERY_NOTE.md
+- PATCH_183_DELETE_LIST.txt
+
+Archived root artifacts included for hygiene:
+- docs/patch_archive/PATCH_182_MANIFEST.txt
+- docs/patch_archive/PATCH_182_RECOVERY_NOTE.md
+- docs/patch_archive/PATCH_182_DELETE_LIST.txt
+
+Scope:
+- Adds sky/gold/white-structure receipt visual cards.
+- Styles receipt documentation, local witness receipt download surfaces, and the World Lens receipt ZIP setup area.
+- Keeps receipt text/JSON/ZIP generation unchanged.
+
+Explicit non-changes:
+- No scoring changes.
+- No routing changes.
+- No taxonomy changes.
+- No receipt schema changes.
+- No receipt value changes.
+- No batch behavior changes.
+- No Evidence Lab calculations changed.
+- No World Lens math changed.
+- No AI static scan logic changed.
+- No protocol-engine logic changed.
+- No storage, telemetry, public ledger, Global ID sync, certification, enforcement, or authority behavior added.
+
+Validation target:
+python tools\run_patch_checks.py 183
+python tools\run_patch_checks.py 182
+python tools\run_patch_checks.py 181
+
+Direct validation used in build container:
+python -m pytest -q tests/test_patch_183_receipt_visual_styling.py tests/test_patch_182_sky_gold_module_alignment.py tests/test_patch_181_sky_gold_pillars_theme.py
+python -m py_compile app.py pages_ui/about_page.py pages_ui/evidence_lab_page.py protocol.py

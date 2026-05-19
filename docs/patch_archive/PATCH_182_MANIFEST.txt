@@ -1,0 +1,46 @@
+PATCH 182 MANIFEST
+==================
+
+Patch ID: 182
+Title: AI Patrol Sky/Gold Module Alignment
+Date: 2026-05-19
+Status: READY FOR LOCAL REVIEW
+
+Scope
+-----
+Visual-only second theme pass for the AI Patrol rebrand. Patch 181 handled the global app shell. Patch 182 aligns the target review surfaces with that sky-blue / gold / white-structure direction:
+
+- Patrol Guide page anchor
+- Why AI Patrol / ALETHEIA page anchor
+- Evidence Lab page anchor
+- AI static scan context expander styling via the shared sky/gold expander treatment
+- table, quote, and open-expander polish for review panels
+
+Files Changed
+-------------
+- app.py
+- pages_ui/about_page.py
+- pages_ui/evidence_lab_page.py
+- tests/test_patch_182_sky_gold_module_alignment.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_182_MANIFEST.txt
+- PATCH_182_RECOVERY_NOTE.md
+- PATCH_182_DELETE_LIST.txt
+- docs/patch_archive/manifests/PATCH_159_MANIFEST.txt through PATCH_181_MANIFEST.txt, where applicable
+- docs/patch_archive/recovery_notes/PATCH_159_RECOVERY_NOTE.md through PATCH_181_RECOVERY_NOTE.md, where applicable
+
+Boundary
+--------
+- No scoring changes.
+- No routing changes.
+- No taxonomy changes.
+- No receipt schema, receipt values, hash, or batch behavior changes.
+- No Evidence Lab calculations, World Lens math, AI static scan logic, or protocol-engine behavior changes.
+- No telemetry, storage, network, certification, enforcement, or authority behavior added.
+- Visual anchors are explanatory UI only; human review remains required.
+
+Validation
+----------
+- python tools/run_patch_checks.py 182
+- python tools/run_patch_checks.py 181
