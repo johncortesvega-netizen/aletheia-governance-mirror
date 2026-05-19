@@ -262,7 +262,7 @@ def enforce_missing_safeguard_threshold_route(
     )
 
 
-APP_VERSION = "v1.0-ai-patrol-rebrand"
+APP_VERSION = "v1.0-ai-patrol-sky-theme"
 SUPPORTED_INPUT_LANGUAGE_NOTE = "Language scope: ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim. Human review remains required."
 PROJECT_ROOT = Path(__file__).resolve().parent
 ABOUT_HEADER_IMAGE = PROJECT_ROOT / "assets" / "about_header.png"
@@ -1236,6 +1236,164 @@ st.markdown(
         box-shadow: 0 10px 24px rgba(93,78,89,0.08);
     }
     .footer-banner strong { color: #3c2438 !important; font-family: 'Cinzel', serif; letter-spacing: 0.06em; }
+
+
+
+    /* Patch 181: AI Patrol sky-blue / gold / white-pillars visual theme override.
+       Visual shell only: no scoring, receipt, routing, taxonomy, or protocol behavior. */
+    :root {
+        --bg: #eaf7ff;
+        --bg-soft: #f5fbff;
+        --panel: rgba(255,255,255,0.94);
+        --panel-strong: rgba(255,255,255,0.985);
+        --sky: #d8f0ff;
+        --sky-deep: #7fbce8;
+        --sky-line: rgba(87, 158, 212, 0.32);
+        --gold: #d4af37;
+        --gold-soft: rgba(212,175,55,0.18);
+        --gold-border: rgba(212,175,55,0.46);
+        --pillar: #ffffff;
+        --text: #17324a;
+        --muted: #577086;
+        --rose: #1f5f8f;
+        --rose-soft: rgba(127,188,232,0.18);
+        --rose-border: rgba(87,158,212,0.26);
+        --sage: #76a8c8;
+        --green: #4f9f8e;
+        --amber: #b8870b;
+        --red: #b94b4b;
+        --shadow: 0 16px 38px rgba(31, 95, 143, 0.13);
+    }
+
+    .stApp {
+        background:
+            radial-gradient(circle at 14% 6%, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0) 26%),
+            radial-gradient(circle at 88% 4%, rgba(212,175,55,0.16) 0%, rgba(212,175,55,0) 24%),
+            linear-gradient(180deg, #dff3ff 0%, #eef9ff 38%, #ffffff 100%);
+        color: var(--text);
+    }
+
+    h1, h2, h3 {
+        color: #164d78 !important;
+        text-shadow: 0 1px 0 rgba(255,255,255,0.75);
+    }
+
+    .botanical-frame {
+        border: 1px solid var(--gold-border);
+        background:
+            linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0) 10%, rgba(255,255,255,0) 90%, rgba(255,255,255,0.18)),
+            linear-gradient(135deg, rgba(255,255,255,0.98), rgba(236,248,255,0.94));
+        box-shadow: var(--shadow), inset 0 0 0 1px rgba(255,255,255,0.78);
+    }
+
+    .botanical-frame::before,
+    .botanical-frame::after {
+        content: "";
+        top: 0.9rem;
+        bottom: 0.9rem;
+        width: 18px;
+        border-radius: 999px;
+        background:
+            linear-gradient(180deg, rgba(255,255,255,1), rgba(246,251,255,0.96)),
+            repeating-linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.0) 3px, rgba(126,185,225,0.10) 4px);
+        border: 1px solid rgba(212,175,55,0.36);
+        box-shadow:
+            inset 0 0 0 3px rgba(255,255,255,0.72),
+            0 8px 18px rgba(31,95,143,0.10);
+        font-size: 0;
+        line-height: 0;
+    }
+    .botanical-frame::before { left: 0.75rem; }
+    .botanical-frame::after { right: 0.75rem; }
+
+    .hero-grid { padding: 0.1rem 2.15rem; }
+    .hero-title {
+        color: #123d63 !important;
+        text-shadow: 0 2px 0 rgba(255,255,255,0.86), 0 0 18px rgba(127,188,232,0.28);
+    }
+    .hero-sub { color: #2d668f !important; }
+    .hero-kicker { color: #9a720d !important; }
+    .hero-emblem,
+    .sidebar-emblem-mark {
+        background:
+            radial-gradient(circle at 50% 42%, rgba(255,255,255,0.98), rgba(225,244,255,0.94)),
+            linear-gradient(135deg, rgba(212,175,55,0.26), rgba(127,188,232,0.28));
+        border: 1px solid var(--gold-border);
+        box-shadow: inset 0 0 0 9px rgba(255,255,255,0.44), 0 14px 28px rgba(31,95,143,0.14);
+    }
+
+    .civic-ribbon,
+    .prototype-note,
+    .sidebar-emblem-card,
+    .footer-banner,
+    .metric-card,
+    .soft-card,
+    [data-testid="stMetric"] {
+        border-color: var(--gold-border) !important;
+        background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(240,249,255,0.90)) !important;
+        box-shadow: 0 10px 26px rgba(31,95,143,0.10) !important;
+    }
+
+    .prototype-note {
+        border-left: 5px solid var(--gold) !important;
+    }
+
+    .ribbon-label,
+    .sidebar-brand,
+    .footer-banner strong {
+        color: #123d63 !important;
+    }
+    .ribbon-icon,
+    .sidebar-tagline,
+    .ribbon-body {
+        color: #2d668f !important;
+    }
+
+    div[data-testid="stExpander"] {
+        border: 1px solid rgba(212,175,55,0.32) !important;
+        border-radius: 18px !important;
+        background: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(244,251,255,0.92)) !important;
+        box-shadow: 0 8px 20px rgba(31,95,143,0.08) !important;
+        overflow: hidden;
+    }
+    div[data-testid="stExpander"] details summary {
+        color: #164d78 !important;
+        font-weight: 800 !important;
+    }
+    div[data-testid="stExpander"] details summary::marker { color: var(--gold); }
+
+    .stButton > button,
+    [data-testid="stButton"] button,
+    .stDownloadButton > button,
+    [data-testid="stDownloadButton"] button {
+        border: 1px solid rgba(212,175,55,0.62) !important;
+        background: linear-gradient(180deg, #ffffff 0%, #eaf7ff 100%) !important;
+        color: #123d63 !important;
+        box-shadow: 0 8px 18px rgba(31,95,143,0.10) !important;
+    }
+    .stButton > button:hover,
+    [data-testid="stButton"] button:hover,
+    .stDownloadButton > button:hover,
+    [data-testid="stDownloadButton"] button:hover {
+        background: linear-gradient(180deg, #f8fbff 0%, #d9efff 100%) !important;
+        color: #0f3556 !important;
+        border-color: rgba(212,175,55,0.82) !important;
+    }
+    div[data-testid="stButton"] button[kind="primary"] {
+        background: linear-gradient(180deg, #d8b648 0%, #b98c14 100%) !important;
+        border-color: #8f6908 !important;
+        color: #ffffff !important;
+        box-shadow: 0 10px 22px rgba(154,114,13,0.25) !important;
+    }
+
+    section[data-testid="stSidebar"] {
+        background: linear-gradient(180deg, rgba(230,246,255,0.96), rgba(255,255,255,0.96)) !important;
+        border-right: 1px solid rgba(212,175,55,0.26) !important;
+    }
+
+    .footer-banner {
+        color: #17324a !important;
+    }
 
     @media (max-width: 900px) {
         .hero-grid { grid-template-columns: 1fr; }

@@ -3860,3 +3860,23 @@ python tools\run_patch_checks.py 180
 python tools\run_patch_checks.py 179
 python tools\run_patch_checks.py 178
 ```
+
+
+## Patch 181 — AI Patrol Sky / Gold / White Pillars Theme
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 181 applies a visual-only AI Patrol theme pass: light sky-blue page background, white card structure, gold accent borders/buttons, and a subtle white-pillar civic motif in the app shell. The change keeps the AI Patrol / ALETHEIA rebrand while making the UI brighter, calmer, and less heavy.
+
+Boundary notes:
+- CSS/theme and app-version label only.
+- No scoring, routing, taxonomy, receipt schema/generation, receipt values, batch behavior, AI Integrity logic, Evidence Lab calculations, World Lens math, protocol logic, external calls, telemetry/storage, certification, enforcement, or authority behavior changed.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 181
+```
