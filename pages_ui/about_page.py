@@ -51,7 +51,8 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
     )
     st.info(
         "AI Patrol is the friendlier public face of ALETHEIA: a compact stop/go "
-        "review layer for human judgment. It signals; people decide."
+        "review layer for human judgment. Science investigates, philosophy structures, "
+        "theological humility restrains final claims, and people decide."
     )
     st.caption(
         "Open only the panels you need. This page explains the public identity, "
@@ -94,7 +95,22 @@ Internal taxonomy labels such as **SANCTUARY**, **THRESHOLD**, and **ASYLUM** ar
 """,
         ),
         (
-            "4. First-use path & navigation",
+            "4. Science, philosophy, humility, and review",
+            """
+> **Science is the investigative base. Philosophy is the interpretive structure. Theology is the humility boundary. Human review is the action layer.**
+
+ALETHEIA is a science-grounded, philosophically structured governance mirror with theological humility boundaries. It does not replace evidence with faith, and it does not claim final authority.
+
+- **Base layer:** inspectable signals, heuristics, metrics, receipts, and repair questions.
+- **Philosophical layer:** power, capture, authority drift, evidence integrity, and self-certification.
+- **Theological / humility layer:** restraint around final claims about soul, life, consciousness, dignity, and ultimate truth.
+- **Action layer:** human review, appeal, correction, and accountable decision-making outside the tool.
+
+Compared with mainstream AI ethics, ALETHEIA is less compliance-centered and more focused on upstream power, epistemic restraint, and preventing ethics itself from becoming a throne.
+""",
+        ),
+        (
+            "5. First-use path & navigation",
             """
 Choose the tab by task:
 
@@ -112,7 +128,7 @@ The UX rule is simple: make the next patrol step obvious while keeping every out
 """,
         ),
         (
-            "5. Failure modes watched",
+            "6. Failure modes watched",
             """
 AI Patrol watches for pressure patterns that can make systems appear more legitimate, neutral, certain, or authoritative than the evidence supports.
 
@@ -126,7 +142,7 @@ AI Patrol watches for pressure patterns that can make systems appear more legiti
 """,
         ),
         (
-            "6. Scope layers & anti-capture posture",
+            "7. Scope layers & anti-capture posture",
             """
 **Current operational layer:** corruption-pattern and governance-risk review for human interpretation.
 
@@ -140,7 +156,7 @@ AI Patrol is anti-capture by design: it reflects capture-risk signals but does n
 """,
         ),
         (
-            "7. What the modules do",
+            "8. What the modules do",
             """
 **Mirror Check** reviews one document, idea, proposal, policy text, or AI output for pressure signals and repair questions.
 
@@ -156,7 +172,7 @@ AI-specific static scan context is now subordinate to **Mirror Check** and **Str
 """,
         ),
         (
-            "8. Research caution & developer notes",
+            "9. Research caution & developer notes",
             """
 ALETHEIA does not prove legal, political, medical, religious, moral, predictive, or final truth. Its outputs are internal review readings. Empirical results depend on dataset quality, variable mapping, normalization choices, missing data, and validation against external outcomes.
 

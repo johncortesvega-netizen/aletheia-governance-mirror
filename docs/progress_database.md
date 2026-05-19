@@ -3533,3 +3533,17 @@ Updated surfaces:
 - Preview Unit-only mascot orientation CSS so the entry logo faces the other way.
 
 Boundary preserved: branding/copy/CSS only; no engine behavior, scoring, routing, taxonomy, receipt generation, World Lens math, Evidence Lab calculation, AI static scan logic, storage, certification, enforcement, or authority behavior changed. Human review remains required.
+
+
+## Patch 186 — Framework Balance Copy Alignment
+
+Date: 2026-05-19
+Status: READY FOR LOCAL REVIEW
+
+Patch 186 adds the corrected framework-balance language across the app and core reviewer-facing documentation: **Science is the investigative base. Philosophy is the interpretive structure. Theology is the humility boundary. Human review is the action layer.**
+
+The update clarifies ALETHEIA as a science-grounded, philosophically structured governance mirror with theological humility boundaries. It explicitly says ALETHEIA does not replace evidence with faith and does not claim final authority. It also defines the base layer as inspectable signals/heuristics/metrics/receipts/repair questions, the philosophical layer as power/capture/authority drift/evidence integrity/self-certification review, the theological-humility layer as restraint around final claims about soul/life/consciousness/dignity/ultimate truth, and the action layer as human review.
+
+Updated surfaces: About / Why AI Patrol, README, docs/BOUNDARY.md, docs/architecture.md, docs/for-reviewers/tool_comparison.md, docs/reviewer_start_here.md, docs/artificial_mind_formation_theory.md, and pages_ui/artificial_mind_formation_page.py.
+
+Boundary preserved: content/documentation copy only; no engine behavior, scoring, routing, taxonomy, receipt generation, World Lens math, Evidence Lab calculation, AI static scan logic, storage, certification, enforcement, or authority behavior changed. Human review remains required.

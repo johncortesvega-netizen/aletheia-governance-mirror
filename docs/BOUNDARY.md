@@ -8,6 +8,13 @@ ALETHEIA is a **mirror, not a throne**.
 
 It is a bounded, reviewable governance mirror. It can surface governance-risk signals for human review, but it must not become an authority, certification body, enforcement layer, public ledger, identity system, or replacement for human judgment.
 
+
+## Framework balance
+
+> **Science is the investigative base. Philosophy is the interpretive structure. Theology is the humility boundary. Human review is the action layer.**
+
+ALETHEIA is a science-grounded, philosophically structured governance mirror with theological humility boundaries. It does not replace evidence with faith, and it does not claim final authority. Its base layer uses inspectable signals, heuristics, metrics, receipts, and repair questions. Its philosophical layer examines power, capture, authority drift, evidence integrity, and self-certification. Its theological/humility layer restrains final claims about soul, life, consciousness, dignity, and ultimate truth. Compared with mainstream AI ethics, ALETHEIA is less compliance-centered and more focused on upstream power, epistemic restraint, and preventing ethics itself from becoming a throne.
+
 ## Core boundaries
 
 ### 1. Identity and authority

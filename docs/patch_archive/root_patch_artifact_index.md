@@ -556,3 +556,16 @@ Current root patch artifacts after applying Patch 185:
 - PATCH_185_MANIFEST.txt
 - PATCH_185_RECOVERY_NOTE.md
 - PATCH_185_DELETE_LIST.txt
+
+
+## Patch 186
+
+Current root-visible patch artifacts:
+- PATCH_186_MANIFEST.txt
+- PATCH_186_RECOVERY_NOTE.md
+- PATCH_186_DELETE_LIST.txt
+
+Archived previous root artifacts:
+- docs/patch_archive/PATCH_185_MANIFEST.txt
+- docs/patch_archive/PATCH_185_RECOVERY_NOTE.md
+- docs/patch_archive/PATCH_185_DELETE_LIST.txt

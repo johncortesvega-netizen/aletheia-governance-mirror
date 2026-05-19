@@ -2,6 +2,8 @@
 
 ALETHEIA v1.0 is a free, open-source governance mirror for human review. It surfaces governance-risk signals such as capture pressure, safeguard gaps, evidence gaps, coercion pressure, consent pressure, service misalignment, and authority overreach.
 
+**Science is the investigative base. Philosophy is the interpretive structure. Theology is the humility boundary. Human review is the action layer.** ALETHEIA is science-grounded and evidence-facing, but it uses philosophical structure and theological humility boundaries to restrain final authority claims. It does not replace evidence with faith and does not claim final authority.
+
 ALETHEIA is a **mirror, not a throne**. It does not decide, certify, approve, reject, enforce, govern, replace evidence, replace law, replace medicine, replace politics, replace religion, or replace human judgment.
 
 ## Fast reviewer path

@@ -8,6 +8,13 @@ AI Patrol / ALETHEIA helps reviewers inspect proposals, policies, systems, doctr
 
 Why it exists: many systems can look governed, compliant, neutral, or benevolent while still moving power out of reach. ALETHEIA does not answer that problem with more command. It answers with a restrained mirror: make pressure visible, name missing safeguards, and return the reading to human review.
 
+
+## Framework balance
+
+> **Science is the investigative base. Philosophy is the interpretive structure. Theology is the humility boundary. Human review is the action layer.**
+
+ALETHEIA is a science-grounded, philosophically structured governance mirror with theological humility boundaries. It does not replace evidence with faith, and it does not claim final authority. Its base layer uses inspectable signals, heuristics, metrics, receipts, and repair questions. Its philosophical layer examines power, capture, authority drift, evidence integrity, and self-certification. Its theological/humility layer restrains final claims about soul, life, consciousness, dignity, and ultimate truth. Compared with mainstream AI ethics, ALETHEIA is less compliance-centered and more focused on upstream power, epistemic restraint, and preventing ethics itself from becoming a throne.
+
 ALETHEIA does **not** decide, certify, approve, reject, enforce, govern, vote, or replace law, evidence, accountability, expertise, or human judgment.
 
 ## What this is / is not

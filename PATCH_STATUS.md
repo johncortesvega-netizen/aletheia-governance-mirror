@@ -3981,3 +3981,30 @@ python tools\run_patch_checks.py 185
 python -m pytest -q tests/test_patch_166_ai_patrol_rebrand.py
 python -m py_compile app.py ui/app_shell.py ui/unit_preview.py
 ```
+
+
+## Patch 186 — Framework Balance Copy Alignment
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 186 incorporates the requested framework-balance language into the app and reviewer-facing documentation: **Science is the investigative base. Philosophy is the interpretive structure. Theology is the humility boundary. Human review is the action layer.**
+
+The patch clarifies that ALETHEIA is a science-grounded, philosophically structured governance mirror with theological humility boundaries. It does not replace evidence with faith and does not claim final authority. It documents the base layer as inspectable signals, heuristics, metrics, receipts, and repair questions; the philosophical layer as power, capture, authority drift, evidence integrity, and self-certification; the theological/humility layer as restraint around final claims about soul, life, consciousness, dignity, and ultimate truth; and human review as the action layer.
+
+Updated surfaces include About / Why AI Patrol, README, Boundary statements, Architecture overview, reviewer start/tool-comparison docs, and Artificial Mind Formation Theory.
+
+Boundary notes:
+- Content/documentation copy only.
+- No scoring, routing, taxonomy, receipt schema/generation, receipt values, batch behavior, Evidence Lab calculations, World Lens math, AI static scan logic, protocol logic, external calls, storage, certification, enforcement, or authority behavior changed.
+- The wording strengthens public explanation without turning theological humility into a scoring engine or authority claim.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python toolsun_patch_checks.py 186
+python -m pytest -q tests/test_patch_186_framework_balance_copy.py tests/test_patch_185_aletheia_ai_patrol_branding.py tests/test_patch_184_current_and_spark_theory_update.py
+python -m py_compile pages_ui/about_page.py pages_ui/artificial_mind_formation_page.py about_page.py app.py
+```

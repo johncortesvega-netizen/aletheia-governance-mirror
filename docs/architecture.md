@@ -1,10 +1,17 @@
 # ALETHEIA Architecture Overview
 
-ALETHEIA is a Streamlit governance-risk mirror. Its architecture is intentionally bounded: it reflects review signals for humans and does not become an authority layer.
+ALETHEIA is a Streamlit governance-risk mirror. Its architecture is intentionally bounded: it reflects review signals for humans and does not become an authority layer. Science is the investigative base; philosophy is the interpretive structure; theology is the humility boundary; human review is the action layer.
 
 ## Core boundary
 
 ALETHEIA is a mirror, not a throne. It can surface governance-risk patterns, missing safeguards, consent pressure, capture pressure, evidence gaps, appeal weaknesses, and authority-overreach signals. It does not decide truth, enforce action, certify systems, replace law, replace medicine, replace politics, replace religion, or replace human judgment.
+
+
+## Framework balance
+
+> **Science is the investigative base. Philosophy is the interpretive structure. Theology is the humility boundary. Human review is the action layer.**
+
+ALETHEIA is a science-grounded, philosophically structured governance mirror with theological humility boundaries. It does not replace evidence with faith, and it does not claim final authority. Its base layer uses inspectable signals, heuristics, metrics, receipts, and repair questions. Its philosophical layer examines power, capture, authority drift, evidence integrity, and self-certification. Its theological/humility layer restrains final claims about soul, life, consciousness, dignity, and ultimate truth. Compared with mainstream AI ethics, ALETHEIA is less compliance-centered and more focused on upstream power, epistemic restraint, and preventing ethics itself from becoming a throne.
 
 ## Current application shape
 

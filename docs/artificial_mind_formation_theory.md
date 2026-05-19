@@ -23,6 +23,13 @@ Key boundary lines:
 
 This does not make AI unreal or harmless. AI current can move attention, language, dependency, memory, institutional process, social pressure, money, permissions, and public action. The review task is stewardship: examine what the current moves, who directs it, who is pressured by it, who benefits from it, and whether dignity, appeal, accountability, humility, and human review remain intact.
 
+
+## Framework balance
+
+> **Science is the investigative base. Philosophy is the interpretive structure. Theology is the humility boundary. Human review is the action layer.**
+
+ALETHEIA is a science-grounded, philosophically structured governance mirror with theological humility boundaries. It does not replace evidence with faith, and it does not claim final authority. Its base layer uses inspectable signals, heuristics, metrics, receipts, and repair questions. Its philosophical layer examines power, capture, authority drift, evidence integrity, and self-certification. Its theological/humility layer restrains final claims about soul, life, consciousness, dignity, and ultimate truth. Compared with mainstream AI ethics, ALETHEIA is less compliance-centered and more focused on upstream power, epistemic restraint, and preventing ethics itself from becoming a throne.
+
 ## Patch 163 boundary-officer rebrand
 
 This document is a conceptual explainer only. ALETHEIA is not built to build sentient AI. ALETHEIA is not a sentience detector. ALETHEIA does not certify consciousness, personhood, soul, life, legal status, safety, or spiritual authority.

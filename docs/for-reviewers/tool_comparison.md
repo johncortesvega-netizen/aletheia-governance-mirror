@@ -2,7 +2,11 @@
 
 ALETHEIA is a free, open-source governance mirror for human review. It does not explain model internals like SHAP or LIME, enforce compliance like enterprise governance platforms, or block runtime outputs like guardrails. Instead, it reflects governance-risk patterns in proposals, policies, scenarios, AI artifacts, public-data evidence views, and ALETHEIA receipts.
 
-Its niche is not automated control. Its niche is structured reflection: capture risk, weak appeal paths, evidence gaps, consent pressure, service misalignment, authority overreach, and repair questions.
+**Science is the investigative base. Philosophy is the interpretive structure. Theology is the humility boundary. Human review is the action layer.**
+
+ALETHEIA is science-grounded and evidence-facing: it uses inspectable signals, heuristics, metrics, receipts, and repair questions. Its philosophical layer examines power, capture, authority drift, evidence integrity, and self-certification. Its theological/humility layer restrains final claims about soul, life, consciousness, dignity, and ultimate truth. This does not replace evidence with faith and does not create an authority claim.
+
+Its niche is not automated control. Its niche is structured reflection: capture risk, weak appeal paths, evidence gaps, consent pressure, service misalignment, authority overreach, upstream power, epistemic restraint, and preventing ethics itself from becoming a throne.
 
 Use ALETHEIA beside other tools, not instead of them.
 
@@ -14,7 +18,7 @@ Use ALETHEIA beside other tools, not instead of them.
 | Live model use | None; this is an intentional design boundary | Usually none | Often includes monitoring or integrations | Often used directly in AI applications |
 | Best used for | Reviewing proposals, policies, scenarios, static AI artifacts, evidence views, and receipts | Debugging predictive model decisions | Organizational compliance and governance operations | Production safety for AI applications |
 | Transparency | Very high: open-source, inspectable rules, reviewer docs, and local receipts | High for explanation methods, depending on implementation | Varies; many are proprietary | High in open-source versions |
-| Philosophy | Mirror, not throne: signals for human judgment | Technical explanation | Governance management and compliance | Preventive control |
+| Philosophy | Science-grounded mirror, philosophical power review, theological humility boundary, human action layer | Technical explanation | Governance management and compliance | Preventive control |
 | Relationship | Complementary reflection layer | Complementary technical layer | Complementary enterprise layer | Complementary safety layer |
 
 ## Positioning summary

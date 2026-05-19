@@ -38,6 +38,15 @@ revealing in the world? Human review is required. This is not an official
 verdict, not certification, and not an authority claim.
 """.strip()
 
+
+ARTIFICIAL_MIND_FORMATION_FRAMEWORK_BALANCE = """
+**Framework balance**
+
+> **Science is the investigative base. Philosophy is the interpretive structure. Theology is the humility boundary. Human review is the action layer.**
+
+ALETHEIA is a science-grounded, philosophically structured governance mirror with theological humility boundaries. It does not replace evidence with faith, and it does not claim final authority. Its base layer uses inspectable signals, heuristics, metrics, receipts, and repair questions. Its philosophical layer examines power, capture, authority drift, evidence integrity, and self-certification. Its theological/humility layer restrains final claims about soul, life, consciousness, dignity, and ultimate truth. Compared with mainstream AI ethics, ALETHEIA is less compliance-centered and more focused on upstream power, epistemic restraint, and preventing ethics itself from becoming a throne.
+""".strip()
+
 ARTIFICIAL_MIND_FORMATION_CURRENT_OVERVIEW = """
 **Current and Spark overview**
 
@@ -65,7 +74,7 @@ intact.
 ARTIFICIAL_MIND_FORMATION_SECTIONS: tuple[tuple[str, str], ...] = (
     (
         "1. Boundary statement",
-        f"{ARTIFICIAL_MIND_FORMATION_BOUNDARY}\n\n{ARTIFICIAL_MIND_FORMATION_CURRENT_OVERVIEW}",
+        f"{ARTIFICIAL_MIND_FORMATION_BOUNDARY}\n\n{ARTIFICIAL_MIND_FORMATION_FRAMEWORK_BALANCE}\n\n{ARTIFICIAL_MIND_FORMATION_CURRENT_OVERVIEW}",
     ),
     (
         "2. Why “more neurons / more scale” is the wrong axis by itself",

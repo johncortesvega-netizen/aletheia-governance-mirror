@@ -16,6 +16,13 @@ def _header_image() -> str | None:
 def render_about():
     st.subheader("Why ALETHEIA")
     st.info("ALETHEIA helps people review power, evidence, safeguards, and repair needs without turning the tool into an authority. It reflects; people decide. ALETHEIA is English-first; Dutch/Nederlands examples are used for batch testing, not as a general app-wide language-compatibility claim.")
+    st.markdown(
+        """
+        > **Science is the investigative base. Philosophy is the interpretive structure. Theology is the humility boundary. Human review is the action layer.**
+
+        ALETHEIA is a science-grounded, philosophically structured governance mirror with theological humility boundaries. It does not replace evidence with faith, and it does not claim final authority. Its base layer uses inspectable signals, heuristics, metrics, receipts, and repair questions. Its philosophical layer examines power, capture, authority drift, evidence integrity, and self-certification. Its theological/humility layer restrains final claims about soul, life, consciousness, dignity, and ultimate truth. Compared with mainstream AI ethics, ALETHEIA is less compliance-centered and more focused on upstream power, epistemic restraint, and preventing ethics itself from becoming a throne.
+        """
+    )
     st.caption("ALETHEIA v1.0 AI Integrity Preview: public adoption docs, demo path, release boundary, and stabilization checks are documented.")
 
     header = _header_image()
