@@ -3289,3 +3289,29 @@ python tools\run_patch_checks.py 173
 python tools\run_patch_checks.py 172
 python tools\run_patch_checks.py 171
 ```
+
+
+## Patch 174 — Remove Standalone AI Integrity Module
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 174 removes the standalone AI Integrity module from the visible app navigation and public app-facing module copy. After Patch 173, AI-specific static scan output is now subordinate context inside Mirror Check and Stress Test, so a separate AI Integrity tab would duplicate the real protocol path.
+
+What changed:
+- Removed the standalone AI Integrity / AI Integrity Patrol tab from app navigation.
+- Removed the standalone AI Integrity input/demo/result UI block.
+- Updated Unit Preview routing so AI artifacts route to Mirror Check, with Stress Test recommended for deployment scenarios under pressure.
+- Updated Why AI Patrol / About and active README surfaces so AI-specific scanning is described as subordinate context, not a standalone module.
+- Preserved the underlying static scan helper because Mirror Check and Stress Test receipts/panels use it as protocol context.
+
+Boundary notes:
+- No scoring, taxonomy, World Lens math, Evidence Lab behavior, receipt schema, protocol-engine behavior, external calls, telemetry/storage, certification, enforcement, approval/rejection, legal authority, political authority, spiritual authority, or final-truth behavior changed.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 174
+```

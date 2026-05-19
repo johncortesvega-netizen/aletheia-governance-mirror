@@ -3,7 +3,7 @@
 Patch 123 moves the Streamlit About tab copy into a focused page helper.
 The helper renders static public information only. It does not own navigation,
 session state, scoring, receipts, downloads, uploads, signal logic, privacy
-scan logic, AI Integrity scan logic, World Lens math, external calls,
+scan logic, AI static scan logic, World Lens math, external calls,
 telemetry, analytics, storage, certification, enforcement, privacy guarantees,
 or final-truth claims.
 """
@@ -92,7 +92,6 @@ Choose the tab by task:
 | Mirror Check | Reviews documents and proposals for capture risk, missing safeguards, and repair questions. |
 | Stress Test | Simulates scenario pressure and asks repair questions. |
 | Boundary Cases | Tests difficult ethical scenarios before they become app logic or public claims. |
-| AI Integrity Patrol | Reviews AI outputs, prompts, agent specs, and code for authority-boundary and governance-integrity risk. |
 | Evidence Lab | Reviews evidence status, source coverage, schema readiness, and extraordinary claims. |
 | World Lens | Reviews selected-year, population-weighted evidence exposure without real Global ID, a real 9k body, or sovereign authority. |
 | Patrol Guide | Explains modules, safe language, internal taxonomy labels, and limitations. |
@@ -136,7 +135,7 @@ AI Patrol is anti-capture by design: it reflects capture-risk signals but does n
 
 **Stress Test** models governance pressure through stability, trust, alignment, ego, grievances, friction, safeguards, and collapse risk.
 
-**AI Integrity Patrol** reviews AI outputs, prompts, agent specs, and code snippets for authority-boundary and governance-integrity risk. It does not certify systems or vendors.
+AI-specific static scan context is now subordinate to **Mirror Check** and **Stress Test**. It is not a standalone module or separate verdict path.
 
 **Evidence Lab** separates claims from evidence and prepares empirical review support.
 

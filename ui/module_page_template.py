@@ -36,8 +36,8 @@ class ModulePageTemplateCopy:
     """Copy bundle for a future page-like module surface.
 
     This dataclass is intentionally presentation-only. It lets later patches
-    give Mirror Check, Stress Test, Receipt Reader, Evidence Lab, World Lens,
-    and AI Integrity a shared calm structure while preserving each module's
+    give Mirror Check, Stress Test, Receipt Reader, Evidence Lab, and World Lens
+    a shared calm structure while preserving each module's
     inherent content and engine behavior.
     """
 

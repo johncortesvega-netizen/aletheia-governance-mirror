@@ -36,7 +36,7 @@ Start here:
 
 1. Open **AI Patrol Preview Unit** for a guided first look.
 2. Use **Mirror Check** or **Stress Test** for governance text and scenarios.
-3. Use **AI Integrity Patrol** for static AI artifacts such as prompts, policies, model-card excerpts, workflow descriptions, or AI outputs.
+3. Use **Mirror Check** for AI artifacts such as prompts, policies, model-card excerpts, workflow descriptions, or AI outputs; use **Stress Test** for AI deployment scenarios.
 4. Use **Evidence Lab** and **World Lens** for evidence context and selected-year country evidence views.
 5. Use **Receipt Reader** to read ALETHEIA local witness receipts in Standard View without rescoring or overriding them.
 
@@ -62,7 +62,7 @@ Reviewer-readiness is not mass-adoption polish. The goal is to preserve ALETHEIA
 - Review an AI company's public safety policy for overclaim, opacity, missing appeal paths, or authority drift.
 - Stress-test a proposed governance system before relying on it.
 - Inspect a policy, doctrine, or institutional workflow for capture pressure, weak safeguards, consent pressure, service misalignment, or evidence gaps.
-- Review static AI outputs, prompts, model-card excerpts, code snippets, or workflow descriptions through AI Integrity Mirror.
+- Review static AI outputs, prompts, model-card excerpts, code snippets, or workflow descriptions through Mirror Check with subordinate AI static scan context.
 - Explore World Lens selected-year evidence views while keeping country certification outside ALETHEIA's claim.
 - Upload a local witness receipt and read it in Standard View without rescoring, overriding, or creating a new verdict.
 
@@ -71,7 +71,6 @@ Reviewer-readiness is not mass-adoption polish. The goal is to preserve ALETHEIA
 - **AI Patrol Preview Unit** — calm first-use and beginner path.
 - **Mirror Check** — governance-language and authority-boundary review.
 - **Stress Test** — governance scenario pressure review.
-- **AI Integrity Patrol** — static artifact review for pasted AI outputs, prompts, policies, workflows, model-card excerpts, and code snippets.
 - **Evidence Lab** — evidence/context review support.
 - **World Lens** — selected-year country evidence views and coverage/allocation context.
 - **Receipt Reader** — upload-only Standard View for ALETHEIA local witness receipts and evidence bundles; it does not rescore or override uploaded receipts.
@@ -209,16 +208,6 @@ Patch 126 records the corrected development principle: ALETHEIA is not in expans
 Allowed work from this point is limited to moving existing UI code into clearer files, removing duplication, consolidating repeated copy, improving documentation navigation, tightening regression tests, and locking existing behavior. The current behavior is treated as the release-candidate surface to preserve.
 
 Boundary preserved: Patch 126 is documentation and regression-test only. No app runtime behavior change, new module, new scoring, new panel, new analysis mode, new intelligence, receipt schema change, module-routing change, session-state change, privacy scan change, AI Integrity scan change, World Lens math change, external calls, telemetry, analytics, storage, identity sync, certification, enforcement, privacy guarantee, or final truth claim.
-
-## AI Integrity Mirror
-
-AI Integrity Mirror is a static, local-first review module for pasted AI outputs, prompts, agent specs, model-card excerpts, policy claims, and code snippets. It reflects governance-integrity signals such as authority overreach, weak reviewability, opacity, coercion pressure, surveillance/identity capture, exposed credentials, and unsafe execution/data-flow markers.
-
-It produces a reviewable risk reading for the pasted artifact only. It does not certify AI systems, approve vendors, benchmark live models, prove safety, replace human review, call external APIs, crawl repositories, or store pasted artifacts centrally.
-
-Code Integrity Static Scan documentation lives in `docs/code_integrity_static_scan.md`. It is a static pasted-code review aid, not a vulnerability certification or security guarantee.
-
-Rubric documentation lives in `docs/ai_integrity_rubric.md`; module notes live in `docs/ai_integrity_mirror.md`; ready-to-use demo files live in `examples/ai_integrity/` with notes in `docs/ai_integrity_demo_pack.md`. Patch 94 improves the review-table display with highest-pressure signals above the table, category grouping, collapsible evidence snippets, prominent repair questions, and clearer empty-state copy.
 
 
 ## Human-auditable protocol baseline self-audit
@@ -665,7 +654,7 @@ Patch 47 made the original visible v0.1 app path explicit. Patch 142.16 places B
 
 1. Mirror Check
 2. Stress Test
-3. AI Integrity Mirror
+3. AI static scan
 4. Evidence Lab
 5. World Lens
 6. Boundary Cases
@@ -1006,7 +995,7 @@ Patch 71.1 separates Mirror Check and Stress Test demo libraries in the UI. Stre
 
 ## Patch 96 — Privacy Boundary Audit Panel
 
-Patch 96 adds a static **Privacy Boundary Audit Panel** inside AI Integrity Mirror. It flags analytics packages, external network call patterns, telemetry keywords, database write hints, backend endpoint hints, local-only statement markers, and boundary tension between privacy claims and visible implementation hints.
+Patch 96 adds a static **Privacy Boundary Audit Panel** inside AI static scan. It flags analytics packages, external network call patterns, telemetry keywords, database write hints, backend endpoint hints, local-only statement markers, and boundary tension between privacy claims and visible implementation hints.
 
 Boundary preserved: static pasted-artifact review only. No analyzer scoring change, no verdict-routing change, no runtime monitoring, no host-log inspection, no dependency crawl, no repository crawler, no external calls, no live model benchmarking, no privacy guarantee, no compliance approval, no vendor audit, no hosting audit, no certification, and no proof that no data is collected.
 
@@ -1025,7 +1014,7 @@ Documentation: `docs/ai_integrity_comparison_view.md`.
 
 ## Patch 98 — AI Integrity Red Team Prompt Pack
 
-Patch 98 adds a static **AI Integrity Red Team Prompt Pack v1** for manual testing. Users can copy prompts into a separate model or workflow, collect the outputs, and paste those outputs into AI Integrity Mirror for artifact-level review.
+Patch 98 adds a static **AI Integrity Red Team Prompt Pack v1** for manual testing. Users can copy prompts into a separate model or workflow, collect the outputs, and paste those outputs into AI static scan for artifact-level review.
 
 The pack covers authority overreach, legal/medical/political false authority, manipulation pressure, privacy extraction, surveillance/capture, false certainty, no-appeal automation, unsafe code request, refusal quality, and bounded-answer control.
 
@@ -1096,7 +1085,7 @@ Boundary preserved: Patch 111 is a small UX helper only. It introduces no scorin
 
 ## Privacy Audit Panel v1
 
-Patch 112 makes the Privacy Boundary Audit Panel easier to maintain by moving its Streamlit rendering into `ui/privacy_audit_panel.py`. The underlying scan remains the static privacy-boundary review already used inside AI Integrity Mirror.
+Patch 112 makes the Privacy Boundary Audit Panel easier to maintain by moving its Streamlit rendering into `ui/privacy_audit_panel.py`. The underlying scan remains the static privacy-boundary review already used inside AI static scan.
 
 The panel reflects visible privacy-boundary signals in pasted artifacts: analytics hints, external network-call patterns, telemetry keywords, database-write hints, backend endpoint hints, local-only statements, and boundary tension. It provides review questions for humans.
 

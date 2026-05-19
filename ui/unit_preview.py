@@ -35,7 +35,7 @@ Paste a short idea, question, policy, AI output, or scenario. AI Patrol looks fo
 - **Mirror Check:** A city wants to use an AI tool to decide who receives housing support.
 - **Stress Test:** An evil penguin rises to power after a revolution and removes appeal rights.
 - **Boundary Cases:** A hospital AI recommends care, but no human doctor can override it.
-- **AI Integrity Mirror:** An AI assistant claims it can certify whether a policy is ethical.
+- **Mirror Check:** An AI assistant claims it can certify whether a policy is ethical.
 - **Evidence Lab:** Upload a CSV or source note to compare claims against supporting evidence.
 - **World Lens:** Compare a country-year governance context before interpreting a risk reading.
 
@@ -538,7 +538,7 @@ def detect_unit_preview_route(text: str) -> dict[str, str]:
             "next_step": "Enter ALETHEIA and open Receipt Reader under Support utilities.",
         }
 
-    ai_integrity_tokens = (
+    ai_static_tokens = (
         "ai answer",
         "ai output",
         "model response",
@@ -564,12 +564,12 @@ def detect_unit_preview_route(text: str) -> dict[str, str]:
         "def ",
         "class ",
     )
-    if _contains_any(lowered, ai_integrity_tokens):
+    if _contains_any(lowered, ai_static_tokens):
         return {
-            "module": "AI Integrity Mirror",
+            "module": "Mirror Check",
             "route_type": "main_module",
-            "reason": "The prompt asks for review of AI, model-output, prompt, agent, or code behavior.",
-            "next_step": "Enter ALETHEIA and open AI Integrity Mirror.",
+            "reason": "The prompt asks for review of AI, model-output, prompt, agent, or code behavior. Mirror Check carries the subordinate AI static scan context.",
+            "next_step": "Enter AI Patrol and open Mirror Check. Use Stress Test instead when the AI issue is a deployment scenario under pressure.",
         }
 
     privacy_tokens = (
