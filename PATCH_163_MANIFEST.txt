@@ -1,0 +1,29 @@
+PATCH 163 — Artificial Mind Formation Boundary-Officer Rebrand
+
+Changed files:
+- pages_ui/artificial_mind_formation_page.py
+- docs/artificial_mind_formation_theory.md
+- tests/test_patch_163_artificial_mind_boundary_officer_rebrand.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- PATCH_163_MANIFEST.txt
+- PATCH_163_RECOVERY_NOTE.md
+
+Summary:
+Patch 163 refines the Patch 162 Artificial Mind Formation Theory explainer to
+make the user's distinction explicit: ALETHEIA may be police-officer-like at the
+AI boundary, but not judge-like.
+
+Boundary:
+- Copy/documentation/test only.
+- No scoring changes.
+- No taxonomy changes.
+- No World Lens changes.
+- No receipt schema or generation changes.
+- No routing changes.
+- No external calls, telemetry, storage, Global ID sync, or public ledger sync.
+- No certification, enforcement, official authority, or final-truth behavior.
+- Human review remains required.
+
+Validation:
+- python tools\run_patch_checks.py 163

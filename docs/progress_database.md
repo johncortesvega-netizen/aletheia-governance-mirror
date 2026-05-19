@@ -3114,3 +3114,15 @@ The explainer sections are: boundary statement; why “more neurons / more scale
 
 Boundary preserved: no core scoring changes, no new taxonomy state, no World Lens changes, no receipt schema/generation changes, no routing changes, no external calls, no telemetry/storage, no certification, no enforcement, no official authority, and no final-truth behavior. ALETHEIA is not built to build sentient AI, is not a sentience detector, and does not certify consciousness, personhood, soul, life, legal status, safety, or spiritual authority. Human review remains required.
 
+
+## Patch 163 — Artificial Mind Formation Boundary-Officer Rebrand
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 163 refines the Artificial Mind Formation Theory explainer after Patch 162. It incorporates the user's distinction that ALETHEIA can be police-officer-like for AI review without becoming a judge.
+
+The page/documentation now says ALETHEIA can stand at the boundary to observe, inspect, preserve evidence, warn, route concerns, and escalate to human reviewers. It also says ALETHEIA is not judge-like and does not decide final truth, guilt, consciousness, personhood, legal standing, soul, safety, worth, approval, rejection, punishment, enforcement, certification, or legal authority.
+
+Boundary preserved: no core scoring changes, no new taxonomy state, no World Lens changes, no receipt schema/generation changes, no routing changes, no external calls, no telemetry/storage, no certification, no enforcement, no official authority, and no final-truth behavior. Human review remains required.

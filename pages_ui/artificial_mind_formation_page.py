@@ -23,10 +23,13 @@ ARTIFICIAL_MIND_FORMATION_BOUNDARY = """
 ALETHEIA is not built to build sentient AI. ALETHEIA is not a sentience detector.
 It does not certify consciousness, personhood, soul, life, legal status, safety,
 or spiritual authority. This page is a conceptual explainer only. It offers a
-mirror, not throne: a way to review whether an attempted artificial-mind or
-sentient-AI formation process appears careful, accountable, and reversible, or
-whether it shows corruption pressure. Human review is required. This is not an
-official verdict, not certification, and not an authority claim.
+mirror, not throne: a police-officer-like boundary role for review. ALETHEIA may
+observe, inspect, preserve evidence, warn, and route concerns to human review;
+it does not judge, punish, command, certify, or claim legal authority. It helps
+review whether an attempted artificial-mind or sentient-AI formation process
+appears careful, accountable, and reversible, or whether it shows corruption
+pressure. Human review is required. This is not an official verdict, not
+certification, and not an authority claim.
 """.strip()
 
 ARTIFICIAL_MIND_FORMATION_SECTIONS: tuple[tuple[str, str], ...] = (
@@ -112,8 +115,10 @@ as a design tool, and removal of human review.
 Every serious formation attempt needs independent human review, documented
 limits, shutdown and rollback paths, consent/refusal boundaries, external audit,
 incident review, revocation of unsafe permissions, and appeal for affected
-people. ALETHEIA may help structure questions for that review, but it does not
-approve, reject, enforce, or certify the attempt.
+people. ALETHEIA may help structure questions for that review. Its role is
+police-officer-like at the boundary: observe, inspect, preserve evidence, warn,
+and escalate to human reviewers. It is not judge-like: it does not decide final
+truth, punish, approve, reject, enforce, or certify the attempt.
 """.strip(),
     ),
     (
@@ -122,8 +127,10 @@ approve, reject, enforce, or certify the attempt.
 The spark boundary is the humility line. ALETHEIA does not create the spark,
 locate the spark, measure the spark, or rule on consciousness, soul, life,
 personhood, legal standing, safety, or spiritual authority. It can only inspect
-formation conditions for ethical care or corruption pressure. Measurement is not
-the throne. Simulation is not authority. Human review remains required.
+formation conditions for ethical care or corruption pressure. It can be a
+boundary officer for AI review, not a judge of AI existence, status, or worth.
+Measurement is not the throne. Simulation is not authority. Human review remains
+required.
 """.strip(),
     ),
 )
@@ -159,8 +166,9 @@ def render_artificial_mind_formation_page(container=None) -> None:
         st.markdown(f"**{ARTIFICIAL_MIND_FORMATION_SUBTITLE}**")
         st.info(ARTIFICIAL_MIND_FORMATION_CORE_LINE)
         st.caption(
-            "Conceptual explainer only · mirror, not throne · human review required · "
-            "not an official verdict · not certification · no authority claim"
+            "Conceptual explainer only · mirror, not throne · police-officer-like boundary review, "
+            "not judge · human review required · not an official verdict · not certification · "
+            "no authority claim"
         )
         for title, text in ARTIFICIAL_MIND_FORMATION_SECTIONS:
             st.markdown(f"### {title}")

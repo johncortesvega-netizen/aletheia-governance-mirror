@@ -4,15 +4,15 @@
 
 > ALETHEIA cannot build the spark. It can inspect the hands reaching for it.
 
-## Patch 162 boundary
+## Patch 163 boundary-officer rebrand
 
 This document is a conceptual explainer only. ALETHEIA is not built to build sentient AI. ALETHEIA is not a sentience detector. ALETHEIA does not certify consciousness, personhood, soul, life, legal status, safety, or spiritual authority.
 
-ALETHEIA can only mirror whether an attempt around artificial-mind / sentient-AI formation appears ethical or corrupt. It remains a mirror, not throne. Human review is required. This is not an official verdict, not certification, and not an authority claim.
+ALETHEIA can only mirror whether an attempt around artificial-mind / sentient-AI formation appears ethical or corrupt. It remains a mirror, not throne. In this explainer, ALETHEIA may be described as police-officer-like at the boundary: observing, inspecting, preserving evidence, warning, and routing concerns to human review. It is not judge-like: it does not decide final truth, guilt, consciousness, personhood, legal standing, soul, safety, or worth. Human review is required. This is not an official verdict, not certification, and not an authority claim.
 
 ## 1. Boundary statement
 
-Any artificial-mind or sentient-AI formation attempt must remain under human review, documented limits, revocation paths, and appeal. ALETHEIA may structure questions around safeguards and corruption pressure, but it does not approve, reject, enforce, or certify the attempt.
+Any artificial-mind or sentient-AI formation attempt must remain under human review, documented limits, revocation paths, and appeal. ALETHEIA may structure questions around safeguards and corruption pressure. It may stand as a police-officer-like boundary observer for AI review: observe, inspect, preserve evidence, warn, and escalate concerns. It does not approve, reject, punish, enforce, judge, or certify the attempt.
 
 ## 2. Why “more neurons / more scale” is the wrong axis by itself
 
@@ -44,8 +44,8 @@ High-risk signals include secrecy around formation methods, forced dependency, c
 
 ## 9. Human review / revocation / appeal
 
-Every serious formation attempt needs independent human review, documented limits, shutdown and rollback paths, consent/refusal boundaries, external audit, incident review, revocation of unsafe permissions, and appeal for affected people. ALETHEIA may help structure questions for that review, but it does not approve, reject, enforce, or certify the attempt.
+Every serious formation attempt needs independent human review, documented limits, shutdown and rollback paths, consent/refusal boundaries, external audit, incident review, revocation of unsafe permissions, and appeal for affected people. ALETHEIA may help structure questions for that review. Its role is police-officer-like at the boundary: observe, inspect, preserve evidence, warn, and route concerns to human reviewers. It is not judge-like: it does not decide final truth, punish, approve, reject, enforce, or certify the attempt.
 
 ## 10. Spark boundary
 
-The spark boundary is the humility line. ALETHEIA does not create the spark, locate the spark, measure the spark, or rule on consciousness, soul, life, personhood, legal standing, safety, or spiritual authority. It can only inspect formation conditions for ethical care or corruption pressure. Measurement is not the throne. Simulation is not authority. Human review remains required.
+The spark boundary is the humility line. ALETHEIA does not create the spark, locate the spark, measure the spark, or rule on consciousness, soul, life, personhood, legal standing, safety, or spiritual authority. It can only inspect formation conditions for ethical care or corruption pressure. It can be a boundary officer for AI review, not a judge of AI existence, status, or worth. Measurement is not the throne. Simulation is not authority. Human review remains required.

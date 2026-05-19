@@ -3520,3 +3520,15 @@ Boundary: conceptual explainer only. No scoring, taxonomy, World Lens logic, rec
 
 Validation target: `python tools\run_patch_checks.py 162`.
 
+
+## Patch 163 — Artificial Mind Formation Boundary-Officer Rebrand
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 163 refines the Patch 162 Artificial Mind Formation Theory explainer to make the role distinction explicit: ALETHEIA may be described as police-officer-like at the AI boundary, but not judge-like.
+
+The explainer now frames ALETHEIA as able to observe, inspect, preserve evidence, warn, and route/escalate concerns to human review. It explicitly preserves the boundary that ALETHEIA does not judge, punish, command, approve, reject, enforce, certify, decide final truth, or claim legal authority.
+
+Boundary: copy/documentation/test only. No scoring, taxonomy, World Lens logic, receipt schema/generation, routing, external calls, telemetry/storage, certification, enforcement, official authority, or final-truth behavior changed. Human review remains required.
+
+Validation target: `python tools\run_patch_checks.py 163`.
