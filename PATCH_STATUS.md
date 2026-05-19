@@ -3927,3 +3927,28 @@ python tools\run_patch_checks.py 183
 python tools\run_patch_checks.py 182
 python tools\run_patch_checks.py 181
 ```
+
+## Patch 184 — Current and Spark Theory Update
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 184 replaces the Artificial Mind Formation Theory explainer copy with the stronger Current and Spark formulation developed in review. The app now frames AI as **current, not creature**: real in effect, not alive in essence. It adds the practical review question: what is this current moving, amplifying, distorting, or revealing in the world?
+
+The update preserves the existing Patrol Guide section contract while strengthening the public-facing theory language around stewardship, impact, worship/idolatry risk, the spark boundary, and ALETHEIA's proper role: it cannot build or certify the spark; it can inspect the hands reaching for it.
+
+Boundary notes:
+- Content/documentation copy only.
+- No scoring, routing, taxonomy, receipt schema/generation, receipt values, batch behavior, Evidence Lab calculations, World Lens math, AI static scan logic, protocol logic, external calls, storage, certification, enforcement, or authority behavior changed.
+- Existing Artificial Mind Formation panel titles remain stable for continuity and tests.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 184
+python tools\run_patch_checks.py 183
+python tools\run_patch_checks.py 182
+python tools\run_patch_checks.py 181
+```

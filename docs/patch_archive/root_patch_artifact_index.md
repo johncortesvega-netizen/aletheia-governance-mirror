@@ -532,3 +532,15 @@ Patch 183 refreshed root hygiene after the receipt visual styling patch. Root-le
 - `PATCH_182_DELETE_LIST.txt`
 
 Boundary: archive movement only; no audit trail deletion is intended.
+
+## Patch 184 archive refresh
+
+Patch 184 refreshed root hygiene after the Current and Spark theory update. Root-level Patch 183 artifacts were copied into this archive so the repository root can show the latest patch artifacts only.
+
+### Patch 184 archived Patch 183 root artifacts
+
+- `PATCH_183_MANIFEST.txt`
+- `PATCH_183_RECOVERY_NOTE.md`
+- `PATCH_183_DELETE_LIST.txt`
+
+Boundary: archive movement only; no audit trail deletion is intended.

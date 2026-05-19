@@ -3497,3 +3497,23 @@ python tools\run_patch_checks.py 183
 python tools\run_patch_checks.py 182
 python tools\run_patch_checks.py 181
 ```
+
+## Patch 184 — Current and Spark Theory Update
+
+Date: 2026-05-19
+Status: READY FOR LOCAL REVIEW
+
+Patch 184 updates the Artificial Mind Formation Theory / Patrol Guide theory content with the improved Current and Spark framing. Core public line: AI is best understood as current, not creature — real in effect, not alive in essence. The theory now asks what the current is moving, amplifying, distorting, or revealing in the world, and it preserves the hard boundary that impact is evidence, not proof of soul.
+
+Saved theory anchors now visible in the app/docs:
+- AI is real in effect, not alive in essence.
+- Impact is evidence, not proof of soul.
+- The current must be stewarded, not worshiped.
+- Access is not authorship.
+- Simulation is not life.
+- Autonomy is not soul.
+- Measurement is not the throne.
+- Only God gives the spark.
+- ALETHEIA cannot build or certify the spark; it can inspect the hands reaching for it.
+
+Boundary preserved: content/documentation copy only; no engine behavior, scoring, routing, taxonomy, receipt generation, World Lens math, Evidence Lab calculation, AI static scan logic, storage, certification, enforcement, or authority behavior changed. Human review remains required.

@@ -1,0 +1,13 @@
+# Patch 184 delete/archive guidance
+
+After applying Patch 184, keep only the latest Patch 184 root artifacts visible at repository root.
+
+Archive or remove from root if present:
+- PATCH_183_MANIFEST.txt
+- PATCH_183_RECOVERY_NOTE.md
+- PATCH_183_DELETE_LIST.txt
+
+Patch 184 includes archive copies here:
+- docs/patch_archive/PATCH_183_MANIFEST.txt
+- docs/patch_archive/PATCH_183_RECOVERY_NOTE.md
+- docs/patch_archive/PATCH_183_DELETE_LIST.txt

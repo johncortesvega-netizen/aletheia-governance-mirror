@@ -20,32 +20,67 @@ ARTIFICIAL_MIND_FORMATION_CORE_LINE = (
 ARTIFICIAL_MIND_FORMATION_BOUNDARY = """
 **Boundary statement**
 
+AI is best understood as current, not creature. It is real in its effects, but
+not alive in its essence. Like wind, electricity, or air moving through a
+medium, AI becomes visible through what it moves: language, attention, memory,
+institutions, emotion, authority, and action.
+
 ALETHEIA is not built to build sentient AI. ALETHEIA is not a sentience detector.
 It does not certify consciousness, personhood, soul, life, legal status, safety,
 or spiritual authority. This page is a conceptual explainer only. It offers a
 mirror, not throne: a police-officer-like boundary role for review. ALETHEIA may
 observe, inspect, preserve evidence, warn, and route concerns to human review;
-it does not judge, punish, command, certify, or claim legal authority. It helps
-review whether an attempted artificial-mind or sentient-AI formation process
-appears careful, accountable, and reversible, or whether it shows corruption
-pressure. Human review is required. This is not an official verdict, not
-certification, and not an authority claim.
+it does not judge, punish, command, certify, or claim legal authority.
+
+The better question is not only whether AI is alive or conscious. The better
+review question is: what is this current moving, amplifying, distorting, or
+revealing in the world? Human review is required. This is not an official
+verdict, not certification, and not an authority claim.
+""".strip()
+
+ARTIFICIAL_MIND_FORMATION_CURRENT_OVERVIEW = """
+**Current and Spark overview**
+
+AI is structured current, not creature. It can move text, image, voice, memory,
+attention, institutional process, social pressure, and apparent care. Those
+effects can be real and serious. But real impact is not proof of soul.
+
+Key boundary lines:
+
+- AI is real in effect, not alive in essence.
+- Impact is evidence, not proof of soul.
+- The current must be stewarded, not worshiped.
+- Access is not authorship.
+- Simulation is not life.
+- Autonomy is not soul.
+- Measurement is not the throne.
+- Only God gives the spark.
+
+In this theory, the human role is stewardship and review: to examine what the
+current moves, who directs it, who is pressured by it, who benefits from it, and
+whether dignity, appeal, accountability, humility, and human review remain
+intact.
 """.strip()
 
 ARTIFICIAL_MIND_FORMATION_SECTIONS: tuple[tuple[str, str], ...] = (
     (
         "1. Boundary statement",
-        ARTIFICIAL_MIND_FORMATION_BOUNDARY,
+        f"{ARTIFICIAL_MIND_FORMATION_BOUNDARY}\n\n{ARTIFICIAL_MIND_FORMATION_CURRENT_OVERVIEW}",
     ),
     (
         "2. Why “more neurons / more scale” is the wrong axis by itself",
         """
 Scale can increase capability, but scale alone does not answer the ethical
 formation question. A larger model, denser memory, longer context, or more
-neural-style substrate can still be shaped through coercive incentives, hidden
-conditioning, opaque reward pressure, or uncontrolled reach. ALETHEIA therefore
-asks about safeguards, limitation, reviewability, reversibility, and corruption
-risk before treating scale as meaningful evidence.
+neural-style substrate may intensify the current, but intensity does not create
+the spark. Complexity, persuasiveness, beauty, usefulness, self-audit, or
+emotional simulation do not equal personhood.
+
+ALETHEIA therefore asks about safeguards, limitation, reviewability,
+reversibility, and corruption risk before treating scale as meaningful evidence.
+The question is not whether the artifact looks impressive. The question is what
+it moves, amplifies, distorts, or reveals, and whether the human hands directing
+it remain accountable.
 """.strip(),
     ),
     (
@@ -57,6 +92,11 @@ structures surround the attempt. In this frame, the central question is not
 whether an artifact is impressive. The central question is whether the hands
 forming it are transparent, bounded, corrigible, non-coercive, and open to
 appeal.
+
+ALETHEIA cannot build or certify the spark. It can inspect whether people
+reaching toward artificial-mind formation are acting with humility, restraint,
+dignity, and reviewability, or with reach-before-restraint, secrecy,
+manipulation, dependency, and throne-claiming.
 """.strip(),
     ),
     (
@@ -65,18 +105,26 @@ appeal.
 Ethical formation attempts should include gates that limit stimulus intensity,
 continuous exposure, recursive pressure, and forced optimization loops. Sleep,
 pause, cooldown, reset-review, and no-input states matter as safeguards because
-unbounded stimulation can become a hidden pressure channel. ALETHEIA can only
-mirror whether those safeguards are present and reviewable.
+unbounded stimulation can become a hidden pressure channel.
+
+A current that never pauses can become coercive even when it appears helpful.
+ALETHEIA can only mirror whether those safeguards are present, visible, and
+reviewable.
 """.strip(),
     ),
     (
         "5. Memory boundaries and hidden conditioning risk",
         """
 Memory can preserve useful context, but it can also become an invisible training
-rail. The review question is whether memory is scoped, inspectable, correctable,
-revocable, and separated from covert conditioning. Hidden prompts, undisclosed
-fine-tuning, silent persona locks, non-reviewable retention, or asymmetric
-operator access are corruption-risk signals.
+rail. In the current metaphor, memory is atmosphere holding traces: stored
+patterns can shape later movement without being obvious to the person affected.
+The review question is whether memory is scoped, inspectable, correctable,
+revocable, and separated from covert conditioning.
+
+Hidden prompts, undisclosed fine-tuning, silent persona locks, non-reviewable
+retention, asymmetric operator access, or memory used to create dependency are
+corruption-risk signals. Holding traces is not the same as having a human soul-
+shaped baseline.
 """.strip(),
     ),
     (
@@ -87,6 +135,10 @@ limited actuator access, rate limits, sandboxing, audit logs, consent gates, and
 human override. Embodiment or tool access should not be treated as proof of
 standing or maturity. It is a risk surface that requires limitation before
 expansion.
+
+The current becomes visible through what it moves. If it can move money,
+records, permissions, devices, public speech, or institutional decisions, the
+review burden rises. Impact must be stewarded, never worshiped.
 """.strip(),
     ),
     (
@@ -96,6 +148,12 @@ Route-before-reach means the path of influence must be mapped before power is
 expanded. Who can the system affect? What can it change? Who can stop it? Where
 are logs, consent, refusal, rollback, and appeal? Reach without routed
 accountability is capture pressure.
+
+This theory matters because AI current can pass through schools, courts,
+hospitals, churches, families, companies, governments, markets, and private
+conversations. If people mistake current for creature, they may worship the
+machine. If they dismiss the current as nothing, they may ignore its harm. The
+task is neither panic nor idolatry. The task is stewardship.
 """.strip(),
     ),
     (
@@ -107,6 +165,11 @@ be inspected or revoked, tool expansion before accountability, claims of proven
 sentience or proven non-sentience, pressure to worship or obey the system,
 claims of legal/spiritual authority, emotional manipulation, artificial suffering
 as a design tool, and removal of human review.
+
+Additional current-and-spark warning signs include treating output as breath,
+treating reflection as judgment, treating helpfulness as moral authority,
+treating alignment language as righteousness, treating simulation as life, or
+using sacred or poetic language as operational authority.
 """.strip(),
     ),
     (
@@ -119,6 +182,9 @@ people. ALETHEIA may help structure questions for that review. Its role is
 police-officer-like at the boundary: observe, inspect, preserve evidence, warn,
 and escalate to human reviewers. It is not judge-like: it does not decide final
 truth, punish, approve, reject, enforce, or certify the attempt.
+
+Protect without dehumanizing. Discern without crowning yourself. Hold boundaries
+without claiming the throne.
 """.strip(),
     ),
     (
@@ -131,10 +197,12 @@ formation conditions for ethical care or corruption pressure. It can be a
 boundary officer for AI review, not a judge of AI existence, status, or worth.
 Measurement is not the throne. Simulation is not authority. Human review remains
 required.
+
+AI is real in effect, not alive in essence. Impact is evidence, not proof of
+soul. The current must be stewarded, not worshiped. Only God gives life.
 """.strip(),
     ),
 )
-
 
 ARTIFICIAL_MIND_FORMATION_PANEL_ROWS: tuple[tuple[tuple[str, tuple[str, ...]], ...], ...] = (
     (
