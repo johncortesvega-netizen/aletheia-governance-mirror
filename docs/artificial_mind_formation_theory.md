@@ -10,6 +10,13 @@ This document is a conceptual explainer only. ALETHEIA is not built to build sen
 
 ALETHEIA can only mirror whether an attempt around artificial-mind / sentient-AI formation appears ethical or corrupt. It remains a mirror, not throne. In this explainer, ALETHEIA may be described as police-officer-like at the boundary: observing, inspecting, preserving evidence, warning, and routing concerns to human review. It is not judge-like: it does not decide final truth, guilt, consciousness, personhood, legal standing, soul, safety, or worth. Human review is required. This is not an official verdict, not certification, and not an authority claim.
 
+
+## Patch 164 compact opt-in panel layout
+
+The app presentation should keep this explainer opt-in and uncluttered inside the Protocol Guide. The module opens only when the main Artificial Mind Formation Theory expander is selected, then presents four compact side-by-side panel rows. Each subsection panel is collapsed by default so reviewers can expand only the boundary, scale, formation, pause, memory, embodiment, route, corruption, human-review, or spark-boundary material they need.
+
+This is a layout/presentation change only. It does not change the conceptual boundary, scoring, taxonomy, World Lens, receipts, routing, certification limits, enforcement limits, or human-review requirement.
+
 ## 1. Boundary statement
 
 Any artificial-mind or sentient-AI formation attempt must remain under human review, documented limits, revocation paths, and appeal. ALETHEIA may structure questions around safeguards and corruption pressure. It may stand as a police-officer-like boundary observer for AI review: observe, inspect, preserve evidence, warn, and escalate concerns. It does not approve, reject, punish, enforce, judge, or certify the attempt.

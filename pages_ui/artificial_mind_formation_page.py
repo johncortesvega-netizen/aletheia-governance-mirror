@@ -136,6 +136,30 @@ required.
 )
 
 
+ARTIFICIAL_MIND_FORMATION_PANEL_ROWS: tuple[tuple[tuple[str, tuple[str, ...]], ...], ...] = (
+    (
+        ("Boundary & scale", ("1. Boundary statement", "2. Why “more neurons / more scale” is the wrong axis by itself")),
+        ("Formation & pause", ("3. Formation over training", "4. Stimulus gates and sleep/pause states")),
+    ),
+    (
+        ("Memory & conditioning", ("5. Memory boundaries and hidden conditioning risk",)),
+        ("Embodiment & friction", ("6. Embodiment/friction as limitation before reach",)),
+    ),
+    (
+        ("Route-before-reach", ("7. Route-before-reach",)),
+        ("Corruption signals", ("8. Corruption signals",)),
+    ),
+    (
+        ("Human review / revocation / appeal", ("9. Human review / revocation / appeal",)),
+        ("Spark boundary", ("10. Spark boundary",)),
+    ),
+)
+
+
+def _section_map() -> dict[str, str]:
+    return {title: section_text for title, section_text in ARTIFICIAL_MIND_FORMATION_SECTIONS}
+
+
 def get_artificial_mind_formation_markdown() -> str:
     """Return the complete static explainer markdown for tests/docs reuse."""
     sections = "\n\n".join(f"### {title}\n{text}" for title, text in ARTIFICIAL_MIND_FORMATION_SECTIONS)
@@ -170,6 +194,13 @@ def render_artificial_mind_formation_page(container=None) -> None:
             "not judge · human review required · not an official verdict · not certification · "
             "no authority claim"
         )
-        for title, text in ARTIFICIAL_MIND_FORMATION_SECTIONS:
-            st.markdown(f"### {title}")
-            st.markdown(text)
+        st.markdown("**Open only the panel you want to review.** Sections are grouped into four compact rows so the Protocol Guide stays opt-in and uncluttered.")
+        sections_by_title = _section_map()
+        for row in ARTIFICIAL_MIND_FORMATION_PANEL_ROWS:
+            columns = st.columns(2)
+            for column, (panel_title, section_titles) in zip(columns, row):
+                with column:
+                    with st.expander(panel_title, expanded=False):
+                        for section_title in section_titles:
+                            st.markdown(f"### {section_title}")
+                            st.markdown(sections_by_title[section_title])

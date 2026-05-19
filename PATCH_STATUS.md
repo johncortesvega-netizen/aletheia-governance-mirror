@@ -3532,3 +3532,16 @@ The explainer now frames ALETHEIA as able to observe, inspect, preserve evidence
 Boundary: copy/documentation/test only. No scoring, taxonomy, World Lens logic, receipt schema/generation, routing, external calls, telemetry/storage, certification, enforcement, official authority, or final-truth behavior changed. Human review remains required.
 
 Validation target: `python tools\run_patch_checks.py 163`.
+
+## Patch 164 — Artificial Mind Formation Compact Opt-In Panels
+
+Date: 2026-05-19
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 164 reorganizes the Artificial Mind Formation Theory explainer inside the Protocol Guide so it is less cluttered and more explicitly opt-in. The main explainer remains collapsed by default, and its internal subsections are now presented as four compact side-by-side panel rows with nested expanders collapsed by default. Reviewers can open only the section they need: boundary/scale, formation/pause, memory/embodiment, route/corruption, or human-review/spark-boundary content.
+
+Boundary preserved: layout/presentation only. No core scoring changes, no new taxonomy state, no World Lens changes, no receipt schema/generation changes, no routing changes, no external calls, no telemetry/storage, no certification, no enforcement, no official authority, and no final-truth behavior changed. Human review remains required.
+
+Validation target: `python tools\run_patch_checks.py 164`.
+
