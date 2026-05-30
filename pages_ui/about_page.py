@@ -38,7 +38,7 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
 
     st = container
     st.subheader("Why ALETHEIA")
-    # Patch 182: visual-only sky/gold alignment anchor for the public Why page.
+    # Patch 192: visual-only warm original governance-mirror anchor for the public Why page.
     st.markdown(
         """
         <div class="sky-gold-page-anchor">
@@ -50,9 +50,9 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
         unsafe_allow_html=True,
     )
     st.info(
-        "ALETHEIA is the friendlier public face of ALETHEIA: a compact stop/go "
-        "review layer for human judgment. Science investigates, philosophy structures, "
-        "theological humility restrains final claims, and people decide."
+        "ALETHEIA is a free, open-source governance mirror for human review. "
+        "It helps people inspect policy, AI, institutional, and evidence claims without "
+        "turning the app into a judge, authority, certification engine, or throne."
     )
     st.caption(
         "Open only the panels you need. This page explains the public purpose, "

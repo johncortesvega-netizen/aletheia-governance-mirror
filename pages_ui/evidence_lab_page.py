@@ -33,14 +33,14 @@ def render_evidence_lab_intro(container=None) -> None:
 
         container = st
 
-    container.subheader("Evidence Lab — Evidence Patrol")
-    # Patch 182: visual-only sky/gold alignment anchor for Evidence Lab.
+    container.subheader("Evidence Lab")
+    # Patch 192: visual-only warm original governance-mirror anchor for Evidence Lab.
     container.markdown(
         """
         <div class="sky-gold-page-anchor">
             <strong><span class="pillar-pair"></span>Evidence Lab</strong>
             <span class="sky-gold-rule"></span>
-            <span>Evidence review gets the same bright patrol frame: source clarity first, certainty restrained, human review required.</span>
+            <span>Evidence review uses the same warm governance-mirror frame: source clarity first, certainty restrained, human review required.</span>
         </div>
         """,
         unsafe_allow_html=True,

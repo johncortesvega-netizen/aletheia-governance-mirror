@@ -1,3 +1,19 @@
+## Patch 192 — Warm Original App-Wide Style Polish
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 192 extends the restored original ALETHEIA design language beyond the logo and Preview Unit. It adds app-wide warm governance-mirror styling overrides: parchment/cream backgrounds, muted green and soft red accents, warmer cards/expanders/buttons/sidebar, and non-blue receipt/reference panels. It also cleans remaining public copy that still sounded like patrol/blue framing.
+
+Scope: CSS, visible copy, version tag, tests, and patch-hygiene only. No scoring, routing, taxonomy, receipt schema/generation, Evidence Lab calculations, World Lens math, AI static scan logic, protocol logic, external calls, storage, certification, enforcement, or authority behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 192
+python -m pytest -q tests/test_patch_192_warm_original_app_style_polish.py tests/test_patch_191_mascot_asset_refresh_and_preview_palette.py tests/test_patch_190_original_governance_mirror_restore.py
+python -m py_compile app.py pages_ui/about_page.py pages_ui/evidence_lab_page.py
+```
+
 ## Patch 191 — Original Mascot Asset Refresh + Warm Preview Palette
 
 Status: READY FOR LOCAL REVIEW

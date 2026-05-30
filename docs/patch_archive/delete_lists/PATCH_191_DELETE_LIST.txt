@@ -1,0 +1,11 @@
+PATCH 191 delete/archive list
+
+Archive or remove these previous root patch artifacts after applying Patch 191:
+- PATCH_190_MANIFEST.txt
+- PATCH_190_RECOVERY_NOTE.md
+- PATCH_190_DELETE_LIST.txt
+
+Patch 190 archive destinations included in this patch:
+- docs/patch_archive/manifests/PATCH_190_MANIFEST.txt
+- docs/patch_archive/recovery_notes/PATCH_190_RECOVERY_NOTE.md
+- docs/patch_archive/delete_lists/PATCH_190_DELETE_LIST.txt

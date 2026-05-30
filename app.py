@@ -262,7 +262,7 @@ def enforce_missing_safeguard_threshold_route(
     )
 
 
-APP_VERSION = "v1.0-original-governance-mirror-p2"
+APP_VERSION = "v1.0-original-governance-mirror-p3"
 SUPPORTED_INPUT_LANGUAGE_NOTE = "Language scope: ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim. Human review remains required."
 PROJECT_ROOT = Path(__file__).resolve().parent
 ABOUT_HEADER_IMAGE = PROJECT_ROOT / "assets" / "about_header.png"
@@ -1568,6 +1568,189 @@ st.markdown(
         border: 1px solid rgba(212,175,55,0.30) !important;
         border-radius: 18px !important;
         box-shadow: 0 8px 18px rgba(31,95,143,0.08) !important;
+    }
+
+
+
+    /* Patch 192: original poster-style warm governance-mirror app polish.
+       Visual-only overrides: warm parchment/cream surfaces, muted green/red accents,
+       botanical/public-good tone, and no blue preview/card dominance. */
+    :root {
+        --aletheia-cream: #fbf6ea;
+        --aletheia-parchment: #f6eddb;
+        --aletheia-green: #355c2b;
+        --aletheia-green-soft: rgba(84, 111, 62, 0.16);
+        --aletheia-red: #b23a42;
+        --aletheia-red-soft: rgba(178, 58, 66, 0.13);
+        --aletheia-ink: #35291d;
+        --aletheia-muted: #756756;
+        --aletheia-line: rgba(151, 124, 75, 0.34);
+    }
+
+    .stApp {
+        background:
+            radial-gradient(circle at 12% 4%, rgba(178, 58, 66, 0.05), rgba(178, 58, 66, 0) 32%),
+            radial-gradient(circle at 88% 8%, rgba(84, 111, 62, 0.10), rgba(84, 111, 62, 0) 31%),
+            linear-gradient(180deg, #fffaf1 0%, var(--aletheia-cream) 48%, #f3ead8 100%) !important;
+        color: var(--aletheia-ink) !important;
+    }
+
+    h1, h2, h3,
+    .hero-title,
+    .sidebar-brand-main,
+    .sidebar-brand-subline {
+        font-family: Georgia, 'Times New Roman', serif !important;
+    }
+
+    .hero-title-main,
+    .sidebar-brand-main {
+        color: var(--aletheia-red) !important;
+        text-shadow: 0 1px 0 rgba(255,255,255,0.82) !important;
+    }
+    .hero-title-subline,
+    .sidebar-brand-subline,
+    .hero-sub,
+    .ribbon-label,
+    .footer-banner strong,
+    .sky-gold-page-anchor strong,
+    .receipt-title {
+        color: var(--aletheia-green) !important;
+    }
+    .hero-kicker,
+    .caption,
+    .ribbon-body,
+    .sidebar-tagline,
+    .sky-gold-page-anchor span,
+    .receipt-body,
+    .receipt-download-note,
+    [data-testid="stCaptionContainer"] {
+        color: var(--aletheia-muted) !important;
+    }
+
+    .botanical-frame,
+    .hero,
+    .civic-ribbon,
+    .prototype-note,
+    .sidebar-emblem-card,
+    .footer-banner,
+    .metric-card,
+    .soft-card,
+    [data-testid="stMetric"],
+    div[data-testid="stExpander"],
+    .sky-gold-page-anchor,
+    .receipt-sky-panel,
+    .receipt-code-frame {
+        border-color: var(--aletheia-line) !important;
+        background:
+            linear-gradient(180deg, rgba(255, 250, 241, 0.98), rgba(246, 237, 219, 0.92)) !important;
+        box-shadow: 0 10px 24px rgba(94, 74, 41, 0.10) !important;
+    }
+
+    .botanical-frame::before,
+    .botanical-frame::after {
+        background:
+            radial-gradient(circle at 50% 28%, rgba(84,111,62,0.28), rgba(84,111,62,0) 35%),
+            linear-gradient(135deg, rgba(178,58,66,0.12), rgba(246,237,219,0.22)) !important;
+        border-color: rgba(151, 124, 75, 0.32) !important;
+    }
+
+    .prototype-note,
+    .sky-gold-page-anchor,
+    .receipt-sky-panel {
+        border-left-color: var(--aletheia-red) !important;
+    }
+
+    .hero-emblem,
+    .sidebar-emblem-mark {
+        background:
+            radial-gradient(circle at 50% 42%, rgba(255, 252, 246, 0.98), rgba(246, 237, 219, 0.92)),
+            linear-gradient(135deg, rgba(84,111,62,0.16), rgba(178,58,66,0.10)) !important;
+        border-color: var(--aletheia-line) !important;
+        box-shadow: inset 0 0 0 9px rgba(255,255,255,0.38), 0 14px 28px rgba(94, 74, 41, 0.12) !important;
+    }
+
+    .sky-gold-page-anchor .sky-gold-rule {
+        background: linear-gradient(90deg, var(--aletheia-red), var(--aletheia-green)) !important;
+    }
+    .sky-gold-page-anchor .pillar-pair {
+        border-top-color: rgba(151, 124, 75, 0.40) !important;
+        border-bottom-color: rgba(151, 124, 75, 0.40) !important;
+        filter: drop-shadow(0 3px 5px rgba(94, 74, 41, 0.08)) !important;
+    }
+
+    .stButton > button,
+    [data-testid="stButton"] button,
+    .stDownloadButton > button,
+    [data-testid="stDownloadButton"] button,
+    [data-testid="stFileUploader"] button {
+        border: 1px solid rgba(151, 124, 75, 0.45) !important;
+        background: linear-gradient(180deg, #fffaf1 0%, #efe3cc 100%) !important;
+        color: var(--aletheia-green) !important;
+        box-shadow: 0 8px 18px rgba(94, 74, 41, 0.10) !important;
+    }
+    .stButton > button:hover,
+    [data-testid="stButton"] button:hover,
+    .stDownloadButton > button:hover,
+    [data-testid="stDownloadButton"] button:hover,
+    [data-testid="stFileUploader"] button:hover {
+        background: linear-gradient(180deg, #fff6e7 0%, #e7d9bd 100%) !important;
+        color: #274a20 !important;
+        border-color: rgba(151, 124, 75, 0.65) !important;
+    }
+    div[data-testid="stButton"] button[kind="primary"] {
+        background: linear-gradient(180deg, #b23a42 0%, #8f2830 100%) !important;
+        border-color: #742127 !important;
+        color: #fffaf1 !important;
+        box-shadow: 0 10px 22px rgba(143, 40, 48, 0.22) !important;
+    }
+
+    section[data-testid="stSidebar"],
+    section[data-testid="stSidebar"] > div,
+    [data-testid="stSidebar"],
+    [data-testid="stSidebarContent"] {
+        background: linear-gradient(180deg, #fff7e8 0%, #f3ead8 100%) !important;
+        border-right: 1px solid var(--aletheia-line) !important;
+    }
+
+    div[data-testid="stExpander"] details[open],
+    div[data-testid="stExpander"],
+    [data-testid="stFileUploader"] section,
+    div[data-baseweb="select"] > div,
+    textarea,
+    input,
+    pre,
+    code,
+    [data-testid="stCodeBlock"] pre,
+    [data-testid="stCodeBlock"] code,
+    [data-testid="stCode"] {
+        background-color: #fffaf1 !important;
+        border-color: var(--aletheia-line) !important;
+        color: var(--aletheia-ink) !important;
+    }
+
+    div[data-testid="stExpander"] p,
+    div[data-testid="stExpander"] li,
+    div[data-testid="stExpander"] td,
+    div[data-testid="stExpander"] details summary,
+    [data-testid="stMarkdownContainer"] code,
+    .receipt-boundary-pill,
+    .receipt-code-frame strong {
+        color: var(--aletheia-green) !important;
+    }
+
+    div[data-testid="stExpander"] blockquote,
+    div[data-testid="stExpander"] th,
+    .receipt-boundary-pill,
+    .receipt-download-note {
+        background: var(--aletheia-green-soft) !important;
+        border-color: rgba(84, 111, 62, 0.26) !important;
+    }
+
+    .receipt-sky-panel::before,
+    .receipt-sky-panel::after {
+        background: linear-gradient(180deg, #fffaf1, #efe3cc) !important;
+        border-color: var(--aletheia-line) !important;
+        box-shadow: inset 0 0 0 2px rgba(255,255,255,0.62), 0 6px 14px rgba(94, 74, 41, 0.08) !important;
     }
 
     @media (max-width: 900px) {
@@ -8498,7 +8681,7 @@ with tab_doctrine:
         <div class="sky-gold-page-anchor">
             <strong><span class="pillar-pair"></span>Protocol Guide</strong>
             <span class="sky-gold-rule"></span>
-            <span>Sky-blue base, white structure, and gold emphasis frame the operating boundaries without adding authority.</span>
+            <span>Warm cream, muted green, and soft red accents frame the operating boundaries without adding authority.</span>
         </div>
         """,
         unsafe_allow_html=True,

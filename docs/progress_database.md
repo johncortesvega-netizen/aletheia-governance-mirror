@@ -1,3 +1,9 @@
+## Patch 192 — Warm Original App-Wide Style Polish
+
+Patch 192 carries the original design direction further into the real app. The app now has a warm parchment/cream visual override layer, muted green and soft red ALETHEIA accents, warmer cards/expanders/buttons/sidebar, and non-blue receipt/reference panels. Public copy on Why ALETHEIA, Evidence Lab, and Protocol Guide no longer frames the app as blue/patrol styling.
+
+Scope: UI/CSS/copy and patch-hygiene only. No scoring, routing, receipt schema, protocol logic, or authority boundary changed. Human review remains required.
+
 ## Patch 191 — Original Mascot Asset Refresh + Warm Preview Palette
 
 Patch 191 finishes the small visual cleanup requested after Patch 190. The public mascot/logo assets now use the original top-right robot from the approved concept image, `assets/about_header.png` returns to the warm poster-style concept header, the app version advances to `v1.0-original-governance-mirror-p2`, and the Preview Unit mascot card swaps its lingering blue tint for a warm cream/green/red palette closer to the original ALETHEIA look.
