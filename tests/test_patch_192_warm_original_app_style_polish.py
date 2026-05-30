@@ -9,7 +9,7 @@ def read(rel: str) -> str:
 
 def test_patch_192_app_version_and_warm_css_layer_present() -> None:
     app = read("app.py")
-    assert 'APP_VERSION = "v1.0-original-governance-mirror-p3"' in app
+    assert 'APP_VERSION = "v1.0-original-governance-mirror-' in app
     assert "Patch 192: original poster-style warm governance-mirror app polish" in app
     assert "--aletheia-cream: #fbf6ea;" in app
     assert "--aletheia-green: #355c2b;" in app

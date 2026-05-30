@@ -1,3 +1,19 @@
+## Patch 193 — Unit Preview Visual Reference Poster Refresh
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 193 replaces the old two-file Unit Preview HTML reference previews (including the earlier pink/blue Sydney Protocol surfaces) with four packaged poster-style visual references: Global Peace Architecture, The Sovereign Master Blueprint, The Sydney Protocol: Command Dossier, and The Sydney Protocol: Architect's Checklist. The Preview Unit now shows these as a calm 2x2 visual poster grid.
+
+Scope: Unit Preview visual-reference presentation, packaged local image assets, version bump, and patch-hygiene only. No scoring, routing, taxonomy, receipt schema/generation, World Lens math, Evidence Lab calculations, protocol logic, external calls, storage, certification, enforcement, or authority behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 193
+python -m pytest -q tests/test_patch_193_unit_preview_visual_reference_poster_refresh.py tests/test_patch_190_original_governance_mirror_restore.py tests/test_patch_191_mascot_asset_refresh_and_preview_palette.py tests/test_patch_192_warm_original_app_style_polish.py
+python -m py_compile app.py ui/unit_preview.py
+```
+
 ## Patch 192 — Warm Original App-Wide Style Polish
 
 Status: READY FOR LOCAL REVIEW

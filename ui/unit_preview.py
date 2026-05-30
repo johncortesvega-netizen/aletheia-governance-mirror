@@ -469,20 +469,38 @@ def render_unit_preview_proof_concepts_side_by_side(container=None) -> None:
         with dao_expander:
             render_dao_governance_proof_of_concept(dao_expander)
 
-def get_unit_preview_html_files(project_root: Path | None = None) -> list[tuple[str, Path]]:
-    """Return packaged HTML preview files for the Unit Preview hook page."""
+def get_unit_preview_visual_reference_cards(project_root: Path | None = None) -> list[dict[str, Path | str]]:
+    """Return packaged visual reference cards for the Unit Preview hook page."""
     root = project_root or Path(__file__).resolve().parents[1]
     candidates = [
-        ("Sydney Protocol v3.2", root / "Sydney_Protocol_v3.2.html"),
-        ("GPA v8.2", root / "GPA_v8.2.html"),
+        {
+            "title": "Global Peace Architecture",
+            "path": root / "assets" / "visual_cards" / "global_peace_architecture.jpg",
+            "caption": "Public-record style architecture poster for the Global Grid / Eternal Baseline layer.",
+        },
+        {
+            "title": "The Sovereign Master Blueprint",
+            "path": root / "assets" / "visual_cards" / "sovereign_master_blueprint.jpg",
+            "caption": "Roadmap-style blueprint poster showing the sanctuary-home and restructuring flow.",
+        },
+        {
+            "title": "The Sydney Protocol: Command Dossier",
+            "path": root / "assets" / "visual_cards" / "sydney_protocol_command_dossier.jpg",
+            "caption": "Command-dossier poster replacing the earlier blue Sydney Protocol reference in Unit Preview.",
+        },
+        {
+            "title": "The Sydney Protocol: Architect's Checklist",
+            "path": root / "assets" / "visual_cards" / "sydney_protocol_architect_checklist.jpg",
+            "caption": "Architect's-checklist poster replacing the earlier pink Sydney Protocol reference in Unit Preview.",
+        },
     ]
-    return [(title, path) for title, path in candidates if path.exists()]
+    return [item for item in candidates if Path(item["path"]).exists()]
 
 
-def render_unit_preview_html_reference(container=None, project_root: Path | None = None) -> None:
-    """Render packaged HTML previews side by side when present.
+def render_unit_preview_visual_reference_cards(container=None, project_root: Path | None = None) -> None:
+    """Render packaged visual reference cards in a calm 2x2 poster grid.
 
-    This stays on the Unit Preview hook page and uses packaged local files only.
+    This stays on the Unit Preview hook page and uses packaged local images only.
     Missing files are ignored calmly.
     """
     if container is None:
@@ -490,21 +508,24 @@ def render_unit_preview_html_reference(container=None, project_root: Path | None
 
         container = st
 
-    html_files = get_unit_preview_html_files(project_root)
-    if not html_files:
+    cards = get_unit_preview_visual_reference_cards(project_root)
+    if not cards:
         return
 
-    container.markdown("### Reference previews")
-    container.caption("Packaged local HTML references. These are orientation aids, not final authority.")
-    import streamlit.components.v1 as components  # type: ignore
+    container.markdown("### Visual reference posters")
+    container.caption(
+        "Packaged local visual references for the Sydney Protocol / baseline context. "
+        "These are orientation aids for human review, not final authority."
+    )
 
-    columns = container.columns(len(html_files))
-    for index, ((title, path), column) in enumerate(zip(html_files, columns), start=1):
-        with column:
-            column.markdown(f"**{title}**")
-            column.caption(f"Local file: `{path.name}`")
-            html_text = path.read_text(encoding="utf-8", errors="ignore")
-            components.html(html_text, height=420, scrolling=True)
+    for row_start in range(0, len(cards), 2):
+        row = cards[row_start: row_start + 2]
+        columns = container.columns(len(row))
+        for column, card in zip(columns, row):
+            with column:
+                column.markdown(f"**{card['title']}**")
+                column.caption(str(card["caption"]))
+                column.image(str(card["path"]), use_container_width=True)
 
 
 def _contains_any(value: str, tokens: tuple[str, ...]) -> bool:
@@ -901,6 +922,6 @@ def render_unit_preview(container=None) -> bool:
         container.caption("This is a stop/go orientation only. You can still choose any module after entering ALETHEIA.")
 
     render_unit_preview_proof_concepts_side_by_side(container)
-    render_unit_preview_html_reference(container)
+    render_unit_preview_visual_reference_cards(container)
 
     return bool(proceed_clicked)
