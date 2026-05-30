@@ -10,7 +10,7 @@ def read(rel: str) -> str:
 def test_patch_190_app_shell_returns_to_original_governance_mirror_identity() -> None:
     app = read("app.py")
     shell = read("ui/app_shell.py")
-    assert 'APP_VERSION = "v1.0-original-governance-mirror-p1"' in app
+    assert 'APP_VERSION = "v1.0-original-governance-mirror-' in app
     assert 'MASCOT_LOGO_IMAGE = PROJECT_ROOT / "assets" / "aletheia_robot_laurel_logo.png"' in app
     assert '"📜 Protocol Guide"' in app
     assert '"ℹ️ Why ALETHEIA"' in app

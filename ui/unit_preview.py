@@ -26,7 +26,7 @@ def _asset_image_data_uri(path: Path) -> str:
 
 
 def get_unit_preview_mascot_image_uri(project_root: Path | None = None) -> str:
-    """Return the original ALETHEIA laurel robot asset for Unit Preview."""
+    """Return the original ALETHEIA top-right mascot asset for Unit Preview."""
     root = project_root or Path(__file__).resolve().parents[1]
     return _asset_image_data_uri(root / "assets" / "aletheia_robot_laurel_logo.png")
 
@@ -129,11 +129,10 @@ div[data-testid="stButton"] button[kind="primary"]:focus {
     outline: 3px solid rgba(248, 113, 113, 0.7) !important;
     outline-offset: 2px !important;
 }
-/* Patch 190: make Preview Unit brand read as ALETHEIA above Governance Mirror. */
+/* Patch 191: warm preview palette aligned with the original governance-mirror concept. */
 .unit-preview-brand-title {
     font-family: Georgia, 'Times New Roman', serif;
-    color: #123d63 !important;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.10em;
     line-height: 0.95;
     margin: 0.2rem 0 0.5rem 0;
     text-transform: uppercase;
@@ -145,36 +144,33 @@ div[data-testid="stButton"] button[kind="primary"]:focus {
 }
 .unit-preview-brand-main {
     font-size: clamp(2.35rem, 6vw, 4.6rem);
+    color: #b23a42 !important;
 }
 .unit-preview-brand-subline {
     font-size: clamp(2.0rem, 5.2vw, 4.0rem);
     margin-top: 0.08rem;
-}
-/* Patch 185: Preview Unit only; face the entry logo the other way. */
-.hero-emblem .aletheia-mascot-logo {
-    transform: scaleX(-1);
+    color: #355c2b !important;
 }
 
-/* Patch 190: original preview visual guide with the laurel robot. */
 .unit-preview-mascot-card {
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(220px, 0.95fr);
     gap: 1rem;
     align-items: center;
-    border: 1px solid rgba(212,175,55,0.42);
-    background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(228,246,255,0.94));
+    border: 1px solid rgba(170, 142, 88, 0.40);
+    background: linear-gradient(135deg, rgba(255, 252, 246, 0.98), rgba(247, 241, 228, 0.95));
     border-radius: 24px;
     padding: 1rem;
     margin: 0.45rem 0 1rem;
-    box-shadow: 0 14px 30px rgba(31,95,143,0.12);
+    box-shadow: 0 14px 30px rgba(118, 96, 58, 0.12);
 }
 .unit-preview-mascot-copy {
-    color: #17324a;
+    color: #44331f;
     font-family: Georgia, 'Times New Roman', serif;
 }
 .unit-preview-mascot-copy strong {
     display: block;
-    color: #123d63;
+    color: #9f2f36;
     font-size: 1.25rem;
     letter-spacing: 0.03em;
     margin-bottom: 0.35rem;
@@ -182,16 +178,17 @@ div[data-testid="stButton"] button[kind="primary"]:focus {
 .unit-preview-mascot-copy span {
     display: block;
     margin-top: 0.32rem;
-    color: #2d668f;
+    color: #355c2b;
 }
 .unit-preview-mascot-image {
     width: 100%;
     max-height: 260px;
     object-fit: cover;
-    object-position: left center;
+    object-position: center top;
     border-radius: 20px;
-    border: 1px solid rgba(127,188,232,0.32);
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.72);
+    border: 1px solid rgba(170, 142, 88, 0.28);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+    background: rgba(255, 250, 242, 0.94);
 }
 @media (max-width: 760px) {
     .unit-preview-mascot-card { grid-template-columns: 1fr; }

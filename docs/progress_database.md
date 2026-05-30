@@ -1,3 +1,9 @@
+## Patch 191 — Original Mascot Asset Refresh + Warm Preview Palette
+
+Patch 191 finishes the small visual cleanup requested after Patch 190. The public mascot/logo assets now use the original top-right robot from the approved concept image, `assets/about_header.png` returns to the warm poster-style concept header, the app version advances to `v1.0-original-governance-mirror-p2`, and the Preview Unit mascot card swaps its lingering blue tint for a warm cream/green/red palette closer to the original ALETHEIA look.
+
+Scope: asset refresh and Preview Unit styling only. No scoring, routing, receipt schema, protocol logic, or authority boundary changed. Human review remains required.
+
 ## Patch 161 — Visual Source Card Grid + Added Reference Posters
 
 Patch 161 changes the visual source card area from tab-swapping embeds into a side-by-side grid of dropdown cards that stay viewable in place. It preserves the bundled Sydney Protocol v3.2 and GPA v8.2 HTML references and adds four new poster-style reference visuals: Global Peace Architecture, The Sovereign Master Blueprint, The Sydney Protocol: Command Dossier, and The Sydney Protocol: Architect's Checklist.

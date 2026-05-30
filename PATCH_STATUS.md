@@ -1,3 +1,19 @@
+## Patch 191 — Original Mascot Asset Refresh + Warm Preview Palette
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 191 completes the visible rollback toward the original ALETHEIA governance-mirror design by replacing the remaining blue/officer-style mascot surfaces with the original top-right mascot derived from the approved concept image. It also warms the Unit Preview palette so the front-door surface no longer reads as blue SaaS/patrol UI.
+
+Scope: visual assets, Preview Unit styling, version bump, and patch-hygiene only. No scoring, routing, taxonomy, receipt schema/generation, Evidence Lab calculations, World Lens math, AI static scan logic, protocol logic, external calls, storage, certification, enforcement, or authority behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 191
+python -m pytest -q tests/test_patch_191_mascot_asset_refresh_and_preview_palette.py tests/test_patch_190_original_governance_mirror_restore.py
+python -m py_compile app.py ui/unit_preview.py
+```
+
 ## Patch 161 - Visual Source Card Grid + Added Reference Posters
 
 Patch 161 replaces the tab-swapping visual source card view with a side-by-side grid of openable dropdown cards. The existing bundled HTML references remain, and four new poster-style visual references are added: Global Peace Architecture, The Sovereign Master Blueprint, The Sydney Protocol: Command Dossier, and The Sydney Protocol: Architect's Checklist.
