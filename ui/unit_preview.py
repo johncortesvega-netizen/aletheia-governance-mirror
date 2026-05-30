@@ -486,19 +486,19 @@ def get_unit_preview_visual_reference_cards(project_root: Path | None = None) ->
         {
             "title": "The Sydney Protocol: Command Dossier",
             "path": root / "assets" / "visual_cards" / "sydney_protocol_command_dossier.jpg",
-            "caption": "Command-dossier poster replacing the earlier blue Sydney Protocol reference in Unit Preview.",
+            "caption": "Command-dossier poster for reviewing the protocol context and boundary layer.",
         },
         {
             "title": "The Sydney Protocol: Architect's Checklist",
             "path": root / "assets" / "visual_cards" / "sydney_protocol_architect_checklist.jpg",
-            "caption": "Architect's-checklist poster replacing the earlier pink Sydney Protocol reference in Unit Preview.",
+            "caption": "Architect's-checklist poster for reviewing the protocol principles and baseline context.",
         },
     ]
     return [item for item in candidates if Path(item["path"]).exists()]
 
 
 def render_unit_preview_visual_reference_cards(container=None, project_root: Path | None = None) -> None:
-    """Render packaged visual reference cards in a calm 2x2 poster grid.
+    """Render packaged visual reference cards behind an opt-in expander.
 
     This stays on the Unit Preview hook page and uses packaged local images only.
     Missing files are ignored calmly.
@@ -514,18 +514,19 @@ def render_unit_preview_visual_reference_cards(container=None, project_root: Pat
 
     container.markdown("### Visual reference posters")
     container.caption(
-        "Packaged local visual references for the Sydney Protocol / baseline context. "
-        "These are orientation aids for human review, not final authority."
+        "Optional local visual references for the Sydney Protocol / baseline context. "
+        "Open them only when you want orientation material; they are not final authority."
     )
 
-    for row_start in range(0, len(cards), 2):
-        row = cards[row_start: row_start + 2]
-        columns = container.columns(len(row))
-        for column, card in zip(columns, row):
-            with column:
-                column.markdown(f"**{card['title']}**")
-                column.caption(str(card["caption"]))
-                column.image(str(card["path"]), use_container_width=True)
+    with container.expander("Open visual reference posters", expanded=False):
+        for row_start in range(0, len(cards), 2):
+            row = cards[row_start: row_start + 2]
+            columns = container.columns(len(row))
+            for column, card in zip(columns, row):
+                with column:
+                    column.markdown(f"**{card['title']}**")
+                    column.caption(str(card["caption"]))
+                    column.image(str(card["path"]), use_container_width=True)
 
 
 def _contains_any(value: str, tokens: tuple[str, ...]) -> bool:

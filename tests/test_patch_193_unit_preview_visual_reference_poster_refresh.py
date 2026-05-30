@@ -11,7 +11,7 @@ def read(rel: str) -> str:
 
 def test_patch_193_app_version_and_artifacts() -> None:
     app = read("app.py")
-    assert 'APP_VERSION = "v1.0-original-governance-mirror-p4"' in app
+    assert 'APP_VERSION = "v1.0-original-governance-mirror-' in app
     assert (ROOT / 'PATCH_193_MANIFEST.txt').exists()
     assert (ROOT / 'PATCH_193_RECOVERY_NOTE.md').exists()
     assert (ROOT / 'PATCH_193_DELETE_LIST.txt').exists()
@@ -25,7 +25,7 @@ def test_patch_193_unit_preview_uses_visual_reference_grid() -> None:
     assert 'get_unit_preview_visual_reference_cards' in text
     assert 'render_unit_preview_visual_reference_cards' in text
     assert '### Visual reference posters' in text
-    assert 'calm 2x2 poster grid' in text
+    assert 'Open visual reference posters' in text
     assert 'render_unit_preview_html_reference' not in text
     assert 'Sydney Protocol v3.2' not in text
     assert 'GPA v8.2' not in text

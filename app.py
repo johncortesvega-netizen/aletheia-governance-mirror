@@ -262,7 +262,7 @@ def enforce_missing_safeguard_threshold_route(
     )
 
 
-APP_VERSION = "v1.0-original-governance-mirror-p4"
+APP_VERSION = "v1.0-original-governance-mirror-p5"
 SUPPORTED_INPUT_LANGUAGE_NOTE = "Language scope: ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim. Human review remains required."
 PROJECT_ROOT = Path(__file__).resolve().parent
 ABOUT_HEADER_IMAGE = PROJECT_ROOT / "assets" / "about_header.png"

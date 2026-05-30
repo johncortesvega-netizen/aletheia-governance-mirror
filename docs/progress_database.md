@@ -1,3 +1,9 @@
+## Patch 194 — Unit Preview Poster References Opt-In Polish
+
+Patch 194 keeps the four visual reference posters in the Preview Unit but moves them behind a collapsed opt-in expander. The Preview Unit now shows a short optional-reference note first, and users open the poster grid only when they want it. Visible poster captions also remove patch-history/replacement language and describe the posters as orientation material.
+
+Scope: Unit Preview display/copy only. No scoring, routing, receipt schema, protocol logic, or authority boundary changed. Human review remains required.
+
 ## Patch 193 — Unit Preview Visual Reference Poster Refresh
 
 Patch 193 updates the Preview Unit reference area so it no longer shows the earlier two HTML reference previews. Instead, the hook page now presents four packaged poster-style visual references in a 2x2 grid: Global Peace Architecture, The Sovereign Master Blueprint, The Sydney Protocol: Command Dossier, and The Sydney Protocol: Architect's Checklist. This directly swaps out the earlier pink/blue Sydney Protocol preview surfaces for the user-approved poster set while keeping the content local and review-oriented.

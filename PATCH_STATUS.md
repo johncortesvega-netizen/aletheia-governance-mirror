@@ -1,3 +1,19 @@
+## Patch 194 — Unit Preview Poster References Opt-In Polish
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 194 makes the Unit Preview visual reference posters explicitly opt-in by placing the poster grid behind a collapsed expander. It also removes unnecessary replacement wording from the visible poster captions so the Preview Unit reads as calm orientation material rather than a patch-change note.
+
+Scope: Unit Preview display/copy, version bump, and patch-hygiene only. No scoring, routing, taxonomy, receipt schema/generation, World Lens math, Evidence Lab calculations, protocol logic, external calls, storage, certification, enforcement, or authority behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 194
+python -m pytest -q tests/test_patch_194_unit_preview_poster_opt_in_polish.py tests/test_patch_193_unit_preview_visual_reference_poster_refresh.py
+python -m py_compile app.py ui/unit_preview.py
+```
+
 ## Patch 193 — Unit Preview Visual Reference Poster Refresh
 
 Status: READY FOR LOCAL REVIEW
