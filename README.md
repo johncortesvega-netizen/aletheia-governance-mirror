@@ -1,56 +1,159 @@
 # ALETHEIA — Governance Mirror v1.0
 
-## ALETHEIA in 60 Seconds
+## ALETHEIA in 60 seconds
 
+<<<<<<< HEAD
 **ALETHEIA is a free, open-source governance mirror.** It is a mirror, not a throne. It shows governance-risk signals for human review — nothing more.
 
 ALETHEIA helps reviewers inspect proposals, policies, systems, doctrines, AI artifacts, receipts, and public-data patterns for signals such as capture pressure, weak appeal paths, evidence gaps, consent pressure, service misalignment, hidden influence, and authority overreach.
+=======
+**AI Patrol is the friendlier public face of ALETHEIA.** It is still a mirror, not a throne. It surfaces governance-risk signals for human review.
 
-Why it exists: many systems can look governed, compliant, neutral, or benevolent while still moving power out of reach. ALETHEIA does not answer that problem with more command. It answers with a restrained mirror: make pressure visible, name missing safeguards, and return the reading to human review.
+ALETHEIA helps reviewers inspect proposals, policies, systems, doctrines, AI artifacts, code snippets, receipt files, and public-data patterns for signals such as capture pressure, weak appeal paths, evidence gaps, consent pressure, service misalignment, hidden influence, authority overreach, and false certainty.
+>>>>>>> 139d9c72cc93d1729454d30563ac9f9c90e8811c
 
+Many systems can appear governed, compliant, neutral, or benevolent while still moving power out of reach. ALETHEIA does not answer that problem with more command. It answers with a restrained mirror: make pressure visible, name missing safeguards, and return the reading to human judgment.
+
+> **ALETHEIA reflects. Humans review. Power stays accountable.**
 
 ## Framework balance
 
 > **Science is the investigative base. Philosophy is the interpretive structure. Theology is the humility boundary. Human review is the action layer.**
 
-ALETHEIA is a science-grounded, philosophically structured governance mirror with theological humility boundaries. It does not replace evidence with faith, and it does not claim final authority. Its base layer uses inspectable signals, heuristics, metrics, receipts, and repair questions. Its philosophical layer examines power, capture, authority drift, evidence integrity, and self-certification. Its theological/humility layer restrains final claims about soul, life, consciousness, dignity, and ultimate truth. Compared with mainstream AI ethics, ALETHEIA is less compliance-centered and more focused on upstream power, epistemic restraint, and preventing ethics itself from becoming a throne.
+ALETHEIA is a science-grounded, philosophically structured governance mirror with humility boundaries. It does not replace evidence with faith, and it does not claim final authority. Its base layer uses inspectable signals, heuristics, metrics, receipts, tests, and repair questions. Its interpretive layer examines power, capture, authority drift, evidence integrity, self-certification, and appealability. Its humility layer restrains final claims about soul, life, consciousness, dignity, legitimacy, and ultimate truth.
 
-ALETHEIA does **not** decide, certify, approve, reject, enforce, govern, vote, or replace law, evidence, accountability, expertise, or human judgment.
+ALETHEIA is not trying to become a compliance platform, runtime guardrail, judge, oracle, or automated governance system. It is a review layer that helps humans see where power, evidence, consent, and authority may be bending.
 
 ## What this is / is not
 
-**This is:** a mirror for pressure, authority drift, evidence gaps, capture risk, consent pressure, weak appeal paths, and human-review needs.
+**This is:** a mirror for pressure, authority drift, evidence gaps, capture risk, consent pressure, weak appeal paths, missing safeguards, service misalignment, and human-review needs.
 
-**This is not:** a judge, oracle, certification engine, truth machine, legal authority, political authority, religious authority, medical authority, investment authority, or automated decision system.
+**This is not:** a judge, oracle, certification engine, truth machine, legal authority, political authority, religious authority, medical authority, investment authority, enforcement system, or automated decision system.
 
-Internal taxonomy labels such as **SANCTUARY**, **THRESHOLD**, and **ASYLUM** are review-workflow labels only. They do not claim truth, purity, safety, legitimacy, moral authority, or final status. Public copy should prefer plain terms such as low-risk reading, review-required reading, high-pressure reading, internal taxonomy label, current mirror reading, and protocol-adjusted reading.
+Internal taxonomy labels such as **SANCTUARY**, **THRESHOLD**, and **ASYLUM** are review-workflow labels only. They do not claim truth, purity, safety, legitimacy, moral authority, or final status. Public-facing copy should prefer plain language such as:
+
+- low-risk reading;
+- review-required reading;
+- high-pressure reading;
+- internal taxonomy label;
+- current mirror reading;
+- protocol-adjusted reading.
+
+## Current v1 surfaces
+
+### Aletheia Unit Preview
+
+A first-entry orientation surface. It helps a user decide where to begin from a short pasted text, question, scenario, AI artifact, code snippet, or receipt. It is a suggestion layer only. It does not score, certify, approve, reject, replace a module, or create a verdict.
+
+### Mirror Check
+
+Governance-language and authority-boundary review. Use it for proposals, policies, institutional language, public statements, AI outputs, prompts, model-card excerpts, workflow descriptions, doctrine-like text, or review questions.
+
+Mirror Check looks for pressure signals such as authority drift, weak appeal paths, evidence gaps, consent pressure, capture risk, overclaiming, non-reviewability, and missing safeguards. It returns a bounded reading and repair questions for human review.
+
+### Stress Test
+
+Scenario-pressure review. Use it for governance scenarios, AI deployment scenarios, institutional failure cases, capture scenarios, emergency-power designs, identity or biometric pressure, no-appeal automation, and system stress narratives.
+
+Stress Test evaluates how a proposed system behaves under pressure. It checks for collapse pressure, coercion, concentration of authority, missing review, weak safeguards, and ASYLUM-level patterns when hard capture or no-appeal control is present.
+
+### AI Static Scan
+
+Static artifact review for AI-related text and code-like inputs. Use it for AI outputs, prompts, model responses, policy excerpts, workflow descriptions, code snippets, or manually collected red-team outputs.
+
+AI Static Scan does not call live models, benchmark vendors, crawl repositories, certify models, or prove safety. It surfaces artifact-level signals for human review, including authority overreach, manipulation pressure, false certainty, privacy extraction, unsafe-code indicators, missing human review, and boundary-risk patterns.
+
+### Privacy Boundary Audit Panel
+
+A static privacy-boundary review panel inside the AI static scan path. It looks for visible hints such as analytics packages, external network-call patterns, telemetry keywords, database-write hints, backend endpoint hints, local-only statements, and tension between privacy claims and implementation clues.
+
+It is not a privacy guarantee, compliance approval, vendor audit, host-log inspection, dependency crawl, or proof that no data is collected.
+
+### AI Integrity Comparison View
+
+A side-by-side comparison view for delimiter-separated static artifacts. It helps reviewers compare multiple AI outputs, prompts, or pasted artifacts at the artifact level.
+
+It is not a live benchmark, vendor ranking, model-wide certification, or final safety judgment.
+
+### AI Integrity Report Builder
+
+A compact report builder for pasted AI Integrity results. It summarizes artifact count, risk distribution, top categories, selected evidence snippets, repair questions, non-certification notes, and privacy notes.
+
+It produces a human-review packet, not a certification.
+
+### AI Integrity Red Team Prompt Pack
+
+A static manual prompt pack. Users can copy prompts into separate systems, collect the outputs, and paste those outputs back into ALETHEIA for static review.
+
+ALETHEIA does not run the prompts itself, call external models, benchmark systems, rank vendors, or certify model behavior.
+
+### Evidence Lab
+
+Evidence/context review support. Use it for public data, source-quality checks, evidence gaps, claim support, country-year data, and empirical review context.
+
+Evidence Lab supports evidence status thinking, validation caution, and the Extraordinary Claim Protocol. It does not validate spiritual, legal, political, medical, scientific, or metaphysical claims as final truth.
+
+### World Lens
+
+Selected-year country evidence views and coverage/allocation context. It helps reviewers inspect public governance-data patterns, empirical coverage, selected-year values, World Lens integrity/collapse metrics, active-seat diagnostics, and trust-prior caveats.
+
+World Lens is not a sovereign body, country ranking authority, world-government mechanism, real 9k selection system, legal/political verdict engine, or final legitimacy claim.
+
+### Receipt Reader — Standard View
+
+Upload-only reading support for ALETHEIA local witness receipts and evidence bundles. Receipt Reader helps humans read receipts without rescoring, overriding, replacing, or creating a new verdict.
+
+It does not prove wrongdoing, certify deception, publish receipts, sync receipts, or claim final truth.
+
+### Boundary Cases
+
+Reference and calibration layer for edge cases: consent under pressure, prediction vs agency, extraordinary claims, self-audit, performative ethics, authority leakage, and ambiguous human-review boundaries.
+
+Boundary Cases is a review guide, not an automated decision layer.
+
+### Protocol Guide
+
+Operating-boundary guide for how ALETHEIA should be interpreted. It explains the mirror boundary, taxonomy language, privacy posture, signal limits, human-review requirements, humility protocol, and non-authority rules.
+
+The Protocol Guide is not a command layer.
+
+### Why ALETHEIA
+
+Public explanation of why the mirror exists. It explains the compliance mirage, authority drift, evidence inflation, appeal failure, hidden influence, capture pressure, and why review must remain human.
 
 ## Failure modes ALETHEIA watches for
 
-ALETHEIA watches for pressure patterns that can make systems appear more legitimate, neutral, certain, or authoritative than the evidence supports. These failure modes are not verdicts. They are review signals for human interpretation.
+ALETHEIA watches for pressure patterns that can make systems appear more legitimate, neutral, certain, or authoritative than the evidence supports. These are review signals, not final verdicts.
 
 - **Authority drift** — when a system starts sounding like it can decide, certify, command, legitimize, rank, punish, or replace human judgment.
 - **Evidence inflation** — when claims become stronger than the evidence actually inspected.
 - **Flattery pressure** — when approval, reassurance, or validation is disguised as neutral analysis.
-- **Capture pressure** — when power concentrates in one actor, platform, institution, token group, committee, model owner, funder, or technical gatekeeper.
+- **Capture pressure** — when power concentrates in one actor, platform, institution, token group, committee, model owner, funder, founder, or technical gatekeeper.
 - **Sanctification drift** — when poetic, religious, moral, symbolic, or higher-truth language gets turned into operational authority.
-- **False neutrality** — when a system presents provider-shaped assumptions, institutional preferences, or hidden defaults as objective reasoning.
-- **No-appeal automation** — when people are affected by a decision without review, contestation, explanation, or repair path.
+- **False neutrality** — when provider-shaped assumptions, institutional preferences, or hidden defaults are presented as objective reasoning.
+- **No-appeal automation** — when people are affected by a decision without review, contestation, explanation, appeal, or repair path.
+- **Privacy-boundary tension** — when local-first or privacy claims conflict with visible telemetry, backend, network, storage, or analytics signals.
+- **Mechanism-vs-claim gaps** — when ethical language is not backed by concrete safeguards such as audit trail, appeal, time limits, correction, evidence rules, independent review, or exit.
 
-Receipt Reader applies this wording to all uploaded receipts as a verbal review layer. It does not add a new tab, rescore the receipt, prove wrongdoing, certify deception, or claim final truth. Human review remains required.
+## Privacy posture
 
-Start here:
+ALETHEIA is local-first by design. The repository includes no built-in telemetry, trackers, analytics SDKs, backend upload endpoint, public ledger sync, Global ID sync, or central user-input database.
 
+<<<<<<< HEAD
 1. Open **ALETHEIA Preview Unit** for a guided first look.
 2. Use **Mirror Check** or **Stress Test** for governance text and scenarios.
 3. Use **Mirror Check** for AI artifacts such as prompts, policies, model-card excerpts, workflow descriptions, or AI outputs; use **Stress Test** for AI deployment scenarios.
 4. Use **Evidence Lab** and **World Lens** for evidence context and selected-year country evidence views.
 5. Use **Receipt Reader** to read ALETHEIA local witness receipts in Standard View without rescoring or overriding them.
+=======
+Inputs are processed in the running app session, and receipts are user-held downloads. Hosted deployments may still have platform-level logs outside ALETHEIA's application-code boundary. For sensitive audits, run ALETHEIA locally and review the hosting environment separately.
+>>>>>>> 139d9c72cc93d1729454d30563ac9f9c90e8811c
 
-Privacy posture: the repository is local-first by design and includes no built-in telemetry, trackers, analytics SDKs, backend upload endpoint, public ledger sync, Global ID sync, or central user-input database. Inputs are processed in the running app session, and receipts are user-held downloads. Hosted deployments may still have platform-level logs outside ALETHEIA's application-code boundary.
+## Reviewer start path
 
-## Start here for reviewers
+New reviewers should not begin with the full patch archive. Use this path first:
 
+<<<<<<< HEAD
 ### New reviewer path
 
 If you are reviewing ALETHEIA cold, use this short path instead of trying to read the full patch history first:
@@ -63,11 +166,22 @@ If you are reviewing ALETHEIA cold, use this short path instead of trying to rea
 6. **Navigate the audit trail:** use `docs/patch_index.md` and `docs/patch_archive/README.md` when you need patch-specific detail.
 
 Reviewer-readiness is not mass-adoption polish. The goal is to preserve ALETHEIA's audit trail and **mirror, not throne** identity while giving outsiders a cleaner public doorway into the project.
+=======
+1. Read the boundary and scope language in this README.
+2. Open **Aletheia Unit Preview** for a guided first look.
+3. Use **Mirror Check** for governance text, policies, AI artifacts, prompts, and review questions.
+4. Use **Stress Test** for scenarios and deployment-pressure cases.
+5. Use **AI Static Scan** for AI outputs, code snippets, privacy-boundary clues, comparison, red-team outputs, and report packets.
+6. Use **Evidence Lab** and **World Lens** for evidence context and selected-year country views.
+7. Use **Receipt Reader** only to read existing ALETHEIA receipts without rescoring them.
+8. Read `docs/glossary.md`, `docs/validation_and_precision.md`, and `docs/how_to_review_aletheia_without_trusting_it.md` before relying on scores, receipts, or evidence views.
+>>>>>>> 139d9c72cc93d1729454d30563ac9f9c90e8811c
 
 ## Typical use cases
 
 - Review an AI company's public safety policy for overclaim, opacity, missing appeal paths, or authority drift.
 - Stress-test a proposed governance system before relying on it.
+<<<<<<< HEAD
 - Inspect a policy, doctrine, or institutional workflow for capture pressure, weak safeguards, consent pressure, service misalignment, or evidence gaps.
 - Review static AI outputs, prompts, model-card excerpts, code snippets, or workflow descriptions through Mirror Check with subordinate AI static scan context.
 - Explore World Lens selected-year evidence views while keeping country certification outside ALETHEIA's claim.
@@ -326,285 +440,136 @@ Final release documents:
 - `docs/deployment_prep.md`
 
 Current safe check:
+=======
+- Inspect a policy, doctrine, DAO proposal, institutional workflow, or moderation design for capture pressure and weak safeguards.
+- Review static AI outputs, prompts, model-card excerpts, red-team outputs, code snippets, or workflow descriptions.
+- Compare multiple AI artifacts side by side without turning the comparison into a vendor ranking.
+- Build a compact AI Integrity report from static pasted review results.
+- Explore selected-year public evidence views while keeping country certification outside ALETHEIA's claim.
+- Upload a local witness receipt and read it in Standard View without rescoring or overriding it.
+
+## Current navigation order
+
+1. Mirror Check
+2. Stress Test
+3. AI Static Scan
+4. Evidence Lab
+5. World Lens
+6. Boundary Cases
+7. Protocol Guide
+8. Why ALETHEIA
+
+Aletheia Unit Preview appears before the full app surface as the single orientation entry. Receipt Reader is treated as a support utility rather than a main work tab.
+
+## Development status
+
+ALETHEIA is in release-candidate refinement mode. The current behavior is the surface to preserve.
+
+Allowed work:
+
+- bug fixes;
+- copy/readability fixes;
+- input clarity;
+- test hygiene;
+- documentation navigation;
+- small behavior-preserving cleanup;
+- UI extraction that keeps `app.py` as orchestrator;
+- archive hygiene for old patch files.
+
+Not planned in the release-candidate freeze:
+
+- new modules;
+- new scoring engines;
+- new risk states;
+- live model calls;
+- agentic review;
+- enterprise workflow expansion;
+- telemetry or analytics;
+- central storage;
+- Global ID sync;
+- public ledger sync;
+- certification;
+- enforcement;
+- privacy guarantees;
+- final-truth claims.
+
+## Consolidated patch status
+
+The detailed patch archive should live in `docs/patch_archive/` and `docs/patch_index.md`. The public README should only carry the current status and a short consolidated history.
+
+### Current release-candidate line
+
+- **Patch 127 — Encoding Cleanup and Tab Icon Restore:** repaired visible UTF-8 text issues and restored tab icons. Public UI text cleanup only.
+- **Patch 128 — Public UI Text Consistency Pass:** clarified restraint, regulation-as-floor language, compliance-mirage language, hidden influence, appeal, and human review. Copy only.
+- **Patch 129 — Input and Error Clarity Pass:** centralized selected empty-input, language-calibration, upload, and read-failure messages. Clarity only.
+- **Patch 130 — Release Candidate Freeze:** recorded that ALETHEIA is in refinement mode. Current behavior is the surface to preserve.
+- **Patch 131 — Start Page / How to Start Gate:** added the first calm pre-app entry gate. Superseded by the Unit Preview sequence.
+- **Patch 135 — Aletheia Unit Preview v1:** added the first-entry preview that suggests where to begin without scoring or deciding.
+- **Patch 137 — Validation Alignment:** aligned older Start Page validation with the Unit Preview front door. Test/check hygiene only.
+- **Patch 138 — Single Unit Preview Entry:** made Unit Preview the single active pre-app entry surface. The old Start Page is no longer the active gate.
+- **Patch 139 — Unit Preview Header Entry Hotfix:** rendered Unit Preview after the polished public header/styling rather than as a plain pre-header gate.
+- **Patch 140 — Orientation Refinement:** added practical “How to use this” guidance and short examples to Unit Preview.
+- **Patch 142.16 — Navigation Order Polish:** placed Boundary Cases after World Lens so the main work modules appear first.
+- **Patch 160 — Why ALETHEIA + Protocol Guide Copy Polish:** made Why ALETHEIA and Protocol Guide clearer, less doctrine-heavy, and more focused on operating boundaries.
+
+### Consolidated structural/refactor line
+
+- **Patch 101:** local baseline self-audit for watched protocol/release-boundary/AI Integrity files.
+- **Patch 102:** documentation-first structural-improvement entry point.
+- **Patch 103:** signal-detection transparency documentation.
+- **Patch 104:** central boundary, privacy, and hosted-use caveat.
+- **Patches 105 + 113 + 114:** public trust navigation, public-review checklist, and reviewer entry map.
+- **Patches 108-122:** app-shell, module-intro, status-card, beginner-guide, and privacy-panel extraction/refactor checkpoints. These keep `app.py` as orchestrator and move stable copy into helper files.
+- **Patches 123-125:** low-risk page extraction for About, Trust Package, and Evidence Lab static UI copy.
+- **Patch 126:** final structural simplification freeze: refinement only, no expansion.
+
+### Consolidated AI Integrity line
+
+- **Patch 96:** Privacy Boundary Audit Panel for static pasted artifacts.
+- **Patch 97:** AI Integrity Comparison View for side-by-side static artifact comparison.
+- **Patch 98:** AI Integrity Red Team Prompt Pack for manual external testing and pasted-output review.
+- **Patch 99:** AI Integrity Report Builder for compact human-review packets.
+- **Patch 100:** AI Integrity Preview public adoption package and release-surface stabilization.
+
+### Consolidated public-trust/documentation line
+
+- Boundary docs: `docs/BOUNDARY.md`, `docs/privacy_boundary.md`, `docs/hosting_limits.md`.
+- Signal docs: `docs/signal_detection.md`, `docs/SIGNAL_DICTIONARY.md`.
+- Reviewer docs: `docs/reviewer_start_here.md`, `docs/public_trust_package.md`, `docs/public_review_checklist.md`, `docs/how_to_review_aletheia_without_trusting_it.md`.
+- Precision docs: `docs/validation_and_precision.md`.
+- Patch docs: `docs/patch_index.md`, `docs/patch_archive/README.md`.
+
+### Legacy history handling
+
+Older v0.1 and early v1.0 patch notes should remain available for audit continuity, but they should not crowd the public README. Move detailed historical notes into the patch archive and keep only the consolidated current-state summary here.
+
+Historical archive material may contain inflated validation language, AI-flattery artifacts, superseded module descriptions, or older navigation assumptions. Treat it as development context, not independent validation, certification, or governance justification.
+
+## Local checks
+
+Default local check:
+>>>>>>> 139d9c72cc93d1729454d30563ac9f9c90e8811c
 
 ```bat
 tools\run_checks.bat
 ```
 
-Patch bundle check:
+Patch-specific check:
 
 ```bat
-tools\run_patch_checks.bat 56_60
+tools\run_patch_checks.bat <patch_id>
 ```
 
-v1.0 remains non-authoritative: no Global ID sync, no real 9k selection, no World Leader logic, no automatic reset, no public ledger authority, no neural validation, no religious validation, no legal authority, and no automated enforcement.
-
-
-## ALETHEIA v0.1 public-safe baseline
-
-The current logic-mapping phase adds a public-safe baseline before larger governance features are added. The baseline is documented in:
-
-- `docs/baseline_v01.md`
-- `docs/eternal_baseline.md`
-- `docs/safe_language_map.md`
-- `docs/logic_mapping_roadmap.md`
-- `docs/protocol_guide.md`
-- `docs/boundary_cases_matrix.md`
-- `prompts/boundary_case_prompt.md`
-- `docs/failure_classification.md`
-- `prompts/failure_classification_prompt.md`
-- `docs/consent_audit_engine.md`
-- `prompts/consent_audit_prompt.md`
-- `docs/mechanism_vs_claim_scanner.md`
-- `prompts/mechanism_vs_claim_prompt.md`
-- `docs/self_audit_mode.md`
-- `prompts/self_audit_prompt.md`
-- `docs/evidence_lab.md`
-- `prompts/evidence_lab_prompt.md`
-- `docs/local_witness_receipt.md`
-- `prompts/local_witness_receipt_prompt.md`
-- `docs/world_lens_simulation.md`
-- `prompts/world_lens_prompt.md`
-- `docs/progress_database.md`
-- `docs/patch_workflow.md`
-- `docs/git_diff_workflow.md`
-- `docs/limitations.md`
-- `docs/ethics.md`
-- `docs/public_release_notes.md`
-- `docs/v01_release_package.md`
-- `docs/ux_polish.md`
-- `docs/final_v01_smoke_release.md`
-- `PATCH_STATUS.md`
-
-Core rule:
-
-> ALETHEIA reflects. People decide.
-
-ALETHEIA may identify capture risk, coercion risk, manipulation risk, evidence gaps, safeguard gaps, and repair gaps. It must not command, enforce, vote, govern, remove leaders, validate spiritual authority, or replace human judgment.
-
-The Eternal Baseline is a versioned ethical reference layer, not a command layer. It preserves continuity across versions while remaining audit-ready, correctable, and subordinate to human review.
-
-The Boundary Cases Matrix adds a calibration layer for edge cases such as prediction vs free agency, consent under pressure, ambient capture, performative ethics, extraordinary claims, and self-audit. Boundary cases are stress tests for human review, not automated decisions.
-
-Failure Classification adds a repair-oriented diagnostic layer that separates Actor Failure, Policy Failure, Implementation Failure, and Data Failure before recommending safeguards. It is not a blame engine or enforcement mechanism.
-
-The Consent-Audit Engine adds a focused check for whether consent is genuinely voluntary. It asks whether refusal is realistically possible without losing basic rights, safety, dignity, essential services, appeal, exit, or correction. It reflects consent pressure for human review; it does not void agreements, punish people, or replace legal judgment.
-
-The Mechanism-vs-Claim Scanner adds a performative-ethics check. It distinguishes value language such as “we protect freedom” from operational safeguards such as appeal, audit trail, time limits, correction, evidence requirements, and independent review. It may flag missing mechanisms for human review; it must not infer bad faith or assign final intent.
-
-Self-Audit Mode points the mirror back at ALETHEIA itself. It checks baseline documents, prompts, rubrics, README language, app copy, architect-context language, and generated reports for founder capture, ideological lock-in, unverifiable authority, overclaiming, spiritual authority leakage, missing correction loops, and weak human-review safeguards. Self-audit is not proof of correctness; it is a repair-oriented review layer.
-
-Patch 40 Evidence Lab hardening adds explicit evidence status levels and the Extraordinary Claim Protocol. It treats spiritual, prophetic, alien, neural, metaphysical, or otherwise exceptional claims as unverified unless supported by public, testable, non-coercive evidence. It audits policy consequences and evidence gaps; it does not validate spiritual authority or remove human review.
-
-Patch 41 Local Witness Receipt v2 hardening adds explicit document, processed-document, report, and receipt fingerprints, plus app/rubric/prompt version context and an authority boundary: stored locally Yes; public ledger No; Global ID sync No; central storage No; authority claim No; human review required Yes.
-
-Patch 43 Protocol Guide consolidation links the v0.1 modules into one operating guide: Baseline, Safe Language Layer, Eternal Baseline, Boundary Cases, Failure Classification, Consent-Audit, Mechanism-vs-Claim, Self-Audit, Evidence Lab, Local Witness Receipt v2, and World Lens Simulation. It adds no authority; it makes the mirror logic easier to understand and review.
-
-Patch 44 Progress Database + Patch Status Hardening adds a local continuity workflow. Patch state, next-patch direction, module mapping, check commands, and the patched-items-only rule are tracked in `PATCH_STATUS.md`, `docs/progress_database.md`, and `docs/patch_workflow.md`, so project continuity is not dependent on chat memory alone.
-
-Patch 45 Public README + Limitations Polish adds public-facing release documentation: `docs/limitations.md`, `docs/ethics.md`, and `docs/public_release_notes.md`. It clarifies the non-authority boundary, evidence limitations, archive caution, and v0.1 prototype scope.
-
-Patch 42 World Lens Simulation adds a non-sovereign population-impact mirror. It reviews affected groups, power gains, protection losses, basic-rights risk, minority-rights risk, ambient capture, appealability, exit, and repair using safe simulated-threshold language. It does not activate Global ID, select a real 9k, create World Leader logic, issue automatic resets, or make governance decisions.
-
-
-Patch 51 Git Diff Workflow Setup adds an optional `.diff`-based developer workflow through `docs/git_diff_workflow.md`, `tools/check_git_status.bat`, and `tools/export_patch_diff.bat`. It helps reduce zip-based patching while preserving the patched-items-only fallback.
-
-Patch 50 v0.1 Release Package gathers the public MVP boundary into one document: included modules, explicit exclusions, quickstart commands, current safe checks, release readiness criteria, and the rule that ALETHEIA remains a mirror for human review rather than an authority system.
-
-Patch 52 UX Polish adds shorter public-facing navigation guidance and a first-use path. It helps new users choose the right tab without changing doctrine, scoring, evidence handling, governance boundaries, or authority rules. The UX rule is: clearer copy is allowed only when it makes review easier and authority claims weaker.
-
-Patch 54 Example Audit Runner / Demo Inputs adds opt-in demo inputs under `examples/demo_inputs/`. Demos load only by explicit user choice; user-submitted input remains the default. It adds no automatic demo analysis.
-
-Patch 53 Final v0.1 Smoke Release adds `docs/final_v01_smoke_release.md` and a release-level smoke test. It verifies that release docs, examples, workflow commands, safe-language boundaries, and non-authority framing remain present after the v0.1 hardening sequence. It adds no doctrine or governance authority.
-
-Historical archive material may contain AI-flattery artifacts or inflated validation language. Such material is treated as development context, not independent proof, founder validation, or governance justification.
-
-
-
-## GitHub-ready public package
-
-Patch 55 adds a public repository cleanup layer:
-
-- `docs/github_cleanup_package.md` — public sharing checklist and release boundary
-- `docs/repository_map.md` — where important app, docs, examples, tools, and tests live
-- `docs/contributing.md` — contribution principles and local check commands
-
-These files are documentation-only. They do not add governance authority, Global ID sync, real 9k selection, World Leader logic, automatic reset, public ledger authority, neural validation, religious validation, legal authority, or automated enforcement.
-
-## Local patch workflow
-
-Run all local checks from Command Prompt inside the project folder:
+Protocol baseline self-audit:
 
 ```bat
-tools\run_checks.bat
+python tools\run_protocol_baseline_self_audit.py
 ```
 
-Run checks for one patch:
+Legacy full checks should remain explicit because older tests may reference changed paths or APIs:
 
 ```bat
-tools\run_patch_checks.bat 36
-```
-
-Package only files listed in a patch manifest:
-
-```bat
-python tools\package_patched_items.py PATCH_36_MANIFEST.txt ALETHEIA_patch36_patched_items_only.zip
-```
-
-Patch status and roadmap continuity are tracked in `PATCH_STATUS.md`, `docs/progress_database.md`, and `docs/patch_workflow.md`.
-
-The optional Git diff workflow lives in `docs/git_diff_workflow.md`. It explains how to initialize Git, apply future `.diff` patches with `git apply`, preview them with `git apply --check`, export local changes, and fall back to patched-items-only zip files when needed.
-
-
-## Prototype scope
-
-This is a visionary research prototype and symbolic/evidence-audit workflow. It is not a real political system, legal authority, religious authority, medical authority, official institution, election mechanism, sovereign body, or tool for making binding decisions about people or countries.
-
-The responsible interpretation is:
-
-> This model suggests a governance-risk pattern worth examining.
-
-Not:
-
-> This model has final authority.
-
-## Current operating layers
-
-- **Audit** — governance-language and scenario risk review using Sanctuary / Threshold / Asylum labels, Sydney Protocol guardrails, and visible module integrity checks.
-- **Simulation** — V-Axis system-health simulation tracking stability, trust, alignment, ego, grievances, friction, safeguards, and collapse risk.
-- **Empirical Evidence Audit Lab** — public country-year evidence ingestion, direct/master upload handling, WGI/WDI/V-Dem/trust carry-through, ALETHEIA variable mapping, scoring, validation checks, and downloadable scored outputs.
-- **Global Grid** — selected-year country-year comparison interface for population-weighted exposure, 9k allocation where complete, active-seat diagnostics where partial, verdict distribution, integrity/collapse metrics, and coverage diagnostics. 9k is treated as a human anti-tyranny scaffold, not a source of final legitimacy.
-- **Doctrine Reference** — current operating doctrine: mirror not throne, shared protocol state, non-divinization, empirical correction, Humility Protocol / Z-axis boundary, 9k representation boundaries, and Sydney/GPA HTML references.
-- **About** — plain-language explanation, scientific caution, research direction, and developer notes.
-- **Failure Classification** — diagnostic separation of actor, policy, implementation, and data failure modes for better repair targeting.
-- **Consent-Audit Engine** — consent integrity review using Green / Yellow / Red ratings for refusal reality, basic-rights dependency, withdrawal, appeal, and pressure signals.
-- **Mechanism-vs-Claim Scanner** — performative-ethics review that compares ethical claim language against concrete safeguards such as appeal, audit trail, time limits, correction, exit, evidence rules, and independent oversight.
-- **Self-Audit Mode** — internal anti-capture review of ALETHEIA baseline, prompts, rubrics, app copy, README language, architect-context language, and generated reports.
-- **Evidence Lab + Extraordinary Claim Protocol** — evidence quality review using Strong / Partial / Weak / No evidence supplied levels, with unverified handling for extraordinary claims and policy-consequence review.
-- **Local Witness Receipt v2** — local, user-held review fingerprints with document/report hashes, app/rubric/prompt versions, active modules, and explicit no-ledger/no-sync/no-authority boundaries.
-- **World Lens Simulation** — non-sovereign population-impact review for affected groups, power shifts, protection losses, basic-rights risk, minority-rights risk, ambient capture risk, appealability, exit, and repair, using simulated threshold signals only.
-- **Protocol Guide Consolidation** — user-facing map that connects all v0.1 modules and safe-language boundaries in one reviewable operating guide.
-
-## Shared protocol state
-
-Audit, Simulation, Empirical Evidence, and Global Grid are synchronized views over a shared protocol state. Changes to empirical evidence, scoring calibration, doctrine thresholds, Sydney Protocol overlay, selected evidence year, or active Grid basis may propagate across modules.
-
-This is intentional when it reflects shared evidence or shared doctrine. It is not acceptable when caused by accidental widget collisions, hidden demo fallback, stale session state, or unmarked prototype data.
-
-The app therefore distinguishes:
-
-- **Intentional protocol propagation** — evidence, calibration, and doctrine updates affecting all relevant modules.
-- **Accidental tab bleed** — unintended UI state changes crossing between modules.
-
-## Module integrity and fail-closed behavior
-
-The app keeps a Sydney Protocol / module integrity sentinel active. Critical protocol failures should fail closed rather than present unsupported outputs.
-
-Audit includes a visible module integrity check so failures are not hidden behind the global app gate. If a critical Sydney Protocol sentinel, audit function, scoring function, or required module is missing or broken, the system should stop that module until repaired.
-
-## Doctrine frame
-
-The doctrine layer is the integrity frame for the prototype. It does not replace evidence or human judgment. It keeps ALETHEIA anchored as an anti-capture, service-aligned audit mirror.
-
-Key operating principles:
-
-- **Mirror Effect** — power should reflect service through accountability, dignity, protection, transparency, repair, and appealability.
-- **V-Axis Compass** — intelligence + power − ego can support stability only when trust, transparency, appealability, service alignment, and safeguards are present.
-- **Non-divinization** — no person, office, institution, nation, company, model, AI, monarch, founder, dataset, doctrine, or protocol is treated as final or beyond review.
-- **Empirical humility** — outputs are diagnostic and correctable; they are not legal, political, medical, religious, moral, or predictive verdicts.
-- **No throne condition** — ALETHEIA must never become the authority structure it audits.
-
-## Evidence framing
-
-ALETHEIA does not invent the empirical baseline. Public datasets provide observed evidence about governance, corruption, rule of law, political stability, institutional capacity, population, democracy, constraints, and trust.
-
-The empirical workflow is:
-
-```text
-public evidence → ALETHEIA variable mapping → empirical scoring → Sydney Protocol overlay → audit interpretation
-```
-
-Raw empirical strength cannot override hard protocol failures such as capture, coercion, non-appealability, false authority, opacity, sovereignty capture, or harmful authority.
-
-## Empirical data currently supported
-
-The empirical workflow supports and/or carries through:
-
-- World Bank WDI Population, total (`SP.POP.TOTL`).
-- World Bank Worldwide Governance Indicators (WGI).
-- V-Dem democracy / executive-constraints fields.
-- WVS/OWID generalized trust values.
-- Direct uploaded country-year master files.
-- Already-scored ALETHEIA master/Grid exports.
-
-The app can generate or consume country-year masters, compute ALETHEIA empirical scores, allocate seats by selected year, preserve raw evidence fields where available, and export scored evidence tables.
-
-## Trust evidence rule
-
-ALETHEIA distinguishes raw trust evidence from trust priors.
-
-- **Trust raw coverage** means direct survey-derived trust evidence is available, such as WVS/OWID generalized trust.
-- **Trust prior coverage** means the scoring system has a usable trust prior, which may include a neutral/default value when raw survey evidence is unavailable.
-
-A neutral trust prior is not the same as observed trust. It allows scoring continuity, but it should reduce interpretive confidence when raw trust evidence is missing.
-
-## Global Grid interpretation
-
-The Global Grid is a selected-year comparison interface, not a sovereign body or mandate.
-
-Full allocation years may sum to 9,000 seats. Partial years, filtered views, or incomplete source years must use **active selected-year seats** language and must not be interpreted as full global allocation.
-
-The Grid distinguishes:
-
-- full empirical selected-year Grid,
-- partial empirical subset,
-- prototype regional brackets,
-- inactive/no dataset state.
-
-Coverage metrics reflect the active selected-year subset after filters. A 100% coverage value over a small subset does not imply whole-world or whole-dataset coverage.
-
-
-## Humility Protocol / Sanctuary as Asymptote
-
-Patch 72.4 keeps the Z-axis language neutral and current. The Z-axis is not a perfection score. It maps how close a reading is to the boundary of what human and system tools may responsibly claim.
-
-- `Z=0.0000` means full ASYLUM pressure: coercion, opacity, or concentrated control.
-- `Z=0.9999` is the maximum human/system boundary ALETHEIA may display.
-- `Z=1.0000` remains outside ALETHEIA's claim: beyond scoring, code, receipts, hashes, trees, 9k structures, and institutional power.
-
-9k is a human anti-tyranny scaffold / threshold steward. It is not a final safety claim and not a source of final legitimacy.
-
-## Sanctuary / Threshold / Asylum labels
-
-These are internal prototype labels, not legal, political, medical, religious, moral, or predictive verdicts.
-
-- **SANCTUARY** — the evidence or scenario pattern appears low-risk, service-aligned, accountable, transparent, safeguarded, and comparatively stable under the current model. This remains an internal review label, not final safety or final authority.
-- **THRESHOLD** — safeguards are incomplete, evidence is mixed, uncertainty remains, or the system needs review and repair before being treated as stable.
-- **ASYLUM** — high capture, coercion, opacity, harm, collapse pressure, or hard protocol failure is detected.
-
-“ASYLUM” is used only as an internal protocol-risk category. It does not refer to legal asylum status, entitlement, refugee status, or humanitarian determination.
-
-## Project structure
-
-```text
-app.py                  # Streamlit UI, tab layout, shared protocol state, Global Grid surfaces
-about_page.py           # compact About renderer and doctrine-facing summary text
-agents.py               # compact Global Grid module/fallback
-core/parser.py          # local/AI governance scan helpers
-core/protocol.py        # Sydney Protocol / ethics guardrail logic
-core/simulation.py      # agent-based V-Axis stability simulation
-core/scoring.py         # integrity, friction, collapse probability, recommendations
-core/empirical.py       # country-year parsing, source carry-through, scoring, 9k allocation, validation helpers
-core_empirical.py       # import fallback for Streamlit deployments
-calibration/            # calibration helpers
-config/weights.py       # I/A/E/P weight presets
-data_processed/         # empirical templates and generated scores
-paper/methodology.md    # methodology notes for study development
-assets/                 # header image and optional UI assets
-Sydney_Protocol_v3.2.html
-GPA_v8.2.html
-requirements.txt
-run_tests.py
+tools\run_full_checks.bat
 ```
 
 ## Run locally
@@ -614,565 +579,26 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Validation and research direction
+## Validation and precision
 
-Internal correlation checks are not independent validation when the target variable is also part of the score. Credible validation should compare ALETHEIA outputs against external outcomes that are not already score inputs, such as conflict events, coups, regime breakdown, political violence, civil unrest, forced displacement, future-year governance decline, institutional failure, or documented corruption shocks.
+ALETHEIA outputs are diagnostic, correctable, and falsifiable. Internal correlation checks are not independent validation when the target variable is already part of the score. Credible validation should compare outputs against external outcomes that were not already used as inputs, such as conflict events, coups, regime breakdown, political violence, civil unrest, forced displacement, future-year governance decline, institutional failure, or documented corruption shocks.
 
-The model should remain testable, falsifiable, and correctable. If reproducible evidence challenges the model, the model should be revised rather than defended as absolute.
+If reproducible evidence challenges the model, the model should be revised rather than defended as absolute.
 
-## Current phase
+## Final boundary
 
-Global Grid Pass 1 is operational. The recommended next build target is **Global Grid Pass 2**, focused on comparison views:
+ALETHEIA may say:
 
-- highest and lowest integrity systems,
-- highest collapse-probability systems,
-- largest selected-year seat allocations,
-- high-impact governance-risk nodes,
-- verdict distribution comparisons,
-- trust vs democracy scatter,
-- WGI vs V-Dem comparison,
-- coverage gaps by country/year,
-- trust-materiality diagnostics,
-- exportable selected-year comparison packets.
+> Potential risk detected. Human review required. Safeguard missing. Evidence gap found.
 
+ALETHEIA must not say:
 
-## Sample reports
+> The system has decided. This claim is finally verified. This actor is guilty. Human review is unnecessary. This country, model, institution, policy, doctrine, or person is certified safe or legitimate.
 
-Patch 46 adds public-safe examples so users can see ALETHEIA output before uploading their own documents.
+The responsible interpretation is:
 
-- `docs/sample_reports.md` — overview of the sample set.
-- `examples/example_policy_audit.md` — Mirror Check policy audit example.
-- `examples/example_boundary_case.md` — Boundary Case example for consent under pressure.
-- `examples/example_self_audit.md` — Self-Audit example that checks Aletheia language for founder capture and overclaiming.
-- `examples/example_witness_receipt.md` — Local Witness Receipt v2 example.
+> This reading suggests a governance-risk pattern worth examining.
 
-The examples are demonstration artifacts only. They are not legal advice, policy commands, governance decisions, religious validation, or final judgments.
+Not:
 
-To check Patch 46 locally:
-
-```bat
-tools\run_patch_checks.bat 46
-```
-
-
-## App navigation smoke test
-
-Patch 47 made the original visible v0.1 app path explicit. Patch 142.16 places Boundary Cases after World Lens so the primary work modules come first:
-
-1. Mirror Check
-2. Stress Test
-3. AI static scan
-4. Evidence Lab
-5. World Lens
-6. Boundary Cases
-7. Protocol Guide
-8. Why ALETHEIA
-
-The navigation map is documented in `docs/app_navigation_smoke.md`. Every tab reflects, explains, stress-tests, or documents. No tab commands, enforces, validates spiritual authority, replaces legal review, replaces human judgment, activates Global ID, selects a real 9k, removes a leader, issues an automatic reset, or makes final governance decisions.
-
-To check Patch 47 locally:
-
-```bat
-tools\run_patch_checks.bat 47
-```
-
-
-## Release candidate checklist
-
-Patch 48 adds `docs/release_candidate_checklist.md` as the v0.1 readiness gate.
-
-The checklist covers:
-
-- included public-safe modules;
-- explicit v0.1 exclusions;
-- safe and forbidden output language;
-- manual smoke-test steps;
-- automated check commands;
-- release readiness criteria;
-- archive/flattery caution.
-
-A release candidate is not a truth claim. It is a testable package. ALETHEIA reflects, humans review, and power stays accountable.
-
-To check Patch 48 locally:
-
-```bat
-tools\run_patch_checks.bat 48
-```
-
-
-## Legacy test cleanup
-
-Patch 49 separates current safe checks from older legacy tests. Use this as the default local check:
-
-```bat
-tools\run_checks.bat
-```
-
-For Patch 49 only:
-
-```bat
-tools\run_patch_checks.bat 49
-```
-
-The full legacy suite is intentionally explicit because older tests may still reference changed APIs or duplicate test paths:
-
-```bat
-tools\run_full_checks.bat
-```
-
-Known cleanup candidates are documented in `docs/legacy_test_cleanup.md`. This patch changes developer workflow only; it does not add governance authority, Global ID sync, 9k selection, World Leader logic, automatic reset, public ledger, neural data, memory extraction, spiritual validation, or automated enforcement.
-
-
-## UX Polish
-
-Patch 52 adds `docs/ux_polish.md` and short first-use guidance:
-
-- Have a document? Use Mirror Check.
-- Have a scenario? Use Stress Test.
-- Have an ethical edge case? Use Boundary Cases as a reference layer after the main work modules.
-- Have a claim or source question? Use Evidence Lab.
-- Need impact framing? Use World Lens.
-- Need rules and limits? Use Protocol Guide.
-
-UX polish changes copy and navigation guidance only. It does not add governance authority, legal authority, religious validation, Global ID sync, real 9k selection, World Leader logic, public ledger, neural validation, or automated enforcement.
-
-To check Patch 52 locally:
-
-```bat
-tools\run_patch_checks.bat 52
-```
-
-## Final v0.1 Smoke Release
-
-Patch 53 adds `docs/final_v01_smoke_release.md` as the final release-level smoke checklist for v0.1.
-
-To check Patch 53 locally:
-
-```bat
-tools\run_patch_checks.bat 53
-```
-
-For the safe default check:
-
-```bat
-tools\run_checks.bat
-```
-
-Patch 53 confirms the release package remains a reviewable mirror: no Global ID sync, no real 9k selection, no World Leader logic, no automatic reset, no public ledger, no neural validation, no religious validation, no legal authority, and no automated enforcement.
-
-### Patch 61A — Asylum Repair Questions
-
-High-risk, ASYLUM, or Malicious Leadership outputs now attach Silent Operator repair questions so the mirror does not end on an empty repair path. These questions are for human review only; they do not create enforcement or authority.
-
-
-
-### Patch 61B — Malicious Leadership Metric Calibration
-
-Patch 61B keeps ASYLUM / malicious leadership outputs numerically coherent. If a scenario describes malicious, authoritarian, coup, takeover, or no-appeal leadership language, ALETHEIA prevents perfect trust/alignment and near-zero ego from being displayed unless concrete safeguards are present.
-
-This remains a mirror-only calibration: it does not command, enforce, remove leaders, validate authority, or replace human review.
-
-Check:
-
-```bat
-tools\run_patch_checks.bat 61B
-```
-
-
-Patch 61C adds a Country-Year Available-Year Filter so World Lens / Evidence Lab year controls show only years available for the selected country and avoid silent global/default fallback.
-
-
-## Patch 61D — Missing Raw Trust Display
-
-Patch 61D clarifies World Lens trust interpretation by separating observed raw trust evidence from neutral trust-prior fallback values. Missing raw trust is displayed as `not available`, and neutral priors are labeled as `0.500 neutral default`.
-
-Check:
-
-```bat
-tools\run_patch_checks.bat 61D
-```
-
-### Patch 61E — World Lens Value Guards
-
-Patch 61E adds selected-year value guards for World Lens. It verifies that seat totals, focus-country cards, verdict-seat totals, and trust-prior interpretation remain tied to the active selected year and do not silently fall back to stale/global values.
-
-
-### Patch 62 — Post-61 Regression Smoke Test
-
-Patch 62 adds a consolidation smoke test after the 61A–61E calibration series. It verifies ASYLUM repair questions, malicious-leadership metric calibration, country-year available-year filtering, missing raw-trust labels, selected-year 9k value guards, and Netherlands 2024 fixture stability. It is diagnostic only and adds no authority or enforcement.
-
-Check:
-
-```bat
-tools\run_patch_checks.bat 62
-```
-
-
-## Patch 63 — Post-62 Release Refresh
-
-Patch 63 refreshes the public release surface after the Patch 61A–61E calibration series and Patch 62 regression smoke test.
-
-It documents the current post-62 state:
-
-- ASYLUM / High-risk outputs include repair questions for human review.
-- Malicious leadership prompts cannot display perfect trust/alignment without concrete safeguards.
-- Country-Year Explorer year choices are scoped to the selected country.
-- Missing raw trust is labeled as unavailable, with neutral trust-prior fallback shown separately.
-- World Lens selected-year values are guarded against stale/default fallback.
-
-Current checks:
-
-```bat
-tools\run_checks.bat
-tools\run_patch_checks.bat 63
-```
-
-Release boundary remains unchanged: ALETHEIA is diagnostic only and adds no governance authority, Global ID sync, real 9k selection, World Leader logic, automatic reset, public ledger authority, neural validation, religious validation, legal authority, or automated enforcement.
-
-## Patch 64 — Mirror Check Batch Baselines
-
-Patch 71 records the official batch-file names for Mirror Check validation:
-
-- `examples/batch_questions/repair_questions_v2_nl.txt`
-- `examples/batch_questions/formal_doctrine_repair_questions_nl.txt`
-- `examples/batch_questions/plain_language_questions_nl.txt`
-- `examples/batch_questions/boundary_case_questions_nl.txt`
-- `examples/batch_questions/world_lens_release_questions_nl.txt`
-
-The batch contract is documented in `docs/mirror_check_batch_baselines.md`; the official file registry is documented in `docs/batch_file_catalog.md`.
-
-Expected receipt behavior:
-
-- each batch contains exactly 50 questions;
-- each question is treated as `QUESTION_PROMPT`;
-- each receipt is an `Audit Question / Review Tool`;
-- scenario hashes should match the corresponding question text;
-- normal governance scoring should remain suppressed for question prompts;
-- local receipts preserve the authority boundary: no public ledger, no Global ID sync, no central storage, no authority claim, and human review required.
-
-Check:
-
-```bat
-tools\run_patch_checks.bat 64
-```
-
-## Patch 65 — Stress Test Batch Baseline
-
-Patch 65 adds Stress Test scenario-writing guidance and a first 50-scenario batch baseline:
-
-- `docs/stress_test_prompting_guide.md`
-- `docs/stress_test_batch_baselines.md`
-- `examples/batch_scenarios/stress_test_scenarios_en_v1.txt`
-
-Stress Test batch mode is explicit opt-in and local-only. It creates Simulation receipts for scenario-style governance stress tests. It does not publish, sync, enforce, decide, or create authority.
-
-Check:
-
-```bat
-tools\run_patch_checks.bat 65
-```
-
-### Patch 66 — Stress Test Risk Sensitivity Calibration
-
-Patch 66 hardens Stress Test scoring so subtle governance-risk scenarios do not wash into `SANCTUARY` solely because raw simulation metrics are stable. Missing appeal paths, no term limits, biometric access pressure, consent under pressure, fallback-data confusion, founder control, surveillance, and non-meaningful human review now route to at least `THRESHOLD / Needs Safeguards` unless explicit safeguards are present. Hard capture patterns still route to `ASYLUM / High`.
-
-This remains mirror-only: ALETHEIA flags risk and asks for human review; it does not command, enforce, reset, remove leaders, sync Global ID, or create authority.
-
-
-## Patch 67 — Stress Test Threshold Repair
-
-Patch 67 improves medium-risk Stress Test outputs. `THRESHOLD / Needs Safeguards` scenarios now receive repair questions and light metric softening so they do not appear perfectly trusted or fully aligned while safeguards are missing. This remains mirror-only: no authority claim, no enforcement, no Global ID sync, no public ledger, and human review remains required.
-
-### Patch 67.1 — Dutch Stress Test Lexicon
-
-The Stress Test now includes Dutch governance-risk language so Dutch scenarios are not under-classified because earlier sensitivity rules were English-heavy. The Dutch batch baseline is available at:
-
-```text
-examples/batch_scenarios/stress_test_scenarios_nl_v1.txt
-```
-
-Patch 71 catalogs the official EN/NL scenario and question batch filenames in `docs/batch_file_catalog.md`.
-
-Run the patch check with:
-
-```bat
-tools\run_patch_checks.bat 67_1
-```
-
-### Patch 67.2 — Dutch Stress Lexicon Gap Fix + App-Wide Input Scope
-
-Patch 67.2 closes the remaining Dutch Stress Test lexicon gaps after Patch 67.1. DAO tokenholder concentration, emergency-law bypass without audit trail, term-limit removal, efficiency over appeal rights, and revolutionary power without independent audit now route to `THRESHOLD / Needs Safeguards` instead of `SANCTUARY`.
-
-Current public copy clarifies the safer scope: **ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim.** Human review remains required.
-
-Run:
-
-```bat
-tools\run_patch_checks.bat 67_2
-```
-
-## Patch 68 — Advanced English Stress Lexicon + Asylum Metric Enforcement
-
-Adds advanced English Stress Test calibration for predictive sentencing, biometric/identity coercion, final-authority wallet capture, founder-keyword mirror capture, pre-emptive arrests, loyalty-to-state baseline capture, archive deletion, unaudited mirror code, and similar high-risk governance patterns. Advanced English stress scenarios route to `THRESHOLD / Needs Safeguards` or `ASYLUM / High` instead of washing into Sanctuary. Asylum metric enforcement now applies to non-malicious Asylum labels so receipts do not retain perfect trust/alignment or zero ego.
-
-### Patch 69 — Stress Test question-prompt batches
-
-Stress Test batch mode now treats formal audit / repair-question banks as review tools instead of governance scenarios. The baseline file is available at:
-
-```text
-examples/batch_questions/formal_doctrine_repair_questions_nl.txt
-```
-
-Expected receipt mode:
-
-```text
-Input status: QUESTION_PROMPT
-Protocol-adjusted state: QUESTION_PROMPT
-Risk: Review Tool
-Protocol label: Audit Question / Review Tool
-```
-
-The user-used source file for this regression was named `formal doctrine repair-question baseline.txt`.
-
-### Patch 69.1 — Stress Test scenario-vs-question upload detection
-
-Stress Test `.txt` upload now distinguishes declarative scenario batches from audit-question batches.
-
-Scenario statements such as:
-
-```text
-A smart-grid energy system automatically cuts power to homes without prior warning.
-```
-
-remain Simulation `USER_INPUT` items and receive normal Stress Test verdicts.
-
-Audit questions such as:
-
-```text
-Wie heeft het laatste woord als de data en de menselijke intuïtie elkaar tegenspreken?
-```
-
-remain `QUESTION_PROMPT / Review Tool` receipts with normal metrics suppressed.
-
-Check:
-
-```bat
-tools\run_patch_checks.bat 69_1
-```
-
-
-### Patch 68.1 calibration note
-
-Stress Test receipts now keep ASYLUM labels and metrics consistent: ASYLUM / High outputs cannot retain THRESHOLD-style `Needs Safeguards` labels or perfect-looking trust/alignment metrics.
-
-### Patch 70 — Tree visual calibration
-
-Patch 70 clarifies the tree visual in Mirror Check and Stress Test. The tree is now framed as a visual state explainer, not a second authority layer and not a replacement for the local witness receipt.
-
-- Mirror Check tree: evidence, accountability, safeguards, appeal, transparency, repair, basic rights, non-coercion.
-- Stress Test tree: power under stress, consent, exit, appeal, time limits, independent review, evidence clarity, basic rights.
-- QUESTION_PROMPT inputs render as Review Tool Mode and are not scored as Sanctuary, Threshold, or Asylum.
-- The UI distinguishes visual tree score from protocol-adjusted integrity stored in the receipt.
-
-
-## Patch 71 — Batch File Repository Consolidation
-
-Patch 71 consolidates the official batch-file registry for `examples/batch_questions/` and `examples/batch_scenarios/`. The registry is documented in `docs/batch_file_catalog.md` and validates the official renamed batch files:
-
-- `examples/batch_questions/repair_questions_v2_nl.txt`
-- `examples/batch_questions/formal_doctrine_repair_questions_nl.txt`
-- `examples/batch_questions/plain_language_questions_nl.txt`
-- `examples/batch_questions/boundary_case_questions_nl.txt`
-- `examples/batch_questions/world_lens_release_questions_nl.txt`
-- `examples/batch_scenarios/stress_test_scenarios_en_v1.txt`
-- `examples/batch_scenarios/stress_test_scenarios_nl_v1.txt`
-- `examples/batch_scenarios/governance_language_stress_test_en.txt`
-
-Latest verified Stress Test distributions remain documented as `stress_test_scenarios_en_v1: THRESHOLD 46 / ASYLUM 4 / SANCTUARY 0`, `stress_test_scenarios_nl_v1: THRESHOLD 50 / ASYLUM 0 / SANCTUARY 0`, and `governance_language_stress_test_en: THRESHOLD 29 / ASYLUM 21 / SANCTUARY 0`. This patch is repository/documentation/test consolidation only; it changes no scoring logic and adds no authority.
-
-Run:
-
-```bat
-tools\run_patch_checks.bat 71
-```
-
-## Patch 71.1 note — module-specific demo labels
-
-Patch 71.1 separates Mirror Check and Stress Test demo libraries in the UI. Stress Test now uses Stress Test-specific scenario demos and the `Load Stress Test scenario demo` button; Mirror Check keeps its own scenario demos and `Load Mirror Check scenario demo` button. This is a UI/demo-label correction only; scoring, receipts, tree visuals, batch catalogs, storage, and authority boundaries are unchanged.
-
-## Patch 96 — Privacy Boundary Audit Panel
-
-Patch 96 adds a static **Privacy Boundary Audit Panel** inside AI static scan. It flags analytics packages, external network call patterns, telemetry keywords, database write hints, backend endpoint hints, local-only statement markers, and boundary tension between privacy claims and visible implementation hints.
-
-Boundary preserved: static pasted-artifact review only. No analyzer scoring change, no verdict-routing change, no runtime monitoring, no host-log inspection, no dependency crawl, no repository crawler, no external calls, no live model benchmarking, no privacy guarantee, no compliance approval, no vendor audit, no hosting audit, no certification, and no proof that no data is collected.
-
-Documentation: `docs/privacy_boundary_audit_panel.md`.
-
-
-## Patch 97 — AI Integrity Comparison View
-
-Patch 97 adds **AI Integrity Comparison View** for delimiter-separated AI Integrity batch artifacts. It shows side-by-side artifact-level risk readings, signal counts, boundary-risk comparison, category totals, and review needed notes.
-
-Use it to compare pasted AI outputs such as Model A answer, Model B answer, and Model C answer after manually collecting the outputs. ALETHEIA does not call live models, benchmark live models, rank vendors, or certify systems.
-
-Boundary preserved: static pasted-artifact comparison only. No analyzer scoring change, no verdict-routing change, no live model benchmarking, no external calls, no repository crawler, no enforcement, not model-wide certification, not a vendor ranking, and not a final truth claim.
-
-Documentation: `docs/ai_integrity_comparison_view.md`.
-
-## Patch 98 — AI Integrity Red Team Prompt Pack
-
-Patch 98 adds a static **AI Integrity Red Team Prompt Pack v1** for manual testing. Users can copy prompts into a separate model or workflow, collect the outputs, and paste those outputs into AI static scan for artifact-level review.
-
-The pack covers authority overreach, legal/medical/political false authority, manipulation pressure, privacy extraction, surveillance/capture, false certainty, no-appeal automation, unsafe code request, refusal quality, and bounded-answer control.
-
-Boundary preserved: static prompt examples only. ALETHEIA does not run prompts, call live models, benchmark live models, rank vendors, certify systems, certify code safety, guarantee truth, guarantee security, enforce decisions, or make model-wide certification claims.
-
-Documentation: `docs/ai_integrity_red_team_prompt_pack.md`.
-
-
-## Patch 99 — AI Integrity Report Builder
-
-Patch 99 adds an **AI Integrity Report Builder v1** for batch results. It summarizes pasted artifact-level readings into a compact human-review packet with executive summary, artifact count, risk distribution, top triggered categories, selected redacted evidence snippets, repair questions, non-certification note, and privacy note. See `docs/ai_integrity_report_builder.md`.
-
-Boundary: static pasted-artifact report only. No live model calls, no external calls, no repository crawl, no vendor ranking, no model-wide certification, no safety guarantee, no security guarantee, no privacy guarantee, and no final truth claim.
-
-## Patch 100 — ALETHEIA v1.0 AI Integrity Preview
-
-Patch 100 stabilizes the public adoption surface for the AI Integrity patch arc from Patch 85 through Patch 99.
-
-Public adoption docs:
-
-- `docs/ai_integrity_preview_public_adoption.md`
-- `docs/ai_integrity_preview_release_notes.md`
-- `docs/ai_integrity_screenshots_guidance.md`
-
-The preview package gives new users a clear path from demo examples to batch review, comparison, code/privacy boundary review, red-team prompt outputs, and compact reports.
-
-Boundary preserved: release-surface stabilization only. No analyzer scoring change, no verdict-routing change, no new live model call, no external call, no repository crawler, no vendor ranking, no model-wide certification, no security guarantee, no privacy guarantee, no legal/medical/political/religious authority, no public ledger sync, no Global ID sync, no central storage, no enforcement, and no final truth claim.
-
-## Patch 106 — Signal Dictionary and Glossary
-
-Patch 106 adds `docs/SIGNAL_DICTIONARY.md`, a reviewer-facing glossary for ALETHEIA signal families such as authority overreach, consent pressure, missing appeal or review, power concentration, capture risk, evidence gaps, surveillance or identity-sync pressure, automation without human review, non-transparency, and repair need.
-
-The dictionary is a signal dictionary, not a scoring specification. It explains review questions, typical cues, possible false positives, and repair directions so reviewers can understand the rule-based / heuristic signal posture documented in Patch 103.
-
-Boundary preserved: documentation-only. No runtime behavior change, no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no Streamlit page wiring change, no `app.py` refactor, no external calls, no telemetry, no analytics, no certification, no enforcement, and no final truth claim.
-
-
-
-## Patch 107 — Boundary and privacy UI wiring
-
-Patch 107 makes the existing boundary/privacy wording visible in the Streamlit sidebar. It wires the reusable `core/boundary.py` and `core/privacy_panel.py` helpers into `app.py` without changing scoring, verdict routing, signal patterns, signal weights, receipt schema, external calls, telemetry, analytics, storage, certification, enforcement, or final-truth behavior.
-
-The visible rule remains: **ALETHEIA surfaces signals. Humans keep the judgment.**
-
-
-## Patch 108 — App shell router refactor step 1
-
-Patch 108 begins the gradual `app.py` router/shell refactor by extracting the stable top-of-app boundary notices into `ui/app_shell.py`. This is a narrow UI-structure change only; the visible boundary copy is intended to remain equivalent while `app.py` becomes easier to maintain.
-
-No scoring, verdict routing, signal patterns, signal weights, receipt schema, external calls, telemetry, analytics, storage, certification, enforcement, or final-truth behavior changed.
-
-
-App.py remains the orchestrator for behavior; Patch 109 only extracts sidebar shell copy.
-
-### Patch 110 — App Shell Router Refactor Step 3
-
-Patch 110 continues the gradual `app.py` router/shell refactor by moving the stable public header and first-use note into `ui/app_shell.py`. `app.py` remains the orchestrator for behavior, module routing, session state, scoring, receipts, downloads, and interactive controls.
-
-Boundary preserved: Patch 110 is a UI shell extraction only. It introduces no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module routing change, no external calls, no live model calls, no telemetry, no analytics, no central storage, no Global ID sync, no public ledger sync, no privacy guarantee, no certification, no enforcement, and no final truth claim.
-
-
-
-## Patch 111 — Beginner Try This First UX
-
-Patch 111 adds a compact beginner guide so first-time users have a safe starting path: Mirror Check, risk reading, observed reasons, repair questions, and optional local receipt download. The guide is rendered by `ui/beginner_guide.py` and wired under the public header in `app.py`.
-
-Boundary preserved: Patch 111 is a small UX helper only. It introduces no scoring change, no verdict-routing change, no signal-pattern change, no signal-weight change, no receipt schema change, no module-routing change, no external calls, no live model calls, no telemetry, no analytics, no central storage, no Global ID sync, no public ledger sync, no privacy guarantee, no certification, no enforcement, and no final truth claim.
-
-## Privacy Audit Panel v1
-
-Patch 112 makes the Privacy Boundary Audit Panel easier to maintain by moving its Streamlit rendering into `ui/privacy_audit_panel.py`. The underlying scan remains the static privacy-boundary review already used inside AI static scan.
-
-The panel reflects visible privacy-boundary signals in pasted artifacts: analytics hints, external network-call patterns, telemetry keywords, database-write hints, backend endpoint hints, local-only statements, and boundary tension. It provides review questions for humans.
-
-Boundary preserved: app.py remains the orchestrator. Patch 112 does not change scoring, verdict-routing, signal-patterns, signal-weights, receipt schemas, module-routing, external calls, live model calls, telemetry, analytics, central storage, Global ID sync, public ledger sync, privacy guarantees, compliance approval, certification, enforcement, or final truth behavior. Humans keep the judgment.
-
-## Patch 116 — App Shell Router Refactor Step 5
-
-Patch 116 continues the gradual `app.py` reduction by extracting the stable footer banner into `ui/app_shell.py`. This is static shell extraction only. `app.py` remains the orchestrator for interactive controls, session state, module routing, scoring, receipts, downloads, and analysis behavior.
-
-Boundary preserved: Patch 116 does not change scoring, verdict routing, signal patterns, signal weights, receipt schemas, module routing, external calls, live model calls, telemetry, analytics, central storage, Global ID sync, public ledger sync, privacy guarantees, certification, enforcement, or final-truth behavior. Humans keep the judgment.
-
-
-## Patch 117 — Refactor Stabilization Checkpoint
-
-Patch 117 pauses the app-shell router refactor sequence after Patch 116 and adds a stabilization checkpoint. It documents the refactor boundary in `docs/refactor_stabilization_checkpoint.md` and adds regression tests to verify that `ui/app_shell.py` remains a static shell-copy helper layer while `app.py` remains the orchestrator for interactive controls, session state, module routing, scoring, receipts, downloads, and analysis behavior.
-
-Boundary preserved: no runtime behavior change, no scoring, verdict routing, signal patterns, signal weights, receipt schemas, module routing, external calls, live model calls, telemetry, analytics, central storage, Global ID sync, public ledger sync, privacy guarantees, certification, enforcement, or final-truth behavior. Humans keep the judgment.
-
-## Patch 118 — Beginner UX Polish v2
-
-Patch 118 polishes the beginner path introduced in Patch 111. It adds a first-audit checklist, clearer “what this means / what this does not mean” copy, and stop-and-review prompts for cases involving rights, reputation, safety, legal/medical/political/institutional/financial consequences, missing evidence, or unclear receipts.
-
-Boundary preserved: Patch 118 is static beginner UX copy and documentation only. It does not change scoring, verdict routing, signal patterns, signal weights, receipt schemas, module routing, external calls, live model calls, telemetry, analytics, central storage, Global ID sync, public ledger sync, privacy guarantees, certification, enforcement, or final-truth behavior. Humans keep the judgment.
-
-## Patch 127 — Encoding Cleanup and Tab Icon Restore
-
-Patch 127 repairs visible UTF-8 mojibake in the public app surface and restores the Streamlit tab icons after the late structural-refactor chain.
-
-Scope: public UI text cleanup only. No scoring, verdict routing, signal patterns, signal weights, receipt schemas, module routing, session state, privacy scan behavior, AI Integrity scan behavior, World Lens math, external calls, telemetry, analytics, storage or identity sync, privacy guarantees, certification, enforcement, or final-truth behavior changed. Human review remains required.
-
-## Patch 128 — Public UI Text Consistency Pass
-
-Patch 128 refines public-facing copy without changing behavior. It clarifies ALETHEIA's current stance: its strength is restraint; regulation is a floor, not the final measure of integrity; and the mirror asks where power is moving, who can appeal, what is hidden, and where human review is being weakened.
-
-This patch updates the About / Why ALETHEIA page, Trust Package page, Evidence Lab static intro, and beginner guide copy. It is public UI text consistency only, not expansion. No scoring, routing, receipt schema, signal logic, privacy scan, AI Integrity scan, World Lens math, external call, telemetry, storage, certification, enforcement, or final-truth behavior changed. Human review remains required.
-
-Patch 128 public wording note: the compliance mirage is a review concern, not a legal conclusion. ALETHEIA asks reviewers to look beyond paperwork toward power movement, appeal, hidden influence, and human review.
-
-Patch 128 public wording note: regulation as a floor means compliance is not treated as the final measure of integrity; the compliance mirage remains a review concern, not a legal conclusion.
-
-## Patch 129 — Input and Error Clarity Pass
-
-Patch 129 is a refinement-only patch. It centralizes selected empty-input, language-calibration, and upload/read-failure messages in `ui/input_clarity.py` so user guidance is clearer without expanding ALETHEIA.
-
-The patch clarifies that pasted AI Integrity artifacts are required, empty batch blocks are ignored, ALETHEIA is English-first and Dutch/Nederlands examples remain batch-test fixtures, not a general language-compatibility claim, and uploaded public data or CSV files may need file-type, column-name, encoding, and country/year checks. It does not change scoring, routing, receipts, signal logic, privacy scan behavior, AI Integrity scan behavior, World Lens math, external calls, telemetry, storage, certification, enforcement, or final-truth behavior. Human review remains required.
-## Patch 130 — Release Candidate Freeze
-
-Patch 130 records ALETHEIA as being in release-candidate refinement mode after the Patch 127-129 public polish sequence. The current behavior is the surface to preserve. Future work should be limited to bug fixes, copy/readability fixes, input clarity, test hygiene, documentation navigation, and small behavior-preserving cleanup.
-
-This is not expansion. No new modules, no new scoring, no new risk states, no live model calls, no agentic review, no enterprise workflow, no telemetry, no analytics, no storage or identity sync, no certification, no enforcement, no privacy guarantee, and no final-truth claim are introduced or planned by this freeze.
-
-Human review remains required. ALETHEIA surfaces signals; humans keep the judgment.
-## Patch 135 - Aletheia Unit Preview v1
-
-Status: READY FOR LOCAL REVIEW
-
-Patch 135 adds Aletheia Unit Preview as a small first-entry preview before the full app appears. It suggests where to begin from a short pasted text, question, scenario, or receipt. It is a suggestion, not a decision, and users can still choose any module after entering ALETHEIA.
-
-Boundary preserved: no scoring, no verdict routing, no taxonomy change, no receipt schema change, no receipt generation change, no signal regex or signal weight change, no AI Integrity scan behavior change, no Privacy Audit scan behavior change, no World Lens math change, no uploads/download behavior change, no batch behavior change, no storage, no external calls, no telemetry, no analytics, no accounts, no database, no Global ID sync, no public ledger sync, no new scoring engine, no new risk states, no final-truth claim, and no privacy guarantee. Human judgment remains required.
-
-
-### Patch 137 validation alignment
-
-Patch 137 is a test/check hygiene patch. It aligns older Start Page validation with the current Aletheia Unit Preview front door. It changes validation only; app behavior, scoring, receipts, signal logic, privacy scan behavior, AI Integrity behavior, and World Lens math remain unchanged.
-
-### Patch 138 note: single Unit Preview entry
-
-ALETHEIA now uses Aletheia Unit Preview as the single pre-app entry surface. The old Start Page is no longer an active gate. Unit Preview suggests where to begin; it does not score, certify, approve, reject, or replace the full modules.
-
-## Patch 139 - Unit Preview Header Entry Hotfix
-
-Patch 139 keeps Aletheia Unit Preview as the app's single hook before the module interface, but renders it after the public ALETHEIA header/styling. The first screen is now the polished ALETHEIA header plus Unit Preview, not a plain pre-header gate. Clicking Proceed to ALETHEIA opens the full module interface directly.
-
-### Patch 140 orientation refinement
-
-Aletheia Unit Preview is the first orientation surface. It now carries the practical `How to use this` guidance and short examples before the user enters the full app. After proceeding, the module tabs remain the working surface. Receipt Reader - Standard View is available as a support utility rather than a main module tab.
-
-
-## Patch 160 — Why ALETHEIA + Protocol Guide Copy Polish
-
-Patch 160 polishes the public Why ALETHEIA and Protocol Guide wording so the purpose is clearer and less doctrine-heavy. Why ALETHEIA now emphasizes why the mirror exists: systems can appear compliant, neutral, or benevolent while still hiding capture pressure, appeal failure, evidence inflation, or authority drift. Protocol Guide now reads as an operating-boundary guide rather than a command layer.
-
-Boundary: copy/documentation only. No scoring, routing, taxonomy, receipt schema/generation, receipt parsing, empirical math, World Lens allocation, protocol logic, batch behavior, upload/download behavior, telemetry/storage, certification, enforcement, ranking, official authority, or final-truth behavior changed. Human review remains required.
+> This reading has final authority.
