@@ -1,3 +1,19 @@
+## Patch 195 — AI Ownership Capture Stress Guard
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 195 fixes a Stress Test logic regression where a user-input scenario alleging AI ownership by an extremely wealthy actor, self-serving incentives, fraud/corruption ties, and reliability concerns could still render as a low-risk SANCTUARY reading with perfect trust/alignment. The local scan now treats that pattern as AI ownership/capital-capture pressure requiring human review, evidence, auditability, appeal, and governance safeguards.
+
+Scope: Stress Test local-scan guardrail, protocol label/routing, metric caps for this pressure pattern, regression self-check/test coverage, version bump, and patch-hygiene only. No design surface, receipt schema, World Lens math, Evidence Lab calculations, external calls, storage, telemetry, certification, enforcement, or authority behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python tools\run_patch_checks.py 195
+python -m pytest -q tests/test_patch_195_ai_ownership_capture_stress_guard.py tests/test_patch_190_original_governance_mirror_restore.py tests/test_patch_191_mascot_asset_refresh_and_preview_palette.py tests/test_patch_192_warm_original_app_style_polish.py tests/test_patch_193_unit_preview_visual_reference_poster_refresh.py tests/test_patch_194_unit_preview_poster_opt_in_polish.py
+python -m py_compile app.py protocol.py core/parser.py
+```
+
 ## Patch 194 — Unit Preview Poster References Opt-In Polish
 
 Status: READY FOR LOCAL REVIEW

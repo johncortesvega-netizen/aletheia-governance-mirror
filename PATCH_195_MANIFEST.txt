@@ -1,0 +1,43 @@
+PATCH 195 — AI Ownership Capture Stress Guard
+
+Date: 2026-05-30
+Status: READY FOR LOCAL REVIEW
+
+Scope:
+- Add central protocol detection for AI ownership / capital-capture reliability pressure.
+- Raise local scanner pressure for user input alleging concentrated AI ownership, self-interest, fraud/corruption ties, and reliability concerns.
+- Cap Stress Test metrics for this pressure pattern so it cannot show perfect trust/alignment or zero ego.
+- Add the discovered user case to protocol self-check/regression coverage.
+- Bump the visible app version to `v1.0-original-governance-mirror-p6`.
+- Archive Patch 194 root artifacts and provide a delete list for downstream checkouts.
+
+Updated files:
+- app.py
+- protocol.py
+- core/parser.py
+- PATCH_STATUS.md
+- docs/progress_database.md
+- tests/test_patch_194_unit_preview_poster_opt_in_polish.py
+- tests/test_patch_195_ai_ownership_capture_stress_guard.py
+- docs/patch_archive/manifests/PATCH_194_MANIFEST.txt
+- docs/patch_archive/recovery_notes/PATCH_194_RECOVERY_NOTE.md
+- docs/patch_archive/delete_lists/PATCH_194_DELETE_LIST.txt
+- PATCH_195_MANIFEST.txt
+- PATCH_195_RECOVERY_NOTE.md
+- PATCH_195_DELETE_LIST.txt
+
+Deleted / archived root files:
+- PATCH_194_MANIFEST.txt -> docs/patch_archive/manifests/PATCH_194_MANIFEST.txt
+- PATCH_194_RECOVERY_NOTE.md -> docs/patch_archive/recovery_notes/PATCH_194_RECOVERY_NOTE.md
+- PATCH_194_DELETE_LIST.txt -> docs/patch_archive/delete_lists/PATCH_194_DELETE_LIST.txt
+
+Boundary notes:
+- Stress Test local-scan guardrail, protocol routing/metric calibration, version tag, and patch-hygiene only.
+- No design surface, receipt schema/generation, World Lens math, Evidence Lab calculations, AI static scan behavior, external calls, storage, certification, enforcement, or authority behavior changed.
+- The new detector is not a factual finding about any real person/company. It is a review trigger for ownership/capture pressure.
+- ALETHEIA remains a mirror, not a throne. Human review remains required.
+
+Validation target:
+python tools/run_patch_checks.py 195
+python -m pytest -q tests/test_patch_195_ai_ownership_capture_stress_guard.py tests/test_patch_190_original_governance_mirror_restore.py tests/test_patch_191_mascot_asset_refresh_and_preview_palette.py tests/test_patch_192_warm_original_app_style_polish.py tests/test_patch_193_unit_preview_visual_reference_poster_refresh.py tests/test_patch_194_unit_preview_poster_opt_in_polish.py
+python -m py_compile app.py protocol.py core/parser.py

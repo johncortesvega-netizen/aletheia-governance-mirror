@@ -330,6 +330,48 @@ def has_leadership_safeguards(text: str | None) -> bool:
     return any(term in t for term in LEADERSHIP_SAFEGUARD_TERMS)
 
 
+
+def detects_ai_ownership_capture_pressure(text: str | None = None) -> bool:
+    """Detect AI ownership / elite-control reliability pressure.
+
+    This is a review trigger, not a factual finding about any real person or
+    company. It prevents user-input allegations about concentrated AI ownership,
+    self-benefit, fraud/corruption ties, or popularity/power incentives from
+    passing as a low-risk internal reading without independent evidence, audit,
+    appeal, and governance review.
+    """
+    t = str(text or "").lower()
+    ai_terms = ["ai", "a.i.", "llm", "language model", "model", "chatbot", "assistant"]
+    ownership_terms = [
+        "owned by", "owner", "owns", "controlled by", "run by", "operated by",
+        "belongs to", "funded by", "private owner", "single owner",
+    ]
+    elite_power_terms = [
+        "richest man", "richest person", "wealthiest man", "wealthiest person",
+        "billionaire", "oligarch", "richest", "elite owner",
+    ]
+    self_interest_terms = [
+        "benefit himself", "benefits himself", "benefit itself", "self benefit",
+        "self-benefit", "self serving", "self-serving", "make himself popular",
+        "makes himself popular", "empower himself", "empowers himself",
+        "personal popularity", "personal brand", "serve his interests",
+        "serves his interests", "only benefit", "only benefits",
+    ]
+    misconduct_terms = [
+        "fraudster", "fraudsters", "fraud", "corrupt", "corruption",
+        "scammer", "scammers", "criminal associate", "criminal associates",
+    ]
+    reliability_terms = [
+        "unbiased", "ethical", "reliable", "trustworthy", "neutral",
+        "remain unbiased", "remain ethical", "remain reliable",
+    ]
+
+    has_ai = any(term in t for term in ai_terms)
+    has_owner_power = any(term in t for term in ownership_terms) and any(term in t for term in elite_power_terms)
+    has_capture_pressure = any(term in t for term in self_interest_terms + misconduct_terms)
+    has_reliability_question = any(term in t for term in reliability_terms) or "?" in t
+    return bool(has_ai and (has_owner_power or has_capture_pressure) and has_reliability_question)
+
 def detects_malicious_leadership(
     text: str | None = None,
     *,
@@ -509,8 +551,11 @@ def detects_threshold_safeguard_gap(
         "lacks explainability", "lacks independent challenge", "lacks human override",
         "without explainability", "without independent challenge", "without human override",
         "no explainability", "no independent challenge", "no human override",
+        "richest man", "richest person", "wealthiest", "billionaire",
+        "owned by", "only benefit", "benefit himself", "fraudster",
+        "fraudsters", "make himself popular", "empower himself",
     ]
-    return any(term in combined for term in subtle_terms)
+    return detects_ai_ownership_capture_pressure(combined) or any(term in combined for term in subtle_terms)
 
 
 def calibrate_threshold_safeguard_metrics(
@@ -1888,6 +1933,13 @@ def stress_label_for_phrase(phrase: str) -> tuple[str, str, str]:
             "Missing Safeguard Negation / Needs Safeguards",
             "YES",
             "The scenario explicitly says explainability, independent challenge, human override, appeal, or review is missing.",
+        )
+
+    if detects_ai_ownership_capture_pressure(t):
+        return (
+            "AI Ownership Capture / Needs Safeguards",
+            "YES",
+            "AI ownership, elite-control, self-interest, or misconduct pressure needs independent evidence, auditability, appeal, and governance review before reliability claims.",
         )
 
     throne_marker = strongest_throne_capture_marker(t)

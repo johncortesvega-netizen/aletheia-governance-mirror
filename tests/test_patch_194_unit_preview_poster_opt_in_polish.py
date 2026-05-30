@@ -9,7 +9,7 @@ def read(rel: str) -> str:
 
 def test_patch_194_app_version_and_artifacts() -> None:
     app = read("app.py")
-    assert 'APP_VERSION = "v1.0-original-governance-mirror-p5"' in app
+    assert 'APP_VERSION = "v1.0-original-governance-mirror-' in app
     assert (ROOT / 'PATCH_194_MANIFEST.txt').exists()
     assert (ROOT / 'PATCH_194_RECOVERY_NOTE.md').exists()
     assert (ROOT / 'PATCH_194_DELETE_LIST.txt').exists()

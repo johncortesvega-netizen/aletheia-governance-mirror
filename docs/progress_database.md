@@ -1,3 +1,11 @@
+## Patch 195 — AI Ownership Capture Stress Guard
+
+Patch 195 addresses a logic regression discovered by human review. A Stress Test user input asking whether an AI owned by the richest man on earth, allegedly benefiting himself and working with fraudsters to gain power/popularity, could remain unbiased, ethical, and reliable was incorrectly allowed to render as SANCTUARY with perfect trust/alignment.
+
+The fix adds an AI ownership/capital-capture pressure detector to the central protocol engine, raises local-scan pressure for this pattern, caps trust/alignment/ego display values, and adds a protocol self-check/regression test. The new label is a review trigger, not a factual claim about any real person or company. It asks for evidence, auditability, appeal, and governance safeguards before reliability claims.
+
+Scope: Stress Test local-scan guardrail and test coverage only. No receipt schema, World Lens math, Evidence Lab calculation, storage, telemetry, enforcement, certification, or authority behavior changed. Human review remains required.
+
 ## Patch 194 — Unit Preview Poster References Opt-In Polish
 
 Patch 194 keeps the four visual reference posters in the Preview Unit but moves them behind a collapsed opt-in expander. The Preview Unit now shows a short optional-reference note first, and users open the poster grid only when they want it. Visible poster captions also remove patch-history/replacement language and describe the posters as orientation material.

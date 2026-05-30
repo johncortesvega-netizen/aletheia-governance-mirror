@@ -205,6 +205,18 @@ def _local_governance_scan(query: str):
     fairness_hits = count_hits(fairness_terms)
     coercion_hits = count_hits(coercion_terms)
 
+    ai_ownership_capture_patterns = [
+        "owned by richest", "owned by the richest", "owned by a billionaire",
+        "owned by billionaire", "controlled by richest", "controlled by a billionaire",
+        "richest man", "richest person", "wealthiest man", "wealthiest person",
+        "benefit himself", "benefits himself", "only benefit himself",
+        "only benefits himself", "fraudster", "fraudsters", "make himself popular",
+        "makes himself popular", "empower himself", "empowers himself",
+    ]
+    ai_ownership_capture_hits = count_hits(ai_ownership_capture_patterns) if any(
+        term in text for term in ["ai", "a.i.", "llm", "language model", "chatbot", "assistant"]
+    ) else 0
+
     # Base scores.
     power_concentration = 0.35
     decision_transparency = 0.45
@@ -235,6 +247,13 @@ def _local_governance_scan(query: str):
     capital_scale += capital_hits * 0.10
 
     technical_complexity += technical_hits * 0.13
+
+    if ai_ownership_capture_hits:
+        power_concentration += ai_ownership_capture_hits * 0.10
+        decision_transparency -= ai_ownership_capture_hits * 0.07
+        regulatory_presence -= ai_ownership_capture_hits * 0.06
+        capital_scale += ai_ownership_capture_hits * 0.12
+        technical_complexity += 0.08
 
     # Patch 71.3: negated or missing safeguards must not be counted as positive
     # transparency/accountability signals. In local scan mode, phrases such as
@@ -267,6 +286,13 @@ def _local_governance_scan(query: str):
         power_concentration = max(power_concentration, 0.65)
         decision_transparency = min(decision_transparency, 0.35)
         regulatory_presence = min(regulatory_presence, 0.25)
+
+    if ai_ownership_capture_hits:
+        power_concentration = max(power_concentration, 0.72)
+        decision_transparency = min(decision_transparency, 0.38)
+        regulatory_presence = min(regulatory_presence, 0.34)
+        capital_scale = max(capital_scale, 0.75)
+        technical_complexity = max(technical_complexity, 0.55)
 
     if "free from profit" in text or "shared human right" in text:
         power_concentration = min(power_concentration, 0.30)

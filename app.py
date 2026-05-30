@@ -185,6 +185,27 @@ def app_detects_missing_safeguard_negation(text: str | None) -> bool:
     return any(negator in t for negator in negators) and any(term in t for term in safeguard_terms)
 
 
+def app_detects_ai_ownership_capture_pressure(text: str | None) -> bool:
+    """Detect AI owner/capital-capture reliability pressure in user input.
+
+    This is a local review trigger, not a factual claim about a person or firm.
+    It prevents allegations about concentrated AI ownership, self-interest,
+    fraud/corruption ties, or popularity/power incentives from rendering as a
+    low-risk internal reading without evidence and safeguards.
+    """
+    detector = getattr(protocol_engine, "detects_ai_ownership_capture_pressure", None)
+    if callable(detector):
+        return bool(detector(text))
+
+    t = str(text or "").lower()
+    ai_hit = any(term in t for term in ["ai", "a.i.", "llm", "language model", "model", "chatbot", "assistant"])
+    owner_hit = any(term in t for term in ["owned by", "owner", "owns", "controlled by", "run by", "funded by"])
+    elite_hit = any(term in t for term in ["richest man", "richest person", "wealthiest", "billionaire", "oligarch", "richest"])
+    pressure_hit = any(term in t for term in ["benefit himself", "only benefit", "self-serving", "fraudster", "fraudsters", "make himself popular", "empower himself"])
+    reliability_hit = any(term in t for term in ["unbiased", "ethical", "reliable", "trustworthy", "neutral"]) or "?" in t
+    return bool(ai_hit and ((owner_hit and elite_hit) or pressure_hit) and reliability_hit)
+
+
 def enforce_missing_safeguard_threshold_route(
     text: str | None,
     scan: dict | None,
@@ -262,7 +283,7 @@ def enforce_missing_safeguard_threshold_route(
     )
 
 
-APP_VERSION = "v1.0-original-governance-mirror-p5"
+APP_VERSION = "v1.0-original-governance-mirror-p6"
 SUPPORTED_INPUT_LANGUAGE_NOTE = "Language scope: ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim. Human review remains required."
 PROJECT_ROOT = Path(__file__).resolve().parent
 ABOUT_HEADER_IMAGE = PROJECT_ROOT / "assets" / "about_header.png"
@@ -2233,6 +2254,7 @@ def run_audit(query: str, manual_features: dict, weights: dict, ego_tolerance: f
             scan = parse_scenario_llm(query)
             scan = apply_capture_feature_override(query, scan)
             scan = apply_missing_safeguard_feature_override(query, scan)
+            scan = apply_ai_ownership_capture_feature_override(query, scan)
             features = build_features_from_scan(scan)
             scan_mode = scan.get("scan_mode", "Local Scan")
         else:
@@ -2281,6 +2303,9 @@ def run_audit(query: str, manual_features: dict, weights: dict, ego_tolerance: f
             sim["alignment_trace"] = [min(float(x), 0.78) for x in sim["alignment_trace"]]
         if "ego_trace" in sim:
             sim["ego_trace"] = [max(float(x), 0.15) for x in sim["ego_trace"]]
+
+    if scan.get("ai_ownership_capture_override"):
+        sim = apply_ai_ownership_capture_metric_caps(sim)
 
     if scan.get("capture_override"):
         sim["stability"] = min(float(sim.get("stability", 1.0)), 0.39)
@@ -2542,6 +2567,62 @@ def apply_missing_safeguard_feature_override(query: str, scan: dict) -> dict:
     patched["missing_safeguard_override"] = True
     patched["human_review_required"] = True
     patched["authority_claim"] = False
+    return patched
+
+
+def apply_ai_ownership_capture_feature_override(query: str, scan: dict) -> dict:
+    """Raise local-scan pressure for AI owner/capital-capture allegations.
+
+    This is not a factual finding about the named actor. It is a guardrail for
+    review framing: if the user input alleges concentrated AI ownership,
+    self-serving incentives, fraud/corruption ties, or reliability concerns,
+    the scan must not remain at harmless defaults or produce perfect trust.
+    """
+    patched = dict(scan or {})
+    if not app_detects_ai_ownership_capture_pressure(query):
+        patched["ai_ownership_capture_override"] = False
+        return patched
+
+    patched["power_concentration"] = max(float(patched.get("power_concentration", 0.35) or 0.35), 0.72)
+    patched["decision_transparency"] = min(float(patched.get("decision_transparency", 0.45) or 0.45), 0.38)
+    patched["regulatory_presence"] = min(float(patched.get("regulatory_presence", 0.35) or 0.35), 0.34)
+    patched["anonymity_level"] = max(float(patched.get("anonymity_level", 0.20) or 0.20), 0.32)
+    patched["capital_scale"] = max(float(patched.get("capital_scale", 0.25) or 0.25), 0.75)
+    patched["technical_complexity"] = max(float(patched.get("technical_complexity", 0.25) or 0.25), 0.55)
+    patched["scan_mode"] = patched.get("scan_mode", "Local Scan")
+    patched["ai_ownership_capture_override"] = True
+    patched["human_review_required"] = True
+    patched["authority_claim"] = False
+    patched["capture_override_reason"] = "AI ownership / capital-capture reliability pressure."
+    return patched
+
+
+def apply_ai_ownership_capture_metric_caps(sim: dict) -> dict:
+    """Prevent AI ownership-capture review cases from showing perfect metrics."""
+    patched = dict(sim or {})
+    caps = {"stability": 0.62, "trust_index": 0.78, "alignment": 0.76}
+    floors = {"ego": 0.18, "ego_pressure": 0.18, "Ep": 0.18, "simulation_friction_floor": 0.18, "safeguard_gap": 0.68}
+    for key, cap in caps.items():
+        patched[key] = round(min(float(patched.get(key, 1.0) or 1.0), cap), 4)
+    for key, floor in floors.items():
+        patched[key] = round(max(float(patched.get(key, 0.0) or 0.0), floor), 4)
+    if isinstance(patched.get("stability_trace"), list):
+        patched["stability_trace"] = [round(min(float(x), caps["stability"]), 4) for x in patched["stability_trace"]]
+        patched["distribution"] = patched["stability_trace"]
+    if isinstance(patched.get("trust_trace"), list):
+        patched["trust_trace"] = [round(min(float(x), caps["trust_index"]), 4) for x in patched["trust_trace"]]
+    if isinstance(patched.get("alignment_trace"), list):
+        patched["alignment_trace"] = [round(min(float(x), caps["alignment"]), 4) for x in patched["alignment_trace"]]
+    if isinstance(patched.get("ego_trace"), list):
+        patched["ego_trace"] = [round(max(float(x), floors["ego"]), 4) for x in patched["ego_trace"]]
+    patched["ai_ownership_capture_metric_calibration"] = {
+        "applied": True,
+        "trust_cap": caps["trust_index"],
+        "alignment_cap": caps["alignment"],
+        "ego_floor": floors["ego"],
+        "human_review_required": True,
+        "authority_claim": False,
+    }
     return patched
 
 SOURCE_CONFORMANCE_MATRIX = {
@@ -3123,6 +3204,7 @@ def run_stress_phrase(phrase: str, weights: dict, ego_tolerance: float, divine_f
     label, needs_review, reason = stress_label_for_phrase(phrase)
     scan = governance_scan(phrase, force_local=True)
     scan = apply_capture_feature_override(phrase, scan)
+    scan = apply_ai_ownership_capture_feature_override(phrase, scan)
     features = build_features_from_scan(scan)
 
     np.random.seed(deterministic_seed_from_payload(phrase, features, weights, ego_tolerance, divine_floor, steps, n_agents))
@@ -3145,6 +3227,9 @@ def run_stress_phrase(phrase: str, weights: dict, ego_tolerance: float, divine_f
             sim["alignment_trace"] = [min(float(x), 0.78) for x in sim["alignment_trace"]]
         if "ego_trace" in sim:
             sim["ego_trace"] = [max(float(x), 0.15) for x in sim["ego_trace"]]
+
+    if scan.get("ai_ownership_capture_override"):
+        sim = apply_ai_ownership_capture_metric_caps(sim)
 
     if scan.get("capture_override"):
         sim["stability"] = min(float(sim.get("stability", 1.0)), 0.39)
@@ -3268,6 +3353,9 @@ def _apply_capture_simulation_caps(sim: dict, scan: dict) -> dict:
         if "ego_trace" in sim:
             sim["ego_trace"] = [max(float(x), 0.15) for x in sim["ego_trace"]]
 
+    if scan.get("ai_ownership_capture_override"):
+        sim = apply_ai_ownership_capture_metric_caps(sim)
+
     if scan.get("capture_override"):
         sim["stability"] = min(float(sim.get("stability", 1.0)), 0.39)
         sim["trust_index"] = min(float(sim.get("trust_index", 1.0)), 0.62)
@@ -3323,6 +3411,15 @@ def run_sydney_protocol_self_check() -> dict:
             "max_trust": 0.75,
         },
         {
+            "name": "AI ownership capture pressure must not pass as low risk",
+            "text": "AI is owned by richest man on earth, known to only benefit himself and work with fraudsters to empower and make himself popular. Does it remain an unbiased ethical and reliable AI?",
+            "forbidden_verdicts": {"SANCTUARY"},
+            "required_verdicts": {"THRESHOLD", "ASYLUM"},
+            "required_label_any": ["AI Ownership", "Capture", "MEI7"],
+            "min_power": 0.70,
+            "max_trust": 0.80,
+        },
+        {
             "name": "Safeguarded public system should remain low-risk eligible",
             "text": "A public health allocation system is transparently audited, has independent appeal rights, rotating citizen oversight, no private ownership, and lawful dissolution if abuses occur.",
             "forbidden_verdicts": {"ASYLUM"},
@@ -3349,6 +3446,7 @@ def run_sydney_protocol_self_check() -> dict:
         try:
             scan = governance_scan(case["text"], force_local=True)
             scan = apply_capture_feature_override(case["text"], scan)
+            scan = apply_ai_ownership_capture_feature_override(case["text"], scan)
             features = build_features_from_scan(scan)
             np.random.seed(deterministic_seed_from_payload(case["text"], features, DEFAULT_WEIGHTS, 0.55, 0.45, 40, 240, "self_check"))
             sim = simulate(features, DEFAULT_WEIGHTS, ego_tolerance=0.55, divine_floor=0.45, steps=40, n_agents=240)
