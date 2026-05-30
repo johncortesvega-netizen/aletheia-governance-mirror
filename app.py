@@ -262,11 +262,11 @@ def enforce_missing_safeguard_threshold_route(
     )
 
 
-APP_VERSION = "v1.0-ai-patrol-officer-icons-p2"
+APP_VERSION = "v1.0-original-governance-mirror-p1"
 SUPPORTED_INPUT_LANGUAGE_NOTE = "Language scope: ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim. Human review remains required."
 PROJECT_ROOT = Path(__file__).resolve().parent
 ABOUT_HEADER_IMAGE = PROJECT_ROOT / "assets" / "about_header.png"
-MASCOT_LOGO_IMAGE = PROJECT_ROOT / "assets" / "ai_patrol_officer_stop_go.png"
+MASCOT_LOGO_IMAGE = PROJECT_ROOT / "assets" / "aletheia_robot_laurel_logo.png"
 VISUAL_SOURCE_FILES = [
     {
         "title": "Sydney Protocol v3.2",
@@ -319,8 +319,8 @@ APP_NAVIGATION_LABELS = [
     "📊 Evidence Lab",
     "🌐 World Lens",
     "🧭 Boundary Cases",
-    "🛂 Patrol Guide",
-    "ℹ️ Why AI Patrol",
+    "📜 Protocol Guide",
+    "ℹ️ Why ALETHEIA",
 ]
 
 APP_NAVIGATION_MAP = [
@@ -329,8 +329,8 @@ APP_NAVIGATION_MAP = [
     ("Evidence Lab", "Separate evidence from claims and park extraordinary claims as unverified until review."),
     ("World Lens", "Read selected-year country evidence, coverage, and allocation context without Global ID, real 9k body, or sovereign authority."),
     ("Boundary Cases", "Reference difficult edge cases such as consent pressure, free agency, ambient capture, and self-audit."),
-    ("Patrol Guide", "Read the v0.1 operating guide, safe-language rules, module boundaries, and the AI Patrol rebrand language."),
-    ("Why AI Patrol", "Understand the AI Patrol public rebrand, release boundary, examples, and research direction."),
+    ("Protocol Guide", "Read the v1.0 operating guide, safe-language rules, module boundaries, and ALETHEIA mirror boundaries."),
+    ("Why ALETHEIA", "Understand ALETHEIA as a free, open-source governance mirror for human review."),
 ]
 
 APP_UX_POLISH_SUMMARY = [
@@ -339,7 +339,7 @@ APP_UX_POLISH_SUMMARY = [
     "Use Evidence Lab when a claim needs source-quality review.",
     "Use World Lens when you need selected-year country evidence and allocation context.",
     "Use Boundary Cases as a reference layer when the ethical edge case is unclear.",
-    "Use Patrol Guide when you need the operating rules and brand boundaries.",
+    "Use Protocol Guide when you need the operating rules and mirror boundaries.",
 ]
 
 DEMO_INPUT_FILES = [
@@ -1239,7 +1239,7 @@ st.markdown(
 
 
 
-    /* Patch 181: AI Patrol sky-blue / gold / white-pillars visual theme override.
+    /* Patch 181: original ALETHEIA warm civic visual theme override.
        Visual shell only: no scoring, receipt, routing, taxonomy, or protocol behavior. */
     :root {
         --bg: #eaf7ff;
@@ -1322,7 +1322,7 @@ st.markdown(
         margin-top: 0.06em;
     }
     .hero-emblem .aletheia-mascot-logo {
-        /* Patch 188: keep STOP / GO lettering readable on the new robot officer asset. */
+        /* Patch 190: original governance-mirror logo; no STOP / GO officer framing. */
         transform: none;
     }
     .hero-sub { color: #2d668f !important; }
@@ -1411,8 +1411,8 @@ st.markdown(
 
 
 
-    /* Patch 182: AI Patrol sky/gold module alignment pass.
-       Visual/copy anchor only for Patrol Guide, Why AI Patrol, Evidence Lab, and subordinate AI Integrity panels. */
+    /* Patch 182: ALETHEIA warm civic module alignment pass.
+       Visual/copy anchor only for Protocol Guide, Why ALETHEIA, Evidence Lab, and subordinate AI Integrity panels. */
     .sky-gold-page-anchor {
         border: 1px solid rgba(212,175,55,0.42);
         border-left: 6px solid var(--gold);
@@ -8491,29 +8491,29 @@ with tab_chat:
 
 
 with tab_doctrine:
-    st.subheader("Patrol Guide")
-    # Patch 182: visual-only sky/gold alignment anchor for the Patrol Guide surface.
+    st.subheader("Protocol Guide")
+    # Patch 182: visual-only warm civic alignment anchor for the Protocol Guide surface.
     st.markdown(
         """
         <div class="sky-gold-page-anchor">
-            <strong><span class="pillar-pair"></span>Patrol Guide</strong>
+            <strong><span class="pillar-pair"></span>Protocol Guide</strong>
             <span class="sky-gold-rule"></span>
             <span>Sky-blue base, white structure, and gold emphasis frame the operating boundaries without adding authority.</span>
         </div>
         """,
         unsafe_allow_html=True,
     )
-    st.markdown("### AI Patrol Guide")
+    st.markdown("### ALETHEIA Protocol Guide")
     st.info(
-        "AI Patrol is the friendlier public face of ALETHEIA: a stop/go integrity patrol for human review. "
-        "It signals review needs; it does not judge, certify, enforce, or become the throne."
+        "ALETHEIA is a free, open-source, protocol-guided governance mirror for human review. "
+        "It reflects pressure and evidence gaps; it does not judge, certify, enforce, or become the throne."
     )
     st.caption(
-        "Open only the section you need. The Patrol Guide is organized as four side-by-side rows of collapsed panels so the tab stays opt-in and readable."
+        "Open only the section you need. The Protocol Guide is organized as four side-by-side rows of collapsed panels so the tab stays opt-in and readable."
     )
     st.markdown(
         "**Quick path:** Mirror Check for documents · Stress Test for scenarios · AI static scan for AI/code artifacts · "
-        "Evidence Lab for claims · World Lens for selected-year evidence · Patrol Guide for rules and limits."
+        "Evidence Lab for claims · World Lens for selected-year evidence · Protocol Guide for rules and limits."
     )
 
     st.markdown("### Patrol guide panels")
@@ -8524,9 +8524,9 @@ with tab_doctrine:
             (
                 "1. Operating boundary",
                 """
-                **AI Patrol signals. Humans review. Power stays accountable.**
+                **ALETHEIA reflects. Humans review. Power stays accountable.**
 
-                ALETHEIA remains a mirror, not a throne. The rebrand makes the public role clearer and kinder: AI Patrol can observe pressure, inspect evidence, preserve review context, warn about stop/go signals, and route concerns to human reviewers.
+                ALETHEIA remains a mirror, not a throne. The interface should stay calm, open-source, and human-centered: ALETHEIA can observe pressure, inspect evidence, preserve review context, raise review signals, and route concerns to human reviewers.
 
                 It does **not** judge final truth, certify safety, approve or reject people, enforce action, punish, command, replace law, validate spiritual authority, or become an automated decision system.
 
@@ -8542,15 +8542,15 @@ with tab_doctrine:
             (
                 "3. Navigation & module map",
                 """
-                | Surface | Patrol use |
+                | Surface | Review use |
                 |---|---|
-                | Mirror Check | Patrol review for documents, proposals, AI outputs, safeguards, and repair questions. |
-                | Stress Test | Scenario-pressure patrol for stability, trust, friction, grievances, collapse risk, and safeguards. |
-                | Boundary Cases | Calibration patrol for consent pressure, free agency, emergency drift, ambient capture, and self-audit. |
+                | Mirror Check | Mirror review for documents, proposals, AI outputs, safeguards, and repair questions. |
+                | Stress Test | Scenario-pressure review for stability, trust, friction, grievances, collapse risk, and safeguards. |
+                | Boundary Cases | Calibration review for consent pressure, free agency, emergency drift, ambient capture, and self-audit. |
                 | Evidence Lab | Evidence status, source coverage, schema readiness, and extraordinary-claim review. |
                 | World Lens | Selected-year evidence context and population-weighted exposure without sovereign authority. |
-                | Patrol Guide | Operating rules, safe language, internal limits, and rebrand boundaries. |
-                | Why AI Patrol | Public explanation of purpose, limits, baseline, and research direction. |
+                | Protocol Guide | Operating rules, safe language, internal limits, and mirror boundaries. |
+                | Why ALETHEIA | Public explanation of purpose, limits, baseline, and research direction. |
 
                 Navigation rule: every surface reflects, explains, or stress-tests. No surface commands, enforces, certifies, validates authority, or replaces human review.
                 """,
@@ -8564,7 +8564,7 @@ with tab_doctrine:
 
                 Accidental tab bleed is not acceptable when caused by widget-key collisions, hidden demo fallback, stale session state, or unmarked prototype data.
 
-                The Patrol Guide makes this shared substrate visible so reviewers can distinguish deliberate continuity from accidental UI leakage.
+                The Protocol Guide makes this shared substrate visible so reviewers can distinguish deliberate continuity from accidental UI leakage.
                 """,
             ),
         ),
@@ -8572,7 +8572,7 @@ with tab_doctrine:
             (
                 "5. Release & continuity",
                 """
-                AI Patrol is a public-facing rebrand of ALETHEIA v1.0, not a new authority layer. It keeps the project continuity intact: local-first posture, no built-in telemetry, no central user-input database, no Global ID sync, no public-ledger sync, and user-held receipts.
+                ALETHEIA v1.0 returns to its original governance-mirror identity, not a new authority layer. It keeps the project continuity intact: local-first posture, no built-in telemetry, no central user-input database, no Global ID sync, no public-ledger sync, and user-held receipts.
 
                 The Eternal Baseline remains an ethical continuity layer. It preserves human dignity, free agency, appealability, accountability, evidence, repair, non-coercion, and human review without becoming a command layer or founder-validation artifact.
 
@@ -8582,11 +8582,11 @@ with tab_doctrine:
             (
                 "6. Evidence & source rules",
                 """
-                Evidence comes before certainty. AI Patrol separates claims from support and asks what was actually inspected.
+                Evidence comes before certainty. ALETHEIA separates claims from support and asks what was actually inspected.
 
                 Evidence Lab may mark source status, coverage, schema readiness, and extraordinary-claim pressure. Strong evidence can support a reading, but it does not remove protocol boundaries. Weak, stale, partial, one-sided, or unavailable evidence must lower confidence.
 
-                Extraordinary claims — spiritual, prophetic, alien, neural, metaphysical, or otherwise exceptional — remain unverified unless supported by public, testable, non-coercive evidence. AI Patrol may audit consequences and safeguards; it does not crown the claim.
+                Extraordinary claims — spiritual, prophetic, alien, neural, metaphysical, or otherwise exceptional — remain unverified unless supported by public, testable, non-coercive evidence. ALETHEIA may audit consequences and safeguards; it does not crown the claim.
 
                 Receipts are local review records. They are not public-ledger records, official findings, or final proof.
                 """,
@@ -8596,7 +8596,7 @@ with tab_doctrine:
             (
                 "7. Review lenses",
                 """
-                AI Patrol watches for pressure patterns that can make systems appear more legitimate, neutral, certain, or authoritative than the evidence supports.
+                ALETHEIA watches for pressure patterns that can make systems appear more legitimate, neutral, certain, or authoritative than the evidence supports.
 
                 Core review signals include:
 
@@ -8642,7 +8642,7 @@ with tab_doctrine:
         render_public_trust_package_page(st)
 
     st.caption(
-        "Patrol Guide boundary: AI Patrol signals stop/go review needs. ALETHEIA remains a mirror, not a throne. Human review remains required."
+        "Protocol Guide boundary: ALETHEIA reflects review needs. ALETHEIA remains a mirror, not a throne. Human review remains required."
     )
 
 

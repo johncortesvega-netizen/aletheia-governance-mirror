@@ -5,17 +5,16 @@ APP = ROOT / "app.py"
 ARTIFICIAL_PAGE = ROOT / "pages_ui" / "artificial_mind_formation_page.py"
 
 
-def test_patch_167_patrol_guide_has_single_rebranded_heading_and_no_duplicate_protocol_header():
+def test_patch_167_protocol_guide_has_original_heading():
     text = APP.read_text(encoding="utf-8")
     section = text[text.index("with tab_doctrine:"):text.index("with tab_about:")]
-    assert 'st.subheader("Patrol Guide")' in section
-    assert '### AI Patrol Guide' in section
-    assert 'st.subheader("Protocol Guide")' not in section
+    assert 'st.subheader("Protocol Guide")' in section
+    assert '### ALETHEIA Protocol Guide' in section
     assert 'four side-by-side rows of collapsed panels' in section
     assert 'All panels are collapsed by default' in section
 
 
-def test_patch_167_patrol_guide_restores_four_rows_eight_collapsed_panels():
+def test_patch_167_protocol_guide_restores_four_rows_eight_collapsed_panels():
     text = APP.read_text(encoding="utf-8")
     section = text[text.index("with tab_doctrine:"):text.index("with tab_about:")]
     assert "patrol_guide_rows = [" in section
@@ -46,7 +45,7 @@ def test_patch_167_artificial_mind_explainer_is_restored_inside_patrol_guide():
     assert "not judge" in page_text
 
 
-def test_patch_167_patrol_guide_keeps_non_authority_boundary_language():
+def test_patch_167_protocol_guide_keeps_non_authority_boundary_language():
     text = APP.read_text(encoding="utf-8")
     section = text[text.index("with tab_doctrine:"):text.index("with tab_about:")]
     assert "mirror, not a throne" in section

@@ -8,12 +8,12 @@ EVIDENCE = ROOT / "pages_ui" / "evidence_lab_page.py"
 
 def test_patch_182_version_marks_second_visual_pass():
     text = APP.read_text(encoding="utf-8")
-    assert 'APP_VERSION = "v1.0-ai-patrol-sky-theme-p' in text
+    assert 'APP_VERSION = "v1.0-original-governance-mirror' in text
 
 
 def test_patch_182_sky_gold_alignment_css_tokens_present():
     text = APP.read_text(encoding="utf-8")
-    assert "Patch 182: AI Patrol sky/gold module alignment pass" in text
+    assert "Patch 182: ALETHEIA warm civic module alignment pass" in text
     assert ".sky-gold-page-anchor" in text
     assert ".pillar-pair" in text
     assert "border-left: 6px solid var(--gold)" in text
@@ -27,10 +27,10 @@ def test_patch_182_target_pages_have_visual_anchor_without_logic_hooks():
     about_text = ABOUT.read_text(encoding="utf-8")
     evidence_text = EVIDENCE.read_text(encoding="utf-8")
 
-    assert "visual-only sky/gold alignment anchor for the Patrol Guide surface" in app_text
-    assert "Patrol Guide</strong>" in app_text
+    assert "visual-only warm civic alignment anchor for the Protocol Guide surface" in app_text
+    assert "Protocol Guide</strong>" in app_text
     assert "visual-only sky/gold alignment anchor for the public Why page" in about_text
-    assert "Why AI Patrol</strong>" in about_text
+    assert "Why ALETHEIA</strong>" in about_text
     assert "visual-only sky/gold alignment anchor for Evidence Lab" in evidence_text
     assert "Evidence Lab</strong>" in evidence_text
 
@@ -50,8 +50,6 @@ def test_patch_182_ai_static_scan_context_remains_subordinate():
 
 def test_patch_182_status_and_recovery_artifacts_present():
     for path in [
-        "PATCH_182_MANIFEST.txt",
-        "PATCH_182_RECOVERY_NOTE.md",
         "PATCH_STATUS.md",
         "docs/progress_database.md",
     ]:

@@ -37,25 +37,25 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
         container = st
 
     st = container
-    st.subheader("Why AI Patrol / ALETHEIA")
+    st.subheader("Why ALETHEIA")
     # Patch 182: visual-only sky/gold alignment anchor for the public Why page.
     st.markdown(
         """
         <div class="sky-gold-page-anchor">
-            <strong><span class="pillar-pair"></span>Why AI Patrol</strong>
+            <strong><span class="pillar-pair"></span>Why ALETHEIA</strong>
             <span class="sky-gold-rule"></span>
-            <span>The rebrand uses sky-blue clarity, white civic structure, and gold emphasis while preserving the mirror-not-throne boundary.</span>
+            <span>ALETHEIA returns to its calm original governance-mirror direction: warm, reviewable, open-source, and non-authoritative.</span>
         </div>
         """,
         unsafe_allow_html=True,
     )
     st.info(
-        "AI Patrol is the friendlier public face of ALETHEIA: a compact stop/go "
+        "ALETHEIA is the friendlier public face of ALETHEIA: a compact stop/go "
         "review layer for human judgment. Science investigates, philosophy structures, "
         "theological humility restrains final claims, and people decide."
     )
     st.caption(
-        "Open only the panels you need. This page explains the public identity, "
+        "Open only the panels you need. This page explains the public purpose, "
         "module map, research boundary, and non-authority limits without changing any app logic."
     )
 
@@ -63,13 +63,13 @@ def render_about_public_info_page(container=None, header_image: str | Path | Non
         (
             "1. Identity & visual theme",
             """
-**AI Patrol is the friendlier public face of ALETHEIA v1.0.**
+**ALETHEIA is a free, open-source governance mirror for human review.**
 
-The visual identity is a kind patrol mascot in a cartoon data-center setting: a cardboard robot, blue patrol uniform, red siren, and STOP / GO paddle.
+The visual identity returns to the original soft public-good direction: warm botanical details, a modest cardboard robot, classical headings, clear review cards, and human-review framing.
 
 The meaning is bounded:
 
-> **AI Patrol signals. Humans review. Power stays accountable.**
+> **ALETHEIA reflects. Humans review. Power stays accountable.**
 
 It is not a judge, enforcer, oracle, certification engine, legal authority, political authority, religious authority, medical authority, investment authority, or automated decision system.
 """,
@@ -77,17 +77,17 @@ It is not a judge, enforcer, oracle, certification engine, legal authority, poli
         (
             "2. Why it exists",
             """
-AI Patrol / ALETHEIA exists because many systems can look orderly while still moving power out of reach.
+ALETHEIA exists because many systems can look orderly while still moving power out of reach.
 
 A policy can have compliance language and still hide appeal failure. An AI output can sound neutral while carrying flattery pressure or provider-shaped assumptions. A governance process can be documented while still concentrating power.
 
-AI Patrol does not answer that problem with more command, automation, or institutional control. It uses a restrained mirror: make pressure visible, name missing safeguards, and return the reading to human review.
+ALETHEIA does not answer that problem with more command, automation, or institutional control. It uses a restrained mirror: make pressure visible, name missing safeguards, and return the reading to human review.
 """,
         ),
         (
             "3. What this is / is not",
             """
-**This is:** a friendly integrity patrol and mirror for pressure, authority drift, evidence gaps, capture risk, consent pressure, weak appeal paths, and human-review needs.
+**This is:** a governance mirror for pressure, authority drift, evidence gaps, capture risk, consent pressure, weak appeal paths, and human-review needs.
 
 **This is not:** a judge, oracle, certification engine, truth machine, legal authority, political authority, religious authority, medical authority, investment authority, or automated decision system.
 
@@ -121,16 +121,16 @@ Choose the tab by task:
 | Boundary Cases | Tests difficult ethical scenarios before they become app logic or public claims. |
 | Evidence Lab | Reviews evidence status, source coverage, schema readiness, and extraordinary claims. |
 | World Lens | Reviews selected-year, population-weighted evidence exposure without real Global ID, a real 9k body, or sovereign authority. |
-| Patrol Guide | Explains modules, safe language, internal taxonomy labels, and limitations. |
-| Why AI Patrol | Explains the project, baseline, and public-safe purpose. |
+| Protocol Guide | Explains modules, safe language, internal taxonomy labels, and limitations. |
+| Why ALETHEIA | Explains the project, baseline, and public-safe purpose. |
 
-The UX rule is simple: make the next patrol step obvious while keeping every output reviewable.
+The UX rule is simple: make the next review step obvious while keeping every output reviewable.
 """,
         ),
         (
             "6. Failure modes watched",
             """
-AI Patrol watches for pressure patterns that can make systems appear more legitimate, neutral, certain, or authoritative than the evidence supports.
+ALETHEIA watches for pressure patterns that can make systems appear more legitimate, neutral, certain, or authoritative than the evidence supports.
 
 - **Authority drift** — when a system sounds like it can decide, certify, command, legitimize, rank, punish, or replace human judgment.
 - **Evidence inflation** — when claims become stronger than the evidence actually inspected.
@@ -152,7 +152,7 @@ AI Patrol watches for pressure patterns that can make systems appear more legiti
 
 **Out-of-scope layer:** ALETHEIA does not govern, enforce, allocate authority, select representatives, create a real 9k body, issue mandates, validate spiritual or political authority, or replace human judgment.
 
-AI Patrol is anti-capture by design: it reflects capture-risk signals but does not become a central authority.
+ALETHEIA is anti-capture by design: it reflects capture-risk signals but does not become a central authority.
 """,
         ),
         (
@@ -162,13 +162,13 @@ AI Patrol is anti-capture by design: it reflects capture-risk signals but does n
 
 **Stress Test** models governance pressure through stability, trust, alignment, ego, grievances, friction, safeguards, and collapse risk.
 
-AI-specific static scan context is now subordinate to **Mirror Check** and **Stress Test**. It is not a standalone module or separate verdict path.
+AI Integrity Mirror context is now subordinate to **Mirror Check** and **Stress Test**. It is not a standalone module or separate verdict path. It does not certify systems or vendors.
 
 **Evidence Lab** separates claims from evidence and prepares empirical review support.
 
 **World Lens** shows selected-year, population-weighted evidence exposure. It is not a real election, government, sovereign body, mandate, Global ID system, or real 9k body.
 
-**Patrol Guide** preserves operating boundaries while remaining corrigible by evidence.
+**Protocol Guide** preserves operating boundaries while remaining corrigible by evidence.
 """,
         ),
         (

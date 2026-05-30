@@ -6,12 +6,12 @@ APP = ROOT / "app.py"
 
 def test_patch_181_app_version_marks_sky_theme():
     text = APP.read_text(encoding="utf-8")
-    assert 'APP_VERSION = "v1.0-ai-patrol-sky-theme' in text
+    assert 'APP_VERSION = "v1.0-original-governance-mirror' in text
 
 
 def test_patch_181_sky_gold_theme_tokens_present():
     text = APP.read_text(encoding="utf-8")
-    assert "Patch 181: AI Patrol sky-blue / gold / white-pillars visual theme override" in text
+    assert "Patch 181: original ALETHEIA warm civic visual theme override" in text
     assert "--sky: #d8f0ff" in text
     assert "--gold: #d4af37" in text
     assert "--pillar: #ffffff" in text

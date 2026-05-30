@@ -5,7 +5,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_patch_188_robot_officer_assets_are_packaged():
+def test_patch_188_legacy_robot_officer_assets_remain_archived():
     expected = [
         "assets/ai_patrol_officer_stop_go.png",
         "assets/ai_patrol_officer_preview.png",
@@ -13,7 +13,7 @@ def test_patch_188_robot_officer_assets_are_packaged():
     ]
     for name in expected:
         path = ROOT / name
-        assert path.exists(), f"Missing robot officer asset: {name}"
+        assert path.exists(), f"Missing legacy robot officer asset: {name}"
         assert path.suffix.lower() == ".png"
         with Image.open(path) as img:
             assert img.size[0] >= 512
@@ -22,21 +22,21 @@ def test_patch_188_robot_officer_assets_are_packaged():
 
 def test_patch_188_main_app_uses_robot_officer_logo_with_readable_stop_go():
     text = (ROOT / "app.py").read_text(encoding="utf-8")
-    assert 'MASCOT_LOGO_IMAGE = PROJECT_ROOT / "assets" / "ai_patrol_officer_stop_go.png"' in text
-    assert 'APP_VERSION = "v1.0-ai-patrol-officer-icons-p2"' in text
-    assert "keep STOP / GO lettering readable" in text
+    assert 'MASCOT_LOGO_IMAGE = PROJECT_ROOT / "assets" / "aletheia_robot_laurel_logo.png"' in text
+    assert 'APP_VERSION = "v1.0-original-governance-mirror-p1"' in text
+    assert "original governance-mirror logo; no STOP / GO officer framing" in text
     assert "transform: none;" in text
 
 
 def test_patch_188_preview_unit_embeds_robot_officer_visual_guide():
     text = (ROOT / "ui" / "unit_preview.py").read_text(encoding="utf-8")
-    assert "get_unit_preview_officer_image_uri" in text
-    assert 'assets" / "ai_patrol_officer_preview.png"' in text
-    assert "unit-preview-officer-card" in text
-    assert "Pause · Check · Ask · Proceed carefully." in text
-    assert "child-readable stop/go guidance" in text
+    assert "get_unit_preview_mascot_image_uri" in text
+    assert 'assets" / "aletheia_robot_laurel_logo.png"' in text
+    assert "unit-preview-mascot-card" in text
+    assert "Audit · Simulate · Inspect evidence · Review carefully." in text
+    assert "plain-language mirror guidance" in text
     assert "visual guide only: no certification, no command, no final authority" in text
-    assert "Friendly ALETHEIA robot officer holding stop and go signs" in text
+    assert "Friendly ALETHEIA laurel robot visual guide" in text
 
 
 def test_patch_188_is_visual_only_documented():

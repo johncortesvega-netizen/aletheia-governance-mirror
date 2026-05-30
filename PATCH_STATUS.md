@@ -4109,3 +4109,31 @@ python tools\run_patch_checks.py 189
 python -m pytest -q tests/test_patch_189_no_colon_brand_titles.py tests/test_patch_188_robot_officer_visual_integration.py tests/test_patch_187_stacked_brand_and_full_app_logo.py tests/test_patch_185_aletheia_ai_patrol_branding.py tests/test_patch_166_ai_patrol_rebrand.py
 python -m py_compile app.py ui/app_shell.py ui/unit_preview.py
 ```
+
+## Patch 190 — Original Governance Mirror Design Restore
+
+Date: 2026-05-30
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 190 reverses the visible AI Patrol rebrand direction and returns the app to the original ALETHEIA governance-mirror concept: calm, warm, open-source, human-centered, reviewable, and non-authoritative.
+
+Updated surfaces:
+- Main app version marker advances to `v1.0-original-governance-mirror-p1`.
+- Main logo asset returns to `assets/aletheia_robot_laurel_logo.png`.
+- Navigation labels return to `Protocol Guide` and `Why ALETHEIA`.
+- App shell, sidebar, Preview Unit, About page, Evidence Lab helper copy, README, and related tests no longer use AI Patrol / stop-go officer branding.
+- Patch 189 root artifacts are archived under `docs/patch_archive/`, with `PATCH_190_DELETE_LIST.txt` listing the old root files to remove downstream.
+
+Boundary notes:
+- UI/copy/branding/test-hygiene only.
+- No scoring, routing, taxonomy, receipt schema/generation, receipt values, batch behavior, Evidence Lab calculations, World Lens math, AI static scan logic, protocol logic, external calls, storage, certification, enforcement, or authority behavior changed.
+- ALETHEIA remains a mirror, not a throne. Human review remains required.
+
+Validation target:
+
+```bat
+python tools\run_patch_checks.py 190
+python -m pytest -q tests/test_patch_190_original_governance_mirror_restore.py tests/test_patch_166_ai_patrol_rebrand.py tests/test_patch_167_patrol_guide_formatting_restore.py tests/test_patch_168_why_ai_patrol_panel_layout.py tests/test_patch_169_evidence_lab_panel_layout.py tests/test_patch_181_sky_gold_pillars_theme.py tests/test_patch_182_sky_gold_module_alignment.py tests/test_patch_185_aletheia_ai_patrol_branding.py tests/test_patch_187_stacked_brand_and_full_app_logo.py tests/test_patch_188_robot_officer_visual_integration.py tests/test_patch_189_no_colon_brand_titles.py
+python -m py_compile app.py ui/app_shell.py ui/unit_preview.py pages_ui/about_page.py pages_ui/evidence_lab_page.py ui/module_intro.py ui/module_page_template.py ui/status_cards.py
+```

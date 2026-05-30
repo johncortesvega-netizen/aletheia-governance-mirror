@@ -46,7 +46,7 @@ def render_evidence_lab_intro(container=None) -> None:
         unsafe_allow_html=True,
     )
     container.info(
-        "Evidence Lab is the AI Patrol evidence desk: it separates claims from sources, "
+        "Evidence Lab is the ALETHEIA evidence desk: it separates claims from sources, "
         "checks coverage, and prepares public data for human review. It signals what can "
         "be supported, what is missing, and what must stay unverified."
     )
@@ -61,7 +61,7 @@ def render_evidence_lab_intro(container=None) -> None:
             """
 **Evidence does not come from ALETHEIA.** Public datasets, user-supplied sources, and uploaded tables provide the material.
 
-AI Patrol / ALETHEIA maps, reflects, and flags limits. It does not certify sources, prove claims, debunk claims, or become a truth authority.
+ALETHEIA maps, reflects, and flags limits. It does not certify sources, prove claims, debunk claims, or become a truth authority.
 
 > **Evidence Lab signals. Humans review. Power stays accountable.**
 """,

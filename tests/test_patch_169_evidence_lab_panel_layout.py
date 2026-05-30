@@ -21,10 +21,10 @@ def test_patch_169_evidence_lab_intro_uses_compact_panel_rows():
         assert title in text
 
 
-def test_patch_169_evidence_lab_copy_preserves_ai_patrol_boundary():
+def test_patch_169_evidence_lab_copy_preserves_aletheia_boundary():
     text = (ROOT / "pages_ui" / "evidence_lab_page.py").read_text(encoding="utf-8")
     assert "Evidence Lab — Evidence Patrol" in text
-    assert "AI Patrol / ALETHEIA maps, reflects, and flags limits" in text
+    assert "ALETHEIA maps, reflects, and flags limits" in text
     assert "It does not certify sources, prove claims, debunk claims, or become a truth authority." in text
     assert "Evidence Lab signals. Humans review. Power stays accountable." in text
     assert "not proof" in text
@@ -46,8 +46,8 @@ def test_patch_169_app_uses_intro_panels_and_collapses_template_helpers():
 
 def test_patch_169_manifest_recovery_and_status_present():
     for path in [
-        "PATCH_169_MANIFEST.txt",
-        "PATCH_169_RECOVERY_NOTE.md",
+        "docs/patch_archive/manifests/PATCH_169_MANIFEST.txt",
+        "docs/patch_archive/recovery_notes/PATCH_169_RECOVERY_NOTE.md",
         "PATCH_STATUS.md",
         "docs/progress_database.md",
     ]:

@@ -25,18 +25,18 @@ def _asset_image_data_uri(path: Path) -> str:
     return f"data:image/{mime};base64,{data}"
 
 
-def get_unit_preview_officer_image_uri(project_root: Path | None = None) -> str:
-    """Return the friendly cardboard robot officer asset for Unit Preview."""
+def get_unit_preview_mascot_image_uri(project_root: Path | None = None) -> str:
+    """Return the original ALETHEIA laurel robot asset for Unit Preview."""
     root = project_root or Path(__file__).resolve().parents[1]
-    return _asset_image_data_uri(root / "assets" / "ai_patrol_officer_preview.png")
+    return _asset_image_data_uri(root / "assets" / "aletheia_robot_laurel_logo.png")
 
 
 def get_unit_preview_boundary_text() -> str:
     """Return the stable non-authority boundary copy for the preview."""
     return (
-        "AI Patrol Preview Unit suggests where to begin. It does not score, certify, "
+        "ALETHEIA Preview Unit suggests where to begin. It does not score, certify, "
         "approve, reject, or replace the full modules.\n\n"
-        "AI Patrol gives stop/go review signals, not verdicts. Human judgment remains required.\n\n"
+        "ALETHEIA gives mirror-review signals, not verdicts. Human judgment remains required.\n\n"
         "For sensitive material, run locally. Hosted deployments may have platform-level "
         "logs outside ALETHEIA's app-code boundary."
     )
@@ -47,7 +47,7 @@ def get_unit_preview_how_to_use_markdown() -> str:
     return """
 **How to use this**
 
-Paste a short idea, question, policy, AI output, or scenario. AI Patrol looks for power, pressure, appeal, evidence, and risk. It gives a suggested stop/go direction for human review, and you keep the final say.
+Paste a short idea, question, policy, AI output, or scenario. ALETHEIA looks for power, pressure, appeal, evidence, and risk. It gives a suggested review path for human review, and you keep the final say.
 
 **Examples**
 
@@ -58,7 +58,7 @@ Paste a short idea, question, policy, AI output, or scenario. AI Patrol looks fo
 - **Evidence Lab:** Upload a CSV or source note to compare claims against supporting evidence.
 - **World Lens:** Compare a country-year governance context before interpreting a risk reading.
 
-Already have an ALETHEIA receipt? The Preview Unit can suggest **Receipt Reader — Standard View**, but receipts are read only after entering AI Patrol / ALETHEIA and opening the upload-only Receipt Reader.
+Already have an ALETHEIA receipt? The Preview Unit can suggest **Receipt Reader — Standard View**, but receipts are read only after entering ALETHEIA and opening the upload-only Receipt Reader.
 """
 
 
@@ -69,7 +69,7 @@ def get_unit_preview_start_here_markdown() -> str:
 
 1. Paste one short item into Unit Preview.
 2. Read the suggested path as a suggestion, not a decision.
-3. Enter AI Patrol / ALETHEIA and choose the module yourself.
+3. Enter ALETHEIA and choose the module yourself.
 4. Inspect observed reasons, values, and repair questions before relying on any reading.
 5. Download a receipt only when you want a local review record.
 
@@ -99,7 +99,7 @@ def get_unit_preview_failure_mode_markdown() -> str:
 def get_unit_preview_what_aletheia_looks_for_markdown() -> str:
     """Return concise Start Here orientation for ALETHEIA's review lens."""
     return """
-AI Patrol looks for pressure patterns that can make a system appear more legitimate, neutral, certain, or authoritative than the evidence supports.
+ALETHEIA looks for pressure patterns that can make a system appear more legitimate, neutral, certain, or authoritative than the evidence supports.
 
 It watches for signals around power, evidence, appeal, capture, language, and human-review needs. These signals are not verdicts or proof of wrongdoing. They are prompts for review.
 
@@ -129,7 +129,7 @@ div[data-testid="stButton"] button[kind="primary"]:focus {
     outline: 3px solid rgba(248, 113, 113, 0.7) !important;
     outline-offset: 2px !important;
 }
-/* Patch 187: make Preview Unit brand read as Aletheia above AI PATROL. */
+/* Patch 190: make Preview Unit brand read as ALETHEIA above Governance Mirror. */
 .unit-preview-brand-title {
     font-family: Georgia, 'Times New Roman', serif;
     color: #123d63 !important;
@@ -155,8 +155,8 @@ div[data-testid="stButton"] button[kind="primary"]:focus {
     transform: scaleX(-1);
 }
 
-/* Patch 188: child-proof visual guide with the cardboard robot officer. */
-.unit-preview-officer-card {
+/* Patch 190: original preview visual guide with the laurel robot. */
+.unit-preview-mascot-card {
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(220px, 0.95fr);
     gap: 1rem;
@@ -168,23 +168,23 @@ div[data-testid="stButton"] button[kind="primary"]:focus {
     margin: 0.45rem 0 1rem;
     box-shadow: 0 14px 30px rgba(31,95,143,0.12);
 }
-.unit-preview-officer-copy {
+.unit-preview-mascot-copy {
     color: #17324a;
     font-family: Georgia, 'Times New Roman', serif;
 }
-.unit-preview-officer-copy strong {
+.unit-preview-mascot-copy strong {
     display: block;
     color: #123d63;
     font-size: 1.25rem;
     letter-spacing: 0.03em;
     margin-bottom: 0.35rem;
 }
-.unit-preview-officer-copy span {
+.unit-preview-mascot-copy span {
     display: block;
     margin-top: 0.32rem;
     color: #2d668f;
 }
-.unit-preview-officer-image {
+.unit-preview-mascot-image {
     width: 100%;
     max-height: 260px;
     object-fit: cover;
@@ -194,7 +194,7 @@ div[data-testid="stButton"] button[kind="primary"]:focus {
     box-shadow: inset 0 0 0 1px rgba(255,255,255,0.72);
 }
 @media (max-width: 760px) {
-    .unit-preview-officer-card { grid-template-columns: 1fr; }
+    .unit-preview-mascot-card { grid-template-columns: 1fr; }
 }
 
 </style>
@@ -656,7 +656,7 @@ def detect_unit_preview_route(text: str) -> dict[str, str]:
             "module": "Mirror Check",
             "route_type": "main_module",
             "reason": "The prompt asks for review of AI, model-output, prompt, agent, or code behavior. Mirror Check carries the subordinate AI static scan context.",
-            "next_step": "Enter AI Patrol and open Mirror Check. Use Stress Test instead when the AI issue is a deployment scenario under pressure.",
+            "next_step": "Enter ALETHEIA and open Mirror Check. Use Stress Test instead when the AI issue is a deployment scenario under pressure.",
         }
 
     privacy_tokens = (
@@ -826,29 +826,29 @@ def render_unit_preview(container=None) -> bool:
     container.markdown(
         """
         <div class="unit-preview-brand-title" role="heading" aria-level="1">
-            <span class="unit-preview-brand-main">Aletheia</span>
-            <span class="unit-preview-brand-subline">AI PATROL</span>
+            <span class="unit-preview-brand-main">ALETHEIA</span>
+            <span class="unit-preview-brand-subline">Governance Mirror</span>
         </div>
         """,
         unsafe_allow_html=True,
     )
-    officer_image_uri = get_unit_preview_officer_image_uri()
+    mascot_image_uri = get_unit_preview_mascot_image_uri()
     container.markdown(
         f"""
-        <div class="unit-preview-officer-card">
-            <div class="unit-preview-officer-copy">
-                <strong>Pause · Check · Ask · Proceed carefully.</strong>
-                <span>The ALETHEIA robot officer gives child-readable stop/go guidance while adults and reviewers keep responsibility.</span>
-                <span>It is a visual guide only: no certification, no command, no final authority.</span>
+        <div class="unit-preview-mascot-card">
+            <div class="unit-preview-mascot-copy">
+                <strong>Audit · Simulate · Inspect evidence · Review carefully.</strong>
+                <span>The ALETHEIA laurel robot is a gentle visual guide; adults and reviewers keep responsibility.</span>
+                <span>It is a visual guide only: no certification, no command, no final authority; plain-language mirror guidance only.</span>
             </div>
-            <img class="unit-preview-officer-image" src="{officer_image_uri}" alt="Friendly ALETHEIA robot officer holding stop and go signs" />
+            <img class="unit-preview-mascot-image" src="{mascot_image_uri}" alt="Friendly ALETHEIA laurel robot visual guide" />
         </div>
         """,
         unsafe_allow_html=True,
     )
-    container.markdown("### Preview Unit · Friendly integrity patrol. Mirror, not throne.")
+    container.markdown("### Preview Unit · Governance mirror. Mirror, not throne.")
     container.write(
-        "Paste a short text, question, policy, AI output, or scenario to get a suggested patrol path before entering Aletheia AI PATROL. Upload receipts in Receipt Reader after entering the app."
+        "Paste a short text, question, policy, AI output, or scenario to get a suggested review path before entering ALETHEIA. Upload receipts in Receipt Reader after entering the app."
     )
     container.info(get_unit_preview_boundary_text())
     container.markdown(get_unit_preview_how_to_use_markdown())
@@ -879,10 +879,10 @@ def render_unit_preview(container=None) -> bool:
     # source marker above for validation continuity.
     action_columns = container.columns([1, 1, 1.25, 4.75], gap="small")
     with action_columns[0]:
-        preview_clicked = container.button("Preview patrol path", key="aletheia_unit_preview_button")
+        preview_clicked = container.button("Preview review path", key="aletheia_unit_preview_button")
     with action_columns[1]:
         proceed_clicked = container.button(
-            "Proceed to Aletheia AI PATROL",
+            "Proceed to ALETHEIA",
             type="primary",
             key="aletheia_unit_preview_proceed",
         )
@@ -895,13 +895,13 @@ def render_unit_preview(container=None) -> bool:
 
     if preview_clicked:
         suggestion = detect_unit_preview_route(preview_text)
-        container.markdown("### Suggested patrol path")
+        container.markdown("### Suggested review path")
         container.info(
             f"**Suggested path:** {suggestion['module']}\n\n"
             f"**Why:** {suggestion['reason']}\n\n"
             f"**Next step:** {suggestion['next_step']}"
         )
-        container.caption("This is a stop/go orientation only. You can still choose any module after entering Aletheia AI PATROL.")
+        container.caption("This is a stop/go orientation only. You can still choose any module after entering ALETHEIA.")
 
     render_unit_preview_proof_concepts_side_by_side(container)
     render_unit_preview_html_reference(container)

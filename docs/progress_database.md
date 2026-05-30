@@ -3580,3 +3580,21 @@ Status: READY FOR LOCAL REVIEW
 Patch 189 removes the colon after `Aletheia` in the Preview Unit and main app stacked title surfaces, preserving the two-line public identity as `Aletheia` / `AI PATROL`. It also raises the visual-only explanatory tree canopy used by Mirror Check and Stress Test so the canopy does not sit too low. The delivered artifact is a clean full-project zip with older root patch artifacts archived into `docs/patch_archive/`.
 
 Boundary preserved: visual branding/tree-presentation only; no engine behavior, scoring, routing, taxonomy, receipt generation, World Lens math, Evidence Lab calculation, AI static scan logic, storage, certification, enforcement, or authority behavior changed. Human review remains required.
+
+## Patch 190 — Original Governance Mirror Design Restore
+
+Date: 2026-05-30
+Status: READY FOR LOCAL REVIEW
+
+Patch 190 reverses the visible AI Patrol rebrand direction and returns the app to the original ALETHEIA governance-mirror design concept. The restored direction is warm, calm, public-good, open-source, human-centered, reviewable, and non-authoritative: ALETHEIA as a mirror, not a throne.
+
+Updated surfaces: `app.py`, `ui/app_shell.py`, `ui/unit_preview.py`, shared UI helper copy, About / Why ALETHEIA, Evidence Lab helper copy, README, related regression tests, and latest patch artifacts.
+
+Visible design/copy changes:
+- Public identity: `ALETHEIA / Governance Mirror`.
+- Main logo: original laurel robot asset.
+- Navigation: `Protocol Guide` and `Why ALETHEIA`.
+- Public framing: audit, simulation, evidence, global comparison, reports, free/open-source, and human review.
+- Removed visible AI Patrol, stop/go officer, and public rebrand wording from active app surfaces.
+
+Boundary preserved: UI/copy/branding/test-hygiene only; no engine behavior, scoring, routing, taxonomy, receipt generation, World Lens math, Evidence Lab calculation, AI static scan logic, storage, certification, enforcement, or authority behavior changed. Human review remains required.

@@ -10,7 +10,7 @@ def render_stress_test_scan_intro(container=None) -> None:
         container = st
 
     container.info(
-        "Scan my idea is for your own text. AI Patrol reads only what you choose to submit. Demo scenarios are there if you choose them, "
+        "Scan my idea is for your own text. ALETHEIA reads only what you choose to submit. Demo scenarios are there if you choose them, "
         "but they never run by themselves."
     )
 
@@ -37,7 +37,7 @@ def render_consent_audit_intro(container=None) -> None:
 
     container.markdown("### Consent-Audit Engine")
     container.write(
-        "AI Patrol treats consent as valid only when refusal is realistically possible. "
+        "ALETHEIA treats consent as valid only when refusal is realistically possible. "
         "This check looks for structural pressure, basic-rights dependency, "
         "withdrawal gaps, and unclear alternatives."
     )
