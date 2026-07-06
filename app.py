@@ -2097,16 +2097,10 @@ def render_pulse_tree(
     """
     Streamlit HTML/SVG state tree.
 
-    Patch 70: the tree is a visual state explainer, not a second protocol
-    metric. The receipt's protocol-adjusted integrity remains the canonical
-    numeric reading; the tree score is a visual stability/pressure signal.
-
-    Patch 71.2: the canopy and caption are visual-only polish. The caption is
-    rendered below the SVG visual so it does not sit inside the tree canopy or
-    trunk area.
-
-    Patch 71.6: removes the large central glow/blob behind the canopy. The
-    tree state still follows the protocol-adjusted verdict; this is visual-only.
+    Patch Tree Visual v2: render the tree as a light-background protocol map
+    instead of a dark abstract canvas. The visual makes the concept explicit:
+    root = human review, trunk = evidence/accountability, canopy = current
+    review band. This remains display-only; receipt metrics stay canonical.
     """
     score = max(0.0, min(1.0, float(score)))
     ego = max(0.0, min(1.0, float(ego)))
@@ -2115,62 +2109,34 @@ def render_pulse_tree(
     if score >= 0.62:
         inferred_state = "SANCTUARY"
         leaf_color = "#8fbc8f"
-        glow_color = "rgba(143,188,143,0.35)"
     elif score >= 0.42:
         inferred_state = "THRESHOLD"
         leaf_color = "#e5c36b"
-        glow_color = "rgba(229,195,107,0.30)"
     else:
         inferred_state = "ASYLUM"
         leaf_color = "#db7777"
-        glow_color = "rgba(219,119,119,0.28)"
 
     state = (state_override or inferred_state or "THRESHOLD").upper()
     if state == "QUESTION_PROMPT":
         leaf_color = "#8ab4f8"
-        glow_color = "rgba(138,180,248,0.30)"
     elif state == "SANCTUARY":
         leaf_color = "#8fbc8f"
-        glow_color = "rgba(143,188,143,0.35)"
     elif state == "THRESHOLD":
         leaf_color = "#e5c36b"
-        glow_color = "rgba(229,195,107,0.30)"
     elif state == "ASYLUM":
         leaf_color = "#db7777"
-        glow_color = "rgba(219,119,119,0.28)"
 
     visual_band = visual_review_band_for_tree(score, state)
     if state == "THRESHOLD":
         leaf_color = visual_band["color"]
-        glow_color = f"{visual_band['color']}55"
 
     copy = tree_copy_for_state(state, mode=mode)
-    canopy_opacity = 0.28 + (score * 0.62)
-    # Patch 71.2 baseline kept for regression-test continuity:
-    # canopy_scale = 0.82 + (score * 0.30)
-    # canopy_sag = 0 if state == "SANCTUARY"
-    # Patch 71.3 tightens/lower-centers the canopy while preserving the
-    # explanatory-only contract from Patch 71.2.
-    # Patch 189 raises the visual-only canopy again so the Mirror Check and
-    # Stress Test module trees read as connected but not visually compressed.
-    canopy_scale = 0.70 + (score * 0.18)
-    canopy_sag = 2 if state == "SANCTUARY" else (6 if state == "THRESHOLD" else 11)
-    canopy_y_offset = -8 if state == "SANCTUARY" else (-4 if state == "THRESHOLD" else 1)
-    fallen_count = int(round(ego * 10)) if state != "QUESTION_PROMPT" else 0
+    canopy_opacity = 0.70 if state != "QUESTION_PROMPT" else 0.62
+    fallen_count = int(round(ego * 6)) if state in {"ASYLUM", "THRESHOLD"} else 0
 
-    fallen_svg = ""
-    for i in range(fallen_count):
-        x = 44 + (i * 16) % 148
-        y = 214 + ((i * 9) % 18)
-        fallen_svg += (
-            f'<ellipse cx="{x}" cy="{y}" rx="5" ry="3" '
-            f'fill="#db7777" opacity="0.70" '
-            f'transform="rotate({i * 17} {x} {y})" />'
-        )
-
-    branch_labels = copy.get("branches", [])[:7]
+    branch_labels = copy.get("branches", [])[:6]
     branch_html = "".join(
-        f'<span style="display:inline-block;margin:3px 5px 0 0;padding:3px 7px;border-radius:999px;background:rgba(255,255,255,0.08);color:#e8e0d0;font-size:11px;">{b}</span>'
+        f'<span style="display:inline-block;margin:3px 5px 0 0;padding:4px 8px;border-radius:999px;background:#fff8ea;border:1px solid #ead7b5;color:#4f5f43;font-size:11px;">{b}</span>'
         for b in branch_labels
     )
     band_labels = [
@@ -2181,81 +2147,109 @@ def render_pulse_tree(
         ("SANCTUARY", "Sanctuary"),
     ]
     band_html = "".join(
-        f'<span style="display:inline-block;margin:0 4px 4px 0;padding:4px 8px;border-radius:999px;border:1px solid {visual_band["color"] if key == visual_band["band"] else "rgba(255,255,255,0.12)"};background:{visual_band["color"] if key == visual_band["band"] else "rgba(255,255,255,0.05)"};color:{"#0b1020" if key == visual_band["band"] else "#aeb7c6"};font-size:11px;font-weight:{"700" if key == visual_band["band"] else "500"};">{label}</span>'
+        f'<span style="display:inline-block;margin:0 5px 6px 0;padding:5px 9px;border-radius:999px;border:1px solid {visual_band["color"] if key == visual_band["band"] else "#ead7b5"};background:{visual_band["color"] if key == visual_band["band"] else "#fff8ea"};color:{"#1f2d22" if key == visual_band["band"] else "#6b7280"};font-size:11px;font-weight:{"800" if key == visual_band["band"] else "600"};">{label}</span>'
         for key, label in band_labels
     )
+
+    fallen_svg = ""
+    for i in range(fallen_count):
+        x = 58 + (i * 22) % 146
+        y = 225 + ((i * 7) % 12)
+        fallen_svg += (
+            f'<ellipse cx="{x}" cy="{y}" rx="6" ry="3" '
+            f'fill="#db7777" opacity="0.55" transform="rotate({i * 19} {x} {y})" />'
+        )
+
+    # Visual-only root/trunk/canopy captions inside the SVG.
+    canopy_label = visual_band["label"]
+    canopy_summary = visual_band["summary"]
 
     svg_html = f"""
     <div style="
         box-sizing:border-box;
-        border:1px solid rgba(212,184,138,0.25);
-        background:rgba(255,255,255,0.055);
+        border:1px solid rgba(143,105,55,0.22);
+        background:linear-gradient(180deg,#fffaf0 0%,#f7eedb 100%);
         border-radius:18px;
-        padding:16px;
+        padding:16px 16px 14px 16px;
         margin:0;
         font-family:Inter, Arial, sans-serif;
-        color:#e8e0d0;
+        color:#203040;
         width:100%;
     ">
-        <div style="font-family:Georgia,serif;color:#d4b88a;font-size:22px;font-weight:700;margin-bottom:6px;">
+        <div style="font-family:Georgia,serif;color:#284f2c;font-size:22px;font-weight:800;margin-bottom:6px;">
             🌳 {title}
         </div>
-        <div style="color:#aeb7c6;font-size:13px;margin-bottom:8px;">
+        <div style="color:#526071;font-size:13px;margin-bottom:10px;line-height:1.45;">
             Mode: <strong>{mode}</strong>
             · State: <strong style="color:{leaf_color};">{state}</strong>
             · Band: <strong style="color:{visual_band['color']};">{visual_band['label']}</strong>
-            · {copy.get('score_label', 'Visual tree score')} {score:.2f}
+            · {copy.get('score_label', 'Visual pressure signal')} {score:.2f}
             · Alignment {alignment:.2f}
             · Ego {ego:.2f}
         </div>
-        <div style="color:#e8e0d0;font-size:13px;line-height:1.45;margin-bottom:10px;">
+        <div style="color:#203040;font-size:13px;line-height:1.45;margin-bottom:12px;">
             <strong>{copy.get('headline', state)}</strong> — {copy.get('caption', '')}
         </div>
-        <div style="border:1px solid rgba(255,255,255,0.10);background:rgba(255,255,255,0.045);border-radius:12px;padding:9px 10px;margin-bottom:10px;">
-            <div style="color:#e8e0d0;font-size:12px;margin-bottom:6px;">
-                <strong>Visual review band:</strong> {visual_band['label']} — {visual_band['summary']}
+        <div style="border:1px solid #ead7b5;background:#fffdf7;border-radius:12px;padding:10px 11px;margin-bottom:12px;">
+            <div style="color:#203040;font-size:12px;margin-bottom:7px;">
+                <strong>Review band:</strong> {visual_band['label']} — {visual_band['summary']}
             </div>
             <div>{band_html}</div>
-            <div style="height:8px;border-radius:999px;background:linear-gradient(90deg,#db7777 0%,#d8894d 32%,#e5c36b 50%,#b6c978 68%,#8fbc8f 100%);position:relative;margin-top:4px;">
-                <span style="position:absolute;left:calc({visual_band['position']}% - 5px);top:-4px;width:14px;height:14px;border-radius:999px;background:{visual_band['color']};border:2px solid #0b1020;display:block;"></span>
+            <div style="height:10px;border-radius:999px;background:linear-gradient(90deg,#db7777 0%,#d8894d 32%,#e5c36b 50%,#b6c978 68%,#8fbc8f 100%);position:relative;margin-top:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);">
+                <span style="position:absolute;left:calc({visual_band['position']}% - 7px);top:-5px;width:17px;height:17px;border-radius:999px;background:{visual_band['color']};border:2px solid #203040;display:block;"></span>
             </div>
         </div>
-        <div style="color:#aeb7c6;font-size:12px;line-height:1.5;margin-bottom:10px;">
+        <div style="color:#425466;font-size:12px;line-height:1.5;margin-bottom:12px;">
             Root: <strong>{copy.get('root', 'Human review')}</strong> · Trunk: <strong>{copy.get('trunk', 'Evidence + accountability')}</strong><br/>
             {branch_html}
         </div>
 
-        <svg width="100%" height="250" viewBox="0 0 260 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ALETHEIA explanatory tree visual">
-            <rect x="0" y="0" width="260" height="250" rx="18" fill="#0b1020"/>
-            <ellipse cx="130" cy="221" rx="92" ry="14" fill="rgba(212,184,138,0.16)"/>
-            <!-- Patch 71.6: central glow/blob intentionally removed; canopy leaves provide the visual state. -->
+        <svg width="100%" height="310" viewBox="0 0 520 310" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ALETHEIA protocol tree visual: root human review, trunk evidence and accountability, canopy current review band">
+            <rect x="0" y="0" width="520" height="310" rx="18" fill="#fffaf0"/>
+            <rect x="16" y="16" width="488" height="278" rx="16" fill="#fffdf7" stroke="#ead7b5"/>
 
-            <path d="M124 214 C126 178, 123 145, 118 116 C132 144, 139 176, 137 214 Z" fill="#8b5e3c"/>
-            <path d="M128 148 C110 129, 94 105, 80 79" stroke="#8b5e3c" stroke-width="9" stroke-linecap="round" fill="none"/>
-            <path d="M132 145 C153 124, 171 96, 188 63" stroke="#8b5e3c" stroke-width="9" stroke-linecap="round" fill="none"/>
-            <path d="M128 130 C132 104, 133 81, 130 50" stroke="#8b5e3c" stroke-width="8" stroke-linecap="round" fill="none"/>
-            <path d="M121 137 C104 126, 96 111, 93 96" stroke="#8b5e3c" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.92"/>
-            <path d="M136 133 C151 119, 159 104, 162 91" stroke="#8b5e3c" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.92"/>
+            <!-- Ground / root system: human review foundation -->
+            <ellipse cx="260" cy="264" rx="160" ry="16" fill="#ead7b5" opacity="0.55"/>
+            <path d="M260 241 C238 254 211 261 178 268" stroke="#8b5e3c" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.75"/>
+            <path d="M260 241 C283 254 314 263 354 270" stroke="#8b5e3c" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.75"/>
+            <path d="M258 245 C250 257 242 268 231 279" stroke="#8b5e3c" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.62"/>
+            <path d="M263 245 C272 257 285 269 300 280" stroke="#8b5e3c" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.62"/>
+            <text x="260" y="292" text-anchor="middle" font-size="12" font-family="Inter, Arial" fill="#425466">ROOT · human review</text>
 
-            <ellipse cx="130" cy="{104 + canopy_y_offset}" rx="{46 * canopy_scale:.0f}" ry="{34 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{canopy_opacity:.2f}"/>
-            <ellipse cx="100" cy="{110 + canopy_y_offset}" rx="{30 * canopy_scale:.0f}" ry="{23 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.18, canopy_opacity - 0.09):.2f}"/>
-            <ellipse cx="160" cy="{108 + canopy_y_offset}" rx="{31 * canopy_scale:.0f}" ry="{24 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.18, canopy_opacity - 0.09):.2f}"/>
-            <ellipse cx="113" cy="{82 + canopy_y_offset}" rx="{25 * canopy_scale:.0f}" ry="{21 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.16, canopy_opacity - 0.12):.2f}"/>
-            <ellipse cx="149" cy="{82 + canopy_y_offset}" rx="{25 * canopy_scale:.0f}" ry="{21 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.16, canopy_opacity - 0.12):.2f}"/>
-            <ellipse cx="130" cy="{130 + canopy_y_offset + canopy_sag}" rx="{37 * canopy_scale:.0f}" ry="{25 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.14, canopy_opacity - 0.16):.2f}"/>
-            <ellipse cx="83" cy="{119 + canopy_y_offset + canopy_sag}" rx="{20 * canopy_scale:.0f}" ry="{16 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.14, canopy_opacity - 0.20):.2f}"/>
-            <ellipse cx="177" cy="{118 + canopy_y_offset + canopy_sag}" rx="{20 * canopy_scale:.0f}" ry="{16 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.14, canopy_opacity - 0.20):.2f}"/>
-            <ellipse cx="130" cy="{101 + canopy_y_offset}" rx="{24 * canopy_scale:.0f}" ry="{20 * canopy_scale:.0f}" fill="{leaf_color}" opacity="{max(0.16, canopy_opacity - 0.10):.2f}"/>
+            <!-- Trunk: evidence + accountability -->
+            <path d="M246 250 C250 214 251 175 244 137 C262 176 274 214 274 250 Z" fill="#8b5e3c"/>
+            <path d="M257 150 C229 127 205 96 187 64" stroke="#8b5e3c" stroke-width="11" stroke-linecap="round" fill="none"/>
+            <path d="M263 148 C295 124 320 92 340 58" stroke="#8b5e3c" stroke-width="11" stroke-linecap="round" fill="none"/>
+            <path d="M260 135 C263 104 263 79 260 46" stroke="#8b5e3c" stroke-width="9" stroke-linecap="round" fill="none"/>
+            <text x="360" y="194" font-size="12" font-family="Inter, Arial" fill="#425466">TRUNK · evidence + accountability</text>
+            <path d="M304 190 L350 190" stroke="#d4b88a" stroke-width="2" stroke-dasharray="4 4"/>
+
+            <!-- Canopy: current review band -->
+            <ellipse cx="260" cy="94" rx="86" ry="56" fill="{leaf_color}" opacity="{canopy_opacity}"/>
+            <ellipse cx="202" cy="112" rx="60" ry="40" fill="{leaf_color}" opacity="{max(0.48, canopy_opacity - 0.10):.2f}"/>
+            <ellipse cx="319" cy="111" rx="62" ry="42" fill="{leaf_color}" opacity="{max(0.48, canopy_opacity - 0.10):.2f}"/>
+            <ellipse cx="225" cy="66" rx="52" ry="39" fill="{leaf_color}" opacity="{max(0.44, canopy_opacity - 0.14):.2f}"/>
+            <ellipse cx="295" cy="66" rx="52" ry="39" fill="{leaf_color}" opacity="{max(0.44, canopy_opacity - 0.14):.2f}"/>
+            <ellipse cx="260" cy="126" rx="72" ry="41" fill="{leaf_color}" opacity="{max(0.42, canopy_opacity - 0.18):.2f}"/>
+            <ellipse cx="260" cy="95" rx="47" ry="34" fill="#fffdf7" opacity="0.18"/>
+            <text x="260" y="88" text-anchor="middle" font-size="18" font-family="Georgia, serif" font-weight="700" fill="#203040">{canopy_label}</text>
+            <text x="260" y="108" text-anchor="middle" font-size="12" font-family="Inter, Arial" fill="#203040">{canopy_summary}</text>
+
+            <!-- Explicit taxonomy rail inside the visual -->
+            <text x="28" y="32" font-size="11" font-family="Inter, Arial" fill="#6b7280">ASYLUM</text>
+            <text x="421" y="32" font-size="11" font-family="Inter, Arial" fill="#6b7280">SANCTUARY</text>
+            <line x1="82" y1="28" x2="412" y2="28" stroke="#d4b88a" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="{82 + (visual_band['position'] / 100) * 330:.1f}" cy="28" r="8" fill="{visual_band['color']}" stroke="#203040" stroke-width="2"/>
 
             {fallen_svg}
         </svg>
-        <div class="{TREE_VISUAL_CAPTION_CLASS}" style="text-align:center;color:#aeb7c6;font-size:11px;line-height:1.45;margin-top:12px;">
-            Visual tree and review band are explanatory; receipt integrity remains the protocol metric.
+        <div class="{TREE_VISUAL_CAPTION_CLASS}" style="text-align:center;color:#526071;font-size:11px;line-height:1.45;margin-top:12px;">
+            Visual tree and review band are explanatory. They do not change receipt integrity, protocol metrics, or human-review requirements.
         </div>
     </div>
     """
 
-    components.html(svg_html, height=448, scrolling=False)
+    components.html(svg_html, height=568, scrolling=False)
 
 def build_features_from_scan(scan: dict) -> dict:
     return {
