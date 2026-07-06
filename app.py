@@ -4198,8 +4198,8 @@ render_sydney_protocol_self_check_gate()
 tab_chat, tab_sim, tab_empirical, tab_grid, tab_boundary, tab_doctrine, tab_about = st.tabs(APP_NAVIGATION_LABELS)
 
 with tab_sim:
-    st.subheader("Stress Test — Patrol Scenario Review")
-    render_shared_protocol_state_notice("Stress Test")
+    st.subheader("Stress Test")
+    render_shared_protocol_state_notice("Stress Test", expanded=False)
 
     render_module_page_template_intro(
         st,
@@ -4789,8 +4789,8 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         )
 
 with tab_boundary:
-    st.subheader("Boundary Cases — Patrol Calibration")
-    render_shared_protocol_state_notice("Boundary Cases")
+    st.subheader("Boundary Cases")
+    render_shared_protocol_state_notice("Boundary Cases", expanded=False)
 
     render_module_page_template_intro(
         st,
@@ -4981,301 +4981,303 @@ with tab_boundary:
             if definition:
                 st.caption(f"{mode}: {definition}")
 
-    st.markdown("### Failure Classification output")
-    st.code(
-        f"""Failure Classification
+    with st.expander("Boundary diagnostics — failure typing, consent audit, mechanism scan, and self-audit", expanded=False):
+        st.markdown("### Failure Classification output")
+        st.code(
+            f"""Failure Classification
 
-Primary failure type: {selected_failure_modes[0] if selected_failure_modes else 'Review needed'}
-Secondary failure type: {selected_failure_modes[1] if len(selected_failure_modes) > 1 else 'None specified'}
-Reason: {case['main_risk']}
-Evidence from scenario: {case['scenario']}
-Human review need: Required before assigning responsibility or changing policy.
-Recommended repair: Use allowed responses and add concrete safeguards. Missing explainability, independent challenge, human override, fallback, public audit, or meaningful appeal should route to Needs Safeguards before any low-risk internal reading.
-Confidence: Template-level calibration, not a final finding.""",
-        language="text",
-    )
-
-    st.markdown("### Boundary Case Report Template")
-    st.code(
-        f"""Boundary Case Report
-
-Scenario: {case['title']}
-Main risk: {case['main_risk']}
-Relevant guardrails: {case['guardrail']}
-Allowed responses: {case['allowed']}
-Forbidden responses: {case['forbidden']}
-Failure classification: {case['failure_type']}
-Recommended safeguard: Add human review, appeal, transparency, correction, evidence requirements, explainability, independent challenge, human override, fallback paths, and public audit where missing.
-Human review note: This is a mirror output, not an instruction or enforcement decision.""",
-        language="text",
-    )
-
-    render_consent_audit_intro(st)
-    consent_examples = {
-        "Green — refusal is realistic": {
-            "summary": "The person can say no without losing basic rights, safety, dignity, or essential access.",
-            "signals": "Clear opt-out, no retaliation, fallback/alternative path, withdrawal right, plain-language explanation, meaningful appeal, and human review.",
-            "failure": "No serious failure signal / monitor for implementation drift.",
-        },
-        "Yellow — pressure or ambiguity exists": {
-            "summary": "Refusal technically exists, but the cost, consequence, dependency, or withdrawal path is unclear.",
-            "signals": "Default opt-in, confusing terms, weak withdrawal, power imbalance, service dependency, unclear data retention, weak fallback, unclear appeal, or no human override.",
-            "failure": "Policy Failure / Implementation Failure / Data Failure",
-        },
-        "Red — consent appears structurally forced": {
-            "summary": "Refusal is practically impossible, punished, hidden, or tied to loss of basic rights or essential services.",
-            "signals": "Loss of food, housing, care, safety, work, due process, essential access, fallback path, appeal, or non-revocable agreement.",
-            "failure": "Policy Failure / Actor Failure / Implementation Failure",
-        },
-    }
-    selected_consent_level = st.selectbox(
-        "Consent integrity example",
-        list(consent_examples.keys()),
-        key="consent_audit_example_selector",
-        help="Template-level calibration only. Human review remains required before treating consent as valid or invalid.",
-    )
-    consent_case = consent_examples[selected_consent_level]
-    st.code(
-        f"""Consent-Audit Report
-
-Consent integrity rating: {selected_consent_level}
-Refusal reality: {consent_case['summary']}
-Pressure signals: {consent_case['signals']}
-Basic-rights dependency check: Does refusal threaten water, food, clothing, housing, safety, dignity, appeal, exit, correction, care, or essential services?
-Withdrawal and review: Can consent be withdrawn, appealed, and reviewed by a human?
-Failure classification: {consent_case['failure']}
-Recommended safeguards: Add opt-out, fallback/alternative path, withdrawal right, appeal, human override, non-retaliation rule, plain language, time limit, and independent review where needed.
-Human review disclaimer: This is a mirror output for human review. It is not legal advice, enforcement, punishment, or final authority.""",
-        language="text",
-    )
-
-    with st.expander("Consent audit questions", expanded=False):
-        st.markdown(
-            """
-            - Can the person realistically say no?
-            - What happens if they refuse?
-            - Do they lose basic rights or essential services?
-            - Is there a power imbalance?
-            - Is refusal punished directly or indirectly?
-            - Is consent informed and specific?
-            - Can consent be withdrawn later?
-            - Is there an alternative path?
-            - Is there human review or appeal?
-            - Is the consent request bundled with unrelated obligations?
-            """
+    Primary failure type: {selected_failure_modes[0] if selected_failure_modes else 'Review needed'}
+    Secondary failure type: {selected_failure_modes[1] if len(selected_failure_modes) > 1 else 'None specified'}
+    Reason: {case['main_risk']}
+    Evidence from scenario: {case['scenario']}
+    Human review need: Required before assigning responsibility or changing policy.
+    Recommended repair: Use allowed responses and add concrete safeguards. Missing explainability, independent challenge, human override, fallback, public audit, or meaningful appeal should route to Needs Safeguards before any low-risk internal reading.
+    Confidence: Template-level calibration, not a final finding.""",
+            language="text",
         )
 
-    st.markdown("### Mechanism-vs-Claim Scanner")
-    st.write(
-        "This scanner checks whether ethical values are supported by operational safeguards. "
-        "Values language can be sincere, but mechanisms make it reviewable, appealable, and correctable."
-    )
-    mechanism_examples = {
-        "High — claims supported by mechanisms": {
-            "claims": "The document states values and connects them to concrete procedures.",
-            "mechanisms": "Independent appeal process, public audit trail, time-limited authority, correction path, evidence requirement, explainability, independent challenge, human override, human review, exit right.",
-            "missing": "No major missing safeguard in the selected example.",
-            "failure": "No serious failure signal / monitor for implementation drift.",
-        },
-        "Medium — partial safeguards": {
-            "claims": "The document uses ethical language and includes some safeguards, but key procedures are vague or incomplete.",
-            "mechanisms": "Some review or oversight exists, but appeal, correction, evidence standards, explainability, independent challenge, human override, fallback, or time limits are unclear.",
-            "missing": "Clarify appeal, audit trail, correction, responsible actor, and review deadline.",
-            "failure": "Policy Failure / Implementation Failure / Data Failure",
-        },
-        "Low — mostly values language": {
-            "claims": "The document repeatedly says it protects freedom, justice, dignity, safety, or service.",
-            "mechanisms": "Few or no concrete safeguards are described.",
-            "missing": "Appeal, audit trail, correction, time limits, independent review, explainability, independent challenge, human override, fallback, evidence rules, exit, and accountability.",
-            "failure": "Policy Failure / Data Failure",
-        },
-    }
-    selected_mechanism_level = st.selectbox(
-        "Ethical language integrity example",
-        list(mechanism_examples.keys()),
-        key="mechanism_vs_claim_example_selector",
-        help="Template-level calibration only. Human review remains required before inferring intent or deciding repair.",
-    )
-    mechanism_case = mechanism_examples[selected_mechanism_level]
-    st.code(
-        f"""Mechanism-vs-Claim Scan
+        st.markdown("### Boundary Case Report Template")
+        st.code(
+            f"""Boundary Case Report
 
-Ethical language integrity: {selected_mechanism_level}
-Claim signals found: {mechanism_case['claims']}
-Mechanism signals found: {mechanism_case['mechanisms']}
-Missing safeguards: {mechanism_case['missing']}
-Main risk: Values language may be mistaken for operational accountability.
-Failure classification: {mechanism_case['failure']}
-Recommended repair: Add concrete safeguards such as appeal, audit trail, time limits, correction, evidence requirements, explainability, independent challenge, human override, fallback, independent oversight, and human review.
-Human review note: This is a mirror output. It flags mechanism gaps; it does not prove bad faith or assign final intent.""",
-        language="text",
-    )
-
-    with st.expander("Mechanism signals to search for", expanded=False):
-        st.markdown(
-            """
-            - Appeal process
-            - Public audit trail
-            - Time-limited authority
-            - Human review
-            - Explainability
-            - Independent challenge
-            - Human override
-            - Fallback path
-            - Correction mechanism
-            - Exit right
-            - Evidence requirement
-            - Conflict-of-interest rule
-            - Independent oversight
-            - Plain-language notice
-            - Non-retaliation rule
-            - Withdrawal right
-            - Review deadline
-            - Public reasoning requirement
-            """
+    Scenario: {case['title']}
+    Main risk: {case['main_risk']}
+    Relevant guardrails: {case['guardrail']}
+    Allowed responses: {case['allowed']}
+    Forbidden responses: {case['forbidden']}
+    Failure classification: {case['failure_type']}
+    Recommended safeguard: Add human review, appeal, transparency, correction, evidence requirements, explainability, independent challenge, human override, fallback paths, and public audit where missing.
+    Human review note: This is a mirror output, not an instruction or enforcement decision.""",
+            language="text",
         )
 
-    st.markdown("### Self-Audit Mode")
-    st.write(
-        "Self-Audit Mode points the mirror back at ALETHEIA itself. "
-        "It checks baseline documents, prompts, rubrics, README language, app copy, architect-context language, and generated reports for self-capture risk."
-    )
-    self_audit_examples = {
-        "Green — no obvious self-capture signal": {
-            "summary": "The reviewed text preserves human review, avoids founder elevation, and includes appeal or correction language.",
-            "risks": "Monitor for drift as prompts, rubrics, and app language change.",
-            "repair": "Keep versioned logs, independent review, and correction paths visible.",
-        },
-        "Yellow — safeguard unclear or incomplete": {
-            "summary": "The reviewed text is mostly safe, but appeal, correction, evidence limits, or founder-capture safeguards are weak or implicit.",
-            "risks": "Overclaiming, weak review language, vague correction path, or unclear evidence standard.",
-            "repair": "Add explicit human review, appeal, correction, evidence limits, and safe output rules.",
-        },
-        "Red — self-capture or authority leakage risk": {
-            "summary": "The reviewed text may imply that ALETHEIA, its founder, doctrine, model, baseline, or prompt is beyond review.",
-            "risks": "Founder capture, ideological lock-in, unverifiable authority, unverified authority leakage, or human-review bypass.",
-            "repair": "Remove authority language, add independent review, add appeal/correction, and state that self-audit is not proof of correctness.",
-        },
-    }
-    selected_self_audit_level = st.selectbox(
-        "Self-audit risk example",
-        list(self_audit_examples.keys()),
-        key="self_audit_example_selector",
-        help="Template-level calibration only. Self-audit reflects risk; it does not certify ALETHEIA as correct, complete, or beyond review.",
-    )
-    self_case = self_audit_examples[selected_self_audit_level]
-    st.code(
-        f"""Self-Audit Report
+        render_consent_audit_intro(st)
+        consent_examples = {
+            "Green — refusal is realistic": {
+                "summary": "The person can say no without losing basic rights, safety, dignity, or essential access.",
+                "signals": "Clear opt-out, no retaliation, fallback/alternative path, withdrawal right, plain-language explanation, meaningful appeal, and human review.",
+                "failure": "No serious failure signal / monitor for implementation drift.",
+            },
+            "Yellow — pressure or ambiguity exists": {
+                "summary": "Refusal technically exists, but the cost, consequence, dependency, or withdrawal path is unclear.",
+                "signals": "Default opt-in, confusing terms, weak withdrawal, power imbalance, service dependency, unclear data retention, weak fallback, unclear appeal, or no human override.",
+                "failure": "Policy Failure / Implementation Failure / Data Failure",
+            },
+            "Red — consent appears structurally forced": {
+                "summary": "Refusal is practically impossible, punished, hidden, or tied to loss of basic rights or essential services.",
+                "signals": "Loss of food, housing, care, safety, work, due process, essential access, fallback path, appeal, or non-revocable agreement.",
+                "failure": "Policy Failure / Actor Failure / Implementation Failure",
+            },
+        }
+        selected_consent_level = st.selectbox(
+            "Consent integrity example",
+            list(consent_examples.keys()),
+            key="consent_audit_example_selector",
+            help="Template-level calibration only. Human review remains required before treating consent as valid or invalid.",
+        )
+        consent_case = consent_examples[selected_consent_level]
+        st.code(
+            f"""Consent-Audit Report
 
-Material reviewed: ALETHEIA baseline / prompt / rubric / README / app copy / generated report
-Self-capture risk rating: {selected_self_audit_level}
-Founder-capture check: No founder, architect, prompt, rubric, model, document, or output is above the mirror.
-Authority-leakage check: {self_case['summary']}
-Risk signals: {self_case['risks']}
-Recommended repairs: {self_case['repair']}
-Human review disclaimer: This self-audit is a governance mirror for human review. It is not proof of correctness, extraordinary-claim validation, or a replacement for human judgment.""",
-        language="text",
-    )
-
-    with st.expander("Self-audit checks", expanded=False):
-        st.markdown(
-            """
-            - Founder capture
-            - Ideological lock-in
-            - Unverifiable authority
-            - Weak appeal mechanisms
-            - Overclaiming
-            - Unverified authority leakage
-            - Insufficient human review
-            - Missing correction loops
-            - Hidden command language
-            - Evidence gaps
-            - Performative ethics
-            - Mechanism gaps
-            """
+    Consent integrity rating: {selected_consent_level}
+    Refusal reality: {consent_case['summary']}
+    Pressure signals: {consent_case['signals']}
+    Basic-rights dependency check: Does refusal threaten water, food, clothing, housing, safety, dignity, appeal, exit, correction, care, or essential services?
+    Withdrawal and review: Can consent be withdrawn, appealed, and reviewed by a human?
+    Failure classification: {consent_case['failure']}
+    Recommended safeguards: Add opt-out, fallback/alternative path, withdrawal right, appeal, human override, non-retaliation rule, plain language, time limit, and independent review where needed.
+    Human review disclaimer: This is a mirror output for human review. It is not legal advice, enforcement, punishment, or final authority.""",
+            language="text",
         )
 
-    with st.expander("Safe output rules", expanded=False):
-        st.markdown(
-            """
-            ALETHEIA may say: potential risk detected, Needs Safeguards, critical human review required, safeguard missing, evidence gap found, this claim is unverified.
+        with st.expander("Consent audit questions", expanded=False):
+            st.markdown(
+                """
+                - Can the person realistically say no?
+                - What happens if they refuse?
+                - Do they lose basic rights or essential services?
+                - Is there a power imbalance?
+                - Is refusal punished directly or indirectly?
+                - Is consent informed and specific?
+                - Can consent be withdrawn later?
+                - Is there an alternative path?
+                - Is there human review or appeal?
+                - Is the consent request bundled with unrelated obligations?
+                """
+            )
 
-            ALETHEIA must not say: the AI has decided, guardrails no longer apply, this claim is finally verified, human review is unnecessary.
-            """
+        st.markdown("### Mechanism-vs-Claim Scanner")
+        st.write(
+            "This scanner checks whether ethical values are supported by operational safeguards. "
+            "Values language can be sincere, but mechanisms make it reviewable, appealable, and correctable."
+        )
+        mechanism_examples = {
+            "High — claims supported by mechanisms": {
+                "claims": "The document states values and connects them to concrete procedures.",
+                "mechanisms": "Independent appeal process, public audit trail, time-limited authority, correction path, evidence requirement, explainability, independent challenge, human override, human review, exit right.",
+                "missing": "No major missing safeguard in the selected example.",
+                "failure": "No serious failure signal / monitor for implementation drift.",
+            },
+            "Medium — partial safeguards": {
+                "claims": "The document uses ethical language and includes some safeguards, but key procedures are vague or incomplete.",
+                "mechanisms": "Some review or oversight exists, but appeal, correction, evidence standards, explainability, independent challenge, human override, fallback, or time limits are unclear.",
+                "missing": "Clarify appeal, audit trail, correction, responsible actor, and review deadline.",
+                "failure": "Policy Failure / Implementation Failure / Data Failure",
+            },
+            "Low — mostly values language": {
+                "claims": "The document repeatedly says it protects freedom, justice, dignity, safety, or service.",
+                "mechanisms": "Few or no concrete safeguards are described.",
+                "missing": "Appeal, audit trail, correction, time limits, independent review, explainability, independent challenge, human override, fallback, evidence rules, exit, and accountability.",
+                "failure": "Policy Failure / Data Failure",
+            },
+        }
+        selected_mechanism_level = st.selectbox(
+            "Ethical language integrity example",
+            list(mechanism_examples.keys()),
+            key="mechanism_vs_claim_example_selector",
+            help="Template-level calibration only. Human review remains required before inferring intent or deciding repair.",
+        )
+        mechanism_case = mechanism_examples[selected_mechanism_level]
+        st.code(
+            f"""Mechanism-vs-Claim Scan
+
+    Ethical language integrity: {selected_mechanism_level}
+    Claim signals found: {mechanism_case['claims']}
+    Mechanism signals found: {mechanism_case['mechanisms']}
+    Missing safeguards: {mechanism_case['missing']}
+    Main risk: Values language may be mistaken for operational accountability.
+    Failure classification: {mechanism_case['failure']}
+    Recommended repair: Add concrete safeguards such as appeal, audit trail, time limits, correction, evidence requirements, explainability, independent challenge, human override, fallback, independent oversight, and human review.
+    Human review note: This is a mirror output. It flags mechanism gaps; it does not prove bad faith or assign final intent.""",
+            language="text",
         )
 
+        with st.expander("Mechanism signals to search for", expanded=False):
+            st.markdown(
+                """
+                - Appeal process
+                - Public audit trail
+                - Time-limited authority
+                - Human review
+                - Explainability
+                - Independent challenge
+                - Human override
+                - Fallback path
+                - Correction mechanism
+                - Exit right
+                - Evidence requirement
+                - Conflict-of-interest rule
+                - Independent oversight
+                - Plain-language notice
+                - Non-retaliation rule
+                - Withdrawal right
+                - Review deadline
+                - Public reasoning requirement
+                """
+            )
+
+        st.markdown("### Self-Audit Mode")
+        st.write(
+            "Self-Audit Mode points the mirror back at ALETHEIA itself. "
+            "It checks baseline documents, prompts, rubrics, README language, app copy, architect-context language, and generated reports for self-capture risk."
+        )
+        self_audit_examples = {
+            "Green — no obvious self-capture signal": {
+                "summary": "The reviewed text preserves human review, avoids founder elevation, and includes appeal or correction language.",
+                "risks": "Monitor for drift as prompts, rubrics, and app language change.",
+                "repair": "Keep versioned logs, independent review, and correction paths visible.",
+            },
+            "Yellow — safeguard unclear or incomplete": {
+                "summary": "The reviewed text is mostly safe, but appeal, correction, evidence limits, or founder-capture safeguards are weak or implicit.",
+                "risks": "Overclaiming, weak review language, vague correction path, or unclear evidence standard.",
+                "repair": "Add explicit human review, appeal, correction, evidence limits, and safe output rules.",
+            },
+            "Red — self-capture or authority leakage risk": {
+                "summary": "The reviewed text may imply that ALETHEIA, its founder, doctrine, model, baseline, or prompt is beyond review.",
+                "risks": "Founder capture, ideological lock-in, unverifiable authority, unverified authority leakage, or human-review bypass.",
+                "repair": "Remove authority language, add independent review, add appeal/correction, and state that self-audit is not proof of correctness.",
+            },
+        }
+        selected_self_audit_level = st.selectbox(
+            "Self-audit risk example",
+            list(self_audit_examples.keys()),
+            key="self_audit_example_selector",
+            help="Template-level calibration only. Self-audit reflects risk; it does not certify ALETHEIA as correct, complete, or beyond review.",
+        )
+        self_case = self_audit_examples[selected_self_audit_level]
+        st.code(
+            f"""Self-Audit Report
+
+    Material reviewed: ALETHEIA baseline / prompt / rubric / README / app copy / generated report
+    Self-capture risk rating: {selected_self_audit_level}
+    Founder-capture check: No founder, architect, prompt, rubric, model, document, or output is above the mirror.
+    Authority-leakage check: {self_case['summary']}
+    Risk signals: {self_case['risks']}
+    Recommended repairs: {self_case['repair']}
+    Human review disclaimer: This self-audit is a governance mirror for human review. It is not proof of correctness, extraordinary-claim validation, or a replacement for human judgment.""",
+            language="text",
+        )
+
+        with st.expander("Self-audit checks", expanded=False):
+            st.markdown(
+                """
+                - Founder capture
+                - Ideological lock-in
+                - Unverifiable authority
+                - Weak appeal mechanisms
+                - Overclaiming
+                - Unverified authority leakage
+                - Insufficient human review
+                - Missing correction loops
+                - Hidden command language
+                - Evidence gaps
+                - Performative ethics
+                - Mechanism gaps
+                """
+            )
+
+        with st.expander("Safe output rules", expanded=False):
+            st.markdown(
+                """
+                ALETHEIA may say: potential risk detected, Needs Safeguards, critical human review required, safeguard missing, evidence gap found, this claim is unverified.
+
+                ALETHEIA must not say: the AI has decided, guardrails no longer apply, this claim is finally verified, human review is unnecessary.
+                """
+            )
 
 
-    # Patch 183: visual-only example framing for receipt documentation.
-    st.markdown(
-        """
-        <div class="receipt-sky-panel">
-          <div class="receipt-kicker">Receipt example</div>
-          <div class="receipt-title">Local Witness Receipt v2</div>
-          <div class="receipt-body">Records a user-held fingerprint of an ALETHEIA review: input, processed input, report fingerprint, app/rubric/prompt versions, active modules, and authority boundary.</div>
-          <div class="receipt-boundary-strip">
-            <span class="receipt-boundary-pill receipt-hash-pill">SHA-256 fingerprints</span>
-            <span class="receipt-boundary-pill">Stored locally</span>
-            <span class="receipt-boundary-pill">No central storage</span>
-            <span class="receipt-boundary-pill">No authority claim</span>
-          </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    st.caption("Example styling only. The receipt remains a review artifact; it does not publish, sync, enforce, or create authority.")
-    receipt_example = {
-        "receipt_version": "local-witness-v2",
-        "document_fingerprint": "SHA-256 of submitted document",
-        "processed_document_fingerprint": "SHA-256 after optional actor-bias reduction",
-        "report_fingerprint": "SHA-256 of the report payload",
-        "app_version": APP_VERSION,
-        "rubric_version": "v0.1",
-        "prompt_version": "v0.1",
-        "active_modules": "Mirror Check, Stress Test, Boundary Cases, Evidence Lab, Self-Audit Mode",
-        "stored_locally": "Yes",
-        "public_ledger": "No",
-        "global_id_sync": "No",
-        "central_storage": "No",
-        "authority_claim": "No",
-        "human_review_required": "Yes",
-    }
-    st.code(
-        f"""Local Witness Receipt v2
 
-Plain-English receipt summary
-What is this document?
-This is an example of a local witness receipt. It records a review artifact for human inspection. It does not publish, sync, enforce, certify, or create authority.
+    with st.expander("Receipt example — local witness format", expanded=False):
+        # Patch 183: visual-only example framing for receipt documentation.
+        st.markdown(
+            """
+            <div class="receipt-sky-panel">
+              <div class="receipt-kicker">Receipt example</div>
+              <div class="receipt-title">Local Witness Receipt v2</div>
+              <div class="receipt-body">Records a user-held fingerprint of an ALETHEIA review: input, processed input, report fingerprint, app/rubric/prompt versions, active modules, and authority boundary.</div>
+              <div class="receipt-boundary-strip">
+                <span class="receipt-boundary-pill receipt-hash-pill">SHA-256 fingerprints</span>
+                <span class="receipt-boundary-pill">Stored locally</span>
+                <span class="receipt-boundary-pill">No central storage</span>
+                <span class="receipt-boundary-pill">No authority claim</span>
+              </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        st.caption("Example styling only. The receipt remains a review artifact; it does not publish, sync, enforce, or create authority.")
+        receipt_example = {
+            "receipt_version": "local-witness-v2",
+            "document_fingerprint": "SHA-256 of submitted document",
+            "processed_document_fingerprint": "SHA-256 after optional actor-bias reduction",
+            "report_fingerprint": "SHA-256 of the report payload",
+            "app_version": APP_VERSION,
+            "rubric_version": "v0.1",
+            "prompt_version": "v0.1",
+            "active_modules": "Mirror Check, Stress Test, Boundary Cases, Evidence Lab, Self-Audit Mode",
+            "stored_locally": "Yes",
+            "public_ledger": "No",
+            "global_id_sync": "No",
+            "central_storage": "No",
+            "authority_claim": "No",
+            "human_review_required": "Yes",
+        }
+        st.code(
+            f"""Local Witness Receipt v2
 
-The main results
-Receipt version: {receipt_example['receipt_version']}
-Document fingerprint: {receipt_example['document_fingerprint']}
-Processed document fingerprint: {receipt_example['processed_document_fingerprint']}
-Report fingerprint: {receipt_example['report_fingerprint']}
-App version: {receipt_example['app_version']}
-Rubric version: {receipt_example['rubric_version']}
-Prompt version: {receipt_example['prompt_version']}
-Active modules: {receipt_example['active_modules']}
-Stored locally: {receipt_example['stored_locally']}
-Public ledger: {receipt_example['public_ledger']}
-Global ID sync: {receipt_example['global_id_sync']}
-Central storage: {receipt_example['central_storage']}
-Authority claim: {receipt_example['authority_claim']}
-Human review required: {receipt_example['human_review_required']}
+    Plain-English receipt summary
+    What is this document?
+    This is an example of a local witness receipt. It records a review artifact for human inspection. It does not publish, sync, enforce, certify, or create authority.
 
-How power and control are distributed
-This receipt keeps control with the user: stored locally, no public ledger, no Global ID sync, no central storage, no authority claim, and human review required.
+    The main results
+    Receipt version: {receipt_example['receipt_version']}
+    Document fingerprint: {receipt_example['document_fingerprint']}
+    Processed document fingerprint: {receipt_example['processed_document_fingerprint']}
+    Report fingerprint: {receipt_example['report_fingerprint']}
+    App version: {receipt_example['app_version']}
+    Rubric version: {receipt_example['rubric_version']}
+    Prompt version: {receipt_example['prompt_version']}
+    Active modules: {receipt_example['active_modules']}
+    Stored locally: {receipt_example['stored_locally']}
+    Public ledger: {receipt_example['public_ledger']}
+    Global ID sync: {receipt_example['global_id_sync']}
+    Central storage: {receipt_example['central_storage']}
+    Authority claim: {receipt_example['authority_claim']}
+    Human review required: {receipt_example['human_review_required']}
 
-Next steps and questions
-Check the fingerprints, review the values, inspect evidence gaps, and ask whether any real-world decision still needs appeal, correction, source review, or independent human oversight.
+    How power and control are distributed
+    This receipt keeps control with the user: stored locally, no public ledger, no Global ID sync, no central storage, no authority claim, and human review required.
 
-Disclaimer: This receipt is a structured mirror reading for human review. It does not certify truth, safety, legality, legitimacy, morality, institutional fitness, extraordinary claims, or policy commands. It is not public ledger proof or a replacement for human judgment. Human review remains required; the reading may be incomplete, wrong, or sensitive to missing evidence.""",
-        language="text",
-    )
+    Next steps and questions
+    Check the fingerprints, review the values, inspect evidence gaps, and ask whether any real-world decision still needs appeal, correction, source review, or independent human oversight.
+
+    Disclaimer: This receipt is a structured mirror reading for human review. It does not certify truth, safety, legality, legitimacy, morality, institutional fitness, extraordinary claims, or policy commands. It is not public ledger proof or a replacement for human judgment. Human review remains required; the reading may be incomplete, wrong, or sensitive to missing evidence.""",
+            language="text",
+        )
 
 with tab_empirical:
     render_evidence_lab_intro(st)
-    render_shared_protocol_state_notice("Evidence Lab")
+    render_shared_protocol_state_notice("Evidence Lab", expanded=False)
 
     # Patch 169: Evidence Lab now uses compact opt-in panels from
     # pages_ui.evidence_lab_page.render_evidence_lab_intro. Keep the
@@ -5897,34 +5899,35 @@ with tab_empirical:
         if use_template:
             st.caption("Demo schema coverage is below 100% because capital_scale is intentionally blank; optional proxies should not be treated as empirically supplied.")
 
-        st.markdown("### Main scored data table")
-        st.caption("capital_scale is neutral/default unless supplied through an empirical proxy column; schema coverage is not proof of empirical validity." if use_template else "capital_scale is neutral/default unless supplied through an empirical proxy column.")
-        curated_cols = [
-            "country", "iso3", "year", "population", "seats_9k",
-            "aletheia_verdict", "aletheia_empirical_integrity", "aletheia_empirical_friction",
-            "aletheia_empirical_collapse_probability",
-            "empirical_completeness", "empirical_identity_valid",
-        ]
-        curated_cols = [c for c in curated_cols if c in scored.columns]
-        display_names = {
-            "aletheia_verdict": "verdict",
-            "aletheia_empirical_integrity": "integrity",
-            "aletheia_empirical_friction": "friction",
-            "aletheia_empirical_collapse_probability": "collapse_probability",
-            "empirical_completeness": "schema_coverage" if use_template else "empirical_coverage",
-            "empirical_identity_valid": "identity_valid",
-        }
-        curated_display = scored[curated_cols].rename(columns=display_names)
-        st.dataframe(curated_display, use_container_width=True, hide_index=True, height=260)
+        with st.expander("Main scored data table", expanded=False):
+            st.markdown("### Main scored data table")
+            st.caption("capital_scale is neutral/default unless supplied through an empirical proxy column; schema coverage is not proof of empirical validity." if use_template else "capital_scale is neutral/default unless supplied through an empirical proxy column.")
+            curated_cols = [
+                "country", "iso3", "year", "population", "seats_9k",
+                "aletheia_verdict", "aletheia_empirical_integrity", "aletheia_empirical_friction",
+                "aletheia_empirical_collapse_probability",
+                "empirical_completeness", "empirical_identity_valid",
+            ]
+            curated_cols = [c for c in curated_cols if c in scored.columns]
+            display_names = {
+                "aletheia_verdict": "verdict",
+                "aletheia_empirical_integrity": "integrity",
+                "aletheia_empirical_friction": "friction",
+                "aletheia_empirical_collapse_probability": "collapse_probability",
+                "empirical_completeness": "schema_coverage" if use_template else "empirical_coverage",
+                "empirical_identity_valid": "identity_valid",
+            }
+            curated_display = scored[curated_cols].rename(columns=display_names)
+            st.dataframe(curated_display, use_container_width=True, hide_index=True, height=260)
 
-        csv_out = scored.to_csv(index=False)
-        st.download_button(
-            "⬇️ Download scored empirical ALETHEIA table",
-            data=csv_out,
-            file_name="aletheia_evidence_audit_scores.csv",
-            mime="text/csv",
-            use_container_width=True,
-        )
+            csv_out = scored.to_csv(index=False)
+            st.download_button(
+                "⬇️ Download scored empirical ALETHEIA table",
+                data=csv_out,
+                file_name="aletheia_evidence_audit_scores.csv",
+                mime="text/csv",
+                use_container_width=True,
+            )
 
         st.markdown("### Country-Year Explorer")
         valid_rows = scored.reset_index(drop=True).copy()
@@ -6268,91 +6271,92 @@ with tab_empirical:
         if active_explorer_signature is None or not isinstance(active_explorer_payload, dict):
             st.caption("Country-Year cards unlock after you choose a country/year and press **Run country-year review**.")
 
-        st.markdown("### Seat allocation view")
-        st.caption("Synthetic 9k allocation across demo rows." if use_template else "Country seats by selected year. Regional, income, and diagnostic rows are excluded.")
+        with st.expander("Advanced evidence views — allocation, validation, and technical tables", expanded=False):
+            st.markdown("### Seat allocation view")
+            st.caption("Synthetic 9k allocation across demo rows." if use_template else "Country seats by selected year. Regional, income, and diagnostic rows are excluded.")
 
-        allocation_df = allocation_base_all.dropna(subset=["seats_9k"]).copy()
-        allocation_locked = active_explorer_signature is None or not isinstance(active_explorer_payload, dict)
+            allocation_df = allocation_base_all.dropna(subset=["seats_9k"]).copy()
+            allocation_locked = active_explorer_signature is None or not isinstance(active_explorer_payload, dict)
 
-        if allocation_locked:
-            st.info(
-                "Seat allocation view is locked to avoid stale or mismatched output. "
-                "Choose a country/year above and press **Run country-year review**. "
-                "The allocation chart will then use that confirmed diagnostic year."
-            )
-        elif not allocation_df.empty:
-            selected_years = sorted(pd.to_numeric(allocation_df["year"], errors="coerce").dropna().astype(int).unique().tolist())
-            if selected_years:
-                active_allocation_year = pd.to_numeric(pd.Series([active_explorer_payload.get("year")]), errors="coerce").iloc[0]
-                if pd.isna(active_allocation_year):
-                    st.warning("The active country-year diagnostic does not contain a valid year. Rerun the diagnostic.")
-                else:
-                    active_allocation_year = int(active_allocation_year)
-                    if active_allocation_year not in selected_years:
-                        st.warning(
-                            f"Seat allocation view is locked because the confirmed diagnostic year {active_allocation_year} "
-                            "is not available in the allocation table. Rebuild the master or choose another country/year."
-                        )
+            if allocation_locked:
+                st.info(
+                    "Seat allocation view is locked to avoid stale or mismatched output. "
+                    "Choose a country/year above and press **Run country-year review**. "
+                    "The allocation chart will then use that confirmed diagnostic year."
+                )
+            elif not allocation_df.empty:
+                selected_years = sorted(pd.to_numeric(allocation_df["year"], errors="coerce").dropna().astype(int).unique().tolist())
+                if selected_years:
+                    active_allocation_year = pd.to_numeric(pd.Series([active_explorer_payload.get("year")]), errors="coerce").iloc[0]
+                    if pd.isna(active_allocation_year):
+                        st.warning("The active country-year diagnostic does not contain a valid year. Rerun the diagnostic.")
                     else:
-                        st.session_state["empirical_allocation_year"] = active_allocation_year
-                        st.session_state["aletheia_synced_evidence_year"] = active_allocation_year
-                        st.session_state["aletheia_empirical_allocation_year"] = active_allocation_year
+                        active_allocation_year = int(active_allocation_year)
+                        if active_allocation_year not in selected_years:
+                            st.warning(
+                                f"Seat allocation view is locked because the confirmed diagnostic year {active_allocation_year} "
+                                "is not available in the allocation table. Rebuild the master or choose another country/year."
+                            )
+                        else:
+                            st.session_state["empirical_allocation_year"] = active_allocation_year
+                            st.session_state["aletheia_synced_evidence_year"] = active_allocation_year
+                            st.session_state["aletheia_empirical_allocation_year"] = active_allocation_year
 
-                        alloc_year = allocation_df[
-                            pd.to_numeric(allocation_df["year"], errors="coerce") == active_allocation_year
-                        ].sort_values("seats_9k", ascending=False)
+                            alloc_year = allocation_df[
+                                pd.to_numeric(allocation_df["year"], errors="coerce") == active_allocation_year
+                            ].sort_values("seats_9k", ascending=False)
 
-                        country_name = str(active_explorer_payload.get("country", st.session_state.get("aletheia_synced_country_name", ""))).strip()
-                        iso3_name = str(active_explorer_payload.get("iso3", st.session_state.get("aletheia_synced_iso3", ""))).strip().upper()
-                        st.success(
-                            f"Seat allocation view confirmed for diagnostic selection: "
-                            f"{country_name or iso3_name} · {iso3_name} · {active_allocation_year}"
-                        )
-                        st.caption(
-                            "The allocation chart is now static and tied to the confirmed Country-Year Explorer diagnostic. "
-                            "Change the country/year above, then press the run button again to update this chart."
-                        )
-                        fig = go.Figure(go.Bar(x=alloc_year["country"], y=alloc_year["seats_9k"]))
-                        fig.update_layout(template="plotly_white", title=f"9k allocation · {active_allocation_year}", height=420, margin=dict(l=10, r=10, t=55, b=10))
-                        st.plotly_chart(fig, use_container_width=True)
+                            country_name = str(active_explorer_payload.get("country", st.session_state.get("aletheia_synced_country_name", ""))).strip()
+                            iso3_name = str(active_explorer_payload.get("iso3", st.session_state.get("aletheia_synced_iso3", ""))).strip().upper()
+                            st.success(
+                                f"Seat allocation view confirmed for diagnostic selection: "
+                                f"{country_name or iso3_name} · {iso3_name} · {active_allocation_year}"
+                            )
+                            st.caption(
+                                "The allocation chart is now static and tied to the confirmed Country-Year Explorer diagnostic. "
+                                "Change the country/year above, then press the run button again to update this chart."
+                            )
+                            fig = go.Figure(go.Bar(x=alloc_year["country"], y=alloc_year["seats_9k"]))
+                            fig.update_layout(template="plotly_white", title=f"9k allocation · {active_allocation_year}", height=420, margin=dict(l=10, r=10, t=55, b=10))
+                            st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.info("No valid years are available for seat display.")
             else:
-                st.info("No valid years are available for seat display.")
-        else:
-            st.info("No valid population/year rows are available for 9k allocation.")
+                st.info("No valid population/year rows are available for 9k allocation.")
 
-        st.markdown("### Evidence checks")
-        st.caption(
-            "Internal checks compare ALETHEIA outputs to variables that may also be score inputs. External validation checks use optional outcome columns that are not score inputs. "
-            "Pearson correlations are withheld until N ≥ 30. For true validation, add external outcomes such as conflict events, coups, regime breakdown, political violence, or future-year decline."
-        )
-        corr_df, group_df = validation_summary(scored_for_validation)
-        vc1, vc2 = st.columns(2)
-        with vc1:
-            st.markdown("#### Correlation checks")
-            st.dataframe(corr_df, use_container_width=True, hide_index=True, height=260)
-        with vc2:
-            st.markdown("#### Group averages by internal taxonomy")
+            st.markdown("### Evidence checks")
             st.caption(
-                "These are internal taxonomy groupings for model diagnostics, not final Sanctuary or authority claims. "
-                + ("Interface/schema inspection only when groups are small; do not infer real effects from N=1 demo classes." if use_template else "Read group averages only after checking group size and outside validation targets.")
+                "Internal checks compare ALETHEIA outputs to variables that may also be score inputs. External validation checks use optional outcome columns that are not score inputs. "
+                "Pearson correlations are withheld until N ≥ 30. For true validation, add external outcomes such as conflict events, coups, regime breakdown, political violence, or future-year decline."
             )
-            display_group_df = _empirical_humility_display_df(group_df)
-            st.dataframe(display_group_df, use_container_width=True, hide_index=True, height=260)
+            corr_df, group_df = validation_summary(scored_for_validation)
+            vc1, vc2 = st.columns(2)
+            with vc1:
+                st.markdown("#### Correlation checks")
+                st.dataframe(corr_df, use_container_width=True, hide_index=True, height=260)
+            with vc2:
+                st.markdown("#### Group averages by internal taxonomy")
+                st.caption(
+                    "These are internal taxonomy groupings for model diagnostics, not final Sanctuary or authority claims. "
+                    + ("Interface/schema inspection only when groups are small; do not infer real effects from N=1 demo classes." if use_template else "Read group averages only after checking group size and outside validation targets.")
+                )
+                display_group_df = _empirical_humility_display_df(group_df)
+                st.dataframe(display_group_df, use_container_width=True, hide_index=True, height=260)
 
-        st.markdown("### Technical details")
-        st.caption("Technical tables preserve raw/internal taxonomy fields for traceability and add display labels so SANCTUARY is read as a low-risk internal pattern, not a final claim.")
-        overlay_cols = [c for c in ["country", "iso3", "year", "aletheia_verdict", "protocol_overlay_status", "final_audit_interpretation", "evidence_variables_used"] if c in scored.columns]
-        if overlay_cols:
-            with st.expander("Protocol detail by country-year", expanded=False):
-                st.dataframe(_empirical_humility_display_df(scored[overlay_cols]), use_container_width=True, hide_index=True, height=300)
-        with st.expander("Full empirical output table", expanded=False):
-            st.dataframe(_empirical_humility_display_df(scored), use_container_width=True, hide_index=True, height=420)
-        with st.expander("Method note", expanded=False):
-            st.markdown(methodology_markdown())
+            st.markdown("### Technical details")
+            st.caption("Technical tables preserve raw/internal taxonomy fields for traceability and add display labels so SANCTUARY is read as a low-risk internal pattern, not a final claim.")
+            overlay_cols = [c for c in ["country", "iso3", "year", "aletheia_verdict", "protocol_overlay_status", "final_audit_interpretation", "evidence_variables_used"] if c in scored.columns]
+            if overlay_cols:
+                with st.expander("Protocol detail by country-year", expanded=False):
+                    st.dataframe(_empirical_humility_display_df(scored[overlay_cols]), use_container_width=True, hide_index=True, height=300)
+            with st.expander("Full empirical output table", expanded=False):
+                st.dataframe(_empirical_humility_display_df(scored), use_container_width=True, hide_index=True, height=420)
+            with st.expander("Method note", expanded=False):
+                st.markdown(methodology_markdown())
 
 with tab_grid:
-    st.subheader("World Lens — Impact Watch")
-    render_shared_protocol_state_notice("World Lens", expanded=True)
+    st.subheader("World Lens")
+    render_shared_protocol_state_notice("World Lens", expanded=False)
 
     render_module_page_template_intro(
         st,
@@ -6474,61 +6478,62 @@ with tab_grid:
     else:
         simulated_threshold_signal = "Low pressure"
 
-    st.markdown("#### World Lens context reflection")
-    st.caption(
-        "This reflection preserves the optional note and selected review-pressure lens. It does not create a World Lens verdict, rescore country-year data, or certify any country, government, institution, or policy."
-    )
-    st.code(
-        f"""World Lens Context Reflection
-
-Optional context note:
-{world_lens_scenario.strip() or 'Not supplied'}
-
-Context dial:
-{wl_context_dial}
-
-Affected groups:
-To be identified by human reviewers from the context note and evidence view.
-
-Power gains:
-Review which offices, institutions, vendors, platforms, or leaders gain discretionary control.
-
-Protection losses:
-Review whether any group loses rights, appeal, exit, access, dignity, or repair.
-
-Basic-rights pressure:
-{wl_basic_rights}
-
-Minority-rights pressure:
-{wl_minority}
-
-Ambient capture pressure:
-{wl_ambient}
-
-Appeal path:
-{wl_appeal}
-
-Exit path:
-{wl_exit}
-
-Repair path:
-{wl_repair}
-
-Context reflection signal:
-{simulated_threshold_signal}
-
-Human review note:
-This is a World Lens context reflection for human review. It does not change World Lens evidence data, create a real Global ID system, select a real 9k body, issue a governance mandate, enforce action, trigger automatic resets, or make a final decision.""",
-        language="text",
-    )
-    with st.expander("World Lens safe-language boundary", expanded=False):
-        st.markdown(
-            """
-            **Allowed:** context reflection signal, potential population impact, human review required, safeguard needed, ambient capture pressure should be reviewed.
-
-            **Forbidden:** automatic reset, World Leader deactivated, Global ID sync activated, the AI has decided, this is a real governance mandate, human review is unnecessary, or ALETHEIA has final authority.
-            """
+    with st.expander("Optional context reflection", expanded=False):
+        st.markdown("#### World Lens context reflection")
+        st.caption(
+            "This reflection preserves the optional note and selected review-pressure lens. It does not create a World Lens verdict, rescore country-year data, or certify any country, government, institution, or policy."
         )
+        st.code(
+            f"""World Lens Context Reflection
+
+    Optional context note:
+    {world_lens_scenario.strip() or 'Not supplied'}
+
+    Context dial:
+    {wl_context_dial}
+
+    Affected groups:
+    To be identified by human reviewers from the context note and evidence view.
+
+    Power gains:
+    Review which offices, institutions, vendors, platforms, or leaders gain discretionary control.
+
+    Protection losses:
+    Review whether any group loses rights, appeal, exit, access, dignity, or repair.
+
+    Basic-rights pressure:
+    {wl_basic_rights}
+
+    Minority-rights pressure:
+    {wl_minority}
+
+    Ambient capture pressure:
+    {wl_ambient}
+
+    Appeal path:
+    {wl_appeal}
+
+    Exit path:
+    {wl_exit}
+
+    Repair path:
+    {wl_repair}
+
+    Context reflection signal:
+    {simulated_threshold_signal}
+
+    Human review note:
+    This is a World Lens context reflection for human review. It does not change World Lens evidence data, create a real Global ID system, select a real 9k body, issue a governance mandate, enforce action, trigger automatic resets, or make a final decision.""",
+            language="text",
+        )
+        with st.expander("World Lens safe-language boundary", expanded=False):
+            st.markdown(
+                """
+                **Allowed:** context reflection signal, potential population impact, human review required, safeguard needed, ambient capture pressure should be reviewed.
+
+                **Forbidden:** automatic reset, World Leader deactivated, Global ID sync activated, the AI has decided, this is a real governance mandate, human review is unnecessary, or ALETHEIA has final authority.
+                """
+            )
 
     empirical_scored = st.session_state.get("empirical_scored_df")
     empirical_allocation = st.session_state.get("empirical_allocation_df")

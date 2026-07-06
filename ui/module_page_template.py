@@ -109,24 +109,29 @@ def get_module_page_template_markdown(copy: ModulePageTemplateCopy) -> str:
 
 
 def render_module_page_template_intro(container, copy: ModulePageTemplateCopy) -> None:
-    """Render the shared page-like intro for a module.
+    """Render a compact shared intro for a module.
 
-    ``container`` may be ``st`` or any Streamlit-like container exposing
-    ``markdown`` and ``expander``. The helper only renders copy; it is not wired
-    into active modules by Patch 155.
+    The visible layer gives the user the purpose and output boundary first.
+    Detailed mechanics stay behind expanders so module pages do not become a
+    wall of guidance before the primary action.
     """
     container.markdown(f"## {copy.module_name}")
-    container.markdown(f"**Plain-language purpose:** {copy.purpose}")
+    container.caption(copy.purpose)
 
-    with container.expander("What this module looks for", expanded=False):
-        container.markdown(_markdown_bullets(copy.looks_for))
-
-    with container.expander("Safe first path", expanded=False):
+    with container.expander("Module header — does / does not / when to use / output meaning", expanded=False):
+        container.markdown("**What it does**")
+        container.markdown(copy.purpose)
+        container.markdown("**What it does not do**")
+        container.markdown(copy.boundary_note)
+        container.markdown("**When to use it**")
         container.markdown(_markdown_bullets(copy.safe_first_path))
+        container.markdown("**Output meaning**")
+        container.markdown(copy.result_guidance)
 
-    container.markdown(f"**Input area:** {copy.input_guidance}")
-    container.markdown(f"**Result / mirror reading:** {copy.result_guidance}")
-    container.markdown(f"**Observed reasons:** {copy.observed_reasons_guidance}")
-    container.markdown(f"**Repair questions:** {copy.repair_questions_guidance}")
-    container.markdown(f"**Receipt / export:** {copy.receipt_guidance}")
-    container.caption(copy.boundary_note)
+        with container.expander("Detailed signals this module looks for", expanded=False):
+            container.markdown(_markdown_bullets(copy.looks_for))
+
+    container.info(
+        f"Output boundary: {copy.result_guidance} Human review remains required.",
+        icon="🪞",
+    )
