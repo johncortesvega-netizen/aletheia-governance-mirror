@@ -952,31 +952,35 @@ def render_unit_preview(container=None) -> bool:
         unsafe_allow_html=True,
     )
 
-    what_columns = container.columns(2, gap="large")
-    with what_columns[0]:
-        container.markdown("#### What this is / is not")
-        container.markdown(get_unit_preview_what_is_markdown())
-    with what_columns[1]:
-        container.markdown("#### Start here")
-        container.markdown(get_unit_preview_start_here_markdown())
-        with container.expander("More start options + safe-use rule", expanded=False):
-            container.markdown(get_unit_preview_more_options_markdown())
+    what_column, start_column = container.columns([0.95, 1.05], gap="large")
+    with what_column:
+        what_column.markdown("#### What this is / is not")
+        what_column.markdown(get_unit_preview_what_is_markdown())
+    with start_column:
+        start_column.markdown("#### Start here")
+        start_column.markdown(get_unit_preview_start_here_markdown())
+        more_start_expander = start_column.expander("More start options + safe-use rule", expanded=False)
+        with more_start_expander:
+            more_start_expander.markdown(get_unit_preview_more_options_markdown())
 
-    with container.expander("Show module workflow", expanded=False):
-        container.markdown(get_unit_preview_workflow_markdown())
+    workflow_expander = container.expander("Show module workflow", expanded=False)
+    with workflow_expander:
+        workflow_expander.markdown(get_unit_preview_workflow_markdown())
 
-    with container.expander("Boundary note and example prompts", expanded=False):
-        container.info(get_unit_preview_boundary_text())
-        container.markdown(get_unit_preview_how_to_use_markdown())
+    boundary_expander = container.expander("Boundary note and example prompts", expanded=False)
+    with boundary_expander:
+        boundary_expander.info(get_unit_preview_boundary_text())
+        boundary_expander.markdown(get_unit_preview_how_to_use_markdown())
 
-    with container.expander("Extra review-lens notes", expanded=False):
-        start_columns = container.columns(2, gap="large")
-        with start_columns[0]:
-            container.markdown("#### What ALETHEIA looks for")
-            container.markdown(get_unit_preview_what_aletheia_looks_for_markdown())
-        with start_columns[1]:
-            container.markdown("#### Seven failure-mode review signals")
-            container.markdown(get_unit_preview_failure_mode_markdown())
+    review_lens_expander = container.expander("Extra review-lens notes", expanded=False)
+    with review_lens_expander:
+        lens_column, failure_column = review_lens_expander.columns(2, gap="large")
+        with lens_column:
+            lens_column.markdown("#### What ALETHEIA looks for")
+            lens_column.markdown(get_unit_preview_what_aletheia_looks_for_markdown())
+        with failure_column:
+            failure_column.markdown("#### Seven failure-mode review signals")
+            failure_column.markdown(get_unit_preview_failure_mode_markdown())
 
     preview_text = container.text_area(
         "Short text, question, or scenario",
