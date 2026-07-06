@@ -1,28 +1,37 @@
-# Patch S1 — Mirror Check semantic pressure integration
+# Patch S2 — Semantic Integration for Stress Test + Evidence Lab
 
 Changed file:
 - `app.py`
 
-What changed:
-- Adds a shared `render_semantic_pressure_panel(...)` helper.
-- Runs `scan_semantic_pressure(...)` during Mirror Check review.
-- Stores semantic pressure payloads in the local scan/report entry.
-- Renders a subordinate **Semantic pressure signals** panel directly below the main Mirror Check reading.
-- Shows compact semantic metrics:
-  - state
-  - claim count
-  - mechanism count
-  - diagnostic integrity pressure
-- Keeps details behind an expander:
-  - notes
-  - proximity hits
-  - normalized text
-  - plain text semantic report
+## What changed
 
-Boundary:
-- This patch does **not** make the semantic scanner the final judge.
-- It does **not** rescore, certify, approve, reject, or enforce.
-- It adds relationship-aware pressure signals under Mirror Check for human review.
+### Stress Test
+- Added semantic-derived stress triggers for Scan-my-idea runs.
+- The semantic scanner now translates language relationships into review questions, without changing Stress Test metrics or internal taxonomy labels.
+- New expander after Repair Questions:
+  - `Semantic stress triggers — subordinate to Stress Test`
+- Detects and explains:
+  - identity-gated access
+  - grip language near access/basic-service terms
+  - soft claims without concrete safeguards
+  - obligation/permanence outweighing reversibility
+  - visible safeguards that still require operational verification
 
-Syntax check:
-- `python -m py_compile app.py` passed in patch workspace.
+### Evidence Lab
+- Added an optional top expander:
+  - `Semantic claim/mechanism evidence check`
+- Lets the user paste a claim/policy sentence and get:
+  - semantic pressure panel
+  - claim/mechanism counts
+  - evidence implications
+  - human-review questions
+- Does not score or alter the country-year empirical table.
+
+## Boundary rule
+The semantic scanner remains subordinate. It does not certify, approve, reject, enforce, or replace the module reading.
+
+## Syntax check
+Passed:
+```bash
+python -m py_compile app.py
+```

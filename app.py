@@ -4458,6 +4458,143 @@ def render_semantic_pressure_panel(text_or_scan, *, source_label: str = "Mirror 
 
 render_sydney_protocol_self_check_gate()
 
+def semantic_stress_trigger_rows(scan) -> list[dict]:
+    """Map semantic pressure signals to Stress Test stress triggers and repair questions.
+
+    This is a subordinate translation layer. It does not change Stress Test metrics
+    or the internal taxonomy label; it only turns language relationships into
+    human-review questions.
+    """
+    if scan is None:
+        return []
+    hits = _semantic_payload_hits(scan)
+    notes = _semantic_payload_notes(scan)
+    note_blob = " ".join(notes).lower()
+    rows: list[dict] = []
+
+    categories = {str(hit.get("category", "")).lower() for hit in hits if isinstance(hit, dict)}
+    if "identity_gated_access" in categories or any("identity-gated" in n.lower() for n in notes):
+        rows.append({
+            "Semantic trigger": "Identity-gated access",
+            "Stress implication": "Access may become coercive when basic services, benefits, or participation depend on verification.",
+            "Repair question": "What fallback, appeal, manual review, or non-exclusion path exists for people who cannot verify?",
+        })
+    if "grip_near_access" in categories or any("grip" in n.lower() and "access" in n.lower() for n in notes):
+        rows.append({
+            "Semantic trigger": "Grip language near access",
+            "Stress implication": "Conditional access may create dependency pressure or hidden coercion under crisis conditions.",
+            "Repair question": "Can access be maintained while the dispute, verification failure, or compliance issue is reviewed?",
+        })
+    if bool(_semantic_payload_value(scan, "fail_closed", False)) or "rhetoric-to-mechanism" in note_blob:
+        rows.append({
+            "Semantic trigger": "Claims without concrete mechanisms",
+            "Stress implication": "Ethical or safety language may hide weak operational safeguards under pressure.",
+            "Repair question": "Which audit, appeal, revocation, time-limit, fallback, or independent-review mechanism makes the claim testable?",
+        })
+    modal_count = int(_semantic_payload_value(scan, "modal_pressure_count", 0) or 0)
+    sovereignty_count = int(_semantic_payload_value(scan, "sovereignty_count", 0) or 0)
+    if modal_count > sovereignty_count:
+        rows.append({
+            "Semantic trigger": "Obligation/permanence outweighs reversibility",
+            "Stress implication": "Mandatory or permanent language can collapse appeal, exit, and correction paths.",
+            "Repair question": "Where are sunset clauses, appeal windows, reversal paths, and human exceptions defined?",
+        })
+    mechanism_count = int(_semantic_payload_value(scan, "mechanism_count", 0) or 0)
+    if mechanism_count >= 2 and not rows:
+        rows.append({
+            "Semantic trigger": "Concrete safeguards visible",
+            "Stress implication": "Appeal, audit, review, time-limit, or revocation language may reduce stress if operationally real.",
+            "Repair question": "Who can use the safeguard, how fast does it work, and who audits whether it actually functions?",
+        })
+    return rows
+
+
+def render_semantic_stress_triggers(scan, *, expanded: bool = False) -> None:
+    """Render semantic-derived stress triggers for Stress Test."""
+    semantic_scan = _semantic_scan_from_payload(scan)
+    if semantic_scan is None:
+        return
+    rows = semantic_stress_trigger_rows(semantic_scan)
+    with st.expander("Semantic stress triggers — subordinate to Stress Test", expanded=expanded):
+        st.caption(
+            "Relationship-aware language signals translated into stress triggers and repair questions. "
+            "This panel does not change Stress Test metrics or decide the result."
+        )
+        if rows:
+            st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+        else:
+            st.info("No additional semantic stress trigger was detected beyond the main Stress Test reading.")
+        render_semantic_pressure_panel(semantic_scan, source_label="Stress Test", expanded=False)
+
+
+def semantic_evidence_implication_rows(scan) -> list[dict]:
+    """Map semantic pressure signals to Evidence Lab evidence implications."""
+    if scan is None:
+        return []
+    hits = _semantic_payload_hits(scan)
+    notes = _semantic_payload_notes(scan)
+    note_blob = " ".join(notes).lower()
+    rows: list[dict] = []
+    categories = {str(hit.get("category", "")).lower() for hit in hits if isinstance(hit, dict)}
+    claim_count = int(_semantic_payload_value(scan, "claim_count", 0) or 0)
+    mechanism_count = int(_semantic_payload_value(scan, "mechanism_count", 0) or 0)
+
+    if claim_count > 0 and mechanism_count == 0:
+        rows.append({
+            "Semantic finding": f"{claim_count} soft/value claim(s), no concrete mechanism detected",
+            "Evidence implication": "Claims need source support and operational safeguards before they can carry governance weight.",
+            "Human review question": "What public, relevant, reviewable evidence and safeguard structure supports each claim?",
+        })
+    if bool(_semantic_payload_value(scan, "fail_closed", False)) or "rhetoric-to-mechanism" in note_blob:
+        rows.append({
+            "Semantic finding": "Rhetoric-to-mechanism gap",
+            "Evidence implication": "Ethical language is not enough; Evidence Lab should look for audit trails, appeal records, review windows, and independent checks.",
+            "Human review question": "Which visible mechanism makes the stated value enforceable without becoming coercive?",
+        })
+    if "identity_gated_access" in categories or any("identity-gated" in n.lower() for n in notes):
+        rows.append({
+            "Semantic finding": "Identity-gated access",
+            "Evidence implication": "Requires evidence of exclusion rates, false rejection/acceptance, fallback access, appeal access, and privacy safeguards.",
+            "Human review question": "What data shows who is excluded, how errors are repaired, and whether basic access remains available?",
+        })
+    if "grip_near_access" in categories:
+        rows.append({
+            "Semantic finding": "Grip language near access/basic-service terms",
+            "Evidence implication": "Requires proof that conditionality is bounded, proportionate, reviewable, and non-punitive.",
+            "Human review question": "What evidence shows access conditions do not become hidden coercion?",
+        })
+    modal_count = int(_semantic_payload_value(scan, "modal_pressure_count", 0) or 0)
+    sovereignty_count = int(_semantic_payload_value(scan, "sovereignty_count", 0) or 0)
+    if modal_count > sovereignty_count:
+        rows.append({
+            "Semantic finding": "Mandatory/permanent language exceeds reversibility language",
+            "Evidence implication": "Requires evidence of sunset clauses, appeal windows, reversal procedures, and exception handling.",
+            "Human review question": "Where is the proof that enforcement can be reversed or corrected?",
+        })
+    if mechanism_count >= 2 and not rows:
+        rows.append({
+            "Semantic finding": f"{mechanism_count} concrete safeguard signal(s) detected",
+            "Evidence implication": "Safeguards are visible in language; Evidence Lab should verify whether they exist in practice and are accessible.",
+            "Human review question": "Are the appeal/audit/review mechanisms real, independent, time-bounded, and usable by affected people?",
+        })
+    return rows
+
+
+def render_semantic_evidence_check(text: str, *, expanded_details: bool = False) -> None:
+    """Render a claim/mechanism evidence check for Evidence Lab."""
+    if not str(text or "").strip():
+        st.info("Paste a claim or policy sentence to inspect whether value claims have visible evidence/mechanism support.")
+        return
+    scan = scan_semantic_pressure(text, governance_context=True)
+    rows = semantic_evidence_implication_rows(scan)
+    render_semantic_pressure_panel(scan, source_label="Evidence Lab", expanded=expanded_details)
+    st.markdown("##### Evidence implications")
+    if rows:
+        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+    else:
+        st.info("No special semantic evidence implication was detected beyond ordinary source review. Human review still required.")
+
+
 tab_chat, tab_sim, tab_empirical, tab_grid, tab_boundary, tab_doctrine, tab_about = st.tabs(APP_NAVIGATION_LABELS)
 
 with tab_sim:
@@ -4649,6 +4786,10 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                 st.session_state.last_query_raw = query
                 st.session_state.last_input_status = input_status
                 st.session_state.last_invisibility_report = invisibility_report
+                if input_mode == "Scan my idea" and str(analysis_query or "").strip():
+                    st.session_state.last_stress_semantic_scan = scan_semantic_pressure(analysis_query, governance_context=True)
+                else:
+                    st.session_state.last_stress_semantic_scan = None
                 selected_context = "Manual test" if input_mode == "Manual test" else ((analysis_query[:120] + "…") if len(analysis_query) > 120 else analysis_query)
                 update_protocol_state(selected_context=selected_context, last_update_source="Stress Test")
                 if input_mode == "Scan my idea":
@@ -4988,6 +5129,12 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                 target = rec.get("target", "System")
                 action = rec.get("action", "Review")
                 soft_card(f"{priority} · {target} · {action}", silent_operator_question(rec, context=str(target)))
+
+        if last_input_mode == "Scan my idea":
+            stress_semantic_scan = st.session_state.get("last_stress_semantic_scan")
+            if stress_semantic_scan is None and str(display_query or "").strip():
+                stress_semantic_scan = scan_semantic_pressure(display_query, governance_context=True)
+            render_semantic_stress_triggers(stress_semantic_scan, expanded=False)
 
         ai_static_context = report.get("ai_static_scan_context") if isinstance(report, dict) else None
         # Patch 182: AI static scan expanders inherit sky/gold expander and table styling; context remains subordinate.
@@ -5587,6 +5734,20 @@ with tab_empirical:
     # pages_ui.evidence_lab_page.render_evidence_lab_intro. Keep the
     # interactive template and upload workflow below, but stop the top of the
     # tab from opening long guidance blocks by default.
+
+    with st.expander("Semantic claim/mechanism evidence check", expanded=False):
+        st.caption(
+            "Optional S2 diagnostic: inspect whether a claim relies on soft value language, concrete mechanisms, "
+            "access conditions, identity gates, or reversible safeguards. This does not score the country-year table."
+        )
+        semantic_evidence_text = st.text_area(
+            "Claim, policy sentence, or evidence-summary text",
+            value="This system protects dignity, safety, harmony, inclusion, and public trust.",
+            height=120,
+            key="evidence_lab_semantic_claim_text",
+            help="Use this for claim/mechanism review before or alongside source scoring.",
+        )
+        render_semantic_evidence_check(semantic_evidence_text, expanded_details=False)
 
     with st.expander("Evidence status template", expanded=False):
         evidence_examples = {
