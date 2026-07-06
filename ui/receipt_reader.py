@@ -1224,6 +1224,147 @@ def _native_values_rows(view: dict[str, Any]) -> list[dict[str, str]]:
     return rows
 
 
+def _safe_float(value: Any) -> float | None:
+    """Return a normalized numeric receipt value when one is present."""
+    if value in {None, "", MISSING_VALUE, NOT_APPLICABLE}:
+        return None
+    text = str(value).strip().replace("%", "")
+    match = re.search(r"-?\d+(?:\.\d+)?", text)
+    if not match:
+        return None
+    try:
+        number = float(match.group(0))
+    except ValueError:
+        return None
+    if "%" in str(value):
+        number = number / 100.0
+    if number > 1.0:
+        number = number / 100.0 if number <= 100.0 else 1.0
+    return max(0.0, min(1.0, number))
+
+
+def _metric_level(value: Any, *, invert: bool = False) -> str:
+    number = _safe_float(value)
+    if number is None:
+        return "Not found"
+    score = 1.0 - number if invert else number
+    if score >= 0.67:
+        return "High"
+    if score >= 0.34:
+        return "Medium"
+    return "Low"
+
+
+def _metric_bar(value: Any) -> str:
+    number = _safe_float(value)
+    if number is None:
+        return "░░░░░░░░░░"
+    filled = int(round(number * 10))
+    filled = max(0, min(10, filled))
+    return "█" * filled + "░" * (10 - filled)
+
+
+def _state_palette(native_state: str) -> dict[str, str]:
+    state = str(native_state or "").upper()
+    if state == "SANCTUARY":
+        return {"bg": "#edf7ed", "border": "#2e7d32", "fg": "#1b5e20", "label": "Low review pressure"}
+    if state == "THRESHOLD":
+        return {"bg": "#fff4e5", "border": "#c77700", "fg": "#7a4a00", "label": "Review needed"}
+    if state == "ASYLUM":
+        return {"bg": "#f8e9e7", "border": "#7f1d1d", "fg": "#5a1414", "label": "High review pressure"}
+    if state == "QUESTION_PROMPT":
+        return {"bg": "#eef3ff", "border": "#355c9a", "fg": "#1f3b67", "label": "Review-tool mode"}
+    if state == "WORLD_LENS_EVIDENCE_VIEW":
+        return {"bg": "#eef7f8", "border": "#237477", "fg": "#164f51", "label": "Evidence view"}
+    return {"bg": "#f2f2f2", "border": "#777777", "fg": "#333333", "label": "Receipt state"}
+
+
+def _render_status_banner(container: Any, view: dict[str, Any]) -> None:
+    """Render the one-second receipt status banner."""
+    fields = view.get("fields") or {}
+    native_state = str(view.get("native_state", MISSING_VALUE))
+    palette = _state_palette(native_state)
+    protocol_label = fields.get("protocol_label", MISSING_VALUE)
+    module = _display_module_source(view)
+    container.markdown(
+        f"""
+<div style="border:1px solid {palette['border']}; border-left:9px solid {palette['border']}; background:{palette['bg']}; color:{palette['fg']}; border-radius:14px; padding:1rem 1.15rem; margin:0.55rem 0 1rem 0;">
+  <div style="font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; font-weight:700; opacity:0.9;">Uploaded receipt status</div>
+  <div style="font-size:1.45rem; line-height:1.2; font-weight:800; margin-top:0.15rem;">STATUS: {native_state} <span style="font-size:0.95rem; font-weight:700;">({palette['label']})</span></div>
+  <div style="margin-top:0.45rem; font-size:0.94rem;"><strong>Protocol label:</strong> {protocol_label}</div>
+  <div style="font-size:0.94rem;"><strong>Module source:</strong> {module}</div>
+</div>
+""",
+        unsafe_allow_html=True,
+    )
+
+
+def _render_top_metric_strip(container: Any, view: dict[str, Any]) -> None:
+    """Render the three main receipt metrics as a compact visual strip."""
+    fields = view.get("fields") or {}
+    metric_specs = [
+        ("Integrity", fields.get("integrity", MISSING_VALUE), False),
+        ("Friction", fields.get("friction", MISSING_VALUE), False),
+        ("Collapse Pressure", fields.get("collapse_probability", MISSING_VALUE), False),
+    ]
+    if _is_question_prompt_state(view.get("native_state", "")):
+        container.info("QUESTION_PROMPT receipt: scored metrics are not applicable.")
+        return
+    if hasattr(container, "columns"):
+        columns = container.columns(3)
+        for col, (label, value, invert) in zip(columns, metric_specs):
+            col.markdown(f"**{label}**")
+            col.markdown(f"`{value}`")
+            col.caption(f"{_metric_level(value, invert=invert)} · {_metric_bar(value)}")
+    else:
+        container.table([
+            {"Metric": label, "Value": value, "Level": _metric_level(value, invert=invert), "Bar": _metric_bar(value)}
+            for label, value, invert in metric_specs
+        ])
+
+
+def _render_visual_metric_rows(container: Any, view: dict[str, Any]) -> None:
+    """Render all copied metrics as scan-friendly bars instead of a dense numeric table."""
+    if _is_question_prompt_state(view.get("native_state", "")):
+        container.info(
+            "Not applicable — QUESTION_PROMPT receipts are review-tool prompts and do not carry "
+            "scored integrity, collapse, trust, alignment, friction, or ego metrics."
+        )
+        return
+    rows = []
+    for row in view.get("metric_rows") or []:
+        metric = str(row.get("Metric", MISSING_VALUE))
+        value = str(row.get("Value", MISSING_VALUE))
+        interpretation = str(row.get("Interpretation", "Shown as recorded in the uploaded receipt."))
+        rows.append({
+            "Metric": metric,
+            "Level": _metric_level(value),
+            "Value": value,
+            "Visual": _metric_bar(value),
+            "Reading note": interpretation,
+        })
+    if rows:
+        container.table(rows)
+    else:
+        container.write("No metric rows were parsed from the uploaded receipt.")
+
+
+def _render_repair_questions_block(container: Any, view: dict[str, Any]) -> None:
+    questions = _plain_next_questions(view)
+    if not questions:
+        return
+    text = "\n".join(f"- {question}" for question in questions)
+    container.info("Human-review hand-off questions:\n\n" + text)
+
+
+def _render_failure_mode_review_signals_compact(container: Any) -> None:
+    """Render failure-mode signals as compact warning items."""
+    container.markdown("### Detected pressure-pattern checklist")
+    container.caption(FAILURE_MODE_REVIEW_BOUNDARY)
+    for label, explanation in FAILURE_MODE_REVIEW_SIGNALS:
+        container.warning(f"**{label}:** {explanation}")
+
+
 def _render_metric_observation_cards(container: Any, view: dict[str, Any]) -> None:
     for row in view.get("metric_rows") or []:
         metric = str(row.get("Metric", MISSING_VALUE))
@@ -1404,91 +1545,60 @@ def _plain_receipt_summary_text(view: dict[str, Any]) -> str:
 
 
 def _render_plain_language_receipt_summary(container: Any, view: dict[str, Any]) -> None:
-    """Render the requested plain-English Receipt Reader summary tone."""
+    """Render the simplified plain-English Standard View."""
     fields = view.get("fields") or {}
     native_state = str(view.get("native_state", MISSING_VALUE))
     standard_band = str(view.get("standard_band", MISSING_VALUE))
 
-    container.markdown("### Plain-English receipt summary")
+    container.markdown("### Plain-English summary")
+    container.write(_plain_receipt_summary_text(view))
+    container.caption(
+        "Copied receipt fields: "
+        f"state {_plain_state_name(native_state)}; review pressure {standard_band}; "
+        f"protocol label {fields.get('protocol_label', MISSING_VALUE)}."
+    )
 
-    with container.expander("What is this document?", expanded=True) as panel:
-        panel.write(_plain_receipt_summary_text(view))
-        panel.info(
-            "Important: this is a demo/review artifact unless the uploaded receipt says otherwise. "
-            "The computer does not decide anything here. It does not give official permission, "
-            "and it does not prove that something is truly safe, good, or true. Human review remains required."
-        )
-
-    with container.expander("The main results", expanded=True) as panel:
-        panel.markdown(f"- **Status:** {_plain_state_name(native_state)}")
-        panel.markdown(f"- **Review pressure:** {standard_band}")
-        panel.markdown(f"- **Protocol label:** {fields.get('protocol_label', MISSING_VALUE)}")
-        panel.markdown(f"- **Integrity:** {_plain_metric_value(fields, 'integrity')}")
-        panel.markdown(f"- **Collapse pressure:** {_plain_metric_value(fields, 'collapse_probability')}")
-        panel.markdown(f"- **Trust:** {_plain_metric_value(fields, 'trust')}")
-        panel.markdown(f"- **Alignment:** {_plain_metric_value(fields, 'alignment')}")
-        panel.caption("These are copied from the uploaded receipt. Receipt Reader does not change or rescore them.")
-
-    with container.expander("How is power distributed?", expanded=False) as panel:
+    with container.expander("How the reader translates power, correction, and access", expanded=False) as panel:
         panel.write(
-            "The reader looks at three practical review areas: power, correction, and access. "
-            "This is a plain-language translation layer; it does not add a new score."
+            "This is a plain-language translation layer. It does not add a new score, verdict, or certification."
         )
         panel.table(_plain_power_distribution_rows(view))
 
-    with container.expander("Next steps and questions", expanded=False) as panel:
-        panel.write(
-            "Even when a receipt looks positive, these are the questions a human reviewer should keep open."
-        )
-        for question in _plain_next_questions(view):
-            panel.markdown(f"- {question}")
 
 def _render_single_view(container: Any, view: dict[str, Any]) -> None:
     fields = view["fields"]
-    container.markdown(f"### {_view_status_heading(view)}")
-    container.write(_verbal_brief(view))
-    _render_plain_language_receipt_summary(container, view)
 
-    container.markdown(
-        f"**Native State:** {view['native_state']}  \n"
-        f"**Review Pressure:** {view['standard_band']}  \n"
-        f"**Protocol Label:** {fields.get('protocol_label', MISSING_VALUE)}  \n"
-        f"**Module Source:** {_display_module_source(view)}"
-    )
+    _render_status_banner(container, view)
+    _render_top_metric_strip(container, view)
+
+    _render_plain_language_receipt_summary(container, view)
+    _render_repair_questions_block(container, view)
 
     container.markdown(f"### {_metric_section_title(view)}")
     container.caption(_metric_section_caption(view))
-    if _is_question_prompt_state(view.get("native_state", "")):
-        container.info(
-            "Not applicable — QUESTION_PROMPT receipts are review-tool prompts and do not carry "
-            "scored integrity, collapse, trust, alignment, friction, or ego metrics."
-        )
-    else:
-        _render_metric_observation_cards(container, view)
-        _render_native_values_expander(container, view)
+    _render_visual_metric_rows(container, view)
+
+    # Secondary diagnostics stay available, but no longer dominate the first view.
+    with container.expander("Diagnostics: core logic, reader brief, and failure-mode signals", expanded=False) as expander:
+        expander.markdown(f"### {view['core_logic_title']}")
+        expander.write(view["core_logic_text"])
+        expander.markdown("### Reader Brief")
+        expander.write(view["summary"])
+        _render_failure_mode_review_signals_compact(expander)
+        expander.info("This is a reflection for human review, not certification, approval, rejection, enforcement, or final truth.")
+        expander.caption(view["parsing_limits"])
 
     _render_ai_static_scan_context(container, view)
 
     world_distribution = (view.get("world_lens_fields") or {}).get("taxonomy_distribution") or []
     if world_distribution:
-        container.markdown("### World Lens Internal Taxonomy Distribution")
-        container.table(world_distribution)
+        with container.expander("World Lens internal taxonomy distribution", expanded=False) as expander:
+            expander.table(world_distribution)
 
-    container.markdown(f"### {view['core_logic_title']}")
-    container.write(view["core_logic_text"])
+    with container.expander("Audit and validation data — native receipt values", expanded=False) as expander:
+        expander.caption("Exact values copied from the uploaded receipt. Missing values are not inferred. This is not certification.")
+        expander.table(_native_values_rows(view))
 
-    container.markdown("### Reader Brief")
-    container.write(view["summary"])
-    _render_failure_mode_review_signals(container)
-    container.info("This is a reflection for human review, not certification, approval, rejection, enforcement, or final truth.")
-    container.caption(view["parsing_limits"])
-
-    questions = view.get("repair_questions") or []
-    if questions:
-        container.markdown("### Human-review questions")
-        container.write("To strengthen this reading before relying on it, consider:")
-        for question in questions:
-            container.markdown(f"- {question}")
 
 
 
