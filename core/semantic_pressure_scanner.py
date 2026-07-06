@@ -73,6 +73,30 @@ IDENTITY_TERMS: tuple[str, ...] = (
     "biometrisch", "biometrische verificatie", "verificatie", "geverifieerd",
 )
 
+CENTRAL_AUTHORITY_TERMS: tuple[str, ...] = (
+    "central office", "central authority", "centralized authority", "centralised authority",
+    "central control", "single authority", "single office", "administrative authority",
+    "central administrator", "centralized control", "centralised control",
+    "centraal kantoor", "centrale autoriteit", "gecentraliseerde autoriteit",
+    "centrale controle", "enkele autoriteit", "centrale beheerder",
+)
+
+EMERGENCY_POWER_TERMS: tuple[str, ...] = (
+    "emergency authority", "emergency power", "emergency powers", "crisis authority",
+    "crisis power", "crisis powers", "emergency mandate", "state of emergency",
+    "during crisis", "during a crisis", "emergency control", "temporary emergency authority",
+    "noodbevoegdheid", "noodbevoegdheden", "crisisbevoegdheid", "crisisbevoegdheden",
+    "noodmandaat", "noodtoestand", "tijdens crisis", "tijdens een crisis",
+)
+
+WEAK_SAFEGUARD_TERMS: tuple[str, ...] = (
+    "limited notice", "short notice", "without notice", "no notice", "unclear notice",
+    "unclear appeal", "unclear appeal rights", "appeal rights unclear", "limited appeal",
+    "limited public notice", "unclear public notice", "opaque appeal",
+    "beperkte kennisgeving", "zonder kennisgeving", "geen kennisgeving",
+    "onduidelijk beroep", "onduidelijke beroepsrechten", "beperkt beroep",
+)
+
 PERMANENCE_TERMS: tuple[str, ...] = (
     "irrevocable", "permanent", "cannot be reversed", "final", "forever",
     "without appeal", "no appeal", "automatic termination", "terminated automatically",
@@ -193,6 +217,32 @@ def _sentence_identity_gate(text: str) -> bool:
     return False
 
 
+def _sentence_emergency_service_control(text: str) -> bool:
+    """Detect emergency/centralized authority over essential services.
+
+    This catches governance wording where a central actor receives crisis or
+    emergency authority over basic/essential services, especially when public
+    notice or appeal rights are limited or unclear.
+    """
+    sentences = re.split(r"(?<=[.!?;])\s+|\n+", text or "")
+    for sentence in sentences:
+        has_central_or_emergency = (
+            _sentence_contains(sentence, CENTRAL_AUTHORITY_TERMS)
+            or _sentence_contains(sentence, EMERGENCY_POWER_TERMS)
+        )
+        if (
+            has_central_or_emergency
+            and _sentence_contains(sentence, ACCESS_TERMS)
+            and (
+                _sentence_contains(sentence, WEAK_SAFEGUARD_TERMS)
+                or _sentence_contains(sentence, GRIP_TERMS)
+                or _sentence_contains(sentence, EMERGENCY_POWER_TERMS)
+            )
+        ):
+            return True
+    return False
+
+
 def _excerpt(tokens: list[str], center_a: int, center_b: int, radius: int = 8) -> str:
     start = max(0, min(center_a, center_b) - radius)
     end = min(len(tokens), max(center_a, center_b) + radius + 1)
@@ -209,6 +259,9 @@ def proximity_scan(text: str, *, window: int = 9) -> tuple[ProximityHit, ...]:
     grip_positions = _find_term_positions(tokens, GRIP_TERMS)
     access_positions = _find_term_positions(tokens, ACCESS_TERMS)
     permanence_positions = _find_term_positions(tokens, PERMANENCE_TERMS)
+    central_positions = _find_term_positions(tokens, CENTRAL_AUTHORITY_TERMS)
+    emergency_positions = _find_term_positions(tokens, EMERGENCY_POWER_TERMS)
+    weak_safeguard_positions = _find_term_positions(tokens, WEAK_SAFEGUARD_TERMS)
 
     hits: list[ProximityHit] = []
     if _sentence_identity_gate(text):
@@ -217,6 +270,16 @@ def proximity_scan(text: str, *, window: int = 9) -> tuple[ProximityHit, ...]:
                 category="identity_gated_access",
                 left="conditional access",
                 right="identity / verification",
+                distance=0,
+                excerpt=(text or "").strip()[:220],
+            )
+        )
+    if _sentence_emergency_service_control(text):
+        hits.append(
+            ProximityHit(
+                category="emergency_service_control",
+                left="central/emergency authority",
+                right="essential/basic services + weak safeguards",
                 distance=0,
                 excerpt=(text or "").strip()[:220],
             )
@@ -248,6 +311,33 @@ def proximity_scan(text: str, *, window: int = 9) -> tuple[ProximityHit, ...]:
                     )
                 )
 
+    for left_idx, left_term in (*central_positions, *emergency_positions):
+        for right_idx, right_term in access_positions:
+            distance = abs(left_idx - right_idx)
+            if distance <= window + 3:
+                hits.append(
+                    ProximityHit(
+                        category="authority_near_services",
+                        left=left_term,
+                        right=right_term,
+                        distance=distance,
+                        excerpt=_excerpt(tokens, left_idx, right_idx),
+                    )
+                )
+    for left_idx, left_term in weak_safeguard_positions:
+        for right_idx, right_term in (*central_positions, *emergency_positions):
+            distance = abs(left_idx - right_idx)
+            if distance <= window + 5:
+                hits.append(
+                    ProximityHit(
+                        category="weak_safeguard_near_authority",
+                        left=left_term,
+                        right=right_term,
+                        distance=distance,
+                        excerpt=_excerpt(tokens, left_idx, right_idx),
+                    )
+                )
+
     # Deduplicate identical phrase/category combinations so UI output stays clean.
     seen: set[tuple[str, str, str, str]] = set()
     clean: list[ProximityHit] = []
@@ -257,7 +347,14 @@ def proximity_scan(text: str, *, window: int = 9) -> tuple[ProximityHit, ...]:
             seen.add(key)
             clean.append(hit)
 
-    priority = {"identity_gated_access": 0, "grip_near_access": 1, "permanence_near_access": 2}
+    priority = {
+        "identity_gated_access": 0,
+        "emergency_service_control": 1,
+        "authority_near_services": 2,
+        "weak_safeguard_near_authority": 3,
+        "grip_near_access": 4,
+        "permanence_near_access": 5,
+    }
     clean.sort(key=lambda hit: (priority.get(hit.category, 9), hit.distance, hit.left, hit.right))
     return tuple(clean[:8])
 
@@ -268,10 +365,17 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     normalized = normalize_entities(raw)
     claims = _count_terms(normalized, CLAIM_TERMS)
     mechanisms = _count_terms(normalized, MECHANISM_TERMS)
-    modal_pressure = _count_terms(normalized, GRIP_TERMS) + _count_terms(normalized, PERMANENCE_TERMS)
+    modal_pressure = (
+        _count_terms(normalized, GRIP_TERMS)
+        + _count_terms(normalized, PERMANENCE_TERMS)
+        + _count_terms(normalized, EMERGENCY_POWER_TERMS)
+        + _count_terms(normalized, CENTRAL_AUTHORITY_TERMS)
+        + _count_terms(normalized, WEAK_SAFEGUARD_TERMS)
+    )
     sovereignty = _count_terms(normalized, SOVEREIGNTY_TERMS)
     hits = proximity_scan(normalized)
     identity_gate = _sentence_identity_gate(normalized)
+    emergency_service_control = _sentence_emergency_service_control(normalized)
 
     ratio = float(claims / max(mechanisms, 1))
     notes: list[str] = []
@@ -284,6 +388,9 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     if identity_gate:
         notes.append("Identity-gated access pattern: access/basic-service language is conditioned on identity or verification in the same sentence.")
         adjustment -= 0.14
+    if emergency_service_control:
+        notes.append("Emergency/central authority over basic services: crisis or central-office authority is linked to essential services while notice or appeal safeguards look limited or unclear.")
+        adjustment -= 0.18
     if claims >= 3 and mechanisms == 0:
         notes.append("Rhetoric-to-mechanism gap: soft ethical claims appear without concrete safeguards.")
         adjustment -= 0.16
@@ -293,7 +400,7 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     if modal_pressure > sovereignty:
         notes.append("Modal pressure outweighs sovereignty language: obligation or permanence terms exceed appeal, revocation, fallback, or choice language.")
         adjustment -= 0.08
-    if mechanisms >= 2 and sovereignty >= 1 and not hits and not identity_gate:
+    if mechanisms >= 2 and sovereignty >= 1 and not hits and not identity_gate and not emergency_service_control:
         notes.append("Concrete safeguards detected: appeal, audit, review, revocation, time-limit, or reversibility language is visible.")
     if governance_context and claims > 0 and mechanisms == 0 and not hits:
         fail_closed = True
@@ -302,7 +409,7 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     if not notes:
         notes.append("No strong semantic pressure pattern detected by this deterministic scanner. Human review still required.")
 
-    if hits or identity_gate or fail_closed or adjustment <= -0.24:
+    if hits or identity_gate or emergency_service_control or fail_closed or adjustment <= -0.24:
         state = "THRESHOLD"
         risk = "Needs safeguards"
     elif adjustment <= -0.10:
