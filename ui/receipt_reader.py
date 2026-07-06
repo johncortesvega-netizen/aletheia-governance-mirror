@@ -6,6 +6,7 @@ approve, reject, certify, enforce, override, or change the original receipt.
 from __future__ import annotations
 
 import csv
+import hashlib
 import io
 import json
 import re
@@ -14,6 +15,12 @@ from collections import Counter
 from typing import Any
 
 from ui.module_page_template import ModulePageTemplateCopy, render_module_page_template_intro
+
+try:
+    from core.semantic_pressure_scanner import format_semantic_pressure_report, scan_semantic_pressure
+except Exception:  # pragma: no cover - optional Streamlit deployment guard
+    format_semantic_pressure_report = None  # type: ignore
+    scan_semantic_pressure = None  # type: ignore
 
 
 RECEIPT_READER_BOUNDARY = (
@@ -1159,7 +1166,7 @@ def parse_uploaded_receipt_file(uploaded_file: Any) -> dict[str, Any]:
             "zip_file_count": len(all_files),
         }
     text, filename = _read_uploaded_text(uploaded_file)
-    return {"kind": "single", "name": filename, "view": parse_receipt_standard_view(text)}
+    return {"kind": "single", "name": filename, "text": text, "view": parse_receipt_standard_view(text)}
 
 
 def _metric_section_title(view: dict[str, Any]) -> str:
@@ -1565,6 +1572,55 @@ def _render_plain_language_receipt_summary(container: Any, view: dict[str, Any])
         panel.table(_plain_power_distribution_rows(view))
 
 
+def _render_optional_current_semantic_reread(container: Any, receipt_text: str, *, filename: str = "uploaded receipt") -> None:
+    """Optional S3 current semantic re-read for uploaded receipt text.
+
+    This never changes the uploaded receipt, native values, Standard View, or stored
+    receipt meaning. It is a current scanner pass for human comparison only.
+    """
+    if scan_semantic_pressure is None:
+        return
+    clean_text = str(receipt_text or "").strip()
+    if not clean_text:
+        return
+    digest = hashlib.sha1((filename + "|" + clean_text[:500]).encode("utf-8", errors="ignore")).hexdigest()[:12]
+    with container.expander("Optional current semantic re-read — not part of original receipt", expanded=False) as panel:
+        panel.caption(
+            "This runs the current relationship-aware semantic scanner on uploaded receipt text. "
+            "It is a present-time comparison only: it does not rescore, alter, certify, approve, reject, or replace the original receipt."
+        )
+        run_reread = panel.button(
+            "Run current semantic re-read",
+            key=f"receipt_current_semantic_reread_{digest}",
+            help="Optional diagnostic only; the original receipt remains unchanged.",
+        )
+        if not run_reread:
+            panel.info("Click the button to run a current semantic re-read on the uploaded receipt text.")
+            return
+        scan = scan_semantic_pressure(clean_text, governance_context=True)
+        state = str(getattr(scan, "state", "SANCTUARY"))
+        risk = str(getattr(scan, "risk", "Review signal"))
+        claim_count = int(getattr(scan, "claim_count", 0) or 0)
+        mechanism_count = int(getattr(scan, "mechanism_count", 0) or 0)
+        integrity_adjustment = float(getattr(scan, "integrity_adjustment", 0.0) or 0.0)
+        c1, c2, c3, c4 = panel.columns(4)
+        c1.metric("Current semantic state", state)
+        c2.metric("Claims", claim_count)
+        c3.metric("Mechanisms", mechanism_count)
+        c4.metric("Diagnostic pressure", f"{integrity_adjustment:+.3f}")
+        panel.info(
+            f"Current semantic note: {risk}. This is a re-read by the current scanner, not a native receipt value."
+        )
+        notes = list(getattr(scan, "notes", ()) or [])
+        if notes:
+            panel.markdown("**Current semantic notes**")
+            for note in notes[:8]:
+                panel.markdown(f"- {note}")
+        if format_semantic_pressure_report is not None:
+            with panel.expander("Current semantic scan details", expanded=False):
+                panel.code(format_semantic_pressure_report(scan), language="text")
+
+
 def _render_single_view(container: Any, view: dict[str, Any]) -> None:
     fields = view["fields"]
 
@@ -1786,3 +1842,8 @@ def render_receipt_reader_standard_view(container=None) -> None:
         _render_batch_zip(container, parsed)
     else:
         _render_single_view(container, parsed["view"])
+        _render_optional_current_semantic_reread(
+            container,
+            str(parsed.get("text", "")),
+            filename=str(parsed.get("name", "uploaded receipt")),
+        )

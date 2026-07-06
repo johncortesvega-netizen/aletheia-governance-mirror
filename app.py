@@ -4607,11 +4607,92 @@ def render_semantic_evidence_check(text: str, *, expanded_details: bool = False)
     scan = scan_semantic_pressure(text, governance_context=True)
     rows = semantic_evidence_implication_rows(scan)
     render_semantic_pressure_panel(scan, source_label="Evidence Lab", expanded=expanded_details, panel_key="evidence_lab_semantic_claim_mechanism")
-    st.markdown("##### Evidence implications")
     if rows:
+        st.markdown("##### Evidence implications")
         st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
     else:
         st.info("No special semantic evidence implication was detected beyond ordinary source review. Human review still required.")
+
+
+def semantic_world_lens_flag_rows(scan) -> list[dict]:
+    """Translate semantic terms into regional interpretation flags for World Lens.
+
+    This is a lens-selection aid only. It does not change World Lens evidence,
+    country-year scoring, receipts, or taxonomy labels.
+    """
+    if scan is None:
+        return []
+    normalized_text = str(_semantic_payload_value(scan, "normalized_text", "") or "").lower()
+    notes_blob = " ".join(_semantic_payload_notes(scan)).lower()
+    hits = _semantic_payload_hits(scan)
+    categories = {str(hit.get("category", "")).lower() for hit in hits if isinstance(hit, dict)}
+    rows: list[dict] = []
+
+    def add(flag: str, why: str, regional_question: str) -> None:
+        if not any(row.get("Flag") == flag for row in rows):
+            rows.append({
+                "Flag": flag,
+                "Why it matters across regions": why,
+                "Human-review question": regional_question,
+            })
+
+    if "identity_gated_access" in categories or "identity" in normalized_text or "verification" in normalized_text:
+        add(
+            "Identity / verification language",
+            "May read as safety infrastructure in one context and surveillance or exclusion pressure in another.",
+            "Who cannot verify, who controls the identity layer, and what fallback exists outside the verification path?",
+        )
+    if "access" in normalized_text or "benefit" in normalized_text or "service" in normalized_text or "basic" in notes_blob:
+        add(
+            "Access / basic-service language",
+            "Access conditions can affect rights, welfare, movement, services, or participation differently across legal and institutional contexts.",
+            "Is access preserved during disputes, errors, documentation gaps, or political conflict?",
+        )
+    if any(term in normalized_text for term in ["harmony", "public trust", "safety", "dignity", "inclusion", "protects"]):
+        add(
+            "Soft legitimacy claims",
+            "Terms like harmony, public trust, safety, dignity, and inclusion can signal protection, but can also mask coercion if mechanisms are absent.",
+            "Which local safeguards make the claim reviewable rather than merely persuasive?",
+        )
+    if any(term in normalized_text for term in ["compliance", "non-compliance", "must", "mandatory", "required", "permanent", "revoked"]):
+        add(
+            "Compliance / permanence language",
+            "Enforcement language may be read as legal order, administrative necessity, or coercive discipline depending on local appeal and rights context.",
+            "Where are sunset clauses, appeal windows, independent review, and reversal paths defined?",
+        )
+    mechanism_count = int(_semantic_payload_value(scan, "mechanism_count", 0) or 0)
+    if mechanism_count >= 2:
+        add(
+            "Visible safeguards",
+            "Appeal, audit, revocation, review, or time-limit language may reduce regional interpretation risk if those safeguards are real and accessible.",
+            "Are these safeguards independent, usable by affected people, and trusted in the selected regional context?",
+        )
+    if not rows:
+        add(
+            "No strong semantic flags",
+            "This scanner did not find major language flags, but World Lens context still requires human interpretation.",
+            "What local historical, legal, or institutional context could change how this language is understood?",
+        )
+    return rows
+
+
+def render_world_lens_semantic_flags(text: str, *, expanded_details: bool = False) -> None:
+    """Render semantic terms as regional interpretation flags in World Lens."""
+    if not str(text or "").strip():
+        st.info("Add an optional context note to inspect semantic terms that may need regional interpretation.")
+        return
+    scan = scan_semantic_pressure(text, governance_context=True)
+    rows = semantic_world_lens_flag_rows(scan)
+    st.caption(
+        "S3 lens aid: semantic terms are treated as regional interpretation flags only. They do not rescore World Lens evidence or receipts."
+    )
+    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+    render_semantic_pressure_panel(
+        scan,
+        source_label="World Lens context note",
+        expanded=expanded_details,
+        panel_key="world_lens_semantic_regional_flags",
+    )
 
 
 tab_chat, tab_sim, tab_empirical, tab_grid, tab_boundary, tab_doctrine, tab_about = st.tabs(APP_NAVIGATION_LABELS)
@@ -5846,94 +5927,96 @@ with tab_empirical:
         st.caption("Scale expectations: WGI fields can use their normal -2.5 to +2.5 scale. V-Dem and trust fields should already be 0–1.")
 
 
-    render_evidence_lab_public_data_build_intro(st)
+    with st.expander("Advanced: build/upload country-year evidence table", expanded=False):
+        st.caption("Open this only when you want to upload WGI/population/V-Dem/trust files or rebuild the country-year table. The semantic evidence check above stays separate from empirical scoring.")
+        render_evidence_lab_public_data_build_intro(st)
 
-    with st.expander("How to get and prepare the first real dataset", expanded=False):
-        st.markdown(ingestion_notes_markdown())
-        st.info(
-            "This uploader does not hard-code a live web download. That makes the workflow reliable on Streamlit Cloud: "
-            "download the public data from the official source, then upload the file here."
-        )
-
-    ingest_cols = st.columns(2)
-    with ingest_cols[0]:
-        wgi_upload = st.file_uploader(
-            "Upload World Bank WGI CSV/XLS/XLSX",
-            type=["csv", "xls", "xlsx"],
-            key="wgi_ingest_upload",
-            help="Accepts common WGI long or wide layouts. Required fields: country, iso3/country code, year, and indicator/value or WGI columns.",
-        )
-    with ingest_cols[1]:
-        pop_upload = st.file_uploader(
-            "Optional population CSV/XLS/XLSX",
-            type=["csv", "xls", "xlsx"],
-            key="population_ingest_upload",
-            help="Required for real 9k seat allocation. Needs country, iso3/country code, year, and population/value columns.",
-        )
-
-    optional_cols = st.columns(2)
-    with optional_cols[0]:
-        vdem_upload = st.file_uploader(
-            "Optional V-Dem/ALETHEIA-compatible file",
-            type=["csv", "xls", "xlsx"],
-            key="vdem_ingest_upload",
-            help="Use country, iso3, year plus columns such as vdem_executive_constraints and vdem_democracy.",
-        )
-    with optional_cols[1]:
-        trust_upload = st.file_uploader(
-            "Optional trust/ALETHEIA-compatible file",
-            type=["csv", "xls", "xlsx"],
-            key="trust_ingest_upload",
-            help="Use country, iso3, year plus wvs_generalized_trust, or upload OWID self-reported trust attitudes CSV directly (Entity/Code/Year plus most-people-can-be-trusted indicator).",
-        )
-
-    build_master = st.button("Build master CSV from uploads", use_container_width=True)
-    if build_master:
-        try:
-            with st.spinner("Reading uploads and building country-year master table..."):
-                wgi_df = read_public_data_upload(wgi_upload) if wgi_upload is not None else None
-                pop_df = read_public_data_upload(pop_upload) if pop_upload is not None else None
-                vdem_df = read_public_data_upload(vdem_upload) if vdem_upload is not None else None
-                trust_df = read_public_data_upload(trust_upload) if trust_upload is not None else None
-                if all(x is None for x in [wgi_df, pop_df, vdem_df, trust_df]):
-                    warn_no_public_data_upload(st)
-                else:
-                    diagnostics_df = public_upload_diagnostics(
-                        wgi_df=wgi_df,
-                        population_df=pop_df,
-                        vdem_df=vdem_df,
-                        trust_df=trust_df,
-                    )
-                    st.session_state["empirical_ingest_diagnostics"] = diagnostics_df.copy()
-                    master_df = build_master_from_public_uploads(wgi_df=wgi_df, population_df=pop_df, vdem_df=vdem_df, trust_df=trust_df)
-                    demo_names = {"Exampleland", "Threshold Republic", "Capture State"}
-                    if "country" in master_df.columns and set(master_df["country"].astype(str).head(10)) & demo_names:
-                        raise ValueError(
-                            "Builder produced synthetic demo rows after a real upload. This is blocked so uploaded data is not mistaken for evidence."
-                        )
-                    st.session_state["empirical_master_df"] = master_df.copy()
-                    st.session_state["use_generated_master_for_scoring"] = True
-                    valid_rows = int(master_df.get("empirical_identity_valid", pd.Series([True] * len(master_df))).fillna(False).astype(bool).sum()) if not master_df.empty else 0
-            if not all(x is None for x in [wgi_df, pop_df, vdem_df, trust_df]):
-                st.success(f"Upload processed: built a country-year table with {len(master_df):,} row(s); {valid_rows:,} valid identity row(s).")
-        except Exception as exc:
-            st.session_state.pop("empirical_master_df", None)
-            render_upload_processing_failed(st, exc)
-            if isinstance(st.session_state.get("empirical_ingest_diagnostics"), pd.DataFrame):
-                st.markdown("#### Upload check details")
-                st.dataframe(st.session_state["empirical_ingest_diagnostics"], use_container_width=True, hide_index=True)
-
-    if isinstance(st.session_state.get("empirical_ingest_diagnostics"), pd.DataFrame):
-        with st.expander("Upload check details", expanded=build_master):
-            st.dataframe(st.session_state["empirical_ingest_diagnostics"], use_container_width=True, hide_index=True)
-            st.caption(
-                "raw_rows_read = rows actually read from the uploaded file; "
-                "standardized_country_year_rows = rows ALETHEIA could map to country/iso3/year; "
-                "rows_with_signal = rows carrying WGI, population, V-Dem, or trust values. "
-                "Individual source files may show 0 valid country-year rows before merge if they do not contain "
-                "the full identity/population basis. The merged master is the source of truth for scoring. "
-                "The generated/scored master uses the default modern empirical window, year >= 1996."
+        with st.expander("How to get and prepare the first real dataset", expanded=False):
+            st.markdown(ingestion_notes_markdown())
+            st.info(
+                "This uploader does not hard-code a live web download. That makes the workflow reliable on Streamlit Cloud: "
+                "download the public data from the official source, then upload the file here."
             )
+
+        ingest_cols = st.columns(2)
+        with ingest_cols[0]:
+            wgi_upload = st.file_uploader(
+                "Upload World Bank WGI CSV/XLS/XLSX",
+                type=["csv", "xls", "xlsx"],
+                key="wgi_ingest_upload",
+                help="Accepts common WGI long or wide layouts. Required fields: country, iso3/country code, year, and indicator/value or WGI columns.",
+            )
+        with ingest_cols[1]:
+            pop_upload = st.file_uploader(
+                "Optional population CSV/XLS/XLSX",
+                type=["csv", "xls", "xlsx"],
+                key="population_ingest_upload",
+                help="Required for real 9k seat allocation. Needs country, iso3/country code, year, and population/value columns.",
+            )
+
+        optional_cols = st.columns(2)
+        with optional_cols[0]:
+            vdem_upload = st.file_uploader(
+                "Optional V-Dem/ALETHEIA-compatible file",
+                type=["csv", "xls", "xlsx"],
+                key="vdem_ingest_upload",
+                help="Use country, iso3, year plus columns such as vdem_executive_constraints and vdem_democracy.",
+            )
+        with optional_cols[1]:
+            trust_upload = st.file_uploader(
+                "Optional trust/ALETHEIA-compatible file",
+                type=["csv", "xls", "xlsx"],
+                key="trust_ingest_upload",
+                help="Use country, iso3, year plus wvs_generalized_trust, or upload OWID self-reported trust attitudes CSV directly (Entity/Code/Year plus most-people-can-be-trusted indicator).",
+            )
+
+        build_master = st.button("Build master CSV from uploads", use_container_width=True)
+        if build_master:
+            try:
+                with st.spinner("Reading uploads and building country-year master table..."):
+                    wgi_df = read_public_data_upload(wgi_upload) if wgi_upload is not None else None
+                    pop_df = read_public_data_upload(pop_upload) if pop_upload is not None else None
+                    vdem_df = read_public_data_upload(vdem_upload) if vdem_upload is not None else None
+                    trust_df = read_public_data_upload(trust_upload) if trust_upload is not None else None
+                    if all(x is None for x in [wgi_df, pop_df, vdem_df, trust_df]):
+                        warn_no_public_data_upload(st)
+                    else:
+                        diagnostics_df = public_upload_diagnostics(
+                            wgi_df=wgi_df,
+                            population_df=pop_df,
+                            vdem_df=vdem_df,
+                            trust_df=trust_df,
+                        )
+                        st.session_state["empirical_ingest_diagnostics"] = diagnostics_df.copy()
+                        master_df = build_master_from_public_uploads(wgi_df=wgi_df, population_df=pop_df, vdem_df=vdem_df, trust_df=trust_df)
+                        demo_names = {"Exampleland", "Threshold Republic", "Capture State"}
+                        if "country" in master_df.columns and set(master_df["country"].astype(str).head(10)) & demo_names:
+                            raise ValueError(
+                                "Builder produced synthetic demo rows after a real upload. This is blocked so uploaded data is not mistaken for evidence."
+                            )
+                        st.session_state["empirical_master_df"] = master_df.copy()
+                        st.session_state["use_generated_master_for_scoring"] = True
+                        valid_rows = int(master_df.get("empirical_identity_valid", pd.Series([True] * len(master_df))).fillna(False).astype(bool).sum()) if not master_df.empty else 0
+                if not all(x is None for x in [wgi_df, pop_df, vdem_df, trust_df]):
+                    st.success(f"Upload processed: built a country-year table with {len(master_df):,} row(s); {valid_rows:,} valid identity row(s).")
+            except Exception as exc:
+                st.session_state.pop("empirical_master_df", None)
+                render_upload_processing_failed(st, exc)
+                if isinstance(st.session_state.get("empirical_ingest_diagnostics"), pd.DataFrame):
+                    st.markdown("#### Upload check details")
+                    st.dataframe(st.session_state["empirical_ingest_diagnostics"], use_container_width=True, hide_index=True)
+
+        if isinstance(st.session_state.get("empirical_ingest_diagnostics"), pd.DataFrame):
+            with st.expander("Upload check details", expanded=build_master):
+                st.dataframe(st.session_state["empirical_ingest_diagnostics"], use_container_width=True, hide_index=True)
+                st.caption(
+                    "raw_rows_read = rows actually read from the uploaded file; "
+                    "standardized_country_year_rows = rows ALETHEIA could map to country/iso3/year; "
+                    "rows_with_signal = rows carrying WGI, population, V-Dem, or trust values. "
+                    "Individual source files may show 0 valid country-year rows before merge if they do not contain "
+                    "the full identity/population basis. The merged master is the source of truth for scoring. "
+                    "The generated/scored master uses the default modern empirical window, year >= 1996."
+                )
 
     def _empirical_source_status_frame(df: pd.DataFrame | None) -> pd.DataFrame:
         wgi_cols = [
@@ -6902,6 +6985,9 @@ with tab_grid:
         key="world_lens_simulation_input_v1",
         help="Add a short policy or governance context if you want a plain-language reflection beside the World Lens evidence view. This does not rescore World Lens data.",
     )
+
+    with st.expander("Semantic regional interpretation flags", expanded=False):
+        render_world_lens_semantic_flags(world_lens_scenario, expanded_details=False)
 
     st.markdown("#### World Lens context dial")
     st.caption(

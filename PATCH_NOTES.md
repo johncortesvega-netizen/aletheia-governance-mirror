@@ -1,22 +1,32 @@
-# Patch S2.1B — Evidence Lab duplicate widget key fix
+# ALETHEIA Patch: Evidence Lab Declutter + S3 World Lens / Receipt Reader
 
-## Changed
+Changed files:
 - `app.py`
+- `ui/receipt_reader.py`
 
-## Fix
-Streamlit was still able to render more than one semantic pressure panel on the same page with identical content-derived widget keys. Evidence Lab triggered the same `Normalized scan text` key pattern when the semantic panel appeared in more than one context.
+## Evidence Lab layout declutter
+- Keeps the semantic claim/mechanism evidence check near the top.
+- Moves the upload/build country-year evidence workflow behind `Advanced: build/upload country-year evidence table`.
+- Keeps the semantic evidence check separate from empirical country-year scoring.
+- Does not change empirical scoring, country-year data, allocation, or receipts.
 
-This patch adds an optional `panel_key` argument to `render_semantic_pressure_panel(...)` and assigns stable module-specific keys for:
+## Patch S3 — World Lens semantic regional flags
+- Adds `Semantic regional interpretation flags` under World Lens.
+- Uses the semantic scanner on the optional World Lens context note.
+- Translates semantic terms into regional interpretation flags, such as:
+  - identity / verification language
+  - access / basic-service language
+  - soft legitimacy claims
+  - compliance / permanence language
+  - visible safeguards
+- Adds human-review questions for regional interpretation.
+- Does not rescore World Lens evidence, receipts, selected-year rows, or taxonomy labels.
 
-- Mirror Check latest semantic pressure panel
-- Stress Test semantic pressure panel
-- Evidence Lab claim/mechanism semantic panel
+## Patch S3 — Receipt Reader current re-read
+- Adds optional `Current semantic re-read` for single uploaded receipt files.
+- The re-read is button-triggered and clearly marked as not part of the original receipt.
+- It does not change native receipt fields, Standard View, metrics, receipt schema, or uploaded artifact meaning.
+- It is only a current scanner comparison for human review.
 
-## Scope
-- No scoring changes.
-- No scanner logic changes.
-- No receipt schema changes.
-- UI stability fix only.
-
-## Check
-`python -m py_compile app.py`
+## Validation
+- `python -m py_compile app.py ui/receipt_reader.py` succeeded in the patch workspace.
