@@ -1,30 +1,13 @@
-# ALETHEIA Tree Visual v2 Patch
+# Tree Visual v2 spacing fix
 
 Changed file:
 - `app.py`
 
-Purpose:
-- Make the Mirror Reading Tree visually clearer and less abstract.
-- Replace the dark canvas with a light protocol-map visual.
-- Make the concept explicit:
-  - Root = human review
-  - Trunk = evidence + accountability
-  - Canopy = current review band
-- Keep the existing review band taxonomy visible:
-  - Asylum
-  - Threshold−
-  - Threshold
-  - Threshold+
-  - Sanctuary
+Fixes:
+- Increased the tree SVG canvas height from 310 to 360.
+- Increased the visual container height from 568 to 640.
+- Added bottom room for the root system and root label.
+- Moved the root label lower but kept it inside the SVG canvas.
+- Preserves the existing taxonomy rail and tree logic.
 
-Important boundary:
-- This is display-only.
-- It does not change receipt metrics, protocol scoring, scanner logic, or taxonomy.
-- It only changes the tree/canopy presentation and the explanatory copy around it.
-
-Expected visual changes:
-- Lighter background.
-- Larger, clearer tree.
-- State color is directly reflected in the canopy.
-- The active band is shown both in the rail and inside the canopy.
-- The visual now reads as a governance-review map rather than an abstract decorative tree.
+No scoring, scanner logic, receipt metrics, or protocol labels are changed.

@@ -2204,17 +2204,17 @@ def render_pulse_tree(
             {branch_html}
         </div>
 
-        <svg width="100%" height="310" viewBox="0 0 520 310" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ALETHEIA protocol tree visual: root human review, trunk evidence and accountability, canopy current review band">
-            <rect x="0" y="0" width="520" height="310" rx="18" fill="#fffaf0"/>
-            <rect x="16" y="16" width="488" height="278" rx="16" fill="#fffdf7" stroke="#ead7b5"/>
+        <svg width="100%" height="360" viewBox="0 0 520 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ALETHEIA protocol tree visual: root human review, trunk evidence and accountability, canopy current review band">
+            <rect x="0" y="0" width="520" height="360" rx="18" fill="#fffaf0"/>
+            <rect x="16" y="16" width="488" height="328" rx="16" fill="#fffdf7" stroke="#ead7b5"/>
 
             <!-- Ground / root system: human review foundation -->
-            <ellipse cx="260" cy="264" rx="160" ry="16" fill="#ead7b5" opacity="0.55"/>
-            <path d="M260 241 C238 254 211 261 178 268" stroke="#8b5e3c" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.75"/>
-            <path d="M260 241 C283 254 314 263 354 270" stroke="#8b5e3c" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.75"/>
-            <path d="M258 245 C250 257 242 268 231 279" stroke="#8b5e3c" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.62"/>
-            <path d="M263 245 C272 257 285 269 300 280" stroke="#8b5e3c" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.62"/>
-            <text x="260" y="292" text-anchor="middle" font-size="12" font-family="Inter, Arial" fill="#425466">ROOT · human review</text>
+            <ellipse cx="260" cy="270" rx="160" ry="16" fill="#ead7b5" opacity="0.55"/>
+            <path d="M260 240 C238 254 211 262 178 270" stroke="#8b5e3c" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.75"/>
+            <path d="M260 240 C283 254 314 264 354 272" stroke="#8b5e3c" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.75"/>
+            <path d="M258 245 C250 260 242 274 231 288" stroke="#8b5e3c" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.62"/>
+            <path d="M263 245 C272 260 285 275 300 290" stroke="#8b5e3c" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.62"/>
+            <text x="260" y="316" text-anchor="middle" font-size="12" font-family="Inter, Arial" fill="#425466">ROOT · human review</text>
 
             <!-- Trunk: evidence + accountability -->
             <path d="M246 250 C250 214 251 175 244 137 C262 176 274 214 274 250 Z" fill="#8b5e3c"/>
@@ -2249,7 +2249,7 @@ def render_pulse_tree(
     </div>
     """
 
-    components.html(svg_html, height=568, scrolling=False)
+    components.html(svg_html, height=640, scrolling=False)
 
 def build_features_from_scan(scan: dict) -> dict:
     return {
