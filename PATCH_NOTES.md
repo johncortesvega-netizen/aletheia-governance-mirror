@@ -1,14 +1,15 @@
-# ALETHEIA combined clarity patch
+# Patch UI-TABS-1 — Module Tab Containment Fix
 
-Changed files only.
+## Problem
+After switching between ALETHEIA modules, multiple module bodies could appear visually stacked on the page. This made it look like Mirror Check, Stress Test, Evidence Lab, World Lens, Boundary Cases, Protocol Guide, and Why ALETHEIA were all open at once.
 
-## Included
-- Patch A/A2/A3/A4: Unit Preview first-60-seconds landing, decluttered layout, column fix, clearer main-entry button.
-- Patch B: authority-language cleanup, compact disclaimers, score/label framing as readings rather than verdicts/certification.
-- Patch C: shared compact module header pattern: what it does / does not / when to use / output meaning, with details behind expanders.
-- Patch D: Receipt Reader repositioned as support utility, cleaner Standard View, stronger non-certification framing.
-- Patch E/F direction: heavy philosophy/examples stay opt-in; module machinery and examples are increasingly behind expanders.
-- Module declutter pass: Boundary Cases diagnostics/receipt example moved behind expanders; Evidence Lab advanced tables moved behind expanders; World Lens context reflection moved behind an expander.
+## Change
+- Adds fail-closed CSS containment rules for Streamlit tab panels.
+- Explicitly hides tab panels marked `hidden` or `aria-hidden="true"`.
+- Adds a modern `:has(...)` fallback so only the selected module panel remains visible if Streamlit/browser styling fails to collapse inactive panels.
 
-## Validation
-- `python -m py_compile app.py ui/module_page_template.py ui/unit_preview.py ui/receipt_reader.py` passed.
+## Changed files
+- `app.py`
+
+## Notes
+This patch does not change scoring, scanner logic, receipts, or module behavior. It only restores the intended single-module visual surface.

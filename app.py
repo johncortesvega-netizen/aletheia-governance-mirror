@@ -52,6 +52,7 @@ from core.ai_integrity_mirror import (
     audit_ai_integrity_artifact,
     build_ai_static_scan_protocol_context,
 )
+from core.semantic_pressure_scanner import scan_semantic_pressure, format_semantic_pressure_report
 
 from core.world_lens import (
     country_available_years,
@@ -1227,6 +1228,39 @@ st.markdown(
         background: rgba(235,242,231,0.96) !important;
         box-shadow: 0 8px 18px rgba(101,121,98,0.10) !important;
     }
+
+    /* Patch UI-TABS-1 — fail-closed containment for Streamlit tab panels.
+       Some Streamlit/browser/CSS combinations can leave inactive tab panels
+       visually stacked. These rules preserve ALETHEIA's single-module reading
+       surface: only the selected tab panel should be visible to the user. */
+    .stTabs [role="tabpanel"][hidden],
+    .stTabs [data-baseweb="tab-panel"][hidden],
+    .stTabs [aria-hidden="true"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+        pointer-events: none !important;
+    }
+    .stTabs [role="tabpanel"] {
+        contain: layout paint;
+    }
+    .stTabs:has([data-baseweb="tab"]:nth-of-type(1)[aria-selected="true"]) [role="tabpanel"]:not(:nth-of-type(1)),
+    .stTabs:has([data-baseweb="tab"]:nth-of-type(2)[aria-selected="true"]) [role="tabpanel"]:not(:nth-of-type(2)),
+    .stTabs:has([data-baseweb="tab"]:nth-of-type(3)[aria-selected="true"]) [role="tabpanel"]:not(:nth-of-type(3)),
+    .stTabs:has([data-baseweb="tab"]:nth-of-type(4)[aria-selected="true"]) [role="tabpanel"]:not(:nth-of-type(4)),
+    .stTabs:has([data-baseweb="tab"]:nth-of-type(5)[aria-selected="true"]) [role="tabpanel"]:not(:nth-of-type(5)),
+    .stTabs:has([data-baseweb="tab"]:nth-of-type(6)[aria-selected="true"]) [role="tabpanel"]:not(:nth-of-type(6)),
+    .stTabs:has([data-baseweb="tab"]:nth-of-type(7)[aria-selected="true"]) [role="tabpanel"]:not(:nth-of-type(7)) {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+        pointer-events: none !important;
+    }
+
 
     .stButton > button,
     [data-testid="stButton"] button,
@@ -5135,6 +5169,45 @@ with tab_boundary:
                 - Public reasoning requirement
                 """
             )
+
+        with st.expander("Relationship-aware semantic pressure scan", expanded=False):
+            st.caption(
+                "Scans relationships between pressure terms, access terms, soft claims, and concrete mechanisms. "
+                "This is deterministic and fail-closed; it is not proof of intent or a final decision."
+            )
+            semantic_sample = (
+                "Access to the application is only possible after successful identity verification. "
+                "The system protects safety and trust, but no appeal, fallback, or human review is described."
+            )
+            semantic_text = st.text_area(
+                "Unstructured text to scan",
+                value=semantic_sample,
+                height=110,
+                key="semantic_pressure_scan_text",
+                help="Use this to inspect words/phrases as relationships, not isolated keywords.",
+            )
+            governance_context = st.checkbox(
+                "Treat as governance / power-distribution text",
+                value=True,
+                key="semantic_pressure_governance_context",
+                help="When enabled, missing recognizable safeguards routes to a fail-closed review warning.",
+            )
+            if semantic_text.strip():
+                semantic_scan = scan_semantic_pressure(semantic_text, governance_context=governance_context)
+                s_col1, s_col2, s_col3, s_col4 = st.columns(4)
+                s_col1.metric("Review state", semantic_scan.state)
+                s_col2.metric("Claims", semantic_scan.claim_count)
+                s_col3.metric("Mechanisms", semantic_scan.mechanism_count)
+                s_col4.metric("Integrity pressure", f"{semantic_scan.integrity_adjustment:+.3f}")
+                if semantic_scan.fail_closed:
+                    st.warning("Fail-closed review: recognizable safeguards were missing or insufficient for the detected governance/value language.")
+                elif semantic_scan.proximity_hits:
+                    st.warning("Contextual pressure pattern detected near access, identity, service, or basic-rights language.")
+                else:
+                    st.info("No strong pressure relationship detected by this scanner. Human review still required.")
+                st.code(format_semantic_pressure_report(semantic_scan), language="text")
+                with st.expander("Normalized text used for scan", expanded=False):
+                    st.code(semantic_scan.normalized_text, language="text")
 
         st.markdown("### Self-Audit Mode")
         st.write(
