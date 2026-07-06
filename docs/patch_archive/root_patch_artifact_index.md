@@ -7,6 +7,14 @@ Current root rule:
 Keep the latest patch manifest/recovery note at root. Archive older patch artifacts here.
 ```
 
+
+## Recent hygiene cleanup — Semantic v1 session
+
+- Root duplicate artifacts for Patch 189 through Patch 194 were removed after confirming archived copies under `docs/patch_archive/manifests/`, `docs/patch_archive/recovery_notes/`, and `docs/patch_archive/delete_lists/`.
+- Transient semantic-session patch notes were consolidated into `docs/patch_archive/other_patch_artifacts/SEMANTIC_V1_SESSION_PATCH_NOTES.md`.
+- Stable Semantic Pressure Scanner v1 documentation lives at `docs/semantic_pressure_scanner_v1.md`.
+- The latest numbered patch root artifacts remain visible at root for Patch 195.
+
 ## Archived manifests
 
 - `docs/patch_archive/manifests/PATCH_100_MANIFEST.txt`

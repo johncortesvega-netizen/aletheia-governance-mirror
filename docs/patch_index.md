@@ -16,6 +16,11 @@ This index is a navigation layer for ALETHEIA's iterative patch history. Patch 1
 
 ALETHEIA remains a **mirror, not a throne**. Patch history is evidence for review, not proof of truth, safety, legality, ethics, privacy, security, or legitimacy.
 
+## Semantic v1 documentation
+
+Semantic Pressure Scanner v1 is documented at `docs/semantic_pressure_scanner_v1.md`. Session-level patch notes from the semantic/UI cleanup round are archived at `docs/patch_archive/other_patch_artifacts/SEMANTIC_V1_SESSION_PATCH_NOTES.md`.
+
+
 
 ## Patch 152 — Receipt Reader Failure-Mode Verbalization
 
