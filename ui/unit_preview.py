@@ -158,8 +158,12 @@ div[data-testid="stButton"] button[kind="primary"] {
     background: #b91c1c !important;
     border: 2px solid #7f1d1d !important;
     color: #ffffff !important;
-    font-weight: 800 !important;
+    font-weight: 900 !important;
     letter-spacing: 0.01em !important;
+    min-height: 3.25rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    white-space: normal !important;
     box-shadow: 0 0 0 1px rgba(127, 29, 29, 0.25), 0 4px 14px rgba(127, 29, 29, 0.28) !important;
 }
 div[data-testid="stButton"] button[kind="primary"]:hover {
@@ -283,6 +287,20 @@ div[data-testid="stButton"] button[kind="primary"]:focus {
 @media (max-width: 760px) {
     .unit-preview-compact-card { grid-template-columns: 1fr; }
     .unit-preview-compact-card img { display: none; }
+}
+
+.unit-preview-action-note {
+    margin: 0.95rem 0 0.45rem;
+    padding: 0.7rem 0.85rem;
+    border-left: 4px solid #b91c1c;
+    border-radius: 10px;
+    background: rgba(255, 252, 246, 0.86);
+    color: #3f2f20;
+    font-size: 0.94rem;
+    line-height: 1.45;
+}
+.unit-preview-action-note strong {
+    color: #7f1d1d;
 }
 
 </style>
@@ -988,24 +1006,28 @@ def render_unit_preview(container=None) -> bool:
         key="aletheia_unit_preview_text",
     )
 
-    action_columns = container.columns(2)
-    # Patch 142.2 reassigns to a compact row while preserving the Patch 141.3
-    # source marker above for validation continuity.
-    action_columns = container.columns([1, 1, 1.25, 4.75], gap="small")
-    with action_columns[0]:
-        preview_clicked = container.button("Preview review path", key="aletheia_unit_preview_button")
-    with action_columns[1]:
-        proceed_clicked = container.button(
-            "Proceed to ALETHEIA",
-            type="primary",
-            key="aletheia_unit_preview_proceed",
-        )
-    with action_columns[2]:
-        container.link_button(
-            "GitHub",
-            "https://github.com/johncortesvega-netizen/aletheia-governance-mirror",
-            help="View GitHub repository. Open the public GitHub mirror in a new page. Unit Preview does not make external calls; this is a user-clicked source link.",
-        )
+    container.markdown(
+        '<div class="unit-preview-action-note"><strong>Ready for the full tool?</strong> Use the red button to enter the main ALETHEIA module functions. The preview button only suggests where to start.</div>',
+        unsafe_allow_html=True,
+    )
+
+    action_columns = container.columns([1.25, 1.9, 0.9, 3.95], gap="small")
+    preview_clicked = action_columns[0].button(
+        "Preview suggested path",
+        key="aletheia_unit_preview_button",
+        help="Use the text box above to get a suggested review path before entering the full app.",
+    )
+    proceed_clicked = action_columns[1].button(
+        "Enter main ALETHEIA tools",
+        type="primary",
+        key="aletheia_unit_preview_proceed",
+        help="Open the full ALETHEIA app with Mirror Check, Stress Test, Evidence Lab, World Lens, Boundary Cases, and Receipt Reader.",
+    )
+    action_columns[2].link_button(
+        "GitHub",
+        "https://github.com/johncortesvega-netizen/aletheia-governance-mirror",
+        help="View GitHub repository. Open the public GitHub mirror in a new page. Unit Preview does not make external calls; this is a user-clicked source link.",
+    )
 
     if preview_clicked:
         suggestion = detect_unit_preview_route(preview_text)
