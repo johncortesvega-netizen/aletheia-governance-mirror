@@ -65,14 +65,20 @@ Paste one short idea, question, policy, AI output, or scenario. Unit Preview giv
 def get_unit_preview_start_here_markdown() -> str:
     """Return the first-use checklist for the front door."""
     return """
-**Start here**
+1. **Check a governance proposal** — Mirror Check.
+2. **Stress-test a risky policy** — Stress Test.
+3. **Inspect evidence quality** — Evidence Lab.
 
-1. **Check a governance proposal** — use Mirror Check.
-2. **Stress-test a risky policy** — use Stress Test.
-3. **Inspect evidence quality** — use Evidence Lab.
-4. **Compare regional perspectives** — use World Lens.
-5. **Review a saved receipt** — use Receipt Reader after entering ALETHEIA.
-6. **Explore hard boundary cases** — use Boundary Cases.
+Use the input box below for a suggested path, or enter ALETHEIA and choose the module yourself.
+"""
+
+
+def get_unit_preview_more_options_markdown() -> str:
+    """Return secondary front-door options kept out of the first view."""
+    return """
+4. **Compare regional perspectives** — World Lens.
+5. **Review a saved receipt** — Receipt Reader after entering ALETHEIA.
+6. **Explore hard boundary cases** — Boundary Cases.
 
 **Safe use rule**
 
@@ -85,18 +91,14 @@ def get_unit_preview_what_is_markdown() -> str:
     return """
 **What ALETHEIA is**
 
-- A mirror for governance-risk review.
-- A structured human-reflection tool.
-- A way to inspect power, evidence, pressure, capture, and safeguards.
-- A local/session review support layer.
+- Governance-risk review mirror.
+- Structured human reflection.
+- Power, evidence, pressure, capture, and safeguard check.
 
 **What ALETHEIA is not**
 
-- Not a judge.
-- Not a certifier.
-- Not a government.
-- Not an enforcement system.
-- Not a source of final truth.
+- Not a judge, certifier, government, or enforcement system.
+- Not final truth.
 - Not a replacement for human review.
 """
 
@@ -232,6 +234,55 @@ div[data-testid="stButton"] button[kind="primary"]:focus {
 }
 @media (max-width: 760px) {
     .unit-preview-mascot-card { grid-template-columns: 1fr; }
+}
+
+/* Patch A2: compact landing layer. The parchment hero above already carries the brand. */
+.unit-preview-compact-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 86px;
+    gap: 0.85rem;
+    align-items: center;
+    border: 1px solid rgba(170, 142, 88, 0.30);
+    background: rgba(255, 252, 246, 0.88);
+    border-radius: 16px;
+    padding: 0.85rem 1rem;
+    margin: 0.55rem 0 0.9rem;
+    box-shadow: 0 8px 18px rgba(118, 96, 58, 0.08);
+}
+.unit-preview-compact-card h3 {
+    margin: 0 0 0.28rem 0;
+    color: #7f1d1d;
+    font-size: 1.05rem;
+    line-height: 1.25;
+}
+.unit-preview-compact-card p {
+    margin: 0.22rem 0;
+    color: #44331f;
+    font-size: 0.94rem;
+    line-height: 1.42;
+}
+.unit-preview-compact-card .mirror-line {
+    color: #355c2b;
+    font-weight: 800;
+}
+.unit-preview-compact-card img {
+    width: 78px;
+    height: 78px;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 14px;
+    border: 1px solid rgba(170, 142, 88, 0.28);
+    background: rgba(255, 250, 242, 0.94);
+}
+.unit-preview-tight-note {
+    margin: 0.35rem 0 0.75rem;
+    color: #5b4631;
+    font-size: 0.92rem;
+    line-height: 1.45;
+}
+@media (max-width: 760px) {
+    .unit-preview-compact-card { grid-template-columns: 1fr; }
+    .unit-preview-compact-card img { display: none; }
 }
 
 </style>
@@ -882,34 +933,24 @@ def render_unit_preview(container=None) -> bool:
         container = st
 
     container.markdown(get_unit_preview_proceed_button_style(), unsafe_allow_html=True)
-    container.markdown(
-        """
-        <div class="unit-preview-brand-title" role="heading" aria-level="1">
-            <span class="unit-preview-brand-main">ALETHEIA</span>
-            <span class="unit-preview-brand-subline">Governance Mirror</span>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
     mascot_image_uri = get_unit_preview_mascot_image_uri()
     container.markdown(
         f"""
-        <div class="unit-preview-mascot-card">
-            <div class="unit-preview-mascot-copy">
-                <strong>Audit · Simulate · Inspect evidence · Review carefully.</strong>
-                <span>The ALETHEIA laurel robot is a gentle visual guide; adults and reviewers keep responsibility.</span>
-                <span>It is a visual guide only: no certification, no command, no final authority; plain-language mirror guidance only.</span>
+        <div class="unit-preview-compact-card">
+            <div>
+                <h3>ALETHEIA is a governance-risk mirror.</h3>
+                <p>It helps reviewers inspect power, capture risk, pressure, evidence gaps, weak safeguards, and authority drift before choosing a full module.</p>
+                <p class="mirror-line">Power → Mirror. Never Mirror → Power.</p>
             </div>
-            <img class="unit-preview-mascot-image" src="{mascot_image_uri}" alt="Friendly ALETHEIA laurel robot visual guide" />
+            <img src="{mascot_image_uri}" alt="Friendly ALETHEIA laurel robot visual guide" />
         </div>
         """,
         unsafe_allow_html=True,
     )
-    container.markdown("### ALETHEIA is a governance-risk mirror")
-    container.write(
-        "It helps people inspect power, capture risk, pressure, evidence gaps, weak safeguards, and authority drift before choosing a full module. Upload receipts in Receipt Reader after entering the app."
+    container.markdown(
+        '<p class="unit-preview-tight-note">No certification, no command, no final authority. Outputs are protocol readings for human review.</p>',
+        unsafe_allow_html=True,
     )
-    container.info(get_unit_preview_boundary_text())
 
     what_columns = container.columns(2, gap="large")
     with what_columns[0]:
@@ -918,24 +959,24 @@ def render_unit_preview(container=None) -> bool:
     with what_columns[1]:
         container.markdown("#### Start here")
         container.markdown(get_unit_preview_start_here_markdown())
+        with container.expander("More start options + safe-use rule", expanded=False):
+            container.markdown(get_unit_preview_more_options_markdown())
 
-    container.markdown("#### Module workflow")
-    container.markdown(get_unit_preview_workflow_markdown())
-    with container.expander("Example prompts and extra review-lens notes", expanded=False):
+    with container.expander("Show module workflow", expanded=False):
+        container.markdown(get_unit_preview_workflow_markdown())
+
+    with container.expander("Boundary note and example prompts", expanded=False):
+        container.info(get_unit_preview_boundary_text())
         container.markdown(get_unit_preview_how_to_use_markdown())
-        container.caption(
-            "Open these review-lens notes only when you want extra orientation. "
-            "They are prompts for human review, not verdicts."
-        )
+
+    with container.expander("Extra review-lens notes", expanded=False):
         start_columns = container.columns(2, gap="large")
         with start_columns[0]:
-            with start_columns[0].expander("What ALETHEIA looks for", expanded=False):
-                container.markdown("#### What ALETHEIA looks for")
-                container.markdown(get_unit_preview_what_aletheia_looks_for_markdown())
+            container.markdown("#### What ALETHEIA looks for")
+            container.markdown(get_unit_preview_what_aletheia_looks_for_markdown())
         with start_columns[1]:
-            with start_columns[1].expander("Seven failure-mode review signals", expanded=False):
-                container.markdown("#### Seven failure-mode review signals")
-                container.markdown(get_unit_preview_failure_mode_markdown())
+            container.markdown("#### Seven failure-mode review signals")
+            container.markdown(get_unit_preview_failure_mode_markdown())
 
     preview_text = container.text_area(
         "Short text, question, or scenario",
