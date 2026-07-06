@@ -1,37 +1,26 @@
-# Patch S2 — Semantic Integration for Stress Test + Evidence Lab
+# Patch S2.1 — Stress Test compact layout
 
 Changed file:
 - `app.py`
 
 ## What changed
+- Stress Test primary reading now stays visually above detailed diagnostic machinery.
+- Secondary metrics, tree visual, stability/trust/alignment plot, action chart, and test voices table are now inside a collapsed expander:
+  - `Stress Test visuals and agent traces`
+- Added a caption clarifying that the visuals are diagnostic only and do not create a separate decision or authority claim.
 
-### Stress Test
-- Added semantic-derived stress triggers for Scan-my-idea runs.
-- The semantic scanner now translates language relationships into review questions, without changing Stress Test metrics or internal taxonomy labels.
-- New expander after Repair Questions:
-  - `Semantic stress triggers — subordinate to Stress Test`
-- Detects and explains:
-  - identity-gated access
-  - grip language near access/basic-service terms
-  - soft claims without concrete safeguards
-  - obligation/permanence outweighing reversibility
-  - visible safeguards that still require operational verification
+## What did not change
+- No Stress Test scoring changes.
+- No semantic scanner logic changes.
+- No receipt schema changes.
+- No Mirror Check / Evidence Lab changes.
 
-### Evidence Lab
-- Added an optional top expander:
-  - `Semantic claim/mechanism evidence check`
-- Lets the user paste a claim/policy sentence and get:
-  - semantic pressure panel
-  - claim/mechanism counts
-  - evidence implications
-  - human-review questions
-- Does not score or alter the country-year empirical table.
+## Expected UI effect
+After running a Stress Test, the user should see:
+1. Protocol reading and main metrics
+2. Why this result?
+3. Repair questions
+4. Semantic pressure signals
+5. Optional visuals in a collapsed expander
 
-## Boundary rule
-The semantic scanner remains subordinate. It does not certify, approve, reject, enforce, or replace the module reading.
-
-## Syntax check
-Passed:
-```bash
-python -m py_compile app.py
-```
+This keeps the human-review path visible first and hides the machinery until requested.

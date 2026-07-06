@@ -5084,29 +5084,37 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         with c4:
             metric_card("Collapse pressure", f"{report['collapse_probability']:.3f}", scan_mode)
 
-        c5, c6, c7, c8 = st.columns(4)
-        c5.metric("Stability", f"{sim['stability']:.3f}")
-        c6.metric("Trust", f"{sim['trust_index']:.3f}")
-        c7.metric("Alignment", f"{sim['alignment']:.3f}")
-        c8.metric("Ego", f"{sim['ego']:.3f}")
+        # Patch S2.1: keep the human-readable reading and repair questions above the machinery.
+        # The detailed Stress Test visuals are still available, but they no longer dominate
+        # the first read of the result.
+        with st.expander("Stress Test visuals and agent traces", expanded=False):
+            st.caption(
+                "Diagnostic visuals only. These charts explain the scenario-pressure run; "
+                "they do not create a separate decision or authority claim."
+            )
+            c5, c6, c7, c8 = st.columns(4)
+            c5.metric("Stability", f"{sim['stability']:.3f}")
+            c6.metric("Trust", f"{sim['trust_index']:.3f}")
+            c7.metric("Alignment", f"{sim['alignment']:.3f}")
+            c8.metric("Ego", f"{sim['ego']:.3f}")
 
-        render_pulse_tree(
-            display_score_from_judgment(report, {"verdict": verdict}),
-            sim["ego"],
-            sim["alignment"],
-            title="Stress Test Tree",
-            state_override=verdict,
-            mode="Stress Test",
-        )
+            render_pulse_tree(
+                display_score_from_judgment(report, {"verdict": verdict}),
+                sim["ego"],
+                sim["alignment"],
+                title="Stress Test Tree",
+                state_override=verdict,
+                mode="Stress Test",
+            )
 
-        st.plotly_chart(plot_trace(sim), use_container_width=True)
+            st.plotly_chart(plot_trace(sim), use_container_width=True)
 
-        chart_col, table_col = st.columns([1, 1.2])
-        with chart_col:
-            st.plotly_chart(action_chart(sim), use_container_width=True)
-        with table_col:
-            st.markdown("### Test voices")
-            st.dataframe(pd.DataFrame(sim.get("agent_profiles", [])), use_container_width=True, hide_index=True)
+            chart_col, table_col = st.columns([1, 1.2])
+            with chart_col:
+                st.plotly_chart(action_chart(sim), use_container_width=True)
+            with table_col:
+                st.markdown("### Test voices")
+                st.dataframe(pd.DataFrame(sim.get("agent_profiles", [])), use_container_width=True, hide_index=True)
 
         st.markdown("### Why this result?")
         reason_cols = st.columns(3)
