@@ -1,15 +1,37 @@
-# Patch UI-TABS-1 — Module Tab Containment Fix
+# ALETHEIA Tree / Threshold Band + Semantic Message Patch
 
-## Problem
-After switching between ALETHEIA modules, multiple module bodies could appear visually stacked on the page. This made it look like Mirror Check, Stress Test, Evidence Lab, World Lens, Boundary Cases, Protocol Guide, and Why ALETHEIA were all open at once.
-
-## Change
-- Adds fail-closed CSS containment rules for Streamlit tab panels.
-- Explicitly hides tab panels marked `hidden` or `aria-hidden="true"`.
-- Adds a modern `:has(...)` fallback so only the selected module panel remains visible if Streamlit/browser styling fails to collapse inactive panels.
-
-## Changed files
+Changed file:
 - `app.py`
 
-## Notes
-This patch does not change scoring, scanner logic, receipts, or module behavior. It only restores the intended single-module visual surface.
+## Semantic scanner UI message
+Improves the green/safeguard case copy:
+- If concrete mechanisms or sovereignty/reversibility signals are detected, the UI now says:
+  "Concrete safeguards detected. No strong pressure relationship was detected by this scanner; human review still required."
+- If neither pressure nor safeguards are detected, the UI now distinguishes that from a safeguard-positive result.
+
+## Threshold language
+Updates display-only review-band language:
+- `Threshold− / near Asylum`: closer to Asylum; repair is needed before trust can increase.
+- `Threshold / middle review`: safeguards are mixed, incomplete, or unclear.
+- `Threshold+ / near Sanctuary`: safeguards are visible, but not a final safety claim.
+
+Canonical taxonomy remains:
+- `ASYLUM`
+- `THRESHOLD`
+- `SANCTUARY`
+
+The plus/minus bands are visual/explanatory only.
+
+## Tree / canopy visualization
+Adds a clearer visual review-band rail inside the tree card:
+- Asylum → Threshold− → Threshold → Threshold+ → Sanctuary
+- Active band is highlighted with a colored pill and marker.
+- The tree canopy color for THRESHOLD now shifts by band:
+  - Threshold−: warmer orange
+  - Threshold: yellow
+  - Threshold+: yellow-green
+
+This makes the tree communicate *where inside the review boundary* the case sits, without changing receipt metrics or protocol scoring.
+
+## Validation
+- `python -m py_compile app.py` passed.

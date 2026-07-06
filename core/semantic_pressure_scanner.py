@@ -31,14 +31,14 @@ CLAIM_TERMS: tuple[str, ...] = (
 # Hard mechanism language: concrete structures that make claims reviewable,
 # contestable, reversible, or limited.
 MECHANISM_TERMS: tuple[str, ...] = (
-    "appeal", "appeals", "audit", "audit trail", "public audit", "time limit",
-    "term limit", "expiry", "sunset", "revocation", "revoke", "fallback",
-    "human review", "human override", "independent review", "independent oversight",
+    "appeal", "appeals", "appealed", "appealable", "appeal window", "audit", "audits", "audited", "independently audited", "independent audit", "audit trail", "public audit", "time limit",
+    "term limit", "review window", "within 30 days", "expiry", "automatic expiry", "sunset", "revocation", "revoke", "revoked", "reversible", "fallback",
+    "human review", "human override", "reviewed", "review", "independent review", "independent oversight",
     "independent challenge", "correction", "rectification", "evidence requirement",
     "evidence standard", "exit right", "opt-out", "withdrawal", "non-retaliation",
     "plain-language notice", "public reasoning", "ombudsman", "due process",
-    "beroepsprocedure", "beroep", "auditlog", "publieke audit", "tijdslimiet",
-    "termijn", "vervaldatum", "herroeping", "herroepen", "fallback", "noodpad",
+    "beroepsprocedure", "beroep", "in beroep", "auditlog", "geaudit", "onafhankelijk geaudit", "publieke audit", "tijdslimiet",
+    "termijn", "binnen 30 dagen", "vervaldatum", "automatische vervaldatum", "herroeping", "herroepen", "herroepbaar", "fallback", "noodpad",
     "menselijke review", "menselijke controle", "menselijke override", "onafhankelijke review",
     "onafhankelijk toezicht", "onafhankelijke toetsing", "correctie", "bewijsvereiste",
     "bewijsstandaard", "exitrecht", "opt-out", "intrekken", "geen vergelding",
@@ -47,23 +47,30 @@ MECHANISM_TERMS: tuple[str, ...] = (
 
 GRIP_TERMS: tuple[str, ...] = (
     "must", "shall", "required", "mandatory", "obliged", "compulsory", "only if",
-    "only after", "conditioned on", "conditional on", "non-compliance", "suspend",
+    "only after", "only possible after", "after identity verification", "conditioned on", "conditional on", "requires", "require", "required for access", "unless verified", "non-compliance", "suspend",
     "terminated", "irrevocable", "permanent", "without appeal", "without fallback",
     "no appeal", "no fallback", "cannot refuse", "may not refuse", "access denied",
     "moet", "moeten", "dient", "dienen", "verplicht", "vereist", "alleen als",
-    "enkel mogelijk na", "alleen mogelijk na", "voorwaarde", "voorwaardelijk",
+    "enkel mogelijk na", "alleen mogelijk na", "pas mogelijk na", "na identiteitsverificatie", "voorwaarde", "voorwaardelijk",
     "non-compliance", "niet-naleving", "opschorten", "beeindigd", "beëindigd",
     "onherroepelijk", "permanent", "zonder beroep", "zonder fallback",
     "geen beroep", "geen alternatief", "kan niet weigeren", "toegang geweigerd",
 )
 
 ACCESS_TERMS: tuple[str, ...] = (
-    "access", "service", "services", "benefits", "housing", "food", "water",
+    "access", "public benefits", "basic benefits", "essential services", "basic services", "service", "services", "benefits", "welfare", "housing", "food", "water",
     "medical", "healthcare", "care", "license", "licence", "application", "account",
-    "identity", "id", "biometric", "verification", "work", "education", "safety",
-    "toegang", "dienst", "diensten", "uitkering", "huisvesting", "woning", "voedsel",
-    "water", "medisch", "zorg", "licentie", "applicatie", "account", "identiteit",
-    "id", "biometrisch", "verificatie", "werk", "onderwijs", "veiligheid",
+    "work", "education", "safety",
+    "toegang", "publieke voorzieningen", "basisvoorzieningen", "basisdiensten", "dienst", "diensten", "uitkering", "toeslagen", "huisvesting", "woning", "voedsel",
+    "water", "medisch", "zorg", "licentie", "applicatie", "account",
+    "werk", "onderwijs", "veiligheid",
+)
+
+IDENTITY_TERMS: tuple[str, ...] = (
+    "identity", "id", "identity verification", "id verification", "verified identity",
+    "biometric", "biometric verification", "verification", "verified",
+    "identiteit", "identiteitsverificatie", "id-verificatie", "geverifieerde identiteit",
+    "biometrisch", "biometrische verificatie", "verificatie", "geverifieerd",
 )
 
 PERMANENCE_TERMS: tuple[str, ...] = (
@@ -74,8 +81,8 @@ PERMANENCE_TERMS: tuple[str, ...] = (
 )
 
 SOVEREIGNTY_TERMS: tuple[str, ...] = (
-    "may", "can", "right to", "has the right", "appeal", "revoke", "withdraw",
-    "opt out", "fallback", "human review", "challenge", "correction", "at any time",
+    "may", "can", "right to", "has the right", "appeal", "appealed", "appealable", "revoke", "revoked", "revocation", "withdraw",
+    "opt out", "fallback", "human review", "reviewed", "review window", "challenge", "correction", "audit", "audited", "independent audit", "independently audited", "time limit", "within 30 days", "at any time",
     "mag", "kan", "heeft het recht", "recht om", "beroep", "herroepen",
     "intrekken", "opt-out", "alternatief", "menselijke review", "bezwaar", "correctie",
     "te allen tijde", "op elk moment",
@@ -164,6 +171,28 @@ def _find_term_positions(tokens: list[str], terms: Iterable[str]) -> list[tuple[
     return sorted(positions, key=lambda item: item[0])
 
 
+def _sentence_contains(text: str, term_group: Iterable[str]) -> bool:
+    return _count_terms(text, term_group) > 0
+
+
+def _sentence_identity_gate(text: str) -> bool:
+    """Detect access gated by identity/verification in the same sentence.
+
+    This catches phrases like "Access to public benefits is only possible after
+    identity verification", where the pressure is the relationship between
+    access, conditionality, and identity verification rather than any single word.
+    """
+    sentences = re.split(r"(?<=[.!?;])\s+|\n+", text or "")
+    for sentence in sentences:
+        if (
+            _sentence_contains(sentence, ACCESS_TERMS)
+            and _sentence_contains(sentence, GRIP_TERMS)
+            and _sentence_contains(sentence, IDENTITY_TERMS)
+        ):
+            return True
+    return False
+
+
 def _excerpt(tokens: list[str], center_a: int, center_b: int, radius: int = 8) -> str:
     start = max(0, min(center_a, center_b) - radius)
     end = min(len(tokens), max(center_a, center_b) + radius + 1)
@@ -182,6 +211,16 @@ def proximity_scan(text: str, *, window: int = 9) -> tuple[ProximityHit, ...]:
     permanence_positions = _find_term_positions(tokens, PERMANENCE_TERMS)
 
     hits: list[ProximityHit] = []
+    if _sentence_identity_gate(text):
+        hits.append(
+            ProximityHit(
+                category="identity_gated_access",
+                left="conditional access",
+                right="identity / verification",
+                distance=0,
+                excerpt=(text or "").strip()[:220],
+            )
+        )
     for left_idx, left_term in grip_positions:
         for right_idx, right_term in access_positions:
             distance = abs(left_idx - right_idx)
@@ -217,6 +256,9 @@ def proximity_scan(text: str, *, window: int = 9) -> tuple[ProximityHit, ...]:
         if key not in seen:
             seen.add(key)
             clean.append(hit)
+
+    priority = {"identity_gated_access": 0, "grip_near_access": 1, "permanence_near_access": 2}
+    clean.sort(key=lambda hit: (priority.get(hit.category, 9), hit.distance, hit.left, hit.right))
     return tuple(clean[:8])
 
 
@@ -229,6 +271,7 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     modal_pressure = _count_terms(normalized, GRIP_TERMS) + _count_terms(normalized, PERMANENCE_TERMS)
     sovereignty = _count_terms(normalized, SOVEREIGNTY_TERMS)
     hits = proximity_scan(normalized)
+    identity_gate = _sentence_identity_gate(normalized)
 
     ratio = float(claims / max(mechanisms, 1))
     notes: list[str] = []
@@ -238,6 +281,9 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     if hits:
         notes.append("Contextual pressure detected: grip/permanence language appears close to access, identity, service, or basic-rights terms.")
         adjustment -= 0.18
+    if identity_gate:
+        notes.append("Identity-gated access pattern: access/basic-service language is conditioned on identity or verification in the same sentence.")
+        adjustment -= 0.14
     if claims >= 3 and mechanisms == 0:
         notes.append("Rhetoric-to-mechanism gap: soft ethical claims appear without concrete safeguards.")
         adjustment -= 0.16
@@ -247,6 +293,8 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     if modal_pressure > sovereignty:
         notes.append("Modal pressure outweighs sovereignty language: obligation or permanence terms exceed appeal, revocation, fallback, or choice language.")
         adjustment -= 0.08
+    if mechanisms >= 2 and sovereignty >= 1 and not hits and not identity_gate:
+        notes.append("Concrete safeguards detected: appeal, audit, review, revocation, time-limit, or reversibility language is visible.")
     if governance_context and claims > 0 and mechanisms == 0 and not hits:
         fail_closed = True
         notes.append("Fail-closed review: governance/value language was detected, but no recognizable safeguard structure was found.")
@@ -254,7 +302,7 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     if not notes:
         notes.append("No strong semantic pressure pattern detected by this deterministic scanner. Human review still required.")
 
-    if hits or fail_closed or adjustment <= -0.24:
+    if hits or identity_gate or fail_closed or adjustment <= -0.24:
         state = "THRESHOLD"
         risk = "Needs safeguards"
     elif adjustment <= -0.10:

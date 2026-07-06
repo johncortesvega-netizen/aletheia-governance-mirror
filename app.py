@@ -1898,9 +1898,9 @@ def apply_guardrail_verdict(base_verdict: str, stress_label: str, needs_review: 
 
 REVIEW_BAND_LABELS = {
     "ASYLUM": "Asylum",
-    "THRESHOLD_MINUS": "Needs Repair",
-    "THRESHOLD": "Needs Review",
-    "THRESHOLD_PLUS": "Near low-risk boundary",
+    "THRESHOLD_MINUS": "Threshold− / near Asylum",
+    "THRESHOLD": "Threshold / middle review",
+    "THRESHOLD_PLUS": "Threshold+ / near Sanctuary",
     "SANCTUARY": "Sanctuary",
 }
 
@@ -1911,9 +1911,9 @@ def review_band_for_state(verdict: str, report: dict | None = None, sim: dict | 
 
     Canonical taxonomy remains ASYLUM / THRESHOLD / SANCTUARY. The middle
     state receives a display-only review band:
-    - Needs Repair: closer to Asylum, but still repairable.
-    - Needs Review: mixed/incomplete safeguards.
-    - Near low-risk boundary: mostly stable, but not a final safety or authority claim.
+    - Threshold−: closer to Asylum; repair is needed before trust can increase.
+    - Threshold: middle review zone; safeguards are mixed, incomplete, or unclear.
+    - Threshold+: closer to Sanctuary; safeguards are visible, but not a final safety claim.
     """
     state = str(verdict or "THRESHOLD").upper()
     report = report or {}
@@ -1942,20 +1942,20 @@ def review_band_for_state(verdict: str, report: dict | None = None, sim: dict | 
         return {
             "band": "THRESHOLD_MINUS",
             "label": REVIEW_BAND_LABELS["THRESHOLD_MINUS"],
-            "summary": "Closer to Asylum, but still repairable.",
+            "summary": "Closer to Asylum; repair is needed before trust can increase.",
         }
 
     if integrity >= 0.62 and collapse <= 0.18 and trust >= 0.86 and alignment >= 0.86 and ego <= 0.08:
         return {
             "band": "THRESHOLD_PLUS",
             "label": REVIEW_BAND_LABELS["THRESHOLD_PLUS"],
-            "summary": "Mostly stable, but not fully safe yet.",
+            "summary": "Closer to Sanctuary; safeguards are visible, but not a final safety claim.",
         }
 
     return {
         "band": "THRESHOLD",
         "label": REVIEW_BAND_LABELS["THRESHOLD"],
-        "summary": "Mixed or incomplete safeguards require human review.",
+        "summary": "Middle review zone; safeguards are mixed, incomplete, or unclear.",
     }
 
 
@@ -2064,6 +2064,27 @@ TREE_VISUAL_CANOPY_LAYER_COUNT = 8
 TREE_VISUAL_CAPTION_CLASS = "aletheia-tree-caption-below-visual"
 TREE_VISUAL_CENTRAL_GLOW_REMOVED = True
 
+def visual_review_band_for_tree(score: float, state: str) -> dict:
+    """Return visual-only band copy for the tree/canopy display.
+
+    Canonical taxonomy remains SANCTUARY / THRESHOLD / ASYLUM. This helper
+    only makes the middle THRESHOLD zone easier to understand visually.
+    """
+    state_key = (state or "THRESHOLD").upper()
+    score = max(0.0, min(1.0, float(score)))
+    if state_key == "ASYLUM":
+        return {"band": "ASYLUM", "label": "Asylum", "summary": "high-risk review zone", "color": "#db7777", "position": 8}
+    if state_key == "SANCTUARY":
+        return {"band": "SANCTUARY", "label": "Sanctuary", "summary": "low-capture review zone", "color": "#8fbc8f", "position": 92}
+    if state_key == "QUESTION_PROMPT":
+        return {"band": "QUESTION_PROMPT", "label": "Review prompt", "summary": "question mode", "color": "#8ab4f8", "position": 50}
+    if score < 0.49:
+        return {"band": "THRESHOLD_MINUS", "label": "Threshold−", "summary": "closer to Asylum; repair needed", "color": "#d8894d", "position": 32}
+    if score >= 0.56:
+        return {"band": "THRESHOLD_PLUS", "label": "Threshold+", "summary": "closer to Sanctuary; safeguards visible", "color": "#b6c978", "position": 68}
+    return {"band": "THRESHOLD", "label": "Threshold", "summary": "middle review zone", "color": "#e5c36b", "position": 50}
+
+
 def render_pulse_tree(
     score: float,
     ego: float,
@@ -2118,6 +2139,11 @@ def render_pulse_tree(
         leaf_color = "#db7777"
         glow_color = "rgba(219,119,119,0.28)"
 
+    visual_band = visual_review_band_for_tree(score, state)
+    if state == "THRESHOLD":
+        leaf_color = visual_band["color"]
+        glow_color = f"{visual_band['color']}55"
+
     copy = tree_copy_for_state(state, mode=mode)
     canopy_opacity = 0.28 + (score * 0.62)
     # Patch 71.2 baseline kept for regression-test continuity:
@@ -2147,6 +2173,17 @@ def render_pulse_tree(
         f'<span style="display:inline-block;margin:3px 5px 0 0;padding:3px 7px;border-radius:999px;background:rgba(255,255,255,0.08);color:#e8e0d0;font-size:11px;">{b}</span>'
         for b in branch_labels
     )
+    band_labels = [
+        ("ASYLUM", "Asylum"),
+        ("THRESHOLD_MINUS", "Threshold−"),
+        ("THRESHOLD", "Threshold"),
+        ("THRESHOLD_PLUS", "Threshold+"),
+        ("SANCTUARY", "Sanctuary"),
+    ]
+    band_html = "".join(
+        f'<span style="display:inline-block;margin:0 4px 4px 0;padding:4px 8px;border-radius:999px;border:1px solid {visual_band["color"] if key == visual_band["band"] else "rgba(255,255,255,0.12)"};background:{visual_band["color"] if key == visual_band["band"] else "rgba(255,255,255,0.05)"};color:{"#0b1020" if key == visual_band["band"] else "#aeb7c6"};font-size:11px;font-weight:{"700" if key == visual_band["band"] else "500"};">{label}</span>'
+        for key, label in band_labels
+    )
 
     svg_html = f"""
     <div style="
@@ -2166,12 +2203,22 @@ def render_pulse_tree(
         <div style="color:#aeb7c6;font-size:13px;margin-bottom:8px;">
             Mode: <strong>{mode}</strong>
             · State: <strong style="color:{leaf_color};">{state}</strong>
+            · Band: <strong style="color:{visual_band['color']};">{visual_band['label']}</strong>
             · {copy.get('score_label', 'Visual tree score')} {score:.2f}
             · Alignment {alignment:.2f}
             · Ego {ego:.2f}
         </div>
         <div style="color:#e8e0d0;font-size:13px;line-height:1.45;margin-bottom:10px;">
             <strong>{copy.get('headline', state)}</strong> — {copy.get('caption', '')}
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.10);background:rgba(255,255,255,0.045);border-radius:12px;padding:9px 10px;margin-bottom:10px;">
+            <div style="color:#e8e0d0;font-size:12px;margin-bottom:6px;">
+                <strong>Visual review band:</strong> {visual_band['label']} — {visual_band['summary']}
+            </div>
+            <div>{band_html}</div>
+            <div style="height:8px;border-radius:999px;background:linear-gradient(90deg,#db7777 0%,#d8894d 32%,#e5c36b 50%,#b6c978 68%,#8fbc8f 100%);position:relative;margin-top:4px;">
+                <span style="position:absolute;left:calc({visual_band['position']}% - 5px);top:-4px;width:14px;height:14px;border-radius:999px;background:{visual_band['color']};border:2px solid #0b1020;display:block;"></span>
+            </div>
         </div>
         <div style="color:#aeb7c6;font-size:12px;line-height:1.5;margin-bottom:10px;">
             Root: <strong>{copy.get('root', 'Human review')}</strong> · Trunk: <strong>{copy.get('trunk', 'Evidence + accountability')}</strong><br/>
@@ -2203,7 +2250,7 @@ def render_pulse_tree(
             {fallen_svg}
         </svg>
         <div class="{TREE_VISUAL_CAPTION_CLASS}" style="text-align:center;color:#aeb7c6;font-size:11px;line-height:1.45;margin-top:12px;">
-            Visual tree score is explanatory; receipt integrity remains the protocol metric.
+            Visual tree and review band are explanatory; receipt integrity remains the protocol metric.
         </div>
     </div>
     """
@@ -5203,8 +5250,10 @@ with tab_boundary:
                     st.warning("Fail-closed review: recognizable safeguards were missing or insufficient for the detected governance/value language.")
                 elif semantic_scan.proximity_hits:
                     st.warning("Contextual pressure pattern detected near access, identity, service, or basic-rights language.")
+                elif semantic_scan.mechanism_count > 0 or semantic_scan.sovereignty_count > 0:
+                    st.success("Concrete safeguards detected. No strong pressure relationship was detected by this scanner; human review still required.")
                 else:
-                    st.info("No strong pressure relationship detected by this scanner. Human review still required.")
+                    st.info("No strong pressure relationship or concrete safeguard structure detected by this scanner. Human review still required.")
                 st.code(format_semantic_pressure_report(semantic_scan), language="text")
                 with st.expander("Normalized text used for scan", expanded=False):
                     st.code(semantic_scan.normalized_text, language="text")
