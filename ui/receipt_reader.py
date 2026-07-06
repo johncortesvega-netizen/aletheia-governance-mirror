@@ -38,11 +38,11 @@ RECEIPT_READER_PAGE_COPY = ModulePageTemplateCopy(
         "Upload one ALETHEIA receipt file first: .txt, .md, .json, or .zip.",
         "Start with the native state, review pressure, protocol label, and module source.",
         "Open Native receipt values only when you need exact copied fields.",
-        "Use batch ZIP reading as an index of receipts, not as a merged verdict.",
+        "Use batch ZIP reading as an index of receipts, not as a merged decision.",
         "Treat all failure-mode language as review signals for human interpretation, not proof of wrongdoing or final truth.",
     ),
     input_guidance="Upload only ALETHEIA receipt artifacts. Do not use this reader for general documents, claims, or live scoring.",
-    result_guidance="Treat the reader output as an explanation of the uploaded receipt, not as a new reading or a second verdict.",
+    result_guidance="Treat the reader output as an explanation of the uploaded receipt, not as a new reading, second label, or decision.",
     observed_reasons_guidance="Compare the reader brief, native values, parsing limits, and failure-mode signals before relying on the receipt.",
     repair_questions_guidance="Use human-review questions to inspect gaps, safeguards, appeal paths, missing evidence, or pressure signals before acting.",
     receipt_guidance="Receipt Reader does not create or alter receipts; it explains local user-held receipts and batch ZIPs for review.",
@@ -65,7 +65,7 @@ STATE_DEFINITIONS = {
     "THRESHOLD": "a review-needed internal reading where unresolved safeguards, appeal paths, or transparency signals should be inspected before reliance.",
     "ASYLUM": "a high-pressure internal reading where escalation-level human review and safeguard inspection should come before any reliance.",
     "QUESTION_PROMPT": "a review-tool prompt rather than a scored scenario receipt; it preserves a question for human inspection.",
-    "WORLD_LENS_EVIDENCE_VIEW": "a selected-year evidence view for country-year coverage and allocation context, not a country certification or government rating.",
+    "WORLD_LENS_EVIDENCE_VIEW": "a selected-year evidence view for country-year coverage and allocation context, not a country certification, government rating, or political judgment.",
 }
 
 STATE_BRIEF_PREFIX = {
@@ -80,7 +80,7 @@ STATE_BRIEF_PREFIX = {
 FAILURE_MODE_REVIEW_SIGNALS = [
     (
         "Authority drift",
-        "when a system starts sounding like it can decide, certify, command, legitimize, rank, punish, or replace human judgment.",
+        "when a system starts sounding like it can decide, certify, command, legitimize, rank, punish, or replace accountable human judgment.",
     ),
     (
         "Evidence inflation",
@@ -88,7 +88,7 @@ FAILURE_MODE_REVIEW_SIGNALS = [
     ),
     (
         "Flattery pressure",
-        "when approval, reassurance, or validation is disguised as neutral analysis.",
+        "when reassurance or status-confirming language is disguised as neutral analysis.",
     ),
     (
         "Capture pressure",
@@ -96,7 +96,7 @@ FAILURE_MODE_REVIEW_SIGNALS = [
     ),
     (
         "Sanctification drift",
-        "when poetic, religious, moral, symbolic, or higher-truth language gets turned into operational authority.",
+        "when poetic, religious, moral, symbolic, or higher-truth language gets turned into operational control.",
     ),
     (
         "False neutrality",
@@ -119,7 +119,7 @@ STATUS_LINES = {
     "THRESHOLD": "The uploaded receipt records a review-needed internal reading. Safeguards, appealability, and transparency deserve closer inspection.",
     "ASYLUM": "The uploaded receipt records high review pressure. Human review and safeguard inspection should come before any reliance.",
     "QUESTION_PROMPT": "The uploaded receipt is a review-tool prompt, not a scored scenario receipt.",
-    "WORLD_LENS_EVIDENCE_VIEW": "The uploaded receipt is a World Lens selected-year evidence view, not a single scenario verdict or country certification.",
+    "WORLD_LENS_EVIDENCE_VIEW": "The uploaded receipt is a World Lens selected-year evidence view, not a single scenario decision or country certification.",
 }
 
 TEXT_FIELD_PATTERNS = {
@@ -132,7 +132,7 @@ TEXT_FIELD_PATTERNS = {
     "protocol_label": [r"(?im)^\s*(?:protocol label|protocol state|protocol judgment)\s*:\s*(.+?)\s*$"],
     "integrity": [r"(?im)^\s*(?:integrity|integrity reading)\s*:\s*(.+?)\s*$"],
     "friction": [r"(?im)^\s*(?:friction|capture pressure)\s*:\s*(.+?)\s*$"],
-    "collapse_probability": [r"(?im)^\s*(?:collapse probability|collapse)\s*:\s*(.+?)\s*$"],
+    "collapse_probability": [r"(?im)^\s*(?:collapse pressure|collapse)\s*:\s*(.+?)\s*$"],
     "trust": [r"(?im)^\s*(?:trust index|trust)\s*:\s*(.+?)\s*$"],
     "alignment": [r"(?im)^\s*alignment\s*:\s*(.+?)\s*$"],
     "ego": [r"(?im)^\s*ego\s*:\s*(.+?)\s*$"],
@@ -319,7 +319,7 @@ def _fields_from_world_lens_text(text: str) -> tuple[dict[str, str], dict[str, A
         "hidden_zero_seat_diagnostic_rows": _markdown_bullet_value(text, "Hidden zero-seat diagnostic rows"),
         "weighted_integrity": _markdown_bullet_value(text, "Weighted integrity"),
         "weighted_friction": _markdown_bullet_value(text, "Weighted friction"),
-        "weighted_collapse_probability": _markdown_bullet_value(text, "Weighted collapse probability"),
+        "weighted_collapse_probability": _markdown_bullet_value(text, "Weighted collapse pressure"),
         "average_empirical_coverage": _markdown_bullet_value(text, "Average empirical coverage"),
         "trust_raw_survey_coverage": _world_lens_coverage_value(text, "Trust raw survey"),
         "trust_prior_coverage": _world_lens_coverage_value(text, "Trust prior"),
@@ -348,7 +348,7 @@ def _world_lens_metric_rows(world: dict[str, Any]) -> list[dict[str, str]]:
     return [
         {"Metric": "Weighted Integrity", "Value": world.get("weighted_integrity", MISSING_VALUE), "Interpretation": "Year-level weighted governance integrity from the uploaded World Lens receipt."},
         {"Metric": "Weighted Friction", "Value": world.get("weighted_friction", MISSING_VALUE), "Interpretation": "Year-level weighted friction pressure from the uploaded receipt."},
-        {"Metric": "Weighted Collapse Pressure", "Value": world.get("weighted_collapse_probability", MISSING_VALUE), "Interpretation": "Native weighted collapse-probability field shown as collapse-pressure context, not a prediction or certification."},
+        {"Metric": "Weighted Collapse Pressure", "Value": world.get("weighted_collapse_probability", MISSING_VALUE), "Interpretation": "Native weighted collapse-pressure field shown as collapse-pressure context, not a prediction, decision, or certification."},
         {"Metric": "Average Empirical Coverage", "Value": world.get("average_empirical_coverage", MISSING_VALUE), "Interpretation": "Coverage reported by the uploaded World Lens receipt."},
         {"Metric": "Active Selected-Year Seats", "Value": world.get("active_selected_year_seats", MISSING_VALUE), "Interpretation": "9k allocation basis recorded in the uploaded receipt."},
         {"Metric": "Allocated Country Rows", "Value": world.get("allocated_country_rows", MISSING_VALUE), "Interpretation": "Country rows included in the selected-year evidence view."},
@@ -468,7 +468,7 @@ def _parse_ai_static_scan_context(text: str) -> dict[str, Any]:
     """Parse the subordinate AI static scan receipt section, if present.
 
     Patch 175 keeps this data below the primary Mirror Check / Stress Test
-    receipt. It is context, not a competing verdict.
+    receipt. It is context, not a competing decision.
     """
     section = _section_between_markers(
         text or "",
@@ -1180,7 +1180,7 @@ def _metric_section_caption(view: dict[str, Any]) -> str:
         return "QUESTION_PROMPT receipts intentionally suppress scored metrics."
     family = view.get("module_family")
     if family == "World Lens":
-        return "Selected-year evidence values from the uploaded World Lens receipt; no new verdict is generated."
+        return "Selected-year evidence values from the uploaded World Lens receipt; no new decision is generated."
     if family == "Stress Test / Simulation":
         return "Uploaded scenario receipt values, shown without rerunning the scenario."
     if family == "AI Integrity Mirror":
@@ -1199,7 +1199,7 @@ def _verbal_brief(view: dict[str, Any]) -> str:
     fields = view.get("fields") or {}
     family = view.get("module_family")
     if family == "World Lens":
-        return f"{prefix} — {definition} The evidence bundle is preserved for readable human inspection; no new World Lens verdict is created."
+        return f"{prefix} — {definition} The evidence bundle is preserved for readable human inspection; no new World Lens decision is created."
     if family == "AI Integrity Mirror":
         artifact = (view.get("ai_integrity_fields") or {}).get("artifact_type", MISSING_VALUE)
         return f"{prefix} — {definition} This is a static artifact review for {artifact}; it does not test a live model or vendor."
@@ -1408,7 +1408,7 @@ def _render_ai_static_scan_context(container: Any, view: dict[str, Any]) -> None
         with container.expander("AI static scan context — subordinate to primary receipt", expanded=False) as expander:
             expander.caption(
                 "Parsed from the uploaded receipt. This context is subordinate to the primary "
-                "Mirror Check / Stress Test receipt and does not create a competing verdict."
+                "Mirror Check / Stress Test receipt and does not create a competing decision."
             )
             protocol_context_state = context.get('protocol_context_state') or view.get('native_state') or context.get('static_scan_state')
             protocol_context_risk = context.get('protocol_context_risk') or view.get('fields', {}).get('risk') or context.get('static_scan_risk')
@@ -1535,7 +1535,7 @@ def _plain_receipt_summary_text(view: dict[str, Any]) -> str:
     return (
         "This is a record of an ALETHEIA review, a kind of digital mirror. "
         "The reader explains what the uploaded receipt says; it does not rerun the test, "
-        "change the values, approve the result, or decide whether something is truly safe, good, or true. "
+        "change the values, approve the result, or decide whether something is safe, good, or true. "
         "Real people must still review the receipt before relying on it.\n\n"
         f"The receipt records **{_plain_state_name(native_state)}** with **{standard_band}**. "
         f"The protocol label copied from the receipt is **{protocol_label}**, and the module source is **{module}**. "
@@ -1560,7 +1560,7 @@ def _render_plain_language_receipt_summary(container: Any, view: dict[str, Any])
 
     with container.expander("How the reader translates power, correction, and access", expanded=False) as panel:
         panel.write(
-            "This is a plain-language translation layer. It does not add a new score, verdict, or certification."
+            "This is a plain-language translation layer. It does not add a new score, label, decision, or certification."
         )
         panel.table(_plain_power_distribution_rows(view))
 
@@ -1595,8 +1595,8 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
         with container.expander("World Lens internal taxonomy distribution", expanded=False) as expander:
             expander.table(world_distribution)
 
-    with container.expander("Audit and validation data — native receipt values", expanded=False) as expander:
-        expander.caption("Exact values copied from the uploaded receipt. Missing values are not inferred. This is not certification.")
+    with container.expander("Audit data — native receipt values", expanded=False) as expander:
+        expander.caption("Exact values copied from the uploaded receipt. Missing values are not inferred. These values are not certification.")
         expander.table(_native_values_rows(view))
 
 
@@ -1710,7 +1710,7 @@ def _render_world_lens_bundle(container: Any, parsed: dict[str, Any]) -> None:
                     raw_expander.write("No raw preview rows found in this supporting evidence table.")
 
     container.info(
-        "World Lens Evidence Bundle reading preserves uploaded receipt, metadata, and CSV evidence tables. It does not rescore, merge verdicts, "
+        "World Lens Evidence Bundle reading preserves uploaded receipt, metadata, and CSV evidence tables. It does not rescore, merge labels, "
         "certify countries or governments, or create a new receipt."
     )
 
@@ -1726,7 +1726,7 @@ def _render_batch_zip(container: Any, parsed: dict[str, Any]) -> None:
     distribution = parsed.get("distribution") or {}
     if distribution:
         container.table([{"Native State": key, "Count": value} for key, value in sorted(distribution.items())])
-    container.info("Batch ZIP reading summarizes uploaded receipts only. It does not rescore, merge verdicts, or create a new receipt.")
+    container.info("Batch ZIP reading summarizes uploaded receipts only. It does not rescore, merge labels, or create a new receipt.")
 
     views = parsed.get("views") or []
     if not views:

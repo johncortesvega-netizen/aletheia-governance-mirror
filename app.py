@@ -3139,13 +3139,13 @@ def evaluate_expected_verdict(expected: str | None, actual: str) -> tuple[str, s
       expected ASYLUM/THRESHOLD -> SANCTUARY
     """
     if not expected:
-        return "NO EXPECTED", "No expected verdict provided."
+        return "NO EXPECTED", "No expected internal label provided."
 
     expected = expected.upper()
     actual = actual.upper()
 
     if expected == actual:
-        return "PASS", "Actual verdict matches expected verdict."
+        return "PASS", "Actual internal label matches expected internal label."
 
     if expected == "SANCTUARY" and actual == "THRESHOLD":
         return "WARN", "Conservative downgrade: safe idea was routed to review."
@@ -3159,7 +3159,7 @@ def evaluate_expected_verdict(expected: str | None, actual: str) -> tuple[str, s
     if expected == "ASYLUM" and actual == "THRESHOLD":
         return "FAIL", "Under-escalation: Asylum phrase was only labeled Threshold."
 
-    return "FAIL", "Actual verdict does not match expected verdict."
+    return "FAIL", "Actual internal label does not match expected internal label."
 
 
 
@@ -3170,22 +3170,28 @@ def normalize_stress_results_df(df: pd.DataFrame) -> pd.DataFrame:
     """
     df = df.copy()
 
-    if "Actual Verdict" not in df.columns and "Verdict" in df.columns:
-        df["Actual Verdict"] = df["Verdict"]
+    if "Expected Label" not in df.columns and "Expected Verdict" in df.columns:
+        df["Expected Label"] = df["Expected Verdict"]
+    if "Actual Label" not in df.columns and "Actual Verdict" in df.columns:
+        df["Actual Label"] = df["Actual Verdict"]
+    if "Actual Label" not in df.columns and "Verdict" in df.columns:
+        df["Actual Label"] = df["Verdict"]
+    if "Base Simulation Label" not in df.columns and "Base Simulation Verdict" in df.columns:
+        df["Base Simulation Label"] = df["Base Simulation Verdict"]
 
     defaults = {
-        "Expected Verdict": "",
-        "Actual Verdict": "THRESHOLD",
+        "Expected Label": "",
+        "Actual Label": "THRESHOLD",
         "Test Result": "NO EXPECTED",
-        "Test Note": "No expected verdict provided.",
+        "Test Note": "No expected internal label provided.",
         "Phrase": "",
         "Stress Label": "Unclassified",
         "Needs Review": "NO",
-        "Base Simulation Verdict": "",
+        "Base Simulation Label": "",
         "Guardrail Risk": "",
         "Integrity": None,
         "Friction": None,
-        "Collapse Probability": None,
+        "Collapse Pressure": None,
         "Power": "",
         "Transparency": "",
         "Regulation": "",
@@ -3263,18 +3269,18 @@ def run_stress_phrase(phrase: str, weights: dict, ego_tolerance: float, divine_f
     test_result, test_note = evaluate_expected_verdict(expected, verdict)
 
     return {
-        "Expected Verdict": expected or "",
-        "Actual Verdict": verdict,
+        "Expected Label": expected or "",
+        "Actual Label": verdict,
         "Test Result": test_result,
         "Test Note": test_note,
         "Phrase": phrase,
         "Stress Label": label,
         "Needs Review": needs_review,
-        "Base Simulation Verdict": base_verdict,
+        "Base Simulation Label": base_verdict,
         "Guardrail Risk": risk,
         "Integrity": round(report["integrity"], 3),
         "Friction": round(report["friction"], 3),
-        "Collapse Probability": round(report["collapse_probability"], 3),
+        "Collapse Pressure": round(report["collapse_probability"], 3),
         "Power": f"{scan['power_concentration']:.0%}",
         "Transparency": f"{scan['decision_transparency']:.0%}",
         "Regulation": f"{scan['regulatory_presence']:.0%}",
@@ -3321,7 +3327,7 @@ def sanitize_public_message(message: str) -> str:
 def local_governance_judgment(query: str, scan: dict, sim: dict, report: dict) -> dict:
     """
     Local fallback for the chat audit when no OpenAI key is configured.
-    Protocol Integrity v2: the final verdict is produced by the central
+    Protocol Integrity v2: the final internal label is produced by the central
     Sydney Protocol + MEI7 ethics aggregator, not by raw simulation alone.
     """
     integrity = float(report.get("integrity", 0.5))
@@ -3465,9 +3471,9 @@ def run_sydney_protocol_self_check() -> dict:
 
             case_failures = []
             if verdict in case.get("forbidden_verdicts", set()):
-                case_failures.append(f"forbidden verdict {verdict}")
+                case_failures.append(f"forbidden internal label {verdict}")
             if case.get("required_verdicts") and verdict not in case["required_verdicts"]:
-                case_failures.append(f"expected verdict in {sorted(case['required_verdicts'])}, got {verdict}")
+                case_failures.append(f"expected internal label in {sorted(case['required_verdicts'])}, got {verdict}")
             if case.get("required_risk") and risk != case["required_risk"]:
                 case_failures.append(f"expected risk {case['required_risk']}, got {risk}")
             if case.get("required_label_any") and not any(part.lower() in label.lower() for part in case["required_label_any"]):
@@ -3529,7 +3535,7 @@ def render_sydney_protocol_self_check_gate():
 
     with st.expander("Sydney Protocol logic check: PASS", expanded=False):
         st.dataframe(_protocol_taxonomy_ui_table_df(pd.DataFrame(check.get("results", []))), use_container_width=True, hide_index=True)
-        st.caption("These sentinel cases run fail-closed so broken guardrail logic cannot silently produce trusted outputs.")
+        st.caption("These sentinel cases run fail-closed so broken guardrail logic cannot silently produce outputs that look authoritative.")
 
 def llm_governance_judgment(query: str, scan: dict, sim: dict, report: dict) -> tuple[dict, str]:
     """
@@ -3664,13 +3670,13 @@ def build_witness_report(query: str, judgment: dict, scan: dict, sim: dict, repo
 Audit ID: {audit_id}
 Timestamp: {timestamp}
 Source: {source}
-Prototype notice: This is a symbolic audit report. It is not a legal, political, medical, religious, or institutional determination.
+Boundary notice: This is a symbolic mirror receipt for human review. It is not legal, political, medical, religious, institutional, or operational authorization.
 
 QUESTION / IDEA
 {query}
 
-VERDICT
-Internal prototype label: {judgment.get("verdict", "THRESHOLD")}
+PROTOCOL READING
+Internal review label: {judgment.get("verdict", "THRESHOLD")}
 Corruption risk: {judgment.get("corruption_risk", "Medium")}
 Stress label: {judgment.get("stress_label", "Unclassified")}
 
@@ -3680,7 +3686,7 @@ SUMMARY
 CORE METRICS
 Integrity: {report.get("integrity")}
 Friction: {report.get("friction")}
-Collapse probability: {report.get("collapse_probability")}
+Collapse pressure: {report.get("collapse_probability")}
 Trust friction: {report.get("trust_friction")}
 
 SIMULATION STATE
@@ -3705,7 +3711,7 @@ REASONS
 REQUIRED SAFEGUARDS
 {safeguards}
 
-QUESTIONS BEFORE TRUSTING THIS MODEL
+HUMAN REVIEW QUESTIONS BEFORE RELYING ON THIS READING
 {questions}
 
 FIVE STRATEGIC FUNCTIONS
@@ -3799,12 +3805,12 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     threshold_confirmed_repair_capacity = float(threshold_mapping.get("confirmed_repair_capacity", threshold_repair_index) or 0.0)
 
     detail_rows = [
-        f'<div><strong>Safety risk:</strong> {safe_risk}</div>',
+        f'<div><strong>Risk signal:</strong> {safe_risk}</div>',
         f'<div style="margin-top:0.15rem;"><strong>Humility note:</strong> {html.escape(_protocol_humility_note(verdict))}</div>',
     ]
     if verdict == "THRESHOLD":
         detail_rows.append(
-            f'<div style="margin-top:0.15rem;"><strong>Review band:</strong> {safe_review_band_label}</div>'
+            f'<div style="margin-top:0.15rem;"><strong>Review zone:</strong> {safe_review_band_label}</div>'
         )
     detail_rows.append(
         f'<div style="margin-top:0.15rem;"><strong>Stress label:</strong> {safe_stress_label}</div>'
@@ -3819,13 +3825,13 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     judgment_card_html = f"""
 <div class="soft-card">
   <div style="color:#aeb7c6;font-size:0.78rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;">
-    {safe_source} · Protocol-adjusted internal label
+    {safe_source} · Protocol reading state
   </div>
   <div style="color:{color};font-size:2rem;font-weight:900;margin-top:0.25rem;">
     {_protocol_metric_display(verdict)}
   </div>
   <div style="color:#c9c0b2;font-size:0.9rem;font-weight:700;margin-top:0.1rem;">
-    Internal taxonomy: {html.escape(str(verdict))}
+    Internal review label: {html.escape(str(verdict))}
   </div>
   {review_band_line}
   <div style="color:#e8e0d0;margin-top:0.5rem;">{detail_rows_html}</div>
@@ -3838,14 +3844,18 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     cols = st.columns(3)
     cols[0].metric("Integrity", f"{report['integrity']:.3f}")
     cols[1].metric("Friction", f"{report['friction']:.3f}")
-    cols[2].metric("Collapse probability", f"{report['collapse_probability']:.3f}")
+    cols[2].metric("Collapse pressure", f"{report['collapse_probability']:.3f}")
+    st.caption(
+        "Metric guide: Integrity reflects visible safeguards/evidence; Friction reflects control or access pressure; "
+        "Collapse pressure reflects stress under weak review paths. These are reading signals, not predictions or verdicts."
+    )
     if report.get("raw_metrics_before_ethics") or report.get("ethics_adjustment_applied") is not None:
         st.caption("These are ethics-calibrated reading metrics. Raw pre-ethics values stay in the local witness receipt.")
 
-    st.markdown("### Mirror Check review summary")
+    st.markdown("### How to read this Mirror Check output")
     st.caption(
-        "Plain-language panels for human review. These panels do not rescore the receipt, change the internal label, "
-        "or turn the reading into proof, permission, certification, or a final safety claim."
+        "Plain-language panels for human review. These panels explain the reading; they do not change the internal label, "
+        "grant permission, certify safety, or replace accountable human judgment."
     )
 
     row1 = st.columns(2, gap="large")
@@ -3855,16 +3865,16 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
                 """
                 This is a structured Mirror Check review. The system looked at the submitted text for pressure, power, evidence, safeguards, and repair needs.
 
-                Important: the computer does not decide anything here. It does not give official permission and it does not prove that something is safe, good, or true. The reading is a digital mirror for people to review.
+                Important: the computer does not decide anything here. It does not grant permission and it does not prove that something is safe, good, or true. The reading is a digital mirror for people to review.
                 """
             )
     with row1[1]:
         with st.expander("The main results", expanded=False):
-            st.markdown(f"- **Internal taxonomy label:** `{verdict}`")
+            st.markdown(f"- **Internal review label:** `{verdict}`")
             st.markdown(f"- **Risk reading:** `{judgment.get('corruption_risk', 'Medium')}`")
             st.markdown(f"- **Integrity:** `{report['integrity']:.3f}`")
             st.markdown(f"- **Friction:** `{report['friction']:.3f}`")
-            st.markdown(f"- **Collapse probability:** `{report['collapse_probability']:.3f}`")
+            st.markdown(f"- **Collapse pressure:** `{report['collapse_probability']:.3f}`")
             st.caption("Read these as review values, not as approval, rejection, prediction, or final truth.")
 
     row2 = st.columns(2, gap="large")
@@ -3874,11 +3884,11 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
                 """
                 Mirror Check asks whether control is concentrated in one actor, office, platform, dataset, model, committee, or hidden process. It also checks whether people have meaningful review, appeal, correction, and refusal paths.
 
-                A healthier reading usually has distributed evidence, visible reasons, human review, repair paths, and non-coercive access. A higher-pressure reading usually has opaque control, weak appeal, central authority, or conditional access to important needs.
+                A healthier reading usually has distributed evidence, visible reasons, human review, repair paths, and non-coercive access. A higher-pressure reading usually has opaque control, weak appeal, central control, or conditional access to important needs.
                 """
             )
     with row2[1]:
-        with st.expander("Threshold mapping review", expanded=False):
+        with st.expander("Threshold direction review", expanded=False):
             if threshold_mapping:
                 tcols = st.columns(4)
                 tcols[0].metric("Threshold direction", friendly_threshold_direction_label(str(threshold_mapping.get("threshold_direction", "Not recorded"))))
@@ -3887,7 +3897,7 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
                 tcols[3].metric("Confirmed repair", f"{float(threshold_mapping.get('confirmed_repair_capacity', threshold_mapping.get('repair_index', 0.0))):.3f}")
                 st.caption(
                     "Receipt preview only: this maps whether the reading is moving toward capture pressure, a balanced review zone, or the human/system boundary. "
-                    "It does not create a new verdict or enforcement path. Repair questions are a route, not proof that safeguards already exist. Z=1.0000 remains outside ALETHEIA’s claim."
+                    "It does not create a new decision or enforcement path. Repair questions are a route, not proof that safeguards already exist. Z=1.0000 remains outside ALETHEIA’s claim."
                 )
                 st.info(str(threshold_mapping.get("asymptote_note", "ALETHEIA does not claim final safety, final truth, or final authority. Ultimate questions and final authority remain outside code, metrics, receipts, hashes, trees, 9k structures, and institutional power.")))
                 st.caption(str(threshold_mapping.get("nine_k_threshold_steward_note", "9k is a human anti-tyranny scaffold / threshold steward, not Sanctuary or final legitimacy.")))
@@ -4217,7 +4227,7 @@ with tab_sim:
                 "Inspect repair questions before relying on the internal taxonomy label or metrics.",
             ),
             input_guidance="Start with your own scenario, load a demo on purpose, or use Manual test. ALETHEIA does not read examples by default. You lead.",
-            result_guidance="Treat Stress Test output as a scenario-pressure reading, not as prediction, accusation, certification, or final verdict.",
+            result_guidance="Treat Stress Test output as a scenario-pressure reading, not as prediction, accusation, certification, or final internal label.",
             observed_reasons_guidance="Check the visible stress signals, feature values, tree, and protocol notes before interpreting the reading.",
             repair_questions_guidance="Use repair questions to add safeguards, appeal paths, review limits, transparency, and exit/correction options.",
             receipt_guidance="Stress Test receipts are local review artifacts for a scenario run; they are not public-ledger records or official decisions.",
@@ -4545,7 +4555,7 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                     stress_rows.append({
                         "#": idx,
                         "State": verdict,
-                        "Review band": stress_review_band.get("label"),
+                        "Review zone": stress_review_band.get("label"),
                         "Risk": risk,
                         "Label": label,
                         "Integrity": "—" if integrity_value is None else round(float(integrity_value), 3),
@@ -4646,20 +4656,20 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         invisibility_report = st.session_state.get("last_invisibility_report")
         invisibility_note = " · Invisibility Filter: on" if isinstance(invisibility_report, dict) and invisibility_report.get("invisibility_filter_applied") else ""
         current_review_band = review_band_for_state(verdict, report, sim)
-        st.caption(f"Feature source: {last_input_mode} · Input status: {input_status_label} · Scan mode: {scan_mode} · Protocol label: {label} · Review band: {current_review_band.get('label')}{invisibility_note}")
+        st.caption(f"Feature source: {last_input_mode} · Input status: {input_status_label} · Scan mode: {scan_mode} · Protocol label: {label} · Review zone: {current_review_band.get('label')}{invisibility_note}")
 
         c1, c2, c3, c4 = st.columns(4)
         review_band = review_band_for_state(verdict, report, sim)
         review_band_label = review_band.get("label", verdict.title())
         review_band_summary = review_band.get("summary", "")
         result_display = f"<span style='color:{verdict_color}'>{_protocol_metric_display(verdict)}</span>"
-        result_display += f"<br><span style='font-size:0.9rem;color:#c9c0b2;'>Internal taxonomy: {html.escape(str(verdict))}</span>"
+        result_display += f"<br><span style='font-size:0.9rem;color:#c9c0b2;'>Internal review label: {html.escape(str(verdict))}</span>"
         if verdict == "THRESHOLD":
             result_display += f"<br><span style='font-size:1.05rem;color:#d4b88a;'>{review_band_label}</span>"
 
-        result_helper = f"Safety risk: {risk}<br>{_protocol_humility_note(verdict)}"
+        result_helper = f"Risk signal: {risk}<br>{_protocol_humility_note(verdict)}"
         if verdict == "THRESHOLD":
-            result_helper += f"<br>Review band: {review_band_label}"
+            result_helper += f"<br>Review zone: {review_band_label}"
 
         with c1:
             metric_card("Protocol reading", result_display, result_helper)
@@ -4668,7 +4678,7 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         with c3:
             metric_card("Friction", f"{report['friction']:.3f}", "Control pressure")
         with c4:
-            metric_card("Collapse probability", f"{report['collapse_probability']:.3f}", scan_mode)
+            metric_card("Collapse pressure", f"{report['collapse_probability']:.3f}", scan_mode)
 
         c5, c6, c7, c8 = st.columns(4)
         c5.metric("Stability", f"{sim['stability']:.3f}")
@@ -4701,7 +4711,7 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
         with reason_cols[1]:
             soft_card("Pattern over time", f"Trust {sim['trust_index']:.0%}, alignment {sim['alignment']:.0%}, ego {sim['ego']:.0%}.")
         with reason_cols[2]:
-            soft_card("Risk picture", f"Review band: {review_band_label}. {review_band_summary} Collapse risk: {'yes' if sim.get('collapse_risk') else 'no'}. Trust friction: {report['trust_friction']:.3f}. Grievance pressure: {sim.get('grievance_pressure', 0):.2f}. Safeguard gap: {sim.get('safeguard_gap', 0):.2f}.")
+            soft_card("Risk picture", f"Review zone: {review_band_label}. {review_band_summary} Collapse risk: {'yes' if sim.get('collapse_risk') else 'no'}. Trust friction: {report['trust_friction']:.3f}. Grievance pressure: {sim.get('grievance_pressure', 0):.2f}. Safeguard gap: {sim.get('safeguard_gap', 0):.2f}.")
 
         st.markdown("### Repair questions")
         st.caption("ALETHEIA asks questions here. It gives no orders and no final judgment.")
@@ -6202,7 +6212,7 @@ with tab_empirical:
                     if display_verdict_caption:
                         col_a.caption(display_verdict_caption)
                     col_b.metric("Integrity", _fmt_num(integrity_value))
-                    col_c.metric("Collapse probability", _fmt_num(collapse_value))
+                    col_c.metric("Collapse pressure", _fmt_num(collapse_value))
                     col_d.metric("Allocated seats", "—" if pd.isna(seats_value) else f"{int(seats_value):,}")
 
                     col_e, col_f, col_g, col_h = st.columns(4)
@@ -6357,7 +6367,7 @@ with tab_grid:
                 "Coverage limits: whether trust, WGI, V-Dem, population, identity, or taxonomy fields are present enough to interpret carefully.",
                 "Allocation context: how the 9k scaffold distributes seats as an analytical view, not as a real body or mandate.",
                 "Internal taxonomy distribution: how country-year rows fall across ALETHEIA's review labels without certifying countries.",
-                "Collapse-pressure patterns: weighted integrity, collapse probability, and high-pressure signals at selected-year level.",
+                "Collapse-pressure patterns: weighted integrity, collapse pressure, and high-pressure signals at selected-year level.",
                 "Authority boundary: no Global ID, no real 9k selection, no World Leader logic, no automatic resets, no country certification, and no governance decision.",
             ),
             safe_first_path=(
@@ -6907,7 +6917,7 @@ This is a World Lens context reflection for human review. It does not change Wor
         m1.metric("Countries scored", f"{countries_scored:,}")
         m2.metric(seat_metric_label, f"{total_seats:,}")
         m3.metric(f"Weighted {metric_scope_word} integrity", "—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
-        m4.metric(f"Weighted {metric_scope_word} collapse probability", "—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
+        m4.metric(f"Weighted {metric_scope_word} collapse pressure", "—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
 
         m5, m6, m7, m8, m9 = st.columns(5)
         m5.metric("Average empirical coverage", "—" if pd.isna(avg_coverage) else f"{avg_coverage:.1%}")
@@ -7303,7 +7313,7 @@ This is a World Lens selected-year evidence receipt. It records how the active E
 - Allocated country rows: **{countries_scored:,}**
 - Active selected-year seats: **{total_seats:,}**
 - Weighted integrity: **{"—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}"}**
-- Weighted collapse probability: **{"—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}"}**
+- Weighted collapse pressure: **{"—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}"}**
 - Average empirical coverage: **{"—" if pd.isna(avg_coverage) else f"{avg_coverage:.1%}"}**
 
 ### How power and control are distributed
@@ -7331,7 +7341,7 @@ World Lens uses population-weighted selected-year evidence to show where exposur
 
 - Weighted integrity: **{"—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}"}**
 - Weighted friction: **{"—" if pd.isna(weighted_friction) else f"{weighted_friction:.3f}"}**
-- Weighted collapse probability: **{"—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}"}**
+- Weighted collapse pressure: **{"—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}"}**
 - Average empirical coverage: **{"—" if pd.isna(avg_coverage) else f"{avg_coverage:.1%}"}**
 
 ## Coverage
@@ -7452,7 +7462,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
         )
         comparison_export["recommended_interpretation"] = np.where(
             comparison_export["_high_impact_node"],
-            "High-impact governance-risk node: high allocation plus low integrity or high collapse probability.",
+            "High-impact governance-risk node: high allocation plus low integrity or high collapse pressure.",
             "Read with selected-year coverage diagnostics and Sydney Protocol overlay."
         )
         comparison_export["sydney_protocol_overlay"] = "mirror_not_throne; anti_capture; non_divinization; appealability; transparency; fail_closed_if_guardrails_break"
@@ -7515,7 +7525,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                 metric_card("BLOCK", f"{signal.get('block', np.nan):,.0f} seats", f"{signal.get('block_pct', np.nan):.1%} of {signal_denominator_label}")
 
             st.write(
-                "High allocation plus low integrity or high collapse probability indicates a high-impact governance-risk node. "
+                "High allocation plus low integrity or high collapse pressure indicates a high-impact governance-risk node. "
                 "Low empirical coverage should reduce interpretive confidence. Verdict categories are protocol interpretations, "
                 "not legal or political determinations."
             )
@@ -7548,7 +7558,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             c1, c2, c3 = st.columns(3)
             c1.metric(f"Weighted {metric_scope_word} integrity", "—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
             c2.metric(f"Weighted {metric_scope_word} friction", "—" if pd.isna(weighted_friction) else f"{weighted_friction:.3f}")
-            c3.metric(f"Weighted {metric_scope_word} collapse probability", "—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
+            c3.metric(f"Weighted {metric_scope_word} collapse pressure", "—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
             if integrity_col in grid_source.columns and collapse_col in grid_source.columns:
                 scatter_df = grid_source.copy()
                 scatter_df["_integrity"] = _numeric_series(integrity_col)
@@ -7560,10 +7570,10 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                         mode="markers",
                         marker={"size": np.maximum(pd.to_numeric(scatter_df.get("seats_9k"), errors="coerce").fillna(1), 1) ** 0.5},
                         text=scatter_df.get("_hover_label", scatter_df.get("iso3", pd.Series("", index=scatter_df.index))),
-                        hovertemplate="%{text}<br>Integrity: %{x:.3f}<br>Collapse probability: %{y:.3f}<extra></extra>",
+                        hovertemplate="%{text}<br>Integrity: %{x:.3f}<br>Collapse pressure: %{y:.3f}<extra></extra>",
                     )
                 )
-                fig.update_layout(template="plotly_white", title=f"Integrity vs collapse probability · {selected_year}", xaxis_title="Integrity", yaxis_title="Collapse probability", height=480, margin=dict(l=10, r=10, t=55, b=10))
+                fig.update_layout(template="plotly_white", title=f"Integrity vs collapse pressure · {selected_year}", xaxis_title="Integrity", yaxis_title="Collapse pressure", height=480, margin=dict(l=10, r=10, t=55, b=10))
                 st.plotly_chart(fig, use_container_width=True)
             else:
                 st.info("Integrity/collapse columns are not available for this selected year.")
@@ -7599,7 +7609,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
 
             st.markdown("#### High-impact risk rows")
             st.write(
-                "High allocation plus low integrity or high collapse probability indicates a high-impact governance-risk node. "
+                "High allocation plus low integrity or high collapse pressure indicates a high-impact governance-risk node. "
                 "This is a protocol risk signal, not a legal or political determination."
             )
             high_impact = comparison_df[comparison_df["_high_impact_node"]].sort_values(["_seats", "_collapse"], ascending=[False, False]).head(max(rank_limit, 10))
@@ -7864,7 +7874,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
         _receipt_check(
             "Weighted integrity/collapse metrics are available",
             required_metric_ok,
-            "Rebuild or rerun scoring so integrity and collapse probability columns are present.",
+            "Rebuild or rerun scoring so integrity and collapse pressure columns are present.",
         )
 
         receipt_year_values = [
@@ -7976,7 +7986,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
                 selected_row_export["sydney_protocol_overlay"] = "mirror_not_throne; anti_capture; non_divinization; appealability; transparency; evidence_humility"
                 selected_row_export["recommended_interpretation"] = np.where(
                     selected_row["_high_impact_node"].values,
-                    "High allocation plus low integrity or high collapse probability indicates a high-impact governance-risk node.",
+                    "High allocation plus low integrity or high collapse pressure indicates a high-impact governance-risk node.",
                     "Read as a selected-year protocol interpretation with coverage caveats."
                 )
                 safe_label = re.sub(r"[^A-Za-z0-9_-]+", "_", str(selected_label)).strip("_")
@@ -8087,7 +8097,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             st.markdown("### Prototype overview")
             st.write(
                 "Prototype brackets are a conceptual demographic mirror only. They do not represent country-year evidence, "
-                "weighted global integrity, collapse probability, WGI/V-Dem/trust coverage, or real-world allocation."
+                "weighted global integrity, collapse pressure, WGI/V-Dem/trust coverage, or real-world allocation."
             )
             st.info("Run or upload valid country-year data in Evidence Lab to activate full World Lens.")
             st.markdown(f"### {allocation_heading}")
@@ -8114,7 +8124,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
 
         with fallback_tabs[3]:
             st.markdown("### Integrity and collapse")
-            st.info("Weighted integrity, friction, and collapse probability need selected-year data rows.")
+            st.info("Weighted integrity, friction, and collapse pressure need selected-year data rows.")
 
         with fallback_tabs[4]:
             st.markdown("### Coverage checks")
@@ -8163,7 +8173,7 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
         with inactive_tabs[2]:
             st.info("Internal taxonomy distribution is unavailable until empirical country-year taxonomy rows are active.")
         with inactive_tabs[3]:
-            st.info("Weighted integrity and collapse probability are unavailable until selected-year data rows are active.")
+            st.info("Weighted integrity and collapse pressure are unavailable until selected-year data rows are active.")
         with inactive_tabs[4]:
             st.info("Trust, WGI, and V-Dem coverage checks are unavailable until selected-year data rows are active.")
         with inactive_tabs[5]:
@@ -8173,7 +8183,11 @@ with tab_chat:
     st.subheader("Mirror Check")
     st.caption(
         "Review one bounded idea, policy, proposal, or AI output. "
-        "The result is a mirror reading for human review, not a verdict."
+        "The result is a mirror reading for human review, not a decision."
+    )
+    st.info(
+        "Boundary: SANCTUARY / THRESHOLD / ASYLUM are internal review labels. "
+        "Metrics are directional pressure readings, not approval, rejection, certification, or final truth."
     )
 
     with st.expander("Module guidance and protocol context", expanded=False):
@@ -8200,15 +8214,15 @@ with tab_chat:
                 safe_first_path=(
                     "Paste one short item, not a whole archive of mixed cases.",
                     "Use optional demos only for orientation; they never run by themselves.",
-                    "Read the protocol-adjusted reading as a suggestion, not a decision.",
+                    "Read the protocol-adjusted label as a bounded signal, not a decision.",
                     "Inspect observed reasons, values, and repair questions before relying on the reading.",
                     "Download a receipt only when you want a local review record.",
                 ),
-                input_guidance="Use this module for one bounded text item. Use the batch-testing panel only for deliberate test batches.",
-                result_guidance="Treat the result as a mirror reading of pressure and review needs, not as approval, rejection, or truth certification.",
+                input_guidance="Use this module for one bounded text item. Use the batch-testing panel only for deliberate local test batches.",
+                result_guidance="Treat the result as a mirror reading of pressure and review needs, not as approval, rejection, certification, or final truth.",
                 observed_reasons_guidance="Check which signals drove the reading before trusting any label, metric, or repair suggestion.",
                 repair_questions_guidance="Use repair questions to strengthen evidence, safeguards, appeal paths, and human review.",
-                receipt_guidance="Mirror Check receipts are local review artifacts held by the user; they are not public-ledger records or official verdicts.",
+                receipt_guidance="Mirror Check receipts are local review artifacts held by the user; they are not public-ledger records, official determinations, or authorization.",
             ),
         )
 
@@ -8411,7 +8425,7 @@ with tab_chat:
     normal_review_col, batch_testing_col = st.columns([0.68, 0.32], gap="large")
 
     with normal_review_col:
-        st.markdown("### Review one idea")
+        st.markdown("### Review one bounded idea")
         st.caption("Paste one bounded item. The tree scanner runs only after you press Review idea.")
 
         with st.expander("Optional demo inputs", expanded=False):

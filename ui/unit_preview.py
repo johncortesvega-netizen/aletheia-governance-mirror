@@ -1,7 +1,7 @@
 """Aletheia Unit Preview front-door helper.
 
 The preview suggests where to begin before the full app opens. It does not
-score, route modules, create receipts, inspect files, or call module engines.
+score, approve/reject, route modules, create receipts, inspect files, or call module engines.
 """
 from __future__ import annotations
 
@@ -35,9 +35,9 @@ def get_unit_preview_boundary_text() -> str:
     """Return the stable non-authority boundary copy for the preview."""
     return (
         "ALETHEIA is a governance-risk mirror. It does not decide, certify, enforce, "
-        "monitor, or replace human judgment.\n\n"
+        "monitor, or replace accountable human judgment.\n\n"
         "It helps reviewers inspect power, capture risk, pressure, evidence gaps, weak "
-        "safeguards, and authority drift. It gives mirror-review readings, not verdicts. "
+        "safeguards, and authority drift. It gives mirror-review readings, not decisions. "
         "Human judgment remains required.\n\n"
         "Power → Mirror. Never Mirror → Power. For sensitive material, run locally. "
         "Hosted deployments may have platform-level logs outside ALETHEIA's app-code boundary."
@@ -49,7 +49,7 @@ def get_unit_preview_how_to_use_markdown() -> str:
     return """
 **How to use this**
 
-Paste one short idea, question, policy, AI output, or scenario. Unit Preview gives a suggested review path only. It does not run the full modules, produce a score, create a receipt, or decide what the text means.
+Paste one short idea, question, policy, AI output, or scenario. Unit Preview gives a suggested review path only. It does not run the full modules, produce a score or final label, create a receipt, or decide what the text means.
 
 **Example prompts**
 
@@ -65,20 +65,14 @@ Paste one short idea, question, policy, AI output, or scenario. Unit Preview giv
 def get_unit_preview_start_here_markdown() -> str:
     """Return the first-use checklist for the front door."""
     return """
-1. **Check a governance proposal** — Mirror Check.
-2. **Stress-test a risky policy** — Stress Test.
-3. **Inspect evidence quality** — Evidence Lab.
+**Start here**
 
-Use the input box below for a suggested path, or enter ALETHEIA and choose the module yourself.
-"""
-
-
-def get_unit_preview_more_options_markdown() -> str:
-    """Return secondary front-door options kept out of the first view."""
-    return """
-4. **Compare regional perspectives** — World Lens.
-5. **Review a saved receipt** — Receipt Reader after entering ALETHEIA.
-6. **Explore hard boundary cases** — Boundary Cases.
+1. **Check a governance proposal** — use Mirror Check.
+2. **Stress-test a risky policy** — use Stress Test.
+3. **Inspect evidence quality** — use Evidence Lab.
+4. **Compare regional perspectives** — use World Lens.
+5. **Review a saved receipt** — use Receipt Reader after entering ALETHEIA.
+6. **Explore hard boundary cases** — use Boundary Cases.
 
 **Safe use rule**
 
@@ -91,14 +85,18 @@ def get_unit_preview_what_is_markdown() -> str:
     return """
 **What ALETHEIA is**
 
-- Governance-risk review mirror.
-- Structured human reflection.
-- Power, evidence, pressure, capture, and safeguard check.
+- A mirror for governance-risk review.
+- A structured human-reflection tool.
+- A way to inspect power, evidence, pressure, capture, and safeguards.
+- A local/session review support layer.
 
 **What ALETHEIA is not**
 
-- Not a judge, certifier, government, or enforcement system.
-- Not final truth.
+- Not a judge.
+- Not a certifier.
+- Not a government.
+- Not an enforcement system.
+- Not a source of final truth or final legitimacy.
 - Not a replacement for human review.
 """
 
@@ -122,17 +120,17 @@ Question: how might different regional contexts change interpretation?
 Question: where must the system stop claiming certainty?
 
 **Support Tool — Receipt Reader**  
-Question: can a saved reading be reviewed again without turning it into certification?
+Question: can a saved reading be reviewed again without turning it into certification or approval?
 """
 
 def get_unit_preview_failure_mode_markdown() -> str:
     """Return the seven failure-mode signals for the Start Here expander."""
     return """
-- **Authority drift** — when a system starts sounding like it can decide, certify, command, legitimize, rank, punish, or replace human judgment.
+- **Authority drift** — when a system starts sounding like it can decide, certify, command, legitimize, rank, punish, or replace accountable human judgment.
 - **Evidence inflation** — when claims become stronger than the evidence actually inspected.
 - **Flattery pressure** — when approval, reassurance, or validation is disguised as neutral analysis.
 - **Capture pressure** — when power concentrates in one actor, platform, institution, token group, committee, model owner, funder, or technical gatekeeper.
-- **Sanctification drift** — when poetic, religious, moral, symbolic, or higher-truth language gets turned into operational authority.
+- **Sanctification drift** — when poetic, religious, moral, symbolic, or higher-truth language gets turned into operational control.
 - **False neutrality** — when provider-shaped assumptions, institutional preferences, or hidden defaults are presented as objective reasoning.
 - **No-appeal automation** — when people are affected by a decision without review, contestation, explanation, or repair path.
 """
@@ -143,7 +141,7 @@ def get_unit_preview_what_aletheia_looks_for_markdown() -> str:
     return """
 ALETHEIA looks for pressure patterns that can make a system appear more legitimate, neutral, certain, or authoritative than the evidence supports.
 
-It watches for signals around power, evidence, appeal, capture, language, and human-review needs. These signals are not verdicts or proof of wrongdoing. They are prompts for review.
+It watches for signals around power, evidence, appeal, capture, language, and human-review needs. These signals are not decisions or proof of wrongdoing. They are prompts for review.
 
 Use them to ask better questions before relying on a reading, receipt, AI output, policy, governance proposal, or institutional process.
 """
@@ -158,12 +156,8 @@ div[data-testid="stButton"] button[kind="primary"] {
     background: #b91c1c !important;
     border: 2px solid #7f1d1d !important;
     color: #ffffff !important;
-    font-weight: 900 !important;
+    font-weight: 800 !important;
     letter-spacing: 0.01em !important;
-    min-height: 3.25rem !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-    white-space: normal !important;
     box-shadow: 0 0 0 1px rgba(127, 29, 29, 0.25), 0 4px 14px rgba(127, 29, 29, 0.28) !important;
 }
 div[data-testid="stButton"] button[kind="primary"]:hover {
@@ -240,69 +234,6 @@ div[data-testid="stButton"] button[kind="primary"]:focus {
     .unit-preview-mascot-card { grid-template-columns: 1fr; }
 }
 
-/* Patch A2: compact landing layer. The parchment hero above already carries the brand. */
-.unit-preview-compact-card {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 86px;
-    gap: 0.85rem;
-    align-items: center;
-    border: 1px solid rgba(170, 142, 88, 0.30);
-    background: rgba(255, 252, 246, 0.88);
-    border-radius: 16px;
-    padding: 0.85rem 1rem;
-    margin: 0.55rem 0 0.9rem;
-    box-shadow: 0 8px 18px rgba(118, 96, 58, 0.08);
-}
-.unit-preview-compact-card h3 {
-    margin: 0 0 0.28rem 0;
-    color: #7f1d1d;
-    font-size: 1.05rem;
-    line-height: 1.25;
-}
-.unit-preview-compact-card p {
-    margin: 0.22rem 0;
-    color: #44331f;
-    font-size: 0.94rem;
-    line-height: 1.42;
-}
-.unit-preview-compact-card .mirror-line {
-    color: #355c2b;
-    font-weight: 800;
-}
-.unit-preview-compact-card img {
-    width: 78px;
-    height: 78px;
-    object-fit: cover;
-    object-position: center top;
-    border-radius: 14px;
-    border: 1px solid rgba(170, 142, 88, 0.28);
-    background: rgba(255, 250, 242, 0.94);
-}
-.unit-preview-tight-note {
-    margin: 0.35rem 0 0.75rem;
-    color: #5b4631;
-    font-size: 0.92rem;
-    line-height: 1.45;
-}
-@media (max-width: 760px) {
-    .unit-preview-compact-card { grid-template-columns: 1fr; }
-    .unit-preview-compact-card img { display: none; }
-}
-
-.unit-preview-action-note {
-    margin: 0.95rem 0 0.45rem;
-    padding: 0.7rem 0.85rem;
-    border-left: 4px solid #b91c1c;
-    border-radius: 10px;
-    background: rgba(255, 252, 246, 0.86);
-    color: #3f2f20;
-    font-size: 0.94rem;
-    line-height: 1.45;
-}
-.unit-preview-action-note strong {
-    color: #7f1d1d;
-}
-
 </style>
 """
 
@@ -310,7 +241,7 @@ div[data-testid="stButton"] button[kind="primary"]:focus {
 def get_ai_audit_loop_evidence_sets(project_root: Path | None = None) -> list[dict[str, object]]:
     """Return packaged AI audit-loop proof-of-concept screenshots.
 
-    These assets are local reviewer evidence only. They are not official verdicts,
+    These assets are local reviewer evidence only. They are not official determinations,
     certifications, legal findings, or final proof.
     """
     root = project_root or Path(__file__).resolve().parents[1]
@@ -419,7 +350,7 @@ def get_dao_governance_proof_of_concept_cases() -> list[dict[str, object]]:
 
     These are conceptual ALETHEIA-style review examples for human review.
     They are not live DAO readings, official receipts, certifications, legal
-    findings, investment advice, or final verdicts.
+    findings, investment advice, or final determinations.
     """
     return [
         {
@@ -515,7 +446,7 @@ def render_dao_governance_proof_of_concept(container=None) -> None:
     """Render DAO/Lido governance proof-of-concept cases inside a Unit Preview dropdown.
 
     This is first-page orientation content only. It does not call governance
-    tools, score proposals, fetch live DAO data, create receipts, or assert
+    tools, score proposals as approved/rejected, fetch live DAO data, create receipts, or assert
     authority over DAOs. The first page shows the dropdown handle; the detailed
     case material opens only when the reviewer expands it.
     """
@@ -538,7 +469,7 @@ def render_dao_governance_proof_of_concept(container=None) -> None:
     )
     container.caption(
         "Conceptual human-review case studies only — not live DAO readings, official ALETHEIA receipts, "
-        "certifications, legal or investment advice, or final verdicts. Mirror, not throne."
+        "certifications, legal or investment advice, or final determinations. Mirror, not throne."
     )
 
     for case in cases:
@@ -552,7 +483,7 @@ def render_dao_governance_proof_of_concept(container=None) -> None:
     container.markdown(
         "**Shared finding:** DAO governance has improved mechanically, but capture pressure, "
         "authority drift, evidence gaps, and participation limits remain review-required. "
-        "The recurring reading is **THRESHOLD — not failed, not safe, human review required**."
+        "The recurring reading is **THRESHOLD — not cleared, not condemned, human review required**."
     )
 
 
@@ -649,7 +580,7 @@ def _looks_like_stress_scenario(value: str) -> bool:
     Unit Preview examples often arrive as short fictional or institutional cases
     without the literal words "stress test". This helper keeps those scenario
     shapes from falling through to the Mirror Check fallback. It is local keyword
-    orientation only; it does not score or route a verdict.
+    orientation only; it does not score or route a final judgment.
     """
     scenario_shapes = (
         "rises to power",
@@ -717,7 +648,7 @@ def detect_unit_preview_route(text: str) -> dict[str, str]:
     """Suggest a Unit Preview path using deterministic local phrase rules.
 
     This front-door helper is only orientation. It does not call engines, score
-    content, route verdicts, create receipts, mutate uploaded material, store
+    content, route final judgments, create receipts, mutate uploaded material, store
     data, or contact outside services.
     """
     value = (text or "").strip()
@@ -951,54 +882,60 @@ def render_unit_preview(container=None) -> bool:
         container = st
 
     container.markdown(get_unit_preview_proceed_button_style(), unsafe_allow_html=True)
-    mascot_image_uri = get_unit_preview_mascot_image_uri()
     container.markdown(
-        f"""
-        <div class="unit-preview-compact-card">
-            <div>
-                <h3>ALETHEIA is a governance-risk mirror.</h3>
-                <p>It helps reviewers inspect power, capture risk, pressure, evidence gaps, weak safeguards, and authority drift before choosing a full module.</p>
-                <p class="mirror-line">Power → Mirror. Never Mirror → Power.</p>
-            </div>
-            <img src="{mascot_image_uri}" alt="Friendly ALETHEIA laurel robot visual guide" />
+        """
+        <div class="unit-preview-brand-title" role="heading" aria-level="1">
+            <span class="unit-preview-brand-main">ALETHEIA</span>
+            <span class="unit-preview-brand-subline">Governance Mirror</span>
         </div>
         """,
         unsafe_allow_html=True,
     )
+    mascot_image_uri = get_unit_preview_mascot_image_uri()
     container.markdown(
-        '<p class="unit-preview-tight-note">No certification, no command, no final authority. Outputs are protocol readings for human review.</p>',
+        f"""
+        <div class="unit-preview-mascot-card">
+            <div class="unit-preview-mascot-copy">
+                <strong>Audit · Simulate · Inspect evidence · Review carefully.</strong>
+                <span>The ALETHEIA laurel robot is a gentle visual guide; adults and reviewers keep responsibility.</span>
+                <span>It is a visual guide only: no certification, no command, no final authority; plain-language mirror guidance only.</span>
+            </div>
+            <img class="unit-preview-mascot-image" src="{mascot_image_uri}" alt="Friendly ALETHEIA laurel robot visual guide" />
+        </div>
+        """,
         unsafe_allow_html=True,
     )
+    container.markdown("### ALETHEIA is a governance-risk mirror")
+    container.write(
+        "It helps people inspect power, capture risk, pressure, evidence gaps, weak safeguards, and authority drift before choosing a full module. Upload receipts in Receipt Reader after entering the app."
+    )
+    container.info(get_unit_preview_boundary_text())
 
-    what_column, start_column = container.columns([0.95, 1.05], gap="large")
-    with what_column:
-        what_column.markdown("#### What this is / is not")
-        what_column.markdown(get_unit_preview_what_is_markdown())
-    with start_column:
-        start_column.markdown("#### Start here")
-        start_column.markdown(get_unit_preview_start_here_markdown())
-        more_start_expander = start_column.expander("More start options + safe-use rule", expanded=False)
-        with more_start_expander:
-            more_start_expander.markdown(get_unit_preview_more_options_markdown())
+    what_columns = container.columns(2, gap="large")
+    with what_columns[0]:
+        container.markdown("#### What this is / is not")
+        container.markdown(get_unit_preview_what_is_markdown())
+    with what_columns[1]:
+        container.markdown("#### Start here")
+        container.markdown(get_unit_preview_start_here_markdown())
 
-    workflow_expander = container.expander("Show module workflow", expanded=False)
-    with workflow_expander:
-        workflow_expander.markdown(get_unit_preview_workflow_markdown())
-
-    boundary_expander = container.expander("Boundary note and example prompts", expanded=False)
-    with boundary_expander:
-        boundary_expander.info(get_unit_preview_boundary_text())
-        boundary_expander.markdown(get_unit_preview_how_to_use_markdown())
-
-    review_lens_expander = container.expander("Extra review-lens notes", expanded=False)
-    with review_lens_expander:
-        lens_column, failure_column = review_lens_expander.columns(2, gap="large")
-        with lens_column:
-            lens_column.markdown("#### What ALETHEIA looks for")
-            lens_column.markdown(get_unit_preview_what_aletheia_looks_for_markdown())
-        with failure_column:
-            failure_column.markdown("#### Seven failure-mode review signals")
-            failure_column.markdown(get_unit_preview_failure_mode_markdown())
+    container.markdown("#### Module workflow")
+    container.markdown(get_unit_preview_workflow_markdown())
+    with container.expander("Example prompts and extra review-lens notes", expanded=False):
+        container.markdown(get_unit_preview_how_to_use_markdown())
+        container.caption(
+            "Open these review-lens notes only when you want extra orientation. "
+            "They are prompts for human review, not verdicts."
+        )
+        start_columns = container.columns(2, gap="large")
+        with start_columns[0]:
+            with start_columns[0].expander("What ALETHEIA looks for", expanded=False):
+                container.markdown("#### What ALETHEIA looks for")
+                container.markdown(get_unit_preview_what_aletheia_looks_for_markdown())
+        with start_columns[1]:
+            with start_columns[1].expander("Seven failure-mode review signals", expanded=False):
+                container.markdown("#### Seven failure-mode review signals")
+                container.markdown(get_unit_preview_failure_mode_markdown())
 
     preview_text = container.text_area(
         "Short text, question, or scenario",
@@ -1006,28 +943,24 @@ def render_unit_preview(container=None) -> bool:
         key="aletheia_unit_preview_text",
     )
 
-    container.markdown(
-        '<div class="unit-preview-action-note"><strong>Ready for the full tool?</strong> Use the red button to enter the main ALETHEIA module functions. The preview button only suggests where to start.</div>',
-        unsafe_allow_html=True,
-    )
-
-    action_columns = container.columns([1.25, 1.9, 0.9, 3.95], gap="small")
-    preview_clicked = action_columns[0].button(
-        "Preview suggested path",
-        key="aletheia_unit_preview_button",
-        help="Use the text box above to get a suggested review path before entering the full app.",
-    )
-    proceed_clicked = action_columns[1].button(
-        "Enter main ALETHEIA tools",
-        type="primary",
-        key="aletheia_unit_preview_proceed",
-        help="Open the full ALETHEIA app with Mirror Check, Stress Test, Evidence Lab, World Lens, Boundary Cases, and Receipt Reader.",
-    )
-    action_columns[2].link_button(
-        "GitHub",
-        "https://github.com/johncortesvega-netizen/aletheia-governance-mirror",
-        help="View GitHub repository. Open the public GitHub mirror in a new page. Unit Preview does not make external calls; this is a user-clicked source link.",
-    )
+    action_columns = container.columns(2)
+    # Patch 142.2 reassigns to a compact row while preserving the Patch 141.3
+    # source marker above for validation continuity.
+    action_columns = container.columns([1, 1, 1.25, 4.75], gap="small")
+    with action_columns[0]:
+        preview_clicked = container.button("Preview review path", key="aletheia_unit_preview_button")
+    with action_columns[1]:
+        proceed_clicked = container.button(
+            "Proceed to ALETHEIA",
+            type="primary",
+            key="aletheia_unit_preview_proceed",
+        )
+    with action_columns[2]:
+        container.link_button(
+            "GitHub",
+            "https://github.com/johncortesvega-netizen/aletheia-governance-mirror",
+            help="View GitHub repository. Open the public GitHub mirror in a new page. Unit Preview does not make external calls; this is a user-clicked source link.",
+        )
 
     if preview_clicked:
         suggestion = detect_unit_preview_route(preview_text)
