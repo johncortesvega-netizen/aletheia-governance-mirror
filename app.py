@@ -4268,6 +4268,194 @@ def render_audit_module_integrity_panel(*, expanded: bool = False):
             st.markdown("#### Sydney Protocol guard tests")
             st.dataframe(_protocol_taxonomy_ui_table_df(pd.DataFrame(check.get("results", []))), use_container_width=True, hide_index=True)
 
+
+
+def _semantic_scan_from_payload(payload):
+    """Return a SemanticPressureScan from text, dataclass, or stored dict payload."""
+    if payload is None:
+        return None
+    if hasattr(payload, "to_dict") and hasattr(payload, "state"):
+        return payload
+    if isinstance(payload, dict):
+        # Stored report payloads are dicts; use them directly in the renderer.
+        return payload
+    if isinstance(payload, str) and payload.strip():
+        return scan_semantic_pressure(payload, governance_context=True)
+    return None
+
+
+def _semantic_payload_value(scan, key, default=None):
+    if scan is None:
+        return default
+    if isinstance(scan, dict):
+        return scan.get(key, default)
+    return getattr(scan, key, default)
+
+
+def _semantic_payload_notes(scan) -> list[str]:
+    notes = _semantic_payload_value(scan, "notes", []) or []
+    if isinstance(notes, tuple):
+        return list(notes)
+    if isinstance(notes, list):
+        return [str(note) for note in notes]
+    return [str(notes)] if notes else []
+
+
+def _semantic_payload_hits(scan) -> list[dict]:
+    hits = _semantic_payload_value(scan, "proximity_hits", []) or []
+    clean = []
+    for hit in hits:
+        if isinstance(hit, dict):
+            clean.append(hit)
+        else:
+            clean.append({
+                "category": getattr(hit, "category", "semantic_hit"),
+                "left": getattr(hit, "left", ""),
+                "right": getattr(hit, "right", ""),
+                "distance": getattr(hit, "distance", ""),
+                "excerpt": getattr(hit, "excerpt", ""),
+            })
+    return clean
+
+
+def semantic_pressure_summary_message(scan) -> tuple[str, str]:
+    """Return (kind, message) for the shared semantic panel."""
+    state = str(_semantic_payload_value(scan, "state", "SANCTUARY") or "SANCTUARY").upper()
+    fail_closed = bool(_semantic_payload_value(scan, "fail_closed", False))
+    mechanism_count = int(_semantic_payload_value(scan, "mechanism_count", 0) or 0)
+    hit_count = len(_semantic_payload_hits(scan))
+    notes = " ".join(_semantic_payload_notes(scan)).lower()
+
+    if fail_closed:
+        return (
+            "warning",
+            "Fail-closed semantic review: value/governance language is visible, but concrete safeguards are missing or insufficient.",
+        )
+    if hit_count:
+        return (
+            "warning",
+            "Contextual pressure relationship detected. Review how access, identity, permanence, or obligation terms are connected.",
+        )
+    if mechanism_count >= 2:
+        return (
+            "success",
+            "Concrete safeguards detected. No strong semantic pressure relationship was detected by this scanner; human review still required.",
+        )
+    if state == "THRESHOLD" or "claims outweigh" in notes or "rhetoric-to-mechanism" in notes:
+        return (
+            "warning",
+            "Semantic review recommends caution: claims, safeguards, or mechanisms need human review.",
+        )
+    return (
+        "info",
+        "No strong semantic pressure relationship detected by this scanner. Human review still required.",
+    )
+
+
+def render_semantic_pressure_panel(text_or_scan, *, source_label: str = "Mirror Check", expanded: bool = False) -> None:
+    """Shared semantic-pressure diagnostic panel.
+
+    The panel is a subordinate relationship-aware signal. It does not certify,
+    approve, reject, enforce, or replace the main module reading.
+    """
+    semantic_scan = _semantic_scan_from_payload(text_or_scan)
+    if semantic_scan is None:
+        st.caption("Semantic pressure scan unavailable for this reading.")
+        return
+
+    state = str(_semantic_payload_value(semantic_scan, "state", "SANCTUARY") or "SANCTUARY").upper()
+    risk = str(_semantic_payload_value(semantic_scan, "risk", "Review signal") or "Review signal")
+    integrity_adjustment = float(_semantic_payload_value(semantic_scan, "integrity_adjustment", 0.0) or 0.0)
+    claim_count = int(_semantic_payload_value(semantic_scan, "claim_count", 0) or 0)
+    mechanism_count = int(_semantic_payload_value(semantic_scan, "mechanism_count", 0) or 0)
+    ratio = float(_semantic_payload_value(semantic_scan, "claim_to_mechanism_ratio", 0.0) or 0.0)
+    modal_count = int(_semantic_payload_value(semantic_scan, "modal_pressure_count", 0) or 0)
+    sovereignty_count = int(_semantic_payload_value(semantic_scan, "sovereignty_count", 0) or 0)
+    fail_closed = bool(_semantic_payload_value(semantic_scan, "fail_closed", False))
+    normalized_text = str(_semantic_payload_value(semantic_scan, "normalized_text", "") or "")
+    hits = _semantic_payload_hits(semantic_scan)
+    notes = _semantic_payload_notes(semantic_scan)
+    message_kind, message = semantic_pressure_summary_message(semantic_scan)
+
+    state_color = {
+        "SANCTUARY": "#2f6b3a",
+        "THRESHOLD": "#9b6b00",
+        "ASYLUM": "#8f1d2c",
+    }.get(state, "#425466")
+
+    with st.container(border=True):
+        st.markdown("#### Semantic pressure signals")
+        st.caption(
+            f"Subordinate diagnostic for {source_label}. It scans relationships between pressure terms, access terms, soft claims, and concrete mechanisms. It does not decide the reading."
+        )
+        c1, c2, c3, c4 = st.columns(4)
+        with c1:
+            st.markdown(f"<div class='metric-card'><b>State</b><br><span style='font-size:1.35rem;color:{state_color};'>{html.escape(state)}</span><br><span>{html.escape(risk)}</span></div>", unsafe_allow_html=True)
+        with c2:
+            st.markdown(f"<div class='metric-card'><b>Claims</b><br><span style='font-size:1.35rem;'>{claim_count}</span><br><span>soft/value terms</span></div>", unsafe_allow_html=True)
+        with c3:
+            st.markdown(f"<div class='metric-card'><b>Mechanisms</b><br><span style='font-size:1.35rem;'>{mechanism_count}</span><br><span>appeal/audit/review etc.</span></div>", unsafe_allow_html=True)
+        with c4:
+            st.markdown(f"<div class='metric-card'><b>Integrity pressure</b><br><span style='font-size:1.35rem;'>{integrity_adjustment:+.3f}</span><br><span>diagnostic only</span></div>", unsafe_allow_html=True)
+
+        if message_kind == "success":
+            st.success(message)
+        elif message_kind == "warning":
+            st.warning(message)
+        else:
+            st.info(message)
+
+        with st.expander("Show semantic scan details", expanded=expanded):
+            st.caption("This is diagnostic machinery. The main module reading remains the primary review output.")
+            detail_cols = st.columns(4)
+            detail_cols[0].metric("Claim/mechanism ratio", f"{ratio:.2f}")
+            detail_cols[1].metric("Modal pressure", str(modal_count))
+            detail_cols[2].metric("Reversibility", str(sovereignty_count))
+            detail_cols[3].metric("Fail-closed", "YES" if fail_closed else "NO")
+            if notes:
+                st.markdown("**Notes**")
+                for note in notes:
+                    st.markdown(f"- {note}")
+            if hits:
+                st.markdown("**Contextual proximity hits**")
+                hit_rows = []
+                for hit in hits:
+                    hit_rows.append({
+                        "Category": hit.get("category"),
+                        "Left": hit.get("left"),
+                        "Right": hit.get("right"),
+                        "Distance": hit.get("distance"),
+                        "Excerpt": hit.get("excerpt"),
+                    })
+                st.dataframe(pd.DataFrame(hit_rows), use_container_width=True, hide_index=True)
+            if normalized_text:
+                with st.expander("Normalized text used for scan", expanded=False):
+                    st.text_area("Normalized scan text", value=normalized_text, height=120, disabled=True)
+            if hasattr(semantic_scan, "to_dict"):
+                report_text = format_semantic_pressure_report(semantic_scan)
+            else:
+                # Reconstruct a compact text block from stored dict values.
+                report_text = "\n".join([
+                    "Semantic Pressure Scan",
+                    "",
+                    f"Internal review state: {state}",
+                    f"Risk note: {risk}",
+                    f"Integrity pressure adjustment: {integrity_adjustment:+.3f}",
+                    f"Claim signals: {claim_count}",
+                    f"Mechanism signals: {mechanism_count}",
+                    f"Claim-to-mechanism ratio: {ratio}",
+                    f"Modal pressure signals: {modal_count}",
+                    f"Sovereignty / reversibility signals: {sovereignty_count}",
+                    f"Fail-closed review: {'YES' if fail_closed else 'NO'}",
+                    "",
+                    "Notes:",
+                    *[f"- {note}" for note in notes],
+                    "",
+                    "Human review note: This scan is a relationship-aware mirror signal, not proof of intent, certification, or a final decision.",
+                ])
+            st.code(report_text, language="text")
+
+
 render_sydney_protocol_self_check_gate()
 
 tab_chat, tab_sim, tab_empirical, tab_grid, tab_boundary, tab_doctrine, tab_about = st.tabs(APP_NAVIGATION_LABELS)
@@ -8368,6 +8556,10 @@ with tab_chat:
         raw_text_value = text_value if raw_text_value is None else raw_text_value
         scan = governance_scan(text_value, force_local=force_local)
         scan = apply_capture_feature_override(text_value, scan)
+        semantic_pressure_scan = scan_semantic_pressure(text_value, governance_context=True)
+        semantic_pressure_payload = semantic_pressure_scan.to_dict()
+        scan["semantic_pressure_scan"] = semantic_pressure_payload
+        scan["semantic_pressure_report"] = format_semantic_pressure_report(semantic_pressure_scan)
         features = build_features_from_scan(scan)
         np.random.seed(deterministic_seed_from_payload(text_value, features, weights, ego_tolerance, divine_floor, steps, n_agents, "chat"))
         sim = simulate(
@@ -8401,6 +8593,8 @@ with tab_chat:
         # Protocol hard overrides still take precedence; this only calibrates the numeric layer.
         sim, report = apply_ethics_to_metrics(sim, report, ethics_diagnostics)
         report["ethics_diagnostics"] = ethics_diagnostics
+        report["semantic_pressure_scan"] = semantic_pressure_payload
+        report["semantic_pressure_report"] = scan["semantic_pressure_report"]
         if force_local:
             judgment, source = local_governance_judgment(text_value, scan, sim, report), "Local batch scan"
         else:
@@ -8452,6 +8646,7 @@ with tab_chat:
             "sim": sim,
             "report": report,
             "ethics_diagnostics": ethics_diagnostics,
+            "semantic_pressure_scan": semantic_pressure_payload,
             "judgment": judgment,
             "source": source,
             "source_hits": source_conformance_hits(text_value),
@@ -8826,6 +9021,15 @@ with tab_chat:
                 mode="Mirror Check",
             )
             render_chat_judgment(latest["judgment"], latest["source"], latest["report"], latest.get("sim"), latest.get("scan"))
+
+            semantic_payload = latest.get("semantic_pressure_scan")
+            if not semantic_payload and isinstance(latest.get("report"), dict):
+                semantic_payload = latest["report"].get("semantic_pressure_scan")
+            if not semantic_payload and isinstance(latest.get("scan"), dict):
+                semantic_payload = latest["scan"].get("semantic_pressure_scan")
+            if not semantic_payload:
+                semantic_payload = latest.get("query", "")
+            render_semantic_pressure_panel(semantic_payload, source_label="Mirror Check", expanded=False)
 
             st.markdown("### Mirror Check support context")
             support_columns = st.columns(2, gap="large")
