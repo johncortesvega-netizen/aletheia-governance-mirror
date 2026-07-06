@@ -4376,6 +4376,9 @@ def render_semantic_pressure_panel(text_or_scan, *, source_label: str = "Mirror 
     hits = _semantic_payload_hits(semantic_scan)
     notes = _semantic_payload_notes(semantic_scan)
     message_kind, message = semantic_pressure_summary_message(semantic_scan)
+    semantic_panel_key = hashlib.sha1(
+        f"{source_label}|{state}|{risk}|{integrity_adjustment}|{claim_count}|{mechanism_count}|{normalized_text}".encode("utf-8")
+    ).hexdigest()[:12]
 
     state_color = {
         "SANCTUARY": "#2f6b3a",
@@ -4430,7 +4433,13 @@ def render_semantic_pressure_panel(text_or_scan, *, source_label: str = "Mirror 
                 st.dataframe(pd.DataFrame(hit_rows), use_container_width=True, hide_index=True)
             if normalized_text:
                 with st.expander("Normalized text used for scan", expanded=False):
-                    st.text_area("Normalized scan text", value=normalized_text, height=120, disabled=True)
+                    st.text_area(
+                        "Normalized scan text",
+                        value=normalized_text,
+                        height=120,
+                        disabled=True,
+                        key=f"semantic_normalized_text_{semantic_panel_key}",
+                    )
             if hasattr(semantic_scan, "to_dict"):
                 report_text = format_semantic_pressure_report(semantic_scan)
             else:
