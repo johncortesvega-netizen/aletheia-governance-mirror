@@ -8170,42 +8170,47 @@ The overlay remains: mirror, not throne; anti-capture; non-divinization; appeala
             st.info("Country-year detail is unavailable until selected-year data rows are active.")
 
 with tab_chat:
-    st.subheader("Mirror Check — Patrol Review")
-    render_shared_protocol_state_notice("Mirror Check")
-    render_audit_module_integrity_panel()
-
-    render_module_page_template_intro(
-        st,
-        ModulePageTemplateCopy(
-            module_name="Mirror Check",
-            purpose=(
-                "Review one document, idea, proposal, policy text, or AI output for pressure signals, "
-                "missing safeguards, review needs, and repair questions. ALETHEIA is English-first; "
-                "Dutch/Nederlands examples may be used for batch testing, not as a general app-wide "
-                "language-compatibility claim."
-            ),
-            looks_for=(
-                "Care alignment: whether the idea protects people, dignity, consent, and non-harm.",
-                "Power language: whether soft wording hides control, coercion, ranking, punishment, or authority drift.",
-                "Evidence and reviewability: whether reasons, sources, and assumptions can be inspected by another human reviewer.",
-                "Appeal and repair: whether affected people have explanation, contestation, correction, and human-review paths.",
-                "Failure-mode pressure: authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, or no-appeal automation.",
-                "Witness receipt: whether a local review record is useful for later human inspection.",
-            ),
-            safe_first_path=(
-                "Paste one short item, not a whole archive of mixed cases.",
-                "Use optional demos only for orientation; they never run by themselves.",
-                "Read the protocol-adjusted reading as a suggestion, not a decision.",
-                "Inspect observed reasons, values, and repair questions before relying on the reading.",
-                "Download a receipt only when you want a local review record.",
-            ),
-            input_guidance="Use this module for one bounded text item. Use the batch-testing panel only for deliberate test batches.",
-            result_guidance="Treat the result as a mirror reading of pressure and review needs, not as approval, rejection, or truth certification.",
-            observed_reasons_guidance="Check which signals drove the reading before trusting any label, metric, or repair suggestion.",
-            repair_questions_guidance="Use repair questions to strengthen evidence, safeguards, appeal paths, and human review.",
-            receipt_guidance="Mirror Check receipts are local review artifacts held by the user; they are not public-ledger records or official verdicts.",
-        ),
+    st.subheader("Mirror Check")
+    st.caption(
+        "Review one bounded idea, policy, proposal, or AI output. "
+        "The result is a mirror reading for human review, not a verdict."
     )
+
+    with st.expander("Module guidance and protocol context", expanded=False):
+        render_shared_protocol_state_notice("Mirror Check")
+        render_audit_module_integrity_panel()
+        render_module_page_template_intro(
+            st,
+            ModulePageTemplateCopy(
+                module_name="Mirror Check",
+                purpose=(
+                    "Review one document, idea, proposal, policy text, or AI output for pressure signals, "
+                    "missing safeguards, review needs, and repair questions. ALETHEIA is English-first; "
+                    "Dutch/Nederlands examples may be used for batch testing, not as a general app-wide "
+                    "language-compatibility claim."
+                ),
+                looks_for=(
+                    "Care alignment: whether the idea protects people, dignity, consent, and non-harm.",
+                    "Power language: whether soft wording hides control, coercion, ranking, punishment, or authority drift.",
+                    "Evidence and reviewability: whether reasons, sources, and assumptions can be inspected by another human reviewer.",
+                    "Appeal and repair: whether affected people have explanation, contestation, correction, and human-review paths.",
+                    "Failure-mode pressure: authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, or no-appeal automation.",
+                    "Witness receipt: whether a local review record is useful for later human inspection.",
+                ),
+                safe_first_path=(
+                    "Paste one short item, not a whole archive of mixed cases.",
+                    "Use optional demos only for orientation; they never run by themselves.",
+                    "Read the protocol-adjusted reading as a suggestion, not a decision.",
+                    "Inspect observed reasons, values, and repair questions before relying on the reading.",
+                    "Download a receipt only when you want a local review record.",
+                ),
+                input_guidance="Use this module for one bounded text item. Use the batch-testing panel only for deliberate test batches.",
+                result_guidance="Treat the result as a mirror reading of pressure and review needs, not as approval, rejection, or truth certification.",
+                observed_reasons_guidance="Check which signals drove the reading before trusting any label, metric, or repair suggestion.",
+                repair_questions_guidance="Use repair questions to strengthen evidence, safeguards, appeal paths, and human review.",
+                receipt_guidance="Mirror Check receipts are local review artifacts held by the user; they are not public-ledger records or official verdicts.",
+            ),
+        )
 
     if "chat_audit_history" not in st.session_state:
         st.session_state.chat_audit_history = []
@@ -8401,13 +8406,13 @@ with tab_chat:
         st.session_state.audit_batch_count = len(receipts)
         return receipts
 
-    # Mirror Check uses two separate side-by-side paths:
-    # left = one-idea tree scanner, right = optional Batch Testing panel.
-    normal_review_col, batch_testing_col = st.columns([0.62, 0.38], gap="large")
+    # Mirror Check keeps the primary path visually dominant. Batch testing remains
+    # available on the side, but the first visible action is one bounded review.
+    normal_review_col, batch_testing_col = st.columns([0.68, 0.32], gap="large")
 
     with normal_review_col:
-        st.markdown("### Share one idea")
-        st.caption("Use this side for one idea or scenario. The tree scanner runs only here.")
+        st.markdown("### Review one idea")
+        st.caption("Paste one bounded item. The tree scanner runs only after you press Review idea.")
 
         with st.expander("Optional demo inputs", expanded=False):
             st.caption("Demo inputs are fictional and opt-in. They load only when you click; they never run by themselves.")
@@ -8425,13 +8430,13 @@ with tab_chat:
                 st.session_state.audit_chat_input_source = "DEMO_INPUT"
                 st.info("Demo input loaded. Click Review idea if you want ALETHEIA to analyze it.")
 
-        audit_demo_choice = st.selectbox("Mirror Check scenario demo examples", list(MIRROR_CHECK_DEMO_SCENARIOS.keys()), key="audit_demo_library")
-        if st.button("Load Mirror Check scenario demo", use_container_width=True, key="audit_load_demo_button"):
-            demo_text = MIRROR_CHECK_DEMO_SCENARIOS[audit_demo_choice]
-            st.session_state.audit_chat_query = demo_text
-            st.session_state.audit_demo_choice = audit_demo_choice
-            st.session_state.audit_demo_loaded_text = demo_text
-            st.session_state.audit_chat_input_source = "DEMO_INPUT"
+            audit_demo_choice = st.selectbox("Mirror Check scenario examples", list(MIRROR_CHECK_DEMO_SCENARIOS.keys()), key="audit_demo_library")
+            if st.button("Load scenario demo", use_container_width=True, key="audit_load_demo_button"):
+                demo_text = MIRROR_CHECK_DEMO_SCENARIOS[audit_demo_choice]
+                st.session_state.audit_chat_query = demo_text
+                st.session_state.audit_demo_choice = audit_demo_choice
+                st.session_state.audit_demo_loaded_text = demo_text
+                st.session_state.audit_chat_input_source = "DEMO_INPUT"
 
         chat_query = st.text_area(
             "Write or paste the idea you want reviewed",
@@ -8475,8 +8480,8 @@ with tab_chat:
             clear_chat = st.button("Clear results", use_container_width=True)
 
     with batch_testing_col:
-        st.markdown("### Batch Testing")
-        st.caption("A local test bench for lists. It stays separate from the tree scanner.")
+        st.markdown("### Batch testing")
+        st.caption("Optional local test bench for lists. Keep closed unless you need batch receipts.")
 
         # Batch testing is intentionally separate from the single Mirror Check / tree scanner flow.
         # It opens on the right side after a user click, runs local-only batch scans, and writes a ZIP of receipts.
