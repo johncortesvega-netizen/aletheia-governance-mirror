@@ -4429,27 +4429,6 @@ def render_semantic_pressure_panel(
                 st.markdown("**Notes**")
                 for note in notes:
                     st.markdown(f"- {note}")
-            if hits:
-                st.markdown("**Contextual proximity hits**")
-                hit_rows = []
-                for hit in hits:
-                    hit_rows.append({
-                        "Category": hit.get("category"),
-                        "Left": hit.get("left"),
-                        "Right": hit.get("right"),
-                        "Distance": hit.get("distance"),
-                        "Excerpt": hit.get("excerpt"),
-                    })
-                st.dataframe(pd.DataFrame(hit_rows), use_container_width=True, hide_index=True)
-            if normalized_text:
-                with st.expander("Normalized text used for scan", expanded=False):
-                    st.text_area(
-                        "Normalized scan text",
-                        value=normalized_text,
-                        height=120,
-                        disabled=True,
-                        key=f"semantic_normalized_text_{semantic_panel_key}",
-                    )
             if hasattr(semantic_scan, "to_dict"):
                 report_text = format_semantic_pressure_report(semantic_scan)
             else:
@@ -4472,7 +4451,36 @@ def render_semantic_pressure_panel(
                     "",
                     "Human review note: This scan is a relationship-aware mirror signal, not proof of intent, certification, or a final decision.",
                 ])
-            st.code(report_text, language="text")
+
+            with st.expander("Developer/debug details", expanded=False):
+                st.caption("Raw semantic machinery for calibration and troubleshooting. Normal users can leave this closed.")
+                if hits:
+                    st.markdown("**Contextual proximity hits**")
+                    hit_rows = []
+                    for hit in hits:
+                        hit_rows.append({
+                            "Category": hit.get("category"),
+                            "Left": hit.get("left"),
+                            "Right": hit.get("right"),
+                            "Distance": hit.get("distance"),
+                            "Excerpt": hit.get("excerpt"),
+                        })
+                    st.dataframe(pd.DataFrame(hit_rows), use_container_width=True, hide_index=True)
+                else:
+                    st.caption("No contextual proximity hits recorded for this scan.")
+
+                if normalized_text:
+                    with st.expander("Normalized text used for scan", expanded=False):
+                        st.text_area(
+                            "Normalized scan text",
+                            value=normalized_text,
+                            height=120,
+                            disabled=True,
+                            key=f"semantic_normalized_text_{semantic_panel_key}",
+                        )
+
+                with st.expander("Plain-text semantic report", expanded=False):
+                    st.code(report_text, language="text")
 
 
 render_sydney_protocol_self_check_gate()
