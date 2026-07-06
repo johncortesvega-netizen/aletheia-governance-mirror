@@ -4352,7 +4352,13 @@ def semantic_pressure_summary_message(scan) -> tuple[str, str]:
     )
 
 
-def render_semantic_pressure_panel(text_or_scan, *, source_label: str = "Mirror Check", expanded: bool = False) -> None:
+def render_semantic_pressure_panel(
+    text_or_scan,
+    *,
+    source_label: str = "Mirror Check",
+    expanded: bool = False,
+    panel_key: str | None = None,
+) -> None:
     """Shared semantic-pressure diagnostic panel.
 
     The panel is a subordinate relationship-aware signal. It does not certify,
@@ -4376,9 +4382,13 @@ def render_semantic_pressure_panel(text_or_scan, *, source_label: str = "Mirror 
     hits = _semantic_payload_hits(semantic_scan)
     notes = _semantic_payload_notes(semantic_scan)
     message_kind, message = semantic_pressure_summary_message(semantic_scan)
-    semantic_panel_key = hashlib.sha1(
+    # Streamlit requires explicit unique keys for repeated semantic panels.
+    # Use the caller-provided panel_key when available, and fall back to a
+    # deterministic content hash for older call sites.
+    semantic_panel_key = panel_key or hashlib.sha1(
         f"{source_label}|{state}|{risk}|{integrity_adjustment}|{claim_count}|{mechanism_count}|{normalized_text}".encode("utf-8")
     ).hexdigest()[:12]
+    semantic_panel_key = re.sub(r"[^A-Za-z0-9_\-]", "_", str(semantic_panel_key))
 
     state_color = {
         "SANCTUARY": "#2f6b3a",
@@ -4533,7 +4543,7 @@ def render_semantic_stress_triggers(scan, *, expanded: bool = False) -> None:
             st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
         else:
             st.info("No additional semantic stress trigger was detected beyond the main Stress Test reading.")
-        render_semantic_pressure_panel(semantic_scan, source_label="Stress Test", expanded=False)
+        render_semantic_pressure_panel(semantic_scan, source_label="Stress Test", expanded=False, panel_key="stress_test_semantic_pressure")
 
 
 def semantic_evidence_implication_rows(scan) -> list[dict]:
@@ -4596,7 +4606,7 @@ def render_semantic_evidence_check(text: str, *, expanded_details: bool = False)
         return
     scan = scan_semantic_pressure(text, governance_context=True)
     rows = semantic_evidence_implication_rows(scan)
-    render_semantic_pressure_panel(scan, source_label="Evidence Lab", expanded=expanded_details)
+    render_semantic_pressure_panel(scan, source_label="Evidence Lab", expanded=expanded_details, panel_key="evidence_lab_semantic_claim_mechanism")
     st.markdown("##### Evidence implications")
     if rows:
         st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
@@ -9207,7 +9217,7 @@ with tab_chat:
                 semantic_payload = latest["scan"].get("semantic_pressure_scan")
             if not semantic_payload:
                 semantic_payload = latest.get("query", "")
-            render_semantic_pressure_panel(semantic_payload, source_label="Mirror Check", expanded=False)
+            render_semantic_pressure_panel(semantic_payload, source_label="Mirror Check", expanded=False, panel_key="mirror_check_latest_semantic_pressure")
 
             st.markdown("### Mirror Check support context")
             support_columns = st.columns(2, gap="large")
