@@ -1,24 +1,24 @@
-# Patch S3.1 — Semantic UI Cleanup
+# Patch S3.2 — Semantic debug hard-hide
 
-Changed files:
-- `app.py`
+Changed file:
+- app.py
 
 Purpose:
-- Keep semantic-pressure output useful for normal users while moving developer-heavy material deeper into the UI.
+- Keep semantic panels useful for normal review while preventing raw debug machinery from dominating World Lens, Stress Test, Mirror Check, or Evidence Lab.
 
 Changes:
-- `render_semantic_pressure_panel(...)` still shows the compact user-facing layer:
-  - state
-  - claims
-  - mechanisms
-  - diagnostic integrity pressure
-  - summary message
-  - notes and secondary metrics inside `Show semantic scan details`
-- Contextual proximity hit tables moved into a nested expander:
-  - `Developer/debug details`
-- Normalized scan text moved under `Developer/debug details`.
-- Plain-text semantic report moved under `Developer/debug details` → `Plain-text semantic report`.
-- No scanner logic, scoring, receipts, World Lens flags, Stress Test metrics, or Evidence Lab calculations changed.
+- Replaced the always-rendered nested "Developer/debug details" expander with an explicit checkbox:
+  - "Show developer/debug details"
+- Default is OFF.
+- When OFF, the UI does not render:
+  - contextual proximity hits table
+  - normalized text area
+  - plain-text semantic report
+- When ON, the same diagnostics are still available for calibration/troubleshooting.
 
-Validation:
-- `python -m py_compile app.py` passes.
+No changes to:
+- semantic scanner logic
+- scores
+- receipts
+- World Lens flags
+- Stress Test/Evidence Lab calculations

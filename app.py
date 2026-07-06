@@ -4452,8 +4452,14 @@ def render_semantic_pressure_panel(
                     "Human review note: This scan is a relationship-aware mirror signal, not proof of intent, certification, or a final decision.",
                 ])
 
-            with st.expander("Developer/debug details", expanded=False):
-                st.caption("Raw semantic machinery for calibration and troubleshooting. Normal users can leave this closed.")
+            show_debug = st.checkbox(
+                "Show developer/debug details",
+                value=False,
+                key=f"semantic_show_debug_{semantic_panel_key}",
+                help="Reveals raw proximity hits, normalized text, and the plain-text scan report. Not needed for normal review.",
+            )
+            if show_debug:
+                st.caption("Raw semantic machinery for calibration and troubleshooting. Normal users can leave this off.")
                 if hits:
                     st.markdown("**Contextual proximity hits**")
                     hit_rows = []
