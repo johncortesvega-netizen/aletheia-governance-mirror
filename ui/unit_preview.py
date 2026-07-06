@@ -234,6 +234,44 @@ div[data-testid="stButton"] button[kind="primary"]:focus {
     .unit-preview-mascot-card { grid-template-columns: 1fr; }
 }
 
+.unit-preview-frontdoor {
+    border: 1px solid rgba(170, 142, 88, 0.38);
+    background: linear-gradient(135deg, rgba(255, 252, 246, 0.98), rgba(248, 243, 232, 0.96));
+    border-radius: 18px;
+    padding: 1rem 1.1rem;
+    margin: 0.5rem 0 1rem;
+    box-shadow: 0 8px 22px rgba(118, 96, 58, 0.10);
+}
+.unit-preview-frontdoor h2 {
+    margin: 0 0 0.35rem 0;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #23364a;
+}
+.unit-preview-frontdoor p {
+    margin: 0.25rem 0;
+    color: #243447;
+}
+.unit-preview-pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.7rem;
+}
+.unit-preview-pill {
+    border: 1px solid rgba(53, 92, 43, 0.22);
+    background: rgba(245, 250, 243, 0.82);
+    color: #24451f;
+    border-radius: 999px;
+    padding: 0.35rem 0.65rem;
+    font-size: 0.92rem;
+}
+.unit-preview-compact-note {
+    border-left: 4px solid #355c2b;
+    background: rgba(247, 250, 246, 0.88);
+    padding: 0.65rem 0.8rem;
+    border-radius: 10px;
+    margin: 0.35rem 0 0.85rem;
+}
 </style>
 """
 
@@ -882,76 +920,85 @@ def render_unit_preview(container=None) -> bool:
         container = st
 
     container.markdown(get_unit_preview_proceed_button_style(), unsafe_allow_html=True)
+
+    # Keep the front door intentionally compact. The app shell already carries the
+    # ALETHEIA brand header; this preview should explain the entry path, not repeat
+    # every concept on the first screen.
     container.markdown(
         """
-        <div class="unit-preview-brand-title" role="heading" aria-level="1">
-            <span class="unit-preview-brand-main">ALETHEIA</span>
-            <span class="unit-preview-brand-subline">Governance Mirror</span>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    mascot_image_uri = get_unit_preview_mascot_image_uri()
-    container.markdown(
-        f"""
-        <div class="unit-preview-mascot-card">
-            <div class="unit-preview-mascot-copy">
-                <strong>Audit · Simulate · Inspect evidence · Review carefully.</strong>
-                <span>The ALETHEIA laurel robot is a gentle visual guide; adults and reviewers keep responsibility.</span>
-                <span>It is a visual guide only: no certification, no command, no final authority; plain-language mirror guidance only.</span>
+        <div class="unit-preview-frontdoor">
+            <h2>Unit Preview — governance-risk front door</h2>
+            <p><strong>ALETHEIA is a governance-risk mirror for human review.</strong></p>
+            <p>Use this page to choose a starting path. It does not decide, certify, approve, reject, monitor, or replace human judgment.</p>
+            <div class="unit-preview-pill-row" aria-label="Primary starting paths">
+                <span class="unit-preview-pill">Mirror Check</span>
+                <span class="unit-preview-pill">Stress Test</span>
+                <span class="unit-preview-pill">Evidence Lab</span>
+                <span class="unit-preview-pill">World Lens</span>
+                <span class="unit-preview-pill">Boundary Cases</span>
+                <span class="unit-preview-pill">Receipt Reader</span>
             </div>
-            <img class="unit-preview-mascot-image" src="{mascot_image_uri}" alt="Friendly ALETHEIA laurel robot visual guide" />
         </div>
         """,
         unsafe_allow_html=True,
     )
-    container.markdown("### ALETHEIA is a governance-risk mirror")
-    container.write(
-        "It helps people inspect power, capture risk, pressure, evidence gaps, weak safeguards, and authority drift before choosing a full module. Upload receipts in Receipt Reader after entering the app."
+
+    container.markdown(
+        """
+        <div class="unit-preview-compact-note">
+            <strong>Safe-use rule:</strong> read every output as a protocol reading for human review. Stop and review carefully when an issue could affect rights, access, reputation, safety, institutional action, legal/medical/financial consequences, or public trust.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
-    container.info(get_unit_preview_boundary_text())
 
-    what_columns = container.columns(2, gap="large")
-    with what_columns[0]:
-        container.markdown("#### What this is / is not")
-        container.markdown(get_unit_preview_what_is_markdown())
-    with what_columns[1]:
-        container.markdown("#### Start here")
-        container.markdown(get_unit_preview_start_here_markdown())
+    start_columns = container.columns(3, gap="medium")
+    with start_columns[0]:
+        container.markdown("**1. Check power-risk**  ")
+        container.caption("Start with Mirror Check for a short proposal, claim, or governance question.")
+    with start_columns[1]:
+        container.markdown("**2. Test pressure**  ")
+        container.caption("Use Stress Test when the issue involves crisis, dependency, coercion, or failure modes.")
+    with start_columns[2]:
+        container.markdown("**3. Inspect evidence**  ")
+        container.caption("Use Evidence Lab when claims depend on sources, data quality, or missing context.")
 
-    container.markdown("#### Module workflow")
-    container.markdown(get_unit_preview_workflow_markdown())
-    with container.expander("Example prompts and extra review-lens notes", expanded=False):
+    with container.expander("More orientation: what this is, workflow, examples", expanded=False):
+        orientation_columns = container.columns(2, gap="large")
+        with orientation_columns[0]:
+            container.markdown("#### What this is / is not")
+            container.markdown(get_unit_preview_what_is_markdown())
+        with orientation_columns[1]:
+            container.markdown("#### Start here")
+            container.markdown(get_unit_preview_start_here_markdown())
+        container.markdown("#### Module workflow")
+        container.markdown(get_unit_preview_workflow_markdown())
+        container.markdown("#### Example prompts")
         container.markdown(get_unit_preview_how_to_use_markdown())
-        container.caption(
-            "Open these review-lens notes only when you want extra orientation. "
-            "They are prompts for human review, not verdicts."
-        )
-        start_columns = container.columns(2, gap="large")
-        with start_columns[0]:
-            with start_columns[0].expander("What ALETHEIA looks for", expanded=False):
-                container.markdown("#### What ALETHEIA looks for")
-                container.markdown(get_unit_preview_what_aletheia_looks_for_markdown())
-        with start_columns[1]:
-            with start_columns[1].expander("Seven failure-mode review signals", expanded=False):
-                container.markdown("#### Seven failure-mode review signals")
-                container.markdown(get_unit_preview_failure_mode_markdown())
+
+    with container.expander("Review-lens notes", expanded=False):
+        note_columns = container.columns(2, gap="large")
+        with note_columns[0]:
+            container.markdown("#### What ALETHEIA looks for")
+            container.markdown(get_unit_preview_what_aletheia_looks_for_markdown())
+        with note_columns[1]:
+            container.markdown("#### Seven failure-mode review signals")
+            container.markdown(get_unit_preview_failure_mode_markdown())
 
     preview_text = container.text_area(
         "Short text, question, or scenario",
-        height=160,
+        height=125,
         key="aletheia_unit_preview_text",
+        help="Optional. Paste one bounded idea if you want a suggested starting path before entering the main tools.",
     )
 
-    action_columns = container.columns(2)
-    # Patch 142.2 reassigns to a compact row while preserving the Patch 141.3
-    # source marker above for validation continuity.
-    action_columns = container.columns([1, 1, 1.25, 4.75], gap="small")
+    container.caption("Ready for the full tool? Use the red button to enter the main ALETHEIA module functions.")
+    action_columns = container.columns([1.35, 1.55, 1, 4.1], gap="small")
     with action_columns[0]:
-        preview_clicked = container.button("Preview review path", key="aletheia_unit_preview_button")
+        preview_clicked = container.button("Preview suggested path", key="aletheia_unit_preview_button")
     with action_columns[1]:
         proceed_clicked = container.button(
-            "Proceed to ALETHEIA",
+            "Enter main ALETHEIA tools",
             type="primary",
             key="aletheia_unit_preview_proceed",
         )
@@ -972,7 +1019,10 @@ def render_unit_preview(container=None) -> bool:
         )
         container.caption("This is a stop/go orientation only. You can still choose any module after entering ALETHEIA.")
 
-    render_unit_preview_proof_concepts_side_by_side(container)
-    render_unit_preview_visual_reference_cards(container)
+    with container.expander("Proof-of-concept mirrors", expanded=False):
+        render_unit_preview_proof_concepts_side_by_side(container)
+
+    with container.expander("Visual reference posters", expanded=False):
+        render_unit_preview_visual_reference_cards(container)
 
     return bool(proceed_clicked)
