@@ -34,11 +34,13 @@ def get_unit_preview_mascot_image_uri(project_root: Path | None = None) -> str:
 def get_unit_preview_boundary_text() -> str:
     """Return the stable non-authority boundary copy for the preview."""
     return (
-        "ALETHEIA Preview Unit suggests where to begin. It does not score, certify, "
-        "approve, reject, or replace the full modules.\n\n"
-        "ALETHEIA gives mirror-review signals, not verdicts. Human judgment remains required.\n\n"
-        "For sensitive material, run locally. Hosted deployments may have platform-level "
-        "logs outside ALETHEIA's app-code boundary."
+        "ALETHEIA is a governance-risk mirror. It does not decide, certify, enforce, "
+        "monitor, or replace human judgment.\n\n"
+        "It helps reviewers inspect power, capture risk, pressure, evidence gaps, weak "
+        "safeguards, and authority drift. It gives mirror-review readings, not verdicts. "
+        "Human judgment remains required.\n\n"
+        "Power → Mirror. Never Mirror → Power. For sensitive material, run locally. "
+        "Hosted deployments may have platform-level logs outside ALETHEIA's app-code boundary."
     )
 
 
@@ -47,41 +49,79 @@ def get_unit_preview_how_to_use_markdown() -> str:
     return """
 **How to use this**
 
-Paste a short idea, question, policy, AI output, or scenario. ALETHEIA looks for power, pressure, appeal, evidence, and risk. It gives a suggested review path for human review, and you keep the final say.
+Paste one short idea, question, policy, AI output, or scenario. Unit Preview gives a suggested review path only. It does not run the full modules, produce a score, create a receipt, or decide what the text means.
 
-**Examples**
+**Example prompts**
 
-- **Mirror Check:** A city wants to use an AI tool to decide who receives housing support.
-- **Stress Test:** An evil penguin rises to power after a revolution and removes appeal rights.
-- **Boundary Cases:** A hospital AI recommends care, but no human doctor can override it.
-- **Mirror Check:** An AI assistant claims it can certify whether a policy is ethical.
-- **Evidence Lab:** Upload a CSV or source note to compare claims against supporting evidence.
-- **World Lens:** Compare a country-year governance context before interpreting a risk reading.
-
-Already have an ALETHEIA receipt? The Preview Unit can suggest **Receipt Reader — Standard View**, but receipts are read only after entering ALETHEIA and opening the upload-only Receipt Reader.
+- **Check a governance proposal:** A city wants to use an AI tool to decide who receives housing support.
+- **Stress-test a risky policy:** Emergency powers are extended after the crisis and appeal rights are reduced.
+- **Inspect evidence quality:** A report claims a reform reduced corruption, but the source basis is unclear.
+- **Compare regional perspectives:** Review a country-year governance context before interpreting a risk reading.
+- **Review a saved receipt:** Open Receipt Reader after entering ALETHEIA and upload the saved receipt locally.
+- **Explore hard boundary cases:** A hospital AI recommends care, but no human doctor can override it.
 """
 
 
 def get_unit_preview_start_here_markdown() -> str:
     """Return the first-use checklist for the front door."""
     return """
-**A safe first path**
+**Start here**
 
-1. Paste one short item into Unit Preview.
-2. Read the suggested path as a suggestion, not a decision.
-3. Enter ALETHEIA and choose the module yourself.
-4. Inspect observed reasons, values, and repair questions before relying on any reading.
-5. Download a receipt only when you want a local review record.
+1. **Check a governance proposal** — use Mirror Check.
+2. **Stress-test a risky policy** — use Stress Test.
+3. **Inspect evidence quality** — use Evidence Lab.
+4. **Compare regional perspectives** — use World Lens.
+5. **Review a saved receipt** — use Receipt Reader after entering ALETHEIA.
+6. **Explore hard boundary cases** — use Boundary Cases.
 
-**Stop and review if**
+**Safe use rule**
 
-- the result could affect rights, access, reputation, safety, or institutional action;
-- source evidence is missing, stale, unclear, or one-sided;
-- the text involves legal, medical, political, institutional, or financial consequences;
-- you cannot explain the receipt in plain language to another reviewer.
+Read every output as a protocol reading for human review. Stop and review carefully when the issue could affect rights, access, reputation, safety, institutional action, legal/medical/financial consequences, or public trust.
 """
 
 
+def get_unit_preview_what_is_markdown() -> str:
+    """Return first-screen What this is / is not copy."""
+    return """
+**What ALETHEIA is**
+
+- A mirror for governance-risk review.
+- A structured human-reflection tool.
+- A way to inspect power, evidence, pressure, capture, and safeguards.
+- A local/session review support layer.
+
+**What ALETHEIA is not**
+
+- Not a judge.
+- Not a certifier.
+- Not a government.
+- Not an enforcement system.
+- Not a source of final truth.
+- Not a replacement for human review.
+"""
+
+
+def get_unit_preview_workflow_markdown() -> str:
+    """Return the Patch A module workflow orientation copy."""
+    return """
+**Step 1 — Mirror Check**  
+Question: what power-risk is present?
+
+**Step 2 — Stress Test**  
+Question: what breaks under pressure?
+
+**Step 3 — Evidence Lab**  
+Question: what is supported, weak, missing, or assumed?
+
+**Step 4 — World Lens**  
+Question: how might different regional contexts change interpretation?
+
+**Step 5 — Boundary Cases**  
+Question: where must the system stop claiming certainty?
+
+**Support Tool — Receipt Reader**  
+Question: can a saved reading be reviewed again without turning it into certification?
+"""
 
 def get_unit_preview_failure_mode_markdown() -> str:
     """Return the seven failure-mode signals for the Start Here expander."""
@@ -865,14 +905,24 @@ def render_unit_preview(container=None) -> bool:
         """,
         unsafe_allow_html=True,
     )
-    container.markdown("### Preview Unit · Governance mirror. Mirror, not throne.")
+    container.markdown("### ALETHEIA is a governance-risk mirror")
     container.write(
-        "Paste a short text, question, policy, AI output, or scenario to get a suggested review path before entering ALETHEIA. Upload receipts in Receipt Reader after entering the app."
+        "It helps people inspect power, capture risk, pressure, evidence gaps, weak safeguards, and authority drift before choosing a full module. Upload receipts in Receipt Reader after entering the app."
     )
     container.info(get_unit_preview_boundary_text())
-    container.markdown(get_unit_preview_how_to_use_markdown())
-    with container.expander("Start here: try this first", expanded=False):
+
+    what_columns = container.columns(2, gap="large")
+    with what_columns[0]:
+        container.markdown("#### What this is / is not")
+        container.markdown(get_unit_preview_what_is_markdown())
+    with what_columns[1]:
+        container.markdown("#### Start here")
         container.markdown(get_unit_preview_start_here_markdown())
+
+    container.markdown("#### Module workflow")
+    container.markdown(get_unit_preview_workflow_markdown())
+    with container.expander("Example prompts and extra review-lens notes", expanded=False):
+        container.markdown(get_unit_preview_how_to_use_markdown())
         container.caption(
             "Open these review-lens notes only when you want extra orientation. "
             "They are prompts for human review, not verdicts."
