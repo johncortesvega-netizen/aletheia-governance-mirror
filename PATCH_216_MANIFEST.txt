@@ -1,0 +1,18 @@
+PATCH 216 — Rules-Based Transparency Clarification
+
+Changed files:
+- README.md
+- docs/public_positioning_v1.md
+- docs/rules_based_transparency_v1.md
+- PATCH_STATUS.md
+- PATCH_216_MANIFEST.txt
+- PATCH_216_RECOVERY_NOTE.md
+- PATCH_216_DELETE_LIST.txt
+
+Purpose:
+- Clarify that ALETHEIA is deterministic, rule-based, heuristic, and non-predictive.
+- Prevent public copy from implying ML authority, scientific measurement, empirical certainty, or automated judgment.
+- Preserve the mirror-not-throne boundary while absorbing external review critique.
+
+Runtime impact:
+- None. Documentation only.

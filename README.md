@@ -99,6 +99,27 @@ A future hybrid approach may be explored only if it preserves the same boundary:
 
 ---
 
+## Rules-based transparency
+
+ALETHEIA is not a machine-learning risk model, predictive governance engine, scientific measuring instrument, or automated adjudicator. The current release-candidate line is intentionally rule-based and deterministic. Its readings come from inspectable heuristics: pressure terms, proximity checks, claim/mechanism gaps, safeguard detection, explicit thresholds, calibration rules, and hand-tuned scoring formulas.
+
+That means a reading is not a discovered fact about the world. It is a structured review signal. A high-pressure output means: **inspect this power relationship, evidence gap, safeguard gap, or authority claim more carefully.** A low-pressure output means only that the current rules did not detect strong pressure patterns in the submitted text; it is not proof of safety, legality, morality, legitimacy, or truth.
+
+The project uses protocol language such as semantic pressure, integrity pressure, collapse pressure, V-axis, Z-axis, and Sydney Protocol as internal review vocabulary. These terms should not be read as physics, empirical prediction, divine authority, institutional mandate, or scientific certification. They name the app's review grammar.
+
+This is the intended tradeoff:
+
+- **less mystery:** no hidden model decides the reading;
+- **more auditability:** reviewers can inspect the rules and pressure codes;
+- **less adaptability:** novel, coded, ironic, or context-heavy language can be missed;
+- **more humility:** every output remains subordinate to evidence and human review.
+
+If future versions add model-assisted support, that support must remain opt-in, explainable, subordinate, and non-authoritative. It may help a reviewer find language patterns; it must never become the judge.
+
+See also: `docs/rules_based_transparency_v1.md`.
+
+---
+
 ## Framework balance
 
 > **Science is the investigative base. Philosophy is the interpretive structure. Theology is the humility boundary. Human review is the action layer.**
@@ -308,7 +329,9 @@ Aletheia Unit Preview appears before the full app surface as the single orientat
 
 ALETHEIA is a release-candidate governance mirror, not production authority. Current limitations should remain visible rather than hidden behind polished language.
 
-- The core scanner is deterministic and auditable, but rule-based systems can miss novel or context-heavy phrasing.
+- The core scanner is deterministic and auditable, not a machine-learning model or predictive risk engine.
+- Scoring uses transparent rules, proximity checks, pressure codes, thresholds, and hand-calibrated formulas; it is a review aid, not a measurement of truth.
+- Rule-based systems can miss novel, coded, ironic, or context-heavy phrasing.
 - The interface is powerful but dense; broad public use still needs cleaner guided workflows and examples.
 - `app.py` remains a large orchestrator file; future modularization should be planned carefully and tested separately.
 - Many thresholds and demo scenarios are intentionally explicit rather than learned from live data. This helps auditability but requires regression tests when calibrations change.
@@ -374,6 +397,8 @@ The detailed patch archive should live in `docs/patch_archive/` and `docs/patch_
 - **Patch 160 — Why ALETHEIA + Protocol Guide Copy Polish:** made Why ALETHEIA and Protocol Guide clearer, less doctrine-heavy, and more focused on operating boundaries.
 - **Semantic v1 session — Semantic Pressure Scanner Integration:** added deterministic relationship-aware semantic pressure diagnostics across Mirror Check, Stress Test, Evidence Lab, World Lens, and Receipt Reader current re-read. Subordinate diagnostic only; no certification, enforcement, or final authority.
 - **Clarity/UI refinement line — Unit Preview, Receipt Reader, Stress Test, Evidence Lab, World Lens:** decluttered primary surfaces, moved developer/debug details behind opt-in controls, and clarified threshold/semantic language.
+- **Patch 215 — README / Public Positioning Upgrade:** strengthened the public doorway, reviewer path, examples, deterministic/local-first explanation, limitations, and 9k audit-lens boundary. Documentation only.
+- **Patch 216 — Rules-Based Transparency Clarification:** states plainly that ALETHEIA uses deterministic heuristics, proximity checks, pressure codes, thresholds, and hand-calibrated formulas. Documentation only; no runtime changes.
 
 ### Consolidated structural/refactor line
 

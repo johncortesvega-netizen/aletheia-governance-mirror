@@ -45,6 +45,12 @@ ALETHEIA is not:
 
 The internal labels `SANCTUARY`, `THRESHOLD`, and `ASYLUM` are workflow/review labels only. They are not final truth claims, safety claims, guilt claims, legitimacy claims, or permission claims.
 
+## Rules-based public clarity
+
+ALETHEIA should be described as deterministic and rule-based, not as a predictive ML model. Its current readings are produced by inspectable heuristics: pressure-code rules, proximity scanning, claim/mechanism comparisons, safeguard detection, thresholds, and hand-calibrated formulas.
+
+This is an intentional boundary choice. ALETHEIA is built to be audited, questioned, corrected, and overruled by human review. The public should understand that the system surfaces review signals; it does not discover final truth.
+
 ## Why the project matters
 
 Many institutions and systems can look governed on the surface while quietly concentrating power, weakening appeal, hiding mechanisms, or inflating evidence. ALETHEIA responds by making those pressure patterns visible without converting the tool itself into authority.

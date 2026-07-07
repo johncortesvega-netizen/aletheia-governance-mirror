@@ -4464,3 +4464,26 @@ python -c "from core.semantic_pressure_scanner import scan_semantic_pressure; pr
 ```
 
 Expected semantic diagnostic: THRESHOLD / Needs safeguards, with weak emergency safeguard notes.
+
+
+## Patch 216 — Rules-Based Transparency Clarification
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 216 clarifies public documentation so reviewers understand ALETHEIA as a deterministic, rule-based governance mirror rather than a machine-learning risk model, predictive governance engine, scientific measuring instrument, or automated adjudicator.
+
+Updated surfaces:
+- README rules-based transparency section.
+- README current limitations.
+- `docs/rules_based_transparency_v1.md`.
+- `docs/public_positioning_v1.md`.
+
+Boundary preserved: documentation only. No runtime behavior, scoring, semantic scanner logic, MEI7 gate, Z-axis, Stress Test metrics, Evidence Lab calculations, World Lens math, receipt schema, external calls, telemetry, storage, certification, enforcement, or authority behavior changed.
+
+Validation target:
+
+```bat
+python -m py_compile app.py core\semantic_pressure_scanner.py ui\receipt_reader.py
+```
+
+No Python files are modified by this patch; the compile command is a conservative smoke check only.
