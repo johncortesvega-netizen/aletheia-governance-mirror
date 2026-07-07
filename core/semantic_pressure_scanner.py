@@ -92,9 +92,16 @@ EMERGENCY_POWER_TERMS: tuple[str, ...] = (
 WEAK_SAFEGUARD_TERMS: tuple[str, ...] = (
     "limited notice", "short notice", "without notice", "no notice", "unclear notice",
     "unclear appeal", "unclear appeal rights", "appeal rights unclear", "limited appeal",
+    "weak appeal", "weak appeal rights", "weak appeals", "limited appeal rights",
     "limited public notice", "unclear public notice", "opaque appeal",
+    "no sunset", "no sunset clause", "without sunset", "no expiry", "no expiration",
+    "weak review", "limited review", "limited independent review", "weak independent review",
+    "unclear independent review", "limited oversight", "weak oversight",
     "beperkte kennisgeving", "zonder kennisgeving", "geen kennisgeving",
     "onduidelijk beroep", "onduidelijke beroepsrechten", "beperkt beroep",
+    "zwak beroep", "zwakke beroepsrechten", "geen sunset", "geen sunset clause",
+    "geen vervaldatum", "beperkte onafhankelijke review", "zwakke review",
+    "beperkt toezicht", "zwak toezicht",
 )
 
 OPAQUE_ACTOR_TERMS: tuple[str, ...] = (
@@ -446,12 +453,15 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     normalized = normalize_entities(raw)
     claims = _count_terms(normalized, CLAIM_TERMS)
     mechanisms = _count_terms(normalized, MECHANISM_TERMS)
+    weak_safeguards = _count_terms(normalized, WEAK_SAFEGUARD_TERMS)
+    emergency_terms = _count_terms(normalized, EMERGENCY_POWER_TERMS)
+    central_terms = _count_terms(normalized, CENTRAL_AUTHORITY_TERMS)
     modal_pressure = (
         _count_terms(normalized, GRIP_TERMS)
         + _count_terms(normalized, PERMANENCE_TERMS)
-        + _count_terms(normalized, EMERGENCY_POWER_TERMS)
-        + _count_terms(normalized, CENTRAL_AUTHORITY_TERMS)
-        + _count_terms(normalized, WEAK_SAFEGUARD_TERMS)
+        + emergency_terms
+        + central_terms
+        + weak_safeguards
     )
     sovereignty = _count_terms(normalized, SOVEREIGNTY_TERMS)
     hits = proximity_scan(normalized)
@@ -473,6 +483,9 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     if emergency_service_control:
         notes.append("Emergency/central authority over basic services: crisis or central-office authority is linked to essential services while notice or appeal safeguards look limited or unclear.")
         adjustment -= 0.18
+    if weak_safeguards and (emergency_terms or central_terms or modal_pressure):
+        notes.append("Weak emergency safeguards: emergency/authority language appears with missing or weakened sunset, appeal, notice, review, or oversight safeguards.")
+        adjustment -= 0.14
     if opaque_capture_claim:
         notes.append("Opaque capture-power claim: an actor group is linked to hidden broad-scale power or control without visible evidence, appeal path, or accountable mechanism.")
         adjustment -= 0.22
@@ -485,7 +498,7 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     if modal_pressure > sovereignty:
         notes.append("Modal pressure outweighs sovereignty language: obligation or permanence terms exceed appeal, revocation, fallback, or choice language.")
         adjustment -= 0.08
-    if mechanisms >= 2 and sovereignty >= 1 and not hits and not identity_gate and not emergency_service_control and not opaque_capture_claim:
+    if mechanisms >= 2 and sovereignty >= 1 and not hits and not identity_gate and not emergency_service_control and not opaque_capture_claim and not weak_safeguards:
         notes.append("Concrete safeguards detected: appeal, audit, review, revocation, time-limit, or reversibility language is visible.")
     if governance_context and claims > 0 and mechanisms == 0 and not hits:
         fail_closed = True
@@ -496,7 +509,7 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     if not notes:
         notes.append("No strong semantic pressure pattern detected by this deterministic scanner. Human review still required.")
 
-    if hits or identity_gate or emergency_service_control or opaque_capture_claim or fail_closed or adjustment <= -0.24:
+    if hits or identity_gate or emergency_service_control or opaque_capture_claim or weak_safeguards or fail_closed or adjustment <= -0.24:
         state = "THRESHOLD"
         risk = "Needs safeguards"
     elif adjustment <= -0.10:

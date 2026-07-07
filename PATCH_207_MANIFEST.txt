@@ -1,0 +1,12 @@
+PATCH 207 — Weak Emergency Safeguard Semantic Calibration
+
+Changed files:
+- core/semantic_pressure_scanner.py
+- PATCH_STATUS.md
+- PATCH_207_MANIFEST.txt
+- PATCH_207_RECOVERY_NOTE.md
+- PATCH_207_DELETE_LIST.txt
+
+Purpose:
+- Prevent emergency-power text with weak sunset/appeal/review safeguards from appearing as semantic SANCTUARY/no-signal.
+- Route these cases to THRESHOLD / Needs safeguards as a subordinate semantic diagnostic.

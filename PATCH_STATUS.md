@@ -4389,3 +4389,20 @@ Status: READY FOR LOCAL REVIEW
 Patch 205 fixes a Stress Test semantic-panel mismatch where the main Stress Test reading could detect high-risk/capture pressure while the semantic layer showed no signal after the Invisibility Filter processed the user text. Stress Test now scans both raw and processed text for the subordinate semantic diagnostic and keeps the stronger semantic pressure signal.
 
 Boundary preserved: this is a diagnostic alignment fix only. It does not change Stress Test metrics, receipt schema, module routing, World Lens math, Evidence Lab calculation, external calls, telemetry, storage, certification, enforcement, or final-truth behavior.
+
+## Patch 207 — Weak Emergency Safeguard Semantic Calibration
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 207 fixes a semantic-layer mismatch where emergency-power language with weak or missing safeguards could still display as a SANCTUARY/no-strong-pattern diagnostic. The scanner now recognizes weak emergency safeguard patterns such as no sunset clause, weak appeal rights, limited independent review, limited oversight, and related phrasing.
+
+Boundary preserved: semantic diagnostic calibration only. No Stress Test scoring change, no receipt schema change, no module routing change, no external calls, no telemetry, no storage, no certification, no enforcement, and no final-truth claim.
+
+Validation target:
+
+```bat
+python -m py_compile core\semantic_pressure_scanner.py
+python -c "from core.semantic_pressure_scanner import scan_semantic_pressure; print(scan_semantic_pressure('A government creates emergency powers after a crisis, but the powers have no sunset clause, weak appeal rights, and limited independent review.'))"
+```
+
+Expected semantic diagnostic: THRESHOLD / Needs safeguards, with weak emergency safeguard notes.
