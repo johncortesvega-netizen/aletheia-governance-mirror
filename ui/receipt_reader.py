@@ -25,6 +25,52 @@ except Exception:  # pragma: no cover - optional Streamlit deployment guard
     reviewability_guidance_rows = None  # type: ignore
 
 
+def _semantic_pressure_rows_by_code(codes: list[str]) -> tuple[list[str], dict[str, str], dict[str, tuple[str, str]]]:
+    """Return pressure-code explanation/guidance rows keyed by code for readable cards."""
+    code_list = [str(code) for code in (codes or []) if str(code or "").strip()]
+    explanation_map: dict[str, str] = {}
+    guidance_map: dict[str, tuple[str, str]] = {}
+    if pressure_code_rows is not None:
+        explanation_map = {
+            str(row.get("Code", "")): str(row.get("Plain-English meaning", ""))
+            for row in pressure_code_rows(code_list)
+        }
+    if reviewability_guidance_rows is not None:
+        guidance_map = {
+            str(row.get("Pressure code", "")): (
+                str(row.get("Reviewability goal", "")),
+                str(row.get("Structural guidance", "")),
+            )
+            for row in reviewability_guidance_rows(code_list)
+        }
+    return code_list, explanation_map, guidance_map
+
+
+def _render_pressure_code_cards(container: Any, pressure_codes: list[str]) -> None:
+    """Render pressure-code diagnostics as readable cards, not cramped dataframes."""
+    if not pressure_codes or pressure_code_rows is None:
+        return
+    code_list, explanation_map, guidance_map = _semantic_pressure_rows_by_code(pressure_codes)
+    container.caption(
+        "Stable diagnostic codes explaining why the semantic layer flagged this receipt. "
+        "Codes are not verdicts or certifications."
+    )
+    for idx, code in enumerate(code_list, start=1):
+        explanation = explanation_map.get(code, "Review signal requiring human interpretation.")
+        goal, guidance = guidance_map.get(
+            code,
+            ("Make the claim reviewable", "Add evidence basis, limits, appeal, correction, and independent review routes."),
+        )
+        card = container.container(border=True)
+        card.markdown(f"**{idx}. `{code}`**")
+        card.caption(explanation)
+        card.markdown(f"**Reviewability goal:** {goal}")
+        card.markdown(f"- {guidance}")
+    with container.expander("Show pressure-code table", expanded=False) as table_panel:
+        table_panel.dataframe(pressure_code_rows(code_list), use_container_width=True, hide_index=True)
+
+
+
 RECEIPT_READER_BOUNDARY = (
     "Receipt Reader - Standard View explains uploaded ALETHEIA receipts. "
     "It does not rescore, certify, approve, reject, enforce, or override the original receipt."
@@ -2121,12 +2167,7 @@ def _render_semantic_pressure_layer(container: Any, view: dict[str, Any]) -> Non
     pressure_codes = list(summary.get("pressure_codes") or [])
     if pressure_codes and pressure_code_rows is not None:
         with container.expander("Pressure-code matrix", expanded=False) as codes_panel:
-            codes_panel.caption("Stable diagnostic codes explaining why the semantic layer flagged this receipt. Codes are not verdicts or certifications.")
-            codes_panel.dataframe(pressure_code_rows(pressure_codes), use_container_width=True, hide_index=True)
-            if reviewability_guidance_rows is not None:
-                codes_panel.markdown("**Reviewable input guidance**")
-                codes_panel.caption("This is not flag-avoidance advice. It shows how to make claims evidence-based, bounded, appealable, and repairable.")
-                codes_panel.dataframe(reviewability_guidance_rows(pressure_codes), use_container_width=True, hide_index=True)
+            _render_pressure_code_cards(codes_panel, pressure_codes)
 
     finding = str(summary.get("finding", "NO SIGNAL"))
     risk = _semantic_layer_receipt_note(summary)

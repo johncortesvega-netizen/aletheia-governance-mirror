@@ -4334,6 +4334,47 @@ def semantic_pressure_summary_message(scan) -> tuple[str, str]:
     )
 
 
+
+def _semantic_pressure_rows_by_code(codes):
+    """Return pressure-code explanation/guidance rows keyed by code for card rendering."""
+    code_list = [str(code) for code in (codes or []) if str(code or "").strip()]
+    explanation_map = {str(row.get("Code", "")): str(row.get("Plain-English meaning", "")) for row in pressure_code_rows(code_list)}
+    guidance_map = {
+        str(row.get("Pressure code", "")): (
+            str(row.get("Reviewability goal", "")),
+            str(row.get("Structural guidance", "")),
+        )
+        for row in reviewability_guidance_rows(code_list)
+    }
+    return code_list, explanation_map, guidance_map
+
+
+def _render_pressure_code_cards(codes) -> None:
+    """Render readable pressure-code cards instead of cramped dataframe cells."""
+    code_list, explanation_map, guidance_map = _semantic_pressure_rows_by_code(codes)
+    if not code_list:
+        return
+
+    st.markdown("**Pressure-code matrix**")
+    st.caption(
+        "Stable diagnostic codes explaining which pressure patterns were detected. "
+        "Codes are not verdicts or certifications."
+    )
+    for idx, code in enumerate(code_list, start=1):
+        explanation = explanation_map.get(code, "Review signal requiring human interpretation.")
+        goal, guidance = guidance_map.get(
+            code,
+            ("Make the claim reviewable", "Add evidence basis, limits, appeal, correction, and independent review routes."),
+        )
+        with st.container(border=True):
+            st.markdown(f"**{idx}. `{html.escape(code)}`**")
+            st.caption(html.escape(explanation))
+            st.markdown(f"**Reviewability goal:** {html.escape(goal)}")
+            st.markdown(f"- {html.escape(guidance)}")
+    with st.expander("Show pressure-code table", expanded=False):
+        st.dataframe(pd.DataFrame(pressure_code_rows(code_list)), use_container_width=True, hide_index=True)
+
+
 def render_semantic_pressure_panel(
     text_or_scan,
     *,
@@ -4432,12 +4473,7 @@ def render_semantic_pressure_panel(
             detail_cols[2].metric("Reversibility", str(sovereignty_count))
             detail_cols[3].metric("Fail-closed", "YES" if fail_closed else "NO")
             if pressure_codes:
-                st.markdown("**Pressure-code matrix**")
-                st.caption("Stable diagnostic codes explaining which pressure patterns were detected. Codes are not verdicts or certifications.")
-                st.dataframe(pd.DataFrame(pressure_code_rows(pressure_codes)), use_container_width=True, hide_index=True)
-                st.markdown("**Reviewable input guidance**")
-                st.caption("This is not flag-avoidance advice. It shows how to make claims evidence-based, bounded, appealable, and repairable.")
-                st.dataframe(pd.DataFrame(reviewability_guidance_rows(pressure_codes)), use_container_width=True, hide_index=True)
+                _render_pressure_code_cards(pressure_codes)
             if notes:
                 st.markdown("**Notes**")
                 for note in notes:

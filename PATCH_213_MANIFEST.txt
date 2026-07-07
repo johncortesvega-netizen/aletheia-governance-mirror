@@ -1,0 +1,28 @@
+PATCH 213 — PRESSURE CODE UI READABILITY CLEANUP
+
+Changed files:
+- app.py
+- ui/receipt_reader.py
+- PATCH_STATUS.md
+- PATCH_213_MANIFEST.txt
+- PATCH_213_RECOVERY_NOTE.md
+- PATCH_213_DELETE_LIST.txt
+
+Purpose:
+- Replace cramped pressure-code and reviewability dataframe blocks with readable cards.
+- Keep pressure-code tables available behind an optional expander for audit/copy workflows.
+- Improve Mirror Check, Stress Test, Evidence Lab, World Lens semantic panels through the shared semantic panel renderer.
+- Improve Receipt Reader semantic pressure layer card readability.
+
+Boundary:
+- UI/readability patch only.
+- No semantic scanner scoring changes.
+- No MEI7 ethics gate changes.
+- No Stress Test metrics changes.
+- No Evidence Lab calculations changes.
+- No World Lens math changes.
+- No receipt schema change.
+- No telemetry, storage, certification, enforcement, or authority behavior added.
+
+Validation:
+python -m py_compile app.py ui\receipt_reader.py

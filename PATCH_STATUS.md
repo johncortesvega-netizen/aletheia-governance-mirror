@@ -4475,3 +4475,18 @@ Validation target:
 python -m py_compile core\semantic_pressure_scanner.py app.py ui\receipt_reader.py
 python -c "from core.semantic_pressure_scanner import scan_semantic_pressure; print(scan_semantic_pressure('a group of bankers have world power in secret').pressure_codes)"
 ```
+
+## Patch 213 — Pressure Code UI Readability Cleanup
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 213 replaces cramped pressure-code/reviewability dataframe output with readable pressure-code cards in the shared semantic pressure panel and Receipt Reader semantic layer. Each card shows the code, plain-language meaning, reviewability goal, and structural guidance. The compact table remains available behind an optional expander for audit/copy workflows.
+
+Boundary preserved: UI/readability only. No scanner logic, scoring, MEI7 ethics gate, Z-axis mapping, Stress Test metrics, Evidence Lab calculations, World Lens math, receipt schema, module routing, external calls, telemetry, storage, certification, enforcement, or final-truth behavior changed.
+
+Validation target:
+
+```bat
+python -m py_compile app.py ui\receipt_reader.py
+python -m streamlit run app.py
+```
