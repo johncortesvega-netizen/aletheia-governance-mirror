@@ -1,0 +1,25 @@
+PATCH 215 — README / Public Positioning Upgrade
+
+Changed files:
+- README.md
+- docs/public_positioning_v1.md
+- docs/public_demo_examples_v1.md
+- PATCH_STATUS.md
+- PATCH_215_MANIFEST.txt
+- PATCH_215_RECOVERY_NOTE.md
+- PATCH_215_DELETE_LIST.txt
+
+Purpose:
+Improve ALETHEIA's public-facing doorway without adding runtime behavior. The patch clarifies what ALETHEIA is/is not, how reviewers should start, what short example scans demonstrate, why deterministic/local-first design matters, and what limitations remain visible.
+
+Deferred intentionally:
+- app.py modularization
+- new modules
+- scoring changes
+- scanner changes
+- World Lens/9k behavior changes
+- receipt schema changes
+- UI changes
+
+Boundary:
+Documentation only. Mirror, not throne.

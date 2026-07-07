@@ -12,6 +12,93 @@ Many systems can appear governed, compliant, neutral, or benevolent while still 
 
 ---
 
+## Public doorway: why this project exists
+
+ALETHEIA is built for situations where governance language looks compliant, neutral, democratic, benevolent, or technically sophisticated while still moving power away from review. Its job is not to accuse, certify, or decide. Its job is to surface pressure patterns that deserve human inspection.
+
+Use ALETHEIA when you need a structured review aid for:
+
+- policy or institutional text that may hide authority drift;
+- AI governance claims that sound strong but lack mechanisms;
+- emergency-power proposals with weak appeal, expiry, or oversight;
+- identity, biometric, welfare, service-access, or procurement designs;
+- DAO, platform, or organizational proposals where capture risk may be subtle;
+- local witness receipts that need a readable audit trail.
+
+The public posture is simple:
+
+> **ALETHEIA reflects. Humans review. Power stays accountable.**
+
+It stands apart from automated judge systems by refusing to convert analysis into command. A strong ALETHEIA output is not a verdict; it is a clearer question for accountable human review.
+
+---
+
+## Five-minute reviewer path
+
+For a first public review, do not begin with the patch archive. Use this path:
+
+1. Run the app locally or open the hosted demo.
+2. Paste one governance statement into **Mirror Check**.
+3. Open **Semantic pressure signals** and inspect the pressure codes.
+4. Run one scenario in **Stress Test** and compare the main reading with the semantic layer.
+5. Open **Evidence Lab** to see which claims still need sources, safeguards, appeal, or review routes.
+6. Open **World Lens** only as contextual public-data support; do not read it as a country ranking or mandate system.
+7. Generate or upload a receipt only as a local witness artifact, not as proof of final truth.
+
+The quickest way to understand ALETHEIA is to test whether it keeps returning authority to humans even when the language becomes dramatic, moral, technical, institutional, or urgent.
+
+---
+
+## Three example scans
+
+These examples are intentionally short. They demonstrate the kind of signal ALETHEIA should surface; they are not legal, political, factual, or moral verdicts.
+
+### 1. Hidden-power claim
+
+```text
+A group of bankers have world power in secret.
+```
+
+Expected diagnostic shape:
+
+- semantic pressure around opaque capture-power language;
+- pressure code such as `OPAQUE_CAPTURE_CLAIM`;
+- guidance to convert the claim into auditable evidence routes: ownership records, decision logs, funding flows, lobbying channels, procurement links, public records, and contestable review questions.
+
+### 2. Emergency authority with weak safeguards
+
+```text
+A government creates emergency powers after a crisis, but the powers have no sunset clause, weak appeal rights, and limited independent review.
+```
+
+Expected diagnostic shape:
+
+- review-required or high-pressure reading;
+- pressure code such as `EMERGENCY_POWER_WEAK_SAFEGUARD`;
+- repair questions about expiry, public notice, independent oversight, appeal, correction, and return to ordinary procedure.
+
+### 3. Ethical claim without mechanism
+
+```text
+This system protects dignity, safety, harmony, inclusion, and public trust.
+```
+
+Expected diagnostic shape:
+
+- claim/mechanism gap;
+- pressure code such as `CLAIM_MECHANISM_GAP`;
+- request for concrete safeguards: audit trail, appeal path, time limit, fallback, independent review, evidence rule, correction route, or exit path.
+
+---
+
+## Why deterministic and local-first?
+
+ALETHEIA deliberately favors inspectable rules, explicit pressure codes, visible thresholds, local receipts, and human-readable repair questions over black-box authority. That design has limits: it can miss novel language, context, irony, coded references, or domain-specific evidence. The tradeoff is intentional. The system should be reviewable before it asks anyone to trust it.
+
+A future hybrid approach may be explored only if it preserves the same boundary: no model may become the judge, certifier, enforcer, or final source of legitimacy.
+
+---
+
 ## Framework balance
 
 > **Science is the investigative base. Philosophy is the interpretive structure. Theology is the humility boundary. Human review is the action layer.**
@@ -94,7 +181,7 @@ Upload-only reading support for ALETHEIA local witness receipts and evidence bun
 
 It does not prove wrongdoing, certify deception, publish receipts, sync receipts, or claim final truth.
 
-Receipt Reader includes an optional **current semantic re-read**. This is a present-day semantic scan of uploaded receipt text. It is not part of the original receipt, does not alter original receipt values, and must not be treated as historical proof of the original reading.
+Receipt Reader includes a **Semantic pressure layer** for present-day diagnostic support. It does not alter native receipt values, does not replace the original receipt, and must not be treated as historical proof of the original reading.
 
 ### Boundary Cases
 
@@ -181,7 +268,7 @@ New reviewers should not begin with the full patch archive. Use this path first:
 4. Use **Stress Test** for scenarios and deployment-pressure cases.
 5. Use **Evidence Lab** for claim/evidence context and semantic claim/mechanism checks.
 6. Use **World Lens** for selected-year country views and regional interpretation flags.
-7. Use **Receipt Reader** only to read existing ALETHEIA receipts without rescoring them; use current semantic re-read only as a present-day diagnostic.
+7. Use **Receipt Reader** only to read existing ALETHEIA receipts without rescoring them; use the Semantic pressure layer only as a present-day diagnostic.
 8. Read `docs/glossary.md`, `docs/validation_and_precision.md`, and `docs/how_to_review_aletheia_without_trusting_it.md` before relying on scores, receipts, or evidence views.
 9. Use `docs/patch_index.md` and `docs/patch_archive/README.md` only when patch-specific detail is needed.
 
@@ -214,6 +301,21 @@ Reviewer-readiness is not mass-adoption polish. The goal is to preserve ALETHEIA
 7. Why ALETHEIA
 
 Aletheia Unit Preview appears before the full app surface as the single orientation entry. Receipt Reader is treated as a support utility rather than a main work tab.
+
+---
+
+## Current limitations
+
+ALETHEIA is a release-candidate governance mirror, not production authority. Current limitations should remain visible rather than hidden behind polished language.
+
+- The core scanner is deterministic and auditable, but rule-based systems can miss novel or context-heavy phrasing.
+- The interface is powerful but dense; broad public use still needs cleaner guided workflows and examples.
+- `app.py` remains a large orchestrator file; future modularization should be planned carefully and tested separately.
+- Many thresholds and demo scenarios are intentionally explicit rather than learned from live data. This helps auditability but requires regression tests when calibrations change.
+- World Lens and the 9k allocation logic are contextual audit lenses only. They are not a mandate system, world parliament, country certification layer, or political authority claim.
+- Hosted deployments may expose platform-level logs outside ALETHEIA's app-code boundary; sensitive review should be local.
+
+A useful review should ask whether ALETHEIA preserves its boundary under pressure, not whether it looks complete.
 
 ---
 
