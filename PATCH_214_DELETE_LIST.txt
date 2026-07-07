@@ -1,0 +1,11 @@
+Patch 214 adds documentation and regression tests only.
+
+No existing runtime files should be deleted.
+
+Rollback-only removals:
+- docs/architecture_review_v1_boundary_and_regression.md
+- tests/test_patch_214_regression_guardrails.py
+- manifest/patch_214.json
+- PATCH_214_MANIFEST.txt
+- PATCH_214_RECOVERY_NOTE.md
+- PATCH_214_DELETE_LIST.txt

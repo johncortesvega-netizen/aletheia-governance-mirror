@@ -1,3 +1,9 @@
+# Patch 214 — Regression Guardrails / Mirror Boundary Test Pack
+
+Status: READY_FOR_LOCAL_VALIDATION
+
+Adds a boundary architecture review note plus regression tests that verify high-risk authority/capture/no-appeal inputs cannot silently route to SANCTUARY. Adds no runtime scoring, UI, scanner, receipt, World Lens, Evidence Lab, or MEI7 gate changes.
+
 ## Patch 212 — Reviewable Input Guidance
 
 Date: 2026-07-07

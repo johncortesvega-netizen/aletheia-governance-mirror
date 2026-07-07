@@ -1,0 +1,11 @@
+{
+  "patch_id": 214,
+  "patch_name": "Regression Guardrails / Mirror Boundary Test Pack",
+  "dependencies": [210, 211, 212, 213],
+  "status": "READY_FOR_LOCAL_VALIDATION",
+  "description": "Anchors ALETHEIA's mirror boundary through regression tests and a core architecture review note. Prevents UI, semantic, and receipt-layer expansion from silently weakening gate routing or creating false SANCTUARY paths.",
+  "recovery_note": {
+    "action": "If these tests fail after UI or semantic-layer changes, block the build and inspect routing before release.",
+    "boundary_check": "Dangerous authority, capture, no-appeal, emergency-power, identity-gated-access, and opaque-capture inputs must not route to SANCTUARY. 9k and World Lens outputs remain audit lenses, not mandate claims."
+  }
+}

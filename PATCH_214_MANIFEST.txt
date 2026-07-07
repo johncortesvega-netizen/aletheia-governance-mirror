@@ -1,0 +1,23 @@
+PATCH 214 — Regression Guardrails / Mirror Boundary Test Pack
+
+Changed / added files:
+- docs/architecture_review_v1_boundary_and_regression.md
+- tests/test_patch_214_regression_guardrails.py
+- manifest/patch_214.json
+- PATCH_STATUS.md
+- PATCH_214_MANIFEST.txt
+- PATCH_214_RECOVERY_NOTE.md
+- PATCH_214_DELETE_LIST.txt
+
+Purpose:
+- Add a core architecture reference note for the mirror boundary and regression posture.
+- Add regression tests that verify high-risk authority/capture/no-appeal inputs cannot silently route to SANCTUARY.
+- Anchor pressure-code expectations for opaque capture, weak emergency safeguards, and biometric/identity-gated access.
+
+Non-goals:
+- No scoring changes.
+- No UI changes.
+- No semantic scanner logic changes.
+- No MEI7 gate changes.
+- No World Lens math changes.
+- No receipt schema changes.
