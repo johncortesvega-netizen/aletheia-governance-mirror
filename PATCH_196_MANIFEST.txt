@@ -1,0 +1,31 @@
+Patch 196 — Receipt Reader Automatic Semantic Reading
+
+Status: READY FOR LOCAL REVIEW
+
+Changed files:
+- ui/receipt_reader.py
+- PATCH_STATUS.md
+- PATCH_196_MANIFEST.txt
+- PATCH_196_RECOVERY_NOTE.md
+- PATCH_196_DELETE_LIST.txt
+
+Summary:
+Patch 196 makes Receipt Reader semantic comparison automatic for every uploaded receipt. Single receipts and every receipt inside batch ZIP uploads now receive a current semantic reading during parse/render. The reading is shown as a comparison layer only: it does not rescore, override, certify, approve, reject, or replace native receipt values.
+
+Behavior:
+- Single receipt uploads automatically show Current semantic reading.
+- Batch ZIP receipt rows include a Current Semantic column for every receipt.
+- Selected receipt inspection shows the same automatic current semantic reading.
+- World Lens evidence bundles also attach current semantic readings to parsed native receipts.
+- Developer/debug semantic details remain opt-in.
+
+Boundary preserved:
+- No receipt schema change.
+- No native receipt value changes.
+- No Standard View rescoring.
+- No new authority, certification, approval, rejection, enforcement, or final-truth behavior.
+- No external calls, telemetry, analytics, storage, Global ID sync, public ledger sync, or hosted-data behavior added.
+
+Validation targets:
+python -m py_compile ui/receipt_reader.py
+python -m py_compile app.py core/semantic_pressure_scanner.py ui/receipt_reader.py ui/unit_preview.py

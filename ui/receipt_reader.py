@@ -1144,7 +1144,7 @@ def parse_uploaded_receipt_file(uploaded_file: Any) -> dict[str, Any]:
     name = getattr(uploaded_file, "name", "") or ""
     if name.lower().endswith(".zip"):
         receipts, zip_name, all_files, bundle_details = _read_zip_receipts(uploaded_file)
-        views = [(filename, parse_receipt_standard_view(text)) for filename, text in receipts]
+        views = [(filename, _attach_current_semantic_reread(parse_receipt_standard_view(text), text, filename=filename)) for filename, text in receipts]
         distribution = Counter(view.get("native_state", MISSING_VALUE) for _, view in views)
         risk_distribution = Counter(
             (view.get("fields") or {}).get("risk_state", MISSING_VALUE) for _, view in views
@@ -1166,7 +1166,7 @@ def parse_uploaded_receipt_file(uploaded_file: Any) -> dict[str, Any]:
             "zip_file_count": len(all_files),
         }
     text, filename = _read_uploaded_text(uploaded_file)
-    return {"kind": "single", "name": filename, "text": text, "view": parse_receipt_standard_view(text)}
+    return {"kind": "single", "name": filename, "text": text, "view": _attach_current_semantic_reread(parse_receipt_standard_view(text), text, filename=filename)}
 
 
 def _metric_section_title(view: dict[str, Any]) -> str:
@@ -1572,53 +1572,107 @@ def _render_plain_language_receipt_summary(container: Any, view: dict[str, Any])
         panel.table(_plain_power_distribution_rows(view))
 
 
-def _render_optional_current_semantic_reread(container: Any, receipt_text: str, *, filename: str = "uploaded receipt") -> None:
-    """Optional S3 current semantic re-read for uploaded receipt text.
+def _semantic_finding_label(scan: Any) -> str:
+    """Return a reader-safe semantic finding label for the current scanner pass."""
+    if scan is None:
+        return "Unavailable"
+    claim_count = int(getattr(scan, "claim_count", 0) or 0)
+    mechanism_count = int(getattr(scan, "mechanism_count", 0) or 0)
+    modal_count = int(getattr(scan, "modal_pressure_count", 0) or 0)
+    sovereignty_count = int(getattr(scan, "sovereignty_count", 0) or 0)
+    proximity_hits = list(getattr(scan, "proximity_hits", ()) or [])
+    fail_closed = bool(getattr(scan, "fail_closed", False))
+    pressure = float(getattr(scan, "integrity_adjustment", 0.0) or 0.0)
+    if not any([claim_count, mechanism_count, modal_count, sovereignty_count, proximity_hits, fail_closed, abs(pressure) > 1e-9]):
+        return "NO SIGNAL"
+    return str(getattr(scan, "state", "REVIEW"))
 
-    This never changes the uploaded receipt, native values, Standard View, or stored
-    receipt meaning. It is a current scanner pass for human comparison only.
-    """
+
+def _build_current_semantic_reread(receipt_text: str) -> dict[str, Any]:
+    """Run the current semantic scanner for a receipt without changing native receipt values."""
     if scan_semantic_pressure is None:
-        return
+        return {"available": False, "finding": "Unavailable", "risk": "Semantic scanner unavailable"}
     clean_text = str(receipt_text or "").strip()
     if not clean_text:
-        return
-    digest = hashlib.sha1((filename + "|" + clean_text[:500]).encode("utf-8", errors="ignore")).hexdigest()[:12]
-    with container.expander("Optional current semantic re-read — not part of original receipt", expanded=False) as panel:
-        panel.caption(
-            "This runs the current relationship-aware semantic scanner on uploaded receipt text. "
-            "It is a present-time comparison only: it does not rescore, alter, certify, approve, reject, or replace the original receipt."
-        )
-        run_reread = panel.button(
-            "Run current semantic re-read",
-            key=f"receipt_current_semantic_reread_{digest}",
-            help="Optional diagnostic only; the original receipt remains unchanged.",
-        )
-        if not run_reread:
-            panel.info("Click the button to run a current semantic re-read on the uploaded receipt text.")
+        return {"available": False, "finding": "NO TEXT", "risk": "No uploaded receipt text found"}
+    scan = scan_semantic_pressure(clean_text, governance_context=True)
+    return {
+        "available": True,
+        "scan": scan,
+        "finding": _semantic_finding_label(scan),
+        "risk": str(getattr(scan, "risk", "Review signal")),
+        "claims": int(getattr(scan, "claim_count", 0) or 0),
+        "mechanisms": int(getattr(scan, "mechanism_count", 0) or 0),
+        "pressure": float(getattr(scan, "integrity_adjustment", 0.0) or 0.0),
+        "notes": list(getattr(scan, "notes", ()) or []),
+    }
+
+
+def _attach_current_semantic_reread(view: dict[str, Any], receipt_text: str, *, filename: str = "uploaded receipt") -> dict[str, Any]:
+    """Attach current semantic reader context while preserving native receipt parsing."""
+    view["_receipt_reader_source_text"] = str(receipt_text or "")
+    view["_receipt_reader_source_name"] = str(filename or "uploaded receipt")
+    view["_current_semantic_reread"] = _build_current_semantic_reread(str(receipt_text or ""))
+    return view
+
+
+def _render_current_semantic_reread(container: Any, view: dict[str, Any]) -> None:
+    """Always show the current semantic reading for uploaded receipts.
+
+    This is an automatic current scanner pass for comparison only. It never changes
+    native receipt values, Standard View, receipt schema, or stored receipt meaning.
+    """
+    summary = view.get("_current_semantic_reread") or {}
+    if not summary:
+        text = str(view.get("_receipt_reader_source_text", ""))
+        if not text.strip():
             return
-        scan = scan_semantic_pressure(clean_text, governance_context=True)
-        state = str(getattr(scan, "state", "SANCTUARY"))
-        risk = str(getattr(scan, "risk", "Review signal"))
-        claim_count = int(getattr(scan, "claim_count", 0) or 0)
-        mechanism_count = int(getattr(scan, "mechanism_count", 0) or 0)
-        integrity_adjustment = float(getattr(scan, "integrity_adjustment", 0.0) or 0.0)
-        c1, c2, c3, c4 = panel.columns(4)
-        c1.metric("Current semantic state", state)
-        c2.metric("Claims", claim_count)
-        c3.metric("Mechanisms", mechanism_count)
-        c4.metric("Diagnostic pressure", f"{integrity_adjustment:+.3f}")
-        panel.info(
-            f"Current semantic note: {risk}. This is a re-read by the current scanner, not a native receipt value."
+        summary = _build_current_semantic_reread(text)
+        view["_current_semantic_reread"] = summary
+    if not summary.get("available"):
+        container.info(f"Current semantic reading: {summary.get('risk', 'semantic scanner unavailable')}.")
+        return
+
+    container.markdown("### Current semantic reading")
+    container.caption(
+        "Automatic current scanner pass on the uploaded receipt text. This is not part of the original receipt and does not rescore, alter, certify, approve, reject, or replace it."
+    )
+    c1, c2, c3, c4 = container.columns(4)
+    c1.metric("Semantic finding", str(summary.get("finding", "NO SIGNAL")))
+    c2.metric("Claims", int(summary.get("claims", 0) or 0))
+    c3.metric("Mechanisms", int(summary.get("mechanisms", 0) or 0))
+    c4.metric("Diagnostic pressure", f"{float(summary.get('pressure', 0.0) or 0.0):+.3f}")
+
+    finding = str(summary.get("finding", "NO SIGNAL"))
+    risk = str(summary.get("risk", "Review signal"))
+    if finding == "NO SIGNAL":
+        container.info("No semantic pressure relationship detected by the current scanner. This does not lower or override the native receipt reading.")
+    elif finding == "SANCTUARY":
+        container.success(f"Current semantic note: {risk}. This is a current re-read only, not a native receipt value.")
+    elif finding == "THRESHOLD":
+        container.warning(f"Current semantic note: {risk}. Human review should compare this with the native receipt values.")
+    else:
+        container.error(f"Current semantic note: {risk}. Human review should compare this with the native receipt values.")
+
+    notes = list(summary.get("notes") or [])
+    if notes:
+        with container.expander("Current semantic notes", expanded=False) as notes_panel:
+            for note in notes[:10]:
+                notes_panel.markdown(f"- {note}")
+
+    scan = summary.get("scan")
+    if scan is not None and format_semantic_pressure_report is not None:
+        digest_source = str(view.get("_receipt_reader_source_name", "uploaded receipt")) + "|" + str(view.get("_receipt_reader_source_text", ""))[:300]
+        digest = hashlib.sha1(digest_source.encode("utf-8", errors="ignore")).hexdigest()[:12]
+        show_debug = container.checkbox(
+            "Show current semantic debug details",
+            value=False,
+            key=f"receipt_current_semantic_debug_{digest}",
+            help="Developer/debug view only. The native receipt remains unchanged.",
         )
-        notes = list(getattr(scan, "notes", ()) or [])
-        if notes:
-            panel.markdown("**Current semantic notes**")
-            for note in notes[:8]:
-                panel.markdown(f"- {note}")
-        if format_semantic_pressure_report is not None:
-            with panel.expander("Current semantic scan details", expanded=False):
-                panel.code(format_semantic_pressure_report(scan), language="text")
+        if show_debug:
+            with container.expander("Developer/debug details — current semantic re-read", expanded=False) as details:
+                details.code(format_semantic_pressure_report(scan), language="text")
 
 
 def _render_single_view(container: Any, view: dict[str, Any]) -> None:
@@ -1629,6 +1683,7 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
 
     _render_plain_language_receipt_summary(container, view)
     _render_repair_questions_block(container, view)
+    _render_current_semantic_reread(container, view)
 
     container.markdown(f"### {_metric_section_title(view)}")
     container.caption(_metric_section_caption(view))
@@ -1656,8 +1711,6 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
         expander.table(_native_values_rows(view))
 
 
-
-
 def _batch_receipt_index_rows(parsed: dict[str, Any]) -> list[dict[str, str]]:
     """Build one compact summary row per uploaded receipt in a batch ZIP."""
     rows: list[dict[str, str]] = []
@@ -1681,6 +1734,7 @@ def _batch_receipt_index_rows(parsed: dict[str, Any]) -> list[dict[str, str]]:
             "Native State": native_state,
             "Review Pressure": review_pressure,
             "Protocol Label": fields.get("protocol_label", MISSING_VALUE),
+            "Current Semantic": str((view.get("_current_semantic_reread") or {}).get("finding", "Not run")),
             "Integrity": integrity,
             "Collapse": collapse,
             "Trust Index": trust,
@@ -1782,7 +1836,7 @@ def _render_batch_zip(container: Any, parsed: dict[str, Any]) -> None:
     distribution = parsed.get("distribution") or {}
     if distribution:
         container.table([{"Native State": key, "Count": value} for key, value in sorted(distribution.items())])
-    container.info("Batch ZIP reading summarizes uploaded receipts only. It does not rescore, merge labels, or create a new receipt.")
+    container.info("Batch ZIP reading summarizes uploaded receipts only. A current semantic reading is attached to every receipt for comparison; it does not rescore, merge labels, or create a new receipt.")
 
     views = parsed.get("views") or []
     if not views:
@@ -1790,7 +1844,7 @@ def _render_batch_zip(container: Any, parsed: dict[str, Any]) -> None:
 
     rows = _batch_receipt_index_rows(parsed)
     container.markdown("### Receipt Index")
-    container.caption("One compact row per uploaded receipt. Values are copied from each native receipt; QUESTION_PROMPT metrics are marked not applicable, not missing.")
+    container.caption("One compact row per uploaded receipt. Current Semantic is an automatic current scanner comparison for every receipt; native values remain unchanged.")
     container.table(rows)
 
     labels = [
@@ -1842,8 +1896,3 @@ def render_receipt_reader_standard_view(container=None) -> None:
         _render_batch_zip(container, parsed)
     else:
         _render_single_view(container, parsed["view"])
-        _render_optional_current_semantic_reread(
-            container,
-            str(parsed.get("text", "")),
-            filename=str(parsed.get("name", "uploaded receipt")),
-        )

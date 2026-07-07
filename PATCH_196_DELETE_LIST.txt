@@ -1,0 +1,3 @@
+Patch 196 delete list
+
+No files are intentionally deleted by this patch.

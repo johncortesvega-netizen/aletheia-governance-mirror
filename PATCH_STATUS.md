@@ -1,3 +1,18 @@
+## Patch 196 — Receipt Reader Automatic Semantic Reading
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 196 makes Receipt Reader semantic comparison automatic for every uploaded receipt. Single receipts, batch ZIP receipts, and World Lens evidence-bundle receipts receive a current Semantic Pressure Scanner reading during parse/render. The reading appears as a comparison layer only: it does not rescore, override, certify, approve, reject, replace, or become part of native receipt values.
+
+Scope: Receipt Reader display/parse support and patch-hygiene only. No receipt schema change, native receipt field change, Standard View rescoring, World Lens math change, Evidence Lab calculation change, external calls, telemetry, analytics, storage, certification, enforcement, or final-truth behavior changed. Human review remains required.
+
+Validation targets:
+
+```bat
+python -m py_compile ui\receipt_reader.py
+python -m py_compile app.py core\semantic_pressure_scanner.py ui\receipt_reader.py ui\unit_preview.py
+```
+
 ## Patch 195 — AI Ownership Capture Stress Guard
 
 Status: READY FOR LOCAL REVIEW
