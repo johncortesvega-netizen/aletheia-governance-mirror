@@ -17,11 +17,12 @@ from typing import Any
 from ui.module_page_template import ModulePageTemplateCopy, render_module_page_template_intro
 
 try:
-    from core.semantic_pressure_scanner import format_semantic_pressure_report, scan_semantic_pressure, pressure_code_rows
+    from core.semantic_pressure_scanner import format_semantic_pressure_report, scan_semantic_pressure, pressure_code_rows, reviewability_guidance_rows
 except Exception:  # pragma: no cover - optional Streamlit deployment guard
     format_semantic_pressure_report = None  # type: ignore
     scan_semantic_pressure = None  # type: ignore
     pressure_code_rows = None  # type: ignore
+    reviewability_guidance_rows = None  # type: ignore
 
 
 RECEIPT_READER_BOUNDARY = (
@@ -2122,6 +2123,10 @@ def _render_semantic_pressure_layer(container: Any, view: dict[str, Any]) -> Non
         with container.expander("Pressure-code matrix", expanded=False) as codes_panel:
             codes_panel.caption("Stable diagnostic codes explaining why the semantic layer flagged this receipt. Codes are not verdicts or certifications.")
             codes_panel.dataframe(pressure_code_rows(pressure_codes), use_container_width=True, hide_index=True)
+            if reviewability_guidance_rows is not None:
+                codes_panel.markdown("**Reviewable input guidance**")
+                codes_panel.caption("This is not flag-avoidance advice. It shows how to make claims evidence-based, bounded, appealable, and repairable.")
+                codes_panel.dataframe(reviewability_guidance_rows(pressure_codes), use_container_width=True, hide_index=True)
 
     finding = str(summary.get("finding", "NO SIGNAL"))
     risk = _semantic_layer_receipt_note(summary)

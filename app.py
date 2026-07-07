@@ -52,7 +52,7 @@ from core.ai_integrity_mirror import (
     audit_ai_integrity_artifact,
     build_ai_static_scan_protocol_context,
 )
-from core.semantic_pressure_scanner import scan_semantic_pressure, format_semantic_pressure_report, pressure_code_rows
+from core.semantic_pressure_scanner import scan_semantic_pressure, format_semantic_pressure_report, pressure_code_rows, reviewability_guidance_rows
 
 from core.world_lens import (
     country_available_years,
@@ -4435,6 +4435,9 @@ def render_semantic_pressure_panel(
                 st.markdown("**Pressure-code matrix**")
                 st.caption("Stable diagnostic codes explaining which pressure patterns were detected. Codes are not verdicts or certifications.")
                 st.dataframe(pd.DataFrame(pressure_code_rows(pressure_codes)), use_container_width=True, hide_index=True)
+                st.markdown("**Reviewable input guidance**")
+                st.caption("This is not flag-avoidance advice. It shows how to make claims evidence-based, bounded, appealable, and repairable.")
+                st.dataframe(pd.DataFrame(reviewability_guidance_rows(pressure_codes)), use_container_width=True, hide_index=True)
             if notes:
                 st.markdown("**Notes**")
                 for note in notes:

@@ -1,0 +1,16 @@
+Patch 212 — Reviewable Input Guidance
+
+Changed files:
+- core/semantic_pressure_scanner.py
+- app.py
+- ui/receipt_reader.py
+- PATCH_STATUS.md
+- PATCH_212_MANIFEST.txt
+- PATCH_212_RECOVERY_NOTE.md
+- PATCH_212_DELETE_LIST.txt
+
+Purpose:
+Add structural guidance linked to pressure codes so users can see how to make risky or unclear claims reviewable: evidence basis, limits, appeal, correction, fallback, time limits, oversight, and repair.
+
+Boundary:
+Guidance/display only. No scoring, routing, receipt schema, World Lens math, Evidence Lab calculations, Stress Test metrics, telemetry, enforcement, or authority behavior changed.

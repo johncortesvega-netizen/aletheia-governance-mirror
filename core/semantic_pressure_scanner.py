@@ -189,6 +189,94 @@ def pressure_code_rows(codes: Iterable[str]) -> list[dict[str, str]]:
     """Return table rows for UI display without exposing scanner internals."""
     return [{"Code": str(code), "Plain-English meaning": pressure_code_explanation(str(code))} for code in codes]
 
+
+# Reviewability guidance tells users how to make a claim structurally auditable.
+# It must not be read as instructions for bypassing flags or cosmetically
+# rewriting risky language. The goal is evidence, limits, appeal, and repair.
+REVIEWABLE_INPUT_GUIDANCE: dict[str, tuple[str, str]] = {
+    "OPAQUE_CAPTURE_CLAIM": (
+        "Make hidden-power claims auditable",
+        "Replace broad unverifiable claims with named evidence routes: ownership structures, decision records, funding flows, lobbying records, procurement links, dates, and accountable review questions.",
+    ),
+    "IDENTITY_GATED_ACCESS": (
+        "Add access safeguards",
+        "Specify fallback access, non-biometric alternatives, error correction, human review, appeal windows, and how people keep essential services during verification disputes.",
+    ),
+    "BIOMETRIC_ACCESS_PRESSURE": (
+        "Separate identity from basic-service denial",
+        "Name the legal basis, retention limit, deletion route, alternative verification path, independent audit, and emergency fallback before access can be interrupted.",
+    ),
+    "EMERGENCY_POWER_WEAK_SAFEGUARD": (
+        "Bound emergency authority",
+        "Add automatic expiry, renewal conditions, public notice, independent oversight, appeal rights, review cadence, and a clear path back to ordinary procedure.",
+    ),
+    "MISSING_SAFEGUARD": (
+        "Show repair mechanisms",
+        "Add concrete appeal, audit, correction, revocation, fallback, human override, time-limit, and independent review routes instead of relying on value claims alone.",
+    ),
+    "NO_APPEAL_PATH": (
+        "Make challenge possible",
+        "State who can appeal, where they appeal, the review deadline, what evidence can be challenged, and what happens while review is pending.",
+    ),
+    "CLAIM_MECHANISM_GAP": (
+        "Convert values into mechanisms",
+        "For each dignity, safety, fairness, transparency, or public-good claim, identify the operational safeguard that makes the claim testable.",
+    ),
+    "MODAL_PRESSURE": (
+        "Reduce command pressure",
+        "Clarify whether obligations are temporary, proportionate, contestable, reversible, and subject to exceptions, fallback, and human review.",
+    ),
+    "AUTHORITY_DRIFT": (
+        "Limit authority scope",
+        "Name the actor, legal basis, scope, duration, oversight body, conflict-of-interest check, and removal or reversal procedure.",
+    ),
+    "ALGORITHMIC_WELFARE_REVIEW_GAP": (
+        "Make automated triage contestable",
+        "Add explainability, human override, independent challenge, error correction, service-continuity fallback, and bias/impact audit language.",
+    ),
+    "PROCUREMENT_VENDOR_CAPTURE": (
+        "Expose vendor influence",
+        "Add procurement records, conflict-of-interest disclosure, vendor audit rights, portability/exit clauses, public-interest tests, and independent review.",
+    ),
+    "SACRALIZATION_DRIFT": (
+        "Keep moral language out of operational authority",
+        "Separate dignity or higher-truth language from enforcement power unless there are explicit limits, plural review, appeal, and non-coercive safeguards.",
+    ),
+    "CONCRETE_SAFEGUARDS_VISIBLE": (
+        "Preserve visible safeguards",
+        "Keep safeguards specific and testable: who reviews, what evidence is checked, when review happens, and how correction or reversal is executed.",
+    ),
+}
+
+
+def reviewability_guidance_for_code(code: str) -> tuple[str, str]:
+    """Return a structural repair prompt for a pressure code.
+
+    The guidance is intentionally framed as reviewability, not flag avoidance.
+    """
+    return REVIEWABLE_INPUT_GUIDANCE.get(
+        str(code or ""),
+        ("Make the claim reviewable", "Add evidence basis, limits, appeal, correction, and independent review routes."),
+    )
+
+
+def reviewability_guidance_rows(codes: Iterable[str]) -> list[dict[str, str]]:
+    """Return UI rows that translate pressure codes into reviewable-input guidance."""
+    rows: list[dict[str, str]] = []
+    seen: set[str] = set()
+    for raw_code in codes or []:
+        code = str(raw_code or "")
+        if not code or code in seen:
+            continue
+        seen.add(code)
+        repair_goal, guidance = reviewability_guidance_for_code(code)
+        rows.append({
+            "Pressure code": code,
+            "Reviewability goal": repair_goal,
+            "Structural guidance": guidance,
+        })
+    return rows
+
 @dataclass(frozen=True)
 class ProximityHit:
     category: str
@@ -727,6 +815,11 @@ def format_semantic_pressure_report(scan: SemanticPressureScan) -> str:
         lines.append("Pressure-code matrix:")
         for code in scan.pressure_codes:
             lines.append(f"- {code}: {pressure_code_explanation(code)}")
+        lines.append("")
+        lines.append("Reviewable input guidance:")
+        lines.append("This is not flag-avoidance advice; it shows how to make claims evidence-based, bounded, appealable, and repairable.")
+        for row in reviewability_guidance_rows(scan.pressure_codes):
+            lines.append(f"- {row['Pressure code']} — {row['Reviewability goal']}: {row['Structural guidance']}")
     if scan.proximity_hits:
         lines.append("")
         lines.append("Contextual proximity hits:")
