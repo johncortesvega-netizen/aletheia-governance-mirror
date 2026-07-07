@@ -4371,3 +4371,11 @@ Validation target:
 python -m py_compile app.py
 python -m streamlit run app.py
 ```
+
+## Patch 205 — Stress Test Semantic Raw/Filtered Alignment
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 205 fixes a Stress Test semantic-panel mismatch where the main Stress Test reading could detect high-risk/capture pressure while the semantic layer showed no signal after the Invisibility Filter processed the user text. Stress Test now scans both raw and processed text for the subordinate semantic diagnostic and keeps the stronger semantic pressure signal.
+
+Boundary preserved: this is a diagnostic alignment fix only. It does not change Stress Test metrics, receipt schema, module routing, World Lens math, Evidence Lab calculation, external calls, telemetry, storage, certification, enforcement, or final-truth behavior.

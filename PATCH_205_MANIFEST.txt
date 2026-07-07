@@ -1,0 +1,15 @@
+PATCH 205 — Stress Test Semantic Raw/Filtered Alignment
+
+Changed files:
+- app.py
+- core/semantic_pressure_scanner.py
+- PATCH_STATUS.md
+- PATCH_205_MANIFEST.txt
+- PATCH_205_RECOVERY_NOTE.md
+- PATCH_205_DELETE_LIST.txt
+
+Purpose:
+Stress Test can apply the Invisibility Filter before audit. That is useful for reducing actor/name bias in the main reading, but it can erase semantic-pressure wording such as actor group + world power + secret. Patch 205 preserves Stress Test's main processed reading while scanning both raw and processed text for the semantic diagnostic and keeping the stronger pressure signal.
+
+Boundary:
+No Stress Test metrics, receipt schema, module routing, World Lens math, Evidence Lab calculation, external calls, telemetry, storage, certification, enforcement, or final-truth behavior changed.

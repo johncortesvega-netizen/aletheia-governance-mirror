@@ -4493,6 +4493,49 @@ def render_semantic_pressure_panel(
 
 render_sydney_protocol_self_check_gate()
 
+def _semantic_review_strength(scan) -> tuple[int, float, int]:
+    """Return a sortable strength tuple for choosing between raw and filtered semantic scans.
+
+    Stress Test may run the Invisibility Filter before the scenario is audited. That is
+    correct for reducing actor/name bias in the main reading, but the semantic layer
+    must not lose structural signals such as "actor group + world power + secret".
+    When both raw and filtered text are available, keep the scan with stronger pressure.
+    """
+    semantic_scan = _semantic_scan_from_payload(scan)
+    if semantic_scan is None:
+        return (-1, 0.0, 0)
+    state = str(_semantic_payload_value(semantic_scan, "state", "SANCTUARY") or "SANCTUARY").upper()
+    state_rank = {"ASYLUM": 3, "THRESHOLD": 2, "SANCTUARY": 1}.get(state, 0)
+    adjustment = float(_semantic_payload_value(semantic_scan, "integrity_adjustment", 0.0) or 0.0)
+    hit_count = len(_semantic_payload_hits(semantic_scan))
+    fail_closed = bool(_semantic_payload_value(semantic_scan, "fail_closed", False))
+    modal_count = int(_semantic_payload_value(semantic_scan, "modal_pressure_count", 0) or 0)
+    claim_count = int(_semantic_payload_value(semantic_scan, "claim_count", 0) or 0)
+    mechanism_count = int(_semantic_payload_value(semantic_scan, "mechanism_count", 0) or 0)
+    evidence_count = hit_count + int(fail_closed) + modal_count + claim_count + mechanism_count
+    # More negative adjustment is stronger pressure; invert it for sorting.
+    return (state_rank, -adjustment, evidence_count)
+
+
+def choose_stress_semantic_scan(raw_text: str, processed_text: str | None = None):
+    """Scan raw and processed Stress Test text and keep the stronger semantic pressure signal.
+
+    The main Stress Test may use processed/decoupled text, but the semantic diagnostic
+    should preserve capture/opacity wording from the raw user scenario when that wording
+    carries the relationship signal.
+    """
+    raw = str(raw_text or "").strip()
+    processed = str(processed_text or "").strip()
+    scans = []
+    if raw:
+        scans.append(scan_semantic_pressure(raw, governance_context=True))
+    if processed and processed != raw:
+        scans.append(scan_semantic_pressure(processed, governance_context=True))
+    if not scans:
+        return None
+    return sorted(scans, key=_semantic_review_strength, reverse=True)[0]
+
+
 def semantic_stress_trigger_rows(scan) -> list[dict]:
     """Map semantic pressure signals to Stress Test stress triggers and repair questions.
 
@@ -4717,38 +4760,42 @@ with tab_sim:
     st.subheader("Stress Test")
     render_shared_protocol_state_notice("Stress Test", expanded=False)
 
-    render_module_page_template_intro(
-        st,
-        ModulePageTemplateCopy(
-            module_name="Stress Test",
-            purpose=(
-                "Try a governance scenario under pressure and inspect stability, trust, friction, "
-                "safeguards, collapse risk, and repair needs. ALETHEIA is English-first; "
-                "Dutch/Nederlands examples may appear as batch-test fixtures, not as a general "
-                "app-wide language-compatibility claim."
+    # Patch 203: keep Stress Test as a compact working surface.
+    # The full module header remains available, but it no longer renders as an always-open
+    # wall of explanatory text above the primary input and result.
+    with st.expander("Stress Test guide and safe-use notes", expanded=False):
+        render_module_page_template_intro(
+            st,
+            ModulePageTemplateCopy(
+                module_name="Stress Test",
+                purpose=(
+                    "Try a governance scenario under pressure and inspect stability, trust, friction, "
+                    "safeguards, collapse risk, and repair needs. ALETHEIA is English-first; "
+                    "Dutch/Nederlands examples may appear as batch-test fixtures, not as a general "
+                    "app-wide language-compatibility claim."
+                ),
+                looks_for=(
+                    "Power under pressure: who gains authority, how quickly, and under what constraints.",
+                    "Safeguard gaps: whether term limits, independent review, appeal, exit, or correction paths are missing.",
+                    "Governance stress: whether trust, friction, grievance, alignment, and ego pressure could destabilize the scenario.",
+                    "Capture pressure: whether one leader, committee, platform, institution, token group, or emergency process can dominate.",
+                    "Failure-mode pressure: authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, or no-appeal automation.",
+                    "Repair needs: what would make the scenario more reviewable, bounded, reversible, and accountable.",
+                ),
+                safe_first_path=(
+                    "Write one scenario as a governance pattern, not as a personal accusation.",
+                    "Use fictional roles or the Invisibility Filter when names and titles may bias the reading.",
+                    "Use Scan my idea for text-derived features; use Manual test only when you deliberately want sliders to shape the run.",
+                    "Read the result as a stress reading, not as proof that a person, group, or institution is good or bad.",
+                    "Inspect repair questions before relying on the internal taxonomy label or metrics.",
+                ),
+                input_guidance="Start with your own scenario, load a demo on purpose, or use Manual test. ALETHEIA does not read examples by default. You lead.",
+                result_guidance="Treat Stress Test output as a scenario-pressure reading, not as prediction, accusation, certification, or final internal label.",
+                observed_reasons_guidance="Check the visible stress signals, feature values, tree, and protocol notes before interpreting the reading.",
+                repair_questions_guidance="Use repair questions to add safeguards, appeal paths, review limits, transparency, and exit/correction options.",
+                receipt_guidance="Stress Test receipts are local review artifacts for a scenario run; they are not public-ledger records or official decisions.",
             ),
-            looks_for=(
-                "Power under pressure: who gains authority, how quickly, and under what constraints.",
-                "Safeguard gaps: whether term limits, independent review, appeal, exit, or correction paths are missing.",
-                "Governance stress: whether trust, friction, grievance, alignment, and ego pressure could destabilize the scenario.",
-                "Capture pressure: whether one leader, committee, platform, institution, token group, or emergency process can dominate.",
-                "Failure-mode pressure: authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, or no-appeal automation.",
-                "Repair needs: what would make the scenario more reviewable, bounded, reversible, and accountable.",
-            ),
-            safe_first_path=(
-                "Write one scenario as a governance pattern, not a personal accusation.",
-                "Use fictional roles or the Invisibility Filter when names and titles may bias the reading.",
-                "Use Scan my idea for text-derived features; use Manual test only when you deliberately want sliders to shape the run.",
-                "Read the result as a stress reading, not as proof that a person, group, or institution is good or bad.",
-                "Inspect repair questions before relying on the internal taxonomy label or metrics.",
-            ),
-            input_guidance="Start with your own scenario, load a demo on purpose, or use Manual test. ALETHEIA does not read examples by default. You lead.",
-            result_guidance="Treat Stress Test output as a scenario-pressure reading, not as prediction, accusation, certification, or final internal label.",
-            observed_reasons_guidance="Check the visible stress signals, feature values, tree, and protocol notes before interpreting the reading.",
-            repair_questions_guidance="Use repair questions to add safeguards, appeal paths, review limits, transparency, and exit/correction options.",
-            receipt_guidance="Stress Test receipts are local review artifacts for a scenario run; they are not public-ledger records or official decisions.",
-        ),
-    )
+        )
 
     input_mode = st.radio(
         "How do you want to work?",
@@ -4902,8 +4949,8 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                 st.session_state.last_query_raw = query
                 st.session_state.last_input_status = input_status
                 st.session_state.last_invisibility_report = invisibility_report
-                if input_mode == "Scan my idea" and str(analysis_query or "").strip():
-                    st.session_state.last_stress_semantic_scan = scan_semantic_pressure(analysis_query, governance_context=True)
+                if input_mode == "Scan my idea" and (str(query or "").strip() or str(analysis_query or "").strip()):
+                    st.session_state.last_stress_semantic_scan = choose_stress_semantic_scan(query, analysis_query)
                 else:
                     st.session_state.last_stress_semantic_scan = None
                 selected_context = "Manual test" if input_mode == "Manual test" else ((analysis_query[:120] + "…") if len(analysis_query) > 120 else analysis_query)
@@ -5256,8 +5303,8 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
 
         if last_input_mode == "Scan my idea":
             stress_semantic_scan = st.session_state.get("last_stress_semantic_scan")
-            if stress_semantic_scan is None and str(display_query or "").strip():
-                stress_semantic_scan = scan_semantic_pressure(display_query, governance_context=True)
+            if stress_semantic_scan is None and (str(st.session_state.get("last_query_raw", "") or "").strip() or str(display_query or "").strip()):
+                stress_semantic_scan = choose_stress_semantic_scan(st.session_state.get("last_query_raw", display_query), display_query)
             render_semantic_stress_triggers(stress_semantic_scan, expanded=False)
 
         ai_static_context = report.get("ai_static_scan_context") if isinstance(report, dict) else None
@@ -5279,48 +5326,50 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                 if ai_static_context.get("findings"):
                     st.dataframe(pd.DataFrame(ai_static_context.get("findings")), use_container_width=True, hide_index=True)
 
-        # Patch 183: visual-only receipt framing; receipt payload and schema remain unchanged.
-        st.markdown(
-            """
-            <div class="receipt-sky-panel">
-              <div class="receipt-kicker">User-held review artifact</div>
-              <div class="receipt-title">Local witness receipt</div>
-              <div class="receipt-body">Creates a receipt you hold. It is not published, synced, enforced, or treated as authority.</div>
-              <div class="receipt-boundary-strip">
-                <span class="receipt-boundary-pill">Local only</span>
-                <span class="receipt-boundary-pill">No public ledger</span>
-                <span class="receipt-boundary-pill">No Global ID sync</span>
-                <span class="receipt-boundary-pill">Human review required</span>
-              </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        st.caption("Download text only. This visual card does not change the receipt content, schema, or authority boundary.")
-        raw_query_for_receipt = st.session_state.get("last_query_raw", display_query)
-        processed_query_for_receipt = st.session_state.get("last_query", display_query)
-        receipt = build_local_witness_receipt(
-            module="Simulation",
-            input_text=raw_query_for_receipt if last_input_mode == "Scan my idea" else "Manual test numeric input",
-            processed_text=processed_query_for_receipt if last_input_mode == "Scan my idea" else "Manual test numeric input",
-            input_status=input_status_label,
-            scan=scan,
-            sim=sim,
-            report=report,
-            verdict=verdict,
-            risk=risk,
-            protocol_label=label,
-            invisibility_applied=isinstance(invisibility_report, dict) and invisibility_report.get("invisibility_filter_applied", False),
-            app_version=APP_VERSION,
-        )
-        receipt_text = render_local_witness_receipt_text(receipt)
-        st.download_button(
-            "⬇️ Download receipt",
-            data=receipt_text,
-            file_name="aletheia_local_witness_receipt.txt",
-            mime="text/plain",
-            use_container_width=True,
-        )
+        # Patch 203: keep receipt download opt-in so Stress Test does not become one
+        # long continuous result page. The receipt payload and schema are unchanged.
+        with st.expander("Download local witness receipt", expanded=False):
+            st.markdown(
+                """
+                <div class="receipt-sky-panel">
+                  <div class="receipt-kicker">User-held review artifact</div>
+                  <div class="receipt-title">Local witness receipt</div>
+                  <div class="receipt-body">Creates a receipt you hold. It is not published, synced, enforced, or treated as authority.</div>
+                  <div class="receipt-boundary-strip">
+                    <span class="receipt-boundary-pill">Local only</span>
+                    <span class="receipt-boundary-pill">No public ledger</span>
+                    <span class="receipt-boundary-pill">No Global ID sync</span>
+                    <span class="receipt-boundary-pill">Human review required</span>
+                  </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            st.caption("Download text only. This visual card does not change the receipt content, schema, or authority boundary.")
+            raw_query_for_receipt = st.session_state.get("last_query_raw", display_query)
+            processed_query_for_receipt = st.session_state.get("last_query", display_query)
+            receipt = build_local_witness_receipt(
+                module="Simulation",
+                input_text=raw_query_for_receipt if last_input_mode == "Scan my idea" else "Manual test numeric input",
+                processed_text=processed_query_for_receipt if last_input_mode == "Scan my idea" else "Manual test numeric input",
+                input_status=input_status_label,
+                scan=scan,
+                sim=sim,
+                report=report,
+                verdict=verdict,
+                risk=risk,
+                protocol_label=label,
+                invisibility_applied=isinstance(invisibility_report, dict) and invisibility_report.get("invisibility_filter_applied", False),
+                app_version=APP_VERSION,
+            )
+            receipt_text = render_local_witness_receipt_text(receipt)
+            st.download_button(
+                "⬇️ Download receipt",
+                data=receipt_text,
+                file_name="aletheia_local_witness_receipt.txt",
+                mime="text/plain",
+                use_container_width=True,
+            )
 
 with tab_boundary:
     st.subheader("Boundary Cases")
