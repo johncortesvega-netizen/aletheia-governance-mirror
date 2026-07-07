@@ -1229,36 +1229,15 @@ st.markdown(
         box-shadow: 0 8px 18px rgba(101,121,98,0.10) !important;
     }
 
-    /* Patch UI-TABS-1 — fail-closed containment for Streamlit tab panels.
-       Some Streamlit/browser/CSS combinations can leave inactive tab panels
-       visually stacked. These rules preserve ALETHEIA's single-module reading
-       surface: only the selected tab panel should be visible to the user. */
+    /* Patch 202 — Streamlit tab containment rollback.
+       The earlier :has()/nth-of-type containment guard could make nested or
+       main tab panels render as one long continuous page in some browser /
+       Streamlit combinations, especially after Stress Test interactions.
+       Keep only a narrow native-hidden-panel rule and let Streamlit manage
+       the active tab state. */
     .stTabs [role="tabpanel"][hidden],
-    .stTabs [data-baseweb="tab-panel"][hidden],
-    .stTabs [aria-hidden="true"] {
+    .stTabs [data-baseweb="tab-panel"][hidden] {
         display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        min-height: 0 !important;
-        overflow: hidden !important;
-        pointer-events: none !important;
-    }
-    .stTabs [role="tabpanel"] {
-        contain: layout paint;
-    }
-    .stTabs:has([data-baseweb="tab"]:nth-of-type(1)[aria-selected="true"]) [role="tabpanel"]:not(:nth-of-type(1)),
-    .stTabs:has([data-baseweb="tab"]:nth-of-type(2)[aria-selected="true"]) [role="tabpanel"]:not(:nth-of-type(2)),
-    .stTabs:has([data-baseweb="tab"]:nth-of-type(3)[aria-selected="true"]) [role="tabpanel"]:not(:nth-of-type(3)),
-    .stTabs:has([data-baseweb="tab"]:nth-of-type(4)[aria-selected="true"]) [role="tabpanel"]:not(:nth-of-type(4)),
-    .stTabs:has([data-baseweb="tab"]:nth-of-type(5)[aria-selected="true"]) [role="tabpanel"]:not(:nth-of-type(5)),
-    .stTabs:has([data-baseweb="tab"]:nth-of-type(6)[aria-selected="true"]) [role="tabpanel"]:not(:nth-of-type(6)),
-    .stTabs:has([data-baseweb="tab"]:nth-of-type(7)[aria-selected="true"]) [role="tabpanel"]:not(:nth-of-type(7)) {
-        display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        min-height: 0 !important;
-        overflow: hidden !important;
-        pointer-events: none !important;
     }
 
 

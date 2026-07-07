@@ -4324,3 +4324,12 @@ python tools\run_patch_checks.py 190
 python -m pytest -q tests/test_patch_190_original_governance_mirror_restore.py tests/test_patch_166_ai_patrol_rebrand.py tests/test_patch_167_patrol_guide_formatting_restore.py tests/test_patch_168_why_ai_patrol_panel_layout.py tests/test_patch_169_evidence_lab_panel_layout.py tests/test_patch_181_sky_gold_pillars_theme.py tests/test_patch_182_sky_gold_module_alignment.py tests/test_patch_185_aletheia_ai_patrol_branding.py tests/test_patch_187_stacked_brand_and_full_app_logo.py tests/test_patch_188_robot_officer_visual_integration.py tests/test_patch_189_no_colon_brand_titles.py
 python -m py_compile app.py ui/app_shell.py ui/unit_preview.py pages_ui/about_page.py pages_ui/evidence_lab_page.py ui/module_intro.py ui/module_page_template.py ui/status_cards.py
 ```
+
+## Patch 202 — Stress Test Tab Containment Rollback
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 202 fixes a UI regression where Stress Test can cause multiple Streamlit tab panels to render as one long continuous page. The broad CSS `:has()` / `nth-of-type` containment guard is removed and replaced with a narrow native hidden-panel rule so Streamlit manages active tab visibility normally.
+
+Boundary preserved: UI containment CSS only. No scoring, semantic scanner, receipt schema, module logic, privacy posture, external calls, telemetry, storage, certification, enforcement, or authority change.
+

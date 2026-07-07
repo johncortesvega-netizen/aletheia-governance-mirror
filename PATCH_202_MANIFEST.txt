@@ -1,0 +1,25 @@
+Patch 202 — Stress Test Tab Containment Rollback
+
+Status: READY FOR LOCAL REVIEW
+
+Changed files:
+- app.py
+- PATCH_STATUS.md
+- PATCH_202_MANIFEST.txt
+- PATCH_202_RECOVERY_NOTE.md
+- PATCH_202_DELETE_LIST.txt
+
+Purpose:
+Fix a UI regression where opening/using Stress Test can cause ALETHEIA tab panels to render as one long continuous page, visually exposing multiple module surfaces at once.
+
+Change:
+- Removed the broad CSS :has()/nth-of-type tab containment guard.
+- Kept only a narrow native hidden-tab-panel rule.
+- Lets Streamlit manage active tab visibility normally.
+
+Boundary preserved:
+- No scoring change.
+- No scanner logic change.
+- No receipt schema change.
+- No module-routing logic change.
+- No external calls, telemetry, storage, certification, enforcement, or authority claims.
