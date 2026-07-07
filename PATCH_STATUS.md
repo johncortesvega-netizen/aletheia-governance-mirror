@@ -1,3 +1,28 @@
+## Patch 198 — Receipt Risk Wording and Repair Blocker
+
+Date: 2026-07-07
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 198 improves Receipt Reader wording when a current semantic re-read detects hidden/concentrated power assertions. Opaque capture-power claims are now described as structural opacity / capture-pressure review, not as coercive or command-oriented language when no coercive modality is present.
+
+Updated surfaces:
+- Receipt Reader current semantic reading now gives specific wording for `opaque_capture_claim` hits.
+- Failure-mode checklist includes **Opaque capture-power claim** as a review signal.
+- Receipt Reader shows a conditional repair-blocker warning when low repair capacity, multiple capture-pressure component lines, or ASYLUM + opaque capture-power findings indicate blocked repair paths.
+- Batch ZIP summaries include a `Repair Blocker` column for quick triage.
+
+Boundary notes:
+- Receipt Reader explanation/copy only.
+- No native receipt values, receipt schema, stored receipt meaning, current semantic scanner logic, module scoring, World Lens math, Evidence Lab calculations, external calls, telemetry, storage, certification, enforcement, or final-truth behavior changed.
+- Current semantic reading remains a comparison layer only. Human review remains required.
+
+Validation target:
+
+```bat
+python -m py_compile ui/receipt_reader.py
+```
+
 ## Patch 197 — Opaque Capture Semantic Calibration
 
 Status: READY FOR LOCAL REVIEW

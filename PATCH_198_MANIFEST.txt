@@ -1,0 +1,17 @@
+PATCH 198 — Receipt Risk Wording and Repair Blocker
+
+Changed files:
+- ui/receipt_reader.py
+- PATCH_STATUS.md
+- PATCH_198_MANIFEST.txt
+- PATCH_198_RECOVERY_NOTE.md
+- PATCH_198_DELETE_LIST.txt
+
+Purpose:
+- Make Receipt Reader wording sharper when the current semantic re-read detects opaque capture-power claims.
+- Avoid treating hidden-power assertions as coercive/command language when no coercive modality is present.
+- Add an explicit repair-blocker note when low repair capacity or capture-pressure component patterns are visible in an uploaded receipt.
+
+Boundary:
+- Receipt Reader explanation/copy only.
+- Native receipt values, receipt schema, stored receipt meaning, scanner scoring, module scoring, World Lens math, Evidence Lab calculations, external calls, telemetry, storage, certification, enforcement, and final-truth behavior are unchanged.

@@ -102,6 +102,10 @@ FAILURE_MODE_REVIEW_SIGNALS = [
         "when power concentrates in one actor, platform, institution, token group, committee, model owner, funder, or technical gatekeeper.",
     ),
     (
+        "Opaque capture-power claim",
+        "when a text links an actor group to hidden broad-scale power or control without visible evidence, appeal path, or accountable mechanism.",
+    ),
+    (
         "Sanctification drift",
         "when poetic, religious, moral, symbolic, or higher-truth language gets turned into operational control.",
     ),
@@ -1616,6 +1620,96 @@ def _attach_current_semantic_reread(view: dict[str, Any], receipt_text: str, *, 
     return view
 
 
+
+def _current_semantic_has_opaque_capture(view: dict[str, Any]) -> bool:
+    """Return True when the current semantic re-read detected hidden-power/capture structure."""
+    summary = view.get("_current_semantic_reread") or {}
+    scan = summary.get("scan")
+    hits = list(getattr(scan, "proximity_hits", ()) or []) if scan is not None else []
+    notes = "\n".join(str(note) for note in (summary.get("notes") or []))
+    risk = str(summary.get("risk", ""))
+    haystack = (notes + "\n" + risk).lower()
+    if any(str(getattr(hit, "category", "")).lower() == "opaque_capture_claim" for hit in hits):
+        return True
+    return "opaque capture" in haystack or "hidden concentrated power" in haystack or "hidden broad-scale power" in haystack
+
+
+def _current_semantic_receipt_note(summary: dict[str, Any]) -> str:
+    """Return receipt-safe wording for the current semantic re-read."""
+    if not summary:
+        return "No current semantic reading is available."
+    scan = summary.get("scan")
+    hits = list(getattr(scan, "proximity_hits", ()) or []) if scan is not None else []
+    notes = "\n".join(str(note) for note in (summary.get("notes") or []))
+    risk = str(summary.get("risk", "Review signal"))
+    haystack = (notes + "\n" + risk).lower()
+    has_opaque_capture = any(str(getattr(hit, "category", "")).lower() == "opaque_capture_claim" for hit in hits) or "opaque capture" in haystack or "hidden concentrated power" in haystack or "hidden broad-scale power" in haystack
+    if has_opaque_capture:
+        return (
+            "Opaque capture-power claim detected: the text links an actor group to hidden broad-scale power or control "
+            "without visible evidence basis, correction path, appeal route, or accountable mechanism. This is structural opacity/capture-pressure review, not a coercive-language finding."
+        )
+    return str(risk or "Review signal")
+
+
+def _extract_repair_optimism_value(text: str) -> float | None:
+    """Parse repair-route optimism / recovery capacity values when an uploaded receipt records them."""
+    patterns = [
+        r"(?im)repair[- ]route optimism\s*[:=]\s*([0-9]*\.?[0-9]+)",
+        r"(?im)repair optimism\s*[:=]\s*([0-9]*\.?[0-9]+)",
+        r"(?im)repair capacity\s*[:=]\s*([0-9]*\.?[0-9]+)",
+        r"(?im)recovery index\s*[:=]\s*([0-9]*\.?[0-9]+)",
+        r"(?im)repair index\s*[:=]\s*([0-9]*\.?[0-9]+)",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, text or "")
+        if match:
+            try:
+                return float(match.group(1))
+            except Exception:
+                return None
+    return None
+
+
+def _capture_pressure_component_count(text: str) -> int:
+    """Count common receipt component lines that are marked with capture pressure."""
+    haystack = str(text or "")
+    components = ["power balance", "power", "correction", "access"]
+    count = 0
+    for component in components:
+        pattern_a = rf"(?is){re.escape(component)}[^\n]{{0,160}}capture pressure"
+        pattern_b = rf"(?is)capture pressure[^\n]{{0,160}}{re.escape(component)}"
+        if re.search(pattern_a, haystack) or re.search(pattern_b, haystack):
+            count += 1
+    return count
+
+
+def _receipt_repair_blocker_note(view: dict[str, Any]) -> str:
+    """Explain why repair capacity remains low when the uploaded receipt exposes blocked repair paths."""
+    text = str(view.get("_receipt_reader_source_text", "") or "")
+    native_state = str(view.get("native_state", "")).upper()
+    repair_value = _extract_repair_optimism_value(text)
+    component_count = _capture_pressure_component_count(text)
+    semantic_opaque = _current_semantic_has_opaque_capture(view)
+    low_repair = repair_value is not None and repair_value <= 0.35
+    if not (low_repair or (native_state == "ASYLUM" and component_count >= 2) or (native_state == "ASYLUM" and semantic_opaque)):
+        return ""
+    value_text = f" Repair index recorded: {repair_value:.2f}." if repair_value is not None else ""
+    if component_count >= 2:
+        return (
+            f"Repair blocker: recovery remains limited because {component_count} core review areas are marked with capture-pressure concerns."
+            f" Inspect power distribution, correction rights, access safeguards, appealability, and evidence basis before relying on the receipt.{value_text}"
+        )
+    if semantic_opaque:
+        return (
+            "Repair blocker: the current semantic re-read detects an opaque capture-power claim, but the receipt does not show enough accountable mechanism, evidence basis, appeal path, or correction route to make repair capacity clear."
+            f"{value_text}"
+        )
+    return (
+        "Repair blocker: recovery remains limited because the receipt records low repair capacity without enough visible safeguards, correction rights, or accountable review structure."
+        f"{value_text}"
+    )
+
 def _render_current_semantic_reread(container: Any, view: dict[str, Any]) -> None:
     """Always show the current semantic reading for uploaded receipts.
 
@@ -1644,7 +1738,7 @@ def _render_current_semantic_reread(container: Any, view: dict[str, Any]) -> Non
     c4.metric("Diagnostic pressure", f"{float(summary.get('pressure', 0.0) or 0.0):+.3f}")
 
     finding = str(summary.get("finding", "NO SIGNAL"))
-    risk = str(summary.get("risk", "Review signal"))
+    risk = _current_semantic_receipt_note(summary)
     if finding == "NO SIGNAL":
         container.info("No semantic pressure relationship detected by the current scanner. This does not lower or override the native receipt reading.")
     elif finding == "SANCTUARY":
@@ -1684,6 +1778,9 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
     _render_plain_language_receipt_summary(container, view)
     _render_repair_questions_block(container, view)
     _render_current_semantic_reread(container, view)
+    repair_blocker = _receipt_repair_blocker_note(view)
+    if repair_blocker:
+        container.warning("[!] " + repair_blocker)
 
     container.markdown(f"### {_metric_section_title(view)}")
     container.caption(_metric_section_caption(view))
