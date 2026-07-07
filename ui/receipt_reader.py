@@ -1576,6 +1576,231 @@ def _render_plain_language_receipt_summary(container: Any, view: dict[str, Any])
         panel.table(_plain_power_distribution_rows(view))
 
 
+def _parse_float_value(value: Any) -> float | None:
+    """Parse a numeric value from receipt text without inferring missing fields."""
+    if value in {None, MISSING_VALUE, NOT_APPLICABLE}:
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    match = re.search(r"[-+]?\d*\.?\d+", str(value))
+    if not match:
+        return None
+    try:
+        return float(match.group(0))
+    except Exception:
+        return None
+
+
+def _nested_lookup(data: Any, keys: tuple[str, ...]) -> Any:
+    """Return the first recursively matched key from a nested JSON-like object."""
+    if isinstance(data, dict):
+        lowered = {str(key).lower(): key for key in data.keys()}
+        for wanted in keys:
+            actual = lowered.get(wanted.lower())
+            if actual is not None:
+                return data.get(actual)
+        for value in data.values():
+            found = _nested_lookup(value, keys)
+            if found not in {None, MISSING_VALUE}:
+                return found
+    elif isinstance(data, list):
+        for item in data:
+            found = _nested_lookup(item, keys)
+            if found not in {None, MISSING_VALUE}:
+                return found
+    return None
+
+
+def _raw_metrics_before_ethics(text: str) -> dict[str, Any]:
+    """Extract raw/pre-ethics metrics when the uploaded receipt records them."""
+    data = _json_after_marker(text or "")
+    raw_block = None
+    if isinstance(data, dict):
+        raw_block = _nested_lookup(
+            data,
+            (
+                "raw_metrics_before_ethics",
+                "raw_before_ethics",
+                "raw_metrics",
+                "pre_ethics_metrics",
+                "metrics_before_ethics",
+            ),
+        )
+    if not isinstance(raw_block, dict):
+        raw_block = {}
+
+    def pick(*keys: str, fallback_patterns: tuple[str, ...] = ()) -> Any:
+        for key in keys:
+            for raw_key, raw_value in raw_block.items():
+                if str(raw_key).lower() == key.lower():
+                    return raw_value
+        if isinstance(data, dict):
+            found = _nested_lookup(data, tuple(keys))
+            if found not in {None, MISSING_VALUE}:
+                return found
+        for pattern in fallback_patterns:
+            match = re.search(pattern, text or "")
+            if match:
+                return match.group(1)
+        return MISSING_VALUE
+
+    return {
+        "raw_integrity": pick("raw_integrity", "integrity", fallback_patterns=(r"(?im)raw integrity\s*[:=]\s*([0-9]*\.?[0-9]+)",)),
+        "raw_friction": pick("raw_friction", "friction", fallback_patterns=(r"(?im)raw friction\s*[:=]\s*([0-9]*\.?[0-9]+)",)),
+        "raw_collapse_probability": pick(
+            "raw_collapse_probability",
+            "collapse_probability",
+            "collapse_pressure",
+            fallback_patterns=(r"(?im)raw collapse(?: probability| pressure)?\s*[:=]\s*([0-9]*\.?[0-9]+)",),
+        ),
+        "raw_alignment": pick("raw_alignment", "alignment", fallback_patterns=(r"(?im)raw alignment\s*[:=]\s*([0-9]*\.?[0-9]+)",)),
+        "raw_ego": pick("raw_ego", "ego", fallback_patterns=(r"(?im)raw ego\s*[:=]\s*([0-9]*\.?[0-9]+)",)),
+    }
+
+
+def _raw_input_excerpt(text: str, limit: int = 420) -> str:
+    """Return a compact raw-ingestion excerpt from the uploaded receipt."""
+    for pattern in (
+        r"(?is)(?:input|user input|scenario|original text|source text)\s*[:=]\s*(.+?)(?:\n\s*\n|\n[A-Z][A-Z0-9 _/-]{3,}\n|$)",
+        r"(?is)```(?:text)?\s*(.+?)```",
+    ):
+        match = re.search(pattern, text or "")
+        if match:
+            excerpt = " ".join(match.group(1).split())
+            return excerpt[:limit] + ("..." if len(excerpt) > limit else "")
+    excerpt = " ".join(str(text or "").split())
+    return excerpt[:limit] + ("..." if len(excerpt) > limit else "")
+
+
+def _invisibility_filter_status(view: dict[str, Any]) -> tuple[str, str]:
+    """Describe the current semantic normalizer without claiming original receipt mutation."""
+    summary = view.get("_current_semantic_reread") or {}
+    scan = summary.get("scan")
+    source_text = str(view.get("_receipt_reader_source_text", "") or "")
+    normalized = str(getattr(scan, "normalized_text", "") or "") if scan is not None else ""
+    actor_tokens = normalized.count("[ACTOR_A]")
+    system_tokens = normalized.count("[SYSTEM_X]")
+    if not normalized:
+        return "Not available", "No current semantic normalization output is available."
+    if actor_tokens or system_tokens:
+        return (
+            "Active in current re-read",
+            f"The current semantic re-read normalized named-entity style tokens before pattern review: [ACTOR_A] x{actor_tokens}, [SYSTEM_X] x{system_tokens}. Native receipt text was not altered.",
+        )
+    if normalized.strip() != source_text.strip():
+        return "Applied", "The current semantic re-read applied normalization before scanning. Native receipt text was not altered."
+    return "No named-entity substitutions detected", "The current semantic re-read did not visibly replace named entities. Native receipt text was not altered."
+
+
+def _semantic_layer_rows(view: dict[str, Any]) -> list[dict[str, Any]]:
+    summary = view.get("_current_semantic_reread") or {}
+    scan = summary.get("scan")
+    hits = list(getattr(scan, "proximity_hits", ()) or []) if scan is not None else []
+    hit_labels = []
+    for hit in hits[:6]:
+        category = str(getattr(hit, "category", "relationship"))
+        left = str(getattr(hit, "left", ""))
+        right = str(getattr(hit, "right", ""))
+        hit_labels.append(f"{category}: {left} -> {right}")
+    return [
+        {"Semantic diagnostic": "Finding", "Value": str(summary.get("finding", "NO SIGNAL"))},
+        {"Semantic diagnostic": "Claim-to-mechanism ratio", "Value": str(getattr(scan, "claim_to_mechanism_ratio", MISSING_VALUE) if scan is not None else MISSING_VALUE)},
+        {"Semantic diagnostic": "Claims / mechanisms", "Value": f"{summary.get('claims', 0)} / {summary.get('mechanisms', 0)}"},
+        {"Semantic diagnostic": "Modal pressure", "Value": str(getattr(scan, "modal_pressure_count", 0) if scan is not None else 0)},
+        {"Semantic diagnostic": "Proximity hits", "Value": "; ".join(hit_labels) if hit_labels else "No contextual proximity hits recorded"},
+    ]
+
+
+def _z_axis_position_from_text(text: str) -> str:
+    match = re.search(r"(?im)\bZ[- ]?Axis(?: Position)?\s*[:=]\s*([0-9]*\.?[0-9]+)", text or "")
+    if match:
+        return match.group(1)
+    if "0.9999" in (text or ""):
+        return "0.9999 cap referenced"
+    return "0.9999 humility cap / 1.0000 not claimed"
+
+
+def _render_layered_causal_receipt_chain(container: Any, view: dict[str, Any]) -> None:
+    """Render the receipt as a five-layer causal chain for human auditability."""
+    text = str(view.get("_receipt_reader_source_text", "") or "")
+    fields = view.get("fields") or {}
+    summary = view.get("_current_semantic_reread") or {}
+    raw_metrics = _raw_metrics_before_ethics(text)
+    raw_integrity = _parse_float_value(raw_metrics.get("raw_integrity"))
+    adjusted_integrity = _parse_float_value(fields.get("integrity"))
+    integrity_gap = None
+    if raw_integrity is not None and adjusted_integrity is not None:
+        integrity_gap = raw_integrity - adjusted_integrity
+    filter_status, filter_note = _invisibility_filter_status(view)
+
+    container.markdown("### Layered causal chain")
+    container.caption(
+        "A transparent reading path: raw text -> semantic pressure -> raw metrics -> protocol correction -> human hand-off. "
+        "This explains the uploaded receipt; it does not change the original receipt."
+    )
+
+    with container.expander("Layer 1 — Raw ingestion / phenomenological layer", expanded=True) as layer:
+        layer.markdown("**Raw input excerpt**")
+        layer.write(_raw_input_excerpt(text))
+        layer.markdown(f"**Invisibility filter status:** {filter_status}")
+        layer.caption(filter_note)
+
+    with container.expander("Layer 2 — Linguistic and semantic pressure", expanded=True) as layer:
+        layer.table(_semantic_layer_rows(view))
+        notes = list(summary.get("notes") or [])
+        if notes:
+            layer.markdown("**Semantic notes**")
+            for note in notes[:6]:
+                layer.markdown(f"- {note}")
+
+    with container.expander("Layer 3 — Zero-point baseline / raw metrics", expanded=False) as layer:
+        layer.caption(
+            "Raw/pre-ethics metrics are shown only when the uploaded receipt records them. Missing raw fields are not inferred."
+        )
+        layer.table(
+            [
+                {"Raw metric": "Raw Integrity", "Value": raw_metrics.get("raw_integrity", MISSING_VALUE)},
+                {"Raw metric": "Raw Friction", "Value": raw_metrics.get("raw_friction", MISSING_VALUE)},
+                {"Raw metric": "Raw Collapse Pressure", "Value": raw_metrics.get("raw_collapse_probability", MISSING_VALUE)},
+                {"Raw metric": "Raw Alignment", "Value": raw_metrics.get("raw_alignment", MISSING_VALUE)},
+                {"Raw metric": "Raw Ego", "Value": raw_metrics.get("raw_ego", MISSING_VALUE)},
+            ]
+        )
+        layer.info(
+            "Interpretation: this layer represents any recorded mechanical/pre-ethics simulation values before the human-boundary/protocol correction is read."
+        )
+
+    with container.expander("Layer 4 — Sydney Protocol gate / ethical correction", expanded=True) as layer:
+        layer.table(
+            [
+                {"Protocol field": "Native receipt state", "Value": str(view.get("native_state", MISSING_VALUE))},
+                {"Protocol field": "Protocol label", "Value": str(fields.get("protocol_label", MISSING_VALUE))},
+                {"Protocol field": "Adjusted Integrity", "Value": str(fields.get("integrity", MISSING_VALUE))},
+                {"Protocol field": "Integrity gap", "Value": f"{integrity_gap:+.4f}" if integrity_gap is not None else MISSING_VALUE},
+                {"Protocol field": "Current semantic finding", "Value": str(summary.get("finding", "NO SIGNAL"))},
+            ]
+        )
+        if integrity_gap is not None and integrity_gap > 0.05:
+            layer.warning(
+                "Integrity gap: the receipt records a lower protocol-adjusted integrity than the raw/pre-ethics integrity. Human review should inspect the pressure signals that caused the correction."
+            )
+        elif integrity_gap is None:
+            layer.caption("No raw-to-adjusted integrity gap could be calculated from the uploaded receipt fields.")
+
+    with container.expander("Layer 5 — Human hand-off / boundary of code", expanded=True) as layer:
+        layer.markdown(f"**Z-Axis position:** {_z_axis_position_from_text(text)}")
+        layer.write(
+            "ALETHEIA reflects. Humans review. The receipt does not execute, certify, enforce, approve, reject, or replace judgment."
+        )
+        questions = [str(q).strip() for q in (view.get("repair_questions") or []) if str(q).strip()]
+        if questions:
+            layer.markdown("**Silent operator repair questions**")
+            for question in questions[:6]:
+                layer.markdown(f"- {question}")
+        else:
+            layer.caption("No repair questions were parsed from the uploaded receipt. Human review remains required.")
+
+
 def _semantic_finding_label(scan: Any) -> str:
     """Return a reader-safe semantic finding label for the current scanner pass."""
     if scan is None:
@@ -1776,8 +2001,9 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
     _render_top_metric_strip(container, view)
 
     _render_plain_language_receipt_summary(container, view)
-    _render_repair_questions_block(container, view)
     _render_current_semantic_reread(container, view)
+    _render_layered_causal_receipt_chain(container, view)
+    _render_repair_questions_block(container, view)
     repair_blocker = _receipt_repair_blocker_note(view)
     if repair_blocker:
         container.warning("[!] " + repair_blocker)

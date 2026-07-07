@@ -1,0 +1,17 @@
+Patch 199 — Layered Causal Receipt Chain
+
+Changed files:
+- ui/receipt_reader.py
+- PATCH_STATUS.md
+- PATCH_199_MANIFEST.txt
+- PATCH_199_RECOVERY_NOTE.md
+- PATCH_199_DELETE_LIST.txt
+
+Summary:
+Patch 199 adds a five-layer causal-chain view to Receipt Reader Standard View. The receipt now exposes a readable path from raw ingestion to semantic pressure, raw/pre-ethics metrics, protocol correction, and human hand-off.
+
+Boundary:
+This is a Receipt Reader explanation/layout patch only. It does not change native receipt values, receipt schema, current semantic scanner logic, stored receipt meaning, module scoring, World Lens math, Evidence Lab calculations, telemetry, external calls, storage, certification, enforcement, or final-truth behavior. Human review remains required.
+
+Validation target:
+python -m py_compile ui/receipt_reader.py

@@ -1,3 +1,30 @@
+## Patch 199 — Layered Causal Receipt Chain
+
+Date: 2026-07-07
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 199 adds a five-layer causal-chain view to Receipt Reader Standard View so uploaded receipts can be read as a transparent audit path rather than a flat list of variables.
+
+The new layers are:
+- **Layer 1 — Raw ingestion / phenomenological layer:** raw input excerpt and current invisibility-filter status.
+- **Layer 2 — Linguistic and semantic pressure:** claim-to-mechanism ratio, modal pressure, proximity hits, and semantic notes from the current semantic re-read.
+- **Layer 3 — Zero-point baseline / raw metrics:** raw/pre-ethics integrity, friction, collapse pressure, alignment, and ego when the uploaded receipt records them.
+- **Layer 4 — Sydney Protocol gate / ethical correction:** native state, protocol label, adjusted integrity, current semantic finding, and integrity-gap explanation when raw and adjusted integrity can be compared.
+- **Layer 5 — Human hand-off / boundary of code:** Z-Axis/humility-cap note and parsed silent-operator repair questions.
+
+Boundary notes:
+- Receipt Reader explanation/layout only.
+- Missing raw metrics are not inferred.
+- No native receipt values, receipt schema, stored receipt meaning, current semantic scanner logic, module scoring, World Lens math, Evidence Lab calculations, external calls, telemetry, storage, certification, enforcement, or final-truth behavior changed.
+- Current semantic reading remains a comparison layer only. Human review remains required.
+
+Validation target:
+
+```bat
+python -m py_compile ui/receipt_reader.py
+```
+
 ## Patch 198 — Receipt Risk Wording and Repair Blocker
 
 Date: 2026-07-07
