@@ -1,0 +1,21 @@
+Patch 200 — Simple English Receipt Walkthrough
+
+Changed files:
+- ui/receipt_reader.py
+- PATCH_STATUS.md
+- PATCH_200_MANIFEST.txt
+- PATCH_200_RECOVERY_NOTE.md
+- PATCH_200_DELETE_LIST.txt
+
+Purpose:
+Add a plain/basic-English receipt walkthrough so technical receipts can be read as four simple steps:
+1. What is this document?
+2. Main warning/status
+3. Big problems to inspect
+4. Next steps for humans
+
+Boundary:
+Receipt Reader explanation/layout only. No native receipt values, receipt schema, scanner logic, scoring, module routing, World Lens math, Evidence Lab calculations, external calls, telemetry, storage, certification, enforcement, or final-truth behavior changed.
+
+Validation:
+python -m py_compile ui/receipt_reader.py

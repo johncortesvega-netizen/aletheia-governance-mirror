@@ -1,3 +1,19 @@
+## Patch 200 — Simple English Receipt Walkthrough
+
+Date: 2026-07-07
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 200 adds a simple four-step plain-English receipt walkthrough to Receipt Reader Standard View. It translates technical receipt data into: what the document is, what the main warning/status means, which big problem areas need inspection, and what humans should check next.
+
+The walkthrough is explanatory only. It does not rescore receipts, alter native receipt values, change the receipt schema, modify scanner logic, change module scoring/routing, or create certification, enforcement, approval, rejection, or final-truth behavior. Missing raw metrics are not inferred.
+
+Validation target:
+
+```bat
+python -m py_compile ui/receipt_reader.py
+```
+
 ## Patch 199 — Layered Causal Receipt Chain
 
 Date: 2026-07-07

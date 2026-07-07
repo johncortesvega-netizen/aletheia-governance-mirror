@@ -1576,6 +1576,145 @@ def _render_plain_language_receipt_summary(container: Any, view: dict[str, Any])
         panel.table(_plain_power_distribution_rows(view))
 
 
+def _simple_integrity_explanation(view: dict[str, Any]) -> str:
+    """Return a short plain-English explanation of raw vs adjusted integrity when available."""
+    text = str(view.get("_receipt_reader_source_text", "") or "")
+    fields = view.get("fields") or {}
+    raw_metrics = _raw_metrics_before_ethics(text)
+    raw_integrity = _parse_float_value(raw_metrics.get("raw_integrity"))
+    adjusted_integrity = _parse_float_value(fields.get("integrity"))
+    native_state = str(view.get("native_state", MISSING_VALUE)).upper()
+    if raw_integrity is not None and adjusted_integrity is not None:
+        raw_pct = round(raw_integrity * 100)
+        adjusted_pct = round(adjusted_integrity * 100)
+        if raw_integrity - adjusted_integrity > 0.05:
+            return (
+                f"Before the protocol correction, the receipt records integrity around {raw_pct}%. "
+                f"After the human-boundary and safeguard checks, it falls to about {adjusted_pct}%. "
+                "That gap means the plan may look mechanically coherent while still raising power, safeguard, or accountability concerns."
+            )
+        return (
+            f"The raw and protocol-adjusted integrity values are close: about {raw_pct}% before correction and {adjusted_pct}% after correction. "
+            "Human review is still required."
+        )
+    if native_state == "ASYLUM":
+        return "The receipt records a High Risk / ASYLUM reading. Raw pre-ethics integrity was not found, so the reader does not invent a raw-to-adjusted percentage gap."
+    if native_state == "THRESHOLD":
+        return "The receipt records a review-needed / THRESHOLD reading. Raw pre-ethics integrity was not found, so the reader does not invent a raw-to-adjusted percentage gap."
+    return "Raw pre-ethics integrity was not found in the uploaded receipt. The reader shows only the values that are present."
+
+
+def _simple_big_problem_rows(view: dict[str, Any]) -> list[dict[str, str]]:
+    """Translate receipt pressure areas into simple English without adding new facts."""
+    text = str(view.get("_receipt_reader_source_text", "") or "")
+    semantic_opaque = _current_semantic_has_opaque_capture(view)
+    component_count = _capture_pressure_component_count(text)
+    repair_blocker = _receipt_repair_blocker_note(view)
+    access_terms = bool(re.search(r"(?i)\b(access|services|benefits|basic needs|essential services|identity|verification|compliance)\b", text))
+    secrecy_terms = bool(re.search(r"(?i)\b(secret|hidden|opaque|behind closed doors|unclear|limited notice|undisclosed)\b", text))
+    return [
+        {
+            "Problem area": "Too much central control",
+            "Plain-English meaning": (
+                "The current semantic re-read sees a hidden or concentrated power claim. The receipt should be reviewed for who holds power and who can check it."
+                if semantic_opaque
+                else "Check whether control, review power, or decision authority is concentrated in one actor or group."
+            ),
+        },
+        {
+            "Problem area": "No clear way to fix mistakes",
+            "Plain-English meaning": (
+                "The receipt shows a repair blocker: appeal, correction, pause, or review paths are not clear enough."
+                if repair_blocker
+                else "Check whether regular people can complain, appeal, pause, correct, or request human review safely."
+            ),
+        },
+        {
+            "Problem area": "Conditional access or safety",
+            "Plain-English meaning": (
+                "The text includes access/service/identity language. Review whether help, rights, services, or participation depend on opaque conditions."
+                if access_terms
+                else "Check whether access to rights, services, or participation is conditional, unclear, or hard to contest."
+            ),
+        },
+        {
+            "Problem area": "Low transparency",
+            "Plain-English meaning": (
+                "The text contains secrecy/opacity language. Review whether outsiders can see the rule, evidence, authority, and appeal path."
+                if secrecy_terms or component_count
+                else "Check whether the rule, evidence, authority, and accountability path are visible to outsiders."
+            ),
+        },
+    ]
+
+
+def _simple_next_step_questions(view: dict[str, Any]) -> list[str]:
+    """Return very plain human hand-off questions for the receipt."""
+    questions = [str(q).strip() for q in (view.get("repair_questions") or []) if str(q).strip()]
+    if questions:
+        return questions[:3]
+    return [
+        "Who can pause or stop this power if it goes wrong?",
+        "How can regular people complain, appeal, or change a decision safely?",
+        "What stops hidden or centralized control from becoming permanent?",
+    ]
+
+
+def _simple_three_sentence_summary(view: dict[str, Any]) -> str:
+    """Return a three-sentence plain-English summary of the uploaded receipt."""
+    native_state = str(view.get("native_state", MISSING_VALUE)).upper()
+    semantic_opaque = _current_semantic_has_opaque_capture(view)
+    if native_state == "ASYLUM" and semantic_opaque:
+        return (
+            "Your text describes or records a structure where hidden or concentrated power may be present. "
+            "The receipt flags this as High Risk because clear evidence, appeal, correction, and accountability paths are not visible enough. "
+            "A human reviewer should redesign the plan or claim so checks, balances, open rules, and repair paths are explicit."
+        )
+    if native_state == "ASYLUM":
+        return (
+            "The uploaded receipt records a High Risk reading. "
+            "This means ALETHEIA found pressure signals that need human review before anyone relies on the result. "
+            "A human reviewer should inspect power, evidence, safeguards, appeal, and repair paths."
+        )
+    if native_state == "THRESHOLD":
+        return (
+            "The uploaded receipt records a review-needed reading. "
+            "This means the text may contain unresolved safeguards, unclear evidence, or pressure signals. "
+            "A human reviewer should clarify the rule, evidence, appeal path, and accountability mechanism."
+        )
+    return (
+        "The uploaded receipt records a lower-pressure reading, but it is still only a mirror reading. "
+        "It does not certify safety, truth, legality, or legitimacy. "
+        "A human reviewer should still check the evidence and safeguards before relying on it."
+    )
+
+
+def _render_simple_english_receipt_walkthrough(container: Any, view: dict[str, Any]) -> None:
+    """Render a simple four-step explanation of a receipt for non-technical readers."""
+    native_state = str(view.get("native_state", MISSING_VALUE)).upper()
+    state_label = "High Risk / ASYLUM" if native_state == "ASYLUM" else _plain_state_name(native_state)
+    container.markdown("### Simple English walkthrough")
+    container.caption(
+        "A four-step translation of the technical receipt. It explains the uploaded receipt; it does not create a new decision, score, or certification."
+    )
+    with container.expander("1. What is this document?", expanded=True) as step:
+        step.write(
+            "This is a private, local ALETHEIA receipt review. It does not make real-world decisions and it is not a legal document. It helps a human look at how power, control, evidence, and safeguards are set up in the text."
+        )
+    with container.expander("2. Main warning / status", expanded=True) as step:
+        step.write(f"The uploaded receipt records **{state_label}**.")
+        step.write(_simple_integrity_explanation(view))
+    with container.expander("3. Big problems to inspect", expanded=True) as step:
+        step.table(_simple_big_problem_rows(view))
+    with container.expander("4. Next steps for humans", expanded=True) as step:
+        for question in _simple_next_step_questions(view):
+            step.markdown(f"- {question}")
+        blocker = _receipt_repair_blocker_note(view)
+        if blocker:
+            step.warning(blocker)
+    container.info(_simple_three_sentence_summary(view))
+
+
 def _parse_float_value(value: Any) -> float | None:
     """Parse a numeric value from receipt text without inferring missing fields."""
     if value in {None, MISSING_VALUE, NOT_APPLICABLE}:
@@ -2001,6 +2140,7 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
     _render_top_metric_strip(container, view)
 
     _render_plain_language_receipt_summary(container, view)
+    _render_simple_english_receipt_walkthrough(container, view)
     _render_current_semantic_reread(container, view)
     _render_layered_causal_receipt_chain(container, view)
     _render_repair_questions_block(container, view)
