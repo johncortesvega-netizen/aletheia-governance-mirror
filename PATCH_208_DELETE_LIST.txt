@@ -1,0 +1,3 @@
+Patch 208 delete list
+
+No files should be deleted for this patch.

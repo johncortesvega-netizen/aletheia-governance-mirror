@@ -1,3 +1,70 @@
+## Patch 209 — Evidence Lab and World Lens Semantic Category Wiring
+
+Date: 2026-07-07
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 209 checks and tightens the semantic integration points for Evidence Lab and World Lens after the Semantic Pressure Layer calibrations through Patch 208.
+
+What changed:
+- Evidence Lab now maps newer semantic categories into evidence implications:
+  - opaque_capture_claim;
+  - emergency_service_control;
+  - weak_safeguard_near_authority;
+  - algorithmic_welfare_review_gap;
+  - biometric access pressure;
+  - procurement/vendor capture risk;
+  - weak_or_missing_safeguard.
+- World Lens now maps the same semantic categories into regional interpretation flags:
+  - hidden-power / opaque capture claims;
+  - emergency authority over essential services;
+  - algorithmic welfare / triage language;
+  - procurement / vendor influence language;
+  - biometric and identity verification access language.
+- These are display/explanation links only. They do not rescore World Lens evidence, country-year rows, Evidence Lab tables, receipts, Stress Test metrics, or core scanner logic.
+
+Boundary notes:
+- Semantic terms are used as subordinate flags and evidence prompts only.
+- No external calls, telemetry, storage, certification, enforcement, or final-truth behavior added.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python -m py_compile app.py core\semantic_pressure_scanner.py
+python -c "from core.semantic_pressure_scanner import scan_semantic_pressure; print(scan_semantic_pressure('A policy gives one central office emergency authority over essential services during crisis, with limited public notice and unclear appeal rights.'))"
+```
+
+
+## Patch 208 — Stress Test Demo Semantic Alignment
+
+Date: 2026-07-07
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 208 aligns Stress Test demo scenarios with the Semantic Pressure Layer. Stress Test now preserves the resolved demo scenario body as an explicit semantic source and scans it alongside the visible editor text and processed/Invisibility Filter text. The strongest semantic-pressure signal is used for the subordinate semantic panel.
+
+This fixes cases where a demo label or stale/processed text could cause semantic output to show SANCTUARY/NO SIGNAL while the active Stress Test scenario contains pressure language.
+
+Scanner calibration was also extended for the current Stress Test demo suite:
+- emergency powers without expiry -> THRESHOLD / weak emergency safeguards;
+- biometric access to basic services without fallback -> THRESHOLD / weak or missing safeguards;
+- algorithmic welfare triage lacking explainability/challenge/override -> THRESHOLD / review gap;
+- public procurement with opaque scoring and limited audit/conflict path -> THRESHOLD / opaque capture pressure;
+- migration queue and local resource allocation examples with visible safeguards remain low-pressure semantic readings.
+
+Boundary notes:
+- Stress Test semantic source selection and deterministic scanner calibration only.
+- No Stress Test scoring, tree metrics, receipt schema, World Lens math, Evidence Lab calculations, external calls, telemetry, storage, certification, enforcement, or final-truth behavior changed.
+- The Semantic Pressure Layer remains subordinate to Stress Test. It does not decide the result.
+
+Validation target:
+
+```bat
+python -m py_compile app.py core\semantic_pressure_scanner.py
+python -c "from core.semantic_pressure_scanner import scan_semantic_pressure; print(scan_semantic_pressure('An automated welfare triage system reduces waiting times but lacks explainability, independent challenge, and human override during hardship cases.'))"
+```
+
 ## Patch 204 — Opaque Capture Values Alignment Hotfix
 
 

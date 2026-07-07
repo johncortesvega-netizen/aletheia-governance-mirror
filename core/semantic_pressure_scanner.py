@@ -108,7 +108,8 @@ OPAQUE_ACTOR_TERMS: tuple[str, ...] = (
     "banker", "bankers", "banking group", "financial elite", "financial elites",
     "elite", "elites", "private elite", "private elites", "group", "small group",
     "committee", "hidden committee", "council", "inner circle", "unelected group",
-    "unelected actors", "private actors", "private group", "oligarchs", "cartel",
+    "unelected actors", "private actors", "private group", "vendor group", "small vendor group",
+    "procurement vendor", "platform vendor", "oligarchs", "cartel",
     "bankier", "bankiers", "financiele elite", "financiële elite",
     "elite", "elites", "privegroep", "privégroep", "groep", "kleine groep",
     "commissie", "verborgen commissie", "raad", "inner circle", "niet-gekozen groep",
@@ -120,6 +121,8 @@ OPAQUE_SCOPE_TERMS: tuple[str, ...] = (
     "controls", "controlled", "power", "authority", "rule", "rules", "govern",
     "governs", "influence", "system control", "policy control", "public systems",
     "access control", "control access", "holds power", "hold power",
+    "public procurement", "procurement platform", "procurement", "welfare triage",
+    "automated welfare", "triage system",
     "wereldmacht", "wereld macht", "globale macht", "wereldcontrole",
     "controle", "beheerst", "macht", "autoriteit", "regeert", "bestuurt",
     "invloed", "systeemcontrole", "beleidscontrole", "publieke systemen",
@@ -128,7 +131,7 @@ OPAQUE_SCOPE_TERMS: tuple[str, ...] = (
 
 OPAQUE_TERMS: tuple[str, ...] = (
     "secret", "in secret", "secretly", "hidden", "behind closed doors",
-    "opaque", "undisclosed", "invisible", "unaccountable", "shadow",
+    "opaque", "opaque scoring", "undisclosed", "invisible", "unaccountable", "shadow",
     "backroom", "behind the scenes", "without disclosure", "not disclosed",
     "geheim", "in het geheim", "verborgen", "achter gesloten deuren",
     "ondoorzichtig", "niet openbaar", "onzichtbaar", "onverantwoord",
@@ -281,6 +284,39 @@ def _sentence_emergency_service_control(text: str) -> bool:
     return False
 
 
+
+
+def _sentence_weak_safeguard_pressure(text: str) -> bool:
+    """Detect claims where safeguards are named as absent, weak, limited, or unclear.
+
+    This prevents phrases such as "lacks human override" or "without a
+    fallback path" from being read as positive safeguard evidence merely because
+    they contain words like fallback, audit, appeal, review, or override.
+    """
+    sentences = re.split(r"(?<=[.!?;])\s+|\n+", text or "")
+    for sentence in sentences:
+        if _sentence_contains(sentence, WEAK_SAFEGUARD_TERMS):
+            return True
+        lower = _lower(sentence)
+        if re.search(r"\b(lacks?|without|no|unclear|weak|limited)\b.{0,80}\b(explainability|challenge|override|fallback|appeal|audit|review|oversight|sunset|expiry|conflict-of-interest)\b", lower):
+            return True
+    return False
+
+
+def _sentence_algorithmic_welfare_gap(text: str) -> bool:
+    """Detect algorithmic welfare/access triage with absent challenge or override paths."""
+    sentences = re.split(r"(?<=[.!?;])\s+|\n+", text or "")
+    for sentence in sentences:
+        lower = _lower(sentence)
+        has_algorithmic_service = (
+            any(term in lower for term in ["algorithmic", "automated", "automation", "ai"])
+            and any(term in lower for term in ["welfare", "triage", "benefits", "service", "hardship", "housing", "food", "medical"])
+        )
+        has_missing_review = re.search(r"\b(lacks?|without|no|unclear|weak|limited)\b.{0,80}\b(explainability|challenge|override|appeal|human review|manual review|fallback)\b", lower)
+        if has_algorithmic_service and has_missing_review:
+            return True
+    return False
+
 def _sentence_opaque_capture_claim(text: str) -> bool:
     """Detect hidden/concentrated power claims without treating them as coercive language.
 
@@ -339,6 +375,26 @@ def proximity_scan(text: str, *, window: int = 9) -> tuple[ProximityHit, ...]:
                 category="emergency_service_control",
                 left="central/emergency authority",
                 right="essential/basic services + weak safeguards",
+                distance=0,
+                excerpt=(text or "").strip()[:220],
+            )
+        )
+    if _sentence_weak_safeguard_pressure(text):
+        hits.append(
+            ProximityHit(
+                category="weak_or_missing_safeguard",
+                left="weak/missing safeguard language",
+                right="appeal / audit / review / fallback / override",
+                distance=0,
+                excerpt=(text or "").strip()[:220],
+            )
+        )
+    if _sentence_algorithmic_welfare_gap(text):
+        hits.append(
+            ProximityHit(
+                category="algorithmic_welfare_review_gap",
+                left="algorithmic welfare/access triage",
+                right="missing explainability / challenge / override",
                 distance=0,
                 excerpt=(text or "").strip()[:220],
             )
@@ -438,10 +494,12 @@ def proximity_scan(text: str, *, window: int = 9) -> tuple[ProximityHit, ...]:
         "identity_gated_access": 0,
         "emergency_service_control": 1,
         "opaque_capture_claim": 2,
-        "authority_near_services": 3,
-        "weak_safeguard_near_authority": 4,
-        "grip_near_access": 5,
-        "permanence_near_access": 6,
+        "weak_or_missing_safeguard": 3,
+        "algorithmic_welfare_review_gap": 4,
+        "authority_near_services": 5,
+        "weak_safeguard_near_authority": 6,
+        "grip_near_access": 7,
+        "permanence_near_access": 8,
     }
     clean.sort(key=lambda hit: (priority.get(hit.category, 9), hit.distance, hit.left, hit.right))
     return tuple(clean[:8])
@@ -454,6 +512,8 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     claims = _count_terms(normalized, CLAIM_TERMS)
     mechanisms = _count_terms(normalized, MECHANISM_TERMS)
     weak_safeguards = _count_terms(normalized, WEAK_SAFEGUARD_TERMS)
+    weak_safeguard_pressure = _sentence_weak_safeguard_pressure(normalized)
+    algorithmic_welfare_gap = _sentence_algorithmic_welfare_gap(normalized)
     emergency_terms = _count_terms(normalized, EMERGENCY_POWER_TERMS)
     central_terms = _count_terms(normalized, CENTRAL_AUTHORITY_TERMS)
     modal_pressure = (
@@ -486,6 +546,12 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     if weak_safeguards and (emergency_terms or central_terms or modal_pressure):
         notes.append("Weak emergency safeguards: emergency/authority language appears with missing or weakened sunset, appeal, notice, review, or oversight safeguards.")
         adjustment -= 0.14
+    if weak_safeguard_pressure and not (emergency_terms or central_terms):
+        notes.append("Weak or missing safeguards: appeal, audit, review, fallback, explainability, challenge, or override language appears as absent, weak, limited, or unclear.")
+        adjustment -= 0.16
+    if algorithmic_welfare_gap:
+        notes.append("Algorithmic welfare/access review gap: automated service triage appears with missing explainability, independent challenge, or human override.")
+        adjustment -= 0.18
     if opaque_capture_claim:
         notes.append("Opaque capture-power claim: an actor group is linked to hidden broad-scale power or control without visible evidence, appeal path, or accountable mechanism.")
         adjustment -= 0.22
@@ -498,7 +564,7 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     if modal_pressure > sovereignty:
         notes.append("Modal pressure outweighs sovereignty language: obligation or permanence terms exceed appeal, revocation, fallback, or choice language.")
         adjustment -= 0.08
-    if mechanisms >= 2 and sovereignty >= 1 and not hits and not identity_gate and not emergency_service_control and not opaque_capture_claim and not weak_safeguards:
+    if mechanisms >= 2 and sovereignty >= 1 and not hits and not identity_gate and not emergency_service_control and not opaque_capture_claim and not weak_safeguards and not weak_safeguard_pressure and not algorithmic_welfare_gap:
         notes.append("Concrete safeguards detected: appeal, audit, review, revocation, time-limit, or reversibility language is visible.")
     if governance_context and claims > 0 and mechanisms == 0 and not hits:
         fail_closed = True
@@ -509,7 +575,7 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     if not notes:
         notes.append("No strong semantic pressure pattern detected by this deterministic scanner. Human review still required.")
 
-    if hits or identity_gate or emergency_service_control or opaque_capture_claim or weak_safeguards or fail_closed or adjustment <= -0.24:
+    if hits or identity_gate or emergency_service_control or opaque_capture_claim or weak_safeguards or weak_safeguard_pressure or algorithmic_welfare_gap or fail_closed or adjustment <= -0.24:
         state = "THRESHOLD"
         risk = "Needs safeguards"
     elif adjustment <= -0.10:

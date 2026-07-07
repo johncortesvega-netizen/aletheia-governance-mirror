@@ -1,0 +1,12 @@
+Patch 208 — Stress Test Demo Semantic Alignment
+
+Changed files:
+- app.py
+- core/semantic_pressure_scanner.py
+- PATCH_STATUS.md
+- PATCH_208_MANIFEST.txt
+- PATCH_208_RECOVERY_NOTE.md
+- PATCH_208_DELETE_LIST.txt
+
+Purpose:
+Align Stress Test demo scenarios, processed text, visible editor text, and the Semantic Pressure Layer so demo examples do not produce stale or label-only semantic readings.

@@ -4636,6 +4636,44 @@ def semantic_evidence_implication_rows(scan) -> list[dict]:
     categories = {str(hit.get("category", "")).lower() for hit in hits if isinstance(hit, dict)}
     claim_count = int(_semantic_payload_value(scan, "claim_count", 0) or 0)
     mechanism_count = int(_semantic_payload_value(scan, "mechanism_count", 0) or 0)
+    normalized_text = str(_semantic_payload_value(scan, "normalized_text", "") or "").lower()
+
+    if "opaque_capture_claim" in categories or "opaque capture-power" in note_blob:
+        rows.append({
+            "Semantic finding": "Opaque capture-power claim",
+            "Evidence implication": "Requires evidence basis, accountable review, named limits, and a correction path before the claim can carry governance weight.",
+            "Human review question": "What public evidence, independent review path, and accountable mechanism make the hidden-power claim reviewable?",
+        })
+    if "emergency_service_control" in categories or "weak_safeguard_near_authority" in categories:
+        rows.append({
+            "Semantic finding": "Emergency or central authority over basic services with weak safeguards",
+            "Evidence implication": "Requires proof of sunset clauses, public notice, independent review, appeal access, and fallback service continuity.",
+            "Human review question": "Where is the evidence that emergency authority is time-limited, reviewable, and cannot silently control essential access?",
+        })
+    if "algorithmic_welfare_review_gap" in categories:
+        rows.append({
+            "Semantic finding": "Algorithmic welfare/access review gap",
+            "Evidence implication": "Requires evidence of explainability, independent challenge, human override, error repair, and protection for hardship cases.",
+            "Human review question": "Can affected people understand, challenge, and reverse the triage result before access is harmed?",
+        })
+    if "biometric" in normalized_text and ("access" in normalized_text or "service" in normalized_text or "benefit" in normalized_text):
+        rows.append({
+            "Semantic finding": "Biometric access pressure",
+            "Evidence implication": "Requires evidence of fallback access, false rejection rates, privacy safeguards, appeal routes, and non-biometric alternatives.",
+            "Human review question": "Who is excluded by the biometric gate, and what non-biometric path preserves access during errors or refusal?",
+        })
+    if "procurement" in normalized_text or ("vendor" in normalized_text and ("disclosure" in normalized_text or "conflict" in normalized_text)):
+        rows.append({
+            "Semantic finding": "Procurement / vendor capture risk",
+            "Evidence implication": "Requires conflict-of-interest records, scoring transparency, auditability, public disclosure, and independent procurement review.",
+            "Human review question": "What evidence shows vendor influence, scoring, conflicts, and audit rights are visible and contestable?",
+        })
+    if "weak_or_missing_safeguard" in categories and not any("weak safeguard" in str(row.get("Semantic finding", "")).lower() for row in rows):
+        rows.append({
+            "Semantic finding": "Weak or missing safeguard language",
+            "Evidence implication": "Requires concrete proof that appeal, audit, fallback, notice, review, override, or time-limit safeguards exist in practice.",
+            "Human review question": "Which missing or weakened safeguard must be repaired before the claim can be treated as operationally reviewable?",
+        })
 
     if claim_count > 0 and mechanism_count == 0:
         rows.append({
@@ -4715,7 +4753,36 @@ def semantic_world_lens_flag_rows(scan) -> list[dict]:
                 "Human-review question": regional_question,
             })
 
-    if "identity_gated_access" in categories or "identity" in normalized_text or "verification" in normalized_text:
+    if "opaque_capture_claim" in categories or "opaque capture-power" in notes_blob or (
+        any(term in normalized_text for term in ["secret", "hidden", "behind closed doors", "opaque"])
+        and any(term in normalized_text for term in ["power", "control", "authority", "influence"])
+    ):
+        add(
+            "Opaque capture / hidden-power claim",
+            "Hidden or concentrated power claims can read very differently across regions: anti-corruption warning, conspiracy claim, oligarchic capture signal, or unverified accusation.",
+            "What public evidence, accountable review path, and correction mechanism make the hidden-power claim reviewable rather than merely asserted?",
+        )
+    if "emergency_service_control" in categories or "weak_safeguard_near_authority" in categories or (
+        "emergency" in normalized_text and ("service" in normalized_text or "authority" in normalized_text)
+    ):
+        add(
+            "Emergency authority over services",
+            "Crisis powers over essential services may be read as necessary administration in one context and emergency capture or rights restriction in another.",
+            "Where are sunset clauses, public notice, appeal windows, independent review, and fallback access defined?",
+        )
+    if "algorithmic_welfare_review_gap" in categories or ("algorithmic" in normalized_text and ("welfare" in normalized_text or "triage" in normalized_text)):
+        add(
+            "Algorithmic welfare / triage language",
+            "Automated triage can be read as efficiency, exclusion, administrative harm, or unequal access depending on local rights and appeal systems.",
+            "Can affected people understand, challenge, and reverse automated decisions before access or support is harmed?",
+        )
+    if "procurement" in normalized_text or ("vendor" in normalized_text and ("capture" in normalized_text or "disclosure" in normalized_text or "conflict" in normalized_text)):
+        add(
+            "Procurement / vendor influence language",
+            "Procurement language can signal ordinary contracting, elite capture, corruption risk, or weak public accountability depending on local oversight.",
+            "Are scoring rules, conflicts of interest, vendor influence, audit rights, and public disclosure visible in the selected context?",
+        )
+    if "identity_gated_access" in categories or "identity" in normalized_text or "verification" in normalized_text or "biometric" in normalized_text:
         add(
             "Identity / verification language",
             "May read as safety infrastructure in one context and surveillance or exclusion pressure in another.",
@@ -4838,8 +4905,10 @@ with tab_sim:
     with col_a:
         scenario_choice = st.selectbox("Stress Test demo examples", list(STRESS_TEST_DEMO_SCENARIOS.keys()), key="simulation_scenario_library")
         if st.button("Load Stress Test scenario demo", use_container_width=True, key="simulation_load_stress_demo_button"):
-            st.session_state.simulation_scenario_text = STRESS_TEST_DEMO_SCENARIOS[scenario_choice]
+            resolved_demo_text = STRESS_TEST_DEMO_SCENARIOS[scenario_choice]
+            st.session_state.simulation_scenario_text = resolved_demo_text
             st.session_state.simulation_demo_choice = scenario_choice
+            st.session_state.simulation_demo_resolved_text = resolved_demo_text
             st.session_state.simulation_input_source = "DEMO_INPUT"
         query = st.text_area("Write or paste your idea", key="simulation_scenario_text", height=150)
 
@@ -4969,8 +5038,22 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                 st.session_state.last_query_raw = query
                 st.session_state.last_input_status = input_status
                 st.session_state.last_invisibility_report = invisibility_report
-                if input_mode == "Scan my idea" and (str(query or "").strip() or str(analysis_query or "").strip()):
-                    st.session_state.last_stress_semantic_scan = choose_stress_semantic_scan(query, analysis_query)
+                # Patch 208: keep the resolved demo scenario text as an explicit
+                # semantic source. Demo labels are only UI labels; the semantic
+                # layer must scan the actual scenario body and the visible editor
+                # text, then keep the strongest pressure reading.
+                demo_source_text = ""
+                if input_status == "DEMO_INPUT":
+                    demo_source_text = str(loaded_demo or st.session_state.get("simulation_demo_resolved_text", "") or "")
+                st.session_state.last_demo_scenario_text = demo_source_text
+                if input_mode == "Scan my idea" and (str(query or "").strip() or str(analysis_query or "").strip() or demo_source_text.strip()):
+                    st.session_state.last_stress_semantic_scan = choose_strongest_semantic_scan(
+                        choose_stress_semantic_scan(query, analysis_query),
+                        choose_stress_semantic_scan(demo_source_text, analysis_query) if demo_source_text else None,
+                        query,
+                        analysis_query,
+                        demo_source_text,
+                    )
                 else:
                     st.session_state.last_stress_semantic_scan = None
                 selected_context = "Manual test" if input_mode == "Manual test" else ((analysis_query[:120] + "…") if len(analysis_query) > 120 else analysis_query)
@@ -5326,12 +5409,19 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
             current_raw_query = str(st.session_state.get("last_query_raw", "") or "").strip()
             current_processed_query = str(display_query or "").strip()
             visible_editor_query = str(query or "").strip()
+            demo_source_query = str(st.session_state.get("last_demo_scenario_text", "") or "").strip()
             recomputed_stress_semantic_scan = choose_stress_semantic_scan(current_raw_query or visible_editor_query, current_processed_query)
             editor_stress_semantic_scan = choose_stress_semantic_scan(visible_editor_query, current_processed_query) if visible_editor_query else None
+            demo_stress_semantic_scan = choose_stress_semantic_scan(demo_source_query, current_processed_query) if demo_source_query else None
             stress_semantic_scan = choose_strongest_semantic_scan(
                 stored_stress_semantic_scan,
                 recomputed_stress_semantic_scan,
                 editor_stress_semantic_scan,
+                demo_stress_semantic_scan,
+                current_raw_query,
+                visible_editor_query,
+                demo_source_query,
+                current_processed_query,
             )
             if stress_semantic_scan is not None:
                 st.session_state.last_stress_semantic_scan = stress_semantic_scan

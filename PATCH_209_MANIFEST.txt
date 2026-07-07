@@ -1,0 +1,14 @@
+PATCH 209 — Evidence Lab and World Lens Semantic Category Wiring
+
+Changed files:
+- app.py
+- PATCH_STATUS.md
+- PATCH_209_MANIFEST.txt
+- PATCH_209_RECOVERY_NOTE.md
+- PATCH_209_DELETE_LIST.txt
+
+Purpose:
+Wire the newer Semantic Pressure Layer categories into Evidence Lab evidence implications and World Lens regional interpretation flags.
+
+Boundary:
+No scanner scoring change, no World Lens math change, no Evidence Lab calculation change, no receipt schema change, no external calls, no telemetry, no storage, no certification, no enforcement, no final-truth behavior.
