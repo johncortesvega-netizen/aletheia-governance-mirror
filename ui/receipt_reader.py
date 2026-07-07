@@ -17,10 +17,11 @@ from typing import Any
 from ui.module_page_template import ModulePageTemplateCopy, render_module_page_template_intro
 
 try:
-    from core.semantic_pressure_scanner import format_semantic_pressure_report, scan_semantic_pressure
+    from core.semantic_pressure_scanner import format_semantic_pressure_report, scan_semantic_pressure, pressure_code_rows
 except Exception:  # pragma: no cover - optional Streamlit deployment guard
     format_semantic_pressure_report = None  # type: ignore
     scan_semantic_pressure = None  # type: ignore
+    pressure_code_rows = None  # type: ignore
 
 
 RECEIPT_READER_BOUNDARY = (
@@ -1973,6 +1974,7 @@ def _build_semantic_pressure_layer(receipt_text: str) -> dict[str, Any]:
         "mechanisms": int(getattr(scan, "mechanism_count", 0) or 0),
         "pressure": float(getattr(scan, "integrity_adjustment", 0.0) or 0.0),
         "notes": list(getattr(scan, "notes", ()) or []),
+        "pressure_codes": list(getattr(scan, "pressure_codes", ()) or []),
     }
 
 
@@ -2102,6 +2104,12 @@ def _render_semantic_pressure_layer(container: Any, view: dict[str, Any]) -> Non
     c3.metric("Mechanisms", int(summary.get("mechanisms", 0) or 0))
     c4.metric("Diagnostic pressure", f"{float(summary.get('pressure', 0.0) or 0.0):+.3f}")
 
+    pressure_codes = list(summary.get("pressure_codes") or [])
+    if pressure_codes and pressure_code_rows is not None:
+        with container.expander("Pressure-code matrix", expanded=False) as codes_panel:
+            codes_panel.caption("Stable diagnostic codes explaining why the semantic layer flagged this receipt. Codes are not verdicts or certifications.")
+            codes_panel.dataframe(pressure_code_rows(pressure_codes), use_container_width=True, hide_index=True)
+
     finding = str(summary.get("finding", "NO SIGNAL"))
     risk = _semantic_layer_receipt_note(summary)
     if finding == "NO SIGNAL":
@@ -2208,6 +2216,7 @@ def _batch_receipt_index_rows(parsed: dict[str, Any]) -> list[dict[str, str]]:
             "Review Pressure": review_pressure,
             "Protocol Label": fields.get("protocol_label", MISSING_VALUE),
             "Semantic Layer": str((view.get("_semantic_pressure_layer") or {}).get("finding", "Not run")),
+                    "Pressure Codes": ", ".join((view.get("_semantic_pressure_layer") or {}).get("pressure_codes", [])[:3]),
             "Integrity": integrity,
             "Collapse": collapse,
             "Trust Index": trust,

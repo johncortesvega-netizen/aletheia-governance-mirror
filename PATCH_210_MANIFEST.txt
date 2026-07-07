@@ -1,0 +1,33 @@
+PATCH 210 — Trigger Matrix / Pressure Codes
+
+Status: READY FOR LOCAL REVIEW
+
+Changed files:
+- core/semantic_pressure_scanner.py
+- app.py
+- ui/receipt_reader.py
+- PATCH_STATUS.md
+- PATCH_210_MANIFEST.txt
+- PATCH_210_RECOVERY_NOTE.md
+- PATCH_210_DELETE_LIST.txt
+
+Purpose:
+Patch 210 adds stable, plain-language pressure codes to the Semantic Pressure Scanner and surfaces them in module/receipt UIs. The goal is to make it clearer which pressure pattern triggered the semantic layer without turning the codes into verdicts.
+
+New diagnostic codes include:
+- AUTHORITY_DRIFT
+- OPAQUE_CAPTURE_CLAIM
+- MISSING_SAFEGUARD
+- NO_APPEAL_PATH
+- EMERGENCY_POWER_WEAK_SAFEGUARD
+- IDENTITY_GATED_ACCESS
+- CLAIM_MECHANISM_GAP
+- MODAL_PRESSURE
+- ALGORITHMIC_WELFARE_REVIEW_GAP
+- BIOMETRIC_ACCESS_PRESSURE
+- PROCUREMENT_VENDOR_CAPTURE
+- SACRALIZATION_DRIFT
+- CONCRETE_SAFEGUARDS_VISIBLE
+
+Boundary preserved:
+This patch adds explanation labels only. It does not change scoring, state routing, receipt schema, World Lens math, Evidence Lab calculations, Stress Test metrics, external calls, telemetry, storage, certification, enforcement, or final-truth behavior.

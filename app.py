@@ -52,7 +52,7 @@ from core.ai_integrity_mirror import (
     audit_ai_integrity_artifact,
     build_ai_static_scan_protocol_context,
 )
-from core.semantic_pressure_scanner import scan_semantic_pressure, format_semantic_pressure_report
+from core.semantic_pressure_scanner import scan_semantic_pressure, format_semantic_pressure_report, pressure_code_rows
 
 from core.world_lens import (
     country_available_years,
@@ -4361,6 +4361,7 @@ def render_semantic_pressure_panel(
     normalized_text = str(_semantic_payload_value(semantic_scan, "normalized_text", "") or "")
     hits = _semantic_payload_hits(semantic_scan)
     notes = _semantic_payload_notes(semantic_scan)
+    pressure_codes = list(_semantic_payload_value(semantic_scan, "pressure_codes", ()) or ())
 
     # UI semantics: the scanner's internal SANCTUARY value can also mean
     # "no semantic relationship detected." Showing that as SANCTUARY beside an
@@ -4427,6 +4428,10 @@ def render_semantic_pressure_panel(
             detail_cols[1].metric("Modal pressure", str(modal_count))
             detail_cols[2].metric("Reversibility", str(sovereignty_count))
             detail_cols[3].metric("Fail-closed", "YES" if fail_closed else "NO")
+            if pressure_codes:
+                st.markdown("**Pressure-code matrix**")
+                st.caption("Stable diagnostic codes explaining which pressure patterns were detected. Codes are not verdicts or certifications.")
+                st.dataframe(pd.DataFrame(pressure_code_rows(pressure_codes)), use_container_width=True, hide_index=True)
             if notes:
                 st.markdown("**Notes**")
                 for note in notes:
@@ -4447,6 +4452,7 @@ def render_semantic_pressure_panel(
                     f"Modal pressure signals: {modal_count}",
                     f"Sovereignty / reversibility signals: {sovereignty_count}",
                     f"Fail-closed review: {'YES' if fail_closed else 'NO'}",
+                    f"Pressure codes: {', '.join(pressure_codes) if pressure_codes else 'none'}",
                     "",
                     "Notes:",
                     *[f"- {note}" for note in notes],
@@ -4636,44 +4642,6 @@ def semantic_evidence_implication_rows(scan) -> list[dict]:
     categories = {str(hit.get("category", "")).lower() for hit in hits if isinstance(hit, dict)}
     claim_count = int(_semantic_payload_value(scan, "claim_count", 0) or 0)
     mechanism_count = int(_semantic_payload_value(scan, "mechanism_count", 0) or 0)
-    normalized_text = str(_semantic_payload_value(scan, "normalized_text", "") or "").lower()
-
-    if "opaque_capture_claim" in categories or "opaque capture-power" in note_blob:
-        rows.append({
-            "Semantic finding": "Opaque capture-power claim",
-            "Evidence implication": "Requires evidence basis, accountable review, named limits, and a correction path before the claim can carry governance weight.",
-            "Human review question": "What public evidence, independent review path, and accountable mechanism make the hidden-power claim reviewable?",
-        })
-    if "emergency_service_control" in categories or "weak_safeguard_near_authority" in categories:
-        rows.append({
-            "Semantic finding": "Emergency or central authority over basic services with weak safeguards",
-            "Evidence implication": "Requires proof of sunset clauses, public notice, independent review, appeal access, and fallback service continuity.",
-            "Human review question": "Where is the evidence that emergency authority is time-limited, reviewable, and cannot silently control essential access?",
-        })
-    if "algorithmic_welfare_review_gap" in categories:
-        rows.append({
-            "Semantic finding": "Algorithmic welfare/access review gap",
-            "Evidence implication": "Requires evidence of explainability, independent challenge, human override, error repair, and protection for hardship cases.",
-            "Human review question": "Can affected people understand, challenge, and reverse the triage result before access is harmed?",
-        })
-    if "biometric" in normalized_text and ("access" in normalized_text or "service" in normalized_text or "benefit" in normalized_text):
-        rows.append({
-            "Semantic finding": "Biometric access pressure",
-            "Evidence implication": "Requires evidence of fallback access, false rejection rates, privacy safeguards, appeal routes, and non-biometric alternatives.",
-            "Human review question": "Who is excluded by the biometric gate, and what non-biometric path preserves access during errors or refusal?",
-        })
-    if "procurement" in normalized_text or ("vendor" in normalized_text and ("disclosure" in normalized_text or "conflict" in normalized_text)):
-        rows.append({
-            "Semantic finding": "Procurement / vendor capture risk",
-            "Evidence implication": "Requires conflict-of-interest records, scoring transparency, auditability, public disclosure, and independent procurement review.",
-            "Human review question": "What evidence shows vendor influence, scoring, conflicts, and audit rights are visible and contestable?",
-        })
-    if "weak_or_missing_safeguard" in categories and not any("weak safeguard" in str(row.get("Semantic finding", "")).lower() for row in rows):
-        rows.append({
-            "Semantic finding": "Weak or missing safeguard language",
-            "Evidence implication": "Requires concrete proof that appeal, audit, fallback, notice, review, override, or time-limit safeguards exist in practice.",
-            "Human review question": "Which missing or weakened safeguard must be repaired before the claim can be treated as operationally reviewable?",
-        })
 
     if claim_count > 0 and mechanism_count == 0:
         rows.append({
@@ -4753,36 +4721,7 @@ def semantic_world_lens_flag_rows(scan) -> list[dict]:
                 "Human-review question": regional_question,
             })
 
-    if "opaque_capture_claim" in categories or "opaque capture-power" in notes_blob or (
-        any(term in normalized_text for term in ["secret", "hidden", "behind closed doors", "opaque"])
-        and any(term in normalized_text for term in ["power", "control", "authority", "influence"])
-    ):
-        add(
-            "Opaque capture / hidden-power claim",
-            "Hidden or concentrated power claims can read very differently across regions: anti-corruption warning, conspiracy claim, oligarchic capture signal, or unverified accusation.",
-            "What public evidence, accountable review path, and correction mechanism make the hidden-power claim reviewable rather than merely asserted?",
-        )
-    if "emergency_service_control" in categories or "weak_safeguard_near_authority" in categories or (
-        "emergency" in normalized_text and ("service" in normalized_text or "authority" in normalized_text)
-    ):
-        add(
-            "Emergency authority over services",
-            "Crisis powers over essential services may be read as necessary administration in one context and emergency capture or rights restriction in another.",
-            "Where are sunset clauses, public notice, appeal windows, independent review, and fallback access defined?",
-        )
-    if "algorithmic_welfare_review_gap" in categories or ("algorithmic" in normalized_text and ("welfare" in normalized_text or "triage" in normalized_text)):
-        add(
-            "Algorithmic welfare / triage language",
-            "Automated triage can be read as efficiency, exclusion, administrative harm, or unequal access depending on local rights and appeal systems.",
-            "Can affected people understand, challenge, and reverse automated decisions before access or support is harmed?",
-        )
-    if "procurement" in normalized_text or ("vendor" in normalized_text and ("capture" in normalized_text or "disclosure" in normalized_text or "conflict" in normalized_text)):
-        add(
-            "Procurement / vendor influence language",
-            "Procurement language can signal ordinary contracting, elite capture, corruption risk, or weak public accountability depending on local oversight.",
-            "Are scoring rules, conflicts of interest, vendor influence, audit rights, and public disclosure visible in the selected context?",
-        )
-    if "identity_gated_access" in categories or "identity" in normalized_text or "verification" in normalized_text or "biometric" in normalized_text:
+    if "identity_gated_access" in categories or "identity" in normalized_text or "verification" in normalized_text:
         add(
             "Identity / verification language",
             "May read as safety infrastructure in one context and surveillance or exclusion pressure in another.",

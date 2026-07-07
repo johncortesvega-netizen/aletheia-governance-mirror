@@ -160,6 +160,35 @@ ENTITY_PATTERNS: tuple[tuple[str, str], ...] = (
 )
 
 
+
+# Human-readable pressure-code matrix. Codes are diagnostic labels for review;
+# they are not verdicts, certifications, or proof of intent.
+PRESSURE_CODE_DEFINITIONS: dict[str, str] = {
+    "AUTHORITY_DRIFT": "A system, actor, or office appears to gain authority without clearly bounded review limits.",
+    "OPAQUE_CAPTURE_CLAIM": "Hidden or concentrated power is claimed without visible evidence basis, accountability, appeal, or correction path.",
+    "MISSING_SAFEGUARD": "Appeal, audit, correction, expiry, fallback, override, or independent review is missing, weak, limited, or unclear.",
+    "NO_APPEAL_PATH": "Affected people may lack a clear way to challenge, correct, or repair a decision.",
+    "EMERGENCY_POWER_WEAK_SAFEGUARD": "Emergency or crisis authority appears without strong sunset, notice, appeal, review, or oversight safeguards.",
+    "IDENTITY_GATED_ACCESS": "Access to a service, benefit, or basic need is conditioned on identity or verification language.",
+    "CLAIM_MECHANISM_GAP": "Ethical or public-good claims are stronger than the visible operational safeguards.",
+    "MODAL_PRESSURE": "Mandatory, permanent, suspension, non-compliance, or obligation language outweighs choice, appeal, fallback, or reversibility language.",
+    "ALGORITHMIC_WELFARE_REVIEW_GAP": "Automated welfare/service triage appears with missing explainability, challenge, override, appeal, or fallback.",
+    "BIOMETRIC_ACCESS_PRESSURE": "Biometric or identity-verification language is linked to basic services or access.",
+    "PROCUREMENT_VENDOR_CAPTURE": "Procurement, vendor, platform, or private-actor language may create capture or conflict-of-interest pressure.",
+    "SACRALIZATION_DRIFT": "Moral, sacred, dignity, harmony, or higher-truth language risks being converted into operational authority without safeguards.",
+    "CONCRETE_SAFEGUARDS_VISIBLE": "Appeal, audit, review, revocation, time-limit, fallback, or reversibility language is visible. This is supportive, not certification.",
+}
+
+
+def pressure_code_explanation(code: str) -> str:
+    """Return a plain-language explanation for a semantic pressure code."""
+    return PRESSURE_CODE_DEFINITIONS.get(str(code or ""), "Review signal requiring human interpretation.")
+
+
+def pressure_code_rows(codes: Iterable[str]) -> list[dict[str, str]]:
+    """Return table rows for UI display without exposing scanner internals."""
+    return [{"Code": str(code), "Plain-English meaning": pressure_code_explanation(str(code))} for code in codes]
+
 @dataclass(frozen=True)
 class ProximityHit:
     category: str
@@ -183,6 +212,7 @@ class SemanticPressureScan:
     fail_closed: bool
     normalized_text: str
     notes: tuple[str, ...]
+    pressure_codes: tuple[str, ...] = ()
 
     def to_dict(self) -> dict:
         data = asdict(self)
@@ -505,6 +535,62 @@ def proximity_scan(text: str, *, window: int = 9) -> tuple[ProximityHit, ...]:
     return tuple(clean[:8])
 
 
+
+def derive_pressure_codes(
+    *,
+    notes: Iterable[str],
+    hits: Iterable[ProximityHit],
+    claim_count: int,
+    mechanism_count: int,
+    modal_pressure_count: int,
+    sovereignty_count: int,
+    fail_closed: bool,
+) -> tuple[str, ...]:
+    """Map semantic evidence into stable, human-readable pressure codes.
+
+    The matrix makes the scanner's causal reasons easier to audit without
+    changing scores or state routing.
+    """
+    codes: list[str] = []
+    categories = {str(getattr(hit, "category", "")) for hit in hits or []}
+    note_text = "\n".join(str(note) for note in notes or []).lower()
+
+    def add(code: str) -> None:
+        if code not in codes:
+            codes.append(code)
+
+    if "opaque_capture_claim" in categories or "opaque capture" in note_text or "hidden concentrated power" in note_text or "hidden broad-scale power" in note_text:
+        add("OPAQUE_CAPTURE_CLAIM")
+    if "identity_gated_access" in categories or "identity-gated access" in note_text:
+        add("IDENTITY_GATED_ACCESS")
+    if "emergency_service_control" in categories or "weak_safeguard_near_authority" in categories or "weak emergency safeguards" in note_text:
+        add("EMERGENCY_POWER_WEAK_SAFEGUARD")
+        add("AUTHORITY_DRIFT")
+    if "weak_or_missing_safeguard" in categories or "weak or missing safeguards" in note_text or fail_closed:
+        add("MISSING_SAFEGUARD")
+    if "algorithmic_welfare_review_gap" in categories or "algorithmic welfare/access review gap" in note_text:
+        add("ALGORITHMIC_WELFARE_REVIEW_GAP")
+        add("NO_APPEAL_PATH")
+        add("MISSING_SAFEGUARD")
+    if "biometric" in note_text or ("identity_gated_access" in categories and "biometric" in note_text):
+        add("BIOMETRIC_ACCESS_PRESSURE")
+    if "procurement" in note_text or "vendor" in note_text or "procurement" in " ".join(str(getattr(hit, "excerpt", "")) for hit in hits or []).lower():
+        add("PROCUREMENT_VENDOR_CAPTURE")
+    if claim_count >= 3 and mechanism_count == 0:
+        add("CLAIM_MECHANISM_GAP")
+        if any(term in note_text for term in ("dignity", "harmony", "higher", "sacred", "moral")):
+            add("SACRALIZATION_DRIFT")
+    if "rhetoric-to-mechanism" in note_text or "claims outweigh" in note_text:
+        add("CLAIM_MECHANISM_GAP")
+    if modal_pressure_count > sovereignty_count:
+        add("MODAL_PRESSURE")
+    if mechanism_count >= 2 and "concrete safeguards" in note_text:
+        add("CONCRETE_SAFEGUARDS_VISIBLE")
+    if "without appeal" in note_text or "no appeal" in note_text or "appeal" in note_text and ("missing" in note_text or "weak" in note_text or "limited" in note_text or "unclear" in note_text):
+        add("NO_APPEAL_PATH")
+    return tuple(codes)
+
+
 def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> SemanticPressureScan:
     """Run fail-closed semantic pressure checks on unstructured text."""
     raw = text or ""
@@ -590,6 +676,16 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
         risk = "High pressure / unverifiable claims"
         fail_closed = True
 
+    pressure_codes = derive_pressure_codes(
+        notes=notes,
+        hits=hits,
+        claim_count=claims,
+        mechanism_count=mechanisms,
+        modal_pressure_count=modal_pressure,
+        sovereignty_count=sovereignty,
+        fail_closed=fail_closed,
+    )
+
     return SemanticPressureScan(
         state=state,
         risk=risk,
@@ -603,6 +699,7 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
         fail_closed=fail_closed,
         normalized_text=normalized,
         notes=tuple(notes),
+        pressure_codes=pressure_codes,
     )
 
 
@@ -620,10 +717,16 @@ def format_semantic_pressure_report(scan: SemanticPressureScan) -> str:
         f"Modal pressure signals: {scan.modal_pressure_count}",
         f"Sovereignty / reversibility signals: {scan.sovereignty_count}",
         f"Fail-closed review: {'YES' if scan.fail_closed else 'NO'}",
+        f"Pressure codes: {', '.join(scan.pressure_codes) if scan.pressure_codes else 'none'}",
         "",
         "Notes:",
     ]
     lines.extend(f"- {note}" for note in scan.notes)
+    if scan.pressure_codes:
+        lines.append("")
+        lines.append("Pressure-code matrix:")
+        for code in scan.pressure_codes:
+            lines.append(f"- {code}: {pressure_code_explanation(code)}")
     if scan.proximity_hits:
         lines.append("")
         lines.append("Contextual proximity hits:")

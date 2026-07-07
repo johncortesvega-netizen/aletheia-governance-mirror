@@ -1,41 +1,3 @@
-## Patch 209 — Evidence Lab and World Lens Semantic Category Wiring
-
-Date: 2026-07-07
-
-Status: READY FOR LOCAL REVIEW
-
-Patch 209 checks and tightens the semantic integration points for Evidence Lab and World Lens after the Semantic Pressure Layer calibrations through Patch 208.
-
-What changed:
-- Evidence Lab now maps newer semantic categories into evidence implications:
-  - opaque_capture_claim;
-  - emergency_service_control;
-  - weak_safeguard_near_authority;
-  - algorithmic_welfare_review_gap;
-  - biometric access pressure;
-  - procurement/vendor capture risk;
-  - weak_or_missing_safeguard.
-- World Lens now maps the same semantic categories into regional interpretation flags:
-  - hidden-power / opaque capture claims;
-  - emergency authority over essential services;
-  - algorithmic welfare / triage language;
-  - procurement / vendor influence language;
-  - biometric and identity verification access language.
-- These are display/explanation links only. They do not rescore World Lens evidence, country-year rows, Evidence Lab tables, receipts, Stress Test metrics, or core scanner logic.
-
-Boundary notes:
-- Semantic terms are used as subordinate flags and evidence prompts only.
-- No external calls, telemetry, storage, certification, enforcement, or final-truth behavior added.
-- Human review remains required.
-
-Validation target:
-
-```bat
-python -m py_compile app.py core\semantic_pressure_scanner.py
-python -c "from core.semantic_pressure_scanner import scan_semantic_pressure; print(scan_semantic_pressure('A policy gives one central office emergency authority over essential services during crisis, with limited public notice and unclear appeal rights.'))"
-```
-
-
 ## Patch 208 — Stress Test Demo Semantic Alignment
 
 Date: 2026-07-07
@@ -4473,3 +4435,18 @@ python -c "from core.semantic_pressure_scanner import scan_semantic_pressure; pr
 ```
 
 Expected semantic diagnostic: THRESHOLD / Needs safeguards, with weak emergency safeguard notes.
+
+## Patch 210 — Trigger Matrix / Pressure Codes
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 210 adds a transparent pressure-code matrix to the semantic pressure layer so reviewers can see which pressure pattern was detected without reading raw debug tables. Codes include `OPAQUE_CAPTURE_CLAIM`, `IDENTITY_GATED_ACCESS`, `EMERGENCY_POWER_WEAK_SAFEGUARD`, `MISSING_SAFEGUARD`, `CLAIM_MECHANISM_GAP`, `MODAL_PRESSURE`, and supportive `CONCRETE_SAFEGUARDS_VISIBLE` language.
+
+Boundary preserved: diagnostic labels/explanatory UI only. No scoring, state routing, receipt schema, World Lens math, Evidence Lab calculation, Stress Test metrics, module routing, external calls, telemetry, storage, certification, enforcement, or final-truth behavior changed.
+
+Validation target:
+
+```bat
+python -m py_compile core\semantic_pressure_scanner.py app.py ui\receipt_reader.py
+python -c "from core.semantic_pressure_scanner import scan_semantic_pressure; print(scan_semantic_pressure('a group of bankers have world power in secret').pressure_codes)"
+```
