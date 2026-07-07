@@ -1,0 +1,21 @@
+PATCH 218 — PYTEST ACTIVE SUITE CONFIGURATION
+
+Changed files:
+- pytest.ini
+- tests/active/test_current_semantic_guardrails.py
+- docs/pytest_active_suite_config_v1.md
+- README.md
+- PATCH_STATUS.md
+- PATCH_218_MANIFEST.txt
+- PATCH_218_RECOVERY_NOTE.md
+- PATCH_218_DELETE_LIST.txt
+
+Purpose:
+- Make plain `python -m pytest` collect the active release-gate suite only.
+- Prevent accidental collection of historical/deprecated patch tests during default review.
+- Preserve legacy tests as explicit cleanup inventory, not default pass/fail evidence.
+
+Boundary:
+- No runtime logic changed.
+- No scanner/scoring/gate/receipt/World Lens/Evidence Lab behavior changed.
+- No authority, certification, telemetry, external model, or enforcement behavior added.

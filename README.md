@@ -448,10 +448,19 @@ Default active safe check:
 tools\run_checks.bat
 ```
 
+Default pytest active suite:
+
+```bat
+python -m pytest
+```
+
+Patch 218 adds `pytest.ini` so the default pytest command collects only `tests/active/`. This is the active release-gate suite, not the full historical patch inventory.
+
 What this means:
 
 - runs the current curated release/patch checks;
 - runs compile smoke checks for active files;
+- makes plain `python -m pytest` collect active tests only;
 - reports the legacy test inventory as non-blocking;
 - does **not** certify the entire historical test tree.
 
@@ -517,3 +526,33 @@ The responsible interpretation is:
 Not:
 
 > This reading has final authority.
+
+
+## Patch 218 — Pytest Active Suite Configuration
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 218 adds an explicit `pytest.ini` and a small active semantic regression suite under `tests/active/`. The default command below now represents the active release gate only:
+
+```bat
+python -m pytest
+```
+
+This avoids accidentally collecting the full historical test inventory when a reviewer runs the normal pytest command. Legacy tests remain available for explicit cleanup inventory and full historical review, but they are not treated as the default release gate.
+
+Updated surfaces:
+- `pytest.ini`
+- `tests/active/test_current_semantic_guardrails.py`
+- `docs/pytest_active_suite_config_v1.md`
+- README local checks section
+
+Boundary preserved: test-collection configuration only. No runtime behavior, scoring, semantic scanner logic, MEI7 gate, Z-axis behavior, Stress Test metrics, Evidence Lab calculations, World Lens math, receipt schema, external calls, telemetry, storage, certification, enforcement, or authority behavior changed.
+
+Validation target:
+
+```bat
+python -m pytest
+tools\run_checks.bat
+```
+
+Interpretation: default pytest and active checks pass; legacy inventory remains explicit and non-blocking unless separately cleaned up.

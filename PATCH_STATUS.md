@@ -4510,3 +4510,26 @@ tools\run_checks.bat
 ```
 
 Interpretation: active release checks pass; legacy inventory remains non-blocking unless separately cleaned up.
+
+## Patch 218 — Pytest Active Suite Configuration
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 218 adds an explicit pytest active-suite configuration so plain `python -m pytest` collects only the current active suite under `tests/active/` instead of accidentally collecting the full historical patch-test inventory.
+
+Changed surfaces:
+- `pytest.ini`
+- `tests/active/test_current_semantic_guardrails.py`
+- `docs/pytest_active_suite_config_v1.md`
+- `README.md`
+
+Boundary preserved: test collection configuration only. No runtime behavior, scoring, semantic scanner logic, MEI7 gate, Z-axis behavior, Stress Test metrics, Evidence Lab calculations, World Lens math, receipts, external calls, telemetry, storage, certification, enforcement, or authority behavior changed.
+
+Validation target:
+
+```bat
+python -m pytest
+python -m py_compile core\semantic_pressure_scanner.py
+```
+
+Interpretation: the default pytest command now means active release gate passed. It must not be represented as proof that every historical test file passes.
