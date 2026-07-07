@@ -1,0 +1,6 @@
+No obsolete files are intentionally deleted by Patch 197.
+
+Temporary local files that may be removed if produced during testing:
+- __pycache__/
+- .pytest_cache/
+- local Streamlit cache files

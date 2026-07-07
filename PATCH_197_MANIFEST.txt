@@ -1,0 +1,21 @@
+Patch 197 — Opaque Capture Semantic Calibration
+
+Changed files:
+- core/semantic_pressure_scanner.py
+- PATCH_STATUS.md
+- PATCH_197_MANIFEST.txt
+- PATCH_197_RECOVERY_NOTE.md
+- PATCH_197_DELETE_LIST.txt
+
+Purpose:
+- Detect hidden/concentrated power claims as opaque capture-pressure signals.
+- Avoid misclassifying such claims as coercive-language detection.
+- Keep the semantic scanner subordinate to human review and existing module readings.
+
+Expected local check:
+- python -m py_compile core/semantic_pressure_scanner.py
+
+Representative expected behavior:
+- "a group of bankers have world power in secret" -> THRESHOLD, opaque_capture_claim.
+- "a hidden committee controls global policy" -> THRESHOLD, opaque_capture_claim.
+- "Any decision can be appealed, revoked, independently audited, and reviewed within 30 days." -> SANCTUARY semantic signal with concrete safeguards detected.

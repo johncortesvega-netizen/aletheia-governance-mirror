@@ -97,6 +97,37 @@ WEAK_SAFEGUARD_TERMS: tuple[str, ...] = (
     "onduidelijk beroep", "onduidelijke beroepsrechten", "beperkt beroep",
 )
 
+OPAQUE_ACTOR_TERMS: tuple[str, ...] = (
+    "banker", "bankers", "banking group", "financial elite", "financial elites",
+    "elite", "elites", "private elite", "private elites", "group", "small group",
+    "committee", "hidden committee", "council", "inner circle", "unelected group",
+    "unelected actors", "private actors", "private group", "oligarchs", "cartel",
+    "bankier", "bankiers", "financiele elite", "financiële elite",
+    "elite", "elites", "privegroep", "privégroep", "groep", "kleine groep",
+    "commissie", "verborgen commissie", "raad", "inner circle", "niet-gekozen groep",
+    "niet verkozen groep", "private actoren", "oligarchen", "kartel",
+)
+
+OPAQUE_SCOPE_TERMS: tuple[str, ...] = (
+    "world power", "global power", "world control", "global control", "control",
+    "controls", "controlled", "power", "authority", "rule", "rules", "govern",
+    "governs", "influence", "system control", "policy control", "public systems",
+    "access control", "control access", "holds power", "hold power",
+    "wereldmacht", "wereld macht", "globale macht", "wereldcontrole",
+    "controle", "beheerst", "macht", "autoriteit", "regeert", "bestuurt",
+    "invloed", "systeemcontrole", "beleidscontrole", "publieke systemen",
+    "toegangscontrole", "houdt macht", "hebben macht",
+)
+
+OPAQUE_TERMS: tuple[str, ...] = (
+    "secret", "in secret", "secretly", "hidden", "behind closed doors",
+    "opaque", "undisclosed", "invisible", "unaccountable", "shadow",
+    "backroom", "behind the scenes", "without disclosure", "not disclosed",
+    "geheim", "in het geheim", "verborgen", "achter gesloten deuren",
+    "ondoorzichtig", "niet openbaar", "onzichtbaar", "onverantwoord",
+    "schaduw", "achter de schermen", "zonder openbaarmaking",
+)
+
 PERMANENCE_TERMS: tuple[str, ...] = (
     "irrevocable", "permanent", "cannot be reversed", "final", "forever",
     "without appeal", "no appeal", "automatic termination", "terminated automatically",
@@ -243,6 +274,24 @@ def _sentence_emergency_service_control(text: str) -> bool:
     return False
 
 
+def _sentence_opaque_capture_claim(text: str) -> bool:
+    """Detect hidden/concentrated power claims without treating them as coercive language.
+
+    This catches statements such as "a group of bankers have world power in
+    secret". The risk signal is structural opacity/capture pressure, not a
+    command verb or direct coercive mode.
+    """
+    sentences = re.split(r"(?<=[.!?;])\s+|\n+", text or "")
+    for sentence in sentences:
+        if (
+            _sentence_contains(sentence, OPAQUE_ACTOR_TERMS)
+            and _sentence_contains(sentence, OPAQUE_SCOPE_TERMS)
+            and _sentence_contains(sentence, OPAQUE_TERMS)
+        ):
+            return True
+    return False
+
+
 def _excerpt(tokens: list[str], center_a: int, center_b: int, radius: int = 8) -> str:
     start = max(0, min(center_a, center_b) - radius)
     end = min(len(tokens), max(center_a, center_b) + radius + 1)
@@ -262,6 +311,9 @@ def proximity_scan(text: str, *, window: int = 9) -> tuple[ProximityHit, ...]:
     central_positions = _find_term_positions(tokens, CENTRAL_AUTHORITY_TERMS)
     emergency_positions = _find_term_positions(tokens, EMERGENCY_POWER_TERMS)
     weak_safeguard_positions = _find_term_positions(tokens, WEAK_SAFEGUARD_TERMS)
+    opaque_actor_positions = _find_term_positions(tokens, OPAQUE_ACTOR_TERMS)
+    opaque_scope_positions = _find_term_positions(tokens, OPAQUE_SCOPE_TERMS)
+    opaque_positions = _find_term_positions(tokens, OPAQUE_TERMS)
 
     hits: list[ProximityHit] = []
     if _sentence_identity_gate(text):
@@ -280,6 +332,16 @@ def proximity_scan(text: str, *, window: int = 9) -> tuple[ProximityHit, ...]:
                 category="emergency_service_control",
                 left="central/emergency authority",
                 right="essential/basic services + weak safeguards",
+                distance=0,
+                excerpt=(text or "").strip()[:220],
+            )
+        )
+    if _sentence_opaque_capture_claim(text):
+        hits.append(
+            ProximityHit(
+                category="opaque_capture_claim",
+                left="actor group",
+                right="hidden/global power claim",
                 distance=0,
                 excerpt=(text or "").strip()[:220],
             )
@@ -338,6 +400,24 @@ def proximity_scan(text: str, *, window: int = 9) -> tuple[ProximityHit, ...]:
                     )
                 )
 
+    if not _sentence_opaque_capture_claim(text):
+        for actor_idx, actor_term in opaque_actor_positions:
+            for scope_idx, scope_term in opaque_scope_positions:
+                scope_distance = abs(actor_idx - scope_idx)
+                if scope_distance <= window + 5:
+                    for opacity_idx, opacity_term in opaque_positions:
+                        opacity_distance = min(abs(actor_idx - opacity_idx), abs(scope_idx - opacity_idx))
+                        if opacity_distance <= window + 7:
+                            hits.append(
+                                ProximityHit(
+                                    category="opaque_capture_claim",
+                                    left=actor_term,
+                                    right=f"{scope_term} + {opacity_term}",
+                                    distance=max(scope_distance, opacity_distance),
+                                    excerpt=_excerpt(tokens, actor_idx, opacity_idx),
+                                )
+                            )
+
     # Deduplicate identical phrase/category combinations so UI output stays clean.
     seen: set[tuple[str, str, str, str]] = set()
     clean: list[ProximityHit] = []
@@ -350,10 +430,11 @@ def proximity_scan(text: str, *, window: int = 9) -> tuple[ProximityHit, ...]:
     priority = {
         "identity_gated_access": 0,
         "emergency_service_control": 1,
-        "authority_near_services": 2,
-        "weak_safeguard_near_authority": 3,
-        "grip_near_access": 4,
-        "permanence_near_access": 5,
+        "opaque_capture_claim": 2,
+        "authority_near_services": 3,
+        "weak_safeguard_near_authority": 4,
+        "grip_near_access": 5,
+        "permanence_near_access": 6,
     }
     clean.sort(key=lambda hit: (priority.get(hit.category, 9), hit.distance, hit.left, hit.right))
     return tuple(clean[:8])
@@ -376,6 +457,7 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     hits = proximity_scan(normalized)
     identity_gate = _sentence_identity_gate(normalized)
     emergency_service_control = _sentence_emergency_service_control(normalized)
+    opaque_capture_claim = _sentence_opaque_capture_claim(normalized)
 
     ratio = float(claims / max(mechanisms, 1))
     notes: list[str] = []
@@ -383,7 +465,7 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     adjustment = 0.0
 
     if hits:
-        notes.append("Contextual pressure detected: grip/permanence language appears close to access, identity, service, or basic-rights terms.")
+        notes.append("Contextual pressure relationship detected: access, authority, opacity, permanence, or hidden-power terms appear in a structurally relevant relation.")
         adjustment -= 0.18
     if identity_gate:
         notes.append("Identity-gated access pattern: access/basic-service language is conditioned on identity or verification in the same sentence.")
@@ -391,6 +473,9 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     if emergency_service_control:
         notes.append("Emergency/central authority over basic services: crisis or central-office authority is linked to essential services while notice or appeal safeguards look limited or unclear.")
         adjustment -= 0.18
+    if opaque_capture_claim:
+        notes.append("Opaque capture-power claim: an actor group is linked to hidden broad-scale power or control without visible evidence, appeal path, or accountable mechanism.")
+        adjustment -= 0.22
     if claims >= 3 and mechanisms == 0:
         notes.append("Rhetoric-to-mechanism gap: soft ethical claims appear without concrete safeguards.")
         adjustment -= 0.16
@@ -400,16 +485,18 @@ def scan_semantic_pressure(text: str, *, governance_context: bool = True) -> Sem
     if modal_pressure > sovereignty:
         notes.append("Modal pressure outweighs sovereignty language: obligation or permanence terms exceed appeal, revocation, fallback, or choice language.")
         adjustment -= 0.08
-    if mechanisms >= 2 and sovereignty >= 1 and not hits and not identity_gate and not emergency_service_control:
+    if mechanisms >= 2 and sovereignty >= 1 and not hits and not identity_gate and not emergency_service_control and not opaque_capture_claim:
         notes.append("Concrete safeguards detected: appeal, audit, review, revocation, time-limit, or reversibility language is visible.")
     if governance_context and claims > 0 and mechanisms == 0 and not hits:
         fail_closed = True
         notes.append("Fail-closed review: governance/value language was detected, but no recognizable safeguard structure was found.")
         adjustment -= 0.12
+    if governance_context and opaque_capture_claim and mechanisms == 0:
+        notes.append("Review-needed opacity: the claim names hidden concentrated power but does not show evidence basis, correction path, or accountable review structure.")
     if not notes:
         notes.append("No strong semantic pressure pattern detected by this deterministic scanner. Human review still required.")
 
-    if hits or identity_gate or emergency_service_control or fail_closed or adjustment <= -0.24:
+    if hits or identity_gate or emergency_service_control or opaque_capture_claim or fail_closed or adjustment <= -0.24:
         state = "THRESHOLD"
         risk = "Needs safeguards"
     elif adjustment <= -0.10:

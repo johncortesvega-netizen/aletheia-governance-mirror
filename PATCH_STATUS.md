@@ -1,16 +1,19 @@
-## Patch 196 — Receipt Reader Automatic Semantic Reading
+## Patch 197 — Opaque Capture Semantic Calibration
 
 Status: READY FOR LOCAL REVIEW
 
-Patch 196 makes Receipt Reader semantic comparison automatic for every uploaded receipt. Single receipts, batch ZIP receipts, and World Lens evidence-bundle receipts receive a current Semantic Pressure Scanner reading during parse/render. The reading appears as a comparison layer only: it does not rescore, override, certify, approve, reject, replace, or become part of native receipt values.
+Patch 197 calibrates the deterministic Semantic Pressure Scanner so hidden or concentrated power claims are no longer reported as "no semantic signal" merely because they do not use coercive command verbs. Phrases such as `a group of bankers have world power in secret`, `a hidden committee controls global policy`, `private elites secretly control public systems`, and `one unelected group holds power behind closed doors` now register as `opaque_capture_claim` relationship hits.
 
-Scope: Receipt Reader display/parse support and patch-hygiene only. No receipt schema change, native receipt field change, Standard View rescoring, World Lens math change, Evidence Lab calculation change, external calls, telemetry, analytics, storage, certification, enforcement, or final-truth behavior changed. Human review remains required.
+The intended reading is structural opacity / capture-pressure review, not coercive-language detection. These claims now route to THRESHOLD-level semantic review with a negative diagnostic integrity pressure and notes asking for evidence basis, accountable mechanism, correction path, appealability, and human review.
+
+Scope: Semantic Pressure Scanner calibration, semantic relationship lexicon, proximity-hit categorization, and patch-hygiene only. No final module scoring, receipt schema, World Lens math, Evidence Lab calculations, external calls, telemetry, storage, certification, enforcement, or authority behavior changed. Human review remains required.
 
 Validation targets:
 
 ```bat
-python -m py_compile ui\receipt_reader.py
-python -m py_compile app.py core\semantic_pressure_scanner.py ui\receipt_reader.py ui\unit_preview.py
+python -m py_compile core/semantic_pressure_scanner.py
+python -c "from core.semantic_pressure_scanner import scan_semantic_pressure; print(scan_semantic_pressure('a group of bankers have world power in secret').to_dict())"
+python -c "from core.semantic_pressure_scanner import scan_semantic_pressure; print(scan_semantic_pressure('Any decision can be appealed, revoked, independently audited, and reviewed within 30 days.').to_dict())"
 ```
 
 ## Patch 195 — AI Ownership Capture Stress Guard
