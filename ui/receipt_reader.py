@@ -1148,7 +1148,7 @@ def parse_uploaded_receipt_file(uploaded_file: Any) -> dict[str, Any]:
     name = getattr(uploaded_file, "name", "") or ""
     if name.lower().endswith(".zip"):
         receipts, zip_name, all_files, bundle_details = _read_zip_receipts(uploaded_file)
-        views = [(filename, _attach_current_semantic_reread(parse_receipt_standard_view(text), text, filename=filename)) for filename, text in receipts]
+        views = [(filename, _attach_semantic_pressure_layer(parse_receipt_standard_view(text), text, filename=filename)) for filename, text in receipts]
         distribution = Counter(view.get("native_state", MISSING_VALUE) for _, view in views)
         risk_distribution = Counter(
             (view.get("fields") or {}).get("risk_state", MISSING_VALUE) for _, view in views
@@ -1170,7 +1170,7 @@ def parse_uploaded_receipt_file(uploaded_file: Any) -> dict[str, Any]:
             "zip_file_count": len(all_files),
         }
     text, filename = _read_uploaded_text(uploaded_file)
-    return {"kind": "single", "name": filename, "text": text, "view": _attach_current_semantic_reread(parse_receipt_standard_view(text), text, filename=filename)}
+    return {"kind": "single", "name": filename, "text": text, "view": _attach_semantic_pressure_layer(parse_receipt_standard_view(text), text, filename=filename)}
 
 
 def _metric_section_title(view: dict[str, Any]) -> str:
@@ -1607,7 +1607,7 @@ def _simple_integrity_explanation(view: dict[str, Any]) -> str:
 def _simple_big_problem_rows(view: dict[str, Any]) -> list[dict[str, str]]:
     """Translate receipt pressure areas into simple English without adding new facts."""
     text = str(view.get("_receipt_reader_source_text", "") or "")
-    semantic_opaque = _current_semantic_has_opaque_capture(view)
+    semantic_opaque = _semantic_layer_has_opaque_capture(view)
     component_count = _capture_pressure_component_count(text)
     repair_blocker = _receipt_repair_blocker_note(view)
     access_terms = bool(re.search(r"(?i)\b(access|services|benefits|basic needs|essential services|identity|verification|compliance)\b", text))
@@ -1616,7 +1616,7 @@ def _simple_big_problem_rows(view: dict[str, Any]) -> list[dict[str, str]]:
         {
             "Problem area": "Too much central control",
             "Plain-English meaning": (
-                "The current semantic re-read sees a hidden or concentrated power claim. The receipt should be reviewed for who holds power and who can check it."
+                "The semantic pressure layer detects a hidden or concentrated power claim. The receipt should be reviewed for who holds power and who can check it."
                 if semantic_opaque
                 else "Check whether control, review power, or decision authority is concentrated in one actor or group."
             ),
@@ -1663,7 +1663,7 @@ def _simple_next_step_questions(view: dict[str, Any]) -> list[str]:
 def _simple_three_sentence_summary(view: dict[str, Any]) -> str:
     """Return a three-sentence plain-English summary of the uploaded receipt."""
     native_state = str(view.get("native_state", MISSING_VALUE)).upper()
-    semantic_opaque = _current_semantic_has_opaque_capture(view)
+    semantic_opaque = _semantic_layer_has_opaque_capture(view)
     if native_state == "ASYLUM" and semantic_opaque:
         return (
             "Your text describes or records a structure where hidden or concentrated power may be present. "
@@ -1812,27 +1812,27 @@ def _raw_input_excerpt(text: str, limit: int = 420) -> str:
 
 
 def _invisibility_filter_status(view: dict[str, Any]) -> tuple[str, str]:
-    """Describe the current semantic normalizer without claiming original receipt mutation."""
-    summary = view.get("_current_semantic_reread") or {}
+    """Describe the semantic layer normalizer without claiming original receipt mutation."""
+    summary = view.get("_semantic_pressure_layer") or {}
     scan = summary.get("scan")
     source_text = str(view.get("_receipt_reader_source_text", "") or "")
     normalized = str(getattr(scan, "normalized_text", "") or "") if scan is not None else ""
     actor_tokens = normalized.count("[ACTOR_A]")
     system_tokens = normalized.count("[SYSTEM_X]")
     if not normalized:
-        return "Not available", "No current semantic normalization output is available."
+        return "Not available", "No semantic layer normalization output is available."
     if actor_tokens or system_tokens:
         return (
-            "Active in current re-read",
-            f"The current semantic re-read normalized named-entity style tokens before pattern review: [ACTOR_A] x{actor_tokens}, [SYSTEM_X] x{system_tokens}. Native receipt text was not altered.",
+            "Active in semantic pressure layer",
+            f"The semantic pressure layer normalized named-entity style tokens before pattern review: [ACTOR_A] x{actor_tokens}, [SYSTEM_X] x{system_tokens}. Native receipt text was not altered.",
         )
     if normalized.strip() != source_text.strip():
-        return "Applied", "The current semantic re-read applied normalization before scanning. Native receipt text was not altered."
-    return "No named-entity substitutions detected", "The current semantic re-read did not visibly replace named entities. Native receipt text was not altered."
+        return "Applied", "The semantic pressure layer applied normalization before scanning. Native receipt text was not altered."
+    return "No named-entity substitutions detected", "The semantic pressure layer did not visibly replace named entities. Native receipt text was not altered."
 
 
 def _semantic_layer_rows(view: dict[str, Any]) -> list[dict[str, Any]]:
-    summary = view.get("_current_semantic_reread") or {}
+    summary = view.get("_semantic_pressure_layer") or {}
     scan = summary.get("scan")
     hits = list(getattr(scan, "proximity_hits", ()) or []) if scan is not None else []
     hit_labels = []
@@ -1863,7 +1863,7 @@ def _render_layered_causal_receipt_chain(container: Any, view: dict[str, Any]) -
     """Render the receipt as a five-layer causal chain for human auditability."""
     text = str(view.get("_receipt_reader_source_text", "") or "")
     fields = view.get("fields") or {}
-    summary = view.get("_current_semantic_reread") or {}
+    summary = view.get("_semantic_pressure_layer") or {}
     raw_metrics = _raw_metrics_before_ethics(text)
     raw_integrity = _parse_float_value(raw_metrics.get("raw_integrity"))
     adjusted_integrity = _parse_float_value(fields.get("integrity"))
@@ -1916,7 +1916,7 @@ def _render_layered_causal_receipt_chain(container: Any, view: dict[str, Any]) -
                 {"Protocol field": "Protocol label", "Value": str(fields.get("protocol_label", MISSING_VALUE))},
                 {"Protocol field": "Adjusted Integrity", "Value": str(fields.get("integrity", MISSING_VALUE))},
                 {"Protocol field": "Integrity gap", "Value": f"{integrity_gap:+.4f}" if integrity_gap is not None else MISSING_VALUE},
-                {"Protocol field": "Current semantic finding", "Value": str(summary.get("finding", "NO SIGNAL"))},
+                {"Protocol field": "Semantic layer finding", "Value": str(summary.get("finding", "NO SIGNAL"))},
             ]
         )
         if integrity_gap is not None and integrity_gap > 0.05:
@@ -1941,7 +1941,7 @@ def _render_layered_causal_receipt_chain(container: Any, view: dict[str, Any]) -
 
 
 def _semantic_finding_label(scan: Any) -> str:
-    """Return a reader-safe semantic finding label for the current scanner pass."""
+    """Return a reader-safe semantic finding label for the semantic pressure scanner pass."""
     if scan is None:
         return "Unavailable"
     claim_count = int(getattr(scan, "claim_count", 0) or 0)
@@ -1956,8 +1956,8 @@ def _semantic_finding_label(scan: Any) -> str:
     return str(getattr(scan, "state", "REVIEW"))
 
 
-def _build_current_semantic_reread(receipt_text: str) -> dict[str, Any]:
-    """Run the current semantic scanner for a receipt without changing native receipt values."""
+def _build_semantic_pressure_layer(receipt_text: str) -> dict[str, Any]:
+    """Run the semantic pressure scanner for a receipt without changing native receipt values."""
     if scan_semantic_pressure is None:
         return {"available": False, "finding": "Unavailable", "risk": "Semantic scanner unavailable"}
     clean_text = str(receipt_text or "").strip()
@@ -1976,18 +1976,18 @@ def _build_current_semantic_reread(receipt_text: str) -> dict[str, Any]:
     }
 
 
-def _attach_current_semantic_reread(view: dict[str, Any], receipt_text: str, *, filename: str = "uploaded receipt") -> dict[str, Any]:
-    """Attach current semantic reader context while preserving native receipt parsing."""
+def _attach_semantic_pressure_layer(view: dict[str, Any], receipt_text: str, *, filename: str = "uploaded receipt") -> dict[str, Any]:
+    """Attach semantic layer reader context while preserving native receipt parsing."""
     view["_receipt_reader_source_text"] = str(receipt_text or "")
     view["_receipt_reader_source_name"] = str(filename or "uploaded receipt")
-    view["_current_semantic_reread"] = _build_current_semantic_reread(str(receipt_text or ""))
+    view["_semantic_pressure_layer"] = _build_semantic_pressure_layer(str(receipt_text or ""))
     return view
 
 
 
-def _current_semantic_has_opaque_capture(view: dict[str, Any]) -> bool:
-    """Return True when the current semantic re-read detected hidden-power/capture structure."""
-    summary = view.get("_current_semantic_reread") or {}
+def _semantic_layer_has_opaque_capture(view: dict[str, Any]) -> bool:
+    """Return True when the semantic pressure layer detects hidden-power/capture structure."""
+    summary = view.get("_semantic_pressure_layer") or {}
     scan = summary.get("scan")
     hits = list(getattr(scan, "proximity_hits", ()) or []) if scan is not None else []
     notes = "\n".join(str(note) for note in (summary.get("notes") or []))
@@ -1998,10 +1998,10 @@ def _current_semantic_has_opaque_capture(view: dict[str, Any]) -> bool:
     return "opaque capture" in haystack or "hidden concentrated power" in haystack or "hidden broad-scale power" in haystack
 
 
-def _current_semantic_receipt_note(summary: dict[str, Any]) -> str:
-    """Return receipt-safe wording for the current semantic re-read."""
+def _semantic_layer_receipt_note(summary: dict[str, Any]) -> str:
+    """Return receipt-safe wording for the semantic pressure layer."""
     if not summary:
-        return "No current semantic reading is available."
+        return "No semantic pressure layer is available."
     scan = summary.get("scan")
     hits = list(getattr(scan, "proximity_hits", ()) or []) if scan is not None else []
     notes = "\n".join(str(note) for note in (summary.get("notes") or []))
@@ -2054,7 +2054,7 @@ def _receipt_repair_blocker_note(view: dict[str, Any]) -> str:
     native_state = str(view.get("native_state", "")).upper()
     repair_value = _extract_repair_optimism_value(text)
     component_count = _capture_pressure_component_count(text)
-    semantic_opaque = _current_semantic_has_opaque_capture(view)
+    semantic_opaque = _semantic_layer_has_opaque_capture(view)
     low_repair = repair_value is not None and repair_value <= 0.35
     if not (low_repair or (native_state == "ASYLUM" and component_count >= 2) or (native_state == "ASYLUM" and semantic_opaque)):
         return ""
@@ -2066,7 +2066,7 @@ def _receipt_repair_blocker_note(view: dict[str, Any]) -> str:
         )
     if semantic_opaque:
         return (
-            "Repair blocker: the current semantic re-read detects an opaque capture-power claim, but the receipt does not show enough accountable mechanism, evidence basis, appeal path, or correction route to make repair capacity clear."
+            "Repair blocker: the semantic pressure layer detects an opaque capture-power claim, but the receipt does not show enough accountable mechanism, evidence basis, appeal path, or correction route to make repair capacity clear."
             f"{value_text}"
         )
     return (
@@ -2074,26 +2074,27 @@ def _receipt_repair_blocker_note(view: dict[str, Any]) -> str:
         f"{value_text}"
     )
 
-def _render_current_semantic_reread(container: Any, view: dict[str, Any]) -> None:
-    """Always show the current semantic reading for uploaded receipts.
+def _render_semantic_pressure_layer(container: Any, view: dict[str, Any]) -> None:
+    """Render the semantic pressure layer for uploaded receipts.
 
-    This is an automatic current scanner pass for comparison only. It never changes
-    native receipt values, Standard View, receipt schema, or stored receipt meaning.
+    This diagnostic layer is generated from uploaded receipt text. It supports
+    the receipt reading but never changes native receipt values, Standard View,
+    receipt schema, or stored receipt meaning.
     """
-    summary = view.get("_current_semantic_reread") or {}
+    summary = view.get("_semantic_pressure_layer") or {}
     if not summary:
         text = str(view.get("_receipt_reader_source_text", ""))
         if not text.strip():
             return
-        summary = _build_current_semantic_reread(text)
-        view["_current_semantic_reread"] = summary
+        summary = _build_semantic_pressure_layer(text)
+        view["_semantic_pressure_layer"] = summary
     if not summary.get("available"):
-        container.info(f"Current semantic reading: {summary.get('risk', 'semantic scanner unavailable')}.")
+        container.info(f"Semantic pressure layer unavailable: {summary.get('risk', 'semantic scanner unavailable')}.")
         return
 
-    container.markdown("### Current semantic reading")
+    container.markdown("### Semantic pressure layer")
     container.caption(
-        "Automatic current scanner pass on the uploaded receipt text. This is not part of the original receipt and does not rescore, alter, certify, approve, reject, or replace it."
+        "Diagnostic layer generated from the uploaded receipt text. It supports the receipt reading but does not rescore, alter, certify, approve, reject, or replace native receipt values."
     )
     c1, c2, c3, c4 = container.columns(4)
     c1.metric("Semantic finding", str(summary.get("finding", "NO SIGNAL")))
@@ -2102,19 +2103,19 @@ def _render_current_semantic_reread(container: Any, view: dict[str, Any]) -> Non
     c4.metric("Diagnostic pressure", f"{float(summary.get('pressure', 0.0) or 0.0):+.3f}")
 
     finding = str(summary.get("finding", "NO SIGNAL"))
-    risk = _current_semantic_receipt_note(summary)
+    risk = _semantic_layer_receipt_note(summary)
     if finding == "NO SIGNAL":
-        container.info("No semantic pressure relationship detected by the current scanner. This does not lower or override the native receipt reading.")
+        container.info("No semantic pressure relationship detected in this layer. This does not lower or override the native receipt reading.")
     elif finding == "SANCTUARY":
-        container.success(f"Current semantic note: {risk}. This is a current re-read only, not a native receipt value.")
+        container.success(f"Semantic layer note: {risk}. This is diagnostic only, not a native receipt value.")
     elif finding == "THRESHOLD":
-        container.warning(f"Current semantic note: {risk}. Human review should compare this with the native receipt values.")
+        container.warning(f"Semantic layer note: {risk}. Human review should compare this layer with the native receipt values.")
     else:
-        container.error(f"Current semantic note: {risk}. Human review should compare this with the native receipt values.")
+        container.error(f"Semantic layer note: {risk}. Human review should compare this layer with the native receipt values.")
 
     notes = list(summary.get("notes") or [])
     if notes:
-        with container.expander("Current semantic notes", expanded=False) as notes_panel:
+        with container.expander("Semantic pressure layer notes", expanded=False) as notes_panel:
             for note in notes[:10]:
                 notes_panel.markdown(f"- {note}")
 
@@ -2123,13 +2124,13 @@ def _render_current_semantic_reread(container: Any, view: dict[str, Any]) -> Non
         digest_source = str(view.get("_receipt_reader_source_name", "uploaded receipt")) + "|" + str(view.get("_receipt_reader_source_text", ""))[:300]
         digest = hashlib.sha1(digest_source.encode("utf-8", errors="ignore")).hexdigest()[:12]
         show_debug = container.checkbox(
-            "Show current semantic debug details",
+            "Show semantic layer debug details",
             value=False,
-            key=f"receipt_current_semantic_debug_{digest}",
+            key=f"receipt_semantic_layer_debug_{digest}",
             help="Developer/debug view only. The native receipt remains unchanged.",
         )
         if show_debug:
-            with container.expander("Developer/debug details — current semantic re-read", expanded=False) as details:
+            with container.expander("Developer/debug details — semantic pressure layer", expanded=False) as details:
                 details.code(format_semantic_pressure_report(scan), language="text")
 
 
@@ -2137,20 +2138,29 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
     fields = view["fields"]
 
     _render_status_banner(container, view)
-    _render_top_metric_strip(container, view)
 
-    _render_plain_language_receipt_summary(container, view)
+    # Main reading: keep the reader human-first. Technical layers are opt-in below.
     _render_simple_english_receipt_walkthrough(container, view)
-    _render_current_semantic_reread(container, view)
-    _render_layered_causal_receipt_chain(container, view)
-    _render_repair_questions_block(container, view)
+
     repair_blocker = _receipt_repair_blocker_note(view)
     if repair_blocker:
         container.warning("[!] " + repair_blocker)
 
-    container.markdown(f"### {_metric_section_title(view)}")
-    container.caption(_metric_section_caption(view))
-    _render_visual_metric_rows(container, view)
+    with container.expander("Original receipt status and metrics", expanded=False) as expander:
+        _render_top_metric_strip(expander, view)
+        _render_plain_language_receipt_summary(expander, view)
+        expander.markdown(f"### {_metric_section_title(view)}")
+        expander.caption(_metric_section_caption(view))
+        _render_visual_metric_rows(expander, view)
+
+    with container.expander("Semantic pressure layer — diagnostic", expanded=False) as expander:
+        _render_semantic_pressure_layer(expander, view)
+
+    with container.expander("Layered causal audit trail", expanded=False) as expander:
+        _render_layered_causal_receipt_chain(expander, view)
+
+    with container.expander("Repair questions and operator hand-off", expanded=False) as expander:
+        _render_repair_questions_block(expander, view)
 
     # Secondary diagnostics stay available, but no longer dominate the first view.
     with container.expander("Diagnostics: core logic, reader brief, and failure-mode signals", expanded=False) as expander:
@@ -2162,11 +2172,11 @@ def _render_single_view(container: Any, view: dict[str, Any]) -> None:
         expander.info("This is a reflection for human review, not certification, approval, rejection, enforcement, or final truth.")
         expander.caption(view["parsing_limits"])
 
-    _render_ai_static_scan_context(container, view)
-
-    world_distribution = (view.get("world_lens_fields") or {}).get("taxonomy_distribution") or []
-    if world_distribution:
-        with container.expander("World Lens internal taxonomy distribution", expanded=False) as expander:
+    with container.expander("AI/static context and World Lens internals", expanded=False) as expander:
+        _render_ai_static_scan_context(expander, view)
+        world_distribution = (view.get("world_lens_fields") or {}).get("taxonomy_distribution") or []
+        if world_distribution:
+            expander.markdown("### World Lens internal taxonomy distribution")
             expander.table(world_distribution)
 
     with container.expander("Audit data — native receipt values", expanded=False) as expander:
@@ -2197,7 +2207,7 @@ def _batch_receipt_index_rows(parsed: dict[str, Any]) -> list[dict[str, str]]:
             "Native State": native_state,
             "Review Pressure": review_pressure,
             "Protocol Label": fields.get("protocol_label", MISSING_VALUE),
-            "Current Semantic": str((view.get("_current_semantic_reread") or {}).get("finding", "Not run")),
+            "Semantic Layer": str((view.get("_semantic_pressure_layer") or {}).get("finding", "Not run")),
             "Integrity": integrity,
             "Collapse": collapse,
             "Trust Index": trust,
@@ -2299,7 +2309,7 @@ def _render_batch_zip(container: Any, parsed: dict[str, Any]) -> None:
     distribution = parsed.get("distribution") or {}
     if distribution:
         container.table([{"Native State": key, "Count": value} for key, value in sorted(distribution.items())])
-    container.info("Batch ZIP reading summarizes uploaded receipts only. A current semantic reading is attached to every receipt for comparison; it does not rescore, merge labels, or create a new receipt.")
+    container.info("Batch ZIP reading summarizes uploaded receipts only. A semantic pressure layer is attached to every receipt as diagnostic context; it does not rescore, merge labels, or create a new receipt.")
 
     views = parsed.get("views") or []
     if not views:
@@ -2307,7 +2317,7 @@ def _render_batch_zip(container: Any, parsed: dict[str, Any]) -> None:
 
     rows = _batch_receipt_index_rows(parsed)
     container.markdown("### Receipt Index")
-    container.caption("One compact row per uploaded receipt. Current Semantic is an automatic current scanner comparison for every receipt; native values remain unchanged.")
+    container.caption("One compact row per uploaded receipt. Semantic Layer is diagnostic context for every receipt; native values remain unchanged.")
     container.table(rows)
 
     labels = [

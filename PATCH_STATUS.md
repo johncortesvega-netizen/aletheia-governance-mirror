@@ -1,3 +1,24 @@
+## Patch 201 — Receipt Semantic Layer Framing and Plain-English Main View
+
+Date: 2026-07-07
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 201 reframes Receipt Reader semantic output from a "current semantic re-read" into a **Semantic pressure layer**. The semantic scan is now presented as one diagnostic layer inside the receipt reading rather than as a competing or replacement receipt reading.
+
+The patch also declutters the Receipt Reader main view. The Simple English walkthrough becomes the primary visible reading, while original status/metrics, semantic layer details, layered causal chain, repair questions, diagnostics, AI/static context, World Lens internals, and native receipt values move behind opt-in expanders.
+
+Boundary notes:
+- Receipt Reader wording/layout only.
+- No native receipt values, receipt schema, stored receipt meaning, semantic scanner logic, module scoring, World Lens math, Evidence Lab calculations, external calls, telemetry, storage, certification, enforcement, or final-truth behavior changed.
+- Human review remains required.
+
+Validation target:
+
+```bat
+python -m py_compile ui/receipt_reader.py
+```
+
 ## Patch 200 — Simple English Receipt Walkthrough
 
 Date: 2026-07-07
