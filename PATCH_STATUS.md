@@ -4533,3 +4533,20 @@ python -m py_compile core\semantic_pressure_scanner.py
 ```
 
 Interpretation: the default pytest command now means active release gate passed. It must not be represented as proof that every historical test file passes.
+
+## Patch 219 — Legacy Test Inventory Cleanup Plan
+Status: READY FOR LOCAL REVIEW
+
+Patch 219 adds a formal cleanup plan for historical tests after Patch 218 separated default pytest collection into the active release-gate suite. It introduces migration labels for legacy tests and a tests README explaining active tests, patch-specific regressions, and legacy inventory.
+
+Changed files:
+- README.md
+- docs/legacy_test_inventory_cleanup_plan_v1.md
+- docs/test_migration_labels_v1.md
+- tests/README.md
+- PATCH_STATUS.md
+- PATCH_219_MANIFEST.txt
+- PATCH_219_RECOVERY_NOTE.md
+- PATCH_219_DELETE_LIST.txt
+
+Boundary: documentation/test-governance only. No runtime behavior, scoring, semantic scanner logic, MEI7 gate, Z-axis behavior, Stress Test metrics, Evidence Lab calculations, World Lens math, receipt schema, external calls, telemetry, storage, certification, enforcement, or authority behavior changed.

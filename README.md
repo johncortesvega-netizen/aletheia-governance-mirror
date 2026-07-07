@@ -401,6 +401,8 @@ The detailed patch archive should live in `docs/patch_archive/` and `docs/patch_
 - **Patch 215 — README / Public Positioning Upgrade:** strengthened the public doorway, reviewer path, examples, deterministic/local-first explanation, limitations, and 9k audit-lens boundary. Documentation only.
 - **Patch 216 — Rules-Based Transparency Clarification:** states plainly that ALETHEIA uses deterministic heuristics, proximity checks, pressure codes, thresholds, and hand-calibrated formulas. Documentation only; no runtime changes.
 - **Patch 217 — Test Suite Triage Documentation:** clarifies active release checks versus legacy test inventory so public documentation does not imply that every historical test file passes. Documentation only; no runtime changes.
+- **Patch 218 — Pytest Active Suite Configuration:** makes plain `python -m pytest` collect the active release-gate suite by default. Legacy tests remain explicit inventory for cleanup and historical review. Documentation/configuration only; no runtime changes.
+- **Patch 219 — Legacy Test Inventory Cleanup Plan:** adds a formal cleanup plan, migration labels, and tests README so old failing tests are restored, archived, or deleted transparently rather than ignored. Documentation only; no runtime changes.
 
 ### Consolidated structural/refactor line
 
@@ -482,7 +484,13 @@ Legacy full checks are explicit and may fail while old tests await cleanup, dele
 tools\run_full_checks.bat
 ```
 
-See also: `docs/test_suite_triage_v1.md`.
+See also:
+
+- `docs/test_suite_triage_v1.md`
+- `docs/pytest_active_suite_config_v1.md`
+- `docs/legacy_test_inventory_cleanup_plan_v1.md`
+- `docs/test_migration_labels_v1.md`
+- `tests/README.md`
 
 ---
 
@@ -556,3 +564,27 @@ tools\run_checks.bat
 ```
 
 Interpretation: default pytest and active checks pass; legacy inventory remains explicit and non-blocking unless separately cleaned up.
+
+
+## Patch 219 — Legacy Test Inventory Cleanup Plan
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 219 documents how to handle old or failing historical tests after Patch 218 separated the active pytest gate from legacy inventory. It does not hide the old tests and it does not claim the full historical tree passes. It creates a cleanup standard for deciding which legacy tests should be restored, archived, or deleted.
+
+Added surfaces:
+
+- `docs/legacy_test_inventory_cleanup_plan_v1.md`
+- `docs/test_migration_labels_v1.md`
+- `tests/README.md`
+- README local-check references
+
+Default active command remains:
+
+```bat
+python -m pytest
+```
+
+Interpretation: active release-gate tests are the default check; legacy tests remain explicit inventory until triaged.
+
+Boundary preserved: documentation and test-governance notes only. No runtime behavior, scoring, semantic scanner logic, MEI7 gate, Z-axis behavior, Stress Test metrics, Evidence Lab calculations, World Lens math, receipt schema, external calls, telemetry, storage, certification, enforcement, or authority behavior changed.

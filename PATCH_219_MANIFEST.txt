@@ -1,0 +1,31 @@
+PATCH 219 — Legacy Test Inventory Cleanup Plan
+
+Purpose:
+- Make legacy-test cleanup explicit after Patch 218 configured default pytest for the active suite.
+- Prevent broken historical tests from being hidden or misrepresented.
+- Provide labels and a migration path for restore/delete/archive decisions.
+
+Changed files:
+- README.md
+- docs/legacy_test_inventory_cleanup_plan_v1.md
+- docs/test_migration_labels_v1.md
+- tests/README.md
+- PATCH_STATUS.md
+- PATCH_219_MANIFEST.txt
+- PATCH_219_RECOVERY_NOTE.md
+- PATCH_219_DELETE_LIST.txt
+
+No runtime changes:
+- app logic unchanged
+- scanner unchanged
+- scoring unchanged
+- MEI7 gate unchanged
+- Z-axis unchanged
+- Stress Test unchanged
+- Evidence Lab unchanged
+- World Lens unchanged
+- receipts unchanged
+- pytest collection behavior unchanged from Patch 218
+
+Recommended local check:
+python -m pytest
