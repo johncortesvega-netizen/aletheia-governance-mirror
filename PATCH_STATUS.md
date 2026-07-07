@@ -1,3 +1,29 @@
+## Patch 204 — Opaque Capture Values Alignment Hotfix
+
+Date: 2026-07-07
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 204 re-ships the current Semantic Pressure Scanner calibration so Stress Test / Mirror Check values align with the visible high-risk reading for opaque capture claims. This fixes the case where text such as `a group of bankers have world power in secret` could still display a semantic `SANCTUARY`/no-signal panel if the local working tree was missing the Patch 197 scanner file.
+
+Expected behavior after Patch 204:
+- `a group of bankers have world power in secret` => semantic `THRESHOLD` with an `opaque_capture_claim` proximity hit and negative integrity pressure.
+- `a hidden committee controls global policy` => semantic `THRESHOLD` with hidden/concentrated power language.
+- `private elites secretly control public systems` => semantic `THRESHOLD` with opaque capture pressure.
+- Direct safeguard language such as appeal/audit/revocation remains recognized as safeguards.
+
+Boundary notes:
+- Scanner calibration only.
+- No Stress Test scoring, Mirror Check scoring, receipt schema, World Lens math, Evidence Lab calculations, external calls, telemetry, storage, certification, enforcement, or final-truth behavior changed.
+- The semantic layer remains subordinate to the main module reading.
+
+Validation target:
+
+```bat
+python -m py_compile core/semantic_pressure_scanner.py
+python -c "from core.semantic_pressure_scanner import scan_semantic_pressure; print(scan_semantic_pressure('a group of bankers have world power in secret'))"
+```
+
 ## Patch 201 — Receipt Semantic Layer Framing and Plain-English Main View
 
 Date: 2026-07-07
@@ -4333,3 +4359,15 @@ Patch 202 fixes a UI regression where Stress Test can cause multiple Streamlit t
 
 Boundary preserved: UI containment CSS only. No scoring, semantic scanner, receipt schema, module logic, privacy posture, external calls, telemetry, storage, certification, enforcement, or authority change.
 
+## Patch 203 — Stress Test Compact Surface / Receipt Opt-in
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 203 reduces Stress Test page clutter after the tab-containment rollback. The long module guide and local witness receipt download block are now opt-in expanders. Scoring, semantic scanner logic, receipt schema, module routing, telemetry/storage posture, and authority boundaries are unchanged.
+
+Validation target:
+
+```bat
+python -m py_compile app.py
+python -m streamlit run app.py
+```

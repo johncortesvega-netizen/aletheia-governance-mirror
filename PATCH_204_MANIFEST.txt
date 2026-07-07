@@ -1,0 +1,15 @@
+Patch 204 — Opaque Capture Values Alignment Hotfix
+
+Changed files:
+- core/semantic_pressure_scanner.py
+- PATCH_STATUS.md
+- PATCH_204_MANIFEST.txt
+- PATCH_204_RECOVERY_NOTE.md
+- PATCH_204_DELETE_LIST.txt
+
+Purpose:
+Re-ship the calibrated semantic scanner so opaque hidden-power claims do not show as semantic SANCTUARY/no-signal when the main module correctly reads high-risk/threshold pressure.
+
+Validation:
+python -m py_compile core/semantic_pressure_scanner.py
+python -c "from core.semantic_pressure_scanner import scan_semantic_pressure; print(scan_semantic_pressure('a group of bankers have world power in secret'))"
