@@ -4536,6 +4536,26 @@ def choose_stress_semantic_scan(raw_text: str, processed_text: str | None = None
     return sorted(scans, key=_semantic_review_strength, reverse=True)[0]
 
 
+def choose_strongest_semantic_scan(*payloads):
+    """Choose the strongest semantic pressure scan from scans or text payloads.
+
+    Streamlit can keep a previous semantic panel in session state after a user
+    changes or reruns Stress Test. This helper prevents a stale SANCTUARY/NO SIGNAL
+    scan from overriding a stronger current raw-text signal such as an opaque
+    capture-power claim.
+    """
+    scans = []
+    for payload in payloads:
+        if payload is None:
+            continue
+        scan = _semantic_scan_from_payload(payload)
+        if scan is not None:
+            scans.append(scan)
+    if not scans:
+        return None
+    return sorted(scans, key=_semantic_review_strength, reverse=True)[0]
+
+
 def semantic_stress_trigger_rows(scan) -> list[dict]:
     """Map semantic pressure signals to Stress Test stress triggers and repair questions.
 
@@ -5302,9 +5322,19 @@ ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when
                 soft_card(f"{priority} · {target} · {action}", silent_operator_question(rec, context=str(target)))
 
         if last_input_mode == "Scan my idea":
-            stress_semantic_scan = st.session_state.get("last_stress_semantic_scan")
-            if stress_semantic_scan is None and (str(st.session_state.get("last_query_raw", "") or "").strip() or str(display_query or "").strip()):
-                stress_semantic_scan = choose_stress_semantic_scan(st.session_state.get("last_query_raw", display_query), display_query)
+            stored_stress_semantic_scan = st.session_state.get("last_stress_semantic_scan")
+            current_raw_query = str(st.session_state.get("last_query_raw", "") or "").strip()
+            current_processed_query = str(display_query or "").strip()
+            visible_editor_query = str(query or "").strip()
+            recomputed_stress_semantic_scan = choose_stress_semantic_scan(current_raw_query or visible_editor_query, current_processed_query)
+            editor_stress_semantic_scan = choose_stress_semantic_scan(visible_editor_query, current_processed_query) if visible_editor_query else None
+            stress_semantic_scan = choose_strongest_semantic_scan(
+                stored_stress_semantic_scan,
+                recomputed_stress_semantic_scan,
+                editor_stress_semantic_scan,
+            )
+            if stress_semantic_scan is not None:
+                st.session_state.last_stress_semantic_scan = stress_semantic_scan
             render_semantic_stress_triggers(stress_semantic_scan, expanded=False)
 
         ai_static_context = report.get("ai_static_scan_context") if isinstance(report, dict) else None

@@ -1,5 +1,15 @@
 ## Patch 204 — Opaque Capture Values Alignment Hotfix
 
+
+## Patch 206 — Stress Test Semantic Stale-State Alignment Fix
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 206 fixes a Stress Test semantic-panel alignment issue where a stale session-state scan could continue to show SANCTUARY/NO SIGNAL even when the current raw scenario text contains an opaque capture-power claim. Stress Test now recomputes semantic diagnostics from current raw/processed scenario text at render time and keeps the strongest semantic-pressure signal.
+
+Boundary preserved: no scoring change, no semantic scanner lexicon or weight change, no receipt schema change, no World Lens/Evidence Lab/Mirror Check behavior change, no telemetry, no storage, no certification, no enforcement, and no final-truth claim.
+
+
 Date: 2026-07-07
 
 Status: READY FOR LOCAL REVIEW

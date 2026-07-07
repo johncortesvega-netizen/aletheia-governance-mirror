@@ -1,0 +1,14 @@
+PATCH 206 — Stress Test Semantic Stale-State Alignment Fix
+
+Changed files:
+- app.py
+- PATCH_STATUS.md
+- PATCH_206_MANIFEST.txt
+- PATCH_206_RECOVERY_NOTE.md
+- PATCH_206_DELETE_LIST.txt
+
+Purpose:
+Fix Stress Test semantic panel showing SANCTUARY/NO SIGNAL after the input should produce an opaque capture-pressure THRESHOLD signal.
+
+Boundary:
+No scoring changes, no receipt schema changes, no semantic scanner lexicon changes, no module routing changes. This patch only fixes how Stress Test selects the semantic diagnostic scan at render time.
