@@ -4450,3 +4450,22 @@ Validation target:
 python -m py_compile core\semantic_pressure_scanner.py app.py ui\receipt_reader.py
 python -c "from core.semantic_pressure_scanner import scan_semantic_pressure; print(scan_semantic_pressure('a group of bankers have world power in secret').pressure_codes)"
 ```
+
+---
+
+## Patch 211 — Z-axis Repair Zone Mapping
+
+Status: packaged.
+
+Changed files:
+- `core/witness.py`
+- `app.py`
+- `ui/receipt_reader.py`
+
+Summary:
+- Adds descriptive `z_axis_zone`, `z_axis_repair_zone`, and `z_axis_repair_note` fields to the Threshold Mapping Layer.
+- Distinguishes `ASYLUM hard stop` from `ASYLUM repair zone`.
+- Keeps canonical states, scoring, MEI7 ethics behavior, receipts, telemetry/storage boundaries, and authority disclaimers unchanged.
+
+Validation:
+- `python -m py_compile core/witness.py app.py ui/receipt_reader.py` passed in patch workspace.

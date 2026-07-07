@@ -1860,6 +1860,17 @@ def _z_axis_position_from_text(text: str) -> str:
     return "0.9999 humility cap / 1.0000 not claimed"
 
 
+
+def _z_axis_zone_from_text(text: str) -> str:
+    match = re.search(r"(?im)\bZ[- ]?Axis Zone\s*[:=]\s*(.+)$", text or "")
+    if match:
+        return match.group(1).strip()
+    if re.search(r"(?im)\bZ[- ]?Axis Repair Zone\s*[:=]\s*True", text or ""):
+        return "ASYLUM repair zone"
+    if re.search(r"(?im)\bZ[- ]?Axis Repair Zone\s*[:=]\s*False", text or ""):
+        return "Standard review mapping"
+    return "Not recorded"
+
 def _render_layered_causal_receipt_chain(container: Any, view: dict[str, Any]) -> None:
     """Render the receipt as a five-layer causal chain for human auditability."""
     text = str(view.get("_receipt_reader_source_text", "") or "")
@@ -1929,6 +1940,8 @@ def _render_layered_causal_receipt_chain(container: Any, view: dict[str, Any]) -
 
     with container.expander("Layer 5 — Human hand-off / boundary of code", expanded=True) as layer:
         layer.markdown(f"**Z-Axis position:** {_z_axis_position_from_text(text)}")
+        layer.markdown(f"**Z-Axis zone:** {_z_axis_zone_from_text(text)}")
+        layer.caption("Repair-zone language means limited reviewability inside a high-risk reading, not approval, certification, or Sanctuary.")
         layer.write(
             "ALETHEIA reflects. Humans review. The receipt does not execute, certify, enforce, approve, reject, or replace judgment."
         )

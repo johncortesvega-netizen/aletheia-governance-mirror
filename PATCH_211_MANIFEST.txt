@@ -1,0 +1,21 @@
+PATCH 211 — Z-axis Repair Zone Mapping
+
+Changed files:
+- core/witness.py
+- app.py
+- ui/receipt_reader.py
+- PATCH_STATUS.md
+- PATCH_211_MANIFEST.txt
+- PATCH_211_RECOVERY_NOTE.md
+- PATCH_211_DELETE_LIST.txt
+
+Purpose:
+- Distinguish ASYLUM hard-stop readings from ASYLUM repair-zone readings in the descriptive Threshold Mapping Layer.
+- Prevent every ASYLUM/capture reading from visually collapsing to Z=0.0000 when repair questions, partial review capacity, or safeguards are present.
+- Preserve canonical ASYLUM state and all scoring/ethics gates.
+
+Non-goals:
+- No change to verdict routing.
+- No change to MEI7 scoring.
+- No change to Semantic Pressure Scanner pressure codes.
+- No enforcement, approval, certification, telemetry, or storage behavior added.

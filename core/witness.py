@@ -723,8 +723,48 @@ def _threshold_mapping_layer(
     # Patch 72.3: Z=1.0000 is outside system claim. Human/system
     # governance scenarios are capped at 0.9999.
     z_axis_position = round(max(0.0, min(0.9999, growth_average - pressure_average)), 4)
+
+    # Patch 211: ASYLUM repair-zone mapping.
+    #
+    # Earlier mapping could collapse every ASYLUM reading to Z=0.0000 even when
+    # the receipt still contained repair questions, partial review routes, or visible
+    # safeguards. That made high-risk-but-repairable texts look identical to hard
+    # stop / outside-claim texts. This remains descriptive only: it does not change
+    # the canonical state, scoring, enforcement boundary, or humility cap.
+    repair_route_signal = max(
+        confirmed_repair_capacity,
+        min(0.5, repair_question_index * 0.5),
+        transparency * 0.35,
+        regulation * 0.35,
+    )
+    hard_asylum_no_repair = (
+        state == "ASYLUM"
+        and hard_capture >= 1.0
+        and repair_route_signal < 0.08
+        and transparency < 0.18
+        and regulation < 0.18
+    )
+    z_axis_zone = "Standard review mapping"
+    z_axis_repair_zone = False
+    z_axis_repair_note = "No separate repair-zone mapping applied."
     if state == "ASYLUM":
-        z_axis_position = round(min(z_axis_position, confirmed_repair_capacity), 4)
+        if hard_asylum_no_repair:
+            z_axis_position = 0.0
+            z_axis_zone = "ASYLUM hard stop"
+            z_axis_repair_note = (
+                "Hard ASYLUM mapping: capture pressure is high and no meaningful review, "
+                "appeal, oversight, or repair route is visible in the scenario."
+            )
+        else:
+            repair_zone_floor = min(0.3, max(0.08, repair_route_signal * 0.3))
+            z_axis_position = round(min(0.3, max(z_axis_position, repair_zone_floor)), 4)
+            z_axis_zone = "ASYLUM repair zone"
+            z_axis_repair_zone = True
+            z_axis_repair_note = (
+                "Repair-zone mapping: canonical ASYLUM remains, but visible repair questions, "
+                "partial review capacity, or safeguards create a limited human-review route. "
+                "This is not approval and not Sanctuary."
+            )
 
     if state == "ASYLUM":
         direction = "Toward ASYLUM"
@@ -777,9 +817,12 @@ def _threshold_mapping_layer(
         "canonical_state": state,
         "threshold_direction": direction,
         "z_axis_position": z_axis_position,
+        "z_axis_zone": z_axis_zone,
+        "z_axis_repair_zone": z_axis_repair_zone,
+        "z_axis_repair_note": z_axis_repair_note,
         "z_axis_maximum_human_system_claim": 0.9999,
         "outside_system_claim_z": 1.0,
-        "z_axis_meaning": "Proximity to the human/system authority boundary; not a perfection score or final-authority claim.",
+        "z_axis_meaning": "Proximity to the human/system authority boundary; not a perfection score or final-authority claim. ASYLUM repair-zone values indicate reviewability, not safety or approval.",
         "integrity_gap": round(max(0.0, 1.0 - integrity), 4),
         "repair_index": round(confirmed_repair_capacity, 4),
         "repair_question_index": round(repair_question_index, 4),
@@ -843,6 +886,9 @@ def _display_threshold_mapping_layer_block(mapping: Mapping[str, Any]) -> str:
         f"Canonical state: {mapping.get('canonical_state')}\n"
         f"Threshold direction: {mapping.get('threshold_direction')}\n"
         f"Z-axis position: {_display_value(mapping.get('z_axis_position'))}\n"
+        f"Z-axis zone: {mapping.get('z_axis_zone', 'Standard review mapping')}\n"
+        f"Z-axis repair zone: {mapping.get('z_axis_repair_zone', False)}\n"
+        f"Z-axis repair note: {mapping.get('z_axis_repair_note', 'No separate repair-zone mapping applied.')}\n"
         f"Z-axis human/system cap: {_display_value(mapping.get('z_axis_maximum_human_system_claim', 0.9999))}\n"
         f"Outside system claim boundary: {_display_value(mapping.get('outside_system_claim_z', 1.0))}\n"
         f"Z-axis meaning: {mapping.get('z_axis_meaning', 'Proximity to the boundary of responsible human/system claims.')}\n"
