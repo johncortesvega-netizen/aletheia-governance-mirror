@@ -337,6 +337,7 @@ ALETHEIA is a release-candidate governance mirror, not production authority. Cur
 - Many thresholds and demo scenarios are intentionally explicit rather than learned from live data. This helps auditability but requires regression tests when calibrations change.
 - World Lens and the 9k allocation logic are contextual audit lenses only. They are not a mandate system, world parliament, country certification layer, or political authority claim.
 - Hosted deployments may expose platform-level logs outside ALETHEIA's app-code boundary; sensitive review should be local.
+- The test tree contains both active release checks and legacy/historical tests from earlier patch contracts. A passing default check means the active safe suite passed; it must not be represented as proof that every historical test file passes.
 
 A useful review should ask whether ALETHEIA preserves its boundary under pressure, not whether it looks complete.
 
@@ -399,6 +400,7 @@ The detailed patch archive should live in `docs/patch_archive/` and `docs/patch_
 - **Clarity/UI refinement line — Unit Preview, Receipt Reader, Stress Test, Evidence Lab, World Lens:** decluttered primary surfaces, moved developer/debug details behind opt-in controls, and clarified threshold/semantic language.
 - **Patch 215 — README / Public Positioning Upgrade:** strengthened the public doorway, reviewer path, examples, deterministic/local-first explanation, limitations, and 9k audit-lens boundary. Documentation only.
 - **Patch 216 — Rules-Based Transparency Clarification:** states plainly that ALETHEIA uses deterministic heuristics, proximity checks, pressure codes, thresholds, and hand-calibrated formulas. Documentation only; no runtime changes.
+- **Patch 217 — Test Suite Triage Documentation:** clarifies active release checks versus legacy test inventory so public documentation does not imply that every historical test file passes. Documentation only; no runtime changes.
 
 ### Consolidated structural/refactor line
 
@@ -438,11 +440,20 @@ Historical archive material may contain inflated validation language, AI-flatter
 
 ## Local checks
 
-Default local check:
+ALETHEIA separates **active release checks** from **legacy test inventory**. This distinction is part of the project boundary: a passing default check is not a claim that every historical test file in the repository still passes.
+
+Default active safe check:
 
 ```bat
 tools\run_checks.bat
 ```
+
+What this means:
+
+- runs the current curated release/patch checks;
+- runs compile smoke checks for active files;
+- reports the legacy test inventory as non-blocking;
+- does **not** certify the entire historical test tree.
 
 Patch-specific check:
 
@@ -456,11 +467,13 @@ Protocol baseline self-audit:
 python tools\run_protocol_baseline_self_audit.py
 ```
 
-Legacy full checks should remain explicit because older tests may reference changed paths or APIs:
+Legacy full checks are explicit and may fail while old tests await cleanup, deletion, or restoration:
 
 ```bat
 tools\run_full_checks.bat
 ```
+
+See also: `docs/test_suite_triage_v1.md`.
 
 ---
 

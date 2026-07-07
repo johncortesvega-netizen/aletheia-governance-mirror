@@ -1,0 +1,19 @@
+PATCH 217 — Test Suite Triage Documentation
+
+Changed files:
+- README.md
+- docs/test_suite_triage_v1.md
+- docs/rules_based_transparency_v1.md
+- PATCH_STATUS.md
+- PATCH_217_MANIFEST.txt
+- PATCH_217_RECOVERY_NOTE.md
+- PATCH_217_DELETE_LIST.txt
+
+Purpose:
+- Clarify active release checks vs legacy test inventory.
+- Prevent public documentation from implying that the full historical test suite passes when only curated current checks are active.
+- Preserve evidence integrity inside the project itself.
+
+Runtime impact:
+- None. Documentation only.
+- No pytest configuration or test runner behavior changed in this patch.

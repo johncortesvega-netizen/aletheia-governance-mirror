@@ -4487,3 +4487,26 @@ python -m py_compile app.py core\semantic_pressure_scanner.py ui\receipt_reader.
 ```
 
 No Python files are modified by this patch; the compile command is a conservative smoke check only.
+
+
+## Patch 217 — Test Suite Triage Documentation
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 217 clarifies the difference between active release checks, patch-specific checks, and legacy test inventory. It prevents README/check documentation from implying that the full historical test tree is green when the default tool intentionally runs a curated current safe suite and reports legacy tests as non-blocking inventory.
+
+Updated surfaces:
+- README local checks section.
+- README current limitations.
+- `docs/test_suite_triage_v1.md`.
+- `docs/rules_based_transparency_v1.md` test-claim transparency note.
+
+Boundary preserved: documentation only. No test runner behavior, pytest configuration, runtime behavior, scoring, semantic scanner logic, MEI7 gate, Z-axis, Stress Test metrics, Evidence Lab calculations, World Lens math, receipt schema, external calls, telemetry, storage, certification, enforcement, or authority behavior changed.
+
+Validation target:
+
+```bat
+tools\run_checks.bat
+```
+
+Interpretation: active release checks pass; legacy inventory remains non-blocking unless separately cleaned up.

@@ -84,3 +84,10 @@ If future versions add model-assisted support, it must remain:
 - unable to certify, enforce, or decide.
 
 No model may become the throne.
+
+
+## Test-claim transparency
+
+The same rule applies to tests: public documentation should distinguish active release checks from legacy test inventory. A passing curated check is useful evidence, but it is not proof that every historical test file in the repository passes.
+
+Do not make a stronger validation claim than the active check evidence supports.
