@@ -4369,7 +4369,8 @@ def render_semantic_pressure_panel(
         st.caption("Semantic pressure scan unavailable for this reading.")
         return
 
-    state = str(_semantic_payload_value(semantic_scan, "state", "SANCTUARY") or "SANCTUARY").upper()
+    raw_state = str(_semantic_payload_value(semantic_scan, "state", "SANCTUARY") or "SANCTUARY").upper()
+    state = raw_state
     risk = str(_semantic_payload_value(semantic_scan, "risk", "Review signal") or "Review signal")
     integrity_adjustment = float(_semantic_payload_value(semantic_scan, "integrity_adjustment", 0.0) or 0.0)
     claim_count = int(_semantic_payload_value(semantic_scan, "claim_count", 0) or 0)
@@ -4381,7 +4382,28 @@ def render_semantic_pressure_panel(
     normalized_text = str(_semantic_payload_value(semantic_scan, "normalized_text", "") or "")
     hits = _semantic_payload_hits(semantic_scan)
     notes = _semantic_payload_notes(semantic_scan)
+
+    # UI semantics: the scanner's internal SANCTUARY value can also mean
+    # "no semantic relationship detected." Showing that as SANCTUARY beside an
+    # ASYLUM/THRESHOLD main reading creates a false contradiction. When no
+    # claims, mechanisms, modal pressure, reversibility, fail-closed flag, hits,
+    # or integrity pressure are present, render it as a neutral no-signal state.
+    no_semantic_signal = (
+        raw_state == "SANCTUARY"
+        and claim_count == 0
+        and mechanism_count == 0
+        and modal_count == 0
+        and sovereignty_count == 0
+        and not fail_closed
+        and not hits
+        and abs(integrity_adjustment) < 1e-9
+    )
+    display_state = "NO SIGNAL" if no_semantic_signal else raw_state
+    display_risk = "No semantic relationship detected" if no_semantic_signal else risk
     message_kind, message = semantic_pressure_summary_message(semantic_scan)
+    if no_semantic_signal:
+        message_kind = "info"
+        message = "No semantic pressure relationship detected. This does not lower or override the main module reading."
     # Streamlit requires explicit unique keys for repeated semantic panels.
     # Use the caller-provided panel_key when available, and fall back to a
     # deterministic content hash for older call sites.
@@ -4391,10 +4413,11 @@ def render_semantic_pressure_panel(
     semantic_panel_key = re.sub(r"[^A-Za-z0-9_\-]", "_", str(semantic_panel_key))
 
     state_color = {
+        "NO SIGNAL": "#425466",
         "SANCTUARY": "#2f6b3a",
         "THRESHOLD": "#9b6b00",
         "ASYLUM": "#8f1d2c",
-    }.get(state, "#425466")
+    }.get(display_state, "#425466")
 
     with st.container(border=True):
         st.markdown("#### Semantic pressure signals")
@@ -4403,7 +4426,7 @@ def render_semantic_pressure_panel(
         )
         c1, c2, c3, c4 = st.columns(4)
         with c1:
-            st.markdown(f"<div class='metric-card'><b>State</b><br><span style='font-size:1.35rem;color:{state_color};'>{html.escape(state)}</span><br><span>{html.escape(risk)}</span></div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='metric-card'><b>Semantic finding</b><br><span style='font-size:1.35rem;color:{state_color};'>{html.escape(display_state)}</span><br><span>{html.escape(display_risk)}</span></div>", unsafe_allow_html=True)
         with c2:
             st.markdown(f"<div class='metric-card'><b>Claims</b><br><span style='font-size:1.35rem;'>{claim_count}</span><br><span>soft/value terms</span></div>", unsafe_allow_html=True)
         with c3:
