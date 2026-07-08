@@ -1,0 +1,25 @@
+PATCH 250 — Evidence Lab Bridge Removal
+
+Files changed:
+- app.py
+- ui/pages/evidence_lab.py
+
+Files added:
+- docs/modularization_stage250_evidence_lab_bridge_removal.md
+- PATCH_250_MANIFEST.txt
+- PATCH_250_RECOVERY_NOTE.md
+- PATCH_250_DELETE_LIST.txt
+
+Purpose:
+- Remove the broad globals() handoff from Evidence Lab.
+- Declare an explicit Evidence Lab dependency map.
+- Keep runtime behavior unchanged while making the page boundary inspectable.
+
+Expected call shape after patch:
+- render_evidence_lab_page(evidence_lab_dependency_map(globals()))
+
+Validation performed in build environment:
+- python -m py_compile app.py ui/pages/evidence_lab.py
+
+Note:
+- The build-copy did not include the active tests directory, so pytest should be run locally after applying.

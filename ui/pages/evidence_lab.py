@@ -1,13 +1,97 @@
 from __future__ import annotations
 
+# Patch 250: Evidence Lab bridge removal.
+# The page receives an explicit dependency mapping instead of the entire
+# app globals() namespace. This keeps behavior stable while making the
+# page boundary inspectable for later dependency cleanup.
 
-def render_evidence_lab_page(runtime_namespace: dict[str, object]) -> None:
-    """Render the Evidence Lab page using the current app runtime namespace.
+from collections.abc import Mapping
+from typing import Any
 
-    Stage 11 keeps behavior unchanged by using a temporary namespace bridge.
-    Later stages can replace this bridge with explicit imports/dependencies.
+
+EVIDENCE_LAB_DEPENDENCIES = (
+    "EMPIRICAL_COLUMNS",
+    "_country_allocation_base",
+    "_empirical_humility_display_df",
+    "_replace_allocation_columns",
+    "build_master_from_public_uploads",
+    "country_available_years",
+    "country_year_status_message",
+    "empirical_template",
+    "evidence_source_frame",
+    "format_raw_trust_label",
+    "format_trust_prior_label",
+    "go",
+    "ingestion_notes_markdown",
+    "methodology_markdown",
+    "pd",
+    "prepare_empirical_frame",
+    "public_upload_diagnostics",
+    "read_public_data_upload",
+    "render_direct_csv_read_failed",
+    "render_evidence_lab_intro",
+    "render_evidence_lab_public_data_build_intro",
+    "render_semantic_evidence_check",
+    "render_shared_protocol_state_notice",
+    "render_upload_processing_failed",
+    "safe_country_year_index",
+    "score_empirical_frame",
+    "st",
+    "update_protocol_state",
+    "validation_summary",
+    "variable_mapping_frame",
+    "warn_no_public_data_upload",
+)
+
+
+def evidence_lab_dependency_map(runtime: Mapping[str, Any]) -> dict[str, Any]:
+    """Return only the dependencies Evidence Lab currently needs.
+
+    Missing dependencies fail loudly during startup/testing. Later patches can
+    replace injected helpers with direct imports where appropriate.
     """
-    globals().update(runtime_namespace)
+    missing = [name for name in EVIDENCE_LAB_DEPENDENCIES if name not in runtime]
+    if missing:
+        raise RuntimeError(
+            "Evidence Lab page dependency map is incomplete: " + ", ".join(missing)
+        )
+    return {name: runtime[name] for name in EVIDENCE_LAB_DEPENDENCIES}
+
+
+def render_evidence_lab_page(deps: Mapping[str, Any]) -> None:
+    """Render the Evidence Lab page using explicit injected dependencies."""
+    EMPIRICAL_COLUMNS = deps["EMPIRICAL_COLUMNS"]
+    _country_allocation_base = deps["_country_allocation_base"]
+    _empirical_humility_display_df = deps["_empirical_humility_display_df"]
+    _replace_allocation_columns = deps["_replace_allocation_columns"]
+    build_master_from_public_uploads = deps["build_master_from_public_uploads"]
+    country_available_years = deps["country_available_years"]
+    country_year_status_message = deps["country_year_status_message"]
+    empirical_template = deps["empirical_template"]
+    evidence_source_frame = deps["evidence_source_frame"]
+    format_raw_trust_label = deps["format_raw_trust_label"]
+    format_trust_prior_label = deps["format_trust_prior_label"]
+    go = deps["go"]
+    ingestion_notes_markdown = deps["ingestion_notes_markdown"]
+    methodology_markdown = deps["methodology_markdown"]
+    pd = deps["pd"]
+    prepare_empirical_frame = deps["prepare_empirical_frame"]
+    public_upload_diagnostics = deps["public_upload_diagnostics"]
+    read_public_data_upload = deps["read_public_data_upload"]
+    render_direct_csv_read_failed = deps["render_direct_csv_read_failed"]
+    render_evidence_lab_intro = deps["render_evidence_lab_intro"]
+    render_evidence_lab_public_data_build_intro = deps["render_evidence_lab_public_data_build_intro"]
+    render_semantic_evidence_check = deps["render_semantic_evidence_check"]
+    render_shared_protocol_state_notice = deps["render_shared_protocol_state_notice"]
+    render_upload_processing_failed = deps["render_upload_processing_failed"]
+    safe_country_year_index = deps["safe_country_year_index"]
+    score_empirical_frame = deps["score_empirical_frame"]
+    st = deps["st"]
+    update_protocol_state = deps["update_protocol_state"]
+    validation_summary = deps["validation_summary"]
+    variable_mapping_frame = deps["variable_mapping_frame"]
+    warn_no_public_data_upload = deps["warn_no_public_data_upload"]
+
     with st.container():
         render_evidence_lab_intro(st)
         render_shared_protocol_state_notice("Evidence Lab", expanded=False)

@@ -1,0 +1,3 @@
+Patch 250 delete list:
+
+No files should be deleted for this patch.
