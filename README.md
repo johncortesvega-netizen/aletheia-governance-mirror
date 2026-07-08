@@ -6,7 +6,7 @@
 
 ALETHEIA helps reviewers inspect proposals, policies, systems, doctrines, AI artifacts, receipts, and public-data patterns for signals such as capture pressure, weak appeal paths, evidence gaps, consent pressure, service misalignment, hidden influence, authority overreach, false certainty, and missing safeguards.
 
-Many systems can appear governed, compliant, neutral, or benevolent while still moving power out of reach. ALETHEIA does not answer that problem with more command. It answers with a restrained mirror: make pressure visible, name missing safeguards, and return the reading to human judgment.
+Many systems can appear governed, compliant, neutral, democratic, benevolent, or technically sophisticated while still moving power out of reach. ALETHEIA does not answer that problem with more command. It answers with a restrained mirror: make pressure visible, name missing safeguards, and return the reading to human judgment.
 
 > **ALETHEIA reflects. Humans review. Power stays accountable.**
 
@@ -14,7 +14,7 @@ Many systems can appear governed, compliant, neutral, or benevolent while still 
 
 ## Public doorway: why this project exists
 
-ALETHEIA is built for situations where governance language looks compliant, neutral, democratic, benevolent, or technically sophisticated while still moving power away from review. Its job is not to accuse, certify, or decide. Its job is to surface pressure patterns that deserve human inspection.
+ALETHEIA is built for situations where governance language looks compliant, neutral, democratic, benevolent, or technically sophisticated while still moving power away from review. Its job is not to accuse, certify, approve, reject, or decide. Its job is to surface pressure patterns that deserve human inspection.
 
 Use ALETHEIA when you need a structured review aid for:
 
@@ -35,7 +35,7 @@ It stands apart from automated judge systems by refusing to convert analysis int
 
 ## Five-minute reviewer path
 
-For a first public review, do not begin with the patch archive. Use this path:
+For a first public review, do not begin with the full patch archive. Use this path:
 
 1. Run the app locally or open the hosted demo.
 2. Paste one governance statement into **Mirror Check**.
@@ -43,7 +43,7 @@ For a first public review, do not begin with the patch archive. Use this path:
 4. Run one scenario in **Stress Test** and compare the main reading with the semantic layer.
 5. Open **Evidence Lab** to see which claims still need sources, safeguards, appeal, or review routes.
 6. Open **World Lens** only as contextual public-data support; do not read it as a country ranking or mandate system.
-7. Generate or upload a receipt only as a local witness artifact, not as proof of final truth.
+7. Use **Receipt Reader** only as a support utility for reading existing ALETHEIA receipts. It is available under **Why ALETHEIA → Support utilities → Receipt Reader — Standard View**.
 
 The quickest way to understand ALETHEIA is to test whether it keeps returning authority to humans even when the language becomes dramatic, moral, technical, institutional, or urgent.
 
@@ -51,7 +51,7 @@ The quickest way to understand ALETHEIA is to test whether it keeps returning au
 
 ## Three example scans
 
-These examples are intentionally short. They demonstrate the kind of signal ALETHEIA should surface; they are not legal, political, factual, or moral verdicts.
+These examples are intentionally short. They demonstrate the kind of signal ALETHEIA should surface; they are not legal, political, factual, scientific, or moral verdicts.
 
 ### 1. Hidden-power claim
 
@@ -196,14 +196,6 @@ World Lens is not a sovereign body, country ranking authority, world-government 
 
 World Lens can use semantic terms as **regional interpretation flags**. Terms such as identity, verification, access, basic services, emergency authority, public trust, harmony, compliance, and appeal can carry different meanings across regions. The semantic layer helps identify what may need regional interpretation. It does not replace evidence or create country-level verdicts.
 
-### Receipt Reader — Standard View
-
-Upload-only reading support for ALETHEIA local witness receipts and evidence bundles. Receipt Reader helps humans read receipts without rescoring, overriding, replacing, or creating a new verdict.
-
-It does not prove wrongdoing, certify deception, publish receipts, sync receipts, or claim final truth.
-
-Receipt Reader includes a **Semantic pressure layer** for present-day diagnostic support. It does not alter native receipt values, does not replace the original receipt, and must not be treated as historical proof of the original reading.
-
 ### Boundary Cases
 
 Reference and calibration layer for edge cases: consent under pressure, prediction vs agency, extraordinary claims, self-audit, performative ethics, authority leakage, mechanism-vs-claim gaps, semantic pressure patterns, and ambiguous human-review boundaries.
@@ -219,6 +211,10 @@ The Protocol Guide is not a command layer.
 ### Why ALETHEIA
 
 Public explanation of why the mirror exists. It explains the compliance mirage, authority drift, evidence inflation, appeal failure, hidden influence, capture pressure, semantic concealment, and why review must remain human.
+
+**Support utility:** Receipt Reader is available under **Why ALETHEIA → Support utilities → Receipt Reader — Standard View**. Receipt Reader is upload-only reading support for ALETHEIA local witness receipts and evidence bundles. It helps humans read receipts without rescoring, overriding, replacing, or creating a new verdict.
+
+Receipt Reader does not prove wrongdoing, certify deception, publish receipts, sync receipts, or claim final truth. Its **Semantic pressure layer** provides present-day diagnostic support only; it does not alter native receipt values, replace the original receipt, or prove what the original reading meant.
 
 ---
 
@@ -289,7 +285,7 @@ New reviewers should not begin with the full patch archive. Use this path first:
 4. Use **Stress Test** for scenarios and deployment-pressure cases.
 5. Use **Evidence Lab** for claim/evidence context and semantic claim/mechanism checks.
 6. Use **World Lens** for selected-year country views and regional interpretation flags.
-7. Use **Receipt Reader** only to read existing ALETHEIA receipts without rescoring them; use the Semantic pressure layer only as a present-day diagnostic.
+7. Use **Receipt Reader** only under **Why ALETHEIA → Support utilities → Receipt Reader — Standard View** to read existing ALETHEIA receipts without rescoring them. Use the Semantic pressure layer only as a present-day diagnostic.
 8. Read `docs/glossary.md`, `docs/validation_and_precision.md`, and `docs/how_to_review_aletheia_without_trusting_it.md` before relying on scores, receipts, or evidence views.
 9. Use `docs/patch_index.md` and `docs/patch_archive/README.md` only when patch-specific detail is needed.
 
@@ -321,7 +317,7 @@ Reviewer-readiness is not mass-adoption polish. The goal is to preserve ALETHEIA
 6. Protocol Guide
 7. Why ALETHEIA
 
-Aletheia Unit Preview appears before the full app surface as the single orientation entry. Receipt Reader is treated as a support utility rather than a main work tab.
+Aletheia Unit Preview appears before the full app surface as the single orientation entry. Receipt Reader is treated as a support utility under **Why ALETHEIA → Support utilities**, not as a main work tab.
 
 ---
 
@@ -333,7 +329,7 @@ ALETHEIA is a release-candidate governance mirror, not production authority. Cur
 - Scoring uses transparent rules, proximity checks, pressure codes, thresholds, and hand-calibrated formulas; it is a review aid, not a measurement of truth.
 - Rule-based systems can miss novel, coded, ironic, or context-heavy phrasing.
 - The interface is powerful but dense; broad public use still needs cleaner guided workflows and examples.
-- `app.py` remains a large orchestrator file; future modularization should be planned carefully and tested separately.
+- `app.py` remains the thin orchestrator after modularization; further cleanup should be behavior-preserving and tested separately.
 - Many thresholds and demo scenarios are intentionally explicit rather than learned from live data. This helps auditability but requires regression tests when calibrations change.
 - World Lens and the 9k allocation logic are contextual audit lenses only. They are not a mandate system, world parliament, country certification layer, or political authority claim.
 - Hosted deployments may expose platform-level logs outside ALETHEIA's app-code boundary; sensitive review should be local.
@@ -355,7 +351,7 @@ Allowed work:
 - test hygiene;
 - documentation navigation;
 - small behavior-preserving cleanup;
-- UI extraction that keeps `app.py` as orchestrator;
+- modularization cleanup that keeps app behavior stable;
 - archive hygiene for old patch files;
 - calibration fixes for existing deterministic scanner logic when structural relationships are missed.
 
@@ -404,6 +400,42 @@ The detailed patch archive should live in `docs/patch_archive/` and `docs/patch_
 - **Patch 218 — Pytest Active Suite Configuration:** makes plain `python -m pytest` collect the active release-gate suite by default. Legacy tests remain explicit inventory for cleanup and historical review. Documentation/configuration only; no runtime changes.
 - **Patch 219 — Legacy Test Inventory Cleanup Plan:** adds a formal cleanup plan, migration labels, and tests README so old failing tests are restored, archived, or deleted transparently rather than ignored. Documentation only; no runtime changes.
 
+### Modularization line
+
+- **Patch 220 — App Modularization Plan Only:** documented the safe split from monolithic `app.py` into components and pages.
+- **Patch 221 — Stage 1 / Semantic Pressure Components:** extracted shared semantic-pressure UI into `ui/components/semantic_pressure_panel.py`.
+- **Patches 222–225:** import hotfixes after Stage 1 extraction.
+- **Patch 226 — Navigation Containment Refactor:** replaced fragile top-level tabs with single-module navigation so inactive modules no longer render underneath each other.
+- **Patch 227 — Stage 2 / Metric Cards:** extracted shared metric/status cards into `ui/components/metric_cards.py`.
+- **Patches 228–230:** metric-card layout and trusted internal HTML rendering cleanup.
+- **Patch 231 — Stage 3 / Review Cards:** extracted review/repair card rendering into `ui/components/review_cards.py`.
+- **Patch 232 — Stage 4 / Tree Visuals:** extracted tree visual helpers into `ui/components/tree_visuals.py`.
+- **Patch 233 — Stage 5 / Receipt Blocks:** extracted shared receipt display blocks into `ui/components/receipt_blocks.py`.
+- **Patch 234 — Stage 6 / Module Headers:** extracted shared module notices and reference-point panels into `ui/components/module_headers.py`.
+- **Patch 235 — Receipt Reader Navigation Restore:** clarified Receipt Reader placement as a support utility.
+- **Patch 236 — Stage 7 / Protocol Guide Page:** extracted Protocol Guide to `ui/pages/protocol_guide.py`.
+- **Patch 237 — Receipt Reader Support Utility Placement Clarification:** made Receipt Reader location explicit under Why ALETHEIA → Support utilities.
+- **Patch 238 — Stage 8 / Boundary Cases Page:** extracted Boundary Cases to `ui/pages/boundary_cases.py`.
+- **Patch 239 — Stage 9 / Mirror Check Page:** extracted Mirror Check to `ui/pages/mirror_check.py`.
+- **Patch 240 — Receipt Reader Why ALETHEIA Rebase:** re-applied Receipt Reader placement copy after page extraction.
+- **Patch 241 — Mirror Check Layout Cleanup + Receipt Header Hint:** cleaned Mirror Check layout and added app-wide Receipt Reader location hint.
+- **Patch 242 — Stage 10 / Stress Test Page:** extracted Stress Test to `ui/pages/stress_test.py`.
+- **Patch 243 — Stage 11 / Evidence Lab Page:** extracted Evidence Lab to `ui/pages/evidence_lab.py`.
+- **Patch 244 — Stage 12 / World Lens Page:** extracted World Lens to `ui/pages/world_lens.py`.
+- **Patch 245 — Modularization Bridge Inventory:** documented remaining namespace bridges.
+- **Patch 247 — Mirror Check Bridge Removal:** replaced direct `globals()` handoff with explicit dependency map.
+- **Patch 248 — Stress Test Bridge Inventory / Prep:** documented Stress Test dependencies.
+- **Patch 249 — Stress Test Bridge Removal:** replaced direct `globals()` handoff with explicit dependency map.
+- **Patch 250 — Evidence Lab Bridge Removal:** replaced direct `globals()` handoff with explicit dependency map.
+- **Patch 251 — Evidence Lab hashlib Import Hotfix:** repaired missing import after Evidence Lab bridge removal.
+- **Patch 252 — World Lens Bridge Inventory / Prep:** documented World Lens dependency groups.
+- **Patch 253 — World Lens Bridge Removal:** replaced direct `globals()` handoff with explicit dependency map.
+- **Patch 254 — Modularization Final Audit:** documented the extracted components/pages and post-bridge cleanup roadmap.
+
+### Patch archive hygiene
+
+- **Patch 255 — Patch Notes Final Cleanup:** moved root-level patch files into `docs/patch_archive/`, updated patch notes/status, and kept root patch files limited to the current patch.
+
 ### Consolidated structural/refactor line
 
 - **Patch 101:** local baseline self-audit for watched protocol/release-boundary/AI Integrity files.
@@ -447,7 +479,8 @@ ALETHEIA separates **active release checks** from **legacy test inventory**. Thi
 Default active safe check:
 
 ```bat
-tools\run_checks.bat
+tools
+un_checks.bat
 ```
 
 Default pytest active suite:
@@ -469,19 +502,21 @@ What this means:
 Patch-specific check:
 
 ```bat
-tools\run_patch_checks.bat <patch_id>
+tools
+un_patch_checks.bat <patch_id>
 ```
 
 Protocol baseline self-audit:
 
 ```bat
-python tools\run_protocol_baseline_self_audit.py
+python tools/run_protocol_baseline_self_audit.py
 ```
 
 Legacy full checks are explicit and may fail while old tests await cleanup, deletion, or restoration:
 
 ```bat
-tools\run_full_checks.bat
+tools
+un_full_checks.bat
 ```
 
 See also:
@@ -498,14 +533,10 @@ See also:
 
 ```bash
 pip install -r requirements.txt
-streamlit run app.py
-```
-
-On Windows, if `streamlit` is not recognized, use:
-
-```bat
 python -m streamlit run app.py
 ```
+
+Using `python -m streamlit run app.py` is recommended on Windows because some environments do not expose the bare `streamlit` command.
 
 ---
 
@@ -534,80 +565,3 @@ The responsible interpretation is:
 Not:
 
 > This reading has final authority.
-
-
-## Patch 218 — Pytest Active Suite Configuration
-
-Status: READY FOR LOCAL REVIEW
-
-Patch 218 adds an explicit `pytest.ini` and a small active semantic regression suite under `tests/active/`. The default command below now represents the active release gate only:
-
-```bat
-python -m pytest
-```
-
-This avoids accidentally collecting the full historical test inventory when a reviewer runs the normal pytest command. Legacy tests remain available for explicit cleanup inventory and full historical review, but they are not treated as the default release gate.
-
-Updated surfaces:
-- `pytest.ini`
-- `tests/active/test_current_semantic_guardrails.py`
-- `docs/pytest_active_suite_config_v1.md`
-- README local checks section
-
-Boundary preserved: test-collection configuration only. No runtime behavior, scoring, semantic scanner logic, MEI7 gate, Z-axis behavior, Stress Test metrics, Evidence Lab calculations, World Lens math, receipt schema, external calls, telemetry, storage, certification, enforcement, or authority behavior changed.
-
-Validation target:
-
-```bat
-python -m pytest
-tools\run_checks.bat
-```
-
-Interpretation: default pytest and active checks pass; legacy inventory remains explicit and non-blocking unless separately cleaned up.
-
-
-## Patch 219 — Legacy Test Inventory Cleanup Plan
-
-Status: READY FOR LOCAL REVIEW
-
-Patch 219 documents how to handle old or failing historical tests after Patch 218 separated the active pytest gate from legacy inventory. It does not hide the old tests and it does not claim the full historical tree passes. It creates a cleanup standard for deciding which legacy tests should be restored, archived, or deleted.
-
-Added surfaces:
-
-- `docs/legacy_test_inventory_cleanup_plan_v1.md`
-- `docs/test_migration_labels_v1.md`
-- `tests/README.md`
-- README local-check references
-
-Default active command remains:
-
-```bat
-python -m pytest
-```
-
-Interpretation: active release-gate tests are the default check; legacy tests remain explicit inventory until triaged.
-
-Boundary preserved: documentation and test-governance notes only. No runtime behavior, scoring, semantic scanner logic, MEI7 gate, Z-axis behavior, Stress Test metrics, Evidence Lab calculations, World Lens math, receipt schema, external calls, telemetry, storage, certification, enforcement, or authority behavior changed.
-
-
----
-
-## App modularization roadmap
-
-ALETHEIA is currently a release-candidate prototype with a large Streamlit orchestrator. The project will not treat that as a conceptual weakness, but it is a maintainability issue.
-
-The next refactor phase should be planning-led and behavior-preserving:
-
-- move page-level flows from `app.py` into `ui/pages/`;
-- move repeated rendering blocks into `ui/components/`;
-- keep scanner, witness, empirical, protocol, and scoring logic in `core/`;
-- keep `app.py` as a thin entrypoint;
-- verify every extraction against the active regression suite.
-
-The detailed plan is in:
-
-```text
-docs/app_modularization_plan_v1.md
-```
-
-This roadmap is documentation-only. It does not change runtime behavior, scoring, scanner logic, receipts, World Lens math, Evidence Lab calculations, or the mirror boundary.
