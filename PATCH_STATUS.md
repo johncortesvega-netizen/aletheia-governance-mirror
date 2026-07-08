@@ -139,3 +139,11 @@ Status: READY. Extracts Mirror Check page body into `ui/pages/mirror_check.py` u
 ## Patch 240 — Receipt Reader Placement Rebase After Stage 9
 
 Receipt Reader placement copy re-applied after Stage 9. Current intended location: Why ALETHEIA → Support utilities → Receipt Reader — Standard View. Documentation-only/navigation-copy clarification; no runtime governance behavior changes.
+
+## Patch 241 — Mirror Check Layout Cleanup and Receipt Reader Header Hint
+Status: READY
+Type: UI readability / placement clarification
+
+- Mirror Check explanation panels changed to full-width sequential expanders.
+- Receipt Reader location added as a global header caption.
+- No scoring, scanner, MEI7, Z-axis, Evidence Lab, World Lens, receipt, telemetry, or authority-boundary changes.

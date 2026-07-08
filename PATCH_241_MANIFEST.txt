@@ -1,0 +1,14 @@
+PATCH 241 — Mirror Check Layout Cleanup and Receipt Reader Header Hint
+
+Changed files:
+- app.py
+- docs/mirror_check_layout_and_receipt_reader_header_hint_v1.md
+- PATCH_STATUS.md
+- PATCH_241_MANIFEST.txt
+- PATCH_241_RECOVERY_NOTE.md
+- PATCH_241_DELETE_LIST.txt
+
+Summary:
+- Cleans Mirror Check explanatory panels after Stage 9 extraction.
+- Adds a visible global module-header hint that Receipt Reader is located in Why ALETHEIA → Support utilities.
+- No runtime scoring/governance changes.
