@@ -52,7 +52,7 @@ from core.ai_integrity_mirror import (
     audit_ai_integrity_artifact,
     build_ai_static_scan_protocol_context,
 )
-from core.semantic_pressure_scanner import scan_semantic_pressure, format_semantic_pressure_report, pressure_code_rows, reviewability_guidance_rows
+from core.semantic_pressure_scanner import scan_semantic_pressure, format_semantic_pressure_report
 
 from core.world_lens import (
     country_available_years,
@@ -1229,15 +1229,35 @@ st.markdown(
         box-shadow: 0 8px 18px rgba(101,121,98,0.10) !important;
     }
 
-    /* Patch 202 — Streamlit tab containment rollback.
-       The earlier :has()/nth-of-type containment guard could make nested or
-       main tab panels render as one long continuous page in some browser /
-       Streamlit combinations, especially after Stress Test interactions.
-       Keep only a narrow native-hidden-panel rule and let Streamlit manage
-       the active tab state. */
+    /* Patch 220 — Streamlit tab inactive-panel guard.
+       Keep this deliberately narrow: no :has(), no nth-of-type mapping, and
+       no assumptions about tab order. Some Streamlit/browser combinations keep
+       inactive panels marked with aria-hidden/data-state rather than a literal
+       hidden attribute after repeated interactions. When that happens, main
+       modules such as Evidence Lab/World Lens can appear to spill into one
+       long page. This rule only hides panels that Streamlit itself marks as
+       inactive; it does not decide which tab is active. */
     .stTabs [role="tabpanel"][hidden],
-    .stTabs [data-baseweb="tab-panel"][hidden] {
+    .stTabs [data-baseweb="tab-panel"][hidden],
+    .stTabs [role="tabpanel"][aria-hidden="true"],
+    .stTabs [data-baseweb="tab-panel"][aria-hidden="true"],
+    .stTabs [role="tabpanel"][data-state="inactive"],
+    .stTabs [data-baseweb="tab-panel"][data-state="inactive"] {
         display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .stTabs [role="tabpanel"][aria-hidden="false"],
+    .stTabs [data-baseweb="tab-panel"][aria-hidden="false"],
+    .stTabs [role="tabpanel"][data-state="active"],
+    .stTabs [data-baseweb="tab-panel"][data-state="active"] {
+        visibility: visible !important;
+        height: auto !important;
+        min-height: initial !important;
+        overflow: visible !important;
     }
 
 
@@ -3854,7 +3874,6 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     threshold_direction_display = friendly_threshold_direction_label(str(threshold_mapping.get("threshold_direction", "Not recorded")))
     safe_threshold_direction = html.escape(threshold_direction_display)
     threshold_z_axis = float(threshold_mapping.get("z_axis_position", 0.0) or 0.0)
-    threshold_z_axis_zone = str(threshold_mapping.get("z_axis_zone", "Standard review mapping") or "Standard review mapping")
     threshold_repair_index = float(threshold_mapping.get("repair_index", 0.0) or 0.0)
     threshold_repair_question_index = float(threshold_mapping.get("repair_question_index", threshold_repair_index) or 0.0)
     threshold_confirmed_repair_capacity = float(threshold_mapping.get("confirmed_repair_capacity", threshold_repair_index) or 0.0)
@@ -3873,7 +3892,7 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     if threshold_mapping:
         detail_rows.append(
             '<div style="margin-top:0.15rem;"><strong>Threshold direction:</strong> '
-            f'{safe_threshold_direction} · Z-axis {threshold_z_axis:.3f} / 0.9999 · {html.escape(threshold_z_axis_zone)} · Confirmed repair {threshold_confirmed_repair_capacity:.3f}</div>'
+            f'{safe_threshold_direction} · Z-axis {threshold_z_axis:.3f} / 0.9999 · Confirmed repair {threshold_confirmed_repair_capacity:.3f}</div>'
         )
     detail_rows_html = "".join(detail_rows)
 
@@ -3950,11 +3969,9 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
                 tcols[1].metric("Z-axis", f"{float(threshold_mapping.get('z_axis_position', 0.0)):.3f} / 0.9999")
                 tcols[2].metric("Repair questions", f"{float(threshold_mapping.get('repair_question_index', threshold_mapping.get('repair_index', 0.0))):.3f}")
                 tcols[3].metric("Confirmed repair", f"{float(threshold_mapping.get('confirmed_repair_capacity', threshold_mapping.get('repair_index', 0.0))):.3f}")
-                st.markdown(f"**Z-axis zone:** `{html.escape(str(threshold_mapping.get('z_axis_zone', 'Standard review mapping')))}`")
-                st.caption(str(threshold_mapping.get('z_axis_repair_note', 'No separate repair-zone mapping applied.')))
                 st.caption(
                     "Receipt preview only: this maps whether the reading is moving toward capture pressure, a balanced review zone, or the human/system boundary. "
-                    "It does not create a new decision or enforcement path. Repair-zone values show reviewability, not approval. Repair questions are a route, not proof that safeguards already exist. Z=1.0000 remains outside ALETHEIA’s claim."
+                    "It does not create a new decision or enforcement path. Repair questions are a route, not proof that safeguards already exist. Z=1.0000 remains outside ALETHEIA’s claim."
                 )
                 st.info(str(threshold_mapping.get("asymptote_note", "ALETHEIA does not claim final safety, final truth, or final authority. Ultimate questions and final authority remain outside code, metrics, receipts, hashes, trees, 9k structures, and institutional power.")))
                 st.caption(str(threshold_mapping.get("nine_k_threshold_steward_note", "9k is a human anti-tyranny scaffold / threshold steward, not Sanctuary or final legitimacy.")))
@@ -4334,47 +4351,6 @@ def semantic_pressure_summary_message(scan) -> tuple[str, str]:
     )
 
 
-
-def _semantic_pressure_rows_by_code(codes):
-    """Return pressure-code explanation/guidance rows keyed by code for card rendering."""
-    code_list = [str(code) for code in (codes or []) if str(code or "").strip()]
-    explanation_map = {str(row.get("Code", "")): str(row.get("Plain-English meaning", "")) for row in pressure_code_rows(code_list)}
-    guidance_map = {
-        str(row.get("Pressure code", "")): (
-            str(row.get("Reviewability goal", "")),
-            str(row.get("Structural guidance", "")),
-        )
-        for row in reviewability_guidance_rows(code_list)
-    }
-    return code_list, explanation_map, guidance_map
-
-
-def _render_pressure_code_cards(codes) -> None:
-    """Render readable pressure-code cards instead of cramped dataframe cells."""
-    code_list, explanation_map, guidance_map = _semantic_pressure_rows_by_code(codes)
-    if not code_list:
-        return
-
-    st.markdown("**Pressure-code matrix**")
-    st.caption(
-        "Stable diagnostic codes explaining which pressure patterns were detected. "
-        "Codes are not verdicts or certifications."
-    )
-    for idx, code in enumerate(code_list, start=1):
-        explanation = explanation_map.get(code, "Review signal requiring human interpretation.")
-        goal, guidance = guidance_map.get(
-            code,
-            ("Make the claim reviewable", "Add evidence basis, limits, appeal, correction, and independent review routes."),
-        )
-        with st.container(border=True):
-            st.markdown(f"**{idx}. `{html.escape(code)}`**")
-            st.caption(html.escape(explanation))
-            st.markdown(f"**Reviewability goal:** {html.escape(goal)}")
-            st.markdown(f"- {html.escape(guidance)}")
-    with st.expander("Show pressure-code table", expanded=False):
-        st.dataframe(pd.DataFrame(pressure_code_rows(code_list)), use_container_width=True, hide_index=True)
-
-
 def render_semantic_pressure_panel(
     text_or_scan,
     *,
@@ -4405,7 +4381,6 @@ def render_semantic_pressure_panel(
     normalized_text = str(_semantic_payload_value(semantic_scan, "normalized_text", "") or "")
     hits = _semantic_payload_hits(semantic_scan)
     notes = _semantic_payload_notes(semantic_scan)
-    pressure_codes = list(_semantic_payload_value(semantic_scan, "pressure_codes", ()) or ())
 
     # UI semantics: the scanner's internal SANCTUARY value can also mean
     # "no semantic relationship detected." Showing that as SANCTUARY beside an
@@ -4472,8 +4447,6 @@ def render_semantic_pressure_panel(
             detail_cols[1].metric("Modal pressure", str(modal_count))
             detail_cols[2].metric("Reversibility", str(sovereignty_count))
             detail_cols[3].metric("Fail-closed", "YES" if fail_closed else "NO")
-            if pressure_codes:
-                _render_pressure_code_cards(pressure_codes)
             if notes:
                 st.markdown("**Notes**")
                 for note in notes:
@@ -4494,7 +4467,6 @@ def render_semantic_pressure_panel(
                     f"Modal pressure signals: {modal_count}",
                     f"Sovereignty / reversibility signals: {sovereignty_count}",
                     f"Fail-closed review: {'YES' if fail_closed else 'NO'}",
-                    f"Pressure codes: {', '.join(pressure_codes) if pressure_codes else 'none'}",
                     "",
                     "Notes:",
                     *[f"- {note}" for note in notes],

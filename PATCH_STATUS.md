@@ -4550,3 +4550,9 @@ Changed files:
 - PATCH_219_DELETE_LIST.txt
 
 Boundary: documentation/test-governance only. No runtime behavior, scoring, semantic scanner logic, MEI7 gate, Z-axis behavior, Stress Test metrics, Evidence Lab calculations, World Lens math, receipt schema, external calls, telemetry, storage, certification, enforcement, or authority behavior changed.
+
+## Patch 220 — Streamlit Tab Inactive-Panel Guard
+Status: READY
+Type: CSS-only UI containment hotfix
+Scope: app.py tab panel visibility guard
+Notes: Adds inactive-panel hiding for aria-hidden/data-state tab panel markers without :has(), nth-of-type, or manual tab routing. Intended to prevent Evidence Lab/World Lens/module content from spilling into one long page after repeated Streamlit interactions.

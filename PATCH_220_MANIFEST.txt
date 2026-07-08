@@ -1,0 +1,19 @@
+PATCH 220 — Streamlit Tab Inactive-Panel Guard
+
+Changed files:
+- app.py
+- PATCH_STATUS.md
+- PATCH_220_MANIFEST.txt
+- PATCH_220_RECOVERY_NOTE.md
+- PATCH_220_DELETE_LIST.txt
+
+Purpose:
+- Fix intermittent UI spillover where Evidence Lab / World Lens / other module content can appear as one long page inside a single tab after repeated Streamlit interactions.
+- Restore native tab containment without reintroducing fragile :has() or nth-of-type CSS rules.
+
+Runtime impact:
+- CSS-only UI containment guard.
+- No scoring, scanner, MEI7 gate, Z-axis, Stress Test metrics, Evidence Lab calculations, World Lens math, receipts, telemetry, pytest configuration, or authority behavior changed.
+
+Validation:
+- python -m py_compile app.py
