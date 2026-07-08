@@ -1,0 +1,8 @@
+PATCH 256 DELETE LIST
+
+No production files are deleted by this patch.
+
+Quarantined from pytest collection through tests/conftest.py, but retained on disk:
+- tests/test_scoring_repair_questions.py
+- tests/test_patch_20_1_batch_question_upload_mode.py
+- historical root patch-artifact contract tests listed in tests/conftest.py

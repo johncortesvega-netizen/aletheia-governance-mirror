@@ -1,0 +1,18 @@
+Patch 257 — Modularization Test Path Repair
+
+Changed files:
+- tests/active/test_modularization_current_paths.py
+- tests/README.md
+- docs/modularization_test_path_repair_patch_257.md
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_257_MANIFEST.txt
+- PATCH_257_RECOVERY_NOTE.md
+- PATCH_257_DELETE_LIST.txt
+
+Runtime behavior changed: no
+Scanner/scoring changed: no
+MEI7/Z-axis changed: no
+Receipts changed: no
+Telemetry/storage changed: no
+Authority boundary changed: no

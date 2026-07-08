@@ -1,21 +1,34 @@
+# Patch 257 — Modularization Test Path Repair
+
+Patch 257 adds `tests/active/test_modularization_current_paths.py`, an active
+release-gate contract for the new modularized layout. It replaces stale
+historical assumptions that page/component strings must still live directly in
+`app.py`.
+
+The new test checks extracted page modules, shared component modules, dependency
+map usage, app orchestration imports/calls, and absence of the broad direct
+`render_*_page(globals())` calls for the core pages.
+
+No runtime logic changed.
+
 # ALETHEIA Patch Notes
 
 ## Current patch
 
-### Patch 255 — Patch Notes Final Cleanup
+### Patch 256 — Legacy Test Quarantine / Import-Break Cleanup
 
-Patch 255 performs the final patch-note hygiene pass after the modularization and bridge-removal sequence.
+Patch 256 performs the first concrete legacy-test cleanup step after the active-suite split, modularization sequence, and Patch 255 patch-archive cleanup.
 
-It preserves the patch audit trail while keeping the repository root clean:
+It adds `tests/conftest.py` with explicit `collect_ignore` quarantine entries for:
 
-- current patch artifacts stay in root;
-- older patch manifests move to `docs/patch_archive/manifests/`;
-- older recovery notes move to `docs/patch_archive/recovery_notes/`;
-- older delete lists move to `docs/patch_archive/delete_lists/`.
+- two historical test files with imports to helpers that no longer exist in the current codebase;
+- historical patch-contract files that still expect old root-level `PATCH_N_*` artifacts after those artifacts were intentionally archived under `docs/patch_archive/`.
+
+The quarantined files are retained on disk for audit continuity. This patch does not rewrite them as passing tests and does not claim they validate the current release surface.
 
 No runtime behavior changed.
 
-## Recent architecture sequence
+## Recent architecture and cleanup sequence
 
 - Patch 245 — Modularization Bridge Inventory
 - Patch 246 — App-wide Copy Cleanup Pass
@@ -28,16 +41,8 @@ No runtime behavior changed.
 - Patch 253 — World Lens Bridge Removal
 - Patch 254 — Modularization Final Audit
 - Patch 255 — Patch Notes Final Cleanup
-
-## Current architecture summary
-
-The app has moved from one large Streamlit orchestrator toward a modular page/component structure:
-
-- shared UI blocks are in `ui/components/`;
-- major pages are in `ui/pages/`;
-- broad page-level `globals()` handoffs have been replaced with dependency maps;
-- patch artifacts are archived instead of cluttering root.
+- Patch 256 — Legacy Test Quarantine / Import-Break Cleanup
 
 ## Runtime boundary
 
-Patch 255 is documentation and repository hygiene only. It does not change governance logic, scanner behavior, scoring, receipts, World Lens math, Evidence Lab calculations, telemetry, storage, or the mirror-not-throne boundary.
+Patch 256 is test-collection and documentation hygiene only. It does not change governance logic, scanner behavior, scoring, receipts, World Lens math, Evidence Lab calculations, telemetry, storage, or the mirror-not-throne boundary.

@@ -1,0 +1,22 @@
+PATCH 256 — Legacy Test Quarantine / Import-Break Cleanup
+
+Changed files:
+- tests/conftest.py
+- tests/README.md
+- docs/legacy_test_quarantine_patch_256.md
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_256_MANIFEST.txt
+- PATCH_256_RECOVERY_NOTE.md
+- PATCH_256_DELETE_LIST.txt
+
+Purpose:
+- Quarantine historical tests with broken imports or superseded root patch-artifact assumptions.
+- Preserve legacy test files on disk for audit continuity.
+- Avoid presenting obsolete tests as active release validation.
+
+Runtime impact:
+- None.
+
+Boundary:
+- No scanner, scoring, MEI7, Z-axis, Stress Test, Evidence Lab, World Lens, receipt, telemetry, storage, certification, enforcement, or authority behavior changed.

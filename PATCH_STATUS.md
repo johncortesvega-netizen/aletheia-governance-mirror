@@ -1,7 +1,27 @@
+# Patch 257 — Modularization Test Path Repair
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 257 adds active current-structure tests for the post-modularization layout.
+It establishes that `app.py` is now the orchestrator, while page modules live in
+`ui/pages/` and shared rendering helpers live in `ui/components/`.
+
+Boundary preserved: test/documentation update only. No runtime behavior, scoring,
+semantic scanner logic, MEI7, Z-axis behavior, Stress Test metrics, Evidence Lab
+calculations, World Lens math, receipt schema, external calls, telemetry,
+storage, certification, enforcement, or authority behavior changed.
+
+Validation target:
+
+```bat
+python -m py_compile tests\active\test_modularization_current_paths.py
+python -m pytest
+```
+
 # ALETHEIA Patch Status
 
-**Current patch:** 255 — Patch Notes Final Cleanup  
-**Current mode:** Modularized release-candidate refinement / repository hygiene  
+**Current patch:** 256 — Legacy Test Quarantine / Import-Break Cleanup  
+**Current mode:** Modularized release-candidate refinement / legacy-test hygiene  
 **Runtime impact of current patch:** None
 
 ## Current stable architecture snapshot
@@ -31,18 +51,15 @@ Bridge-removal status:
 - Evidence Lab — completed
 - World Lens — completed
 
-## Current root policy
+## Current test hygiene status
 
-The repository root keeps only the current patch artifacts and current patch summaries:
+Patch 256 adds explicit collection quarantine for legacy tests that are known to target superseded repository contracts:
 
-- `PATCH_STATUS.md`
-- `PATCH_NOTES.md`
-- `PATCH_255_MANIFEST.txt`
-- `PATCH_255_RECOVERY_NOTE.md`
-- `PATCH_255_DELETE_LIST.txt`
+- two broken-import historical test files;
+- old root-level patch-artifact contract tests superseded by Patch 255's `docs/patch_archive/` layout.
 
-Older patch artifacts are preserved in `docs/patch_archive/`.
+This keeps the active suite honest while preserving legacy files for audit continuity and later restoration/deletion decisions.
 
 ## Boundary
 
-ALETHEIA remains a mirror, not a throne. Patch 255 does not change scanner logic, scoring, MEI7 gates, Z-axis mapping, receipts, Evidence Lab calculations, World Lens math, navigation, telemetry, storage, or authority boundaries.
+ALETHEIA remains a mirror, not a throne. Patch 256 does not change scanner logic, scoring, MEI7 gates, Z-axis mapping, receipts, Evidence Lab calculations, World Lens math, navigation, telemetry, storage, or authority boundaries.

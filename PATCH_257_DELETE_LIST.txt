@@ -1,0 +1,6 @@
+Patch 257 delete list
+
+No files are deleted.
+
+Patch 257 adds a current active modularization path contract and documentation.
+It does not delete or rewrite historical legacy tests.
