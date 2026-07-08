@@ -1,0 +1,19 @@
+Patch 261 — Legacy Manifest Quarantine Completion
+
+Changed files:
+- tests/conftest.py
+- docs/legacy_manifest_quarantine_completion_patch_261.md
+- docs/refactor_pause_roadmap_patch_261.md
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_261_MANIFEST.txt
+- PATCH_261_RECOVERY_NOTE.md
+- PATCH_261_DELETE_LIST.txt
+
+Purpose:
+- Complete the root-level patch-artifact quarantine after follow-up full-suite triage found 16 additional historical manifest-contract tests.
+- Preserve tests on disk for audit continuity while preventing obsolete root-artifact contracts from blocking collection.
+- Add a short roadmap for the next chat while keeping routing/state/config refactors on hold.
+
+Runtime impact:
+- None.

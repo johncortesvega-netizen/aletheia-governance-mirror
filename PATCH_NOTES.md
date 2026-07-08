@@ -2,22 +2,19 @@
 
 ## Current patch
 
-### Patch 260 — App Shell Helper Extraction
+### Patch 261 — Legacy Manifest Quarantine Completion
 
-Patch 260 is the first implementation step after the Patch 259 app-shell
-inventory.
+Patch 261 completes a follow-up cleanup from Patch 256.
 
-It moves the global Streamlit page setup and large CSS theme block out of
-`app.py` and into `ui/app_shell.py`:
+A later full-suite triage found 16 additional historical patch-contract tests that still expected old root-level `PATCH_N_*` artifacts. Patch 255 intentionally moved old patch artifacts to `docs/patch_archive/`, so these tests were checking a superseded documentation layout rather than runtime behavior.
 
-- `ALETHEIA_GLOBAL_CSS`
-- `apply_app_page_config_and_theme(st)`
+Patch 261 adds those 16 tests to `PATCH_ARTIFACT_ROOT_CONTRACT_QUARANTINE` in `tests/conftest.py`.
 
-`app.py` now calls the helper instead of carrying the full inline setup block.
+The tests remain on disk for audit continuity. They can later be restored by rewriting them to inspect the patch archive rather than repository root.
 
-This is a shell extraction only. It does not alter scanner behavior, scoring,
-MEI7, Z-axis, receipts, Evidence Lab calculations, World Lens math, navigation,
-telemetry/storage, or authority-boundary behavior.
+Patch 261 also adds `docs/refactor_pause_roadmap_patch_261.md` for the next chat. Routing extraction, session-state extraction, and config extraction remain on hold.
+
+This is test-governance cleanup only. It does not alter scanner behavior, scoring, MEI7, Z-axis, receipts, Evidence Lab calculations, World Lens math, navigation, telemetry/storage, or authority-boundary behavior.
 
 ## Recent architecture and cleanup sequence
 
@@ -37,3 +34,4 @@ telemetry/storage, or authority-boundary behavior.
 - Patch 258 — Behavior Regression Review
 - Patch 259 — App Shell Inventory / Thin Entrypoint Plan
 - Patch 260 — App Shell Helper Extraction
+- Patch 261 — Legacy Manifest Quarantine Completion

@@ -2,25 +2,33 @@
 
 ## Current patch
 
-Patch 260 — App Shell Helper Extraction
+Patch 261 — Legacy Manifest Quarantine Completion
 
 Status: READY FOR LOCAL REVIEW
 
-Patch 260 moves the global Streamlit page configuration and ALETHEIA CSS theme
-from `app.py` into `ui/app_shell.py`.
+Patch 261 completes the Patch 256 legacy manifest quarantine by adding 16 additional historical patch-contract tests to `PATCH_ARTIFACT_ROOT_CONTRACT_QUARANTINE` in `tests/conftest.py`.
+
+These tests still expected root-level `PATCH_N_*` files after Patch 255 intentionally moved old patch artifacts into `docs/patch_archive/`.
 
 Validation target:
 
 ```bat
-python -m py_compile app.py uipp_shell.py testsctive	est_app_shell_extraction.py
+python -m py_compile tests\conftest.py
 python -m pytest
+python -m pytest tests --collect-only -q
 ```
 
-Expected active result: active release suite passes.
+Boundary preserved: no scanner, scoring, MEI7, Z-axis, receipt, Evidence Lab, World Lens, navigation, telemetry/storage, or authority-boundary behavior is changed.
 
-Boundary preserved: no scanner, scoring, MEI7, Z-axis, receipt, Evidence Lab,
-World Lens, navigation, telemetry/storage, or authority-boundary behavior is
-changed.
+## Hold note
+
+The deeper refactor steps formerly discussed as 261–263 are paused:
+
+- routing extraction;
+- session-state extraction;
+- config/demo-data extraction.
+
+Patch 261 is a test-governance completion patch, not a routing refactor.
 
 ## Recent sequence
 
@@ -30,3 +38,4 @@ changed.
 - Patch 258 — Behavior Regression Review
 - Patch 259 — App Shell Inventory / Thin Entrypoint Plan
 - Patch 260 — App Shell Helper Extraction
+- Patch 261 — Legacy Manifest Quarantine Completion

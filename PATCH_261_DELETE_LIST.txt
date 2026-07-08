@@ -1,0 +1,5 @@
+Patch 261 delete list
+
+No files are deleted.
+
+Historical tests remain on disk for audit continuity. Patch 261 only adds 16 obsolete root-artifact contract tests to the existing pytest collection quarantine list in `tests/conftest.py`.
