@@ -2,33 +2,40 @@
 
 ## Current patch
 
-Patch 261 — Legacy Manifest Quarantine Completion
+Patch 263 — Controlled Router Extraction
 
 Status: READY FOR LOCAL REVIEW
 
-Patch 261 completes the Patch 256 legacy manifest quarantine by adding 16 additional historical patch-contract tests to `PATCH_ARTIFACT_ROOT_CONTRACT_QUARANTINE` in `tests/conftest.py`.
+Patch 263 moves the top-level controlled router out of `app.py` and into `ui/main.py` while preserving current navigation behavior.
 
-These tests still expected root-level `PATCH_N_*` files after Patch 255 intentionally moved old patch artifacts into `docs/patch_archive/`.
+It creates `ui.main.render_controlled_router(...)` and keeps `app.py` as the Streamlit entrypoint. The router now owns:
+
+- selected-module resolution through the existing `st.radio("ALETHEIA module", ...)` selector;
+- `key="aletheia_active_module"`;
+- Receipt Reader location caption;
+- conditional dispatch for Mirror Check, Stress Test, Evidence Lab, World Lens, Boundary Cases, Protocol Guide, and Why ALETHEIA;
+- Receipt Reader — Standard View under Why ALETHEIA support utilities.
 
 Validation target:
 
 ```bat
-python -m py_compile tests\conftest.py
-python -m pytest
-python -m pytest tests --collect-only -q
+python -m pytest tests\active -q
+python -m pytest -q
 ```
 
-Boundary preserved: no scanner, scoring, MEI7, Z-axis, receipt, Evidence Lab, World Lens, navigation, telemetry/storage, or authority-boundary behavior is changed.
+Boundary preserved: no scanner, scoring, MEI7, Z-axis, receipt parsing, Evidence Lab, World Lens, session-state default, telemetry/storage, native multipage, config/static-data, or authority-boundary behavior is changed.
 
 ## Hold note
 
-The deeper refactor steps formerly discussed as 261–263 are paused:
+Patch 263 is a controlled-router extraction patch only.
 
-- routing extraction;
+Still paused until separate patches:
+
 - session-state extraction;
-- config/demo-data extraction.
+- config/demo-data extraction;
+- Streamlit native multipage migration.
 
-Patch 261 is a test-governance completion patch, not a routing refactor.
+Patch 264 should be a state-extraction prep patch: map session-state keys/defaults/lifecycle before moving state helpers.
 
 ## Recent sequence
 
@@ -39,3 +46,5 @@ Patch 261 is a test-governance completion patch, not a routing refactor.
 - Patch 259 — App Shell Inventory / Thin Entrypoint Plan
 - Patch 260 — App Shell Helper Extraction
 - Patch 261 — Legacy Manifest Quarantine Completion
+- Patch 262 — Routing Extraction Prep
+- Patch 263 — Controlled Router Extraction

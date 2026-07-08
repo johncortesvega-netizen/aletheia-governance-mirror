@@ -2,19 +2,63 @@
 
 ## Current patch
 
-### Patch 261 — Legacy Manifest Quarantine Completion
+### Patch 263 — Controlled Router Extraction
 
-Patch 261 completes a follow-up cleanup from Patch 256.
+Patch 263 performs the runtime move prepared by Patch 262: the top-level controlled router is now owned by `ui/main.py`, while `app.py` remains the Streamlit entrypoint.
 
-A later full-suite triage found 16 additional historical patch-contract tests that still expected old root-level `PATCH_N_*` artifacts. Patch 255 intentionally moved old patch artifacts to `docs/patch_archive/`, so these tests were checking a superseded documentation layout rather than runtime behavior.
+Added:
 
-Patch 261 adds those 16 tests to `PATCH_ARTIFACT_ROOT_CONTRACT_QUARANTINE` in `tests/conftest.py`.
+- `ui/main.py`
+- `docs/controlled_router_extraction_patch_263.md`
+- `docs/controlled_router_extraction_patch_263_summary.md`
+- `PATCH_263_MANIFEST.txt`
+- `PATCH_263_RECOVERY_NOTE.md`
+- `PATCH_263_DELETE_LIST.txt`
 
-The tests remain on disk for audit continuity. They can later be restored by rewriting them to inspect the patch archive rather than repository root.
+Updated:
 
-Patch 261 also adds `docs/refactor_pause_roadmap_patch_261.md` for the next chat. Routing extraction, session-state extraction, and config extraction remain on hold.
+- `app.py` now delegates to `render_controlled_router(...)`.
+- `tests/active/test_patch_262_routing_extraction_prep.py` now treats `ui/main.py` as the canonical router owner after Patch 263.
+- `PATCH_STATUS.md` records Patch 263 as current.
 
-This is test-governance cleanup only. It does not alter scanner behavior, scoring, MEI7, Z-axis, receipts, Evidence Lab calculations, World Lens math, navigation, telemetry/storage, or authority-boundary behavior.
+Preserved:
+
+- exact top-level navigation labels and order;
+- `key="aletheia_active_module"`;
+- Receipt Reader placement under Why ALETHEIA support utilities;
+- controlled-router dispatch targets;
+- app.py as the entrypoint.
+
+Not changed:
+
+- no Streamlit native multipage migration;
+- no session-state extraction;
+- no config/static-data extraction;
+- no scanner/scoring/taxonomy/Z-axis/receipt behavior changes.
+
+## Previous patch
+
+### Patch 262 — Routing Extraction Prep
+
+Patch 262 prepares the next architecture step without moving runtime code.
+
+The current build already completed the app-shell inventory/extraction sequence in Patches 259–260 and the legacy manifest quarantine completion in Patch 261. Patch 262 therefore does not repeat inventory or shell work. Instead, it records the current `app.py` controlled-router contract so the next patch can extract routing deliberately.
+
+Added:
+
+- `docs/routing_extraction_prep_patch_262.md`
+- `docs/routing_extraction_prep_patch_262_summary.md`
+- `tests/active/test_patch_262_routing_extraction_prep.py`
+
+The new active tests protect:
+
+- exact top-level navigation labels and order;
+- the `st.radio` selector contract;
+- `key="aletheia_active_module"`;
+- the Receipt Reader location hint and support-utility placement;
+- the current dispatch targets for Mirror Check, Stress Test, Evidence Lab, World Lens, Boundary Cases, Protocol Guide, and Why ALETHEIA.
+
+This is a no-runtime-move patch. It does not create `ui/main.py`, switch to native multipage, alter session-state defaults, move config/static values, or change scanner/scoring/taxonomy/Z-axis/receipt behavior.
 
 ## Recent architecture and cleanup sequence
 
@@ -35,3 +79,5 @@ This is test-governance cleanup only. It does not alter scanner behavior, scorin
 - Patch 259 — App Shell Inventory / Thin Entrypoint Plan
 - Patch 260 — App Shell Helper Extraction
 - Patch 261 — Legacy Manifest Quarantine Completion
+- Patch 262 — Routing Extraction Prep
+- Patch 263 — Controlled Router Extraction

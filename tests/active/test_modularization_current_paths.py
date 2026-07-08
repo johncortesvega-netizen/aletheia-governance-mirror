@@ -68,10 +68,11 @@ def test_current_component_modules_exist_and_hold_shared_renderers():
             assert token in source, f"{token!r} missing from {relative_path}"
 
 
-def test_app_py_is_orchestrator_not_page_source_container():
+def test_app_py_delegates_to_controlled_router_after_patch_263():
     app = read("app.py")
 
     required_imports = [
+        "from ui.main import render_controlled_router",
         "from ui.pages.mirror_check import mirror_check_dependency_map, render_mirror_check_page",
         "from ui.pages.stress_test import render_stress_test_page, stress_test_dependency_map",
         "from ui.pages.evidence_lab import evidence_lab_dependency_map, render_evidence_lab_page",
@@ -82,16 +83,33 @@ def test_app_py_is_orchestrator_not_page_source_container():
     for token in required_imports:
         assert token in app
 
+    required_delegate_tokens = [
+        "render_controlled_router(",
+        "module_globals=globals()",
+        "render_mirror_check_page=render_mirror_check_page",
+        "stress_test_dependency_map=stress_test_dependency_map",
+        "evidence_lab_dependency_map=evidence_lab_dependency_map",
+        "world_lens_dependency_map=world_lens_dependency_map",
+        "render_boundary_cases_page=render_boundary_cases_page",
+        "render_protocol_guide_page=render_protocol_guide_page",
+    ]
+    for token in required_delegate_tokens:
+        assert token in app
+
+
+def test_ui_main_is_current_top_level_router_owner():
+    main = read("ui/main.py")
+
     required_calls = [
-        "render_mirror_check_page(mirror_check_dependency_map(globals()))",
-        "render_stress_test_page(stress_test_dependency_map(globals()))",
-        "render_evidence_lab_page(evidence_lab_dependency_map(globals()))",
-        "render_world_lens_page(world_lens_dependency_map(globals()))",
+        "render_mirror_check_page(mirror_check_dependency_map(module_globals))",
+        "render_stress_test_page(stress_test_dependency_map(module_globals))",
+        "render_evidence_lab_page(evidence_lab_dependency_map(module_globals))",
+        "render_world_lens_page(world_lens_dependency_map(module_globals))",
         "render_boundary_cases_page(",
         "render_protocol_guide_page()",
     ]
     for token in required_calls:
-        assert token in app
+        assert token in main
 
 
 def test_no_broad_page_bridge_calls_remain_for_core_pages():

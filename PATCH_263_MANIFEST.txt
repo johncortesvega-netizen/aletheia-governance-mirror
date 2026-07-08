@@ -1,0 +1,21 @@
+Patch 263 — Controlled Router Extraction
+
+Edited/added files:
+- app.py
+- ui/main.py
+- tests/active/test_patch_262_routing_extraction_prep.py
+- docs/controlled_router_extraction_patch_263.md
+- docs/controlled_router_extraction_patch_263_summary.md
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_263_MANIFEST.txt
+- PATCH_263_RECOVERY_NOTE.md
+- PATCH_263_DELETE_LIST.txt
+
+Runtime intent:
+- Move top-level selected-module resolution and dispatch into ui/main.py.
+- Preserve controlled-router behavior exactly.
+
+Validation:
+- python -m pytest tests/active -q
+- python -m pytest -q

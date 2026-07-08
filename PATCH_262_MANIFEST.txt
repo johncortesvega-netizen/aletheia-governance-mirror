@@ -1,0 +1,19 @@
+Patch 262 — Routing Extraction Prep
+
+Changed files:
+- docs/routing_extraction_prep_patch_262.md
+- docs/routing_extraction_prep_patch_262_summary.md
+- tests/active/test_patch_262_routing_extraction_prep.py
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_262_MANIFEST.txt
+- PATCH_262_RECOVERY_NOTE.md
+- PATCH_262_DELETE_LIST.txt
+
+Purpose:
+- Prepare the controlled-router extraction without changing runtime behavior.
+- Document the current app.py routing owner, navigation labels/order, state key, Receipt Reader placement, and dispatch targets.
+- Add focused active tests so Patch 263 can move routing deliberately.
+
+Runtime impact:
+- None.

@@ -30,6 +30,7 @@ from ui.module_intro import render_boundary_cases_intro, render_consent_audit_in
 from ui.privacy_audit_panel import render_privacy_boundary_audit_panel
 from ui.receipt_reader import render_receipt_reader_standard_view
 from ui.module_page_template import ModulePageTemplateCopy, render_module_page_template_intro
+from ui.main import render_controlled_router
 from ui.input_clarity import (
     render_language_calibration_caveat,
     render_direct_csv_read_failed,
@@ -2898,61 +2899,25 @@ def render_audit_module_integrity_panel(*, expanded: bool = False):
 
 
 
-# Patch 226: top-level modules use single-module conditional navigation instead of st.tabs.
-# Streamlit tabs render all tab bodies internally; that can leak inactive module content
-# into one long page after reruns. This radio keeps only the selected module rendered.
-selected_top_module = st.radio(
-    "ALETHEIA module",
-    APP_NAVIGATION_LABELS,
-    horizontal=True,
-    label_visibility="collapsed",
-    key="aletheia_active_module",
+render_controlled_router(
+    st,
+    app_navigation_labels=APP_NAVIGATION_LABELS,
+    app_version=APP_VERSION,
+    module_globals=globals(),
+    update_protocol_state=update_protocol_state,
+    render_shared_protocol_state_notice=render_shared_protocol_state_notice,
+    resolve_about_header_image=resolve_about_header_image,
+    render_stress_test_page=render_stress_test_page,
+    stress_test_dependency_map=stress_test_dependency_map,
+    render_boundary_cases_page=render_boundary_cases_page,
+    render_evidence_lab_page=render_evidence_lab_page,
+    evidence_lab_dependency_map=evidence_lab_dependency_map,
+    render_world_lens_page=render_world_lens_page,
+    world_lens_dependency_map=world_lens_dependency_map,
+    render_mirror_check_page=render_mirror_check_page,
+    mirror_check_dependency_map=mirror_check_dependency_map,
+    render_protocol_guide_page=render_protocol_guide_page,
+    render_about_public_info_page=render_about_public_info_page,
+    render_receipt_reader_standard_view=render_receipt_reader_standard_view,
+    render_app_footer_banner=render_app_footer_banner,
 )
-st.caption("Receipt Reader: Why ALETHEIA → Support utilities → Receipt Reader — Standard View.")
-
-if selected_top_module == '🚀 Stress Test':
-    render_stress_test_page(stress_test_dependency_map(globals()))
-
-if selected_top_module == '🧭 Boundary Cases':
-    render_boundary_cases_page(
-        update_protocol_state=update_protocol_state,
-        render_shared_protocol_state_notice=render_shared_protocol_state_notice,
-        app_version=APP_VERSION,
-    )
-
-if selected_top_module == '📊 Evidence Lab':
-    render_evidence_lab_page(evidence_lab_dependency_map(globals()))
-
-if selected_top_module == '🌐 World Lens':
-    render_world_lens_page(world_lens_dependency_map(globals()))
-
-if selected_top_module == '🪞 Mirror Check':
-    render_mirror_check_page(mirror_check_dependency_map(globals()))
-if selected_top_module == '📜 Protocol Guide':
-    render_protocol_guide_page()
-
-
-if selected_top_module == 'ℹ️ Why ALETHEIA':
-    with st.container():
-        render_about_public_info_page(st, header_image=resolve_about_header_image())
-    
-    st.divider()
-    st.markdown("### Support utilities")
-    st.info(
-        "This section contains Receipt Reader — Standard View. "
-        "It is intentionally kept as a read-only support utility, not a scoring surface or primary review module."
-    )
-    st.caption(
-        "Optional reading aids that support review without becoming primary modules. "
-        "They do not rescore, certify, approve, reject, enforce, or override ALETHEIA receipts."
-    )
-    with st.expander("Receipt Reader — Standard View", expanded=False):
-        st.caption(
-            "Have an ALETHEIA receipt? Upload a .txt, .md, or .json receipt file for native values "
-            "and a standard review-band explanation. This utility does not rescore, certify, approve, "
-            "reject, or override the original receipt."
-        )
-        render_receipt_reader_standard_view(st)
-    
-    render_app_footer_banner(APP_VERSION, st)
-    
