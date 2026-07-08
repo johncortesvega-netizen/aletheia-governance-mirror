@@ -1,0 +1,18 @@
+PATCH 242 — App Modularization Stage 10: Stress Test Page
+
+Changed files:
+- app.py
+- ui/pages/stress_test.py
+- docs/app_modularization_stage10_stress_test_page.md
+- PATCH_STATUS.md
+- PATCH_242_MANIFEST.txt
+- PATCH_242_RECOVERY_NOTE.md
+- PATCH_242_DELETE_LIST.txt
+
+Purpose:
+- Extract Stress Test page rendering from app.py into ui/pages/stress_test.py.
+- Continue the page-level modularization sequence after Mirror Check.
+- Preserve existing behavior by using a temporary runtime namespace bridge.
+
+Boundary:
+- No scanner/scoring/MEI7/Z-axis/receipt/Evidence Lab/World Lens/telemetry changes.

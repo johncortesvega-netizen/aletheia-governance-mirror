@@ -147,3 +147,12 @@ Type: UI readability / placement clarification
 - Mirror Check explanation panels changed to full-width sequential expanders.
 - Receipt Reader location added as a global header caption.
 - No scoring, scanner, MEI7, Z-axis, Evidence Lab, World Lens, receipt, telemetry, or authority-boundary changes.
+
+## Patch 242 — App Modularization Stage 10: Stress Test Page
+Status: READY
+Type: page extraction / behavior-preserving modularization
+
+- Extracted Stress Test rendering from `app.py` into `ui/pages/stress_test.py`.
+- Uses the same temporary runtime namespace bridge pattern as Stage 9 to avoid changing scenario scoring, batch behavior, receipts, semantic diagnostics, or UI state keys.
+- `app.py` now delegates Stress Test rendering to `render_stress_test_page(globals())`.
+- No scanner, scoring, MEI7, Z-axis, Evidence Lab, World Lens, receipt schema, telemetry, or authority-boundary behavior changed.
