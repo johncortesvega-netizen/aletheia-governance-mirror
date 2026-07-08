@@ -1,0 +1,18 @@
+PATCH 229 — Threshold Metric Readability Follow-up
+
+Changed files:
+- app.py
+- docs/app_modularization_stage2_metric_readability_followup.md
+- PATCH_STATUS.md
+- PATCH_229_MANIFEST.txt
+- PATCH_229_RECOVERY_NOTE.md
+- PATCH_229_DELETE_LIST.txt
+
+Purpose:
+- Repair a UI readability regression after Stage 2 modularization.
+- Replace the narrow native st.metric row in Mirror Check's Threshold direction review with a readable summary table.
+- Add defensive wrapping CSS for native Streamlit metric values.
+
+Boundary:
+- Presentation only.
+- No governance scoring, scanner behavior, MEI7 gate, Z-axis calculation, receipts, Evidence Lab math, World Lens math, telemetry, or authority behavior changed.

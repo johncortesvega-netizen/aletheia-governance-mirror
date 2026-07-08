@@ -880,6 +880,24 @@ st.markdown(
         min-width: 0 !important;
     }
 
+
+    /* Patch 229: native Streamlit metric values should not collapse into unreadable ellipses in narrow review columns. */
+    [data-testid="stMetricLabel"],
+    [data-testid="stMetricValue"],
+    [data-testid="stMetricDelta"] {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        max-width: 100% !important;
+        overflow-wrap: anywhere !important;
+        word-break: normal !important;
+    }
+
+    [data-testid="stMetricValue"] {
+        font-size: clamp(1.05rem, 2vw, 1.55rem) !important;
+        line-height: 1.12 !important;
+    }
+
     .stTabs [data-baseweb="tab-list"] { gap: 0.45rem; }
     .stTabs [data-baseweb="tab"] {
         background: rgba(255,255,255,0.80);
@@ -3985,11 +4003,19 @@ def render_chat_judgment(judgment: dict, source: str, report: dict, sim: dict | 
     with row2[1]:
         with st.expander("Threshold direction review", expanded=False):
             if threshold_mapping:
-                tcols = st.columns(4)
-                tcols[0].metric("Threshold direction", friendly_threshold_direction_label(str(threshold_mapping.get("threshold_direction", "Not recorded"))))
-                tcols[1].metric("Z-axis", f"{float(threshold_mapping.get('z_axis_position', 0.0)):.3f} / 0.9999")
-                tcols[2].metric("Repair questions", f"{float(threshold_mapping.get('repair_question_index', threshold_mapping.get('repair_index', 0.0))):.3f}")
-                tcols[3].metric("Confirmed repair", f"{float(threshold_mapping.get('confirmed_repair_capacity', threshold_mapping.get('repair_index', 0.0))):.3f}")
+                # Patch 229: native st.metric truncates long threshold-direction values in narrow columns.
+                # Use a readable summary table instead so Z-axis and repair-zone values remain inspectable.
+                threshold_direction_value = friendly_threshold_direction_label(str(threshold_mapping.get("threshold_direction", "Not recorded")))
+                z_axis_value = f"{float(threshold_mapping.get('z_axis_position', 0.0)):.3f} / 0.9999"
+                repair_questions_value = f"{float(threshold_mapping.get('repair_question_index', threshold_mapping.get('repair_index', 0.0))):.3f}"
+                confirmed_repair_value = f"{float(threshold_mapping.get('confirmed_repair_capacity', threshold_mapping.get('repair_index', 0.0))):.3f}"
+                threshold_summary_rows = [
+                    {"Field": "Threshold direction", "Value": threshold_direction_value, "Human-review meaning": "Direction of pressure within the threshold band; not approval or rejection."},
+                    {"Field": "Z-axis", "Value": z_axis_value, "Human-review meaning": "Boundary proximity marker; Z=1.0000 remains outside ALETHEIA's claim."},
+                    {"Field": "Repair questions", "Value": repair_questions_value, "Human-review meaning": "How much review/repair questioning is available, not proof of safety."},
+                    {"Field": "Confirmed repair", "Value": confirmed_repair_value, "Human-review meaning": "Visible repair capacity already detected in the text/receipt context."},
+                ]
+                st.dataframe(pd.DataFrame(threshold_summary_rows), use_container_width=True, hide_index=True)
                 st.markdown(f"**Z-axis zone:** `{html.escape(str(threshold_mapping.get('z_axis_zone', 'Standard review mapping')))}`")
                 st.caption(str(threshold_mapping.get('z_axis_repair_note', 'No separate repair-zone mapping applied.')))
                 st.caption(

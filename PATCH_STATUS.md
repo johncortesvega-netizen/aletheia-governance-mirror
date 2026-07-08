@@ -47,3 +47,19 @@ Validation:
 - `python -m py_compile app.py ui\components\metric_cards.py ui\components\semantic_pressure_panel.py`
 - `python -m pytest`
 - `python -m streamlit run app.py`
+
+## Patch 229 — Threshold Metric Readability Follow-up
+
+Status: READY
+Type: UI readability stabilization after modularization Stage 2
+
+Summary:
+- Replaces a narrow native `st.metric` row in Mirror Check's Threshold direction review with a readable summary table.
+- Adds defensive wrapping CSS for native Streamlit metric labels and values.
+- Presentation-only; no scoring, scanner, MEI7, Z-axis calculation, Evidence Lab math, World Lens math, receipt, telemetry, or authority behavior changes.
+
+Validation:
+- `python -m py_compile app.py ui\components\metric_cards.py ui\components\semantic_pressure_panel.py`
+- `python -m pytest`
+- Manual check: Mirror Check → Threshold direction review values remain readable.
+
