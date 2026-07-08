@@ -111,3 +111,21 @@ Status: ready.
 - Added documentation for Stage 7 modularization.
 - No scoring, scanner, MEI7, Z-axis, Evidence Lab, World Lens, Stress Test, receipt, telemetry, or authority behavior changes.
 
+## Patch 237 — Receipt Reader Support Utility Placement Clarification
+Status: Ready
+Type: UI copy / navigation placement clarification
+
+Summary:
+- Clarifies that Receipt Reader is available under Why ALETHEIA → Support utilities.
+- Keeps Receipt Reader framed as a read-only support utility rather than a main decision module.
+- Adds docs/receipt_reader_support_utility_placement_v1.md.
+
+Boundary:
+- No runtime governance logic changes.
+- No receipt schema/parser/witness changes.
+- No scanner, scoring, MEI7, Z-axis, Evidence Lab, or World Lens math changes.
+
+## Patch 238 — App Modularization Stage 8: Boundary Cases Page
+- Extracted Boundary Cases rendering from `app.py` into `ui/pages/boundary_cases.py`.
+- Kept Boundary Cases as reference/calibration surface; no scoring or governance logic changed.
+- Added `docs/app_modularization_stage8_boundary_cases_page.md`.

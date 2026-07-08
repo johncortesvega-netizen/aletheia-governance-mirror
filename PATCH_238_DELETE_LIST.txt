@@ -1,0 +1,4 @@
+Patch 238 delete list:
+- No required deletions.
+- Do not delete existing UI modules.
+- Do not delete `ui/pages/__init__.py`.

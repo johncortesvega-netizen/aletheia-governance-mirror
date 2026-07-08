@@ -1,0 +1,25 @@
+PATCH 238 — APP MODULARIZATION STAGE 8: BOUNDARY CASES PAGE
+
+Changed files:
+- app.py
+- ui/pages/boundary_cases.py
+- docs/app_modularization_stage8_boundary_cases_page.md
+- PATCH_STATUS.md
+- PATCH_238_MANIFEST.txt
+- PATCH_238_RECOVERY_NOTE.md
+- PATCH_238_DELETE_LIST.txt
+
+Purpose:
+Extract the Boundary Cases page rendering into a dedicated `ui/pages/` module without changing behavior.
+
+No changes to:
+- scanner logic
+- scoring
+- MEI7 gate
+- Z-axis
+- Stress Test math
+- Evidence Lab calculations
+- World Lens math
+- receipt schema
+- telemetry/storage behavior
+- authority boundaries
