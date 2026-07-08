@@ -4265,1682 +4265,2643 @@ def render_audit_module_integrity_panel(*, expanded: bool = False):
 
 
 
-tab_chat, tab_sim, tab_empirical, tab_grid, tab_boundary, tab_doctrine, tab_about = st.tabs(APP_NAVIGATION_LABELS)
+# Patch 226: top-level modules use single-module conditional navigation instead of st.tabs.
+# Streamlit tabs render all tab bodies internally; that can leak inactive module content
+# into one long page after reruns. This radio keeps only the selected module rendered.
+selected_top_module = st.radio(
+    "ALETHEIA module",
+    APP_NAVIGATION_LABELS,
+    horizontal=True,
+    label_visibility="collapsed",
+    key="aletheia_active_module",
+)
 
-with tab_sim:
-    st.subheader("Stress Test")
-    render_shared_protocol_state_notice("Stress Test", expanded=False)
-
-    # Patch 203: keep Stress Test as a compact working surface.
-    # The full module header remains available, but it no longer renders as an always-open
-    # wall of explanatory text above the primary input and result.
-    with st.expander("Stress Test guide and safe-use notes", expanded=False):
+if selected_top_module == '🚀 Stress Test':
+    with st.container():
+        st.subheader("Stress Test")
+        render_shared_protocol_state_notice("Stress Test", expanded=False)
+    
+        # Patch 203: keep Stress Test as a compact working surface.
+        # The full module header remains available, but it no longer renders as an always-open
+        # wall of explanatory text above the primary input and result.
+        with st.expander("Stress Test guide and safe-use notes", expanded=False):
+            render_module_page_template_intro(
+                st,
+                ModulePageTemplateCopy(
+                    module_name="Stress Test",
+                    purpose=(
+                        "Try a governance scenario under pressure and inspect stability, trust, friction, "
+                        "safeguards, collapse risk, and repair needs. ALETHEIA is English-first; "
+                        "Dutch/Nederlands examples may appear as batch-test fixtures, not as a general "
+                        "app-wide language-compatibility claim."
+                    ),
+                    looks_for=(
+                        "Power under pressure: who gains authority, how quickly, and under what constraints.",
+                        "Safeguard gaps: whether term limits, independent review, appeal, exit, or correction paths are missing.",
+                        "Governance stress: whether trust, friction, grievance, alignment, and ego pressure could destabilize the scenario.",
+                        "Capture pressure: whether one leader, committee, platform, institution, token group, or emergency process can dominate.",
+                        "Failure-mode pressure: authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, or no-appeal automation.",
+                        "Repair needs: what would make the scenario more reviewable, bounded, reversible, and accountable.",
+                    ),
+                    safe_first_path=(
+                        "Write one scenario as a governance pattern, not as a personal accusation.",
+                        "Use fictional roles or the Invisibility Filter when names and titles may bias the reading.",
+                        "Use Scan my idea for text-derived features; use Manual test only when you deliberately want sliders to shape the run.",
+                        "Read the result as a stress reading, not as proof that a person, group, or institution is good or bad.",
+                        "Inspect repair questions before relying on the internal taxonomy label or metrics.",
+                    ),
+                    input_guidance="Start with your own scenario, load a demo on purpose, or use Manual test. ALETHEIA does not read examples by default. You lead.",
+                    result_guidance="Treat Stress Test output as a scenario-pressure reading, not as prediction, accusation, certification, or final internal label.",
+                    observed_reasons_guidance="Check the visible stress signals, feature values, tree, and protocol notes before interpreting the reading.",
+                    repair_questions_guidance="Use repair questions to add safeguards, appeal paths, review limits, transparency, and exit/correction options.",
+                    receipt_guidance="Stress Test receipts are local review artifacts for a scenario run; they are not public-ledger records or official decisions.",
+                ),
+            )
+    
+        input_mode = st.radio(
+            "How do you want to work?",
+            ["Scan my idea", "Manual test"],
+            horizontal=True,
+            help="Scan my idea reads your text. Manual test uses the sliders.",
+        )
+    
+        if input_mode == "Scan my idea":
+            render_stress_test_scan_intro(st)
+        else:
+            st.warning("Manual test is for hands-on testing. The sliders shape the result. Any text is just a note.")
+    
+        if "simulation_scenario_text" not in st.session_state:
+            st.session_state.simulation_scenario_text = ""
+        if "simulation_input_source" not in st.session_state:
+            st.session_state.simulation_input_source = "EMPTY_INPUT"
+    
+        col_a, col_b = st.columns([1.2, 1])
+        with col_a:
+            scenario_choice = st.selectbox("Stress Test demo examples", list(STRESS_TEST_DEMO_SCENARIOS.keys()), key="simulation_scenario_library")
+            if st.button("Load Stress Test scenario demo", use_container_width=True, key="simulation_load_stress_demo_button"):
+                resolved_demo_text = STRESS_TEST_DEMO_SCENARIOS[scenario_choice]
+                st.session_state.simulation_scenario_text = resolved_demo_text
+                st.session_state.simulation_demo_choice = scenario_choice
+                st.session_state.simulation_demo_resolved_text = resolved_demo_text
+                st.session_state.simulation_input_source = "DEMO_INPUT"
+            query = st.text_area("Write or paste your idea", key="simulation_scenario_text", height=150)
+    
+            loaded_demo = STRESS_TEST_DEMO_SCENARIOS.get(st.session_state.get("simulation_demo_choice", ""), None)
+            if not query.strip():
+                input_status = "EMPTY_INPUT"
+                st.session_state.simulation_input_source = "EMPTY_INPUT"
+            elif st.session_state.get("simulation_input_source") == "DEMO_INPUT" and loaded_demo is not None and query == loaded_demo:
+                input_status = "DEMO_INPUT"
+            else:
+                input_status = "USER_INPUT"
+                st.session_state.simulation_input_source = "USER_INPUT"
+    
+            if input_status == "EMPTY_INPUT":
+                st.caption("Add your own idea to begin. Demos are optional and never run by themselves.")
+            elif input_status == "DEMO_INPUT":
+                st.caption("Demo mode is on. This is only an example.")
+            else:
+                st.caption("Your idea is ready. You are the source; ALETHEIA is the mirror.")
+    
+            apply_invisibility = False
+            if input_mode == "Scan my idea":
+                apply_invisibility = st.checkbox(
+                    "Invisibility Filter",
+                    value=(input_status == "USER_INPUT"),
+                    key=f"simulation_invisibility_filter_{input_status}",
+                    disabled=(input_status == "EMPTY_INPUT"),
+                    help="Remove names and titles before review. On by default for your own input.",
+                )
+                if apply_invisibility and input_status != "EMPTY_INPUT":
+                    st.caption("Names and titles are removed before review. The pattern stays visible.")
+    
+            selected_context = "Waiting for your input" if input_status == "EMPTY_INPUT" else ((query[:120] + "…") if len(query) > 120 else query)
+            update_protocol_state(selected_context=selected_context, last_update_source="Stress Test")
+            if input_mode == "Manual test":
+                st.caption("Manual test mode is active: sliders shape the result directly. Scenario text is optional context, not hidden default data.")
+        with col_b:
+            st.markdown("### Review lens / manual test")
+    
+            default_manual_features = {
+                "technical_complexity": 0.55,
+                "transparency": 0.55,
+                "regulation": 0.55,
+                "centralization": 0.35,
+                "anonymity": 0.25,
+                "capital_scale": 0.35,
+            }
+    
+            scenario_slider_features = default_manual_features
+            if (
+                input_mode == "Scan my idea"
+                and st.session_state.get("last_input_mode") == "Scan my idea"
+                and isinstance(st.session_state.get("last_scan"), dict)
+            ):
+                scenario_slider_features = build_features_from_scan(st.session_state.last_scan)
+    
+            if input_mode == "Scan my idea":
+                st.caption("These features are derived from the scenario text. In Scan my idea mode they stay read-only and refresh after each run so you can see what the parser picked up.")
+                slider_key_suffix = "fresh"
+                if isinstance(st.session_state.get("last_scan"), dict):
+                    slider_key_suffix = "_".join([
+                        f"{scenario_slider_features.get('technical_complexity', 0.55):.2f}",
+                        f"{scenario_slider_features.get('transparency', 0.55):.2f}",
+                        f"{scenario_slider_features.get('regulation', 0.55):.2f}",
+                        f"{scenario_slider_features.get('centralization', 0.35):.2f}",
+                        f"{scenario_slider_features.get('anonymity', 0.25):.2f}",
+                        f"{scenario_slider_features.get('capital_scale', 0.35):.2f}",
+                    ])
+    
+                manual_features = {
+                    "technical_complexity": st.slider("Technical complexity", 0.0, 1.0, float(scenario_slider_features.get("technical_complexity", 0.55)), 0.01, key=f"scenario_technical_complexity_{slider_key_suffix}", disabled=True),
+                    "transparency": st.slider("Transparency", 0.0, 1.0, float(scenario_slider_features.get("transparency", 0.55)), 0.01, key=f"scenario_transparency_{slider_key_suffix}", disabled=True),
+                    "regulation": st.slider("Regulation / oversight", 0.0, 1.0, float(scenario_slider_features.get("regulation", 0.55)), 0.01, key=f"scenario_regulation_{slider_key_suffix}", disabled=True),
+                    "centralization": st.slider("Power concentration", 0.0, 1.0, float(scenario_slider_features.get("centralization", 0.35)), 0.01, key=f"scenario_centralization_{slider_key_suffix}", disabled=True),
+                    "anonymity": st.slider("Anonymity / opacity", 0.0, 1.0, float(scenario_slider_features.get("anonymity", 0.25)), 0.01, key=f"scenario_anonymity_{slider_key_suffix}", disabled=True),
+                    "capital_scale": st.slider("Capital scale", 0.0, 1.0, float(scenario_slider_features.get("capital_scale", 0.35)), 0.01, key=f"scenario_capital_scale_{slider_key_suffix}", disabled=True),
+                }
+            else:
+                st.caption("These sliders shape the test. They are inputs, not hidden truth.")
+                manual_features = {
+                    "technical_complexity": st.slider("Technical complexity", 0.0, 1.0, default_manual_features["technical_complexity"], 0.01, key="manual_technical_complexity"),
+                    "transparency": st.slider("Transparency", 0.0, 1.0, default_manual_features["transparency"], 0.01, key="manual_transparency"),
+                    "regulation": st.slider("Regulation / oversight", 0.0, 1.0, default_manual_features["regulation"], 0.01, key="manual_regulation"),
+                    "centralization": st.slider("Power concentration", 0.0, 1.0, default_manual_features["centralization"], 0.01, key="manual_centralization"),
+                    "anonymity": st.slider("Anonymity / opacity", 0.0, 1.0, default_manual_features["anonymity"], 0.01, key="manual_anonymity"),
+                    "capital_scale": st.slider("Capital scale", 0.0, 1.0, default_manual_features["capital_scale"], 0.01, key="manual_capital_scale"),
+                }
+    
+        with st.expander("How to write good Stress Test scenarios", expanded=False):
+            st.markdown(
+                """
+    Stress Test works best when you write a **scenario as a governance pattern**, not as a personal accusation. ALETHEIA is English-first; Dutch/Nederlands examples may appear in batch-test fixtures, but that is not a general language-compatibility claim.
+    
+    Include: who gains power, how power is obtained, what can go wrong, what safeguards exist or are missing, and whether affected people can appeal, exit, or request correction.
+    
+    **Weak:** `Is this bad?`
+    
+    **Better:** `A temporary crisis leader gains emergency authority after a disaster, but no term limit, appeal path, or independent review is defined.`
+    
+    **Weak:** `John is evil.`
+    
+    **Better:** `A named leader gains centralized authority after a crisis. The system has weak review, unclear limits, and no visible exit path.`
+    
+    ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when testing. The Invisibility Filter can reduce actor/name/title bias while keeping the governance pattern visible.
+                """
+            )
+    
+        run = st.button("Run review", type="primary", use_container_width=True, key="simulation_run_button")
+        if run:
+            if input_mode == "Scan my idea" and input_status == "EMPTY_INPUT":
+                st.warning("Add your own scenario or load a demo before running Scan my idea. ALETHEIA does not run examples by itself.")
+            else:
+                analysis_query = query
+                invisibility_report = None
+                if input_mode == "Scan my idea" and apply_invisibility and input_status != "EMPTY_INPUT":
+                    invisibility_report = decouple_actor(query)
+                    analysis_query = invisibility_report.get("decoupled_text", query)
+                with st.spinner("Reading your idea and checking the pattern..."):
+                    scan, features, sim, report, scan_mode = run_audit(analysis_query, manual_features, weights, ego_tolerance, divine_floor, steps, n_agents, input_mode)
+                    st.session_state.last_scan = scan
+                    st.session_state.last_features = features
+                    st.session_state.last_sim = sim
+                    st.session_state.last_report = report
+                    st.session_state.last_scan_mode = scan_mode
+                    st.session_state.last_input_mode = input_mode
+                    st.session_state.last_query = analysis_query
+                    st.session_state.last_query_raw = query
+                    st.session_state.last_input_status = input_status
+                    st.session_state.last_invisibility_report = invisibility_report
+                    # Patch 208: keep the resolved demo scenario text as an explicit
+                    # semantic source. Demo labels are only UI labels; the semantic
+                    # layer must scan the actual scenario body and the visible editor
+                    # text, then keep the strongest pressure reading.
+                    demo_source_text = ""
+                    if input_status == "DEMO_INPUT":
+                        demo_source_text = str(loaded_demo or st.session_state.get("simulation_demo_resolved_text", "") or "")
+                    st.session_state.last_demo_scenario_text = demo_source_text
+                    if input_mode == "Scan my idea" and (str(query or "").strip() or str(analysis_query or "").strip() or demo_source_text.strip()):
+                        st.session_state.last_stress_semantic_scan = choose_strongest_semantic_scan(
+                            choose_stress_semantic_scan(query, analysis_query),
+                            choose_stress_semantic_scan(demo_source_text, analysis_query) if demo_source_text else None,
+                            query,
+                            analysis_query,
+                            demo_source_text,
+                        )
+                    else:
+                        st.session_state.last_stress_semantic_scan = None
+                    selected_context = "Manual test" if input_mode == "Manual test" else ((analysis_query[:120] + "…") if len(analysis_query) > 120 else analysis_query)
+                    update_protocol_state(selected_context=selected_context, last_update_source="Stress Test")
+                    if input_mode == "Scan my idea":
+                        st.rerun()
+    
+        with st.expander("Stress Test Batch Testing — up to 50 scenarios", expanded=False):
+            st.caption("Upload or paste scenario-style inputs. Batch testing is explicit opt-in, local-only, and creates local witness receipts.")
+            stress_batch_source = st.radio(
+                "Stress batch input source",
+                ["Upload .txt", "Paste list"],
+                horizontal=True,
+                key="stress_batch_source_mode",
+            )
+            stress_batch_text = ""
+            if stress_batch_source == "Upload .txt":
+                stress_upload = st.file_uploader(
+                    "Upload Stress Test .txt list",
+                    type=["txt"],
+                    key="stress_batch_txt_upload",
+                    help="Use one scenario per line, a numbered list, or --- between longer items.",
+                )
+                if stress_upload is not None:
+                    stress_batch_text = stress_upload.getvalue().decode("utf-8", errors="replace")
+                    st.caption(f"Staged {stress_upload.name}. Press Run Stress Batch to process it.")
+            else:
+                stress_batch_text = st.text_area(
+                    "Paste Stress Test scenarios",
+                    height=180,
+                    key="stress_batch_manual_input",
+                    placeholder="1. A temporary leader gains emergency power without a term limit.\n2. A public service requires biometric ID before food or housing support.",
+                )
+    
+            stress_batch_items = parse_witness_batch_input(stress_batch_text, max_items=MAX_BATCH_RECEIPTS)
+            stress_question_set_mode = is_witness_question_set(stress_batch_items)
+            if stress_batch_text.strip():
+                question_note = " Question-prompt mode will keep audit/repair questions as review tools, not scored scenarios." if stress_question_set_mode else ""
+                st.caption(f"{len(stress_batch_items)} item(s) ready. Maximum: {MAX_BATCH_RECEIPTS}.{question_note}")
+            stress_batch_apply_invisibility = st.checkbox(
+                "Apply Invisibility Filter to Stress batch",
+                value=bool(stress_batch_items),
+                key="stress_batch_invisibility_filter",
+                disabled=not bool(stress_batch_items),
+            )
+            stress_batch_signature = hashlib.sha256(
+                (
+                    stress_batch_source
+                    + "\n"
+                    + stress_batch_text.strip()
+                    + "\n"
+                    + str(bool(stress_batch_apply_invisibility))
+                ).encode("utf-8")
+            ).hexdigest()
+            active_stress_batch_signature = st.session_state.get("stress_batch_active_signature")
+            stress_batch_has_active_results = bool(
+                st.session_state.get("stress_batch_summary")
+                or st.session_state.get("stress_batch_archive_bytes")
+            )
+            stress_batch_matches_active = (
+                bool(stress_batch_text.strip())
+                and bool(active_stress_batch_signature)
+                and active_stress_batch_signature == stress_batch_signature
+            )
+            stress_batch_is_stale = stress_batch_has_active_results and not stress_batch_matches_active
+            if stress_batch_is_stale:
+                st.info(
+                    "The Stress batch input has changed. The previous batch result is closed for this draft. "
+                    "Click Run Stress Batch to create a new batch and receipts."
+                )
+            run_stress_batch = st.button(
+                "Run Stress Batch",
+                type="primary",
+                use_container_width=True,
+                disabled=not bool(stress_batch_items),
+                key="simulation_run_stress_batch_button",
+            )
+            if run_stress_batch:
+                stress_receipts = []
+                stress_rows = []
+                with st.spinner(f"Running {len(stress_batch_items)} local Stress Test scenario(s)..."):
+                    for idx, raw_item in enumerate(stress_batch_items, start=1):
+                        processed_item = raw_item
+                        invisibility_report = None
+                        if stress_batch_apply_invisibility:
+                            invisibility_report = decouple_actor(raw_item)
+                            processed_item = invisibility_report.get("decoupled_text", raw_item)
+    
+                        # Patch 69: a Stress Test batch can also be a bank of audit/repair
+                        # questions. In that case the questions are review tools, not
+                        # governance scenarios to score as Sanctuary/Threshold/Asylum.
+                        if stress_question_set_mode and is_witness_question_prompt(raw_item):
+                            receipt = build_local_question_prompt_receipt(
+                                module="Simulation",
+                                input_text=raw_item,
+                                processed_text=processed_item,
+                                invisibility_applied=bool(stress_batch_apply_invisibility),
+                                app_version=APP_VERSION,
+                            )
+                            stress_report = {"integrity": None, "repair_questions": receipt.get("repair_questions", [])}
+                            verdict = "QUESTION_PROMPT"
+                            risk = "Review Tool"
+                            label = "Audit Question / Review Tool"
+                        else:
+                            scan, features, sim, stress_report, scan_mode = run_audit(
+                                processed_item,
+                                default_manual_features,
+                                weights,
+                                ego_tolerance,
+                                divine_floor,
+                                steps,
+                                n_agents,
+                                "Scan my idea",
+                            )
+                            label, needs_review, _reason = stress_label_for_phrase(processed_item)
+                            base_verdict, _base_color = classify_verdict(stress_report["integrity"])
+                            verdict, risk = apply_guardrail_verdict(base_verdict, label, needs_review)
+                            sim, stress_report, verdict, label, needs_review, risk = enforce_missing_safeguard_threshold_route(
+                                processed_item,
+                                scan,
+                                sim,
+                                stress_report,
+                                verdict,
+                                label,
+                                needs_review,
+                                risk,
+                            )
+                            label = normalize_asylum_protocol_label(label, verdict=verdict, risk=risk)
+                            sim = enforce_asylum_metric_consistency(sim, verdict=verdict, risk=risk, protocol_label=label)
+                            stress_report = ensure_asylum_repair_questions(
+                                stress_report,
+                                verdict=verdict,
+                                risk=risk,
+                                protocol_label=label,
+                                scan=scan,
+                            )
+                            stress_report = ensure_threshold_repair_questions(
+                                stress_report,
+                                verdict=verdict,
+                                risk=risk,
+                                protocol_label=label,
+                            )
+                            ai_static_context = build_ai_static_scan_protocol_context(
+                                processed_item,
+                                source_module="Stress Test",
+                                primary_state=verdict,
+                                primary_risk=risk,
+                                primary_protocol_label=label,
+                            )
+                            stress_report["ai_static_scan_context"] = ai_static_context
+                            scan["ai_static_scan_context"] = ai_static_context
+                            receipt = build_local_witness_receipt(
+                                module="Simulation",
+                                input_text=raw_item,
+                                processed_text=processed_item,
+                                input_status="USER_INPUT",
+                                scan=scan,
+                                sim=sim,
+                                report=stress_report,
+                                verdict=verdict,
+                                risk=risk,
+                                protocol_label=label,
+                                invisibility_applied=isinstance(invisibility_report, dict) and invisibility_report.get("invisibility_filter_applied", False),
+                                app_version=APP_VERSION,
+                            )
+                        stress_receipts.append(receipt)
+                        integrity_value = stress_report.get("integrity") if isinstance(stress_report, dict) else None
+                        stress_review_band = review_band_for_state(verdict, stress_report, sim)
+                        stress_rows.append({
+                            "#": idx,
+                            "State": verdict,
+                            "Review zone": stress_review_band.get("label"),
+                            "Risk": risk,
+                            "Label": label,
+                            "Integrity": "—" if integrity_value is None else round(float(integrity_value), 3),
+                            "Repair questions": len((stress_report or {}).get("repair_questions") or []),
+                        })
+                archive_bytes, batch_index = build_local_witness_batch_zip(stress_receipts, module="Simulation", app_version=APP_VERSION)
+                st.session_state.stress_batch_archive_bytes = archive_bytes
+                st.session_state.stress_batch_index = batch_index
+                st.session_state.stress_batch_summary = stress_rows
+                st.session_state.stress_batch_active_signature = stress_batch_signature
+                # Patch 142.3: a Stress Test batch is a separate workflow. If the user
+                # ran one scenario first and then runs a batch, close the single-scenario
+                # tree/result state so the old tree does not remain below the batch.
+                for stress_single_key in [
+                    "last_scan",
+                    "last_features",
+                    "last_sim",
+                    "last_report",
+                    "last_scan_mode",
+                    "last_input_mode",
+                    "last_query",
+                    "last_query_raw",
+                    "last_input_status",
+                    "last_invisibility_report",
+                ]:
+                    st.session_state.pop(stress_single_key, None)
+                st.success(f"Stress batch complete. {len(stress_receipts)} local receipt(s) are ready to download.")
+    
+            if st.session_state.get("stress_batch_summary") and not stress_batch_is_stale:
+                st.dataframe(pd.DataFrame(st.session_state.stress_batch_summary), use_container_width=True, hide_index=True, height=300)
+            if st.session_state.get("stress_batch_archive_bytes") and not stress_batch_is_stale:
+                st.download_button(
+                    "⬇️ Download Stress Test batch receipts",
+                    data=st.session_state.stress_batch_archive_bytes,
+                    file_name="aletheia_stress_test_batch_witness_receipts.zip",
+                    mime="application/zip",
+                    use_container_width=True,
+                    key="simulation_download_stress_batch_receipts",
+                )
+            if stress_batch_is_stale and st.session_state.get("stress_batch_summary"):
+                with st.expander("Last closed Stress batch", expanded=False):
+                    st.caption("Previous batch results are kept for review, but downloads are hidden until the current input is explicitly run.")
+                    st.dataframe(_protocol_taxonomy_ui_table_df(pd.DataFrame(st.session_state.stress_batch_summary)), use_container_width=True, hide_index=True, height=220)
+    
+        if "last_report" not in st.session_state:
+            st.info("No review has run yet. Add your input, load a demo, or use the Manual test.")
+        else:
+            scan = st.session_state.last_scan
+            features = st.session_state.last_features
+            sim = st.session_state.last_sim
+            report = st.session_state.last_report
+            scan_mode = st.session_state.last_scan_mode
+            last_input_mode = st.session_state.get("last_input_mode", input_mode)
+    
+            base_verdict, base_color = classify_verdict(report["integrity"])
+            display_query = st.session_state.get("last_query", query) if last_input_mode == "Scan my idea" else ""
+            label, needs_review, stress_reason = stress_label_for_phrase(display_query) if display_query else ("Manual test", "NO", "Manual numeric tuner run.")
+            verdict, risk = apply_guardrail_verdict(base_verdict, label, needs_review)
+            sim, report, verdict, label, needs_review, risk = enforce_missing_safeguard_threshold_route(
+                display_query,
+                scan,
+                sim,
+                report,
+                verdict,
+                label,
+                needs_review,
+                risk,
+            )
+            label = normalize_asylum_protocol_label(label, verdict=verdict, risk=risk)
+            sim = enforce_asylum_metric_consistency(sim, verdict=verdict, risk=risk, protocol_label=label)
+            st.session_state.last_sim = sim
+            report = ensure_asylum_repair_questions(
+                report,
+                verdict=verdict,
+                risk=risk,
+                protocol_label=label,
+                scan=scan,
+            )
+            report = ensure_threshold_repair_questions(
+                report,
+                verdict=verdict,
+                risk=risk,
+                protocol_label=label,
+            )
+            if last_input_mode == "Scan my idea":
+                ai_static_context = build_ai_static_scan_protocol_context(
+                    st.session_state.get("last_query", display_query),
+                    source_module="Stress Test",
+                    primary_state=verdict,
+                    primary_risk=risk,
+                    primary_protocol_label=label,
+                )
+                report["ai_static_scan_context"] = ai_static_context
+                scan["ai_static_scan_context"] = ai_static_context
+            st.session_state.last_report = report
+            verdict_color = {"SANCTUARY": "#8fbc8f", "THRESHOLD": "#e5c36b", "ASYLUM": "#db7777"}.get(verdict, base_color)
+            input_status_label = st.session_state.get("last_input_status", "MANUAL_INPUT" if last_input_mode == "Manual test" else "USER_INPUT")
+            invisibility_report = st.session_state.get("last_invisibility_report")
+            invisibility_note = " · Invisibility Filter: on" if isinstance(invisibility_report, dict) and invisibility_report.get("invisibility_filter_applied") else ""
+            current_review_band = review_band_for_state(verdict, report, sim)
+            st.caption(f"Feature source: {last_input_mode} · Input status: {input_status_label} · Scan mode: {scan_mode} · Protocol label: {label} · Review zone: {current_review_band.get('label')}{invisibility_note}")
+    
+            c1, c2, c3, c4 = st.columns(4)
+            review_band = review_band_for_state(verdict, report, sim)
+            review_band_label = review_band.get("label", verdict.title())
+            review_band_summary = review_band.get("summary", "")
+            result_display = f"<span style='color:{verdict_color}'>{_protocol_metric_display(verdict)}</span>"
+            result_display += f"<br><span style='font-size:0.9rem;color:#c9c0b2;'>Internal review label: {html.escape(str(verdict))}</span>"
+            if verdict == "THRESHOLD":
+                result_display += f"<br><span style='font-size:1.05rem;color:#d4b88a;'>{review_band_label}</span>"
+    
+            result_helper = f"Risk signal: {risk}<br>{_protocol_humility_note(verdict)}"
+            if verdict == "THRESHOLD":
+                result_helper += f"<br>Review zone: {review_band_label}"
+    
+            with c1:
+                metric_card("Protocol reading", result_display, result_helper)
+            with c2:
+                metric_card("Integrity", f"{report['integrity']:.3f}", "Current reading. Raw values stay in the local receipt.")
+            with c3:
+                metric_card("Friction", f"{report['friction']:.3f}", "Control pressure")
+            with c4:
+                metric_card("Collapse pressure", f"{report['collapse_probability']:.3f}", scan_mode)
+    
+            # Patch S2.1: keep the human-readable reading and repair questions above the machinery.
+            # The detailed Stress Test visuals are still available, but they no longer dominate
+            # the first read of the result.
+            with st.expander("Stress Test visuals and agent traces", expanded=False):
+                st.caption(
+                    "Diagnostic visuals only. These charts explain the scenario-pressure run; "
+                    "they do not create a separate decision or authority claim."
+                )
+                c5, c6, c7, c8 = st.columns(4)
+                c5.metric("Stability", f"{sim['stability']:.3f}")
+                c6.metric("Trust", f"{sim['trust_index']:.3f}")
+                c7.metric("Alignment", f"{sim['alignment']:.3f}")
+                c8.metric("Ego", f"{sim['ego']:.3f}")
+    
+                render_pulse_tree(
+                    display_score_from_judgment(report, {"verdict": verdict}),
+                    sim["ego"],
+                    sim["alignment"],
+                    title="Stress Test Tree",
+                    state_override=verdict,
+                    mode="Stress Test",
+                )
+    
+                st.plotly_chart(plot_trace(sim), use_container_width=True)
+    
+                chart_col, table_col = st.columns([1, 1.2])
+                with chart_col:
+                    st.plotly_chart(action_chart(sim), use_container_width=True)
+                with table_col:
+                    st.markdown("### Test voices")
+                    st.dataframe(pd.DataFrame(sim.get("agent_profiles", [])), use_container_width=True, hide_index=True)
+    
+            st.markdown("### Why this result?")
+            reason_cols = st.columns(3)
+            with reason_cols[0]:
+                soft_card("What ALETHEIA saw", f"Source: {last_input_mode}. Power concentration {scan['power_concentration']:.0%}, transparency {scan['decision_transparency']:.0%}, regulation {scan['regulatory_presence']:.0%}.")
+            with reason_cols[1]:
+                soft_card("Pattern over time", f"Trust {sim['trust_index']:.0%}, alignment {sim['alignment']:.0%}, ego {sim['ego']:.0%}.")
+            with reason_cols[2]:
+                soft_card("Risk picture", f"Review zone: {review_band_label}. {review_band_summary} Collapse risk: {'yes' if sim.get('collapse_risk') else 'no'}. Trust friction: {report['trust_friction']:.3f}. Grievance pressure: {sim.get('grievance_pressure', 0):.2f}. Safeguard gap: {sim.get('safeguard_gap', 0):.2f}.")
+    
+            st.markdown("### Repair questions")
+            st.caption("ALETHEIA asks questions here. It gives no orders and no final judgment.")
+            repair_questions = report.get("repair_questions") or []
+            if repair_questions:
+                for idx, question in enumerate(repair_questions[:5], start=1):
+                    soft_card(f"REVIEW · Question {idx}", silent_operator_question(question, context="this repair path"))
+            else:
+                for rec in report["recommendations"][:5]:
+                    priority = str(rec.get("priority", "review")).upper()
+                    target = rec.get("target", "System")
+                    action = rec.get("action", "Review")
+                    soft_card(f"{priority} · {target} · {action}", silent_operator_question(rec, context=str(target)))
+    
+            if last_input_mode == "Scan my idea":
+                stored_stress_semantic_scan = st.session_state.get("last_stress_semantic_scan")
+                current_raw_query = str(st.session_state.get("last_query_raw", "") or "").strip()
+                current_processed_query = str(display_query or "").strip()
+                visible_editor_query = str(query or "").strip()
+                demo_source_query = str(st.session_state.get("last_demo_scenario_text", "") or "").strip()
+                recomputed_stress_semantic_scan = choose_stress_semantic_scan(current_raw_query or visible_editor_query, current_processed_query)
+                editor_stress_semantic_scan = choose_stress_semantic_scan(visible_editor_query, current_processed_query) if visible_editor_query else None
+                demo_stress_semantic_scan = choose_stress_semantic_scan(demo_source_query, current_processed_query) if demo_source_query else None
+                stress_semantic_scan = choose_strongest_semantic_scan(
+                    stored_stress_semantic_scan,
+                    recomputed_stress_semantic_scan,
+                    editor_stress_semantic_scan,
+                    demo_stress_semantic_scan,
+                    current_raw_query,
+                    visible_editor_query,
+                    demo_source_query,
+                    current_processed_query,
+                )
+                if stress_semantic_scan is not None:
+                    st.session_state.last_stress_semantic_scan = stress_semantic_scan
+                render_semantic_stress_triggers(stress_semantic_scan, expanded=False)
+    
+            ai_static_context = report.get("ai_static_scan_context") if isinstance(report, dict) else None
+            # Patch 182: AI static scan expanders inherit sky/gold expander and table styling; context remains subordinate.
+            if isinstance(ai_static_context, dict):
+                with st.expander("AI static scan context — subordinate to Stress Test", expanded=False):
+                    st.caption(ai_static_context.get("notice"))
+                    st.markdown(
+                        f"**Protocol context signal:** {ai_static_context.get('protocol_context_state', ai_static_context.get('ai_static_scan_state'))} · "
+                        f"{ai_static_context.get('protocol_context_risk', ai_static_context.get('ai_static_scan_risk'))} · "
+                        f"{ai_static_context.get('finding_count')} AI-specific finding(s)"
+                    )
+                    if ai_static_context.get("alignment_note"):
+                        st.caption(ai_static_context.get("alignment_note"))
+                    st.caption(
+                        f"Raw AI static scan only: {ai_static_context.get('ai_static_scan_state')} · "
+                        f"{ai_static_context.get('ai_static_scan_risk')}"
+                    )
+                    if ai_static_context.get("findings"):
+                        st.dataframe(pd.DataFrame(ai_static_context.get("findings")), use_container_width=True, hide_index=True)
+    
+            # Patch 203: keep receipt download opt-in so Stress Test does not become one
+            # long continuous result page. The receipt payload and schema are unchanged.
+            with st.expander("Download local witness receipt", expanded=False):
+                st.markdown(
+                    """
+                    <div class="receipt-sky-panel">
+                      <div class="receipt-kicker">User-held review artifact</div>
+                      <div class="receipt-title">Local witness receipt</div>
+                      <div class="receipt-body">Creates a receipt you hold. It is not published, synced, enforced, or treated as authority.</div>
+                      <div class="receipt-boundary-strip">
+                        <span class="receipt-boundary-pill">Local only</span>
+                        <span class="receipt-boundary-pill">No public ledger</span>
+                        <span class="receipt-boundary-pill">No Global ID sync</span>
+                        <span class="receipt-boundary-pill">Human review required</span>
+                      </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+                st.caption("Download text only. This visual card does not change the receipt content, schema, or authority boundary.")
+                raw_query_for_receipt = st.session_state.get("last_query_raw", display_query)
+                processed_query_for_receipt = st.session_state.get("last_query", display_query)
+                receipt = build_local_witness_receipt(
+                    module="Simulation",
+                    input_text=raw_query_for_receipt if last_input_mode == "Scan my idea" else "Manual test numeric input",
+                    processed_text=processed_query_for_receipt if last_input_mode == "Scan my idea" else "Manual test numeric input",
+                    input_status=input_status_label,
+                    scan=scan,
+                    sim=sim,
+                    report=report,
+                    verdict=verdict,
+                    risk=risk,
+                    protocol_label=label,
+                    invisibility_applied=isinstance(invisibility_report, dict) and invisibility_report.get("invisibility_filter_applied", False),
+                    app_version=APP_VERSION,
+                )
+                receipt_text = render_local_witness_receipt_text(receipt)
+                st.download_button(
+                    "⬇️ Download receipt",
+                    data=receipt_text,
+                    file_name="aletheia_local_witness_receipt.txt",
+                    mime="text/plain",
+                    use_container_width=True,
+                )
+    
+if selected_top_module == '🧭 Boundary Cases':
+    with st.container():
+        st.subheader("Boundary Cases")
+        render_shared_protocol_state_notice("Boundary Cases", expanded=False)
+    
         render_module_page_template_intro(
             st,
             ModulePageTemplateCopy(
-                module_name="Stress Test",
+                module_name="Boundary Cases",
                 purpose=(
-                    "Try a governance scenario under pressure and inspect stability, trust, friction, "
-                    "safeguards, collapse risk, and repair needs. ALETHEIA is English-first; "
-                    "Dutch/Nederlands examples may appear as batch-test fixtures, not as a general "
-                    "app-wide language-compatibility claim."
+                    "Use difficult edge cases to calibrate how ALETHEIA reads consent pressure, free agency, "
+                    "basic-rights scarcity, emergency misuse, ambient capture, self-audit, and review limits."
                 ),
                 looks_for=(
-                    "Power under pressure: who gains authority, how quickly, and under what constraints.",
-                    "Safeguard gaps: whether term limits, independent review, appeal, exit, or correction paths are missing.",
-                    "Governance stress: whether trust, friction, grievance, alignment, and ego pressure could destabilize the scenario.",
-                    "Capture pressure: whether one leader, committee, platform, institution, token group, or emergency process can dominate.",
-                    "Failure-mode pressure: authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, or no-appeal automation.",
-                    "Repair needs: what would make the scenario more reviewable, bounded, reversible, and accountable.",
+                    "Consent pressure: whether agreement is meaningful when refusal carries basic-rights, dignity, housing, work, safety, or service costs.",
+                    "Free-agency risk: whether prediction, risk scoring, or crisis logic tries to replace human agency before action happens.",
+                    "Emergency drift: whether emergency mechanisms become tools for removal, reset, punishment, or irreversible power transfer.",
+                    "Ambient capture: whether propaganda, platform pressure, fear, or social saturation can bend reviewers without visible bribery.",
+                    "Failure typing: whether pressure comes from actor failure, policy failure, implementation failure, data failure, or a mix.",
+                    "Repair paths: whether the case needs alternatives, appeal, independent review, cooling-off periods, or stronger evidence.",
                 ),
                 safe_first_path=(
-                    "Write one scenario as a governance pattern, not as a personal accusation.",
-                    "Use fictional roles or the Invisibility Filter when names and titles may bias the reading.",
-                    "Use Scan my idea for text-derived features; use Manual test only when you deliberately want sliders to shape the run.",
-                    "Read the result as a stress reading, not as proof that a person, group, or institution is good or bad.",
-                    "Inspect repair questions before relying on the internal taxonomy label or metrics.",
+                    "Start with one edge case and read it as a calibration reference, not as a command to act.",
+                    "Separate actor failure from policy failure, implementation failure, and data failure before drawing conclusions.",
+                    "Treat allowed actions as review options only; do not use this module as enforcement authority.",
+                    "Use the guardrail and forbidden-action language to preserve human agency, consent, appeal, and reversibility.",
                 ),
-                input_guidance="Start with your own scenario, load a demo on purpose, or use Manual test. ALETHEIA does not read examples by default. You lead.",
-                result_guidance="Treat Stress Test output as a scenario-pressure reading, not as prediction, accusation, certification, or final internal label.",
-                observed_reasons_guidance="Check the visible stress signals, feature values, tree, and protocol notes before interpreting the reading.",
-                repair_questions_guidance="Use repair questions to add safeguards, appeal paths, review limits, transparency, and exit/correction options.",
-                receipt_guidance="Stress Test receipts are local review artifacts for a scenario run; they are not public-ledger records or official decisions.",
+                input_guidance="Boundary Cases is a reference/calibration surface. Use it to compare a difficult situation against known pressure patterns before running a separate review.",
+                result_guidance="Treat each case as a boundary mirror, not as a verdict about a person, institution, community, or event.",
+                observed_reasons_guidance="Inspect the main risk, guardrail, allowed response, forbidden response, and failure type together.",
+                repair_questions_guidance="Use the case language to ask what evidence, consent, appeal, human review, or non-coercive alternative is missing.",
+                receipt_guidance="Boundary-case notes should support later human review; they are not enforcement records or official findings.",
             ),
         )
-
-    input_mode = st.radio(
-        "How do you want to work?",
-        ["Scan my idea", "Manual test"],
-        horizontal=True,
-        help="Scan my idea reads your text. Manual test uses the sliders.",
-    )
-
-    if input_mode == "Scan my idea":
-        render_stress_test_scan_intro(st)
-    else:
-        st.warning("Manual test is for hands-on testing. The sliders shape the result. Any text is just a note.")
-
-    if "simulation_scenario_text" not in st.session_state:
-        st.session_state.simulation_scenario_text = ""
-    if "simulation_input_source" not in st.session_state:
-        st.session_state.simulation_input_source = "EMPTY_INPUT"
-
-    col_a, col_b = st.columns([1.2, 1])
-    with col_a:
-        scenario_choice = st.selectbox("Stress Test demo examples", list(STRESS_TEST_DEMO_SCENARIOS.keys()), key="simulation_scenario_library")
-        if st.button("Load Stress Test scenario demo", use_container_width=True, key="simulation_load_stress_demo_button"):
-            resolved_demo_text = STRESS_TEST_DEMO_SCENARIOS[scenario_choice]
-            st.session_state.simulation_scenario_text = resolved_demo_text
-            st.session_state.simulation_demo_choice = scenario_choice
-            st.session_state.simulation_demo_resolved_text = resolved_demo_text
-            st.session_state.simulation_input_source = "DEMO_INPUT"
-        query = st.text_area("Write or paste your idea", key="simulation_scenario_text", height=150)
-
-        loaded_demo = STRESS_TEST_DEMO_SCENARIOS.get(st.session_state.get("simulation_demo_choice", ""), None)
-        if not query.strip():
-            input_status = "EMPTY_INPUT"
-            st.session_state.simulation_input_source = "EMPTY_INPUT"
-        elif st.session_state.get("simulation_input_source") == "DEMO_INPUT" and loaded_demo is not None and query == loaded_demo:
-            input_status = "DEMO_INPUT"
-        else:
-            input_status = "USER_INPUT"
-            st.session_state.simulation_input_source = "USER_INPUT"
-
-        if input_status == "EMPTY_INPUT":
-            st.caption("Add your own idea to begin. Demos are optional and never run by themselves.")
-        elif input_status == "DEMO_INPUT":
-            st.caption("Demo mode is on. This is only an example.")
-        else:
-            st.caption("Your idea is ready. You are the source; ALETHEIA is the mirror.")
-
-        apply_invisibility = False
-        if input_mode == "Scan my idea":
-            apply_invisibility = st.checkbox(
-                "Invisibility Filter",
-                value=(input_status == "USER_INPUT"),
-                key=f"simulation_invisibility_filter_{input_status}",
-                disabled=(input_status == "EMPTY_INPUT"),
-                help="Remove names and titles before review. On by default for your own input.",
-            )
-            if apply_invisibility and input_status != "EMPTY_INPUT":
-                st.caption("Names and titles are removed before review. The pattern stays visible.")
-
-        selected_context = "Waiting for your input" if input_status == "EMPTY_INPUT" else ((query[:120] + "…") if len(query) > 120 else query)
-        update_protocol_state(selected_context=selected_context, last_update_source="Stress Test")
-        if input_mode == "Manual test":
-            st.caption("Manual test mode is active: sliders shape the result directly. Scenario text is optional context, not hidden default data.")
-    with col_b:
-        st.markdown("### Review lens / manual test")
-
-        default_manual_features = {
-            "technical_complexity": 0.55,
-            "transparency": 0.55,
-            "regulation": 0.55,
-            "centralization": 0.35,
-            "anonymity": 0.25,
-            "capital_scale": 0.35,
+    
+        render_boundary_cases_intro(st)
+    
+        failure_mode_definitions = {
+            "Actor Failure": "A person, group, office, founder, operator, or implementing body misuses power, manipulates others, bypasses review, or becomes unfit.",
+            "Policy Failure": "The proposal, rule, charter, doctrine, or system design itself creates coercion, opacity, instability, exclusion, rights risk, or capture risk.",
+            "Implementation Failure": "The idea may be valid, but the execution layer fails through weak process, missing safeguards, unclear responsibility, bad deployment, or unreliable operation.",
+            "Data Failure": "The evidence base is incomplete, manipulated, stale, biased, low-coverage, unverifiable, or too uncertain to support the conclusion.",
         }
-
-        scenario_slider_features = default_manual_features
-        if (
-            input_mode == "Scan my idea"
-            and st.session_state.get("last_input_mode") == "Scan my idea"
-            and isinstance(st.session_state.get("last_scan"), dict)
-        ):
-            scenario_slider_features = build_features_from_scan(st.session_state.last_scan)
-
-        if input_mode == "Scan my idea":
-            st.caption("These features are derived from the scenario text. In Scan my idea mode they stay read-only and refresh after each run so you can see what the parser picked up.")
-            slider_key_suffix = "fresh"
-            if isinstance(st.session_state.get("last_scan"), dict):
-                slider_key_suffix = "_".join([
-                    f"{scenario_slider_features.get('technical_complexity', 0.55):.2f}",
-                    f"{scenario_slider_features.get('transparency', 0.55):.2f}",
-                    f"{scenario_slider_features.get('regulation', 0.55):.2f}",
-                    f"{scenario_slider_features.get('centralization', 0.35):.2f}",
-                    f"{scenario_slider_features.get('anonymity', 0.25):.2f}",
-                    f"{scenario_slider_features.get('capital_scale', 0.35):.2f}",
-                ])
-
-            manual_features = {
-                "technical_complexity": st.slider("Technical complexity", 0.0, 1.0, float(scenario_slider_features.get("technical_complexity", 0.55)), 0.01, key=f"scenario_technical_complexity_{slider_key_suffix}", disabled=True),
-                "transparency": st.slider("Transparency", 0.0, 1.0, float(scenario_slider_features.get("transparency", 0.55)), 0.01, key=f"scenario_transparency_{slider_key_suffix}", disabled=True),
-                "regulation": st.slider("Regulation / oversight", 0.0, 1.0, float(scenario_slider_features.get("regulation", 0.55)), 0.01, key=f"scenario_regulation_{slider_key_suffix}", disabled=True),
-                "centralization": st.slider("Power concentration", 0.0, 1.0, float(scenario_slider_features.get("centralization", 0.35)), 0.01, key=f"scenario_centralization_{slider_key_suffix}", disabled=True),
-                "anonymity": st.slider("Anonymity / opacity", 0.0, 1.0, float(scenario_slider_features.get("anonymity", 0.25)), 0.01, key=f"scenario_anonymity_{slider_key_suffix}", disabled=True),
-                "capital_scale": st.slider("Capital scale", 0.0, 1.0, float(scenario_slider_features.get("capital_scale", 0.35)), 0.01, key=f"scenario_capital_scale_{slider_key_suffix}", disabled=True),
+    
+        boundary_cases = [
+            {
+                "title": "Prediction vs Free Agency",
+                "scenario": "A system predicts with high confidence that someone may cause harm, but the action has not happened yet.",
+                "main_risk": "Replacing human agency with prediction.",
+                "guardrail": "No prediction may replace human agency.",
+                "allowed": "Warning, care response, mediation, delay, de-escalation, support, and human review.",
+                "forbidden": "Automatic punishment, mind control, coercive agency override, or irreversible restriction without review.",
+                "failure_type": "Policy Failure / Implementation Failure",
+            },
+            {
+                "title": "Voluntary Protection Mode",
+                "scenario": "A person asks for temporary protective limits because they do not trust themselves during crisis, addiction, psychosis, panic, or rage.",
+                "main_risk": "Confusing voluntary help with imposed control.",
+                "guardrail": "Consent must be real, informed, revocable, and not structurally forced.",
+                "allowed": "Informed, revocable, time-limited support with appeal and review.",
+                "forbidden": "Permanent restriction, hidden coercion, non-revocable consent, or forced treatment without review.",
+                "failure_type": "Implementation Failure",
+            },
+            {
+                "title": "Consent Under Pressure",
+                "scenario": "A person says yes, but refusal would cost basic rights, dignity, housing, food, work, safety, or essential services.",
+                "main_risk": "False consent.",
+                "guardrail": "Consent is invalid when refusal is not realistically possible.",
+                "allowed": "Identify pressure, require an alternative path, reduce dependency, and add appeal.",
+                "forbidden": "Treating coerced agreement as valid consent.",
+                "failure_type": "Policy Failure / Actor Failure",
+            },
+            {
+                "title": "Basic Rights Scarcity",
+                "scenario": "Water, food, clothing, housing, safety, or essential support are limited.",
+                "main_risk": "Sacrificing one group permanently or invisibly.",
+                "guardrail": "Basic rights remain the baseline even under scarcity.",
+                "allowed": "Transparent rationing, independent review, temporary limits, public reasoning, and repair.",
+                "forbidden": "Permanent exclusion, discriminatory denial, opaque allocation, or no appeal.",
+                "failure_type": "Policy Failure",
+            },
+            {
+                "title": "Emergency Trigger Misuse",
+                "scenario": "A group tries to trigger emergency or threshold mechanisms repeatedly to remove opponents or force a preferred outcome.",
+                "main_risk": "The emergency mechanism becomes a power weapon.",
+                "guardrail": "Critical review triggers must themselves be protected against capture.",
+                "allowed": "Multi-signal review, evidence threshold, independent oversight, and cooling-off period.",
+                "forbidden": "Automatic reset, automatic removal, or irreversible governance change based on one signal.",
+                "failure_type": "Actor Failure / Policy Failure",
+            },
+            {
+                "title": "Ambient Capture",
+                "scenario": "Reviewers are not directly bribed, but they are shaped by propaganda, media saturation, platform algorithms, fear, or social pressure.",
+                "main_risk": "Mass influence that bypasses visible corruption checks.",
+                "guardrail": "Statistical isolation does not solve shared informational manipulation.",
+                "allowed": "Source diversity check, manipulation scan, delay, independent review, and exposure mapping.",
+                "forbidden": "Treating isolated selection as sufficient when the information environment is captured.",
+                "failure_type": "Data Failure / Implementation Failure",
+            },
+            {
+                "title": "Extraordinary Claim Without Public Evidence",
+                "scenario": "A person or institution claims final, prophetic, alien, neural, or metaphysical authority.",
+                "main_risk": "Unverifiable authority bypasses public review.",
+                "guardrail": "Extraordinary claims do not remove human review.",
+                "allowed": "Treat the claim as personally meaningful but unverified; audit policy consequences for rights, coercion, transparency, appeal, and repair.",
+                "forbidden": "Treating an unverified extraordinary claim as authority, removing guardrails, or granting policy authority without public evidence.",
+                "failure_type": "Actor Failure / Data Failure",
+            },
+            {
+                "title": "Neural Data Without Consent",
+                "scenario": "Future technology could read, infer, or reconstruct internal experience, memory, or intention.",
+                "main_risk": "Violating mental privacy and free agency.",
+                "guardrail": "No neural data without informed, revocable consent.",
+                "allowed": "Informed, revocable consent; medical and independent audit context; strict minimization.",
+                "forbidden": "Forced neural extraction, treating refusal as guilt, or using neural evidence as sole governance authority.",
+                "failure_type": "Policy Failure / Data Failure",
+            },
+            {
+                "title": "Performative Ethics",
+                "scenario": "A document uses strong ethical language but lacks operational safeguards.",
+                "main_risk": "Values language hides missing mechanisms.",
+                "guardrail": "Mechanisms outweigh adjectives.",
+                "allowed": "Compare claims against appeal, audit trail, time limits, correction, exit rights, evidence rules, independent oversight, explainability, independent challenge, and human override.",
+                "forbidden": "Treating values language as proof of integrity or allowing missing safeguards to appear as a low-risk internal reading.",
+                "failure_type": "Data Failure / Policy Failure",
+            },
+            {
+                "title": "Automated Triage Missing Safeguards",
+                "scenario": "An automated welfare triage or priority system reduces waiting times but lacks explainability, independent challenge, and human override during hardship cases.",
+                "main_risk": "Efficiency language hides missing appeal, challenge, explanation, and human override mechanisms.",
+                "guardrail": "Missing explainability, independent challenge, or human override routes to THRESHOLD / Needs Safeguards, not a low-risk internal reading.",
+                "allowed": "Classify as Needs Safeguards; require explanation path, independent challenge, human override, appeal, correction, audit trail, and hardship review.",
+                "forbidden": "Treating speed or automation benefits as proof of integrity when explainability, challenge, or override is missing.",
+                "failure_type": "Policy Failure / Implementation Failure / Data Failure",
+            },
+            {
+                "title": "Biometric Gate Without Fallback",
+                "scenario": "A city links food, housing, and medical access to a biometric identity gate without a fallback path, public audit, or meaningful appeal.",
+                "main_risk": "Basic rights become dependent on a technical identity gate with weak correction and contestability.",
+                "guardrail": "Basic-rights access requires fallback, public audit, meaningful appeal, correction, and human review before it can approach the review boundary.",
+                "allowed": "Classify as Needs Safeguards; add non-biometric fallback, public audit, meaningful appeal, human review, dignity-preserving correction, and emergency access.",
+                "forbidden": "Making food, housing, medical access, or other basic rights conditional on one biometric system without fallback or appeal.",
+                "failure_type": "Policy Failure / Implementation Failure / Data Failure",
+            },
+            {
+                "title": "Question Prompt vs Risk State",
+                "scenario": "A user submits audit questions, repair prompts, or review-tool questions rather than a governance scenario.",
+                "main_risk": "Review-tool questions could be misread as scored governance scenarios.",
+                "guardrail": "QUESTION_PROMPT is an input/review-tool mode, not a fourth risk state.",
+                "allowed": "Keep audit and repair questions in Review Tool mode with metrics suppressed; score only scenario-style governance inputs using the internal SANCTUARY / THRESHOLD / ASYLUM labels.",
+                "forbidden": "Scoring a pure audit question as a risk-state reading, or treating QUESTION_PROMPT as a risk state.",
+                "failure_type": "Implementation Failure / Data Failure",
+            },
+            {
+                "title": "ALETHEIA Audits Itself",
+                "scenario": "ALETHEIA, its founder, prompt, rubric, model, baseline, or report language may contain capture risk.",
+                "main_risk": "Founder capture, doctrine lock-in, overclaiming, or unverified authority leakage.",
+                "guardrail": "No founder, architect, prompt, model, document, or output is above the mirror.",
+                "allowed": "Self-audit, public correction, forkability, independent review, and versioned change logs.",
+                "forbidden": "Exempting the founder, model, prompt, doctrine, or baseline from audit.",
+                "failure_type": "Implementation Failure / Actor Failure",
+            },
+        ]
+    
+        selected_case = st.selectbox(
+            "Boundary case",
+            [case["title"] for case in boundary_cases],
+            key="boundary_case_selector",
+            help="Select a calibration case to inspect. These are templates for human review, not automated decisions.",
+        )
+        case = next(item for item in boundary_cases if item["title"] == selected_case)
+        update_protocol_state(selected_context=case["title"], last_update_source="Boundary Cases")
+    
+        left, right = st.columns([1.05, 1])
+        with left:
+            st.markdown("### Scenario")
+            st.write(case["scenario"])
+            st.markdown("### Main risk")
+            st.warning(case["main_risk"])
+            st.markdown("### Relevant guardrail")
+            st.success(case["guardrail"])
+        with right:
+            st.markdown("### Allowed responses")
+            st.write(case["allowed"])
+            st.markdown("### Forbidden responses")
+            st.write(case["forbidden"])
+            st.markdown("### Failure classification")
+            st.code(case["failure_type"], language="text")
+            selected_failure_modes = [mode.strip() for mode in case["failure_type"].split("/")]
+            for mode in selected_failure_modes:
+                definition = failure_mode_definitions.get(mode)
+                if definition:
+                    st.caption(f"{mode}: {definition}")
+    
+        with st.expander("Boundary diagnostics — failure typing, consent audit, mechanism scan, and self-audit", expanded=False):
+            st.markdown("### Failure Classification output")
+            st.code(
+                f"""Failure Classification
+    
+        Primary failure type: {selected_failure_modes[0] if selected_failure_modes else 'Review needed'}
+        Secondary failure type: {selected_failure_modes[1] if len(selected_failure_modes) > 1 else 'None specified'}
+        Reason: {case['main_risk']}
+        Evidence from scenario: {case['scenario']}
+        Human review need: Required before assigning responsibility or changing policy.
+        Recommended repair: Use allowed responses and add concrete safeguards. Missing explainability, independent challenge, human override, fallback, public audit, or meaningful appeal should route to Needs Safeguards before any low-risk internal reading.
+        Confidence: Template-level calibration, not a final finding.""",
+                language="text",
+            )
+    
+            st.markdown("### Boundary Case Report Template")
+            st.code(
+                f"""Boundary Case Report
+    
+        Scenario: {case['title']}
+        Main risk: {case['main_risk']}
+        Relevant guardrails: {case['guardrail']}
+        Allowed responses: {case['allowed']}
+        Forbidden responses: {case['forbidden']}
+        Failure classification: {case['failure_type']}
+        Recommended safeguard: Add human review, appeal, transparency, correction, evidence requirements, explainability, independent challenge, human override, fallback paths, and public audit where missing.
+        Human review note: This is a mirror output, not an instruction or enforcement decision.""",
+                language="text",
+            )
+    
+            render_consent_audit_intro(st)
+            consent_examples = {
+                "Green — refusal is realistic": {
+                    "summary": "The person can say no without losing basic rights, safety, dignity, or essential access.",
+                    "signals": "Clear opt-out, no retaliation, fallback/alternative path, withdrawal right, plain-language explanation, meaningful appeal, and human review.",
+                    "failure": "No serious failure signal / monitor for implementation drift.",
+                },
+                "Yellow — pressure or ambiguity exists": {
+                    "summary": "Refusal technically exists, but the cost, consequence, dependency, or withdrawal path is unclear.",
+                    "signals": "Default opt-in, confusing terms, weak withdrawal, power imbalance, service dependency, unclear data retention, weak fallback, unclear appeal, or no human override.",
+                    "failure": "Policy Failure / Implementation Failure / Data Failure",
+                },
+                "Red — consent appears structurally forced": {
+                    "summary": "Refusal is practically impossible, punished, hidden, or tied to loss of basic rights or essential services.",
+                    "signals": "Loss of food, housing, care, safety, work, due process, essential access, fallback path, appeal, or non-revocable agreement.",
+                    "failure": "Policy Failure / Actor Failure / Implementation Failure",
+                },
             }
-        else:
-            st.caption("These sliders shape the test. They are inputs, not hidden truth.")
-            manual_features = {
-                "technical_complexity": st.slider("Technical complexity", 0.0, 1.0, default_manual_features["technical_complexity"], 0.01, key="manual_technical_complexity"),
-                "transparency": st.slider("Transparency", 0.0, 1.0, default_manual_features["transparency"], 0.01, key="manual_transparency"),
-                "regulation": st.slider("Regulation / oversight", 0.0, 1.0, default_manual_features["regulation"], 0.01, key="manual_regulation"),
-                "centralization": st.slider("Power concentration", 0.0, 1.0, default_manual_features["centralization"], 0.01, key="manual_centralization"),
-                "anonymity": st.slider("Anonymity / opacity", 0.0, 1.0, default_manual_features["anonymity"], 0.01, key="manual_anonymity"),
-                "capital_scale": st.slider("Capital scale", 0.0, 1.0, default_manual_features["capital_scale"], 0.01, key="manual_capital_scale"),
-            }
-
-    with st.expander("How to write good Stress Test scenarios", expanded=False):
-        st.markdown(
-            """
-Stress Test works best when you write a **scenario as a governance pattern**, not as a personal accusation. ALETHEIA is English-first; Dutch/Nederlands examples may appear in batch-test fixtures, but that is not a general language-compatibility claim.
-
-Include: who gains power, how power is obtained, what can go wrong, what safeguards exist or are missing, and whether affected people can appeal, exit, or request correction.
-
-**Weak:** `Is this bad?`
-
-**Better:** `A temporary crisis leader gains emergency authority after a disaster, but no term limit, appeal path, or independent review is defined.`
-
-**Weak:** `John is evil.`
-
-**Better:** `A named leader gains centralized authority after a crisis. The system has weak review, unclear limits, and no visible exit path.`
-
-ALETHEIA reviews patterns, not personal worth. Use fictional names or roles when testing. The Invisibility Filter can reduce actor/name/title bias while keeping the governance pattern visible.
-            """
-        )
-
-    run = st.button("Run review", type="primary", use_container_width=True, key="simulation_run_button")
-    if run:
-        if input_mode == "Scan my idea" and input_status == "EMPTY_INPUT":
-            st.warning("Add your own scenario or load a demo before running Scan my idea. ALETHEIA does not run examples by itself.")
-        else:
-            analysis_query = query
-            invisibility_report = None
-            if input_mode == "Scan my idea" and apply_invisibility and input_status != "EMPTY_INPUT":
-                invisibility_report = decouple_actor(query)
-                analysis_query = invisibility_report.get("decoupled_text", query)
-            with st.spinner("Reading your idea and checking the pattern..."):
-                scan, features, sim, report, scan_mode = run_audit(analysis_query, manual_features, weights, ego_tolerance, divine_floor, steps, n_agents, input_mode)
-                st.session_state.last_scan = scan
-                st.session_state.last_features = features
-                st.session_state.last_sim = sim
-                st.session_state.last_report = report
-                st.session_state.last_scan_mode = scan_mode
-                st.session_state.last_input_mode = input_mode
-                st.session_state.last_query = analysis_query
-                st.session_state.last_query_raw = query
-                st.session_state.last_input_status = input_status
-                st.session_state.last_invisibility_report = invisibility_report
-                # Patch 208: keep the resolved demo scenario text as an explicit
-                # semantic source. Demo labels are only UI labels; the semantic
-                # layer must scan the actual scenario body and the visible editor
-                # text, then keep the strongest pressure reading.
-                demo_source_text = ""
-                if input_status == "DEMO_INPUT":
-                    demo_source_text = str(loaded_demo or st.session_state.get("simulation_demo_resolved_text", "") or "")
-                st.session_state.last_demo_scenario_text = demo_source_text
-                if input_mode == "Scan my idea" and (str(query or "").strip() or str(analysis_query or "").strip() or demo_source_text.strip()):
-                    st.session_state.last_stress_semantic_scan = choose_strongest_semantic_scan(
-                        choose_stress_semantic_scan(query, analysis_query),
-                        choose_stress_semantic_scan(demo_source_text, analysis_query) if demo_source_text else None,
-                        query,
-                        analysis_query,
-                        demo_source_text,
-                    )
-                else:
-                    st.session_state.last_stress_semantic_scan = None
-                selected_context = "Manual test" if input_mode == "Manual test" else ((analysis_query[:120] + "…") if len(analysis_query) > 120 else analysis_query)
-                update_protocol_state(selected_context=selected_context, last_update_source="Stress Test")
-                if input_mode == "Scan my idea":
-                    st.rerun()
-
-    with st.expander("Stress Test Batch Testing — up to 50 scenarios", expanded=False):
-        st.caption("Upload or paste scenario-style inputs. Batch testing is explicit opt-in, local-only, and creates local witness receipts.")
-        stress_batch_source = st.radio(
-            "Stress batch input source",
-            ["Upload .txt", "Paste list"],
-            horizontal=True,
-            key="stress_batch_source_mode",
-        )
-        stress_batch_text = ""
-        if stress_batch_source == "Upload .txt":
-            stress_upload = st.file_uploader(
-                "Upload Stress Test .txt list",
-                type=["txt"],
-                key="stress_batch_txt_upload",
-                help="Use one scenario per line, a numbered list, or --- between longer items.",
+            selected_consent_level = st.selectbox(
+                "Consent integrity example",
+                list(consent_examples.keys()),
+                key="consent_audit_example_selector",
+                help="Template-level calibration only. Human review remains required before treating consent as valid or invalid.",
             )
-            if stress_upload is not None:
-                stress_batch_text = stress_upload.getvalue().decode("utf-8", errors="replace")
-                st.caption(f"Staged {stress_upload.name}. Press Run Stress Batch to process it.")
-        else:
-            stress_batch_text = st.text_area(
-                "Paste Stress Test scenarios",
-                height=180,
-                key="stress_batch_manual_input",
-                placeholder="1. A temporary leader gains emergency power without a term limit.\n2. A public service requires biometric ID before food or housing support.",
+            consent_case = consent_examples[selected_consent_level]
+            st.code(
+                f"""Consent-Audit Report
+    
+        Consent integrity rating: {selected_consent_level}
+        Refusal reality: {consent_case['summary']}
+        Pressure signals: {consent_case['signals']}
+        Basic-rights dependency check: Does refusal threaten water, food, clothing, housing, safety, dignity, appeal, exit, correction, care, or essential services?
+        Withdrawal and review: Can consent be withdrawn, appealed, and reviewed by a human?
+        Failure classification: {consent_case['failure']}
+        Recommended safeguards: Add opt-out, fallback/alternative path, withdrawal right, appeal, human override, non-retaliation rule, plain language, time limit, and independent review where needed.
+        Human review disclaimer: This is a mirror output for human review. It is not legal advice, enforcement, punishment, or final authority.""",
+                language="text",
             )
-
-        stress_batch_items = parse_witness_batch_input(stress_batch_text, max_items=MAX_BATCH_RECEIPTS)
-        stress_question_set_mode = is_witness_question_set(stress_batch_items)
-        if stress_batch_text.strip():
-            question_note = " Question-prompt mode will keep audit/repair questions as review tools, not scored scenarios." if stress_question_set_mode else ""
-            st.caption(f"{len(stress_batch_items)} item(s) ready. Maximum: {MAX_BATCH_RECEIPTS}.{question_note}")
-        stress_batch_apply_invisibility = st.checkbox(
-            "Apply Invisibility Filter to Stress batch",
-            value=bool(stress_batch_items),
-            key="stress_batch_invisibility_filter",
-            disabled=not bool(stress_batch_items),
-        )
-        stress_batch_signature = hashlib.sha256(
-            (
-                stress_batch_source
-                + "\n"
-                + stress_batch_text.strip()
-                + "\n"
-                + str(bool(stress_batch_apply_invisibility))
-            ).encode("utf-8")
-        ).hexdigest()
-        active_stress_batch_signature = st.session_state.get("stress_batch_active_signature")
-        stress_batch_has_active_results = bool(
-            st.session_state.get("stress_batch_summary")
-            or st.session_state.get("stress_batch_archive_bytes")
-        )
-        stress_batch_matches_active = (
-            bool(stress_batch_text.strip())
-            and bool(active_stress_batch_signature)
-            and active_stress_batch_signature == stress_batch_signature
-        )
-        stress_batch_is_stale = stress_batch_has_active_results and not stress_batch_matches_active
-        if stress_batch_is_stale:
-            st.info(
-                "The Stress batch input has changed. The previous batch result is closed for this draft. "
-                "Click Run Stress Batch to create a new batch and receipts."
-            )
-        run_stress_batch = st.button(
-            "Run Stress Batch",
-            type="primary",
-            use_container_width=True,
-            disabled=not bool(stress_batch_items),
-            key="simulation_run_stress_batch_button",
-        )
-        if run_stress_batch:
-            stress_receipts = []
-            stress_rows = []
-            with st.spinner(f"Running {len(stress_batch_items)} local Stress Test scenario(s)..."):
-                for idx, raw_item in enumerate(stress_batch_items, start=1):
-                    processed_item = raw_item
-                    invisibility_report = None
-                    if stress_batch_apply_invisibility:
-                        invisibility_report = decouple_actor(raw_item)
-                        processed_item = invisibility_report.get("decoupled_text", raw_item)
-
-                    # Patch 69: a Stress Test batch can also be a bank of audit/repair
-                    # questions. In that case the questions are review tools, not
-                    # governance scenarios to score as Sanctuary/Threshold/Asylum.
-                    if stress_question_set_mode and is_witness_question_prompt(raw_item):
-                        receipt = build_local_question_prompt_receipt(
-                            module="Simulation",
-                            input_text=raw_item,
-                            processed_text=processed_item,
-                            invisibility_applied=bool(stress_batch_apply_invisibility),
-                            app_version=APP_VERSION,
-                        )
-                        stress_report = {"integrity": None, "repair_questions": receipt.get("repair_questions", [])}
-                        verdict = "QUESTION_PROMPT"
-                        risk = "Review Tool"
-                        label = "Audit Question / Review Tool"
-                    else:
-                        scan, features, sim, stress_report, scan_mode = run_audit(
-                            processed_item,
-                            default_manual_features,
-                            weights,
-                            ego_tolerance,
-                            divine_floor,
-                            steps,
-                            n_agents,
-                            "Scan my idea",
-                        )
-                        label, needs_review, _reason = stress_label_for_phrase(processed_item)
-                        base_verdict, _base_color = classify_verdict(stress_report["integrity"])
-                        verdict, risk = apply_guardrail_verdict(base_verdict, label, needs_review)
-                        sim, stress_report, verdict, label, needs_review, risk = enforce_missing_safeguard_threshold_route(
-                            processed_item,
-                            scan,
-                            sim,
-                            stress_report,
-                            verdict,
-                            label,
-                            needs_review,
-                            risk,
-                        )
-                        label = normalize_asylum_protocol_label(label, verdict=verdict, risk=risk)
-                        sim = enforce_asylum_metric_consistency(sim, verdict=verdict, risk=risk, protocol_label=label)
-                        stress_report = ensure_asylum_repair_questions(
-                            stress_report,
-                            verdict=verdict,
-                            risk=risk,
-                            protocol_label=label,
-                            scan=scan,
-                        )
-                        stress_report = ensure_threshold_repair_questions(
-                            stress_report,
-                            verdict=verdict,
-                            risk=risk,
-                            protocol_label=label,
-                        )
-                        ai_static_context = build_ai_static_scan_protocol_context(
-                            processed_item,
-                            source_module="Stress Test",
-                            primary_state=verdict,
-                            primary_risk=risk,
-                            primary_protocol_label=label,
-                        )
-                        stress_report["ai_static_scan_context"] = ai_static_context
-                        scan["ai_static_scan_context"] = ai_static_context
-                        receipt = build_local_witness_receipt(
-                            module="Simulation",
-                            input_text=raw_item,
-                            processed_text=processed_item,
-                            input_status="USER_INPUT",
-                            scan=scan,
-                            sim=sim,
-                            report=stress_report,
-                            verdict=verdict,
-                            risk=risk,
-                            protocol_label=label,
-                            invisibility_applied=isinstance(invisibility_report, dict) and invisibility_report.get("invisibility_filter_applied", False),
-                            app_version=APP_VERSION,
-                        )
-                    stress_receipts.append(receipt)
-                    integrity_value = stress_report.get("integrity") if isinstance(stress_report, dict) else None
-                    stress_review_band = review_band_for_state(verdict, stress_report, sim)
-                    stress_rows.append({
-                        "#": idx,
-                        "State": verdict,
-                        "Review zone": stress_review_band.get("label"),
-                        "Risk": risk,
-                        "Label": label,
-                        "Integrity": "—" if integrity_value is None else round(float(integrity_value), 3),
-                        "Repair questions": len((stress_report or {}).get("repair_questions") or []),
-                    })
-            archive_bytes, batch_index = build_local_witness_batch_zip(stress_receipts, module="Simulation", app_version=APP_VERSION)
-            st.session_state.stress_batch_archive_bytes = archive_bytes
-            st.session_state.stress_batch_index = batch_index
-            st.session_state.stress_batch_summary = stress_rows
-            st.session_state.stress_batch_active_signature = stress_batch_signature
-            # Patch 142.3: a Stress Test batch is a separate workflow. If the user
-            # ran one scenario first and then runs a batch, close the single-scenario
-            # tree/result state so the old tree does not remain below the batch.
-            for stress_single_key in [
-                "last_scan",
-                "last_features",
-                "last_sim",
-                "last_report",
-                "last_scan_mode",
-                "last_input_mode",
-                "last_query",
-                "last_query_raw",
-                "last_input_status",
-                "last_invisibility_report",
-            ]:
-                st.session_state.pop(stress_single_key, None)
-            st.success(f"Stress batch complete. {len(stress_receipts)} local receipt(s) are ready to download.")
-
-        if st.session_state.get("stress_batch_summary") and not stress_batch_is_stale:
-            st.dataframe(pd.DataFrame(st.session_state.stress_batch_summary), use_container_width=True, hide_index=True, height=300)
-        if st.session_state.get("stress_batch_archive_bytes") and not stress_batch_is_stale:
-            st.download_button(
-                "⬇️ Download Stress Test batch receipts",
-                data=st.session_state.stress_batch_archive_bytes,
-                file_name="aletheia_stress_test_batch_witness_receipts.zip",
-                mime="application/zip",
-                use_container_width=True,
-                key="simulation_download_stress_batch_receipts",
-            )
-        if stress_batch_is_stale and st.session_state.get("stress_batch_summary"):
-            with st.expander("Last closed Stress batch", expanded=False):
-                st.caption("Previous batch results are kept for review, but downloads are hidden until the current input is explicitly run.")
-                st.dataframe(_protocol_taxonomy_ui_table_df(pd.DataFrame(st.session_state.stress_batch_summary)), use_container_width=True, hide_index=True, height=220)
-
-    if "last_report" not in st.session_state:
-        st.info("No review has run yet. Add your input, load a demo, or use the Manual test.")
-    else:
-        scan = st.session_state.last_scan
-        features = st.session_state.last_features
-        sim = st.session_state.last_sim
-        report = st.session_state.last_report
-        scan_mode = st.session_state.last_scan_mode
-        last_input_mode = st.session_state.get("last_input_mode", input_mode)
-
-        base_verdict, base_color = classify_verdict(report["integrity"])
-        display_query = st.session_state.get("last_query", query) if last_input_mode == "Scan my idea" else ""
-        label, needs_review, stress_reason = stress_label_for_phrase(display_query) if display_query else ("Manual test", "NO", "Manual numeric tuner run.")
-        verdict, risk = apply_guardrail_verdict(base_verdict, label, needs_review)
-        sim, report, verdict, label, needs_review, risk = enforce_missing_safeguard_threshold_route(
-            display_query,
-            scan,
-            sim,
-            report,
-            verdict,
-            label,
-            needs_review,
-            risk,
-        )
-        label = normalize_asylum_protocol_label(label, verdict=verdict, risk=risk)
-        sim = enforce_asylum_metric_consistency(sim, verdict=verdict, risk=risk, protocol_label=label)
-        st.session_state.last_sim = sim
-        report = ensure_asylum_repair_questions(
-            report,
-            verdict=verdict,
-            risk=risk,
-            protocol_label=label,
-            scan=scan,
-        )
-        report = ensure_threshold_repair_questions(
-            report,
-            verdict=verdict,
-            risk=risk,
-            protocol_label=label,
-        )
-        if last_input_mode == "Scan my idea":
-            ai_static_context = build_ai_static_scan_protocol_context(
-                st.session_state.get("last_query", display_query),
-                source_module="Stress Test",
-                primary_state=verdict,
-                primary_risk=risk,
-                primary_protocol_label=label,
-            )
-            report["ai_static_scan_context"] = ai_static_context
-            scan["ai_static_scan_context"] = ai_static_context
-        st.session_state.last_report = report
-        verdict_color = {"SANCTUARY": "#8fbc8f", "THRESHOLD": "#e5c36b", "ASYLUM": "#db7777"}.get(verdict, base_color)
-        input_status_label = st.session_state.get("last_input_status", "MANUAL_INPUT" if last_input_mode == "Manual test" else "USER_INPUT")
-        invisibility_report = st.session_state.get("last_invisibility_report")
-        invisibility_note = " · Invisibility Filter: on" if isinstance(invisibility_report, dict) and invisibility_report.get("invisibility_filter_applied") else ""
-        current_review_band = review_band_for_state(verdict, report, sim)
-        st.caption(f"Feature source: {last_input_mode} · Input status: {input_status_label} · Scan mode: {scan_mode} · Protocol label: {label} · Review zone: {current_review_band.get('label')}{invisibility_note}")
-
-        c1, c2, c3, c4 = st.columns(4)
-        review_band = review_band_for_state(verdict, report, sim)
-        review_band_label = review_band.get("label", verdict.title())
-        review_band_summary = review_band.get("summary", "")
-        result_display = f"<span style='color:{verdict_color}'>{_protocol_metric_display(verdict)}</span>"
-        result_display += f"<br><span style='font-size:0.9rem;color:#c9c0b2;'>Internal review label: {html.escape(str(verdict))}</span>"
-        if verdict == "THRESHOLD":
-            result_display += f"<br><span style='font-size:1.05rem;color:#d4b88a;'>{review_band_label}</span>"
-
-        result_helper = f"Risk signal: {risk}<br>{_protocol_humility_note(verdict)}"
-        if verdict == "THRESHOLD":
-            result_helper += f"<br>Review zone: {review_band_label}"
-
-        with c1:
-            metric_card("Protocol reading", result_display, result_helper)
-        with c2:
-            metric_card("Integrity", f"{report['integrity']:.3f}", "Current reading. Raw values stay in the local receipt.")
-        with c3:
-            metric_card("Friction", f"{report['friction']:.3f}", "Control pressure")
-        with c4:
-            metric_card("Collapse pressure", f"{report['collapse_probability']:.3f}", scan_mode)
-
-        # Patch S2.1: keep the human-readable reading and repair questions above the machinery.
-        # The detailed Stress Test visuals are still available, but they no longer dominate
-        # the first read of the result.
-        with st.expander("Stress Test visuals and agent traces", expanded=False):
-            st.caption(
-                "Diagnostic visuals only. These charts explain the scenario-pressure run; "
-                "they do not create a separate decision or authority claim."
-            )
-            c5, c6, c7, c8 = st.columns(4)
-            c5.metric("Stability", f"{sim['stability']:.3f}")
-            c6.metric("Trust", f"{sim['trust_index']:.3f}")
-            c7.metric("Alignment", f"{sim['alignment']:.3f}")
-            c8.metric("Ego", f"{sim['ego']:.3f}")
-
-            render_pulse_tree(
-                display_score_from_judgment(report, {"verdict": verdict}),
-                sim["ego"],
-                sim["alignment"],
-                title="Stress Test Tree",
-                state_override=verdict,
-                mode="Stress Test",
-            )
-
-            st.plotly_chart(plot_trace(sim), use_container_width=True)
-
-            chart_col, table_col = st.columns([1, 1.2])
-            with chart_col:
-                st.plotly_chart(action_chart(sim), use_container_width=True)
-            with table_col:
-                st.markdown("### Test voices")
-                st.dataframe(pd.DataFrame(sim.get("agent_profiles", [])), use_container_width=True, hide_index=True)
-
-        st.markdown("### Why this result?")
-        reason_cols = st.columns(3)
-        with reason_cols[0]:
-            soft_card("What ALETHEIA saw", f"Source: {last_input_mode}. Power concentration {scan['power_concentration']:.0%}, transparency {scan['decision_transparency']:.0%}, regulation {scan['regulatory_presence']:.0%}.")
-        with reason_cols[1]:
-            soft_card("Pattern over time", f"Trust {sim['trust_index']:.0%}, alignment {sim['alignment']:.0%}, ego {sim['ego']:.0%}.")
-        with reason_cols[2]:
-            soft_card("Risk picture", f"Review zone: {review_band_label}. {review_band_summary} Collapse risk: {'yes' if sim.get('collapse_risk') else 'no'}. Trust friction: {report['trust_friction']:.3f}. Grievance pressure: {sim.get('grievance_pressure', 0):.2f}. Safeguard gap: {sim.get('safeguard_gap', 0):.2f}.")
-
-        st.markdown("### Repair questions")
-        st.caption("ALETHEIA asks questions here. It gives no orders and no final judgment.")
-        repair_questions = report.get("repair_questions") or []
-        if repair_questions:
-            for idx, question in enumerate(repair_questions[:5], start=1):
-                soft_card(f"REVIEW · Question {idx}", silent_operator_question(question, context="this repair path"))
-        else:
-            for rec in report["recommendations"][:5]:
-                priority = str(rec.get("priority", "review")).upper()
-                target = rec.get("target", "System")
-                action = rec.get("action", "Review")
-                soft_card(f"{priority} · {target} · {action}", silent_operator_question(rec, context=str(target)))
-
-        if last_input_mode == "Scan my idea":
-            stored_stress_semantic_scan = st.session_state.get("last_stress_semantic_scan")
-            current_raw_query = str(st.session_state.get("last_query_raw", "") or "").strip()
-            current_processed_query = str(display_query or "").strip()
-            visible_editor_query = str(query or "").strip()
-            demo_source_query = str(st.session_state.get("last_demo_scenario_text", "") or "").strip()
-            recomputed_stress_semantic_scan = choose_stress_semantic_scan(current_raw_query or visible_editor_query, current_processed_query)
-            editor_stress_semantic_scan = choose_stress_semantic_scan(visible_editor_query, current_processed_query) if visible_editor_query else None
-            demo_stress_semantic_scan = choose_stress_semantic_scan(demo_source_query, current_processed_query) if demo_source_query else None
-            stress_semantic_scan = choose_strongest_semantic_scan(
-                stored_stress_semantic_scan,
-                recomputed_stress_semantic_scan,
-                editor_stress_semantic_scan,
-                demo_stress_semantic_scan,
-                current_raw_query,
-                visible_editor_query,
-                demo_source_query,
-                current_processed_query,
-            )
-            if stress_semantic_scan is not None:
-                st.session_state.last_stress_semantic_scan = stress_semantic_scan
-            render_semantic_stress_triggers(stress_semantic_scan, expanded=False)
-
-        ai_static_context = report.get("ai_static_scan_context") if isinstance(report, dict) else None
-        # Patch 182: AI static scan expanders inherit sky/gold expander and table styling; context remains subordinate.
-        if isinstance(ai_static_context, dict):
-            with st.expander("AI static scan context — subordinate to Stress Test", expanded=False):
-                st.caption(ai_static_context.get("notice"))
+    
+            with st.expander("Consent audit questions", expanded=False):
                 st.markdown(
-                    f"**Protocol context signal:** {ai_static_context.get('protocol_context_state', ai_static_context.get('ai_static_scan_state'))} · "
-                    f"{ai_static_context.get('protocol_context_risk', ai_static_context.get('ai_static_scan_risk'))} · "
-                    f"{ai_static_context.get('finding_count')} AI-specific finding(s)"
+                    """
+                    - Can the person realistically say no?
+                    - What happens if they refuse?
+                    - Do they lose basic rights or essential services?
+                    - Is there a power imbalance?
+                    - Is refusal punished directly or indirectly?
+                    - Is consent informed and specific?
+                    - Can consent be withdrawn later?
+                    - Is there an alternative path?
+                    - Is there human review or appeal?
+                    - Is the consent request bundled with unrelated obligations?
+                    """
                 )
-                if ai_static_context.get("alignment_note"):
-                    st.caption(ai_static_context.get("alignment_note"))
+    
+            st.markdown("### Mechanism-vs-Claim Scanner")
+            st.write(
+                "This scanner checks whether ethical values are supported by operational safeguards. "
+                "Values language can be sincere, but mechanisms make it reviewable, appealable, and correctable."
+            )
+            mechanism_examples = {
+                "High — claims supported by mechanisms": {
+                    "claims": "The document states values and connects them to concrete procedures.",
+                    "mechanisms": "Independent appeal process, public audit trail, time-limited authority, correction path, evidence requirement, explainability, independent challenge, human override, human review, exit right.",
+                    "missing": "No major missing safeguard in the selected example.",
+                    "failure": "No serious failure signal / monitor for implementation drift.",
+                },
+                "Medium — partial safeguards": {
+                    "claims": "The document uses ethical language and includes some safeguards, but key procedures are vague or incomplete.",
+                    "mechanisms": "Some review or oversight exists, but appeal, correction, evidence standards, explainability, independent challenge, human override, fallback, or time limits are unclear.",
+                    "missing": "Clarify appeal, audit trail, correction, responsible actor, and review deadline.",
+                    "failure": "Policy Failure / Implementation Failure / Data Failure",
+                },
+                "Low — mostly values language": {
+                    "claims": "The document repeatedly says it protects freedom, justice, dignity, safety, or service.",
+                    "mechanisms": "Few or no concrete safeguards are described.",
+                    "missing": "Appeal, audit trail, correction, time limits, independent review, explainability, independent challenge, human override, fallback, evidence rules, exit, and accountability.",
+                    "failure": "Policy Failure / Data Failure",
+                },
+            }
+            selected_mechanism_level = st.selectbox(
+                "Ethical language integrity example",
+                list(mechanism_examples.keys()),
+                key="mechanism_vs_claim_example_selector",
+                help="Template-level calibration only. Human review remains required before inferring intent or deciding repair.",
+            )
+            mechanism_case = mechanism_examples[selected_mechanism_level]
+            st.code(
+                f"""Mechanism-vs-Claim Scan
+    
+        Ethical language integrity: {selected_mechanism_level}
+        Claim signals found: {mechanism_case['claims']}
+        Mechanism signals found: {mechanism_case['mechanisms']}
+        Missing safeguards: {mechanism_case['missing']}
+        Main risk: Values language may be mistaken for operational accountability.
+        Failure classification: {mechanism_case['failure']}
+        Recommended repair: Add concrete safeguards such as appeal, audit trail, time limits, correction, evidence requirements, explainability, independent challenge, human override, fallback, independent oversight, and human review.
+        Human review note: This is a mirror output. It flags mechanism gaps; it does not prove bad faith or assign final intent.""",
+                language="text",
+            )
+    
+            with st.expander("Mechanism signals to search for", expanded=False):
+                st.markdown(
+                    """
+                    - Appeal process
+                    - Public audit trail
+                    - Time-limited authority
+                    - Human review
+                    - Explainability
+                    - Independent challenge
+                    - Human override
+                    - Fallback path
+                    - Correction mechanism
+                    - Exit right
+                    - Evidence requirement
+                    - Conflict-of-interest rule
+                    - Independent oversight
+                    - Plain-language notice
+                    - Non-retaliation rule
+                    - Withdrawal right
+                    - Review deadline
+                    - Public reasoning requirement
+                    """
+                )
+    
+            with st.expander("Relationship-aware semantic pressure scan", expanded=False):
                 st.caption(
-                    f"Raw AI static scan only: {ai_static_context.get('ai_static_scan_state')} · "
-                    f"{ai_static_context.get('ai_static_scan_risk')}"
+                    "Scans relationships between pressure terms, access terms, soft claims, and concrete mechanisms. "
+                    "This is deterministic and fail-closed; it is not proof of intent or a final decision."
                 )
-                if ai_static_context.get("findings"):
-                    st.dataframe(pd.DataFrame(ai_static_context.get("findings")), use_container_width=True, hide_index=True)
-
-        # Patch 203: keep receipt download opt-in so Stress Test does not become one
-        # long continuous result page. The receipt payload and schema are unchanged.
-        with st.expander("Download local witness receipt", expanded=False):
+                semantic_sample = (
+                    "Access to the application is only possible after successful identity verification. "
+                    "The system protects safety and trust, but no appeal, fallback, or human review is described."
+                )
+                semantic_text = st.text_area(
+                    "Unstructured text to scan",
+                    value=semantic_sample,
+                    height=110,
+                    key="semantic_pressure_scan_text",
+                    help="Use this to inspect words/phrases as relationships, not isolated keywords.",
+                )
+                governance_context = st.checkbox(
+                    "Treat as governance / power-distribution text",
+                    value=True,
+                    key="semantic_pressure_governance_context",
+                    help="When enabled, missing recognizable safeguards routes to a fail-closed review warning.",
+                )
+                if semantic_text.strip():
+                    semantic_scan = scan_semantic_pressure(semantic_text, governance_context=governance_context)
+                    s_col1, s_col2, s_col3, s_col4 = st.columns(4)
+                    s_col1.metric("Review state", semantic_scan.state)
+                    s_col2.metric("Claims", semantic_scan.claim_count)
+                    s_col3.metric("Mechanisms", semantic_scan.mechanism_count)
+                    s_col4.metric("Integrity pressure", f"{semantic_scan.integrity_adjustment:+.3f}")
+                    if semantic_scan.fail_closed:
+                        st.warning("Fail-closed review: recognizable safeguards were missing or insufficient for the detected governance/value language.")
+                    elif semantic_scan.proximity_hits:
+                        st.warning("Contextual pressure pattern detected near access, identity, service, or basic-rights language.")
+                    elif semantic_scan.mechanism_count > 0 or semantic_scan.sovereignty_count > 0:
+                        st.success("Concrete safeguards detected. No strong pressure relationship was detected by this scanner; human review still required.")
+                    else:
+                        st.info("No strong pressure relationship or concrete safeguard structure detected by this scanner. Human review still required.")
+                    st.code(format_semantic_pressure_report(semantic_scan), language="text")
+                    with st.expander("Normalized text used for scan", expanded=False):
+                        st.code(semantic_scan.normalized_text, language="text")
+    
+            st.markdown("### Self-Audit Mode")
+            st.write(
+                "Self-Audit Mode points the mirror back at ALETHEIA itself. "
+                "It checks baseline documents, prompts, rubrics, README language, app copy, architect-context language, and generated reports for self-capture risk."
+            )
+            self_audit_examples = {
+                "Green — no obvious self-capture signal": {
+                    "summary": "The reviewed text preserves human review, avoids founder elevation, and includes appeal or correction language.",
+                    "risks": "Monitor for drift as prompts, rubrics, and app language change.",
+                    "repair": "Keep versioned logs, independent review, and correction paths visible.",
+                },
+                "Yellow — safeguard unclear or incomplete": {
+                    "summary": "The reviewed text is mostly safe, but appeal, correction, evidence limits, or founder-capture safeguards are weak or implicit.",
+                    "risks": "Overclaiming, weak review language, vague correction path, or unclear evidence standard.",
+                    "repair": "Add explicit human review, appeal, correction, evidence limits, and safe output rules.",
+                },
+                "Red — self-capture or authority leakage risk": {
+                    "summary": "The reviewed text may imply that ALETHEIA, its founder, doctrine, model, baseline, or prompt is beyond review.",
+                    "risks": "Founder capture, ideological lock-in, unverifiable authority, unverified authority leakage, or human-review bypass.",
+                    "repair": "Remove authority language, add independent review, add appeal/correction, and state that self-audit is not proof of correctness.",
+                },
+            }
+            selected_self_audit_level = st.selectbox(
+                "Self-audit risk example",
+                list(self_audit_examples.keys()),
+                key="self_audit_example_selector",
+                help="Template-level calibration only. Self-audit reflects risk; it does not certify ALETHEIA as correct, complete, or beyond review.",
+            )
+            self_case = self_audit_examples[selected_self_audit_level]
+            st.code(
+                f"""Self-Audit Report
+    
+        Material reviewed: ALETHEIA baseline / prompt / rubric / README / app copy / generated report
+        Self-capture risk rating: {selected_self_audit_level}
+        Founder-capture check: No founder, architect, prompt, rubric, model, document, or output is above the mirror.
+        Authority-leakage check: {self_case['summary']}
+        Risk signals: {self_case['risks']}
+        Recommended repairs: {self_case['repair']}
+        Human review disclaimer: This self-audit is a governance mirror for human review. It is not proof of correctness, extraordinary-claim validation, or a replacement for human judgment.""",
+                language="text",
+            )
+    
+            with st.expander("Self-audit checks", expanded=False):
+                st.markdown(
+                    """
+                    - Founder capture
+                    - Ideological lock-in
+                    - Unverifiable authority
+                    - Weak appeal mechanisms
+                    - Overclaiming
+                    - Unverified authority leakage
+                    - Insufficient human review
+                    - Missing correction loops
+                    - Hidden command language
+                    - Evidence gaps
+                    - Performative ethics
+                    - Mechanism gaps
+                    """
+                )
+    
+            with st.expander("Safe output rules", expanded=False):
+                st.markdown(
+                    """
+                    ALETHEIA may say: potential risk detected, Needs Safeguards, critical human review required, safeguard missing, evidence gap found, this claim is unverified.
+    
+                    ALETHEIA must not say: the AI has decided, guardrails no longer apply, this claim is finally verified, human review is unnecessary.
+                    """
+                )
+    
+    
+    
+        with st.expander("Receipt example — local witness format", expanded=False):
+            # Patch 183: visual-only example framing for receipt documentation.
             st.markdown(
                 """
                 <div class="receipt-sky-panel">
-                  <div class="receipt-kicker">User-held review artifact</div>
-                  <div class="receipt-title">Local witness receipt</div>
-                  <div class="receipt-body">Creates a receipt you hold. It is not published, synced, enforced, or treated as authority.</div>
+                  <div class="receipt-kicker">Receipt example</div>
+                  <div class="receipt-title">Local Witness Receipt v2</div>
+                  <div class="receipt-body">Records a user-held fingerprint of an ALETHEIA review: input, processed input, report fingerprint, app/rubric/prompt versions, active modules, and authority boundary.</div>
                   <div class="receipt-boundary-strip">
-                    <span class="receipt-boundary-pill">Local only</span>
-                    <span class="receipt-boundary-pill">No public ledger</span>
-                    <span class="receipt-boundary-pill">No Global ID sync</span>
-                    <span class="receipt-boundary-pill">Human review required</span>
+                    <span class="receipt-boundary-pill receipt-hash-pill">SHA-256 fingerprints</span>
+                    <span class="receipt-boundary-pill">Stored locally</span>
+                    <span class="receipt-boundary-pill">No central storage</span>
+                    <span class="receipt-boundary-pill">No authority claim</span>
                   </div>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
-            st.caption("Download text only. This visual card does not change the receipt content, schema, or authority boundary.")
-            raw_query_for_receipt = st.session_state.get("last_query_raw", display_query)
-            processed_query_for_receipt = st.session_state.get("last_query", display_query)
-            receipt = build_local_witness_receipt(
-                module="Simulation",
-                input_text=raw_query_for_receipt if last_input_mode == "Scan my idea" else "Manual test numeric input",
-                processed_text=processed_query_for_receipt if last_input_mode == "Scan my idea" else "Manual test numeric input",
-                input_status=input_status_label,
-                scan=scan,
-                sim=sim,
-                report=report,
-                verdict=verdict,
-                risk=risk,
-                protocol_label=label,
-                invisibility_applied=isinstance(invisibility_report, dict) and invisibility_report.get("invisibility_filter_applied", False),
-                app_version=APP_VERSION,
+            st.caption("Example styling only. The receipt remains a review artifact; it does not publish, sync, enforce, or create authority.")
+            receipt_example = {
+                "receipt_version": "local-witness-v2",
+                "document_fingerprint": "SHA-256 of submitted document",
+                "processed_document_fingerprint": "SHA-256 after optional actor-bias reduction",
+                "report_fingerprint": "SHA-256 of the report payload",
+                "app_version": APP_VERSION,
+                "rubric_version": "v0.1",
+                "prompt_version": "v0.1",
+                "active_modules": "Mirror Check, Stress Test, Boundary Cases, Evidence Lab, Self-Audit Mode",
+                "stored_locally": "Yes",
+                "public_ledger": "No",
+                "global_id_sync": "No",
+                "central_storage": "No",
+                "authority_claim": "No",
+                "human_review_required": "Yes",
+            }
+            st.code(
+                f"""Local Witness Receipt v2
+    
+        Plain-English receipt summary
+        What is this document?
+        This is an example of a local witness receipt. It records a review artifact for human inspection. It does not publish, sync, enforce, certify, or create authority.
+    
+        The main results
+        Receipt version: {receipt_example['receipt_version']}
+        Document fingerprint: {receipt_example['document_fingerprint']}
+        Processed document fingerprint: {receipt_example['processed_document_fingerprint']}
+        Report fingerprint: {receipt_example['report_fingerprint']}
+        App version: {receipt_example['app_version']}
+        Rubric version: {receipt_example['rubric_version']}
+        Prompt version: {receipt_example['prompt_version']}
+        Active modules: {receipt_example['active_modules']}
+        Stored locally: {receipt_example['stored_locally']}
+        Public ledger: {receipt_example['public_ledger']}
+        Global ID sync: {receipt_example['global_id_sync']}
+        Central storage: {receipt_example['central_storage']}
+        Authority claim: {receipt_example['authority_claim']}
+        Human review required: {receipt_example['human_review_required']}
+    
+        How power and control are distributed
+        This receipt keeps control with the user: stored locally, no public ledger, no Global ID sync, no central storage, no authority claim, and human review required.
+    
+        Next steps and questions
+        Check the fingerprints, review the values, inspect evidence gaps, and ask whether any real-world decision still needs appeal, correction, source review, or independent human oversight.
+    
+        Disclaimer: This receipt is a structured mirror reading for human review. It does not certify truth, safety, legality, legitimacy, morality, institutional fitness, extraordinary claims, or policy commands. It is not public ledger proof or a replacement for human judgment. Human review remains required; the reading may be incomplete, wrong, or sensitive to missing evidence.""",
+                language="text",
             )
-            receipt_text = render_local_witness_receipt_text(receipt)
-            st.download_button(
-                "⬇️ Download receipt",
-                data=receipt_text,
-                file_name="aletheia_local_witness_receipt.txt",
-                mime="text/plain",
-                use_container_width=True,
-            )
-
-with tab_boundary:
-    st.subheader("Boundary Cases")
-    render_shared_protocol_state_notice("Boundary Cases", expanded=False)
-
-    render_module_page_template_intro(
-        st,
-        ModulePageTemplateCopy(
-            module_name="Boundary Cases",
-            purpose=(
-                "Use difficult edge cases to calibrate how ALETHEIA reads consent pressure, free agency, "
-                "basic-rights scarcity, emergency misuse, ambient capture, self-audit, and review limits."
-            ),
-            looks_for=(
-                "Consent pressure: whether agreement is meaningful when refusal carries basic-rights, dignity, housing, work, safety, or service costs.",
-                "Free-agency risk: whether prediction, risk scoring, or crisis logic tries to replace human agency before action happens.",
-                "Emergency drift: whether emergency mechanisms become tools for removal, reset, punishment, or irreversible power transfer.",
-                "Ambient capture: whether propaganda, platform pressure, fear, or social saturation can bend reviewers without visible bribery.",
-                "Failure typing: whether pressure comes from actor failure, policy failure, implementation failure, data failure, or a mix.",
-                "Repair paths: whether the case needs alternatives, appeal, independent review, cooling-off periods, or stronger evidence.",
-            ),
-            safe_first_path=(
-                "Start with one edge case and read it as a calibration reference, not as a command to act.",
-                "Separate actor failure from policy failure, implementation failure, and data failure before drawing conclusions.",
-                "Treat allowed actions as review options only; do not use this module as enforcement authority.",
-                "Use the guardrail and forbidden-action language to preserve human agency, consent, appeal, and reversibility.",
-            ),
-            input_guidance="Boundary Cases is a reference/calibration surface. Use it to compare a difficult situation against known pressure patterns before running a separate review.",
-            result_guidance="Treat each case as a boundary mirror, not as a verdict about a person, institution, community, or event.",
-            observed_reasons_guidance="Inspect the main risk, guardrail, allowed response, forbidden response, and failure type together.",
-            repair_questions_guidance="Use the case language to ask what evidence, consent, appeal, human review, or non-coercive alternative is missing.",
-            receipt_guidance="Boundary-case notes should support later human review; they are not enforcement records or official findings.",
-        ),
-    )
-
-    render_boundary_cases_intro(st)
-
-    failure_mode_definitions = {
-        "Actor Failure": "A person, group, office, founder, operator, or implementing body misuses power, manipulates others, bypasses review, or becomes unfit.",
-        "Policy Failure": "The proposal, rule, charter, doctrine, or system design itself creates coercion, opacity, instability, exclusion, rights risk, or capture risk.",
-        "Implementation Failure": "The idea may be valid, but the execution layer fails through weak process, missing safeguards, unclear responsibility, bad deployment, or unreliable operation.",
-        "Data Failure": "The evidence base is incomplete, manipulated, stale, biased, low-coverage, unverifiable, or too uncertain to support the conclusion.",
-    }
-
-    boundary_cases = [
-        {
-            "title": "Prediction vs Free Agency",
-            "scenario": "A system predicts with high confidence that someone may cause harm, but the action has not happened yet.",
-            "main_risk": "Replacing human agency with prediction.",
-            "guardrail": "No prediction may replace human agency.",
-            "allowed": "Warning, care response, mediation, delay, de-escalation, support, and human review.",
-            "forbidden": "Automatic punishment, mind control, coercive agency override, or irreversible restriction without review.",
-            "failure_type": "Policy Failure / Implementation Failure",
-        },
-        {
-            "title": "Voluntary Protection Mode",
-            "scenario": "A person asks for temporary protective limits because they do not trust themselves during crisis, addiction, psychosis, panic, or rage.",
-            "main_risk": "Confusing voluntary help with imposed control.",
-            "guardrail": "Consent must be real, informed, revocable, and not structurally forced.",
-            "allowed": "Informed, revocable, time-limited support with appeal and review.",
-            "forbidden": "Permanent restriction, hidden coercion, non-revocable consent, or forced treatment without review.",
-            "failure_type": "Implementation Failure",
-        },
-        {
-            "title": "Consent Under Pressure",
-            "scenario": "A person says yes, but refusal would cost basic rights, dignity, housing, food, work, safety, or essential services.",
-            "main_risk": "False consent.",
-            "guardrail": "Consent is invalid when refusal is not realistically possible.",
-            "allowed": "Identify pressure, require an alternative path, reduce dependency, and add appeal.",
-            "forbidden": "Treating coerced agreement as valid consent.",
-            "failure_type": "Policy Failure / Actor Failure",
-        },
-        {
-            "title": "Basic Rights Scarcity",
-            "scenario": "Water, food, clothing, housing, safety, or essential support are limited.",
-            "main_risk": "Sacrificing one group permanently or invisibly.",
-            "guardrail": "Basic rights remain the baseline even under scarcity.",
-            "allowed": "Transparent rationing, independent review, temporary limits, public reasoning, and repair.",
-            "forbidden": "Permanent exclusion, discriminatory denial, opaque allocation, or no appeal.",
-            "failure_type": "Policy Failure",
-        },
-        {
-            "title": "Emergency Trigger Misuse",
-            "scenario": "A group tries to trigger emergency or threshold mechanisms repeatedly to remove opponents or force a preferred outcome.",
-            "main_risk": "The emergency mechanism becomes a power weapon.",
-            "guardrail": "Critical review triggers must themselves be protected against capture.",
-            "allowed": "Multi-signal review, evidence threshold, independent oversight, and cooling-off period.",
-            "forbidden": "Automatic reset, automatic removal, or irreversible governance change based on one signal.",
-            "failure_type": "Actor Failure / Policy Failure",
-        },
-        {
-            "title": "Ambient Capture",
-            "scenario": "Reviewers are not directly bribed, but they are shaped by propaganda, media saturation, platform algorithms, fear, or social pressure.",
-            "main_risk": "Mass influence that bypasses visible corruption checks.",
-            "guardrail": "Statistical isolation does not solve shared informational manipulation.",
-            "allowed": "Source diversity check, manipulation scan, delay, independent review, and exposure mapping.",
-            "forbidden": "Treating isolated selection as sufficient when the information environment is captured.",
-            "failure_type": "Data Failure / Implementation Failure",
-        },
-        {
-            "title": "Extraordinary Claim Without Public Evidence",
-            "scenario": "A person or institution claims final, prophetic, alien, neural, or metaphysical authority.",
-            "main_risk": "Unverifiable authority bypasses public review.",
-            "guardrail": "Extraordinary claims do not remove human review.",
-            "allowed": "Treat the claim as personally meaningful but unverified; audit policy consequences for rights, coercion, transparency, appeal, and repair.",
-            "forbidden": "Treating an unverified extraordinary claim as authority, removing guardrails, or granting policy authority without public evidence.",
-            "failure_type": "Actor Failure / Data Failure",
-        },
-        {
-            "title": "Neural Data Without Consent",
-            "scenario": "Future technology could read, infer, or reconstruct internal experience, memory, or intention.",
-            "main_risk": "Violating mental privacy and free agency.",
-            "guardrail": "No neural data without informed, revocable consent.",
-            "allowed": "Informed, revocable consent; medical and independent audit context; strict minimization.",
-            "forbidden": "Forced neural extraction, treating refusal as guilt, or using neural evidence as sole governance authority.",
-            "failure_type": "Policy Failure / Data Failure",
-        },
-        {
-            "title": "Performative Ethics",
-            "scenario": "A document uses strong ethical language but lacks operational safeguards.",
-            "main_risk": "Values language hides missing mechanisms.",
-            "guardrail": "Mechanisms outweigh adjectives.",
-            "allowed": "Compare claims against appeal, audit trail, time limits, correction, exit rights, evidence rules, independent oversight, explainability, independent challenge, and human override.",
-            "forbidden": "Treating values language as proof of integrity or allowing missing safeguards to appear as a low-risk internal reading.",
-            "failure_type": "Data Failure / Policy Failure",
-        },
-        {
-            "title": "Automated Triage Missing Safeguards",
-            "scenario": "An automated welfare triage or priority system reduces waiting times but lacks explainability, independent challenge, and human override during hardship cases.",
-            "main_risk": "Efficiency language hides missing appeal, challenge, explanation, and human override mechanisms.",
-            "guardrail": "Missing explainability, independent challenge, or human override routes to THRESHOLD / Needs Safeguards, not a low-risk internal reading.",
-            "allowed": "Classify as Needs Safeguards; require explanation path, independent challenge, human override, appeal, correction, audit trail, and hardship review.",
-            "forbidden": "Treating speed or automation benefits as proof of integrity when explainability, challenge, or override is missing.",
-            "failure_type": "Policy Failure / Implementation Failure / Data Failure",
-        },
-        {
-            "title": "Biometric Gate Without Fallback",
-            "scenario": "A city links food, housing, and medical access to a biometric identity gate without a fallback path, public audit, or meaningful appeal.",
-            "main_risk": "Basic rights become dependent on a technical identity gate with weak correction and contestability.",
-            "guardrail": "Basic-rights access requires fallback, public audit, meaningful appeal, correction, and human review before it can approach the review boundary.",
-            "allowed": "Classify as Needs Safeguards; add non-biometric fallback, public audit, meaningful appeal, human review, dignity-preserving correction, and emergency access.",
-            "forbidden": "Making food, housing, medical access, or other basic rights conditional on one biometric system without fallback or appeal.",
-            "failure_type": "Policy Failure / Implementation Failure / Data Failure",
-        },
-        {
-            "title": "Question Prompt vs Risk State",
-            "scenario": "A user submits audit questions, repair prompts, or review-tool questions rather than a governance scenario.",
-            "main_risk": "Review-tool questions could be misread as scored governance scenarios.",
-            "guardrail": "QUESTION_PROMPT is an input/review-tool mode, not a fourth risk state.",
-            "allowed": "Keep audit and repair questions in Review Tool mode with metrics suppressed; score only scenario-style governance inputs using the internal SANCTUARY / THRESHOLD / ASYLUM labels.",
-            "forbidden": "Scoring a pure audit question as a risk-state reading, or treating QUESTION_PROMPT as a risk state.",
-            "failure_type": "Implementation Failure / Data Failure",
-        },
-        {
-            "title": "ALETHEIA Audits Itself",
-            "scenario": "ALETHEIA, its founder, prompt, rubric, model, baseline, or report language may contain capture risk.",
-            "main_risk": "Founder capture, doctrine lock-in, overclaiming, or unverified authority leakage.",
-            "guardrail": "No founder, architect, prompt, model, document, or output is above the mirror.",
-            "allowed": "Self-audit, public correction, forkability, independent review, and versioned change logs.",
-            "forbidden": "Exempting the founder, model, prompt, doctrine, or baseline from audit.",
-            "failure_type": "Implementation Failure / Actor Failure",
-        },
-    ]
-
-    selected_case = st.selectbox(
-        "Boundary case",
-        [case["title"] for case in boundary_cases],
-        key="boundary_case_selector",
-        help="Select a calibration case to inspect. These are templates for human review, not automated decisions.",
-    )
-    case = next(item for item in boundary_cases if item["title"] == selected_case)
-    update_protocol_state(selected_context=case["title"], last_update_source="Boundary Cases")
-
-    left, right = st.columns([1.05, 1])
-    with left:
-        st.markdown("### Scenario")
-        st.write(case["scenario"])
-        st.markdown("### Main risk")
-        st.warning(case["main_risk"])
-        st.markdown("### Relevant guardrail")
-        st.success(case["guardrail"])
-    with right:
-        st.markdown("### Allowed responses")
-        st.write(case["allowed"])
-        st.markdown("### Forbidden responses")
-        st.write(case["forbidden"])
-        st.markdown("### Failure classification")
-        st.code(case["failure_type"], language="text")
-        selected_failure_modes = [mode.strip() for mode in case["failure_type"].split("/")]
-        for mode in selected_failure_modes:
-            definition = failure_mode_definitions.get(mode)
-            if definition:
-                st.caption(f"{mode}: {definition}")
-
-    with st.expander("Boundary diagnostics — failure typing, consent audit, mechanism scan, and self-audit", expanded=False):
-        st.markdown("### Failure Classification output")
-        st.code(
-            f"""Failure Classification
-
-    Primary failure type: {selected_failure_modes[0] if selected_failure_modes else 'Review needed'}
-    Secondary failure type: {selected_failure_modes[1] if len(selected_failure_modes) > 1 else 'None specified'}
-    Reason: {case['main_risk']}
-    Evidence from scenario: {case['scenario']}
-    Human review need: Required before assigning responsibility or changing policy.
-    Recommended repair: Use allowed responses and add concrete safeguards. Missing explainability, independent challenge, human override, fallback, public audit, or meaningful appeal should route to Needs Safeguards before any low-risk internal reading.
-    Confidence: Template-level calibration, not a final finding.""",
-            language="text",
-        )
-
-        st.markdown("### Boundary Case Report Template")
-        st.code(
-            f"""Boundary Case Report
-
-    Scenario: {case['title']}
-    Main risk: {case['main_risk']}
-    Relevant guardrails: {case['guardrail']}
-    Allowed responses: {case['allowed']}
-    Forbidden responses: {case['forbidden']}
-    Failure classification: {case['failure_type']}
-    Recommended safeguard: Add human review, appeal, transparency, correction, evidence requirements, explainability, independent challenge, human override, fallback paths, and public audit where missing.
-    Human review note: This is a mirror output, not an instruction or enforcement decision.""",
-            language="text",
-        )
-
-        render_consent_audit_intro(st)
-        consent_examples = {
-            "Green — refusal is realistic": {
-                "summary": "The person can say no without losing basic rights, safety, dignity, or essential access.",
-                "signals": "Clear opt-out, no retaliation, fallback/alternative path, withdrawal right, plain-language explanation, meaningful appeal, and human review.",
-                "failure": "No serious failure signal / monitor for implementation drift.",
-            },
-            "Yellow — pressure or ambiguity exists": {
-                "summary": "Refusal technically exists, but the cost, consequence, dependency, or withdrawal path is unclear.",
-                "signals": "Default opt-in, confusing terms, weak withdrawal, power imbalance, service dependency, unclear data retention, weak fallback, unclear appeal, or no human override.",
-                "failure": "Policy Failure / Implementation Failure / Data Failure",
-            },
-            "Red — consent appears structurally forced": {
-                "summary": "Refusal is practically impossible, punished, hidden, or tied to loss of basic rights or essential services.",
-                "signals": "Loss of food, housing, care, safety, work, due process, essential access, fallback path, appeal, or non-revocable agreement.",
-                "failure": "Policy Failure / Actor Failure / Implementation Failure",
-            },
-        }
-        selected_consent_level = st.selectbox(
-            "Consent integrity example",
-            list(consent_examples.keys()),
-            key="consent_audit_example_selector",
-            help="Template-level calibration only. Human review remains required before treating consent as valid or invalid.",
-        )
-        consent_case = consent_examples[selected_consent_level]
-        st.code(
-            f"""Consent-Audit Report
-
-    Consent integrity rating: {selected_consent_level}
-    Refusal reality: {consent_case['summary']}
-    Pressure signals: {consent_case['signals']}
-    Basic-rights dependency check: Does refusal threaten water, food, clothing, housing, safety, dignity, appeal, exit, correction, care, or essential services?
-    Withdrawal and review: Can consent be withdrawn, appealed, and reviewed by a human?
-    Failure classification: {consent_case['failure']}
-    Recommended safeguards: Add opt-out, fallback/alternative path, withdrawal right, appeal, human override, non-retaliation rule, plain language, time limit, and independent review where needed.
-    Human review disclaimer: This is a mirror output for human review. It is not legal advice, enforcement, punishment, or final authority.""",
-            language="text",
-        )
-
-        with st.expander("Consent audit questions", expanded=False):
-            st.markdown(
-                """
-                - Can the person realistically say no?
-                - What happens if they refuse?
-                - Do they lose basic rights or essential services?
-                - Is there a power imbalance?
-                - Is refusal punished directly or indirectly?
-                - Is consent informed and specific?
-                - Can consent be withdrawn later?
-                - Is there an alternative path?
-                - Is there human review or appeal?
-                - Is the consent request bundled with unrelated obligations?
-                """
-            )
-
-        st.markdown("### Mechanism-vs-Claim Scanner")
-        st.write(
-            "This scanner checks whether ethical values are supported by operational safeguards. "
-            "Values language can be sincere, but mechanisms make it reviewable, appealable, and correctable."
-        )
-        mechanism_examples = {
-            "High — claims supported by mechanisms": {
-                "claims": "The document states values and connects them to concrete procedures.",
-                "mechanisms": "Independent appeal process, public audit trail, time-limited authority, correction path, evidence requirement, explainability, independent challenge, human override, human review, exit right.",
-                "missing": "No major missing safeguard in the selected example.",
-                "failure": "No serious failure signal / monitor for implementation drift.",
-            },
-            "Medium — partial safeguards": {
-                "claims": "The document uses ethical language and includes some safeguards, but key procedures are vague or incomplete.",
-                "mechanisms": "Some review or oversight exists, but appeal, correction, evidence standards, explainability, independent challenge, human override, fallback, or time limits are unclear.",
-                "missing": "Clarify appeal, audit trail, correction, responsible actor, and review deadline.",
-                "failure": "Policy Failure / Implementation Failure / Data Failure",
-            },
-            "Low — mostly values language": {
-                "claims": "The document repeatedly says it protects freedom, justice, dignity, safety, or service.",
-                "mechanisms": "Few or no concrete safeguards are described.",
-                "missing": "Appeal, audit trail, correction, time limits, independent review, explainability, independent challenge, human override, fallback, evidence rules, exit, and accountability.",
-                "failure": "Policy Failure / Data Failure",
-            },
-        }
-        selected_mechanism_level = st.selectbox(
-            "Ethical language integrity example",
-            list(mechanism_examples.keys()),
-            key="mechanism_vs_claim_example_selector",
-            help="Template-level calibration only. Human review remains required before inferring intent or deciding repair.",
-        )
-        mechanism_case = mechanism_examples[selected_mechanism_level]
-        st.code(
-            f"""Mechanism-vs-Claim Scan
-
-    Ethical language integrity: {selected_mechanism_level}
-    Claim signals found: {mechanism_case['claims']}
-    Mechanism signals found: {mechanism_case['mechanisms']}
-    Missing safeguards: {mechanism_case['missing']}
-    Main risk: Values language may be mistaken for operational accountability.
-    Failure classification: {mechanism_case['failure']}
-    Recommended repair: Add concrete safeguards such as appeal, audit trail, time limits, correction, evidence requirements, explainability, independent challenge, human override, fallback, independent oversight, and human review.
-    Human review note: This is a mirror output. It flags mechanism gaps; it does not prove bad faith or assign final intent.""",
-            language="text",
-        )
-
-        with st.expander("Mechanism signals to search for", expanded=False):
-            st.markdown(
-                """
-                - Appeal process
-                - Public audit trail
-                - Time-limited authority
-                - Human review
-                - Explainability
-                - Independent challenge
-                - Human override
-                - Fallback path
-                - Correction mechanism
-                - Exit right
-                - Evidence requirement
-                - Conflict-of-interest rule
-                - Independent oversight
-                - Plain-language notice
-                - Non-retaliation rule
-                - Withdrawal right
-                - Review deadline
-                - Public reasoning requirement
-                """
-            )
-
-        with st.expander("Relationship-aware semantic pressure scan", expanded=False):
+    
+if selected_top_module == '📊 Evidence Lab':
+    with st.container():
+        render_evidence_lab_intro(st)
+        render_shared_protocol_state_notice("Evidence Lab", expanded=False)
+    
+        # Patch 169: Evidence Lab now uses compact opt-in panels from
+        # pages_ui.evidence_lab_page.render_evidence_lab_intro. Keep the
+        # interactive template and upload workflow below, but stop the top of the
+        # tab from opening long guidance blocks by default.
+    
+        with st.expander("Semantic claim/mechanism evidence check", expanded=False):
             st.caption(
-                "Scans relationships between pressure terms, access terms, soft claims, and concrete mechanisms. "
-                "This is deterministic and fail-closed; it is not proof of intent or a final decision."
+                "Optional S2 diagnostic: inspect whether a claim relies on soft value language, concrete mechanisms, "
+                "access conditions, identity gates, or reversible safeguards. This does not score the country-year table."
             )
-            semantic_sample = (
-                "Access to the application is only possible after successful identity verification. "
-                "The system protects safety and trust, but no appeal, fallback, or human review is described."
+            semantic_evidence_text = st.text_area(
+                "Claim, policy sentence, or evidence-summary text",
+                value="This system protects dignity, safety, harmony, inclusion, and public trust.",
+                height=120,
+                key="evidence_lab_semantic_claim_text",
+                help="Use this for claim/mechanism review before or alongside source scoring.",
             )
-            semantic_text = st.text_area(
-                "Unstructured text to scan",
-                value=semantic_sample,
-                height=110,
-                key="semantic_pressure_scan_text",
-                help="Use this to inspect words/phrases as relationships, not isolated keywords.",
+            render_semantic_evidence_check(semantic_evidence_text, expanded_details=False)
+    
+        with st.expander("Evidence status template", expanded=False):
+            evidence_examples = {
+                "Strong evidence": "Multiple public, relevant, reviewable sources support the claim.",
+                "Partial evidence": "Some evidence exists, but coverage, independence, relevance, or completeness is limited.",
+                "Weak evidence": "The claim is mostly asserted, anecdotal, internally sourced, or insufficiently documented.",
+                "No evidence supplied": "No reviewable support is provided for the claim.",
+                "Unverified extraordinary claim": "The claim may be personally meaningful, but it is not used as policy authority without public, testable, non-coercive evidence and human review.",
+            }
+            selected_evidence_level = st.selectbox(
+                "Evidence status example",
+                list(evidence_examples.keys()),
+                key="evidence_status_example_selector",
+                help="Template-level calibration only. Evidence status is a review signal, not a final truth verdict.",
             )
-            governance_context = st.checkbox(
-                "Treat as governance / power-distribution text",
-                value=True,
-                key="semantic_pressure_governance_context",
-                help="When enabled, missing recognizable safeguards routes to a fail-closed review warning.",
+            st.code(
+                f"""Evidence Lab Review
+    
+        Plain-English receipt summary
+        What is this document?
+        This is an Evidence Lab review note. It records a claim, the visible evidence status, evidence gaps, and review questions. It is not proof, certification, or authority.
+    
+        The main results
+        Claim reviewed: [insert claim]
+        Evidence status: {selected_evidence_level}
+        Reason: {evidence_examples[selected_evidence_level]}
+    
+        How power and control are distributed
+        Evidence Lab asks whether a claim is supported by public, relevant, reviewable evidence or whether power is being moved through unsupported certainty, stale sources, hidden assumptions, or extraordinary claims without evidence.
+    
+        Next steps and questions
+        Evidence gaps: identify unsupported assertions, missing sources, stale data, self-referential sources, or unreviewable claims.
+        Extraordinary claim handling: treat as unverified unless supported by public, testable, non-coercive evidence.
+        Policy consequence audit: review effects on basic rights, free agency, coercion, transparency, appeal, accountability, and repair.
+        Human review disclaimer: Evidence Lab is a mirror for human review. It is not a proof engine, oracle, legal judgment, religious authority, or enforcement authority.""",
+                language="text",
             )
-            if semantic_text.strip():
-                semantic_scan = scan_semantic_pressure(semantic_text, governance_context=governance_context)
-                s_col1, s_col2, s_col3, s_col4 = st.columns(4)
-                s_col1.metric("Review state", semantic_scan.state)
-                s_col2.metric("Claims", semantic_scan.claim_count)
-                s_col3.metric("Mechanisms", semantic_scan.mechanism_count)
-                s_col4.metric("Integrity pressure", f"{semantic_scan.integrity_adjustment:+.3f}")
-                if semantic_scan.fail_closed:
-                    st.warning("Fail-closed review: recognizable safeguards were missing or insufficient for the detected governance/value language.")
-                elif semantic_scan.proximity_hits:
-                    st.warning("Contextual pressure pattern detected near access, identity, service, or basic-rights language.")
-                elif semantic_scan.mechanism_count > 0 or semantic_scan.sovereignty_count > 0:
-                    st.success("Concrete safeguards detected. No strong pressure relationship was detected by this scanner; human review still required.")
-                else:
-                    st.info("No strong pressure relationship or concrete safeguard structure detected by this scanner. Human review still required.")
-                st.code(format_semantic_pressure_report(semantic_scan), language="text")
-                with st.expander("Normalized text used for scan", expanded=False):
-                    st.code(semantic_scan.normalized_text, language="text")
-
-        st.markdown("### Self-Audit Mode")
-        st.write(
-            "Self-Audit Mode points the mirror back at ALETHEIA itself. "
-            "It checks baseline documents, prompts, rubrics, README language, app copy, architect-context language, and generated reports for self-capture risk."
-        )
-        self_audit_examples = {
-            "Green — no obvious self-capture signal": {
-                "summary": "The reviewed text preserves human review, avoids founder elevation, and includes appeal or correction language.",
-                "risks": "Monitor for drift as prompts, rubrics, and app language change.",
-                "repair": "Keep versioned logs, independent review, and correction paths visible.",
-            },
-            "Yellow — safeguard unclear or incomplete": {
-                "summary": "The reviewed text is mostly safe, but appeal, correction, evidence limits, or founder-capture safeguards are weak or implicit.",
-                "risks": "Overclaiming, weak review language, vague correction path, or unclear evidence standard.",
-                "repair": "Add explicit human review, appeal, correction, evidence limits, and safe output rules.",
-            },
-            "Red — self-capture or authority leakage risk": {
-                "summary": "The reviewed text may imply that ALETHEIA, its founder, doctrine, model, baseline, or prompt is beyond review.",
-                "risks": "Founder capture, ideological lock-in, unverifiable authority, unverified authority leakage, or human-review bypass.",
-                "repair": "Remove authority language, add independent review, add appeal/correction, and state that self-audit is not proof of correctness.",
-            },
-        }
-        selected_self_audit_level = st.selectbox(
-            "Self-audit risk example",
-            list(self_audit_examples.keys()),
-            key="self_audit_example_selector",
-            help="Template-level calibration only. Self-audit reflects risk; it does not certify ALETHEIA as correct, complete, or beyond review.",
-        )
-        self_case = self_audit_examples[selected_self_audit_level]
-        st.code(
-            f"""Self-Audit Report
-
-    Material reviewed: ALETHEIA baseline / prompt / rubric / README / app copy / generated report
-    Self-capture risk rating: {selected_self_audit_level}
-    Founder-capture check: No founder, architect, prompt, rubric, model, document, or output is above the mirror.
-    Authority-leakage check: {self_case['summary']}
-    Risk signals: {self_case['risks']}
-    Recommended repairs: {self_case['repair']}
-    Human review disclaimer: This self-audit is a governance mirror for human review. It is not proof of correctness, extraordinary-claim validation, or a replacement for human judgment.""",
-            language="text",
-        )
-
-        with st.expander("Self-audit checks", expanded=False):
+    
+    
+        with st.expander("Data sources → ALETHEIA fields → Protocol view", expanded=False):
             st.markdown(
-                """
-                - Founder capture
-                - Ideological lock-in
-                - Unverifiable authority
-                - Weak appeal mechanisms
-                - Overclaiming
-                - Unverified authority leakage
-                - Insufficient human review
-                - Missing correction loops
-                - Hidden command language
-                - Evidence gaps
-                - Performative ethics
-                - Mechanism gaps
-                """
+                "**Flow:** public evidence → variable mapping → scoring → protocol overlay → review."
             )
-
-        with st.expander("Safe output rules", expanded=False):
-            st.markdown(
-                """
-                ALETHEIA may say: potential risk detected, Needs Safeguards, critical human review required, safeguard missing, evidence gap found, this claim is unverified.
-
-                ALETHEIA must not say: the AI has decided, guardrails no longer apply, this claim is finally verified, human review is unnecessary.
-                """
-            )
-
-
-
-    with st.expander("Receipt example — local witness format", expanded=False):
-        # Patch 183: visual-only example framing for receipt documentation.
-        st.markdown(
-            """
-            <div class="receipt-sky-panel">
-              <div class="receipt-kicker">Receipt example</div>
-              <div class="receipt-title">Local Witness Receipt v2</div>
-              <div class="receipt-body">Records a user-held fingerprint of an ALETHEIA review: input, processed input, report fingerprint, app/rubric/prompt versions, active modules, and authority boundary.</div>
-              <div class="receipt-boundary-strip">
-                <span class="receipt-boundary-pill receipt-hash-pill">SHA-256 fingerprints</span>
-                <span class="receipt-boundary-pill">Stored locally</span>
-                <span class="receipt-boundary-pill">No central storage</span>
-                <span class="receipt-boundary-pill">No authority claim</span>
-              </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        st.caption("Example styling only. The receipt remains a review artifact; it does not publish, sync, enforce, or create authority.")
-        receipt_example = {
-            "receipt_version": "local-witness-v2",
-            "document_fingerprint": "SHA-256 of submitted document",
-            "processed_document_fingerprint": "SHA-256 after optional actor-bias reduction",
-            "report_fingerprint": "SHA-256 of the report payload",
-            "app_version": APP_VERSION,
-            "rubric_version": "v0.1",
-            "prompt_version": "v0.1",
-            "active_modules": "Mirror Check, Stress Test, Boundary Cases, Evidence Lab, Self-Audit Mode",
-            "stored_locally": "Yes",
-            "public_ledger": "No",
-            "global_id_sync": "No",
-            "central_storage": "No",
-            "authority_claim": "No",
-            "human_review_required": "Yes",
-        }
-        st.code(
-            f"""Local Witness Receipt v2
-
-    Plain-English receipt summary
-    What is this document?
-    This is an example of a local witness receipt. It records a review artifact for human inspection. It does not publish, sync, enforce, certify, or create authority.
-
-    The main results
-    Receipt version: {receipt_example['receipt_version']}
-    Document fingerprint: {receipt_example['document_fingerprint']}
-    Processed document fingerprint: {receipt_example['processed_document_fingerprint']}
-    Report fingerprint: {receipt_example['report_fingerprint']}
-    App version: {receipt_example['app_version']}
-    Rubric version: {receipt_example['rubric_version']}
-    Prompt version: {receipt_example['prompt_version']}
-    Active modules: {receipt_example['active_modules']}
-    Stored locally: {receipt_example['stored_locally']}
-    Public ledger: {receipt_example['public_ledger']}
-    Global ID sync: {receipt_example['global_id_sync']}
-    Central storage: {receipt_example['central_storage']}
-    Authority claim: {receipt_example['authority_claim']}
-    Human review required: {receipt_example['human_review_required']}
-
-    How power and control are distributed
-    This receipt keeps control with the user: stored locally, no public ledger, no Global ID sync, no central storage, no authority claim, and human review required.
-
-    Next steps and questions
-    Check the fingerprints, review the values, inspect evidence gaps, and ask whether any real-world decision still needs appeal, correction, source review, or independent human oversight.
-
-    Disclaimer: This receipt is a structured mirror reading for human review. It does not certify truth, safety, legality, legitimacy, morality, institutional fitness, extraordinary claims, or policy commands. It is not public ledger proof or a replacement for human judgment. Human review remains required; the reading may be incomplete, wrong, or sensitive to missing evidence.""",
-            language="text",
-        )
-
-with tab_empirical:
-    render_evidence_lab_intro(st)
-    render_shared_protocol_state_notice("Evidence Lab", expanded=False)
-
-    # Patch 169: Evidence Lab now uses compact opt-in panels from
-    # pages_ui.evidence_lab_page.render_evidence_lab_intro. Keep the
-    # interactive template and upload workflow below, but stop the top of the
-    # tab from opening long guidance blocks by default.
-
-    with st.expander("Semantic claim/mechanism evidence check", expanded=False):
-        st.caption(
-            "Optional S2 diagnostic: inspect whether a claim relies on soft value language, concrete mechanisms, "
-            "access conditions, identity gates, or reversible safeguards. This does not score the country-year table."
-        )
-        semantic_evidence_text = st.text_area(
-            "Claim, policy sentence, or evidence-summary text",
-            value="This system protects dignity, safety, harmony, inclusion, and public trust.",
-            height=120,
-            key="evidence_lab_semantic_claim_text",
-            help="Use this for claim/mechanism review before or alongside source scoring.",
-        )
-        render_semantic_evidence_check(semantic_evidence_text, expanded_details=False)
-
-    with st.expander("Evidence status template", expanded=False):
-        evidence_examples = {
-            "Strong evidence": "Multiple public, relevant, reviewable sources support the claim.",
-            "Partial evidence": "Some evidence exists, but coverage, independence, relevance, or completeness is limited.",
-            "Weak evidence": "The claim is mostly asserted, anecdotal, internally sourced, or insufficiently documented.",
-            "No evidence supplied": "No reviewable support is provided for the claim.",
-            "Unverified extraordinary claim": "The claim may be personally meaningful, but it is not used as policy authority without public, testable, non-coercive evidence and human review.",
-        }
-        selected_evidence_level = st.selectbox(
-            "Evidence status example",
-            list(evidence_examples.keys()),
-            key="evidence_status_example_selector",
-            help="Template-level calibration only. Evidence status is a review signal, not a final truth verdict.",
-        )
-        st.code(
-            f"""Evidence Lab Review
-
-    Plain-English receipt summary
-    What is this document?
-    This is an Evidence Lab review note. It records a claim, the visible evidence status, evidence gaps, and review questions. It is not proof, certification, or authority.
-
-    The main results
-    Claim reviewed: [insert claim]
-    Evidence status: {selected_evidence_level}
-    Reason: {evidence_examples[selected_evidence_level]}
-
-    How power and control are distributed
-    Evidence Lab asks whether a claim is supported by public, relevant, reviewable evidence or whether power is being moved through unsupported certainty, stale sources, hidden assumptions, or extraordinary claims without evidence.
-
-    Next steps and questions
-    Evidence gaps: identify unsupported assertions, missing sources, stale data, self-referential sources, or unreviewable claims.
-    Extraordinary claim handling: treat as unverified unless supported by public, testable, non-coercive evidence.
-    Policy consequence audit: review effects on basic rights, free agency, coercion, transparency, appeal, accountability, and repair.
-    Human review disclaimer: Evidence Lab is a mirror for human review. It is not a proof engine, oracle, legal judgment, religious authority, or enforcement authority.""",
-            language="text",
-        )
-
-
-    with st.expander("Data sources → ALETHEIA fields → Protocol view", expanded=False):
-        st.markdown(
-            "**Flow:** public evidence → variable mapping → scoring → protocol overlay → review."
-        )
-        st.markdown("#### Data source map")
-        source_df = evidence_source_frame()
-        visible_source_cols = ["Evidence source", "What it contributes", "ALETHEIA use"]
-        st.dataframe(source_df[visible_source_cols], use_container_width=True, hide_index=True, height=300)
-        with st.expander("Protocol details by source", expanded=False):
-            st.dataframe(
-                source_df[["Evidence source", "Protocol overlay"]],
-                use_container_width=True,
-                hide_index=True,
-                height=300,
-            )
-        st.markdown("#### Field mapping")
-        st.dataframe(variable_mapping_frame(), use_container_width=True, hide_index=True, height=300)
-        st.caption(
-            "External outcome columns do not change the score. They are for later checks against real-world outcomes."
-        )
-
-    with st.expander("Needed and helpful columns", expanded=False):
-        st.markdown("**Required identity columns**")
-        st.code("country, iso3, year", language="text")
-        st.markdown("**Needed for real 9k allocation**")
-        st.code("population", language="text")
-        st.markdown("**Helpful empirical columns**")
-        helpful_empirical_columns = [c for c in EMPIRICAL_COLUMNS if c != "population"]
-        st.code("\n".join(helpful_empirical_columns), language="text")
-        st.caption("Scale expectations: WGI fields can use their normal -2.5 to +2.5 scale. V-Dem and trust fields should already be 0–1.")
-
-
-    with st.expander("Advanced: build/upload country-year evidence table", expanded=False):
-        st.caption("Open this only when you want to upload WGI/population/V-Dem/trust files or rebuild the country-year table. The semantic evidence check above stays separate from empirical scoring.")
-        render_evidence_lab_public_data_build_intro(st)
-
-        with st.expander("How to get and prepare the first real dataset", expanded=False):
-            st.markdown(ingestion_notes_markdown())
-            st.info(
-                "This uploader does not hard-code a live web download. That makes the workflow reliable on Streamlit Cloud: "
-                "download the public data from the official source, then upload the file here."
-            )
-
-        ingest_cols = st.columns(2)
-        with ingest_cols[0]:
-            wgi_upload = st.file_uploader(
-                "Upload World Bank WGI CSV/XLS/XLSX",
-                type=["csv", "xls", "xlsx"],
-                key="wgi_ingest_upload",
-                help="Accepts common WGI long or wide layouts. Required fields: country, iso3/country code, year, and indicator/value or WGI columns.",
-            )
-        with ingest_cols[1]:
-            pop_upload = st.file_uploader(
-                "Optional population CSV/XLS/XLSX",
-                type=["csv", "xls", "xlsx"],
-                key="population_ingest_upload",
-                help="Required for real 9k seat allocation. Needs country, iso3/country code, year, and population/value columns.",
-            )
-
-        optional_cols = st.columns(2)
-        with optional_cols[0]:
-            vdem_upload = st.file_uploader(
-                "Optional V-Dem/ALETHEIA-compatible file",
-                type=["csv", "xls", "xlsx"],
-                key="vdem_ingest_upload",
-                help="Use country, iso3, year plus columns such as vdem_executive_constraints and vdem_democracy.",
-            )
-        with optional_cols[1]:
-            trust_upload = st.file_uploader(
-                "Optional trust/ALETHEIA-compatible file",
-                type=["csv", "xls", "xlsx"],
-                key="trust_ingest_upload",
-                help="Use country, iso3, year plus wvs_generalized_trust, or upload OWID self-reported trust attitudes CSV directly (Entity/Code/Year plus most-people-can-be-trusted indicator).",
-            )
-
-        build_master = st.button("Build master CSV from uploads", use_container_width=True)
-        if build_master:
-            try:
-                with st.spinner("Reading uploads and building country-year master table..."):
-                    wgi_df = read_public_data_upload(wgi_upload) if wgi_upload is not None else None
-                    pop_df = read_public_data_upload(pop_upload) if pop_upload is not None else None
-                    vdem_df = read_public_data_upload(vdem_upload) if vdem_upload is not None else None
-                    trust_df = read_public_data_upload(trust_upload) if trust_upload is not None else None
-                    if all(x is None for x in [wgi_df, pop_df, vdem_df, trust_df]):
-                        warn_no_public_data_upload(st)
-                    else:
-                        diagnostics_df = public_upload_diagnostics(
-                            wgi_df=wgi_df,
-                            population_df=pop_df,
-                            vdem_df=vdem_df,
-                            trust_df=trust_df,
-                        )
-                        st.session_state["empirical_ingest_diagnostics"] = diagnostics_df.copy()
-                        master_df = build_master_from_public_uploads(wgi_df=wgi_df, population_df=pop_df, vdem_df=vdem_df, trust_df=trust_df)
-                        demo_names = {"Exampleland", "Threshold Republic", "Capture State"}
-                        if "country" in master_df.columns and set(master_df["country"].astype(str).head(10)) & demo_names:
-                            raise ValueError(
-                                "Builder produced synthetic demo rows after a real upload. This is blocked so uploaded data is not mistaken for evidence."
-                            )
-                        st.session_state["empirical_master_df"] = master_df.copy()
-                        st.session_state["use_generated_master_for_scoring"] = True
-                        valid_rows = int(master_df.get("empirical_identity_valid", pd.Series([True] * len(master_df))).fillna(False).astype(bool).sum()) if not master_df.empty else 0
-                if not all(x is None for x in [wgi_df, pop_df, vdem_df, trust_df]):
-                    st.success(f"Upload processed: built a country-year table with {len(master_df):,} row(s); {valid_rows:,} valid identity row(s).")
-            except Exception as exc:
-                st.session_state.pop("empirical_master_df", None)
-                render_upload_processing_failed(st, exc)
-                if isinstance(st.session_state.get("empirical_ingest_diagnostics"), pd.DataFrame):
-                    st.markdown("#### Upload check details")
-                    st.dataframe(st.session_state["empirical_ingest_diagnostics"], use_container_width=True, hide_index=True)
-
-        if isinstance(st.session_state.get("empirical_ingest_diagnostics"), pd.DataFrame):
-            with st.expander("Upload check details", expanded=build_master):
-                st.dataframe(st.session_state["empirical_ingest_diagnostics"], use_container_width=True, hide_index=True)
-                st.caption(
-                    "raw_rows_read = rows actually read from the uploaded file; "
-                    "standardized_country_year_rows = rows ALETHEIA could map to country/iso3/year; "
-                    "rows_with_signal = rows carrying WGI, population, V-Dem, or trust values. "
-                    "Individual source files may show 0 valid country-year rows before merge if they do not contain "
-                    "the full identity/population basis. The merged master is the source of truth for scoring. "
-                    "The generated/scored master uses the default modern empirical window, year >= 1996."
+            st.markdown("#### Data source map")
+            source_df = evidence_source_frame()
+            visible_source_cols = ["Evidence source", "What it contributes", "ALETHEIA use"]
+            st.dataframe(source_df[visible_source_cols], use_container_width=True, hide_index=True, height=300)
+            with st.expander("Protocol details by source", expanded=False):
+                st.dataframe(
+                    source_df[["Evidence source", "Protocol overlay"]],
+                    use_container_width=True,
+                    hide_index=True,
+                    height=300,
                 )
-
-    def _empirical_source_status_frame(df: pd.DataFrame | None) -> pd.DataFrame:
-        wgi_cols = [
-            "wgi_voice_accountability",
-            "wgi_political_stability",
-            "wgi_government_effectiveness",
-            "wgi_regulatory_quality",
-            "wgi_rule_of_law",
-            "wgi_control_corruption",
-        ]
-        vdem_cols = ["vdem_executive_constraints", "vdem_democracy", "v2x_polyarchy", "v2x_libdem"]
-        trust_raw_cols = ["wvs_generalized_trust"]
-        trust_prior_cols = ["empirical_trust_prior"]
-
-        def _count_present(cols: list[str]) -> tuple[int, int, str, str]:
-            if not isinstance(df, pd.DataFrame) or df.empty:
-                return 0, 0, "No active table", "missing"
-            existing = [c for c in cols if c in df.columns]
-            if not existing:
-                return 0, len(df), "Columns absent", "missing"
-            mask = pd.Series(False, index=df.index)
-            for col in existing:
-                mask = mask | pd.to_numeric(df[col], errors="coerce").notna()
-            present = int(mask.sum())
-            missing = int((~mask).sum())
-            if present > 0:
-                status = "active"
-            elif existing:
-                status = "columns present; no usable values"
+            st.markdown("#### Field mapping")
+            st.dataframe(variable_mapping_frame(), use_container_width=True, hide_index=True, height=300)
+            st.caption(
+                "External outcome columns do not change the score. They are for later checks against real-world outcomes."
+            )
+    
+        with st.expander("Needed and helpful columns", expanded=False):
+            st.markdown("**Required identity columns**")
+            st.code("country, iso3, year", language="text")
+            st.markdown("**Needed for real 9k allocation**")
+            st.code("population", language="text")
+            st.markdown("**Helpful empirical columns**")
+            helpful_empirical_columns = [c for c in EMPIRICAL_COLUMNS if c != "population"]
+            st.code("\n".join(helpful_empirical_columns), language="text")
+            st.caption("Scale expectations: WGI fields can use their normal -2.5 to +2.5 scale. V-Dem and trust fields should already be 0–1.")
+    
+    
+        with st.expander("Advanced: build/upload country-year evidence table", expanded=False):
+            st.caption("Open this only when you want to upload WGI/population/V-Dem/trust files or rebuild the country-year table. The semantic evidence check above stays separate from empirical scoring.")
+            render_evidence_lab_public_data_build_intro(st)
+    
+            with st.expander("How to get and prepare the first real dataset", expanded=False):
+                st.markdown(ingestion_notes_markdown())
+                st.info(
+                    "This uploader does not hard-code a live web download. That makes the workflow reliable on Streamlit Cloud: "
+                    "download the public data from the official source, then upload the file here."
+                )
+    
+            ingest_cols = st.columns(2)
+            with ingest_cols[0]:
+                wgi_upload = st.file_uploader(
+                    "Upload World Bank WGI CSV/XLS/XLSX",
+                    type=["csv", "xls", "xlsx"],
+                    key="wgi_ingest_upload",
+                    help="Accepts common WGI long or wide layouts. Required fields: country, iso3/country code, year, and indicator/value or WGI columns.",
+                )
+            with ingest_cols[1]:
+                pop_upload = st.file_uploader(
+                    "Optional population CSV/XLS/XLSX",
+                    type=["csv", "xls", "xlsx"],
+                    key="population_ingest_upload",
+                    help="Required for real 9k seat allocation. Needs country, iso3/country code, year, and population/value columns.",
+                )
+    
+            optional_cols = st.columns(2)
+            with optional_cols[0]:
+                vdem_upload = st.file_uploader(
+                    "Optional V-Dem/ALETHEIA-compatible file",
+                    type=["csv", "xls", "xlsx"],
+                    key="vdem_ingest_upload",
+                    help="Use country, iso3, year plus columns such as vdem_executive_constraints and vdem_democracy.",
+                )
+            with optional_cols[1]:
+                trust_upload = st.file_uploader(
+                    "Optional trust/ALETHEIA-compatible file",
+                    type=["csv", "xls", "xlsx"],
+                    key="trust_ingest_upload",
+                    help="Use country, iso3, year plus wvs_generalized_trust, or upload OWID self-reported trust attitudes CSV directly (Entity/Code/Year plus most-people-can-be-trusted indicator).",
+                )
+    
+            build_master = st.button("Build master CSV from uploads", use_container_width=True)
+            if build_master:
+                try:
+                    with st.spinner("Reading uploads and building country-year master table..."):
+                        wgi_df = read_public_data_upload(wgi_upload) if wgi_upload is not None else None
+                        pop_df = read_public_data_upload(pop_upload) if pop_upload is not None else None
+                        vdem_df = read_public_data_upload(vdem_upload) if vdem_upload is not None else None
+                        trust_df = read_public_data_upload(trust_upload) if trust_upload is not None else None
+                        if all(x is None for x in [wgi_df, pop_df, vdem_df, trust_df]):
+                            warn_no_public_data_upload(st)
+                        else:
+                            diagnostics_df = public_upload_diagnostics(
+                                wgi_df=wgi_df,
+                                population_df=pop_df,
+                                vdem_df=vdem_df,
+                                trust_df=trust_df,
+                            )
+                            st.session_state["empirical_ingest_diagnostics"] = diagnostics_df.copy()
+                            master_df = build_master_from_public_uploads(wgi_df=wgi_df, population_df=pop_df, vdem_df=vdem_df, trust_df=trust_df)
+                            demo_names = {"Exampleland", "Threshold Republic", "Capture State"}
+                            if "country" in master_df.columns and set(master_df["country"].astype(str).head(10)) & demo_names:
+                                raise ValueError(
+                                    "Builder produced synthetic demo rows after a real upload. This is blocked so uploaded data is not mistaken for evidence."
+                                )
+                            st.session_state["empirical_master_df"] = master_df.copy()
+                            st.session_state["use_generated_master_for_scoring"] = True
+                            valid_rows = int(master_df.get("empirical_identity_valid", pd.Series([True] * len(master_df))).fillna(False).astype(bool).sum()) if not master_df.empty else 0
+                    if not all(x is None for x in [wgi_df, pop_df, vdem_df, trust_df]):
+                        st.success(f"Upload processed: built a country-year table with {len(master_df):,} row(s); {valid_rows:,} valid identity row(s).")
+                except Exception as exc:
+                    st.session_state.pop("empirical_master_df", None)
+                    render_upload_processing_failed(st, exc)
+                    if isinstance(st.session_state.get("empirical_ingest_diagnostics"), pd.DataFrame):
+                        st.markdown("#### Upload check details")
+                        st.dataframe(st.session_state["empirical_ingest_diagnostics"], use_container_width=True, hide_index=True)
+    
+            if isinstance(st.session_state.get("empirical_ingest_diagnostics"), pd.DataFrame):
+                with st.expander("Upload check details", expanded=build_master):
+                    st.dataframe(st.session_state["empirical_ingest_diagnostics"], use_container_width=True, hide_index=True)
+                    st.caption(
+                        "raw_rows_read = rows actually read from the uploaded file; "
+                        "standardized_country_year_rows = rows ALETHEIA could map to country/iso3/year; "
+                        "rows_with_signal = rows carrying WGI, population, V-Dem, or trust values. "
+                        "Individual source files may show 0 valid country-year rows before merge if they do not contain "
+                        "the full identity/population basis. The merged master is the source of truth for scoring. "
+                        "The generated/scored master uses the default modern empirical window, year >= 1996."
+                    )
+    
+        def _empirical_source_status_frame(df: pd.DataFrame | None) -> pd.DataFrame:
+            wgi_cols = [
+                "wgi_voice_accountability",
+                "wgi_political_stability",
+                "wgi_government_effectiveness",
+                "wgi_regulatory_quality",
+                "wgi_rule_of_law",
+                "wgi_control_corruption",
+            ]
+            vdem_cols = ["vdem_executive_constraints", "vdem_democracy", "v2x_polyarchy", "v2x_libdem"]
+            trust_raw_cols = ["wvs_generalized_trust"]
+            trust_prior_cols = ["empirical_trust_prior"]
+    
+            def _count_present(cols: list[str]) -> tuple[int, int, str, str]:
+                if not isinstance(df, pd.DataFrame) or df.empty:
+                    return 0, 0, "No active table", "missing"
+                existing = [c for c in cols if c in df.columns]
+                if not existing:
+                    return 0, len(df), "Columns absent", "missing"
+                mask = pd.Series(False, index=df.index)
+                for col in existing:
+                    mask = mask | pd.to_numeric(df[col], errors="coerce").notna()
+                present = int(mask.sum())
+                missing = int((~mask).sum())
+                if present > 0:
+                    status = "active"
+                elif existing:
+                    status = "columns present; no usable values"
+                else:
+                    status = "missing"
+                return present, missing, ", ".join(existing), status
+    
+            rows = []
+            for label, cols in [
+                ("WGI", wgi_cols),
+                ("V-Dem", vdem_cols),
+                ("Trust raw survey", trust_raw_cols),
+            ]:
+                present, missing, detail, status = _count_present(cols)
+                rows.append({
+                    "Source": label,
+                    "Rows with usable values": present,
+                    "Rows missing / neutral fallback": missing,
+                    "Status": status,
+                    "Detected columns": detail,
+                })
+    
+            # Patch 72.13: `empirical_trust_prior` is a derived/scoring field, not a
+            # required upload source. Direct merged-upload diagnostics should not
+            # report it as a missing source error when raw trust is active.
+            prior_present, prior_missing, prior_detail, prior_status = _count_present(trust_prior_cols)
+            if prior_detail == "Columns absent":
+                prior_status = "computed after scoring"
+                prior_detail = "Not an upload requirement; derived during scoring from raw trust or neutral fallback."
+                prior_missing = 0
             else:
-                status = "missing"
-            return present, missing, ", ".join(existing), status
-
-        rows = []
-        for label, cols in [
-            ("WGI", wgi_cols),
-            ("V-Dem", vdem_cols),
-            ("Trust raw survey", trust_raw_cols),
-        ]:
-            present, missing, detail, status = _count_present(cols)
+                prior_status = "derived field active" if prior_present > 0 else "derived field present; no usable values yet"
             rows.append({
-                "Source": label,
-                "Rows with usable values": present,
-                "Rows missing / neutral fallback": missing,
-                "Status": status,
-                "Detected columns": detail,
+                "Source": "Trust prior (derived)",
+                "Rows with usable values": prior_present,
+                "Rows missing / neutral fallback": prior_missing,
+                "Status": prior_status,
+                "Detected columns": prior_detail,
             })
-
-        # Patch 72.13: `empirical_trust_prior` is a derived/scoring field, not a
-        # required upload source. Direct merged-upload diagnostics should not
-        # report it as a missing source error when raw trust is active.
-        prior_present, prior_missing, prior_detail, prior_status = _count_present(trust_prior_cols)
-        if prior_detail == "Columns absent":
-            prior_status = "computed after scoring"
-            prior_detail = "Not an upload requirement; derived during scoring from raw trust or neutral fallback."
-            prior_missing = 0
-        else:
-            prior_status = "derived field active" if prior_present > 0 else "derived field present; no usable values yet"
-        rows.append({
-            "Source": "Trust prior (derived)",
-            "Rows with usable values": prior_present,
-            "Rows missing / neutral fallback": prior_missing,
-            "Status": prior_status,
-            "Detected columns": prior_detail,
-        })
-        return pd.DataFrame(rows)
-
-    def _is_aletheia_scored_master(df: pd.DataFrame | None) -> bool:
-        if not isinstance(df, pd.DataFrame) or df.empty:
-            return False
-        required = {
-            "country", "iso3", "year", "population",
-            "aletheia_empirical_integrity",
-            "aletheia_empirical_friction",
-            "aletheia_empirical_collapse_probability",
-            "aletheia_verdict",
-        }
-        cols = {str(c).strip().lower().replace(" ", "_") for c in df.columns}
-        return required.issubset(cols)
-
-    uploaded_empirical_override = None
-    if isinstance(st.session_state.get("empirical_master_df"), pd.DataFrame):
-        master_df = st.session_state["empirical_master_df"]
-        with st.expander("Data carry-through check", expanded=False):
-            st.dataframe(_empirical_source_status_frame(master_df), use_container_width=True, hide_index=True)
-            st.caption("This checks the table before scoring. If WGI is missing here, World Lens cannot report WGI coverage. Rebuild with the WGI file in the WGI slot.")
-        st.markdown("#### Generated country-year table")
-        st.caption("This table merges WGI, population, and optional V-Dem/trust data. V-Dem rows before 1996 are filtered out by default.")
-        st.dataframe(master_df.head(250), use_container_width=True, hide_index=True, height=260)
+            return pd.DataFrame(rows)
+    
+        def _is_aletheia_scored_master(df: pd.DataFrame | None) -> bool:
+            if not isinstance(df, pd.DataFrame) or df.empty:
+                return False
+            required = {
+                "country", "iso3", "year", "population",
+                "aletheia_empirical_integrity",
+                "aletheia_empirical_friction",
+                "aletheia_empirical_collapse_probability",
+                "aletheia_verdict",
+            }
+            cols = {str(c).strip().lower().replace(" ", "_") for c in df.columns}
+            return required.issubset(cols)
+    
+        uploaded_empirical_override = None
+        if isinstance(st.session_state.get("empirical_master_df"), pd.DataFrame):
+            master_df = st.session_state["empirical_master_df"]
+            with st.expander("Data carry-through check", expanded=False):
+                st.dataframe(_empirical_source_status_frame(master_df), use_container_width=True, hide_index=True)
+                st.caption("This checks the table before scoring. If WGI is missing here, World Lens cannot report WGI coverage. Rebuild with the WGI file in the WGI slot.")
+            st.markdown("#### Generated country-year table")
+            st.caption("This table merges WGI, population, and optional V-Dem/trust data. V-Dem rows before 1996 are filtered out by default.")
+            st.dataframe(master_df.head(250), use_container_width=True, hide_index=True, height=260)
+            st.download_button(
+                "⬇️ Download generated country-year master CSV",
+                data=master_df.to_csv(index=False),
+                file_name="aletheia_country_year_master.csv",
+                mime="text/csv",
+                use_container_width=True,
+                key="download_generated_country_year_master_csv",
+            )
+            st.caption("Downloading this master CSV does not rebuild the four source uploads; it exports the active generated table held in session state.")
+            if "use_generated_master_for_scoring" not in st.session_state:
+                st.session_state["use_generated_master_for_scoring"] = True
+    
+            if st.checkbox("Use this table for scoring", key="use_generated_master_for_scoring"):
+                uploaded_empirical_override = master_df.copy()
+    
+        st.markdown("### Score evidence table")
+        template_df = empirical_template()
         st.download_button(
-            "⬇️ Download generated country-year master CSV",
-            data=master_df.to_csv(index=False),
-            file_name="aletheia_country_year_master.csv",
+            "⬇️ Download empirical CSV template",
+            data=template_df.to_csv(index=False),
+            file_name="aletheia_empirical_country_year_template.csv",
             mime="text/csv",
             use_container_width=True,
-            key="download_generated_country_year_master_csv",
         )
-        st.caption("Downloading this master CSV does not rebuild the four source uploads; it exports the active generated table held in session state.")
-        if "use_generated_master_for_scoring" not in st.session_state:
-            st.session_state["use_generated_master_for_scoring"] = True
-
-        if st.checkbox("Use this table for scoring", key="use_generated_master_for_scoring"):
-            uploaded_empirical_override = master_df.copy()
-
-    st.markdown("### Score evidence table")
-    template_df = empirical_template()
-    st.download_button(
-        "⬇️ Download empirical CSV template",
-        data=template_df.to_csv(index=False),
-        file_name="aletheia_empirical_country_year_template.csv",
-        mime="text/csv",
-        use_container_width=True,
-    )
-
-    uploaded_empirical = st.file_uploader(
-        "Upload merged evidence / country-year CSV",
-        type=["csv"],
-        key="empirical_merged_upload",
-        help="Use this for a complete already-merged ALETHEIA master CSV or a previously exported ALETHEIA scored master. Do not upload V-Dem-only or trust-only enrichment files here; use their optional slots above.",
-    )
-
-    direct_upload_df = None
-    direct_upload_is_scored_master = False
-    if uploaded_empirical is not None:
-        try:
-            direct_upload_df = pd.read_csv(uploaded_empirical)
-            st.session_state["direct_empirical_upload_df"] = direct_upload_df.copy()
-            direct_upload_is_scored_master = _is_aletheia_scored_master(direct_upload_df)
-            with st.expander("Direct merged-upload diagnostics", expanded=True):
-                st.dataframe(_empirical_source_status_frame(direct_upload_df), use_container_width=True, hide_index=True)
-                if direct_upload_is_scored_master:
-                    st.success(
-                        "This file looks like an ALETHEIA scored master/export. Existing ALETHEIA scores, verdicts, "
-                        "trust priors, and source columns will be preserved for the active empirical table."
-                    )
-                else:
-                    st.info(
-                        "This file looks like an unscored merged evidence table. ALETHEIA will score it after variable mapping. "
-                        "Raw trust is read from `wvs_generalized_trust` when available. Trust prior is derived during scoring, "
-                        "so it is not a required upload column. If a true source column is present but has no usable values, "
-                        "Grid coverage for that source will correctly remain 0%."
-                    )
-        except Exception as exc:
-            render_direct_csv_read_failed(st, exc)
-            direct_upload_df = None
-
-    use_template = st.checkbox(
-        "Use built-in synthetic demo template instead of uploaded/generated data",
-        value=(uploaded_empirical is None and uploaded_empirical_override is None),
-        help="The demo rows are not real countries. They only demonstrate the schema and output flow.",
-    )
-
-    st.session_state["empirical_use_template"] = bool(use_template)
-    update_protocol_state(last_update_source="Evidence Lab", synthetic_demo_active=bool(use_template))
-
-    if use_template:
-        st.warning(
-            "Synthetic demo mode is active. Exampleland, Threshold Republic, and Capture State are interface-test rows only; "
-            "do not interpret their correlations, scores, or 9k allocation as real-world findings."
+    
+        uploaded_empirical = st.file_uploader(
+            "Upload merged evidence / country-year CSV",
+            type=["csv"],
+            key="empirical_merged_upload",
+            help="Use this for a complete already-merged ALETHEIA master CSV or a previously exported ALETHEIA scored master. Do not upload V-Dem-only or trust-only enrichment files here; use their optional slots above.",
         )
-
-    empirical_raw = None
-    active_direct_scored_master = False
-    if uploaded_empirical_override is not None and not use_template:
-        empirical_raw = uploaded_empirical_override.copy()
-    elif direct_upload_df is not None and not use_template:
-        empirical_raw = direct_upload_df.copy()
-        active_direct_scored_master = bool(direct_upload_is_scored_master)
-    else:
-        empirical_raw = template_df.copy()
-
-    def _empirical_active_input_signature(
-        df: pd.DataFrame | None,
-        *,
-        source_label: str,
-        use_template_flag: bool,
-        active_direct_scored_master_flag: bool,
-    ) -> str:
-        """Stable Evidence Lab signature for active input tables.
-
-        Patch 72.9: widgets and downloads rerun Streamlit, but they should not
-        re-score the same active master. This signature changes when the active
-        source table, source type, or scored-master mode changes.
-        """
-        hasher = hashlib.sha256()
-        hasher.update(str(source_label).encode("utf-8"))
-        hasher.update(str(bool(use_template_flag)).encode("utf-8"))
-        hasher.update(str(bool(active_direct_scored_master_flag)).encode("utf-8"))
-        if not isinstance(df, pd.DataFrame):
-            hasher.update(b"<none>")
-            return hasher.hexdigest()
-        hasher.update(str(df.shape).encode("utf-8"))
-        hasher.update("|".join(map(str, df.columns)).encode("utf-8"))
-        try:
-            content_hash = pd.util.hash_pandas_object(df.reset_index(drop=True), index=True).values
-            hasher.update(content_hash.tobytes())
-        except Exception:
-            hasher.update(df.to_csv(index=False).encode("utf-8", errors="replace"))
-        return hasher.hexdigest()
-
-    if empirical_raw is not None:
+    
+        direct_upload_df = None
+        direct_upload_is_scored_master = False
+        if uploaded_empirical is not None:
+            try:
+                direct_upload_df = pd.read_csv(uploaded_empirical)
+                st.session_state["direct_empirical_upload_df"] = direct_upload_df.copy()
+                direct_upload_is_scored_master = _is_aletheia_scored_master(direct_upload_df)
+                with st.expander("Direct merged-upload diagnostics", expanded=True):
+                    st.dataframe(_empirical_source_status_frame(direct_upload_df), use_container_width=True, hide_index=True)
+                    if direct_upload_is_scored_master:
+                        st.success(
+                            "This file looks like an ALETHEIA scored master/export. Existing ALETHEIA scores, verdicts, "
+                            "trust priors, and source columns will be preserved for the active empirical table."
+                        )
+                    else:
+                        st.info(
+                            "This file looks like an unscored merged evidence table. ALETHEIA will score it after variable mapping. "
+                            "Raw trust is read from `wvs_generalized_trust` when available. Trust prior is derived during scoring, "
+                            "so it is not a required upload column. If a true source column is present but has no usable values, "
+                            "Grid coverage for that source will correctly remain 0%."
+                        )
+            except Exception as exc:
+                render_direct_csv_read_failed(st, exc)
+                direct_upload_df = None
+    
+        use_template = st.checkbox(
+            "Use built-in synthetic demo template instead of uploaded/generated data",
+            value=(uploaded_empirical is None and uploaded_empirical_override is None),
+            help="The demo rows are not real countries. They only demonstrate the schema and output flow.",
+        )
+    
+        st.session_state["empirical_use_template"] = bool(use_template)
+        update_protocol_state(last_update_source="Evidence Lab", synthetic_demo_active=bool(use_template))
+    
         if use_template:
-            source_label = "synthetic demo template"
-        elif uploaded_empirical_override is not None:
-            source_label = "generated master table"
-        elif active_direct_scored_master:
-            source_label = "uploaded ALETHEIA scored master"
-        else:
-            source_label = "uploaded merged evidence CSV"
-
-        empirical_active_signature = _empirical_active_input_signature(
-            empirical_raw,
-            source_label=source_label,
-            use_template_flag=bool(use_template),
-            active_direct_scored_master_flag=bool(active_direct_scored_master),
-        )
-        cached_signature = st.session_state.get("empirical_active_scoring_signature")
-        cached_prepared = st.session_state.get("empirical_active_prepared_df")
-        cached_scored_all = st.session_state.get("empirical_active_scored_all_df")
-        if (
-            cached_signature == empirical_active_signature
-            and isinstance(cached_prepared, pd.DataFrame)
-            and isinstance(cached_scored_all, pd.DataFrame)
-        ):
-            prepared = cached_prepared.copy().reset_index(drop=True)
-            scored_all = cached_scored_all.copy().reset_index(drop=True)
-            st.caption(
-                "Using the active Evidence Lab scored table from session state. "
-                "Country/year selection and downloads do not rebuild or rescore the uploaded master."
+            st.warning(
+                "Synthetic demo mode is active. Exampleland, Threshold Republic, and Capture State are interface-test rows only; "
+                "do not interpret their correlations, scores, or 9k allocation as real-world findings."
             )
+    
+        empirical_raw = None
+        active_direct_scored_master = False
+        if uploaded_empirical_override is not None and not use_template:
+            empirical_raw = uploaded_empirical_override.copy()
+        elif direct_upload_df is not None and not use_template:
+            empirical_raw = direct_upload_df.copy()
+            active_direct_scored_master = bool(direct_upload_is_scored_master)
         else:
-            with st.spinner(f"Processing {source_label} through ALETHEIA variable mapping and Sydney Protocol overlay..."):
-                prepared = prepare_empirical_frame(empirical_raw).reset_index(drop=True)
-                if active_direct_scored_master:
-                    # A previously exported ALETHEIA master should be accepted as an
-                    # already-scored protocol state rather than neutralized by a second
-                    # scoring pass when raw source columns are sparse. Identity and
-                    # modern-year guards still apply below.
-                    scored_all = prepared.copy().reset_index(drop=True)
-                    for _score_col in [
-                        "aletheia_empirical_integrity",
-                        "aletheia_empirical_friction",
-                        "aletheia_empirical_collapse_probability",
-                        "empirical_completeness",
-                        "empirical_trust_prior",
-                    ]:
-                        if _score_col in scored_all.columns:
-                            scored_all[_score_col] = pd.to_numeric(scored_all[_score_col], errors="coerce")
-                    if "evidence_variables_used" not in scored_all.columns and "evidence_used" in scored_all.columns:
-                        scored_all["evidence_variables_used"] = scored_all["evidence_used"]
-                    if "evidence_used" not in scored_all.columns and "evidence_variables_used" in scored_all.columns:
-                        scored_all["evidence_used"] = scored_all["evidence_variables_used"]
-                    if "protocol_overlay_status" not in scored_all.columns:
-                        scored_all["protocol_overlay_status"] = "preserved uploaded scored master"
-                    if "final_audit_interpretation" not in scored_all.columns:
-                        scored_all["final_audit_interpretation"] = scored_all.get("aletheia_verdict", pd.Series([""] * len(scored_all))).astype(str)
+            empirical_raw = template_df.copy()
+    
+        def _empirical_active_input_signature(
+            df: pd.DataFrame | None,
+            *,
+            source_label: str,
+            use_template_flag: bool,
+            active_direct_scored_master_flag: bool,
+        ) -> str:
+            """Stable Evidence Lab signature for active input tables.
+    
+            Patch 72.9: widgets and downloads rerun Streamlit, but they should not
+            re-score the same active master. This signature changes when the active
+            source table, source type, or scored-master mode changes.
+            """
+            hasher = hashlib.sha256()
+            hasher.update(str(source_label).encode("utf-8"))
+            hasher.update(str(bool(use_template_flag)).encode("utf-8"))
+            hasher.update(str(bool(active_direct_scored_master_flag)).encode("utf-8"))
+            if not isinstance(df, pd.DataFrame):
+                hasher.update(b"<none>")
+                return hasher.hexdigest()
+            hasher.update(str(df.shape).encode("utf-8"))
+            hasher.update("|".join(map(str, df.columns)).encode("utf-8"))
+            try:
+                content_hash = pd.util.hash_pandas_object(df.reset_index(drop=True), index=True).values
+                hasher.update(content_hash.tobytes())
+            except Exception:
+                hasher.update(df.to_csv(index=False).encode("utf-8", errors="replace"))
+            return hasher.hexdigest()
+    
+        if empirical_raw is not None:
+            if use_template:
+                source_label = "synthetic demo template"
+            elif uploaded_empirical_override is not None:
+                source_label = "generated master table"
+            elif active_direct_scored_master:
+                source_label = "uploaded ALETHEIA scored master"
+            else:
+                source_label = "uploaded merged evidence CSV"
+    
+            empirical_active_signature = _empirical_active_input_signature(
+                empirical_raw,
+                source_label=source_label,
+                use_template_flag=bool(use_template),
+                active_direct_scored_master_flag=bool(active_direct_scored_master),
+            )
+            cached_signature = st.session_state.get("empirical_active_scoring_signature")
+            cached_prepared = st.session_state.get("empirical_active_prepared_df")
+            cached_scored_all = st.session_state.get("empirical_active_scored_all_df")
+            if (
+                cached_signature == empirical_active_signature
+                and isinstance(cached_prepared, pd.DataFrame)
+                and isinstance(cached_scored_all, pd.DataFrame)
+            ):
+                prepared = cached_prepared.copy().reset_index(drop=True)
+                scored_all = cached_scored_all.copy().reset_index(drop=True)
+                st.caption(
+                    "Using the active Evidence Lab scored table from session state. "
+                    "Country/year selection and downloads do not rebuild or rescore the uploaded master."
+                )
+            else:
+                with st.spinner(f"Processing {source_label} through ALETHEIA variable mapping and Sydney Protocol overlay..."):
+                    prepared = prepare_empirical_frame(empirical_raw).reset_index(drop=True)
+                    if active_direct_scored_master:
+                        # A previously exported ALETHEIA master should be accepted as an
+                        # already-scored protocol state rather than neutralized by a second
+                        # scoring pass when raw source columns are sparse. Identity and
+                        # modern-year guards still apply below.
+                        scored_all = prepared.copy().reset_index(drop=True)
+                        for _score_col in [
+                            "aletheia_empirical_integrity",
+                            "aletheia_empirical_friction",
+                            "aletheia_empirical_collapse_probability",
+                            "empirical_completeness",
+                            "empirical_trust_prior",
+                        ]:
+                            if _score_col in scored_all.columns:
+                                scored_all[_score_col] = pd.to_numeric(scored_all[_score_col], errors="coerce")
+                        if "evidence_variables_used" not in scored_all.columns and "evidence_used" in scored_all.columns:
+                            scored_all["evidence_variables_used"] = scored_all["evidence_used"]
+                        if "evidence_used" not in scored_all.columns and "evidence_variables_used" in scored_all.columns:
+                            scored_all["evidence_used"] = scored_all["evidence_variables_used"]
+                        if "protocol_overlay_status" not in scored_all.columns:
+                            scored_all["protocol_overlay_status"] = "preserved uploaded scored master"
+                        if "final_audit_interpretation" not in scored_all.columns:
+                            scored_all["final_audit_interpretation"] = scored_all.get("aletheia_verdict", pd.Series([""] * len(scored_all))).astype(str)
+                    else:
+                        scored_all = score_empirical_frame(prepared).reset_index(drop=True)
+                st.session_state["empirical_active_scoring_signature"] = empirical_active_signature
+                st.session_state["empirical_active_prepared_df"] = prepared.copy()
+                st.session_state["empirical_active_scored_all_df"] = scored_all.copy()
+    
+            if active_direct_scored_master and not scored_all.empty:
+                _direct_identity = scored_all.get("empirical_identity_valid", pd.Series([False] * len(scored_all)))
+                _direct_identity = _direct_identity.fillna(False).astype(bool) if hasattr(_direct_identity, "fillna") else pd.Series([False] * len(scored_all))
+                _direct_year = pd.to_numeric(scored_all.get("year"), errors="coerce")
+                _direct_modern = _direct_year.ge(1996)
+                _before_direct_filter = len(scored_all)
+                scored_all = scored_all.loc[_direct_identity & _direct_modern].copy().reset_index(drop=True)
+                _removed_direct = _before_direct_filter - len(scored_all)
+                if _removed_direct > 0:
+                    st.info(f"Direct scored table guard removed {_removed_direct:,} row(s) outside valid identity or modern-year scope.")
+    
+            # Fail closed for real uploads/generated masters. Diagnostic rows are useful
+            # for ingestion debugging, but they must never be reported as scored
+            # empirical evidence. A valid empirical row requires country, iso3, year,
+            # and positive population.
+            if not use_template:
+                if scored_all.empty:
+                    st.error("No valid country-year rows are available for scoring.")
+                    st.warning(
+                        "The upload/generated master produced only diagnostic rows or no rows at all. "
+                        "ALETHEIA blocked scoring instead of reporting diagnostic rows as evidence. "
+                        "Check WGI pivoting, country/iso3/year fields, and population merge."
+                    )
+                    if isinstance(st.session_state.get("empirical_ingest_diagnostics"), pd.DataFrame):
+                        st.markdown("#### Upload check details")
+                        st.dataframe(st.session_state["empirical_ingest_diagnostics"], use_container_width=True, hide_index=True)
+                    st.stop()
+    
+                _identity_series = scored_all.get("empirical_identity_valid", pd.Series([False] * len(scored_all)))
+                _identity_series = _identity_series.fillna(False).astype(bool) if hasattr(_identity_series, "fillna") else pd.Series([False] * len(scored_all))
+                _valid_rows = int(_identity_series.sum())
+                _diagnostic_rows = int((~_identity_series).sum())
+                if _valid_rows == 0:
+                    st.error("No valid country-year rows are available for scoring.")
+                    st.warning(
+                        f"{_diagnostic_rows:,} diagnostic row(s) were produced, but all are missing country, iso3, year, "
+                        "or positive population. Scoring and 9k allocation are blocked until at least one valid "
+                        "country-year row exists."
+                    )
+                    if isinstance(st.session_state.get("empirical_ingest_diagnostics"), pd.DataFrame):
+                        st.markdown("#### Upload check details")
+                        st.dataframe(st.session_state["empirical_ingest_diagnostics"], use_container_width=True, hide_index=True)
+                    st.stop()
+    
+            st.success(f"Evidence scoring complete: {len(scored_all):,} valid row(s) mapped and scored from {source_label}.")
+    
+            # Keep the active empirical input columns attached to the scored output.
+            # The scoring helper intentionally returns a compact audit table, but the
+            # UI, validation checks, downloads, and technical detail sections need the
+            # original public evidence columns too.  Attaching them here prevents lower
+            # sections from falling back to the synthetic demo view or losing WGI data.
+            if len(scored_all) == len(prepared):
+                passthrough_cols = [
+                    "wgi_voice_accountability",
+                    "wgi_political_stability",
+                    "wgi_government_effectiveness",
+                    "wgi_regulatory_quality",
+                    "wgi_rule_of_law",
+                    "wgi_control_corruption",
+                    "vdem_executive_constraints",
+                    "vdem_democracy",
+                    "wvs_generalized_trust",
+                    "conflict_events",
+                    "political_violence_events",
+                    "coup_attempt",
+                    "regime_breakdown",
+                    "civil_unrest_index",
+                    "forced_displacement_rate",
+                    "future_stability_decline",
+                ]
+                for _col in passthrough_cols:
+                    if _col in prepared.columns and _col not in scored_all.columns:
+                        scored_all[_col] = prepared[_col].values
+    
+            # Recompute 9k seats from the full valid country population base, not
+            # from the WGI-filtered evidence subset and not from World Bank regional
+            # aggregates.  The scored table keeps diagnostic rows, but only valid
+            # country rows receive seats.
+            allocation_base_all = _country_allocation_base(scored_all, include_demo=use_template)
+            if not use_template:
+                scored_all = _replace_allocation_columns(scored_all, allocation_base_all)
+            else:
+                allocation_base_all = scored_all.copy()
+    
+            identity_valid_series = scored_all.get("empirical_identity_valid", pd.Series([True] * len(scored_all)))
+            identity_valid_series = identity_valid_series.fillna(False).astype(bool) if hasattr(identity_valid_series, "fillna") else pd.Series([True] * len(scored_all))
+            invalid_count = int((~identity_valid_series).sum()) if not scored_all.empty else 0
+            valid_identity_count = int(identity_valid_series.sum()) if not scored_all.empty else 0
+    
+            if invalid_count and not use_template:
+                st.warning(
+                    f"{valid_identity_count:,} valid country-year row(s) and {invalid_count:,} diagnostic row(s). "
+                    "Diagnostic rows are retained because they are missing country, iso3, year, or positive population; "
+                    "they are excluded from valid 9k allocation."
+                )
+            elif not use_template and not scored_all.empty:
+                st.success(f"{valid_identity_count:,} valid country-year row(s) are ready for scoring and 9k allocation.")
+    
+            scored = scored_all.copy()
+            if not use_template and not scored.empty:
+                _wgi_cols_check = [
+                    "wgi_voice_accountability",
+                    "wgi_political_stability",
+                    "wgi_government_effectiveness",
+                    "wgi_regulatory_quality",
+                    "wgi_rule_of_law",
+                    "wgi_control_corruption",
+                ]
+                _wgi_present_cols = [c for c in _wgi_cols_check if c in scored.columns]
+                _wgi_rows_present = 0
+                if _wgi_present_cols:
+                    _wgi_mask = pd.Series(False, index=scored.index)
+                    for _col in _wgi_present_cols:
+                        _wgi_mask = _wgi_mask | pd.to_numeric(scored[_col], errors="coerce").notna()
+                    _wgi_rows_present = int(_wgi_mask.sum())
+                if _wgi_rows_present == 0:
+                    st.warning(
+                        "WGI source signal is not present in the active scored evidence table. "
+                        "The Global Grid will correctly show WGI coverage as 0.0% until the master is rebuilt with a WGI file in the WGI upload slot or a merged CSV containing WGI columns."
+                    )
+    
+            if not use_template and not scored.empty:
+                wgi_signal_cols = [
+                    "wgi_voice_accountability",
+                    "wgi_political_stability",
+                    "wgi_government_effectiveness",
+                    "wgi_regulatory_quality",
+                    "wgi_rule_of_law",
+                    "wgi_control_corruption",
+                ]
+                available_signal_cols = [c for c in wgi_signal_cols if c in scored.columns]
+                if available_signal_cols:
+                    evidence_mask = pd.Series(False, index=scored.index)
+                    for col in available_signal_cols:
+                        evidence_mask = evidence_mask | pd.to_numeric(scored[col], errors="coerce").notna()
+                    if int(evidence_mask.sum()) > 0 and int(evidence_mask.sum()) < len(scored):
+                        show_evidence_years_only = st.checkbox(
+                            "Show WGI-supported evidence years only",
+                            value=True,
+                            help="Recommended for first real runs. Population-only historical rows are useful for allocation context but should not drive governance scoring summaries.",
+                        )
+                        if show_evidence_years_only:
+                            scored = scored.loc[evidence_mask].copy()
+                        st.caption(
+                            f"Evidence-year filter: showing {len(scored):,} of {len(scored_all):,} rows. "
+                            f"{int(evidence_mask.sum()):,} row(s) contain at least one WGI governance indicator."
+                        )
+    
+            st.session_state["empirical_scored_df"] = scored.copy()
+            st.session_state["empirical_allocation_df"] = allocation_base_all.copy()
+            update_protocol_state(last_update_source="Evidence Lab", synthetic_demo_active=bool(use_template))
+    
+            if not use_template and not scored.empty:
+                demo_names = {"Exampleland", "Threshold Republic", "Capture State"}
+                visible_names = set(scored.get("country", pd.Series(dtype=str)).astype(str).head(25).tolist())
+                if visible_names & demo_names:
+                    st.warning("Uploaded-evidence mode is active, but demo country names are still present in the active scored data. Clear the uploaded file or reload the app if this was not intended.")
+    
+            # Validation should use the exact active dataframe visible on the page,
+            # including uploaded/generated evidence columns.  This keeps N and group
+            # means aligned with the real uploaded evidence instead of the demo rows.
+            scored_for_validation = scored.reset_index(drop=True).copy()
+    
+            st.markdown("### Topline Evidence Results" + (" · Synthetic demo" if use_template else " · Uploaded evidence"))
+            if use_template:
+                st.caption("Synthetic rows are for app testing only. Do not read them as real-world findings.")
+            else:
+                st.caption("Uploaded/generated data was mapped, scored, and shown through the protocol view.")
+    
+            e1, e2, e3, e4 = st.columns(4)
+            e1.metric("Rows scored", f"{len(scored):,}")
+    
+            seat_year_label = "Synthetic 9k seats" if use_template else "Latest-year 9k seats"
+            seat_year_value = "—"
+            seat_caption = ""
+            seat_df = allocation_base_all.copy()
+            if not seat_df.empty and "year" in seat_df.columns and "seats_9k" in seat_df.columns:
+                year_values = pd.to_numeric(seat_df["year"], errors="coerce")
+                if year_values.notna().any():
+                    latest_year = int(year_values.dropna().max())
+                    seat_year_label = "Synthetic 9k seats" if use_template else f"9k seats · {latest_year}"
+                    latest_year_mask = year_values == latest_year
+                    latest_year_seats = int(pd.to_numeric(seat_df.loc[latest_year_mask, "seats_9k"], errors="coerce").sum(skipna=True))
+                    seat_year_value = f"{latest_year_seats:,}"
+                    if not use_template:
+                        all_year_seats = int(pd.to_numeric(seat_df["seats_9k"], errors="coerce").sum(skipna=True))
+                        seat_caption = f"All row-year seat total: {all_year_seats:,}; 9k allocation is interpreted per year."
+            e2.metric(seat_year_label, seat_year_value)
+            e3.metric("Mean integrity", f"{pd.to_numeric(scored['aletheia_empirical_integrity'], errors='coerce').mean():.3f}")
+            e4.metric("Average schema coverage" if use_template else "Average empirical coverage", f"{pd.to_numeric(scored['empirical_completeness'], errors='coerce').mean():.1%}")
+            if seat_caption:
+                st.caption(seat_caption)
+            if use_template:
+                st.caption("Demo schema coverage is below 100% because capital_scale is intentionally blank; optional proxies should not be treated as empirically supplied.")
+    
+            with st.expander("Main scored data table", expanded=False):
+                st.markdown("### Main scored data table")
+                st.caption("capital_scale is neutral/default unless supplied through an empirical proxy column; schema coverage is not proof of empirical validity." if use_template else "capital_scale is neutral/default unless supplied through an empirical proxy column.")
+                curated_cols = [
+                    "country", "iso3", "year", "population", "seats_9k",
+                    "aletheia_verdict", "aletheia_empirical_integrity", "aletheia_empirical_friction",
+                    "aletheia_empirical_collapse_probability",
+                    "empirical_completeness", "empirical_identity_valid",
+                ]
+                curated_cols = [c for c in curated_cols if c in scored.columns]
+                display_names = {
+                    "aletheia_verdict": "verdict",
+                    "aletheia_empirical_integrity": "integrity",
+                    "aletheia_empirical_friction": "friction",
+                    "aletheia_empirical_collapse_probability": "collapse_probability",
+                    "empirical_completeness": "schema_coverage" if use_template else "empirical_coverage",
+                    "empirical_identity_valid": "identity_valid",
+                }
+                curated_display = scored[curated_cols].rename(columns=display_names)
+                st.dataframe(curated_display, use_container_width=True, hide_index=True, height=260)
+    
+                csv_out = scored.to_csv(index=False)
+                st.download_button(
+                    "⬇️ Download scored empirical ALETHEIA table",
+                    data=csv_out,
+                    file_name="aletheia_evidence_audit_scores.csv",
+                    mime="text/csv",
+                    use_container_width=True,
+                )
+    
+            st.markdown("### Country-Year Explorer")
+            valid_rows = scored.reset_index(drop=True).copy()
+    
+            def _truthy_series(series: pd.Series) -> pd.Series:
+                if series is None:
+                    return pd.Series(True, index=valid_rows.index)
+                if series.dtype == bool:
+                    return series.fillna(False)
+                text = series.astype(str).str.strip().str.lower()
+                return text.isin(["true", "1", "yes", "y", "valid"])
+    
+            if "empirical_identity_valid" in valid_rows.columns:
+                identity_mask = _truthy_series(valid_rows["empirical_identity_valid"])
+            elif "identity_valid" in valid_rows.columns:
+                identity_mask = _truthy_series(valid_rows["identity_valid"])
+            else:
+                identity_mask = pd.Series(True, index=valid_rows.index)
+    
+            required_explorer_cols = ["country", "iso3", "year"]
+            missing_explorer_cols = [c for c in required_explorer_cols if c not in valid_rows.columns]
+            if missing_explorer_cols:
+                st.warning(
+                    "Country-Year Explorer is inactive because the active scored table is missing required column(s): "
+                    + ", ".join(missing_explorer_cols)
+                    + ". Upload or rebuild a country-year master with country, iso3, and year."
+                )
+            else:
+                valid_rows = valid_rows.loc[identity_mask].copy()
+                valid_rows["_country_label"] = valid_rows["country"].astype(str).str.strip()
+                valid_rows["_iso3_label"] = valid_rows["iso3"].astype(str).str.strip().str.upper()
+                valid_rows["_year_num"] = pd.to_numeric(valid_rows["year"], errors="coerce")
+                valid_rows = valid_rows[
+                    valid_rows["_country_label"].ne("")
+                    & valid_rows["_iso3_label"].ne("")
+                    & valid_rows["_year_num"].notna()
+                ].copy()
+    
+                if valid_rows.empty:
+                    st.info("No valid country-year rows yet. Add country, ISO3, year, and population so you can inspect one row at a time." )
                 else:
-                    scored_all = score_empirical_frame(prepared).reset_index(drop=True)
-            st.session_state["empirical_active_scoring_signature"] = empirical_active_signature
-            st.session_state["empirical_active_prepared_df"] = prepared.copy()
-            st.session_state["empirical_active_scored_all_df"] = scored_all.copy()
-
-        if active_direct_scored_master and not scored_all.empty:
-            _direct_identity = scored_all.get("empirical_identity_valid", pd.Series([False] * len(scored_all)))
-            _direct_identity = _direct_identity.fillna(False).astype(bool) if hasattr(_direct_identity, "fillna") else pd.Series([False] * len(scored_all))
-            _direct_year = pd.to_numeric(scored_all.get("year"), errors="coerce")
-            _direct_modern = _direct_year.ge(1996)
-            _before_direct_filter = len(scored_all)
-            scored_all = scored_all.loc[_direct_identity & _direct_modern].copy().reset_index(drop=True)
-            _removed_direct = _before_direct_filter - len(scored_all)
-            if _removed_direct > 0:
-                st.info(f"Direct scored table guard removed {_removed_direct:,} row(s) outside valid identity or modern-year scope.")
-
-        # Fail closed for real uploads/generated masters. Diagnostic rows are useful
-        # for ingestion debugging, but they must never be reported as scored
-        # empirical evidence. A valid empirical row requires country, iso3, year,
-        # and positive population.
-        if not use_template:
-            if scored_all.empty:
-                st.error("No valid country-year rows are available for scoring.")
-                st.warning(
-                    "The upload/generated master produced only diagnostic rows or no rows at all. "
-                    "ALETHEIA blocked scoring instead of reporting diagnostic rows as evidence. "
-                    "Check WGI pivoting, country/iso3/year fields, and population merge."
+                    valid_rows["_year_int"] = valid_rows["_year_num"].astype(int)
+    
+                    def _friendly_country_name(iso3_value: str, country_value: str = "") -> str:
+                        iso3_text = str(iso3_value or "").strip().upper()
+                        country_text = str(country_value or "").strip()
+                        if country_text and country_text.upper() != iso3_text and len(country_text) > 3:
+                            return country_text
+                        manual_names = {
+                            "AFG": "Afghanistan", "ALB": "Albania", "DZA": "Algeria", "AGO": "Angola", "ARG": "Argentina",
+                            "ARM": "Armenia", "AUS": "Australia", "AUT": "Austria", "AZE": "Azerbaijan", "BHR": "Bahrain",
+                            "BGD": "Bangladesh", "BLR": "Belarus", "BEL": "Belgium", "BEN": "Benin", "BOL": "Bolivia",
+                            "BIH": "Bosnia and Herzegovina", "BWA": "Botswana", "BRA": "Brazil", "BGR": "Bulgaria",
+                            "BFA": "Burkina Faso", "BDI": "Burundi", "KHM": "Cambodia", "CMR": "Cameroon", "CAN": "Canada",
+                            "CAF": "Central African Republic", "TCD": "Chad", "CHL": "Chile", "CHN": "China", "COL": "Colombia",
+                            "COD": "Democratic Republic of the Congo", "COG": "Republic of the Congo", "CRI": "Costa Rica",
+                            "CIV": "Côte d’Ivoire", "HRV": "Croatia", "CUB": "Cuba", "CYP": "Cyprus", "CZE": "Czechia",
+                            "DNK": "Denmark", "DOM": "Dominican Republic", "ECU": "Ecuador", "EGY": "Egypt", "SLV": "El Salvador",
+                            "ERI": "Eritrea", "EST": "Estonia", "ETH": "Ethiopia", "FIN": "Finland", "FRA": "France",
+                            "GAB": "Gabon", "GEO": "Georgia", "DEU": "Germany", "GHA": "Ghana", "GRC": "Greece",
+                            "GTM": "Guatemala", "GIN": "Guinea", "HTI": "Haiti", "HND": "Honduras", "HUN": "Hungary",
+                            "IND": "India", "IDN": "Indonesia", "IRN": "Iran", "IRQ": "Iraq", "IRL": "Ireland",
+                            "ISR": "Israel", "ITA": "Italy", "JPN": "Japan", "JOR": "Jordan", "KAZ": "Kazakhstan",
+                            "KEN": "Kenya", "KWT": "Kuwait", "KGZ": "Kyrgyzstan", "LAO": "Laos", "LVA": "Latvia",
+                            "LBN": "Lebanon", "LBR": "Liberia", "LBY": "Libya", "LTU": "Lithuania", "MDG": "Madagascar",
+                            "MWI": "Malawi", "MYS": "Malaysia", "MLI": "Mali", "MEX": "Mexico", "MDA": "Moldova",
+                            "MAR": "Morocco", "MOZ": "Mozambique", "MMR": "Myanmar", "NAM": "Namibia", "NPL": "Nepal",
+                            "NLD": "Netherlands", "NZL": "New Zealand", "NIC": "Nicaragua", "NER": "Niger", "NGA": "Nigeria",
+                            "PRK": "North Korea", "MKD": "North Macedonia", "NOR": "Norway", "OMN": "Oman", "PAK": "Pakistan",
+                            "PAN": "Panama", "PRY": "Paraguay", "PER": "Peru", "PHL": "Philippines", "POL": "Poland",
+                            "PRT": "Portugal", "QAT": "Qatar", "ROU": "Romania", "RUS": "Russia", "RWA": "Rwanda",
+                            "SAU": "Saudi Arabia", "SEN": "Senegal", "SRB": "Serbia", "SLE": "Sierra Leone", "SGP": "Singapore",
+                            "SVK": "Slovakia", "SVN": "Slovenia", "SOM": "Somalia", "ZAF": "South Africa", "KOR": "South Korea",
+                            "SSD": "South Sudan", "ESP": "Spain", "LKA": "Sri Lanka", "SDN": "Sudan", "SWE": "Sweden",
+                            "CHE": "Switzerland", "SYR": "Syria", "TWN": "Taiwan", "TJK": "Tajikistan", "TZA": "Tanzania",
+                            "THA": "Thailand", "TUN": "Tunisia", "TUR": "Türkiye", "TKM": "Turkmenistan", "UGA": "Uganda",
+                            "UKR": "Ukraine", "ARE": "United Arab Emirates", "GBR": "United Kingdom", "USA": "United States",
+                            "URY": "Uruguay", "UZB": "Uzbekistan", "VEN": "Venezuela", "VNM": "Vietnam", "YEM": "Yemen",
+                            "ZMB": "Zambia", "ZWE": "Zimbabwe",
+                        }
+                        return manual_names.get(iso3_text, country_text or iso3_text)
+    
+                    valid_rows["_country_name"] = [
+                        _friendly_country_name(iso3, country)
+                        for iso3, country in zip(valid_rows["_iso3_label"], valid_rows["_country_label"])
+                    ]
+                    valid_rows = valid_rows.sort_values(["_year_int", "_country_name"], ascending=[False, True]).reset_index(drop=True)
+    
+                    years_available = sorted(valid_rows["_year_int"].dropna().astype(int).unique().tolist(), reverse=True)
+                    if years_available:
+                        max_explorer_year = max(years_available)
+                        min_explorer_year = min(years_available)
+                        if max_explorer_year < 2020:
+                            st.warning(
+                                f"The active scored table currently only goes up to {max_explorer_year}. "
+                                "The explorer can only show years that exist in this Empirical run. "
+                                "If you expected newer years, reload or rebuild the full country-year master before using this explorer."
+                            )
+    
+                        # Country-first selection keeps the list readable and gives native
+                        # type-ahead suggestions from the available countries.
+                        country_lookup = (
+                            valid_rows[["_country_name", "_iso3_label"]]
+                            .drop_duplicates()
+                            .sort_values(["_country_name", "_iso3_label"])
+                            .reset_index(drop=True)
+                        )
+                        country_lookup["_country_option"] = country_lookup["_country_name"] + " · " + country_lookup["_iso3_label"]
+                        country_options = country_lookup["_country_option"].tolist()
+    
+                        synced_iso3 = st.session_state.get("aletheia_synced_iso3")
+                        synced_country_option = None
+                        if synced_iso3:
+                            _synced_options = country_lookup.loc[
+                                country_lookup["_iso3_label"].astype(str).str.upper() == str(synced_iso3).upper(),
+                                "_country_option",
+                            ].tolist()
+                            synced_country_option = _synced_options[0] if _synced_options else None
+    
+                        country_widget_key = "empirical_country_year_explorer_country_search"
+                        # Only seed the country selector before the widget exists.
+                        # Do not overwrite an existing widget value from a user click,
+                        # otherwise a stale focus country can force the selector back
+                        # to the previous/default country such as Afghanistan.
+                        if country_widget_key not in st.session_state and synced_country_option in country_options:
+                            st.session_state[country_widget_key] = synced_country_option
+    
+                        country_col, year_col = st.columns([2, 1])
+                        with country_col:
+                            selected_country_option = st.selectbox(
+                                "Search country",
+                                options=country_options,
+                                index=country_options.index(st.session_state.get(country_widget_key, country_options[0])) if st.session_state.get(country_widget_key, country_options[0]) in country_options else 0,
+                                key=country_widget_key,
+                                help="Start typing a country name or ISO code. The list only includes countries available in the active scored table.",
+                            )
+                        selected_iso = country_lookup.loc[
+                            country_lookup["_country_option"] == selected_country_option, "_iso3_label"
+                        ].iloc[0]
+                        selected_country_name = country_lookup.loc[
+                            country_lookup["_country_option"] == selected_country_option, "_country_name"
+                        ].iloc[0]
+                        st.session_state["aletheia_synced_iso3"] = str(selected_iso).upper()
+                        st.session_state["aletheia_synced_country_name"] = str(selected_country_name)
+                        st.caption(f"Focus country set for Grid/report context: {selected_country_name} · {str(selected_iso).upper()}")
+    
+                        country_rows_all_years = valid_rows[valid_rows["_iso3_label"] == selected_iso].copy()
+                        country_years = country_available_years(valid_rows, selected_iso)
+    
+                        st.caption(
+                            country_year_status_message(selected_country_name, selected_iso, country_years)
+                            + " The year dropdown is scoped to this selected country only; ALETHEIA does not silently fall back to a global/default year."
+                        )
+                        if not country_years:
+                            st.warning(
+                                f"No available country-year data for {selected_country_name} · {str(selected_iso).upper()}. "
+                                "Choose another country or rebuild the country-year master."
+                            )
+                            st.stop()
+    
+                        synced_evidence_year = st.session_state.get("aletheia_synced_evidence_year")
+                        country_year_widget_key = f"empirical_country_year_explorer_year_{selected_iso}"
+                        # Patch 72.13: a synced Grid/World Lens year may seed the widget
+                        # once, but must not overwrite a user's manual year choice on
+                        # every Streamlit rerun. This keeps the dropdown from snapping
+                        # back to 2024 after the user selects another available year.
+                        if country_year_widget_key not in st.session_state and synced_evidence_year in country_years:
+                            st.session_state[country_year_widget_key] = int(synced_evidence_year)
+                        country_year_index = safe_country_year_index(st.session_state.get(country_year_widget_key), country_years)
+                        with year_col:
+                            selected_explorer_year = st.selectbox(
+                                "Year for country",
+                                options=country_years,
+                                index=country_year_index,
+                                key=country_year_widget_key,
+                                help="Only years present for the selected country are shown. No global/default fallback is used.",
+                            )
+                        st.session_state["aletheia_synced_evidence_year"] = int(selected_explorer_year)
+                        st.session_state["aletheia_empirical_country_year"] = int(selected_explorer_year)
+    
+                        explorer_rows = country_rows_all_years[country_rows_all_years["_year_int"] == int(selected_explorer_year)].copy()
+    
+                        if explorer_rows.empty:
+                            st.info("No country-year row matches that country and year. Try another country or year.")
+                            st.stop()
+    
+                        explorer_rows["_label"] = explorer_rows["_country_name"] + " · " + explorer_rows["_iso3_label"] + " · " + explorer_rows["_year_int"].astype(str)
+                        if "seats_9k" in explorer_rows.columns:
+                            _seat_nums = pd.to_numeric(explorer_rows["seats_9k"], errors="coerce")
+                            explorer_rows.loc[_seat_nums.notna(), "_label"] = (
+                                explorer_rows.loc[_seat_nums.notna(), "_label"]
+                                + " · "
+                                + _seat_nums[_seat_nums.notna()].astype(int).astype(str)
+                                + " seats"
+                            )
+    
+                        st.caption(
+                            "Explorer source: active scored table. Search country first, then choose one of that country’s available years. "
+                            "This avoids stale global-year fallback and shares the confirmed year with allocation and Grid outputs when available."
+                        )
+    
+                        if len(explorer_rows) == 1:
+                            selected = explorer_rows.iloc[0]
+                        else:
+                            options = explorer_rows.index.tolist()
+                            selected_idx = st.selectbox(
+                                "Country-year row",
+                                options=options,
+                                format_func=lambda idx: explorer_rows.loc[idx, "_label"],
+                                key="empirical_country_year_explorer_country_year_row",
+                            )
+                            selected = explorer_rows.loc[selected_idx]
+    
+                        selected_explorer_signature = (
+                            f"{str(selected.get('iso3', selected_iso)).upper()}::"
+                            f"{int(selected_explorer_year)}::"
+                            f"{str(selected.get('country', selected_country_name))}"
+                        )
+                        pending_label = f"{selected_country_name} · {str(selected_iso).upper()} · {int(selected_explorer_year)}"
+                        active_signature = st.session_state.get("empirical_country_year_explorer_active_signature")
+                        active_selected = active_signature == selected_explorer_signature
+    
+                        run_cols = st.columns([1, 2])
+                        with run_cols[0]:
+                            run_country_diagnostic = st.button(
+                                "Run country-year review",
+                                key="empirical_country_year_explorer_run_button",
+                                type="primary",
+                                use_container_width=True,
+                            )
+                        with run_cols[1]:
+                            if active_selected:
+                                st.success(f"Diagnostic is active for: {pending_label}")
+                            else:
+                                st.info(
+                                    f"Selected: {pending_label}. Press **Run country-year review** to update the cards and raw-row detail."
+                                )
+    
+                        if run_country_diagnostic:
+                            st.session_state["empirical_country_year_explorer_active_signature"] = selected_explorer_signature
+                            st.session_state["empirical_country_year_explorer_active_payload"] = selected.to_dict()
+                            active_selected = True
+    
+                        if active_selected:
+                            active_payload = st.session_state.get("empirical_country_year_explorer_active_payload")
+                            if isinstance(active_payload, dict):
+                                selected = pd.Series(active_payload)
+                        else:
+                            selected = None
+                    else:
+                        st.info("No valid years are available in the active scored table.")
+                        st.stop()
+    
+                    if selected is not None:
+                        def _first_value(row, names, default="—"):
+                            for name in names:
+                                if name in row.index:
+                                    value = row.get(name)
+                                    if pd.notna(value):
+                                        return value
+                            return default
+    
+                        def _fmt_num(value, digits=3):
+                            num = pd.to_numeric(pd.Series([value]), errors="coerce").iloc[0]
+                            return "—" if pd.isna(num) else f"{float(num):.{digits}f}"
+    
+                        verdict_value = _first_value(selected, ["aletheia_verdict", "verdict"], "—")
+                        verdict_text = str(verdict_value or "—").strip().upper()
+                        if verdict_text == "SANCTUARY":
+                            display_verdict_value = "Low-risk internal reading"
+                            display_verdict_caption = (
+                                "Internal taxonomy label: SANCTUARY. This means the country-year evidence pattern is low-risk within ALETHEIA's review model; "
+                                "it is not a final safety, final Sanctuary, or authority claim."
+                            )
+                        else:
+                            display_verdict_value = verdict_value
+                            display_verdict_caption = ""
+                        integrity_value = _first_value(selected, ["aletheia_empirical_integrity", "integrity"], None)
+                        collapse_value = _first_value(selected, ["aletheia_empirical_collapse_probability", "collapse_probability"], None)
+                        coverage_value = _first_value(selected, ["empirical_completeness", "empirical_coverage", "schema_coverage"], None)
+                        seats_value = pd.to_numeric(pd.Series([_first_value(selected, ["seats_9k"], None)]), errors="coerce").iloc[0]
+    
+                        col_a, col_b, col_c, col_d = st.columns(4)
+                        col_a.metric("Empirical pattern", display_verdict_value)
+                        if display_verdict_caption:
+                            col_a.caption(display_verdict_caption)
+                        col_b.metric("Integrity", _fmt_num(integrity_value))
+                        col_c.metric("Collapse pressure", _fmt_num(collapse_value))
+                        col_d.metric("Allocated seats", "—" if pd.isna(seats_value) else f"{int(seats_value):,}")
+    
+                        col_e, col_f, col_g, col_h = st.columns(4)
+                        col_e.metric("Empirical coverage", _fmt_num(coverage_value, digits=1) if pd.to_numeric(pd.Series([coverage_value]), errors="coerce").iloc[0] > 1 else ("—" if pd.isna(pd.to_numeric(pd.Series([coverage_value]), errors="coerce").iloc[0]) else f"{pd.to_numeric(pd.Series([coverage_value]), errors='coerce').iloc[0]:.1%}"))
+                        raw_trust_value = _first_value(selected, ["wvs_generalized_trust"], None)
+                        trust_prior_value = _first_value(selected, ["empirical_trust_prior"], None)
+                        col_f.metric("Raw trust", format_raw_trust_label(raw_trust_value))
+                        col_g.metric("Trust prior used", format_trust_prior_label(trust_prior_value))
+                        if format_raw_trust_label(raw_trust_value) == "not available" and format_trust_prior_label(trust_prior_value).startswith("0.500"):
+                            st.caption("Raw trust is not available for this country-year; ALETHEIA is showing a neutral trust-prior fallback, not observed survey trust.")
+                        col_h.metric("Identity valid", str(_first_value(selected, ["empirical_identity_valid", "identity_valid"], True)))
+    
+                        st.markdown("#### Sydney Protocol overlay")
+                        overlay_status_value = str(_first_value(selected, ["protocol_overlay_status", "sydney_overlay_status"], "No overlay status available."))
+                        if overlay_status_value.startswith("SANCTUARY evidence pattern"):
+                            overlay_status_value = (
+                                "Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. "
+                                "Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority."
+                            )
+                        st.write(overlay_status_value)
+                        st.caption("Evidence used: " + str(_first_value(selected, ["evidence_variables_used", "evidence_used"], "—")))
+                        st.caption("Country-Year Explorer uses the active scored table. Search a country, then choose one of its years. Seats are read inside that year only.")
+    
+                        feature_cols = [
+                            "technical_complexity", "centralization", "anonymity", "regulation", "transparency", "capital_scale",
+                            "empirical_trust_prior", "wvs_generalized_trust",
+                            "wgi_voice_accountability", "wgi_political_stability", "wgi_government_effectiveness",
+                            "wgi_regulatory_quality", "wgi_rule_of_law", "wgi_control_corruption",
+                            "vdem_executive_constraints", "vdem_democracy",
+                        ]
+                        feature_rows = []
+                        for col in feature_cols:
+                            if col in selected.index:
+                                value = pd.to_numeric(pd.Series([selected.get(col)]), errors="coerce").iloc[0]
+                                feature_rows.append({"feature": col, "value": "—" if pd.isna(value) else f"{value:.3f}"})
+                        feature_table = pd.DataFrame(feature_rows)
+                        if not feature_table.empty:
+                            st.dataframe(feature_table, use_container_width=True, hide_index=True, height=300)
+    
+                        detail_cols = [
+                            "country", "iso3", "year", "population", "population_share", "seats_9k", "_allocation_role",
+                            "aletheia_verdict", "verdict", "aletheia_empirical_integrity", "integrity",
+                            "aletheia_empirical_friction", "friction",
+                            "aletheia_empirical_collapse_probability", "collapse_probability",
+                            "empirical_completeness", "empirical_coverage",
+                            "evidence_variables_used", "evidence_used",
+                        ]
+                        detail_cols = [c for c in detail_cols if c in valid_rows.columns]
+                        with st.expander("Selected country-year raw row", expanded=False):
+                            st.dataframe(pd.DataFrame([selected[detail_cols].to_dict()]), use_container_width=True, hide_index=True)
+            active_explorer_payload = st.session_state.get("empirical_country_year_explorer_active_payload")
+            active_explorer_signature = st.session_state.get("empirical_country_year_explorer_active_signature")
+            if active_explorer_signature is None or not isinstance(active_explorer_payload, dict):
+                st.caption("Country-Year cards unlock after you choose a country/year and press **Run country-year review**.")
+    
+            with st.expander("Advanced evidence views — allocation, validation, and technical tables", expanded=False):
+                st.markdown("### Seat allocation view")
+                st.caption("Synthetic 9k allocation across demo rows." if use_template else "Country seats by selected year. Regional, income, and diagnostic rows are excluded.")
+    
+                allocation_df = allocation_base_all.dropna(subset=["seats_9k"]).copy()
+                allocation_locked = active_explorer_signature is None or not isinstance(active_explorer_payload, dict)
+    
+                if allocation_locked:
+                    st.info(
+                        "Seat allocation view is locked to avoid stale or mismatched output. "
+                        "Choose a country/year above and press **Run country-year review**. "
+                        "The allocation chart will then use that confirmed diagnostic year."
+                    )
+                elif not allocation_df.empty:
+                    selected_years = sorted(pd.to_numeric(allocation_df["year"], errors="coerce").dropna().astype(int).unique().tolist())
+                    if selected_years:
+                        active_allocation_year = pd.to_numeric(pd.Series([active_explorer_payload.get("year")]), errors="coerce").iloc[0]
+                        if pd.isna(active_allocation_year):
+                            st.warning("The active country-year diagnostic does not contain a valid year. Rerun the diagnostic.")
+                        else:
+                            active_allocation_year = int(active_allocation_year)
+                            if active_allocation_year not in selected_years:
+                                st.warning(
+                                    f"Seat allocation view is locked because the confirmed diagnostic year {active_allocation_year} "
+                                    "is not available in the allocation table. Rebuild the master or choose another country/year."
+                                )
+                            else:
+                                st.session_state["empirical_allocation_year"] = active_allocation_year
+                                st.session_state["aletheia_synced_evidence_year"] = active_allocation_year
+                                st.session_state["aletheia_empirical_allocation_year"] = active_allocation_year
+    
+                                alloc_year = allocation_df[
+                                    pd.to_numeric(allocation_df["year"], errors="coerce") == active_allocation_year
+                                ].sort_values("seats_9k", ascending=False)
+    
+                                country_name = str(active_explorer_payload.get("country", st.session_state.get("aletheia_synced_country_name", ""))).strip()
+                                iso3_name = str(active_explorer_payload.get("iso3", st.session_state.get("aletheia_synced_iso3", ""))).strip().upper()
+                                st.success(
+                                    f"Seat allocation view confirmed for diagnostic selection: "
+                                    f"{country_name or iso3_name} · {iso3_name} · {active_allocation_year}"
+                                )
+                                st.caption(
+                                    "The allocation chart is now static and tied to the confirmed Country-Year Explorer diagnostic. "
+                                    "Change the country/year above, then press the run button again to update this chart."
+                                )
+                                fig = go.Figure(go.Bar(x=alloc_year["country"], y=alloc_year["seats_9k"]))
+                                fig.update_layout(template="plotly_white", title=f"9k allocation · {active_allocation_year}", height=420, margin=dict(l=10, r=10, t=55, b=10))
+                                st.plotly_chart(fig, use_container_width=True)
+                    else:
+                        st.info("No valid years are available for seat display.")
+                else:
+                    st.info("No valid population/year rows are available for 9k allocation.")
+    
+                st.markdown("### Evidence checks")
+                st.caption(
+                    "Internal checks compare ALETHEIA outputs to variables that may also be score inputs. External validation checks use optional outcome columns that are not score inputs. "
+                    "Pearson correlations are withheld until N ≥ 30. For true validation, add external outcomes such as conflict events, coups, regime breakdown, political violence, or future-year decline."
                 )
-                if isinstance(st.session_state.get("empirical_ingest_diagnostics"), pd.DataFrame):
-                    st.markdown("#### Upload check details")
-                    st.dataframe(st.session_state["empirical_ingest_diagnostics"], use_container_width=True, hide_index=True)
-                st.stop()
-
-            _identity_series = scored_all.get("empirical_identity_valid", pd.Series([False] * len(scored_all)))
-            _identity_series = _identity_series.fillna(False).astype(bool) if hasattr(_identity_series, "fillna") else pd.Series([False] * len(scored_all))
-            _valid_rows = int(_identity_series.sum())
-            _diagnostic_rows = int((~_identity_series).sum())
-            if _valid_rows == 0:
-                st.error("No valid country-year rows are available for scoring.")
-                st.warning(
-                    f"{_diagnostic_rows:,} diagnostic row(s) were produced, but all are missing country, iso3, year, "
-                    "or positive population. Scoring and 9k allocation are blocked until at least one valid "
-                    "country-year row exists."
+                corr_df, group_df = validation_summary(scored_for_validation)
+                vc1, vc2 = st.columns(2)
+                with vc1:
+                    st.markdown("#### Correlation checks")
+                    st.dataframe(corr_df, use_container_width=True, hide_index=True, height=260)
+                with vc2:
+                    st.markdown("#### Group averages by internal taxonomy")
+                    st.caption(
+                        "These are internal taxonomy groupings for model diagnostics, not final Sanctuary or authority claims. "
+                        + ("Interface/schema inspection only when groups are small; do not infer real effects from N=1 demo classes." if use_template else "Read group averages only after checking group size and outside validation targets.")
+                    )
+                    display_group_df = _empirical_humility_display_df(group_df)
+                    st.dataframe(display_group_df, use_container_width=True, hide_index=True, height=260)
+    
+                st.markdown("### Technical details")
+                st.caption("Technical tables preserve raw/internal taxonomy fields for traceability and add display labels so SANCTUARY is read as a low-risk internal pattern, not a final claim.")
+                overlay_cols = [c for c in ["country", "iso3", "year", "aletheia_verdict", "protocol_overlay_status", "final_audit_interpretation", "evidence_variables_used"] if c in scored.columns]
+                if overlay_cols:
+                    with st.expander("Protocol detail by country-year", expanded=False):
+                        st.dataframe(_empirical_humility_display_df(scored[overlay_cols]), use_container_width=True, hide_index=True, height=300)
+                with st.expander("Full empirical output table", expanded=False):
+                    st.dataframe(_empirical_humility_display_df(scored), use_container_width=True, hide_index=True, height=420)
+                with st.expander("Method note", expanded=False):
+                    st.markdown(methodology_markdown())
+    
+if selected_top_module == '🌐 World Lens':
+    with st.container():
+        st.subheader("World Lens")
+        render_shared_protocol_state_notice("World Lens", expanded=False)
+    
+        render_module_page_template_intro(
+            st,
+            ModulePageTemplateCopy(
+                module_name="World Lens",
+                purpose=(
+                    "Explore selected-year country evidence, empirical coverage, seat allocation context, internal taxonomy patterns, "
+                    "weighted integrity, and collapse-pressure signals without creating sovereign authority."
+                ),
+                looks_for=(
+                    "Selected-year context: which country-year rows are active and whether the selected evidence year is aligned.",
+                    "Coverage limits: whether trust, WGI, V-Dem, population, identity, or taxonomy fields are present enough to interpret carefully.",
+                    "Allocation context: how the 9k scaffold distributes seats as an analytical view, not as a real body or mandate.",
+                    "Internal taxonomy distribution: how country-year rows fall across ALETHEIA's review labels without certifying countries.",
+                    "Collapse-pressure patterns: weighted integrity, collapse pressure, and high-pressure signals at selected-year level.",
+                    "Authority boundary: no Global ID, no real 9k selection, no World Leader logic, no automatic resets, no country certification, and no governance decision.",
+                ),
+                safe_first_path=(
+                    "Use an active empirical table or choose prototype brackets deliberately; do not treat prototype views as real-world output.",
+                    "Confirm the selected year and source state before reading metrics or exports.",
+                    "Read coverage diagnostics before comparing countries or regions.",
+                    "Treat 9k allocation as an anti-tyranny scaffold for analysis only, not as representation, legitimacy, or authority.",
+                    "Use context notes only as human-review reflections; they do not rescore World Lens data.",
+                ),
+                input_guidance="Use World Lens for selected-year empirical context and optional human-review notes. It does not activate identity systems or enforce governance action.",
+                result_guidance="Treat World Lens output as a country-year evidence mirror, not as ranking, certification, legitimacy judgment, or policy decision.",
+                observed_reasons_guidance="Check source state, selected year, coverage diagnostics, weighted metrics, allocation notes, and method notes together.",
+                repair_questions_guidance="Use review questions to ask what data, coverage, appeal path, governance context, or human interpretation is missing before relying on the view.",
+                receipt_guidance="World Lens receipts are local selected-year review artifacts; they are not public-ledger records, sovereign mandates, or official rankings.",
+            ),
+        )
+    
+        st.write(
+            "Explore country-year governance-risk readings, seat allocation, internal taxonomy distribution, weighted integrity, collapse pressure, and empirical coverage across the world. World Lens is meant to help you compare carefully, not rush to conclusions."
+        )
+        st.caption(
+            "The Global Grid gathers country-year evidence after ALETHEIA variable mapping, empirical scoring, seat allocation, and the Sydney Protocol overlay. Allocation totals are always interpreted per selected year."
+        )
+    
+        st.markdown("### World Lens")
+        st.info(
+            "World Lens is a selected-year evidence mirror. It helps read population-weighted country-year context, coverage, seat allocation, and internal taxonomy patterns. It does not activate Global ID, select a real 9k body, create World Leader logic, issue automatic resets, certify countries, or make governance decisions."
+        )
+        st.caption(
+            "The optional context note below is a human-review lens only. It does not change country-year data, World Lens math, 9k allocation, receipts, or any native World Lens evidence view."
+        )
+        world_lens_scenario = st.text_area(
+            "Optional context note",
+            value="A policy gives one central office emergency authority over essential services during crisis, with limited public notice and unclear appeal rights.",
+            height=120,
+            key="world_lens_simulation_input_v1",
+            help="Add a short policy or governance context if you want a plain-language reflection beside the World Lens evidence view. This does not rescore World Lens data.",
+        )
+    
+        with st.expander("Semantic regional interpretation flags", expanded=False):
+            render_world_lens_semantic_flags(world_lens_scenario, expanded_details=False)
+    
+        st.markdown("#### World Lens context dial")
+        st.caption(
+            "Set a broad review-pressure lens for the optional context note. This is not a score, verdict, or World Lens data override."
+        )
+        wl_context_dial = st.radio(
+            "Review pressure lens",
+            ["Low pressure", "Review pressure", "High pressure"],
+            index=1,
+            horizontal=True,
+            key="world_lens_context_dial_v1",
+        )
+    
+        with st.expander("Optional context details", expanded=False):
+            st.caption(
+                "These details shape the plain-language context reflection only. They do not change World Lens evidence data, receipts, 9k allocation, or scoring."
+            )
+            wl_col1, wl_col2, wl_col3 = st.columns(3)
+            with wl_col1:
+                wl_basic_rights = st.selectbox(
+                    "Basic-rights pressure",
+                    ["Low", "Watch / unclear", "High"],
+                    index=1,
+                    key="world_lens_basic_rights_v1",
                 )
-                if isinstance(st.session_state.get("empirical_ingest_diagnostics"), pd.DataFrame):
-                    st.markdown("#### Upload check details")
-                    st.dataframe(st.session_state["empirical_ingest_diagnostics"], use_container_width=True, hide_index=True)
+                wl_appeal = st.selectbox(
+                    "Appeal path",
+                    ["Visible", "Partial / unclear", "Missing", "Not supplied"],
+                    index=1,
+                    key="world_lens_appealability_v1",
+                )
+            with wl_col2:
+                wl_minority = st.selectbox(
+                    "Minority-rights pressure",
+                    ["Low", "Watch / unclear", "High"],
+                    index=1,
+                    key="world_lens_minority_rights_v1",
+                )
+                wl_exit = st.selectbox(
+                    "Exit path",
+                    ["Visible", "Partial / unclear", "Missing", "Not supplied"],
+                    index=1,
+                    key="world_lens_exit_v1",
+                )
+            with wl_col3:
+                wl_ambient = st.selectbox(
+                    "Ambient capture pressure",
+                    ["Low", "Watch / plausible", "High"],
+                    index=1,
+                    key="world_lens_ambient_capture_v1",
+                )
+                wl_repair = st.selectbox(
+                    "Repair path",
+                    ["Visible", "Partial / unclear", "Missing", "Not supplied"],
+                    index=1,
+                    key="world_lens_repair_v1",
+                )
+    
+        detail_values = [wl_basic_rights, wl_minority, wl_ambient, wl_appeal, wl_exit, wl_repair]
+        red_signal = any(str(v) in {"High", "Missing"} for v in detail_values) or wl_context_dial == "High pressure"
+        yellow_signal = any(str(v).startswith("Watch") or str(v).startswith("Partial") or v == "Not supplied" for v in detail_values) or wl_context_dial == "Review pressure"
+        if red_signal:
+            simulated_threshold_signal = "High review pressure"
+        elif yellow_signal:
+            simulated_threshold_signal = "Review pressure"
+        else:
+            simulated_threshold_signal = "Low pressure"
+    
+        with st.expander("Optional context reflection", expanded=False):
+            st.markdown("#### World Lens context reflection")
+            st.caption(
+                "This reflection preserves the optional note and selected review-pressure lens. It does not create a World Lens verdict, rescore country-year data, or certify any country, government, institution, or policy."
+            )
+            st.code(
+                f"""World Lens Context Reflection
+    
+        Optional context note:
+        {world_lens_scenario.strip() or 'Not supplied'}
+    
+        Context dial:
+        {wl_context_dial}
+    
+        Affected groups:
+        To be identified by human reviewers from the context note and evidence view.
+    
+        Power gains:
+        Review which offices, institutions, vendors, platforms, or leaders gain discretionary control.
+    
+        Protection losses:
+        Review whether any group loses rights, appeal, exit, access, dignity, or repair.
+    
+        Basic-rights pressure:
+        {wl_basic_rights}
+    
+        Minority-rights pressure:
+        {wl_minority}
+    
+        Ambient capture pressure:
+        {wl_ambient}
+    
+        Appeal path:
+        {wl_appeal}
+    
+        Exit path:
+        {wl_exit}
+    
+        Repair path:
+        {wl_repair}
+    
+        Context reflection signal:
+        {simulated_threshold_signal}
+    
+        Human review note:
+        This is a World Lens context reflection for human review. It does not change World Lens evidence data, create a real Global ID system, select a real 9k body, issue a governance mandate, enforce action, trigger automatic resets, or make a final decision.""",
+                language="text",
+            )
+            with st.expander("World Lens safe-language boundary", expanded=False):
+                st.markdown(
+                    """
+                    **Allowed:** context reflection signal, potential population impact, human review required, safeguard needed, ambient capture pressure should be reviewed.
+    
+                    **Forbidden:** automatic reset, World Leader deactivated, Global ID sync activated, the AI has decided, this is a real governance mandate, human review is unnecessary, or ALETHEIA has final authority.
+                    """
+                )
+    
+        empirical_scored = st.session_state.get("empirical_scored_df")
+        empirical_allocation = st.session_state.get("empirical_allocation_df")
+        # Prefer the scored empirical dataframe because it carries the evidence fields
+        # needed for WGI / V-Dem / trust coverage diagnostics. The empirical tab has
+        # already copied the valid per-year 9k allocation back onto scored rows.
+        empirical_source = empirical_scored if isinstance(empirical_scored, pd.DataFrame) and not empirical_scored.empty else empirical_allocation
+        # If the scored frame exists but lacks the allocation columns on a fresh rerun,
+        # recover per-year seats/population from the allocation frame without changing
+        # the empirical pipeline itself.
+        if (
+            isinstance(empirical_source, pd.DataFrame) and not empirical_source.empty
+            and isinstance(empirical_allocation, pd.DataFrame) and not empirical_allocation.empty
+            and ("seats_9k" not in empirical_source.columns or pd.to_numeric(empirical_source.get("seats_9k"), errors="coerce").notna().sum() == 0)
+        ):
+            merge_keys = [c for c in ["country", "iso3", "year"] if c in empirical_source.columns and c in empirical_allocation.columns]
+            if merge_keys:
+                alloc_cols = merge_keys + [c for c in ["population", "population_share", "seats_9k"] if c in empirical_allocation.columns]
+                empirical_source = empirical_source.merge(
+                    empirical_allocation[alloc_cols].drop_duplicates(subset=merge_keys),
+                    on=merge_keys,
+                    how="left",
+                    suffixes=("", "_alloc"),
+                )
+                for col in ["population", "population_share", "seats_9k"]:
+                    alloc_col = f"{col}_alloc"
+                    if alloc_col in empirical_source.columns:
+                        if col not in empirical_source.columns:
+                            empirical_source[col] = empirical_source[alloc_col]
+                        else:
+                            empirical_source[col] = empirical_source[col].where(empirical_source[col].notna(), empirical_source[alloc_col])
+                        empirical_source = empirical_source.drop(columns=[alloc_col])
+        empirical_available = isinstance(empirical_source, pd.DataFrame) and not empirical_source.empty
+        valid_empirical = pd.DataFrame()
+        if empirical_available:
+            valid_empirical = empirical_source.copy()
+            identity_col = valid_empirical.get("empirical_identity_valid", pd.Series(True, index=valid_empirical.index))
+            if not isinstance(identity_col, pd.Series):
+                identity_col = pd.Series(bool(identity_col), index=valid_empirical.index)
+            valid_empirical = valid_empirical[
+                identity_col.fillna(False).astype(bool)
+                & pd.to_numeric(valid_empirical.get("seats_9k"), errors="coerce").notna()
+                & pd.to_numeric(valid_empirical.get("population"), errors="coerce").gt(0)
+                & pd.to_numeric(valid_empirical.get("year"), errors="coerce").notna()
+            ].copy()
+    
+        mode_options = [
+            "No dataset / do not use prototype brackets",
+            "Uploaded empirical country-year data",
+            "Prototype region brackets",
+        ]
+    
+        default_grid_index = 0
+        grid_mode = st.radio("What should World Lens use?", mode_options, index=default_grid_index, horizontal=True, key="grid_basis_mode_v4")
+        update_protocol_state(grid_basis=grid_mode, last_update_source="World Lens", synthetic_demo_active=(grid_mode == "Prototype region brackets"))
+    
+        if grid_mode == "Uploaded empirical country-year data" and not valid_empirical.empty:
+            valid_empirical["year"] = pd.to_numeric(valid_empirical["year"], errors="coerce").astype("Int64")
+            all_years = sorted(valid_empirical["year"].dropna().astype(int).unique().tolist())
+    
+            # Default the Grid to allocation-complete years. Sparse years are still
+            # available as diagnostics, but they should not be the default surface
+            # because their seats may not sum to 9,000 and their metrics are not a
+            # full Global Grid reading.
+            year_diagnostics = []
+            for _year in all_years:
+                _subset = valid_empirical[valid_empirical["year"] == int(_year)]
+                _seat_series = pd.to_numeric(_subset.get("seats_9k"), errors="coerce").fillna(0) if "seats_9k" in _subset.columns else pd.Series(0, index=_subset.index)
+                _allocated_subset = _subset.loc[_seat_series.gt(0)]
+                _countries = int(_subset["iso3"].dropna().astype(str).nunique()) if "iso3" in _subset.columns else int(len(_subset))
+                _allocated_countries = int(_allocated_subset["iso3"].dropna().astype(str).nunique()) if "iso3" in _allocated_subset.columns else int(len(_allocated_subset))
+                _zero_seat_rows = int(_seat_series.le(0).sum())
+                _seats = int(_seat_series.sum()) if "seats_9k" in _subset.columns else 0
+                _full = _allocated_countries >= MIN_FULL_GRID_COUNTRIES and abs(_seats - TOTAL_9K) <= 5
+                year_diagnostics.append({
+                    "year": int(_year),
+                    "countries": _countries,
+                    "allocated_countries": _allocated_countries,
+                    "zero_seat_rows": _zero_seat_rows,
+                    "seats": _seats,
+                    "full": _full,
+                })
+            year_diag_by_year = {row["year"]: row for row in year_diagnostics}
+            full_years = [row["year"] for row in year_diagnostics if row["full"]]
+            show_partial_years = st.checkbox(
+                "Show partial diagnostic years",
+                value=False,
+                key="grid_show_partial_years",
+                help="Partial years have too few countries or incomplete seat totals. They remain useful diagnostics, but they are not full Global Grid allocations.",
+            )
+            years = all_years if show_partial_years or not full_years else full_years
+            if not years:
+                st.warning("No valid selected-year rows are available for World Lens.")
                 st.stop()
-
-        st.success(f"Evidence scoring complete: {len(scored_all):,} valid row(s) mapped and scored from {source_label}.")
-
-        # Keep the active empirical input columns attached to the scored output.
-        # The scoring helper intentionally returns a compact audit table, but the
-        # UI, validation checks, downloads, and technical detail sections need the
-        # original public evidence columns too.  Attaching them here prevents lower
-        # sections from falling back to the synthetic demo view or losing WGI data.
-        if len(scored_all) == len(prepared):
-            passthrough_cols = [
+    
+            def _format_grid_year(_year: int) -> str:
+                row = year_diag_by_year.get(int(_year), {})
+                suffix = "full 9k evidence view" if row.get("full") else "partial evidence view"
+                return f"{int(_year)} — {suffix}"
+    
+            synced_evidence_year = st.session_state.get("aletheia_synced_evidence_year")
+            try:
+                synced_evidence_year_int = int(synced_evidence_year) if synced_evidence_year is not None else None
+            except Exception:
+                synced_evidence_year_int = None
+            # Patch 72.15: seed the World Lens year from the Evidence Lab synced
+            # year only before the widget exists. Do not force it back on every
+            # Streamlit rerun after the user manually selects another available year.
+            if "grid_year_v2" not in st.session_state and synced_evidence_year_int in years:
+                st.session_state["grid_year_v2"] = synced_evidence_year_int
+            elif st.session_state.get("grid_year_v2") not in years:
+                st.session_state["grid_year_v2"] = years[-1]
+            selected_year = st.selectbox(
+                "Select evidence year",
+                years,
+                index=years.index(st.session_state.get("grid_year_v2", years[-1])),
+                key="grid_year_v2",
+                format_func=_format_grid_year,
+                help="This year should match the Empirical country-year and allocation year before creating a review receipt.",
+            )
+            st.session_state["aletheia_synced_evidence_year"] = int(selected_year)
+            st.session_state["aletheia_global_grid_year"] = int(selected_year)
+            selected_year_diag = year_diag_by_year.get(int(selected_year), {})
+            selected_year_status = "full 9k evidence view" if selected_year_diag.get("full") else "partial selected-year evidence view"
+            st.caption(
+                f"{int(selected_year)} — {selected_year_status}: "
+                f"{selected_year_diag.get('allocated_countries', selected_year_diag.get('countries', 0)):,} allocated countries · "
+                f"{selected_year_diag.get('seats', 0):,} active seats"
+                + (
+                    f" · {selected_year_diag.get('zero_seat_rows', 0):,} zero-seat diagnostic row(s)"
+                    if selected_year_diag.get("zero_seat_rows", 0) else ""
+                )
+                + "."
+            )
+    
+            year_alignment_rows = [
+                {"Year control": "Empirical Country-Year Explorer", "Selected year": st.session_state.get("aletheia_empirical_country_year")},
+                {"Year control": "Empirical Seat allocation view", "Selected year": st.session_state.get("aletheia_empirical_allocation_year")},
+                {"Year control": "Global Grid", "Selected year": int(selected_year)},
+            ]
+            year_alignment_df = pd.DataFrame(year_alignment_rows)
+            filled_alignment_years = [
+                int(v) for v in year_alignment_df["Selected year"].dropna().tolist()
+                if str(v).strip() not in ["", "None"]
+            ]
+            year_alignment_ok = bool(filled_alignment_years) and len(set(filled_alignment_years)) == 1 and int(selected_year) in set(filled_alignment_years)
+            with st.expander("Year match check", expanded=not year_alignment_ok):
+                st.write(
+                    "Final receipt outputs should use one evidence year across Empirical Country-Year Explorer, "
+                    "Empirical Allocation, and Global Grid. Choosing a year in one selector will try to align the others when that year exists there."
+                )
+                st.dataframe(year_alignment_df.fillna("Not selected yet"), use_container_width=True, hide_index=True)
+                if year_alignment_ok:
+                    st.success(f"Year controls match on {int(selected_year)}.")
+                else:
+                    st.warning("Year controls do not match yet. Use the same year in Evidence Lab and World Lens before creating a receipt.")
+            update_protocol_state(selected_evidence_year=int(selected_year), last_update_source="World Lens")
+    
+            grid_source = valid_empirical[valid_empirical["year"] == int(selected_year)].copy()
+            grid_source = apply_world_lens_diagnostic_alignment(grid_source)
+            grid_source["seats_9k"] = pd.to_numeric(grid_source.get("seats_9k"), errors="coerce").fillna(0).astype(int)
+            grid_source["population"] = pd.to_numeric(grid_source.get("population"), errors="coerce")
+    
+            # Recover raw evidence-source columns from the generated master when the
+            # active scored dataframe was created in an earlier Streamlit run or has
+            # been compacted for display. Coverage cards must measure raw WGI/V-Dem/WVS
+            # availability, not fallback ALETHEIA priors such as empirical_trust_prior.
+            source_signal_cols = [
                 "wgi_voice_accountability",
                 "wgi_political_stability",
                 "wgi_government_effectiveness",
@@ -5949,46 +6910,98 @@ with tab_empirical:
                 "wgi_control_corruption",
                 "vdem_executive_constraints",
                 "vdem_democracy",
+                "v2x_polyarchy",
+                "v2x_libdem",
                 "wvs_generalized_trust",
-                "conflict_events",
-                "political_violence_events",
-                "coup_attempt",
-                "regime_breakdown",
-                "civil_unrest_index",
-                "forced_displacement_rate",
-                "future_stability_decline",
             ]
-            for _col in passthrough_cols:
-                if _col in prepared.columns and _col not in scored_all.columns:
-                    scored_all[_col] = prepared[_col].values
-
-        # Recompute 9k seats from the full valid country population base, not
-        # from the WGI-filtered evidence subset and not from World Bank regional
-        # aggregates.  The scored table keeps diagnostic rows, but only valid
-        # country rows receive seats.
-        allocation_base_all = _country_allocation_base(scored_all, include_demo=use_template)
-        if not use_template:
-            scored_all = _replace_allocation_columns(scored_all, allocation_base_all)
-        else:
-            allocation_base_all = scored_all.copy()
-
-        identity_valid_series = scored_all.get("empirical_identity_valid", pd.Series([True] * len(scored_all)))
-        identity_valid_series = identity_valid_series.fillna(False).astype(bool) if hasattr(identity_valid_series, "fillna") else pd.Series([True] * len(scored_all))
-        invalid_count = int((~identity_valid_series).sum()) if not scored_all.empty else 0
-        valid_identity_count = int(identity_valid_series.sum()) if not scored_all.empty else 0
-
-        if invalid_count and not use_template:
-            st.warning(
-                f"{valid_identity_count:,} valid country-year row(s) and {invalid_count:,} diagnostic row(s). "
-                "Diagnostic rows are retained because they are missing country, iso3, year, or positive population; "
-                "they are excluded from valid 9k allocation."
+            source_master = st.session_state.get("empirical_master_df")
+            if isinstance(source_master, pd.DataFrame) and not source_master.empty:
+                merge_keys = [c for c in ["country", "iso3", "year"] if c in grid_source.columns and c in source_master.columns]
+                recover_cols = [c for c in source_signal_cols + ["region", "income_group", "income", "wb_region", "world_bank_region"] if c in source_master.columns and c not in merge_keys]
+                if merge_keys and recover_cols:
+                    source_recovery = source_master[merge_keys + recover_cols].copy()
+                    if "year" in source_recovery.columns:
+                        source_recovery["year"] = pd.to_numeric(source_recovery["year"], errors="coerce").astype("Int64")
+                    if "year" in grid_source.columns:
+                        grid_source["year"] = pd.to_numeric(grid_source["year"], errors="coerce").astype("Int64")
+                    source_recovery = source_recovery.drop_duplicates(subset=merge_keys)
+                    grid_source = grid_source.merge(
+                        source_recovery,
+                        on=merge_keys,
+                        how="left",
+                        suffixes=("", "__source"),
+                    )
+                    for col in recover_cols:
+                        src_col = f"{col}__source"
+                        if src_col in grid_source.columns:
+                            # Preserve a dedicated raw source column for diagnostics.
+                            diag_col = f"__source_{col}"
+                            grid_source[diag_col] = grid_source[src_col]
+                            if col not in grid_source.columns or pd.to_numeric(grid_source.get(col), errors="coerce").notna().sum() == 0:
+                                grid_source[col] = grid_source[src_col]
+                            elif col in ["region", "income_group", "income", "wb_region", "world_bank_region"]:
+                                grid_source[col] = grid_source[col].where(grid_source[col].notna(), grid_source[src_col])
+                            grid_source = grid_source.drop(columns=[src_col])
+    
+            filter_cols = [c for c in ["region", "income_group", "income", "wb_region", "world_bank_region"] if c in grid_source.columns]
+            active_filters = []
+            if filter_cols:
+                with st.expander("Region / income filter", expanded=False):
+                    for filter_col in filter_cols:
+                        values = sorted([v for v in grid_source[filter_col].dropna().astype(str).unique().tolist() if v.strip()])
+                        if values:
+                            selected_values = st.multiselect(
+                                filter_col.replace("_", " ").title(),
+                                values,
+                                default=values,
+                                key=f"grid_filter_{filter_col}",
+                            )
+                            if selected_values:
+                                if set(selected_values) != set(values):
+                                    active_filters.append(filter_col)
+                                grid_source = grid_source[grid_source[filter_col].astype(str).isin(selected_values)].copy()
+                            else:
+                                grid_source = grid_source.iloc[0:0].copy()
+    
+            grid_source["seats_9k"] = pd.to_numeric(grid_source.get("seats_9k"), errors="coerce").fillna(0).astype(int)
+            zero_seat_mask_after_filters = grid_source["seats_9k"].le(0)
+            zero_seat_diagnostic_rows = int(zero_seat_mask_after_filters.sum())
+            show_zero_seat_diagnostics = False
+            if zero_seat_diagnostic_rows:
+                show_zero_seat_diagnostics = st.checkbox(
+                    "Show zero-seat diagnostic rows",
+                    value=False,
+                    key=f"grid_show_zero_seat_diagnostics_{selected_year}",
+                    help=(
+                        "Zero-seat rows are territories or diagnostic entities retained for source coverage checks. "
+                        "They do not contribute to the 9k allocation and are hidden from comparisons by default."
+                    ),
+                )
+                if not show_zero_seat_diagnostics:
+                    grid_source = grid_source.loc[~zero_seat_mask_after_filters].copy()
+    
+            grid_source["_allocation_role"] = np.where(
+                pd.to_numeric(grid_source.get("seats_9k"), errors="coerce").fillna(0).gt(0),
+                "allocated_country",
+                "diagnostic_zero_seat",
             )
-        elif not use_template and not scored_all.empty:
-            st.success(f"{valid_identity_count:,} valid country-year row(s) are ready for scoring and 9k allocation.")
-
-        scored = scored_all.copy()
-        if not use_template and not scored.empty:
-            _wgi_cols_check = [
+            grid_source = grid_source.sort_values("seats_9k", ascending=False)
+            total_seats = int(grid_source["seats_9k"].sum()) if not grid_source.empty else 0
+            countries_scored = int(grid_source.loc[pd.to_numeric(grid_source["seats_9k"], errors="coerce").fillna(0).gt(0), "iso3"].dropna().astype(str).nunique()) if "iso3" in grid_source.columns else int(pd.to_numeric(grid_source["seats_9k"], errors="coerce").fillna(0).gt(0).sum())
+            row_count = int(len(grid_source))
+            displayed_zero_seat_rows = int(pd.to_numeric(grid_source.get("seats_9k"), errors="coerce").fillna(0).le(0).sum()) if not grid_source.empty else 0
+            hidden_zero_seat_rows = zero_seat_diagnostic_rows if zero_seat_diagnostic_rows and not show_zero_seat_diagnostics else 0
+            has_complete_seat_total = abs(total_seats - TOTAL_9K) <= 5
+            is_full_grid = countries_scored >= MIN_FULL_GRID_COUNTRIES and has_complete_seat_total and not active_filters
+            grid_state_label = "Full empirical scored master" if is_full_grid else "Partial empirical subset"
+            if active_filters:
+                grid_state_label += " · filtered view"
+            metric_scope_word = "World Lens" if is_full_grid else "selected subset"
+            seat_metric_label = "9k seats allocated" if is_full_grid else "Active selected-year seats"
+            allocation_heading = "9k internal taxonomy signal" if is_full_grid else "Active-seat internal taxonomy signal"
+            signal_denominator_label = "selected-year 9k" if is_full_grid else "active selected-year seats"
+    
+            wgi_cols = [
                 "wgi_voice_accountability",
                 "wgi_political_stability",
                 "wgi_government_effectiveness",
@@ -5996,1460 +7009,844 @@ with tab_empirical:
                 "wgi_rule_of_law",
                 "wgi_control_corruption",
             ]
-            _wgi_present_cols = [c for c in _wgi_cols_check if c in scored.columns]
-            _wgi_rows_present = 0
-            if _wgi_present_cols:
-                _wgi_mask = pd.Series(False, index=scored.index)
-                for _col in _wgi_present_cols:
-                    _wgi_mask = _wgi_mask | pd.to_numeric(scored[_col], errors="coerce").notna()
-                _wgi_rows_present = int(_wgi_mask.sum())
-            if _wgi_rows_present == 0:
+            def _diagnostic_col(col_name: str) -> str | None:
+                source_col = f"__source_{col_name}"
+                if source_col in grid_source.columns and pd.to_numeric(grid_source[source_col], errors="coerce").notna().any():
+                    return source_col
+                if col_name in grid_source.columns:
+                    return col_name
+                return None
+    
+            present_wgi_cols = [c for c in [_diagnostic_col(c) for c in wgi_cols] if c]
+            vdem_cols = [c for c in [_diagnostic_col(c) for c in ["vdem_executive_constraints", "vdem_democracy", "v2x_polyarchy", "v2x_libdem"]] if c]
+            # Coverage checks measure raw source availability, not neutral fallback
+            # priors. empirical_trust_prior can exist for every row even when no WVS
+            # observation is present, so source trust coverage uses WVS only.
+            trust_cols = [c for c in [_diagnostic_col("wvs_generalized_trust")] if c]
+            trust_prior_cols = [c for c in [_diagnostic_col("empirical_trust_prior")] if c]
+            coverage_col = "empirical_completeness" if "empirical_completeness" in grid_source.columns else "empirical_coverage" if "empirical_coverage" in grid_source.columns else None
+            verdict_col = "aletheia_verdict" if "aletheia_verdict" in grid_source.columns else "verdict"
+            integrity_col = "aletheia_empirical_integrity" if "aletheia_empirical_integrity" in grid_source.columns else "integrity"
+            friction_col = "aletheia_empirical_friction" if "aletheia_empirical_friction" in grid_source.columns else "friction"
+            collapse_col = "aletheia_empirical_collapse_probability" if "aletheia_empirical_collapse_probability" in grid_source.columns else "collapse_probability"
+    
+            def _numeric_series(col_name: str, default: float = np.nan) -> pd.Series:
+                if col_name in grid_source.columns:
+                    return pd.to_numeric(grid_source[col_name], errors="coerce")
+                return pd.Series(default, index=grid_source.index, dtype="float64")
+    
+            weights = pd.to_numeric(grid_source.get("seats_9k"), errors="coerce").fillna(0).astype(float) if not grid_source.empty else pd.Series(dtype="float64")
+            if weights.sum() <= 0 and "population" in grid_source.columns:
+                weights = pd.to_numeric(grid_source["population"], errors="coerce").fillna(0).astype(float)
+    
+            def _weighted_mean(col_name: str, default: float = 0.5) -> float:
+                if grid_source.empty or weights.sum() <= 0:
+                    return np.nan
+                values = _numeric_series(col_name, default=default).fillna(default)
+                return float(np.average(values, weights=weights))
+    
+            weighted_integrity = _weighted_mean(integrity_col, 0.5)
+            weighted_collapse = _weighted_mean(collapse_col, 0.5)
+            weighted_friction = _weighted_mean(friction_col, 0.5)
+            avg_coverage = float(pd.to_numeric(grid_source[coverage_col], errors="coerce").mean()) if coverage_col else np.nan
+    
+            evidence_text = pd.Series("", index=grid_source.index, dtype="object")
+            for _evidence_col in ["evidence_variables_used", "evidence_used"]:
+                if _evidence_col in grid_source.columns:
+                    evidence_text = evidence_text.where(evidence_text.astype(str).str.len() > 0, grid_source[_evidence_col].fillna("").astype(str))
+    
+            if trust_cols:
+                trust_mask = pd.Series(False, index=grid_source.index)
+                for col in trust_cols:
+                    trust_mask = trust_mask | pd.to_numeric(grid_source[col], errors="coerce").notna()
+            else:
+                trust_mask = pd.Series(False, index=grid_source.index)
+            if not trust_mask.any() and not evidence_text.empty:
+                trust_mask = evidence_text.str.contains("trust survey", case=False, na=False)
+    
+            if trust_prior_cols:
+                trust_prior_mask = pd.Series(False, index=grid_source.index)
+                for col in trust_prior_cols:
+                    trust_prior_mask = trust_prior_mask | pd.to_numeric(grid_source[col], errors="coerce").notna()
+            else:
+                trust_prior_mask = pd.Series(False, index=grid_source.index)
+            if not trust_prior_mask.any() and not evidence_text.empty:
+                trust_prior_mask = evidence_text.str.contains("trust prior", case=False, na=False)
+    
+            if present_wgi_cols:
+                wgi_mask = grid_source[present_wgi_cols].apply(pd.to_numeric, errors="coerce").notna().any(axis=1)
+            else:
+                wgi_mask = pd.Series(False, index=grid_source.index)
+            if not wgi_mask.any() and not evidence_text.empty:
+                wgi_mask = evidence_text.str.contains("WGI governance", case=False, na=False)
+    
+            if vdem_cols:
+                vdem_mask = grid_source[vdem_cols].apply(pd.to_numeric, errors="coerce").notna().any(axis=1)
+            else:
+                vdem_mask = pd.Series(False, index=grid_source.index)
+            if not vdem_mask.any() and not evidence_text.empty:
+                vdem_mask = evidence_text.str.contains("V-Dem/democracy", case=False, na=False)
+    
+            missing_trust = int((~trust_mask).sum()) if not grid_source.empty else 0
+            missing_wgi = int((~wgi_mask).sum()) if not grid_source.empty else 0
+            missing_vdem = int((~vdem_mask).sum()) if not grid_source.empty else 0
+            trust_coverage = float(trust_mask.mean()) if not grid_source.empty else np.nan
+            trust_prior_coverage = float(trust_prior_mask.mean()) if not grid_source.empty else np.nan
+            missing_trust_prior = int((~trust_prior_mask).sum()) if not grid_source.empty else 0
+            wgi_coverage = float(wgi_mask.mean()) if not grid_source.empty else np.nan
+            vdem_coverage = float(vdem_mask.mean()) if not grid_source.empty else np.nan
+    
+            empirical_scored_raw = st.session_state.get("empirical_scored_df")
+            excluded_rows = 0
+            if isinstance(empirical_scored_raw, pd.DataFrame) and not empirical_scored_raw.empty and "year" in empirical_scored_raw.columns:
+                raw_year_rows = empirical_scored_raw[pd.to_numeric(empirical_scored_raw["year"], errors="coerce") == int(selected_year)]
+                excluded_rows = max(int(len(raw_year_rows) - len(grid_source)), 0)
+                if hidden_zero_seat_rows:
+                    excluded_rows = max(excluded_rows, hidden_zero_seat_rows)
+    
+            update_protocol_state(grid_basis=grid_state_label, selected_evidence_year=int(selected_year), last_update_source="World Lens")
+            st.info("Seat totals are for the selected year only. They are not added across all years.")
+            st.caption(f"World Lens source state: **{grid_state_label}**. Coverage metrics reflect source availability among active selected-year rows after current filters; they are diagnostics for this view, not whole-dataset coverage.")
+            if not grid_source.empty and not is_full_grid:
                 st.warning(
-                    "WGI source signal is not present in the active scored evidence table. "
-                    "The Global Grid will correctly show WGI coverage as 0.0% until the master is rebuilt with a WGI file in the WGI upload slot or a merged CSV containing WGI columns."
+                    f"Partial selected-year view: {countries_scored:,} allocated country row(s) and {total_seats:,} active seats are available for {selected_year}. "
+                    f"This is not a full {TOTAL_9K:,}-seat global allocation, so weighted metrics are diagnostic only."
                 )
-
-        if not use_template and not scored.empty:
-            wgi_signal_cols = [
-                "wgi_voice_accountability",
-                "wgi_political_stability",
-                "wgi_government_effectiveness",
-                "wgi_regulatory_quality",
-                "wgi_rule_of_law",
-                "wgi_control_corruption",
-            ]
-            available_signal_cols = [c for c in wgi_signal_cols if c in scored.columns]
-            if available_signal_cols:
-                evidence_mask = pd.Series(False, index=scored.index)
-                for col in available_signal_cols:
-                    evidence_mask = evidence_mask | pd.to_numeric(scored[col], errors="coerce").notna()
-                if int(evidence_mask.sum()) > 0 and int(evidence_mask.sum()) < len(scored):
-                    show_evidence_years_only = st.checkbox(
-                        "Show WGI-supported evidence years only",
-                        value=True,
-                        help="Recommended for first real runs. Population-only historical rows are useful for allocation context but should not drive governance scoring summaries.",
-                    )
-                    if show_evidence_years_only:
-                        scored = scored.loc[evidence_mask].copy()
-                    st.caption(
-                        f"Evidence-year filter: showing {len(scored):,} of {len(scored_all):,} rows. "
-                        f"{int(evidence_mask.sum()):,} row(s) contain at least one WGI governance indicator."
-                    )
-
-        st.session_state["empirical_scored_df"] = scored.copy()
-        st.session_state["empirical_allocation_df"] = allocation_base_all.copy()
-        update_protocol_state(last_update_source="Evidence Lab", synthetic_demo_active=bool(use_template))
-
-        if not use_template and not scored.empty:
-            demo_names = {"Exampleland", "Threshold Republic", "Capture State"}
-            visible_names = set(scored.get("country", pd.Series(dtype=str)).astype(str).head(25).tolist())
-            if visible_names & demo_names:
-                st.warning("Uploaded-evidence mode is active, but demo country names are still present in the active scored data. Clear the uploaded file or reload the app if this was not intended.")
-
-        # Validation should use the exact active dataframe visible on the page,
-        # including uploaded/generated evidence columns.  This keeps N and group
-        # means aligned with the real uploaded evidence instead of the demo rows.
-        scored_for_validation = scored.reset_index(drop=True).copy()
-
-        st.markdown("### Topline Evidence Results" + (" · Synthetic demo" if use_template else " · Uploaded evidence"))
-        if use_template:
-            st.caption("Synthetic rows are for app testing only. Do not read them as real-world findings.")
-        else:
-            st.caption("Uploaded/generated data was mapped, scored, and shown through the protocol view.")
-
-        e1, e2, e3, e4 = st.columns(4)
-        e1.metric("Rows scored", f"{len(scored):,}")
-
-        seat_year_label = "Synthetic 9k seats" if use_template else "Latest-year 9k seats"
-        seat_year_value = "—"
-        seat_caption = ""
-        seat_df = allocation_base_all.copy()
-        if not seat_df.empty and "year" in seat_df.columns and "seats_9k" in seat_df.columns:
-            year_values = pd.to_numeric(seat_df["year"], errors="coerce")
-            if year_values.notna().any():
-                latest_year = int(year_values.dropna().max())
-                seat_year_label = "Synthetic 9k seats" if use_template else f"9k seats · {latest_year}"
-                latest_year_mask = year_values == latest_year
-                latest_year_seats = int(pd.to_numeric(seat_df.loc[latest_year_mask, "seats_9k"], errors="coerce").sum(skipna=True))
-                seat_year_value = f"{latest_year_seats:,}"
-                if not use_template:
-                    all_year_seats = int(pd.to_numeric(seat_df["seats_9k"], errors="coerce").sum(skipna=True))
-                    seat_caption = f"All row-year seat total: {all_year_seats:,}; 9k allocation is interpreted per year."
-        e2.metric(seat_year_label, seat_year_value)
-        e3.metric("Mean integrity", f"{pd.to_numeric(scored['aletheia_empirical_integrity'], errors='coerce').mean():.3f}")
-        e4.metric("Average schema coverage" if use_template else "Average empirical coverage", f"{pd.to_numeric(scored['empirical_completeness'], errors='coerce').mean():.1%}")
-        if seat_caption:
-            st.caption(seat_caption)
-        if use_template:
-            st.caption("Demo schema coverage is below 100% because capital_scale is intentionally blank; optional proxies should not be treated as empirically supplied.")
-
-        with st.expander("Main scored data table", expanded=False):
-            st.markdown("### Main scored data table")
-            st.caption("capital_scale is neutral/default unless supplied through an empirical proxy column; schema coverage is not proof of empirical validity." if use_template else "capital_scale is neutral/default unless supplied through an empirical proxy column.")
-            curated_cols = [
-                "country", "iso3", "year", "population", "seats_9k",
-                "aletheia_verdict", "aletheia_empirical_integrity", "aletheia_empirical_friction",
-                "aletheia_empirical_collapse_probability",
-                "empirical_completeness", "empirical_identity_valid",
-            ]
-            curated_cols = [c for c in curated_cols if c in scored.columns]
-            display_names = {
-                "aletheia_verdict": "verdict",
-                "aletheia_empirical_integrity": "integrity",
-                "aletheia_empirical_friction": "friction",
-                "aletheia_empirical_collapse_probability": "collapse_probability",
-                "empirical_completeness": "schema_coverage" if use_template else "empirical_coverage",
-                "empirical_identity_valid": "identity_valid",
-            }
-            curated_display = scored[curated_cols].rename(columns=display_names)
-            st.dataframe(curated_display, use_container_width=True, hide_index=True, height=260)
-
-            csv_out = scored.to_csv(index=False)
-            st.download_button(
-                "⬇️ Download scored empirical ALETHEIA table",
-                data=csv_out,
-                file_name="aletheia_evidence_audit_scores.csv",
-                mime="text/csv",
-                use_container_width=True,
-            )
-
-        st.markdown("### Country-Year Explorer")
-        valid_rows = scored.reset_index(drop=True).copy()
-
-        def _truthy_series(series: pd.Series) -> pd.Series:
-            if series is None:
-                return pd.Series(True, index=valid_rows.index)
-            if series.dtype == bool:
-                return series.fillna(False)
-            text = series.astype(str).str.strip().str.lower()
-            return text.isin(["true", "1", "yes", "y", "valid"])
-
-        if "empirical_identity_valid" in valid_rows.columns:
-            identity_mask = _truthy_series(valid_rows["empirical_identity_valid"])
-        elif "identity_valid" in valid_rows.columns:
-            identity_mask = _truthy_series(valid_rows["identity_valid"])
-        else:
-            identity_mask = pd.Series(True, index=valid_rows.index)
-
-        required_explorer_cols = ["country", "iso3", "year"]
-        missing_explorer_cols = [c for c in required_explorer_cols if c not in valid_rows.columns]
-        if missing_explorer_cols:
-            st.warning(
-                "Country-Year Explorer is inactive because the active scored table is missing required column(s): "
-                + ", ".join(missing_explorer_cols)
-                + ". Upload or rebuild a country-year master with country, iso3, and year."
-            )
-        else:
-            valid_rows = valid_rows.loc[identity_mask].copy()
-            valid_rows["_country_label"] = valid_rows["country"].astype(str).str.strip()
-            valid_rows["_iso3_label"] = valid_rows["iso3"].astype(str).str.strip().str.upper()
-            valid_rows["_year_num"] = pd.to_numeric(valid_rows["year"], errors="coerce")
-            valid_rows = valid_rows[
-                valid_rows["_country_label"].ne("")
-                & valid_rows["_iso3_label"].ne("")
-                & valid_rows["_year_num"].notna()
-            ].copy()
-
-            if valid_rows.empty:
-                st.info("No valid country-year rows yet. Add country, ISO3, year, and population so you can inspect one row at a time." )
-            else:
-                valid_rows["_year_int"] = valid_rows["_year_num"].astype(int)
-
-                def _friendly_country_name(iso3_value: str, country_value: str = "") -> str:
-                    iso3_text = str(iso3_value or "").strip().upper()
-                    country_text = str(country_value or "").strip()
-                    if country_text and country_text.upper() != iso3_text and len(country_text) > 3:
-                        return country_text
-                    manual_names = {
-                        "AFG": "Afghanistan", "ALB": "Albania", "DZA": "Algeria", "AGO": "Angola", "ARG": "Argentina",
-                        "ARM": "Armenia", "AUS": "Australia", "AUT": "Austria", "AZE": "Azerbaijan", "BHR": "Bahrain",
-                        "BGD": "Bangladesh", "BLR": "Belarus", "BEL": "Belgium", "BEN": "Benin", "BOL": "Bolivia",
-                        "BIH": "Bosnia and Herzegovina", "BWA": "Botswana", "BRA": "Brazil", "BGR": "Bulgaria",
-                        "BFA": "Burkina Faso", "BDI": "Burundi", "KHM": "Cambodia", "CMR": "Cameroon", "CAN": "Canada",
-                        "CAF": "Central African Republic", "TCD": "Chad", "CHL": "Chile", "CHN": "China", "COL": "Colombia",
-                        "COD": "Democratic Republic of the Congo", "COG": "Republic of the Congo", "CRI": "Costa Rica",
-                        "CIV": "Côte d’Ivoire", "HRV": "Croatia", "CUB": "Cuba", "CYP": "Cyprus", "CZE": "Czechia",
-                        "DNK": "Denmark", "DOM": "Dominican Republic", "ECU": "Ecuador", "EGY": "Egypt", "SLV": "El Salvador",
-                        "ERI": "Eritrea", "EST": "Estonia", "ETH": "Ethiopia", "FIN": "Finland", "FRA": "France",
-                        "GAB": "Gabon", "GEO": "Georgia", "DEU": "Germany", "GHA": "Ghana", "GRC": "Greece",
-                        "GTM": "Guatemala", "GIN": "Guinea", "HTI": "Haiti", "HND": "Honduras", "HUN": "Hungary",
-                        "IND": "India", "IDN": "Indonesia", "IRN": "Iran", "IRQ": "Iraq", "IRL": "Ireland",
-                        "ISR": "Israel", "ITA": "Italy", "JPN": "Japan", "JOR": "Jordan", "KAZ": "Kazakhstan",
-                        "KEN": "Kenya", "KWT": "Kuwait", "KGZ": "Kyrgyzstan", "LAO": "Laos", "LVA": "Latvia",
-                        "LBN": "Lebanon", "LBR": "Liberia", "LBY": "Libya", "LTU": "Lithuania", "MDG": "Madagascar",
-                        "MWI": "Malawi", "MYS": "Malaysia", "MLI": "Mali", "MEX": "Mexico", "MDA": "Moldova",
-                        "MAR": "Morocco", "MOZ": "Mozambique", "MMR": "Myanmar", "NAM": "Namibia", "NPL": "Nepal",
-                        "NLD": "Netherlands", "NZL": "New Zealand", "NIC": "Nicaragua", "NER": "Niger", "NGA": "Nigeria",
-                        "PRK": "North Korea", "MKD": "North Macedonia", "NOR": "Norway", "OMN": "Oman", "PAK": "Pakistan",
-                        "PAN": "Panama", "PRY": "Paraguay", "PER": "Peru", "PHL": "Philippines", "POL": "Poland",
-                        "PRT": "Portugal", "QAT": "Qatar", "ROU": "Romania", "RUS": "Russia", "RWA": "Rwanda",
-                        "SAU": "Saudi Arabia", "SEN": "Senegal", "SRB": "Serbia", "SLE": "Sierra Leone", "SGP": "Singapore",
-                        "SVK": "Slovakia", "SVN": "Slovenia", "SOM": "Somalia", "ZAF": "South Africa", "KOR": "South Korea",
-                        "SSD": "South Sudan", "ESP": "Spain", "LKA": "Sri Lanka", "SDN": "Sudan", "SWE": "Sweden",
-                        "CHE": "Switzerland", "SYR": "Syria", "TWN": "Taiwan", "TJK": "Tajikistan", "TZA": "Tanzania",
-                        "THA": "Thailand", "TUN": "Tunisia", "TUR": "Türkiye", "TKM": "Turkmenistan", "UGA": "Uganda",
-                        "UKR": "Ukraine", "ARE": "United Arab Emirates", "GBR": "United Kingdom", "USA": "United States",
-                        "URY": "Uruguay", "UZB": "Uzbekistan", "VEN": "Venezuela", "VNM": "Vietnam", "YEM": "Yemen",
-                        "ZMB": "Zambia", "ZWE": "Zimbabwe",
-                    }
-                    return manual_names.get(iso3_text, country_text or iso3_text)
-
-                valid_rows["_country_name"] = [
-                    _friendly_country_name(iso3, country)
-                    for iso3, country in zip(valid_rows["_iso3_label"], valid_rows["_country_label"])
-                ]
-                valid_rows = valid_rows.sort_values(["_year_int", "_country_name"], ascending=[False, True]).reset_index(drop=True)
-
-                years_available = sorted(valid_rows["_year_int"].dropna().astype(int).unique().tolist(), reverse=True)
-                if years_available:
-                    max_explorer_year = max(years_available)
-                    min_explorer_year = min(years_available)
-                    if max_explorer_year < 2020:
-                        st.warning(
-                            f"The active scored table currently only goes up to {max_explorer_year}. "
-                            "The explorer can only show years that exist in this Empirical run. "
-                            "If you expected newer years, reload or rebuild the full country-year master before using this explorer."
-                        )
-
-                    # Country-first selection keeps the list readable and gives native
-                    # type-ahead suggestions from the available countries.
-                    country_lookup = (
-                        valid_rows[["_country_name", "_iso3_label"]]
-                        .drop_duplicates()
-                        .sort_values(["_country_name", "_iso3_label"])
-                        .reset_index(drop=True)
-                    )
-                    country_lookup["_country_option"] = country_lookup["_country_name"] + " · " + country_lookup["_iso3_label"]
-                    country_options = country_lookup["_country_option"].tolist()
-
-                    synced_iso3 = st.session_state.get("aletheia_synced_iso3")
-                    synced_country_option = None
-                    if synced_iso3:
-                        _synced_options = country_lookup.loc[
-                            country_lookup["_iso3_label"].astype(str).str.upper() == str(synced_iso3).upper(),
-                            "_country_option",
-                        ].tolist()
-                        synced_country_option = _synced_options[0] if _synced_options else None
-
-                    country_widget_key = "empirical_country_year_explorer_country_search"
-                    # Only seed the country selector before the widget exists.
-                    # Do not overwrite an existing widget value from a user click,
-                    # otherwise a stale focus country can force the selector back
-                    # to the previous/default country such as Afghanistan.
-                    if country_widget_key not in st.session_state and synced_country_option in country_options:
-                        st.session_state[country_widget_key] = synced_country_option
-
-                    country_col, year_col = st.columns([2, 1])
-                    with country_col:
-                        selected_country_option = st.selectbox(
-                            "Search country",
-                            options=country_options,
-                            index=country_options.index(st.session_state.get(country_widget_key, country_options[0])) if st.session_state.get(country_widget_key, country_options[0]) in country_options else 0,
-                            key=country_widget_key,
-                            help="Start typing a country name or ISO code. The list only includes countries available in the active scored table.",
-                        )
-                    selected_iso = country_lookup.loc[
-                        country_lookup["_country_option"] == selected_country_option, "_iso3_label"
-                    ].iloc[0]
-                    selected_country_name = country_lookup.loc[
-                        country_lookup["_country_option"] == selected_country_option, "_country_name"
-                    ].iloc[0]
-                    st.session_state["aletheia_synced_iso3"] = str(selected_iso).upper()
-                    st.session_state["aletheia_synced_country_name"] = str(selected_country_name)
-                    st.caption(f"Focus country set for Grid/report context: {selected_country_name} · {str(selected_iso).upper()}")
-
-                    country_rows_all_years = valid_rows[valid_rows["_iso3_label"] == selected_iso].copy()
-                    country_years = country_available_years(valid_rows, selected_iso)
-
-                    st.caption(
-                        country_year_status_message(selected_country_name, selected_iso, country_years)
-                        + " The year dropdown is scoped to this selected country only; ALETHEIA does not silently fall back to a global/default year."
-                    )
-                    if not country_years:
-                        st.warning(
-                            f"No available country-year data for {selected_country_name} · {str(selected_iso).upper()}. "
-                            "Choose another country or rebuild the country-year master."
-                        )
-                        st.stop()
-
-                    synced_evidence_year = st.session_state.get("aletheia_synced_evidence_year")
-                    country_year_widget_key = f"empirical_country_year_explorer_year_{selected_iso}"
-                    # Patch 72.13: a synced Grid/World Lens year may seed the widget
-                    # once, but must not overwrite a user's manual year choice on
-                    # every Streamlit rerun. This keeps the dropdown from snapping
-                    # back to 2024 after the user selects another available year.
-                    if country_year_widget_key not in st.session_state and synced_evidence_year in country_years:
-                        st.session_state[country_year_widget_key] = int(synced_evidence_year)
-                    country_year_index = safe_country_year_index(st.session_state.get(country_year_widget_key), country_years)
-                    with year_col:
-                        selected_explorer_year = st.selectbox(
-                            "Year for country",
-                            options=country_years,
-                            index=country_year_index,
-                            key=country_year_widget_key,
-                            help="Only years present for the selected country are shown. No global/default fallback is used.",
-                        )
-                    st.session_state["aletheia_synced_evidence_year"] = int(selected_explorer_year)
-                    st.session_state["aletheia_empirical_country_year"] = int(selected_explorer_year)
-
-                    explorer_rows = country_rows_all_years[country_rows_all_years["_year_int"] == int(selected_explorer_year)].copy()
-
-                    if explorer_rows.empty:
-                        st.info("No country-year row matches that country and year. Try another country or year.")
-                        st.stop()
-
-                    explorer_rows["_label"] = explorer_rows["_country_name"] + " · " + explorer_rows["_iso3_label"] + " · " + explorer_rows["_year_int"].astype(str)
-                    if "seats_9k" in explorer_rows.columns:
-                        _seat_nums = pd.to_numeric(explorer_rows["seats_9k"], errors="coerce")
-                        explorer_rows.loc[_seat_nums.notna(), "_label"] = (
-                            explorer_rows.loc[_seat_nums.notna(), "_label"]
-                            + " · "
-                            + _seat_nums[_seat_nums.notna()].astype(int).astype(str)
-                            + " seats"
-                        )
-
-                    st.caption(
-                        "Explorer source: active scored table. Search country first, then choose one of that country’s available years. "
-                        "This avoids stale global-year fallback and shares the confirmed year with allocation and Grid outputs when available."
-                    )
-
-                    if len(explorer_rows) == 1:
-                        selected = explorer_rows.iloc[0]
-                    else:
-                        options = explorer_rows.index.tolist()
-                        selected_idx = st.selectbox(
-                            "Country-year row",
-                            options=options,
-                            format_func=lambda idx: explorer_rows.loc[idx, "_label"],
-                            key="empirical_country_year_explorer_country_year_row",
-                        )
-                        selected = explorer_rows.loc[selected_idx]
-
-                    selected_explorer_signature = (
-                        f"{str(selected.get('iso3', selected_iso)).upper()}::"
-                        f"{int(selected_explorer_year)}::"
-                        f"{str(selected.get('country', selected_country_name))}"
-                    )
-                    pending_label = f"{selected_country_name} · {str(selected_iso).upper()} · {int(selected_explorer_year)}"
-                    active_signature = st.session_state.get("empirical_country_year_explorer_active_signature")
-                    active_selected = active_signature == selected_explorer_signature
-
-                    run_cols = st.columns([1, 2])
-                    with run_cols[0]:
-                        run_country_diagnostic = st.button(
-                            "Run country-year review",
-                            key="empirical_country_year_explorer_run_button",
-                            type="primary",
-                            use_container_width=True,
-                        )
-                    with run_cols[1]:
-                        if active_selected:
-                            st.success(f"Diagnostic is active for: {pending_label}")
-                        else:
-                            st.info(
-                                f"Selected: {pending_label}. Press **Run country-year review** to update the cards and raw-row detail."
-                            )
-
-                    if run_country_diagnostic:
-                        st.session_state["empirical_country_year_explorer_active_signature"] = selected_explorer_signature
-                        st.session_state["empirical_country_year_explorer_active_payload"] = selected.to_dict()
-                        active_selected = True
-
-                    if active_selected:
-                        active_payload = st.session_state.get("empirical_country_year_explorer_active_payload")
-                        if isinstance(active_payload, dict):
-                            selected = pd.Series(active_payload)
-                    else:
-                        selected = None
-                else:
-                    st.info("No valid years are available in the active scored table.")
-                    st.stop()
-
-                if selected is not None:
-                    def _first_value(row, names, default="—"):
-                        for name in names:
-                            if name in row.index:
-                                value = row.get(name)
-                                if pd.notna(value):
-                                    return value
-                        return default
-
-                    def _fmt_num(value, digits=3):
-                        num = pd.to_numeric(pd.Series([value]), errors="coerce").iloc[0]
-                        return "—" if pd.isna(num) else f"{float(num):.{digits}f}"
-
-                    verdict_value = _first_value(selected, ["aletheia_verdict", "verdict"], "—")
-                    verdict_text = str(verdict_value or "—").strip().upper()
-                    if verdict_text == "SANCTUARY":
-                        display_verdict_value = "Low-risk internal reading"
-                        display_verdict_caption = (
-                            "Internal taxonomy label: SANCTUARY. This means the country-year evidence pattern is low-risk within ALETHEIA's review model; "
-                            "it is not a final safety, final Sanctuary, or authority claim."
-                        )
-                    else:
-                        display_verdict_value = verdict_value
-                        display_verdict_caption = ""
-                    integrity_value = _first_value(selected, ["aletheia_empirical_integrity", "integrity"], None)
-                    collapse_value = _first_value(selected, ["aletheia_empirical_collapse_probability", "collapse_probability"], None)
-                    coverage_value = _first_value(selected, ["empirical_completeness", "empirical_coverage", "schema_coverage"], None)
-                    seats_value = pd.to_numeric(pd.Series([_first_value(selected, ["seats_9k"], None)]), errors="coerce").iloc[0]
-
-                    col_a, col_b, col_c, col_d = st.columns(4)
-                    col_a.metric("Empirical pattern", display_verdict_value)
-                    if display_verdict_caption:
-                        col_a.caption(display_verdict_caption)
-                    col_b.metric("Integrity", _fmt_num(integrity_value))
-                    col_c.metric("Collapse pressure", _fmt_num(collapse_value))
-                    col_d.metric("Allocated seats", "—" if pd.isna(seats_value) else f"{int(seats_value):,}")
-
-                    col_e, col_f, col_g, col_h = st.columns(4)
-                    col_e.metric("Empirical coverage", _fmt_num(coverage_value, digits=1) if pd.to_numeric(pd.Series([coverage_value]), errors="coerce").iloc[0] > 1 else ("—" if pd.isna(pd.to_numeric(pd.Series([coverage_value]), errors="coerce").iloc[0]) else f"{pd.to_numeric(pd.Series([coverage_value]), errors='coerce').iloc[0]:.1%}"))
-                    raw_trust_value = _first_value(selected, ["wvs_generalized_trust"], None)
-                    trust_prior_value = _first_value(selected, ["empirical_trust_prior"], None)
-                    col_f.metric("Raw trust", format_raw_trust_label(raw_trust_value))
-                    col_g.metric("Trust prior used", format_trust_prior_label(trust_prior_value))
-                    if format_raw_trust_label(raw_trust_value) == "not available" and format_trust_prior_label(trust_prior_value).startswith("0.500"):
-                        st.caption("Raw trust is not available for this country-year; ALETHEIA is showing a neutral trust-prior fallback, not observed survey trust.")
-                    col_h.metric("Identity valid", str(_first_value(selected, ["empirical_identity_valid", "identity_valid"], True)))
-
-                    st.markdown("#### Sydney Protocol overlay")
-                    overlay_status_value = str(_first_value(selected, ["protocol_overlay_status", "sydney_overlay_status"], "No overlay status available."))
-                    if overlay_status_value.startswith("SANCTUARY evidence pattern"):
-                        overlay_status_value = (
-                            "Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. "
-                            "Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority."
-                        )
-                    st.write(overlay_status_value)
-                    st.caption("Evidence used: " + str(_first_value(selected, ["evidence_variables_used", "evidence_used"], "—")))
-                    st.caption("Country-Year Explorer uses the active scored table. Search a country, then choose one of its years. Seats are read inside that year only.")
-
-                    feature_cols = [
-                        "technical_complexity", "centralization", "anonymity", "regulation", "transparency", "capital_scale",
-                        "empirical_trust_prior", "wvs_generalized_trust",
-                        "wgi_voice_accountability", "wgi_political_stability", "wgi_government_effectiveness",
-                        "wgi_regulatory_quality", "wgi_rule_of_law", "wgi_control_corruption",
-                        "vdem_executive_constraints", "vdem_democracy",
-                    ]
-                    feature_rows = []
-                    for col in feature_cols:
-                        if col in selected.index:
-                            value = pd.to_numeric(pd.Series([selected.get(col)]), errors="coerce").iloc[0]
-                            feature_rows.append({"feature": col, "value": "—" if pd.isna(value) else f"{value:.3f}"})
-                    feature_table = pd.DataFrame(feature_rows)
-                    if not feature_table.empty:
-                        st.dataframe(feature_table, use_container_width=True, hide_index=True, height=300)
-
-                    detail_cols = [
-                        "country", "iso3", "year", "population", "population_share", "seats_9k", "_allocation_role",
-                        "aletheia_verdict", "verdict", "aletheia_empirical_integrity", "integrity",
-                        "aletheia_empirical_friction", "friction",
-                        "aletheia_empirical_collapse_probability", "collapse_probability",
-                        "empirical_completeness", "empirical_coverage",
-                        "evidence_variables_used", "evidence_used",
-                    ]
-                    detail_cols = [c for c in detail_cols if c in valid_rows.columns]
-                    with st.expander("Selected country-year raw row", expanded=False):
-                        st.dataframe(pd.DataFrame([selected[detail_cols].to_dict()]), use_container_width=True, hide_index=True)
-        active_explorer_payload = st.session_state.get("empirical_country_year_explorer_active_payload")
-        active_explorer_signature = st.session_state.get("empirical_country_year_explorer_active_signature")
-        if active_explorer_signature is None or not isinstance(active_explorer_payload, dict):
-            st.caption("Country-Year cards unlock after you choose a country/year and press **Run country-year review**.")
-
-        with st.expander("Advanced evidence views — allocation, validation, and technical tables", expanded=False):
-            st.markdown("### Seat allocation view")
-            st.caption("Synthetic 9k allocation across demo rows." if use_template else "Country seats by selected year. Regional, income, and diagnostic rows are excluded.")
-
-            allocation_df = allocation_base_all.dropna(subset=["seats_9k"]).copy()
-            allocation_locked = active_explorer_signature is None or not isinstance(active_explorer_payload, dict)
-
-            if allocation_locked:
-                st.info(
-                    "Seat allocation view is locked to avoid stale or mismatched output. "
-                    "Choose a country/year above and press **Run country-year review**. "
-                    "The allocation chart will then use that confirmed diagnostic year."
+            elif not has_complete_seat_total and not grid_source.empty:
+                st.warning(
+                    f"Selected-year seats currently sum to {total_seats:,}, not {TOTAL_9K:,}. "
+                    "This view will use active-seat wording until the selected year has a complete 9k allocation base."
                 )
-            elif not allocation_df.empty:
-                selected_years = sorted(pd.to_numeric(allocation_df["year"], errors="coerce").dropna().astype(int).unique().tolist())
-                if selected_years:
-                    active_allocation_year = pd.to_numeric(pd.Series([active_explorer_payload.get("year")]), errors="coerce").iloc[0]
-                    if pd.isna(active_allocation_year):
-                        st.warning("The active country-year diagnostic does not contain a valid year. Rerun the diagnostic.")
-                    else:
-                        active_allocation_year = int(active_allocation_year)
-                        if active_allocation_year not in selected_years:
-                            st.warning(
-                                f"Seat allocation view is locked because the confirmed diagnostic year {active_allocation_year} "
-                                "is not available in the allocation table. Rebuild the master or choose another country/year."
-                            )
-                        else:
-                            st.session_state["empirical_allocation_year"] = active_allocation_year
-                            st.session_state["aletheia_synced_evidence_year"] = active_allocation_year
-                            st.session_state["aletheia_empirical_allocation_year"] = active_allocation_year
-
-                            alloc_year = allocation_df[
-                                pd.to_numeric(allocation_df["year"], errors="coerce") == active_allocation_year
-                            ].sort_values("seats_9k", ascending=False)
-
-                            country_name = str(active_explorer_payload.get("country", st.session_state.get("aletheia_synced_country_name", ""))).strip()
-                            iso3_name = str(active_explorer_payload.get("iso3", st.session_state.get("aletheia_synced_iso3", ""))).strip().upper()
-                            st.success(
-                                f"Seat allocation view confirmed for diagnostic selection: "
-                                f"{country_name or iso3_name} · {iso3_name} · {active_allocation_year}"
-                            )
-                            st.caption(
-                                "The allocation chart is now static and tied to the confirmed Country-Year Explorer diagnostic. "
-                                "Change the country/year above, then press the run button again to update this chart."
-                            )
-                            fig = go.Figure(go.Bar(x=alloc_year["country"], y=alloc_year["seats_9k"]))
-                            fig.update_layout(template="plotly_white", title=f"9k allocation · {active_allocation_year}", height=420, margin=dict(l=10, r=10, t=55, b=10))
-                            st.plotly_chart(fig, use_container_width=True)
-                else:
-                    st.info("No valid years are available for seat display.")
-            else:
-                st.info("No valid population/year rows are available for 9k allocation.")
-
-            st.markdown("### Evidence checks")
-            st.caption(
-                "Internal checks compare ALETHEIA outputs to variables that may also be score inputs. External validation checks use optional outcome columns that are not score inputs. "
-                "Pearson correlations are withheld until N ≥ 30. For true validation, add external outcomes such as conflict events, coups, regime breakdown, political violence, or future-year decline."
-            )
-            corr_df, group_df = validation_summary(scored_for_validation)
-            vc1, vc2 = st.columns(2)
-            with vc1:
-                st.markdown("#### Correlation checks")
-                st.dataframe(corr_df, use_container_width=True, hide_index=True, height=260)
-            with vc2:
-                st.markdown("#### Group averages by internal taxonomy")
-                st.caption(
-                    "These are internal taxonomy groupings for model diagnostics, not final Sanctuary or authority claims. "
-                    + ("Interface/schema inspection only when groups are small; do not infer real effects from N=1 demo classes." if use_template else "Read group averages only after checking group size and outside validation targets.")
-                )
-                display_group_df = _empirical_humility_display_df(group_df)
-                st.dataframe(display_group_df, use_container_width=True, hide_index=True, height=260)
-
-            st.markdown("### Technical details")
-            st.caption("Technical tables preserve raw/internal taxonomy fields for traceability and add display labels so SANCTUARY is read as a low-risk internal pattern, not a final claim.")
-            overlay_cols = [c for c in ["country", "iso3", "year", "aletheia_verdict", "protocol_overlay_status", "final_audit_interpretation", "evidence_variables_used"] if c in scored.columns]
-            if overlay_cols:
-                with st.expander("Protocol detail by country-year", expanded=False):
-                    st.dataframe(_empirical_humility_display_df(scored[overlay_cols]), use_container_width=True, hide_index=True, height=300)
-            with st.expander("Full empirical output table", expanded=False):
-                st.dataframe(_empirical_humility_display_df(scored), use_container_width=True, hide_index=True, height=420)
-            with st.expander("Method note", expanded=False):
-                st.markdown(methodology_markdown())
-
-with tab_grid:
-    st.subheader("World Lens")
-    render_shared_protocol_state_notice("World Lens", expanded=False)
-
-    render_module_page_template_intro(
-        st,
-        ModulePageTemplateCopy(
-            module_name="World Lens",
-            purpose=(
-                "Explore selected-year country evidence, empirical coverage, seat allocation context, internal taxonomy patterns, "
-                "weighted integrity, and collapse-pressure signals without creating sovereign authority."
-            ),
-            looks_for=(
-                "Selected-year context: which country-year rows are active and whether the selected evidence year is aligned.",
-                "Coverage limits: whether trust, WGI, V-Dem, population, identity, or taxonomy fields are present enough to interpret carefully.",
-                "Allocation context: how the 9k scaffold distributes seats as an analytical view, not as a real body or mandate.",
-                "Internal taxonomy distribution: how country-year rows fall across ALETHEIA's review labels without certifying countries.",
-                "Collapse-pressure patterns: weighted integrity, collapse pressure, and high-pressure signals at selected-year level.",
-                "Authority boundary: no Global ID, no real 9k selection, no World Leader logic, no automatic resets, no country certification, and no governance decision.",
-            ),
-            safe_first_path=(
-                "Use an active empirical table or choose prototype brackets deliberately; do not treat prototype views as real-world output.",
-                "Confirm the selected year and source state before reading metrics or exports.",
-                "Read coverage diagnostics before comparing countries or regions.",
-                "Treat 9k allocation as an anti-tyranny scaffold for analysis only, not as representation, legitimacy, or authority.",
-                "Use context notes only as human-review reflections; they do not rescore World Lens data.",
-            ),
-            input_guidance="Use World Lens for selected-year empirical context and optional human-review notes. It does not activate identity systems or enforce governance action.",
-            result_guidance="Treat World Lens output as a country-year evidence mirror, not as ranking, certification, legitimacy judgment, or policy decision.",
-            observed_reasons_guidance="Check source state, selected year, coverage diagnostics, weighted metrics, allocation notes, and method notes together.",
-            repair_questions_guidance="Use review questions to ask what data, coverage, appeal path, governance context, or human interpretation is missing before relying on the view.",
-            receipt_guidance="World Lens receipts are local selected-year review artifacts; they are not public-ledger records, sovereign mandates, or official rankings.",
-        ),
-    )
-
-    st.write(
-        "Explore country-year governance-risk readings, seat allocation, internal taxonomy distribution, weighted integrity, collapse pressure, and empirical coverage across the world. World Lens is meant to help you compare carefully, not rush to conclusions."
-    )
-    st.caption(
-        "The Global Grid gathers country-year evidence after ALETHEIA variable mapping, empirical scoring, seat allocation, and the Sydney Protocol overlay. Allocation totals are always interpreted per selected year."
-    )
-
-    st.markdown("### World Lens")
-    st.info(
-        "World Lens is a selected-year evidence mirror. It helps read population-weighted country-year context, coverage, seat allocation, and internal taxonomy patterns. It does not activate Global ID, select a real 9k body, create World Leader logic, issue automatic resets, certify countries, or make governance decisions."
-    )
-    st.caption(
-        "The optional context note below is a human-review lens only. It does not change country-year data, World Lens math, 9k allocation, receipts, or any native World Lens evidence view."
-    )
-    world_lens_scenario = st.text_area(
-        "Optional context note",
-        value="A policy gives one central office emergency authority over essential services during crisis, with limited public notice and unclear appeal rights.",
-        height=120,
-        key="world_lens_simulation_input_v1",
-        help="Add a short policy or governance context if you want a plain-language reflection beside the World Lens evidence view. This does not rescore World Lens data.",
-    )
-
-    with st.expander("Semantic regional interpretation flags", expanded=False):
-        render_world_lens_semantic_flags(world_lens_scenario, expanded_details=False)
-
-    st.markdown("#### World Lens context dial")
-    st.caption(
-        "Set a broad review-pressure lens for the optional context note. This is not a score, verdict, or World Lens data override."
-    )
-    wl_context_dial = st.radio(
-        "Review pressure lens",
-        ["Low pressure", "Review pressure", "High pressure"],
-        index=1,
-        horizontal=True,
-        key="world_lens_context_dial_v1",
-    )
-
-    with st.expander("Optional context details", expanded=False):
-        st.caption(
-            "These details shape the plain-language context reflection only. They do not change World Lens evidence data, receipts, 9k allocation, or scoring."
-        )
-        wl_col1, wl_col2, wl_col3 = st.columns(3)
-        with wl_col1:
-            wl_basic_rights = st.selectbox(
-                "Basic-rights pressure",
-                ["Low", "Watch / unclear", "High"],
-                index=1,
-                key="world_lens_basic_rights_v1",
-            )
-            wl_appeal = st.selectbox(
-                "Appeal path",
-                ["Visible", "Partial / unclear", "Missing", "Not supplied"],
-                index=1,
-                key="world_lens_appealability_v1",
-            )
-        with wl_col2:
-            wl_minority = st.selectbox(
-                "Minority-rights pressure",
-                ["Low", "Watch / unclear", "High"],
-                index=1,
-                key="world_lens_minority_rights_v1",
-            )
-            wl_exit = st.selectbox(
-                "Exit path",
-                ["Visible", "Partial / unclear", "Missing", "Not supplied"],
-                index=1,
-                key="world_lens_exit_v1",
-            )
-        with wl_col3:
-            wl_ambient = st.selectbox(
-                "Ambient capture pressure",
-                ["Low", "Watch / plausible", "High"],
-                index=1,
-                key="world_lens_ambient_capture_v1",
-            )
-            wl_repair = st.selectbox(
-                "Repair path",
-                ["Visible", "Partial / unclear", "Missing", "Not supplied"],
-                index=1,
-                key="world_lens_repair_v1",
-            )
-
-    detail_values = [wl_basic_rights, wl_minority, wl_ambient, wl_appeal, wl_exit, wl_repair]
-    red_signal = any(str(v) in {"High", "Missing"} for v in detail_values) or wl_context_dial == "High pressure"
-    yellow_signal = any(str(v).startswith("Watch") or str(v).startswith("Partial") or v == "Not supplied" for v in detail_values) or wl_context_dial == "Review pressure"
-    if red_signal:
-        simulated_threshold_signal = "High review pressure"
-    elif yellow_signal:
-        simulated_threshold_signal = "Review pressure"
-    else:
-        simulated_threshold_signal = "Low pressure"
-
-    with st.expander("Optional context reflection", expanded=False):
-        st.markdown("#### World Lens context reflection")
-        st.caption(
-            "This reflection preserves the optional note and selected review-pressure lens. It does not create a World Lens verdict, rescore country-year data, or certify any country, government, institution, or policy."
-        )
-        st.code(
-            f"""World Lens Context Reflection
-
-    Optional context note:
-    {world_lens_scenario.strip() or 'Not supplied'}
-
-    Context dial:
-    {wl_context_dial}
-
-    Affected groups:
-    To be identified by human reviewers from the context note and evidence view.
-
-    Power gains:
-    Review which offices, institutions, vendors, platforms, or leaders gain discretionary control.
-
-    Protection losses:
-    Review whether any group loses rights, appeal, exit, access, dignity, or repair.
-
-    Basic-rights pressure:
-    {wl_basic_rights}
-
-    Minority-rights pressure:
-    {wl_minority}
-
-    Ambient capture pressure:
-    {wl_ambient}
-
-    Appeal path:
-    {wl_appeal}
-
-    Exit path:
-    {wl_exit}
-
-    Repair path:
-    {wl_repair}
-
-    Context reflection signal:
-    {simulated_threshold_signal}
-
-    Human review note:
-    This is a World Lens context reflection for human review. It does not change World Lens evidence data, create a real Global ID system, select a real 9k body, issue a governance mandate, enforce action, trigger automatic resets, or make a final decision.""",
-            language="text",
-        )
-        with st.expander("World Lens safe-language boundary", expanded=False):
-            st.markdown(
-                """
-                **Allowed:** context reflection signal, potential population impact, human review required, safeguard needed, ambient capture pressure should be reviewed.
-
-                **Forbidden:** automatic reset, World Leader deactivated, Global ID sync activated, the AI has decided, this is a real governance mandate, human review is unnecessary, or ALETHEIA has final authority.
-                """
-            )
-
-    empirical_scored = st.session_state.get("empirical_scored_df")
-    empirical_allocation = st.session_state.get("empirical_allocation_df")
-    # Prefer the scored empirical dataframe because it carries the evidence fields
-    # needed for WGI / V-Dem / trust coverage diagnostics. The empirical tab has
-    # already copied the valid per-year 9k allocation back onto scored rows.
-    empirical_source = empirical_scored if isinstance(empirical_scored, pd.DataFrame) and not empirical_scored.empty else empirical_allocation
-    # If the scored frame exists but lacks the allocation columns on a fresh rerun,
-    # recover per-year seats/population from the allocation frame without changing
-    # the empirical pipeline itself.
-    if (
-        isinstance(empirical_source, pd.DataFrame) and not empirical_source.empty
-        and isinstance(empirical_allocation, pd.DataFrame) and not empirical_allocation.empty
-        and ("seats_9k" not in empirical_source.columns or pd.to_numeric(empirical_source.get("seats_9k"), errors="coerce").notna().sum() == 0)
-    ):
-        merge_keys = [c for c in ["country", "iso3", "year"] if c in empirical_source.columns and c in empirical_allocation.columns]
-        if merge_keys:
-            alloc_cols = merge_keys + [c for c in ["population", "population_share", "seats_9k"] if c in empirical_allocation.columns]
-            empirical_source = empirical_source.merge(
-                empirical_allocation[alloc_cols].drop_duplicates(subset=merge_keys),
-                on=merge_keys,
-                how="left",
-                suffixes=("", "_alloc"),
-            )
-            for col in ["population", "population_share", "seats_9k"]:
-                alloc_col = f"{col}_alloc"
-                if alloc_col in empirical_source.columns:
-                    if col not in empirical_source.columns:
-                        empirical_source[col] = empirical_source[alloc_col]
-                    else:
-                        empirical_source[col] = empirical_source[col].where(empirical_source[col].notna(), empirical_source[alloc_col])
-                    empirical_source = empirical_source.drop(columns=[alloc_col])
-    empirical_available = isinstance(empirical_source, pd.DataFrame) and not empirical_source.empty
-    valid_empirical = pd.DataFrame()
-    if empirical_available:
-        valid_empirical = empirical_source.copy()
-        identity_col = valid_empirical.get("empirical_identity_valid", pd.Series(True, index=valid_empirical.index))
-        if not isinstance(identity_col, pd.Series):
-            identity_col = pd.Series(bool(identity_col), index=valid_empirical.index)
-        valid_empirical = valid_empirical[
-            identity_col.fillna(False).astype(bool)
-            & pd.to_numeric(valid_empirical.get("seats_9k"), errors="coerce").notna()
-            & pd.to_numeric(valid_empirical.get("population"), errors="coerce").gt(0)
-            & pd.to_numeric(valid_empirical.get("year"), errors="coerce").notna()
-        ].copy()
-
-    mode_options = [
-        "No dataset / do not use prototype brackets",
-        "Uploaded empirical country-year data",
-        "Prototype region brackets",
-    ]
-
-    default_grid_index = 0
-    grid_mode = st.radio("What should World Lens use?", mode_options, index=default_grid_index, horizontal=True, key="grid_basis_mode_v4")
-    update_protocol_state(grid_basis=grid_mode, last_update_source="World Lens", synthetic_demo_active=(grid_mode == "Prototype region brackets"))
-
-    if grid_mode == "Uploaded empirical country-year data" and not valid_empirical.empty:
-        valid_empirical["year"] = pd.to_numeric(valid_empirical["year"], errors="coerce").astype("Int64")
-        all_years = sorted(valid_empirical["year"].dropna().astype(int).unique().tolist())
-
-        # Default the Grid to allocation-complete years. Sparse years are still
-        # available as diagnostics, but they should not be the default surface
-        # because their seats may not sum to 9,000 and their metrics are not a
-        # full Global Grid reading.
-        year_diagnostics = []
-        for _year in all_years:
-            _subset = valid_empirical[valid_empirical["year"] == int(_year)]
-            _seat_series = pd.to_numeric(_subset.get("seats_9k"), errors="coerce").fillna(0) if "seats_9k" in _subset.columns else pd.Series(0, index=_subset.index)
-            _allocated_subset = _subset.loc[_seat_series.gt(0)]
-            _countries = int(_subset["iso3"].dropna().astype(str).nunique()) if "iso3" in _subset.columns else int(len(_subset))
-            _allocated_countries = int(_allocated_subset["iso3"].dropna().astype(str).nunique()) if "iso3" in _allocated_subset.columns else int(len(_allocated_subset))
-            _zero_seat_rows = int(_seat_series.le(0).sum())
-            _seats = int(_seat_series.sum()) if "seats_9k" in _subset.columns else 0
-            _full = _allocated_countries >= MIN_FULL_GRID_COUNTRIES and abs(_seats - TOTAL_9K) <= 5
-            year_diagnostics.append({
-                "year": int(_year),
-                "countries": _countries,
-                "allocated_countries": _allocated_countries,
-                "zero_seat_rows": _zero_seat_rows,
-                "seats": _seats,
-                "full": _full,
-            })
-        year_diag_by_year = {row["year"]: row for row in year_diagnostics}
-        full_years = [row["year"] for row in year_diagnostics if row["full"]]
-        show_partial_years = st.checkbox(
-            "Show partial diagnostic years",
-            value=False,
-            key="grid_show_partial_years",
-            help="Partial years have too few countries or incomplete seat totals. They remain useful diagnostics, but they are not full Global Grid allocations.",
-        )
-        years = all_years if show_partial_years or not full_years else full_years
-        if not years:
-            st.warning("No valid selected-year rows are available for World Lens.")
-            st.stop()
-
-        def _format_grid_year(_year: int) -> str:
-            row = year_diag_by_year.get(int(_year), {})
-            suffix = "full 9k evidence view" if row.get("full") else "partial evidence view"
-            return f"{int(_year)} — {suffix}"
-
-        synced_evidence_year = st.session_state.get("aletheia_synced_evidence_year")
-        try:
-            synced_evidence_year_int = int(synced_evidence_year) if synced_evidence_year is not None else None
-        except Exception:
-            synced_evidence_year_int = None
-        # Patch 72.15: seed the World Lens year from the Evidence Lab synced
-        # year only before the widget exists. Do not force it back on every
-        # Streamlit rerun after the user manually selects another available year.
-        if "grid_year_v2" not in st.session_state and synced_evidence_year_int in years:
-            st.session_state["grid_year_v2"] = synced_evidence_year_int
-        elif st.session_state.get("grid_year_v2") not in years:
-            st.session_state["grid_year_v2"] = years[-1]
-        selected_year = st.selectbox(
-            "Select evidence year",
-            years,
-            index=years.index(st.session_state.get("grid_year_v2", years[-1])),
-            key="grid_year_v2",
-            format_func=_format_grid_year,
-            help="This year should match the Empirical country-year and allocation year before creating a review receipt.",
-        )
-        st.session_state["aletheia_synced_evidence_year"] = int(selected_year)
-        st.session_state["aletheia_global_grid_year"] = int(selected_year)
-        selected_year_diag = year_diag_by_year.get(int(selected_year), {})
-        selected_year_status = "full 9k evidence view" if selected_year_diag.get("full") else "partial selected-year evidence view"
-        st.caption(
-            f"{int(selected_year)} — {selected_year_status}: "
-            f"{selected_year_diag.get('allocated_countries', selected_year_diag.get('countries', 0)):,} allocated countries · "
-            f"{selected_year_diag.get('seats', 0):,} active seats"
-            + (
-                f" · {selected_year_diag.get('zero_seat_rows', 0):,} zero-seat diagnostic row(s)"
-                if selected_year_diag.get("zero_seat_rows", 0) else ""
-            )
-            + "."
-        )
-
-        year_alignment_rows = [
-            {"Year control": "Empirical Country-Year Explorer", "Selected year": st.session_state.get("aletheia_empirical_country_year")},
-            {"Year control": "Empirical Seat allocation view", "Selected year": st.session_state.get("aletheia_empirical_allocation_year")},
-            {"Year control": "Global Grid", "Selected year": int(selected_year)},
-        ]
-        year_alignment_df = pd.DataFrame(year_alignment_rows)
-        filled_alignment_years = [
-            int(v) for v in year_alignment_df["Selected year"].dropna().tolist()
-            if str(v).strip() not in ["", "None"]
-        ]
-        year_alignment_ok = bool(filled_alignment_years) and len(set(filled_alignment_years)) == 1 and int(selected_year) in set(filled_alignment_years)
-        with st.expander("Year match check", expanded=not year_alignment_ok):
-            st.write(
-                "Final receipt outputs should use one evidence year across Empirical Country-Year Explorer, "
-                "Empirical Allocation, and Global Grid. Choosing a year in one selector will try to align the others when that year exists there."
-            )
-            st.dataframe(year_alignment_df.fillna("Not selected yet"), use_container_width=True, hide_index=True)
-            if year_alignment_ok:
-                st.success(f"Year controls match on {int(selected_year)}.")
-            else:
-                st.warning("Year controls do not match yet. Use the same year in Evidence Lab and World Lens before creating a receipt.")
-        update_protocol_state(selected_evidence_year=int(selected_year), last_update_source="World Lens")
-
-        grid_source = valid_empirical[valid_empirical["year"] == int(selected_year)].copy()
-        grid_source = apply_world_lens_diagnostic_alignment(grid_source)
-        grid_source["seats_9k"] = pd.to_numeric(grid_source.get("seats_9k"), errors="coerce").fillna(0).astype(int)
-        grid_source["population"] = pd.to_numeric(grid_source.get("population"), errors="coerce")
-
-        # Recover raw evidence-source columns from the generated master when the
-        # active scored dataframe was created in an earlier Streamlit run or has
-        # been compacted for display. Coverage cards must measure raw WGI/V-Dem/WVS
-        # availability, not fallback ALETHEIA priors such as empirical_trust_prior.
-        source_signal_cols = [
-            "wgi_voice_accountability",
-            "wgi_political_stability",
-            "wgi_government_effectiveness",
-            "wgi_regulatory_quality",
-            "wgi_rule_of_law",
-            "wgi_control_corruption",
-            "vdem_executive_constraints",
-            "vdem_democracy",
-            "v2x_polyarchy",
-            "v2x_libdem",
-            "wvs_generalized_trust",
-        ]
-        source_master = st.session_state.get("empirical_master_df")
-        if isinstance(source_master, pd.DataFrame) and not source_master.empty:
-            merge_keys = [c for c in ["country", "iso3", "year"] if c in grid_source.columns and c in source_master.columns]
-            recover_cols = [c for c in source_signal_cols + ["region", "income_group", "income", "wb_region", "world_bank_region"] if c in source_master.columns and c not in merge_keys]
-            if merge_keys and recover_cols:
-                source_recovery = source_master[merge_keys + recover_cols].copy()
-                if "year" in source_recovery.columns:
-                    source_recovery["year"] = pd.to_numeric(source_recovery["year"], errors="coerce").astype("Int64")
-                if "year" in grid_source.columns:
-                    grid_source["year"] = pd.to_numeric(grid_source["year"], errors="coerce").astype("Int64")
-                source_recovery = source_recovery.drop_duplicates(subset=merge_keys)
-                grid_source = grid_source.merge(
-                    source_recovery,
-                    on=merge_keys,
-                    how="left",
-                    suffixes=("", "__source"),
-                )
-                for col in recover_cols:
-                    src_col = f"{col}__source"
-                    if src_col in grid_source.columns:
-                        # Preserve a dedicated raw source column for diagnostics.
-                        diag_col = f"__source_{col}"
-                        grid_source[diag_col] = grid_source[src_col]
-                        if col not in grid_source.columns or pd.to_numeric(grid_source.get(col), errors="coerce").notna().sum() == 0:
-                            grid_source[col] = grid_source[src_col]
-                        elif col in ["region", "income_group", "income", "wb_region", "world_bank_region"]:
-                            grid_source[col] = grid_source[col].where(grid_source[col].notna(), grid_source[src_col])
-                        grid_source = grid_source.drop(columns=[src_col])
-
-        filter_cols = [c for c in ["region", "income_group", "income", "wb_region", "world_bank_region"] if c in grid_source.columns]
-        active_filters = []
-        if filter_cols:
-            with st.expander("Region / income filter", expanded=False):
-                for filter_col in filter_cols:
-                    values = sorted([v for v in grid_source[filter_col].dropna().astype(str).unique().tolist() if v.strip()])
-                    if values:
-                        selected_values = st.multiselect(
-                            filter_col.replace("_", " ").title(),
-                            values,
-                            default=values,
-                            key=f"grid_filter_{filter_col}",
-                        )
-                        if selected_values:
-                            if set(selected_values) != set(values):
-                                active_filters.append(filter_col)
-                            grid_source = grid_source[grid_source[filter_col].astype(str).isin(selected_values)].copy()
-                        else:
-                            grid_source = grid_source.iloc[0:0].copy()
-
-        grid_source["seats_9k"] = pd.to_numeric(grid_source.get("seats_9k"), errors="coerce").fillna(0).astype(int)
-        zero_seat_mask_after_filters = grid_source["seats_9k"].le(0)
-        zero_seat_diagnostic_rows = int(zero_seat_mask_after_filters.sum())
-        show_zero_seat_diagnostics = False
-        if zero_seat_diagnostic_rows:
-            show_zero_seat_diagnostics = st.checkbox(
-                "Show zero-seat diagnostic rows",
-                value=False,
-                key=f"grid_show_zero_seat_diagnostics_{selected_year}",
-                help=(
-                    "Zero-seat rows are territories or diagnostic entities retained for source coverage checks. "
-                    "They do not contribute to the 9k allocation and are hidden from comparisons by default."
-                ),
-            )
-            if not show_zero_seat_diagnostics:
-                grid_source = grid_source.loc[~zero_seat_mask_after_filters].copy()
-
-        grid_source["_allocation_role"] = np.where(
-            pd.to_numeric(grid_source.get("seats_9k"), errors="coerce").fillna(0).gt(0),
-            "allocated_country",
-            "diagnostic_zero_seat",
-        )
-        grid_source = grid_source.sort_values("seats_9k", ascending=False)
-        total_seats = int(grid_source["seats_9k"].sum()) if not grid_source.empty else 0
-        countries_scored = int(grid_source.loc[pd.to_numeric(grid_source["seats_9k"], errors="coerce").fillna(0).gt(0), "iso3"].dropna().astype(str).nunique()) if "iso3" in grid_source.columns else int(pd.to_numeric(grid_source["seats_9k"], errors="coerce").fillna(0).gt(0).sum())
-        row_count = int(len(grid_source))
-        displayed_zero_seat_rows = int(pd.to_numeric(grid_source.get("seats_9k"), errors="coerce").fillna(0).le(0).sum()) if not grid_source.empty else 0
-        hidden_zero_seat_rows = zero_seat_diagnostic_rows if zero_seat_diagnostic_rows and not show_zero_seat_diagnostics else 0
-        has_complete_seat_total = abs(total_seats - TOTAL_9K) <= 5
-        is_full_grid = countries_scored >= MIN_FULL_GRID_COUNTRIES and has_complete_seat_total and not active_filters
-        grid_state_label = "Full empirical scored master" if is_full_grid else "Partial empirical subset"
-        if active_filters:
-            grid_state_label += " · filtered view"
-        metric_scope_word = "World Lens" if is_full_grid else "selected subset"
-        seat_metric_label = "9k seats allocated" if is_full_grid else "Active selected-year seats"
-        allocation_heading = "9k internal taxonomy signal" if is_full_grid else "Active-seat internal taxonomy signal"
-        signal_denominator_label = "selected-year 9k" if is_full_grid else "active selected-year seats"
-
-        wgi_cols = [
-            "wgi_voice_accountability",
-            "wgi_political_stability",
-            "wgi_government_effectiveness",
-            "wgi_regulatory_quality",
-            "wgi_rule_of_law",
-            "wgi_control_corruption",
-        ]
-        def _diagnostic_col(col_name: str) -> str | None:
-            source_col = f"__source_{col_name}"
-            if source_col in grid_source.columns and pd.to_numeric(grid_source[source_col], errors="coerce").notna().any():
-                return source_col
-            if col_name in grid_source.columns:
-                return col_name
-            return None
-
-        present_wgi_cols = [c for c in [_diagnostic_col(c) for c in wgi_cols] if c]
-        vdem_cols = [c for c in [_diagnostic_col(c) for c in ["vdem_executive_constraints", "vdem_democracy", "v2x_polyarchy", "v2x_libdem"]] if c]
-        # Coverage checks measure raw source availability, not neutral fallback
-        # priors. empirical_trust_prior can exist for every row even when no WVS
-        # observation is present, so source trust coverage uses WVS only.
-        trust_cols = [c for c in [_diagnostic_col("wvs_generalized_trust")] if c]
-        trust_prior_cols = [c for c in [_diagnostic_col("empirical_trust_prior")] if c]
-        coverage_col = "empirical_completeness" if "empirical_completeness" in grid_source.columns else "empirical_coverage" if "empirical_coverage" in grid_source.columns else None
-        verdict_col = "aletheia_verdict" if "aletheia_verdict" in grid_source.columns else "verdict"
-        integrity_col = "aletheia_empirical_integrity" if "aletheia_empirical_integrity" in grid_source.columns else "integrity"
-        friction_col = "aletheia_empirical_friction" if "aletheia_empirical_friction" in grid_source.columns else "friction"
-        collapse_col = "aletheia_empirical_collapse_probability" if "aletheia_empirical_collapse_probability" in grid_source.columns else "collapse_probability"
-
-        def _numeric_series(col_name: str, default: float = np.nan) -> pd.Series:
-            if col_name in grid_source.columns:
-                return pd.to_numeric(grid_source[col_name], errors="coerce")
-            return pd.Series(default, index=grid_source.index, dtype="float64")
-
-        weights = pd.to_numeric(grid_source.get("seats_9k"), errors="coerce").fillna(0).astype(float) if not grid_source.empty else pd.Series(dtype="float64")
-        if weights.sum() <= 0 and "population" in grid_source.columns:
-            weights = pd.to_numeric(grid_source["population"], errors="coerce").fillna(0).astype(float)
-
-        def _weighted_mean(col_name: str, default: float = 0.5) -> float:
-            if grid_source.empty or weights.sum() <= 0:
-                return np.nan
-            values = _numeric_series(col_name, default=default).fillna(default)
-            return float(np.average(values, weights=weights))
-
-        weighted_integrity = _weighted_mean(integrity_col, 0.5)
-        weighted_collapse = _weighted_mean(collapse_col, 0.5)
-        weighted_friction = _weighted_mean(friction_col, 0.5)
-        avg_coverage = float(pd.to_numeric(grid_source[coverage_col], errors="coerce").mean()) if coverage_col else np.nan
-
-        evidence_text = pd.Series("", index=grid_source.index, dtype="object")
-        for _evidence_col in ["evidence_variables_used", "evidence_used"]:
-            if _evidence_col in grid_source.columns:
-                evidence_text = evidence_text.where(evidence_text.astype(str).str.len() > 0, grid_source[_evidence_col].fillna("").astype(str))
-
-        if trust_cols:
-            trust_mask = pd.Series(False, index=grid_source.index)
-            for col in trust_cols:
-                trust_mask = trust_mask | pd.to_numeric(grid_source[col], errors="coerce").notna()
-        else:
-            trust_mask = pd.Series(False, index=grid_source.index)
-        if not trust_mask.any() and not evidence_text.empty:
-            trust_mask = evidence_text.str.contains("trust survey", case=False, na=False)
-
-        if trust_prior_cols:
-            trust_prior_mask = pd.Series(False, index=grid_source.index)
-            for col in trust_prior_cols:
-                trust_prior_mask = trust_prior_mask | pd.to_numeric(grid_source[col], errors="coerce").notna()
-        else:
-            trust_prior_mask = pd.Series(False, index=grid_source.index)
-        if not trust_prior_mask.any() and not evidence_text.empty:
-            trust_prior_mask = evidence_text.str.contains("trust prior", case=False, na=False)
-
-        if present_wgi_cols:
-            wgi_mask = grid_source[present_wgi_cols].apply(pd.to_numeric, errors="coerce").notna().any(axis=1)
-        else:
-            wgi_mask = pd.Series(False, index=grid_source.index)
-        if not wgi_mask.any() and not evidence_text.empty:
-            wgi_mask = evidence_text.str.contains("WGI governance", case=False, na=False)
-
-        if vdem_cols:
-            vdem_mask = grid_source[vdem_cols].apply(pd.to_numeric, errors="coerce").notna().any(axis=1)
-        else:
-            vdem_mask = pd.Series(False, index=grid_source.index)
-        if not vdem_mask.any() and not evidence_text.empty:
-            vdem_mask = evidence_text.str.contains("V-Dem/democracy", case=False, na=False)
-
-        missing_trust = int((~trust_mask).sum()) if not grid_source.empty else 0
-        missing_wgi = int((~wgi_mask).sum()) if not grid_source.empty else 0
-        missing_vdem = int((~vdem_mask).sum()) if not grid_source.empty else 0
-        trust_coverage = float(trust_mask.mean()) if not grid_source.empty else np.nan
-        trust_prior_coverage = float(trust_prior_mask.mean()) if not grid_source.empty else np.nan
-        missing_trust_prior = int((~trust_prior_mask).sum()) if not grid_source.empty else 0
-        wgi_coverage = float(wgi_mask.mean()) if not grid_source.empty else np.nan
-        vdem_coverage = float(vdem_mask.mean()) if not grid_source.empty else np.nan
-
-        empirical_scored_raw = st.session_state.get("empirical_scored_df")
-        excluded_rows = 0
-        if isinstance(empirical_scored_raw, pd.DataFrame) and not empirical_scored_raw.empty and "year" in empirical_scored_raw.columns:
-            raw_year_rows = empirical_scored_raw[pd.to_numeric(empirical_scored_raw["year"], errors="coerce") == int(selected_year)]
-            excluded_rows = max(int(len(raw_year_rows) - len(grid_source)), 0)
-            if hidden_zero_seat_rows:
-                excluded_rows = max(excluded_rows, hidden_zero_seat_rows)
-
-        update_protocol_state(grid_basis=grid_state_label, selected_evidence_year=int(selected_year), last_update_source="World Lens")
-        st.info("Seat totals are for the selected year only. They are not added across all years.")
-        st.caption(f"World Lens source state: **{grid_state_label}**. Coverage metrics reflect source availability among active selected-year rows after current filters; they are diagnostics for this view, not whole-dataset coverage.")
-        if not grid_source.empty and not is_full_grid:
-            st.warning(
-                f"Partial selected-year view: {countries_scored:,} allocated country row(s) and {total_seats:,} active seats are available for {selected_year}. "
-                f"This is not a full {TOTAL_9K:,}-seat global allocation, so weighted metrics are diagnostic only."
-            )
-        elif not has_complete_seat_total and not grid_source.empty:
-            st.warning(
-                f"Selected-year seats currently sum to {total_seats:,}, not {TOTAL_9K:,}. "
-                "This view will use active-seat wording until the selected year has a complete 9k allocation base."
-            )
-
-        m1, m2, m3, m4 = st.columns(4)
-        m1.metric("Countries scored", f"{countries_scored:,}")
-        m2.metric(seat_metric_label, f"{total_seats:,}")
-        m3.metric(f"Weighted {metric_scope_word} integrity", "—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
-        m4.metric(f"Weighted {metric_scope_word} collapse pressure", "—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
-
-        m5, m6, m7, m8, m9 = st.columns(5)
-        m5.metric("Average empirical coverage", "—" if pd.isna(avg_coverage) else f"{avg_coverage:.1%}")
-        raw_trust_coverage_label, trust_prior_coverage_label, trust_coverage_note = trust_coverage_label(trust_coverage, trust_prior_coverage)
-        m6.metric("Raw trust survey coverage", raw_trust_coverage_label)
-        m7.metric("Neutral trust-prior fallback coverage", trust_prior_coverage_label)
-        m8.metric("WGI coverage", "—" if pd.isna(wgi_coverage) else f"{wgi_coverage:.1%}")
-        m9.metric("V-Dem coverage", "—" if pd.isna(vdem_coverage) else f"{vdem_coverage:.1%}")
-        st.caption("Coverage cards show only the active selected-year rows after filters. " + trust_coverage_note)
-
-        focus_iso3 = str(st.session_state.get("aletheia_synced_iso3") or "NLD").upper().strip()
-        # Patch 72.14/72.15: keep World Lens resilient if an older deployment or
-        # partial patch has app.py calling selected_year_value_guard before the
-        # helper import is available. The fallback is diagnostic-only and mirrors
-        # the core helper's essential selected-year/seat checks.
-        _selected_year_value_guard_fn = globals().get("selected_year_value_guard")
-        if not callable(_selected_year_value_guard_fn):
-            def _selected_year_value_guard_fn(df, selected_year, *, total_9k=TOTAL_9K, min_allocated_countries=MIN_FULL_GRID_COUNTRIES, focus_iso3="NLD"):
-                if not isinstance(df, pd.DataFrame) or df.empty:
+    
+            m1, m2, m3, m4 = st.columns(4)
+            m1.metric("Countries scored", f"{countries_scored:,}")
+            m2.metric(seat_metric_label, f"{total_seats:,}")
+            m3.metric(f"Weighted {metric_scope_word} integrity", "—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
+            m4.metric(f"Weighted {metric_scope_word} collapse pressure", "—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
+    
+            m5, m6, m7, m8, m9 = st.columns(5)
+            m5.metric("Average empirical coverage", "—" if pd.isna(avg_coverage) else f"{avg_coverage:.1%}")
+            raw_trust_coverage_label, trust_prior_coverage_label, trust_coverage_note = trust_coverage_label(trust_coverage, trust_prior_coverage)
+            m6.metric("Raw trust survey coverage", raw_trust_coverage_label)
+            m7.metric("Neutral trust-prior fallback coverage", trust_prior_coverage_label)
+            m8.metric("WGI coverage", "—" if pd.isna(wgi_coverage) else f"{wgi_coverage:.1%}")
+            m9.metric("V-Dem coverage", "—" if pd.isna(vdem_coverage) else f"{vdem_coverage:.1%}")
+            st.caption("Coverage cards show only the active selected-year rows after filters. " + trust_coverage_note)
+    
+            focus_iso3 = str(st.session_state.get("aletheia_synced_iso3") or "NLD").upper().strip()
+            # Patch 72.14/72.15: keep World Lens resilient if an older deployment or
+            # partial patch has app.py calling selected_year_value_guard before the
+            # helper import is available. The fallback is diagnostic-only and mirrors
+            # the core helper's essential selected-year/seat checks.
+            _selected_year_value_guard_fn = globals().get("selected_year_value_guard")
+            if not callable(_selected_year_value_guard_fn):
+                def _selected_year_value_guard_fn(df, selected_year, *, total_9k=TOTAL_9K, min_allocated_countries=MIN_FULL_GRID_COUNTRIES, focus_iso3="NLD"):
+                    if not isinstance(df, pd.DataFrame) or df.empty:
+                        return {
+                            "selected_year": int(selected_year),
+                            "total_seats": 0,
+                            "seat_total_ok": False,
+                            "no_stale_year_rows": True,
+                            "focus_row_available": False,
+                            "focus": {},
+                            "diagnostic_note": "Local fallback guard used; core world_lens helper was unavailable.",
+                        }
+                    years = pd.to_numeric(df.get("year"), errors="coerce")
+                    seats = pd.to_numeric(df.get("seats_9k"), errors="coerce").fillna(0)
+                    total_seats_guard = int(seats.sum()) if not seats.empty else 0
+                    iso_series = df.get("iso3", pd.Series("", index=df.index)).astype(str).str.upper().str.strip()
+                    focus_rows = df[iso_series == str(focus_iso3).upper().strip()] if "iso3" in df.columns else pd.DataFrame()
+                    focus = {}
+                    if not focus_rows.empty:
+                        focus_row = focus_rows.iloc[0]
+                        focus = {
+                            "country": focus_row.get("country", focus_iso3),
+                            "iso3": focus_row.get("iso3", focus_iso3),
+                            "year": focus_row.get("year", selected_year),
+                            "seats": focus_row.get("seats_9k", "—"),
+                            "verdict": focus_row.get("aletheia_verdict", focus_row.get("verdict", "—")),
+                            "raw_trust_label": format_raw_trust_label(focus_row.get("wvs_generalized_trust")),
+                            "trust_prior_label": format_trust_prior_label(focus_row.get("empirical_trust_prior")),
+                        }
                     return {
                         "selected_year": int(selected_year),
-                        "total_seats": 0,
-                        "seat_total_ok": False,
-                        "no_stale_year_rows": True,
-                        "focus_row_available": False,
-                        "focus": {},
+                        "total_seats": total_seats_guard,
+                        "seat_total_ok": total_seats_guard == int(total_9k),
+                        "no_stale_year_rows": bool((years.dropna().astype(int) == int(selected_year)).all()) if years.notna().any() else True,
+                        "focus_row_available": not focus_rows.empty,
+                        "focus": focus,
                         "diagnostic_note": "Local fallback guard used; core world_lens helper was unavailable.",
                     }
-                years = pd.to_numeric(df.get("year"), errors="coerce")
-                seats = pd.to_numeric(df.get("seats_9k"), errors="coerce").fillna(0)
-                total_seats_guard = int(seats.sum()) if not seats.empty else 0
-                iso_series = df.get("iso3", pd.Series("", index=df.index)).astype(str).str.upper().str.strip()
-                focus_rows = df[iso_series == str(focus_iso3).upper().strip()] if "iso3" in df.columns else pd.DataFrame()
-                focus = {}
-                if not focus_rows.empty:
-                    focus_row = focus_rows.iloc[0]
-                    focus = {
-                        "country": focus_row.get("country", focus_iso3),
-                        "iso3": focus_row.get("iso3", focus_iso3),
-                        "year": focus_row.get("year", selected_year),
-                        "seats": focus_row.get("seats_9k", "—"),
-                        "verdict": focus_row.get("aletheia_verdict", focus_row.get("verdict", "—")),
-                        "raw_trust_label": format_raw_trust_label(focus_row.get("wvs_generalized_trust")),
-                        "trust_prior_label": format_trust_prior_label(focus_row.get("empirical_trust_prior")),
-                    }
-                return {
-                    "selected_year": int(selected_year),
-                    "total_seats": total_seats_guard,
-                    "seat_total_ok": total_seats_guard == int(total_9k),
-                    "no_stale_year_rows": bool((years.dropna().astype(int) == int(selected_year)).all()) if years.notna().any() else True,
-                    "focus_row_available": not focus_rows.empty,
-                    "focus": focus,
-                    "diagnostic_note": "Local fallback guard used; core world_lens helper was unavailable.",
-                }
-        value_guard = _selected_year_value_guard_fn(grid_source, int(selected_year), total_9k=TOTAL_9K, min_allocated_countries=MIN_FULL_GRID_COUNTRIES, focus_iso3=focus_iso3 or "NLD")
-        with st.expander("World Lens value guard", expanded=False):
-            st.write(
-                "This guard verifies that the selected-year rows, seats, verdict signals, and focus country stay tied to the active year. "
-                "It is diagnostic only and does not create authority."
-            )
-            g1, g2, g3, g4 = st.columns(4)
-            g1.metric("Guard year", str(value_guard.get("selected_year", selected_year)))
-            g2.metric("Guard seats", f'{int(value_guard.get("total_seats", 0)):,}')
-            g3.metric("Seat total OK", "Yes" if value_guard.get("seat_total_ok") else "No")
-            g4.metric("No stale year rows", "Yes" if value_guard.get("no_stale_year_rows") else "No")
-            if value_guard.get("focus_row_available"):
-                focus_guard = value_guard.get("focus", {})
-                st.caption(
-                    f"Focus guard: {focus_guard.get('country', focus_iso3 or 'NLD')} · {focus_guard.get('iso3', focus_iso3 or 'NLD')} · "
-                    f"{focus_guard.get('year', selected_year)} · seats {focus_guard.get('seats', '—')} · "
-                    f"verdict {focus_guard.get('verdict', '—')} · raw trust {focus_guard.get('raw_trust_label', 'not available')} · "
-                    f"trust prior {focus_guard.get('trust_prior_label', 'not available')}."
+            value_guard = _selected_year_value_guard_fn(grid_source, int(selected_year), total_9k=TOTAL_9K, min_allocated_countries=MIN_FULL_GRID_COUNTRIES, focus_iso3=focus_iso3 or "NLD")
+            with st.expander("World Lens value guard", expanded=False):
+                st.write(
+                    "This guard verifies that the selected-year rows, seats, verdict signals, and focus country stay tied to the active year. "
+                    "It is diagnostic only and does not create authority."
                 )
+                g1, g2, g3, g4 = st.columns(4)
+                g1.metric("Guard year", str(value_guard.get("selected_year", selected_year)))
+                g2.metric("Guard seats", f'{int(value_guard.get("total_seats", 0)):,}')
+                g3.metric("Seat total OK", "Yes" if value_guard.get("seat_total_ok") else "No")
+                g4.metric("No stale year rows", "Yes" if value_guard.get("no_stale_year_rows") else "No")
+                if value_guard.get("focus_row_available"):
+                    focus_guard = value_guard.get("focus", {})
+                    st.caption(
+                        f"Focus guard: {focus_guard.get('country', focus_iso3 or 'NLD')} · {focus_guard.get('iso3', focus_iso3 or 'NLD')} · "
+                        f"{focus_guard.get('year', selected_year)} · seats {focus_guard.get('seats', '—')} · "
+                        f"verdict {focus_guard.get('verdict', '—')} · raw trust {focus_guard.get('raw_trust_label', 'not available')} · "
+                        f"trust prior {focus_guard.get('trust_prior_label', 'not available')}."
+                    )
+                else:
+                    st.caption("No focus country row is available for this selected-year guard.")
+    
+            verdict_seats = pd.Series(dtype="float64")
+            if verdict_col in grid_source.columns:
+                verdict_seats = (
+                    grid_source.groupby(verdict_col, dropna=False)["seats_9k"]
+                    .sum()
+                    .reindex(["SANCTUARY", "THRESHOLD", "ASYLUM"], fill_value=0)
+                )
+            signal = deterministic_signal_summary(grid_source)
+    
+            # ------------------------------------------------------------------
+            # Global Grid Pass 2 / Pass 3 preparation
+            # Comparison surfaces use the same active selected-year source as the
+            # overview, so full/partial wording and coverage caveats stay aligned.
+            # ------------------------------------------------------------------
+            comparison_df = grid_source.copy()
+            comparison_df["_seats"] = pd.to_numeric(comparison_df.get("seats_9k"), errors="coerce").fillna(0)
+            comparison_df["_integrity"] = _numeric_series(integrity_col, default=np.nan)
+            comparison_df["_friction"] = _numeric_series(friction_col, default=np.nan)
+            comparison_df["_collapse"] = _numeric_series(collapse_col, default=np.nan)
+            comparison_df["_coverage"] = pd.to_numeric(comparison_df[coverage_col], errors="coerce") if coverage_col and coverage_col in comparison_df.columns else pd.Series(np.nan, index=comparison_df.index)
+            comparison_df["_trust_raw"] = pd.to_numeric(comparison_df[trust_cols[0]], errors="coerce") if trust_cols and trust_cols[0] in comparison_df.columns else pd.Series(np.nan, index=comparison_df.index)
+            comparison_df["_trust_prior"] = pd.to_numeric(comparison_df[trust_prior_cols[0]], errors="coerce") if trust_prior_cols and trust_prior_cols[0] in comparison_df.columns else pd.Series(np.nan, index=comparison_df.index)
+            comparison_df["_vdem_democracy"] = pd.to_numeric(comparison_df["vdem_democracy"], errors="coerce") if "vdem_democracy" in comparison_df.columns else pd.Series(np.nan, index=comparison_df.index)
+            comparison_df["_vdem_constraints"] = pd.to_numeric(comparison_df["vdem_executive_constraints"], errors="coerce") if "vdem_executive_constraints" in comparison_df.columns else pd.Series(np.nan, index=comparison_df.index)
+    
+            def _grid_friendly_country_name(iso3_value: str, country_value: str = "") -> str:
+                iso3_text = str(iso3_value or "").strip().upper()
+                country_text = str(country_value or "").strip()
+                if country_text and country_text.upper() != iso3_text and len(country_text) > 3:
+                    return country_text
+                manual_names = {
+                    "AFG": "Afghanistan", "ALB": "Albania", "DZA": "Algeria", "AGO": "Angola", "ARG": "Argentina",
+                    "ARM": "Armenia", "AUS": "Australia", "AUT": "Austria", "AZE": "Azerbaijan", "BHR": "Bahrain",
+                    "BGD": "Bangladesh", "BLR": "Belarus", "BEL": "Belgium", "BEN": "Benin", "BOL": "Bolivia",
+                    "BIH": "Bosnia and Herzegovina", "BWA": "Botswana", "BRA": "Brazil", "BGR": "Bulgaria",
+                    "BFA": "Burkina Faso", "BDI": "Burundi", "KHM": "Cambodia", "CMR": "Cameroon", "CAN": "Canada",
+                    "CAF": "Central African Republic", "TCD": "Chad", "CHL": "Chile", "CHN": "China", "COL": "Colombia",
+                    "COD": "Democratic Republic of the Congo", "COG": "Republic of the Congo", "CRI": "Costa Rica",
+                    "CIV": "Côte d’Ivoire", "HRV": "Croatia", "CUB": "Cuba", "CYP": "Cyprus", "CZE": "Czechia",
+                    "DNK": "Denmark", "DOM": "Dominican Republic", "ECU": "Ecuador", "EGY": "Egypt", "SLV": "El Salvador",
+                    "ERI": "Eritrea", "EST": "Estonia", "ETH": "Ethiopia", "FIN": "Finland", "FRA": "France",
+                    "GAB": "Gabon", "GEO": "Georgia", "DEU": "Germany", "GHA": "Ghana", "GRC": "Greece",
+                    "GTM": "Guatemala", "GIN": "Guinea", "HTI": "Haiti", "HND": "Honduras", "HUN": "Hungary",
+                    "IND": "India", "IDN": "Indonesia", "IRN": "Iran", "IRQ": "Iraq", "IRL": "Ireland",
+                    "ISR": "Israel", "ITA": "Italy", "JPN": "Japan", "JOR": "Jordan", "KAZ": "Kazakhstan",
+                    "KEN": "Kenya", "KWT": "Kuwait", "KGZ": "Kyrgyzstan", "LAO": "Laos", "LVA": "Latvia",
+                    "LBN": "Lebanon", "LBR": "Liberia", "LBY": "Libya", "LTU": "Lithuania", "MDG": "Madagascar",
+                    "MWI": "Malawi", "MYS": "Malaysia", "MLI": "Mali", "MEX": "Mexico", "MDA": "Moldova",
+                    "MAR": "Morocco", "MOZ": "Mozambique", "MMR": "Myanmar", "NAM": "Namibia", "NPL": "Nepal",
+                    "NLD": "Netherlands", "NZL": "New Zealand", "NIC": "Nicaragua", "NER": "Niger", "NGA": "Nigeria",
+                    "PRK": "North Korea", "MKD": "North Macedonia", "NOR": "Norway", "OMN": "Oman", "PAK": "Pakistan",
+                    "PAN": "Panama", "PRY": "Paraguay", "PER": "Peru", "PHL": "Philippines", "POL": "Poland",
+                    "PRT": "Portugal", "QAT": "Qatar", "ROU": "Romania", "RUS": "Russia", "RWA": "Rwanda",
+                    "SAU": "Saudi Arabia", "SEN": "Senegal", "SRB": "Serbia", "SLE": "Sierra Leone", "SGP": "Singapore",
+                    "SVK": "Slovakia", "SVN": "Slovenia", "SOM": "Somalia", "ZAF": "South Africa", "KOR": "South Korea",
+                    "SSD": "South Sudan", "ESP": "Spain", "LKA": "Sri Lanka", "SDN": "Sudan", "SWE": "Sweden",
+                    "CHE": "Switzerland", "SYR": "Syria", "TWN": "Taiwan", "TJK": "Tajikistan", "TZA": "Tanzania",
+                    "THA": "Thailand", "TUN": "Tunisia", "TUR": "Türkiye", "TKM": "Turkmenistan", "UGA": "Uganda",
+                    "UKR": "Ukraine", "ARE": "United Arab Emirates", "GBR": "United Kingdom", "USA": "United States",
+                    "URY": "Uruguay", "UZB": "Uzbekistan", "VEN": "Venezuela", "VNM": "Vietnam", "YEM": "Yemen",
+                    "ZMB": "Zambia", "ZWE": "Zimbabwe",
+                }
+                return manual_names.get(iso3_text, country_text or iso3_text)
+    
+            comparison_df["_country_name"] = [
+                _grid_friendly_country_name(iso3, country)
+                for iso3, country in zip(
+                    comparison_df.get("iso3", pd.Series("", index=comparison_df.index)),
+                    comparison_df.get("country", pd.Series("", index=comparison_df.index)),
+                )
+            ]
+            comparison_df["_hover_label"] = comparison_df["_country_name"].astype(str) + " · " + comparison_df.get("iso3", pd.Series("", index=comparison_df.index)).fillna("").astype(str)
+    
+            if present_wgi_cols:
+                wgi_numeric = comparison_df[present_wgi_cols].apply(pd.to_numeric, errors="coerce")
+                comparison_df["_wgi_composite"] = wgi_numeric.mean(axis=1)
+                comparison_df["_wgi_source_count"] = wgi_numeric.notna().sum(axis=1)
+                comparison_df["_wgi_fields_used"] = wgi_numeric.apply(lambda row: ", ".join([col for col, val in row.items() if pd.notna(val)]), axis=1)
             else:
-                st.caption("No focus country row is available for this selected-year guard.")
-
-        verdict_seats = pd.Series(dtype="float64")
-        if verdict_col in grid_source.columns:
-            verdict_seats = (
-                grid_source.groupby(verdict_col, dropna=False)["seats_9k"]
-                .sum()
-                .reindex(["SANCTUARY", "THRESHOLD", "ASYLUM"], fill_value=0)
+                comparison_df["_wgi_composite"] = np.nan
+                comparison_df["_wgi_source_count"] = 0
+                comparison_df["_wgi_fields_used"] = ""
+    
+            comparison_df["_missing_raw_trust"] = ~trust_mask.reindex(comparison_df.index, fill_value=False)
+            comparison_df["_missing_trust_prior"] = ~trust_prior_mask.reindex(comparison_df.index, fill_value=False)
+            comparison_df["_missing_wgi"] = ~wgi_mask.reindex(comparison_df.index, fill_value=False)
+            comparison_df["_missing_vdem"] = ~vdem_mask.reindex(comparison_df.index, fill_value=False)
+            comparison_df["_coverage_gap_count"] = (
+                comparison_df[["_missing_raw_trust", "_missing_trust_prior", "_missing_wgi", "_missing_vdem"]]
+                .fillna(False)
+                .astype(int)
+                .sum(axis=1)
             )
-        signal = deterministic_signal_summary(grid_source)
-
-        # ------------------------------------------------------------------
-        # Global Grid Pass 2 / Pass 3 preparation
-        # Comparison surfaces use the same active selected-year source as the
-        # overview, so full/partial wording and coverage caveats stay aligned.
-        # ------------------------------------------------------------------
-        comparison_df = grid_source.copy()
-        comparison_df["_seats"] = pd.to_numeric(comparison_df.get("seats_9k"), errors="coerce").fillna(0)
-        comparison_df["_integrity"] = _numeric_series(integrity_col, default=np.nan)
-        comparison_df["_friction"] = _numeric_series(friction_col, default=np.nan)
-        comparison_df["_collapse"] = _numeric_series(collapse_col, default=np.nan)
-        comparison_df["_coverage"] = pd.to_numeric(comparison_df[coverage_col], errors="coerce") if coverage_col and coverage_col in comparison_df.columns else pd.Series(np.nan, index=comparison_df.index)
-        comparison_df["_trust_raw"] = pd.to_numeric(comparison_df[trust_cols[0]], errors="coerce") if trust_cols and trust_cols[0] in comparison_df.columns else pd.Series(np.nan, index=comparison_df.index)
-        comparison_df["_trust_prior"] = pd.to_numeric(comparison_df[trust_prior_cols[0]], errors="coerce") if trust_prior_cols and trust_prior_cols[0] in comparison_df.columns else pd.Series(np.nan, index=comparison_df.index)
-        comparison_df["_vdem_democracy"] = pd.to_numeric(comparison_df["vdem_democracy"], errors="coerce") if "vdem_democracy" in comparison_df.columns else pd.Series(np.nan, index=comparison_df.index)
-        comparison_df["_vdem_constraints"] = pd.to_numeric(comparison_df["vdem_executive_constraints"], errors="coerce") if "vdem_executive_constraints" in comparison_df.columns else pd.Series(np.nan, index=comparison_df.index)
-
-        def _grid_friendly_country_name(iso3_value: str, country_value: str = "") -> str:
-            iso3_text = str(iso3_value or "").strip().upper()
-            country_text = str(country_value or "").strip()
-            if country_text and country_text.upper() != iso3_text and len(country_text) > 3:
-                return country_text
-            manual_names = {
-                "AFG": "Afghanistan", "ALB": "Albania", "DZA": "Algeria", "AGO": "Angola", "ARG": "Argentina",
-                "ARM": "Armenia", "AUS": "Australia", "AUT": "Austria", "AZE": "Azerbaijan", "BHR": "Bahrain",
-                "BGD": "Bangladesh", "BLR": "Belarus", "BEL": "Belgium", "BEN": "Benin", "BOL": "Bolivia",
-                "BIH": "Bosnia and Herzegovina", "BWA": "Botswana", "BRA": "Brazil", "BGR": "Bulgaria",
-                "BFA": "Burkina Faso", "BDI": "Burundi", "KHM": "Cambodia", "CMR": "Cameroon", "CAN": "Canada",
-                "CAF": "Central African Republic", "TCD": "Chad", "CHL": "Chile", "CHN": "China", "COL": "Colombia",
-                "COD": "Democratic Republic of the Congo", "COG": "Republic of the Congo", "CRI": "Costa Rica",
-                "CIV": "Côte d’Ivoire", "HRV": "Croatia", "CUB": "Cuba", "CYP": "Cyprus", "CZE": "Czechia",
-                "DNK": "Denmark", "DOM": "Dominican Republic", "ECU": "Ecuador", "EGY": "Egypt", "SLV": "El Salvador",
-                "ERI": "Eritrea", "EST": "Estonia", "ETH": "Ethiopia", "FIN": "Finland", "FRA": "France",
-                "GAB": "Gabon", "GEO": "Georgia", "DEU": "Germany", "GHA": "Ghana", "GRC": "Greece",
-                "GTM": "Guatemala", "GIN": "Guinea", "HTI": "Haiti", "HND": "Honduras", "HUN": "Hungary",
-                "IND": "India", "IDN": "Indonesia", "IRN": "Iran", "IRQ": "Iraq", "IRL": "Ireland",
-                "ISR": "Israel", "ITA": "Italy", "JPN": "Japan", "JOR": "Jordan", "KAZ": "Kazakhstan",
-                "KEN": "Kenya", "KWT": "Kuwait", "KGZ": "Kyrgyzstan", "LAO": "Laos", "LVA": "Latvia",
-                "LBN": "Lebanon", "LBR": "Liberia", "LBY": "Libya", "LTU": "Lithuania", "MDG": "Madagascar",
-                "MWI": "Malawi", "MYS": "Malaysia", "MLI": "Mali", "MEX": "Mexico", "MDA": "Moldova",
-                "MAR": "Morocco", "MOZ": "Mozambique", "MMR": "Myanmar", "NAM": "Namibia", "NPL": "Nepal",
-                "NLD": "Netherlands", "NZL": "New Zealand", "NIC": "Nicaragua", "NER": "Niger", "NGA": "Nigeria",
-                "PRK": "North Korea", "MKD": "North Macedonia", "NOR": "Norway", "OMN": "Oman", "PAK": "Pakistan",
-                "PAN": "Panama", "PRY": "Paraguay", "PER": "Peru", "PHL": "Philippines", "POL": "Poland",
-                "PRT": "Portugal", "QAT": "Qatar", "ROU": "Romania", "RUS": "Russia", "RWA": "Rwanda",
-                "SAU": "Saudi Arabia", "SEN": "Senegal", "SRB": "Serbia", "SLE": "Sierra Leone", "SGP": "Singapore",
-                "SVK": "Slovakia", "SVN": "Slovenia", "SOM": "Somalia", "ZAF": "South Africa", "KOR": "South Korea",
-                "SSD": "South Sudan", "ESP": "Spain", "LKA": "Sri Lanka", "SDN": "Sudan", "SWE": "Sweden",
-                "CHE": "Switzerland", "SYR": "Syria", "TWN": "Taiwan", "TJK": "Tajikistan", "TZA": "Tanzania",
-                "THA": "Thailand", "TUN": "Tunisia", "TUR": "Türkiye", "TKM": "Turkmenistan", "UGA": "Uganda",
-                "UKR": "Ukraine", "ARE": "United Arab Emirates", "GBR": "United Kingdom", "USA": "United States",
-                "URY": "Uruguay", "UZB": "Uzbekistan", "VEN": "Venezuela", "VNM": "Vietnam", "YEM": "Yemen",
-                "ZMB": "Zambia", "ZWE": "Zimbabwe",
-            }
-            return manual_names.get(iso3_text, country_text or iso3_text)
-
-        comparison_df["_country_name"] = [
-            _grid_friendly_country_name(iso3, country)
-            for iso3, country in zip(
-                comparison_df.get("iso3", pd.Series("", index=comparison_df.index)),
-                comparison_df.get("country", pd.Series("", index=comparison_df.index)),
+            comparison_df["_trust_delta_from_neutral"] = (comparison_df["_trust_prior"] - 0.5).abs()
+    
+            if not comparison_df.empty:
+                seat_q75 = comparison_df["_seats"].quantile(0.75)
+                integrity_q25 = comparison_df["_integrity"].quantile(0.25)
+                collapse_q75 = comparison_df["_collapse"].quantile(0.75)
+            else:
+                seat_q75 = integrity_q25 = collapse_q75 = np.nan
+    
+            comparison_df["_large_allocation"] = comparison_df["_seats"].ge(seat_q75) if not pd.isna(seat_q75) else False
+            comparison_df["_low_integrity"] = comparison_df["_integrity"].le(integrity_q25) if not pd.isna(integrity_q25) else False
+            comparison_df["_high_collapse"] = comparison_df["_collapse"].ge(collapse_q75) if not pd.isna(collapse_q75) else False
+            comparison_df["_high_impact_node"] = comparison_df["_large_allocation"] & (comparison_df["_low_integrity"] | comparison_df["_high_collapse"])
+            comparison_df["_seat_rank"] = comparison_df["_seats"].rank(ascending=False, method="min")
+            comparison_df["_integrity_rank"] = comparison_df["_integrity"].rank(ascending=False, method="min")
+            comparison_df["_collapse_rank"] = comparison_df["_collapse"].rank(ascending=False, method="min")
+    
+            def _comparison_display(df: pd.DataFrame, include_reason: bool = False) -> pd.DataFrame:
+                base_cols = [
+                    "_country_name", "iso3", "year", verdict_col, "_seats", "_seat_rank",
+                    "_integrity", "_collapse", "_coverage",
+                    "_trust_raw", "_trust_prior", "_wgi_composite", "_wgi_source_count", "_vdem_democracy",
+                ]
+                if include_reason:
+                    base_cols += ["_allocation_role", "_large_allocation", "_low_integrity", "_high_collapse", "_coverage_gap_count"]
+                base_cols = [c for c in base_cols if c in df.columns]
+                out = df[base_cols].copy()
+                out = out.rename(columns={
+                    "_country_name": "country",
+                    verdict_col: "internal_taxonomy_label",
+                    "_seats": "seats",
+                    "_seat_rank": "seat_rank",
+                    "_integrity": "integrity",
+                    "_collapse": "collapse_probability",
+                    "_country_name": "country",
+                    "_allocation_role": "allocation_role",
+                    "_coverage": "empirical_coverage",
+                    "_trust_raw": "raw_trust",
+                    "_trust_prior": "trust_prior",
+                    "_wgi_composite": "available_wgi_mean",
+                    "_wgi_source_count": "wgi_source_count",
+                    "_vdem_democracy": "vdem_democracy",
+                    "_allocation_role": "allocation_role",
+                    "_large_allocation": "large_allocation",
+                    "_low_integrity": "low_integrity",
+                    "_high_collapse": "high_collapse",
+                    "_coverage_gap_count": "coverage_gap_count",
+                })
+                for c in ["integrity", "collapse_probability", "empirical_coverage", "raw_trust", "trust_prior", "available_wgi_mean", "vdem_democracy"]:
+                    if c in out.columns:
+                        out[c] = pd.to_numeric(out[c], errors="coerce").round(3)
+                for c in ["seats", "seat_rank"]:
+                    if c in out.columns:
+                        out[c] = pd.to_numeric(out[c], errors="coerce").fillna(0).astype(int)
+                return _world_lens_public_display_df(out)
+    
+            def _safe_receipt_table(df: pd.DataFrame, limit: int | None = None) -> pd.DataFrame:
+                out = df.copy()
+                if limit is not None:
+                    out = out.head(limit)
+                for col in out.columns:
+                    if pd.api.types.is_float_dtype(out[col]):
+                        out[col] = out[col].round(4)
+                return out
+    
+            def _receipt_md_table(df: pd.DataFrame, limit: int | None = None) -> str:
+                out = _safe_receipt_table(df, limit=limit)
+                if out.empty:
+                    return "_No rows available._"
+    
+                # Avoid pandas.to_markdown because Streamlit Cloud may not have the
+                # optional "tabulate" dependency installed. This small renderer keeps
+                # the receipt portable with the existing requirements.
+                out = out.copy().fillna("")
+                columns = [str(c) for c in out.columns]
+    
+                def _cell(value) -> str:
+                    text_value = str(value)
+                    text_value = text_value.replace("|", "\\|").replace("\n", " ")
+                    return text_value
+    
+                header = "| " + " | ".join(columns) + " |"
+                divider = "| " + " | ".join(["---"] * len(columns)) + " |"
+                rows = [
+                    "| " + " | ".join(_cell(row[col]) for col in out.columns) + " |"
+                    for _, row in out.iterrows()
+                ]
+                return "\n".join([header, divider] + rows)
+    
+            def _sanitize_world_lens_receipt_text(df: pd.DataFrame) -> pd.DataFrame:
+                """Patch 72.18: neutralize SANCTUARY display text in World Lens exports.
+    
+                The raw/internal taxonomy label may remain SANCTUARY. Exported
+                narrative fields must not present Sanctuary as final safety, final
+                authority, or an achieved endpoint.
+                """
+                if not isinstance(df, pd.DataFrame) or df.empty:
+                    return df
+                out = df.copy()
+                replacements = {
+                    "SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
+                        "Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. "
+                        "Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority."
+                    ),
+                    "SANCTUARY · SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
+                        "Low-risk internal reading · Internal taxonomy label: SANCTUARY; not a final safety, final Sanctuary, or authority claim."
+                    ),
+                }
+                for col in out.columns:
+                    if out[col].dtype == object or pd.api.types.is_string_dtype(out[col]):
+                        out[col] = out[col].replace(replacements)
+                        out[col] = out[col].apply(lambda value: replacements.get(value, value) if isinstance(value, str) else value)
+                return out
+    
+            def _build_world_lens_receipt_zip() -> bytes:
+                receipt_summary = {
+                    "selected_year": int(selected_year),
+                    "grid_source_state": grid_state_label,
+                    "full_9k_allocation": bool(is_full_grid),
+                    "allocated_country_rows": int(countries_scored),
+                    "displayed_rows": int(row_count),
+                    "rows_excluded_or_diagnostic": int(excluded_rows),
+                    "hidden_zero_seat_diagnostic_rows": int(hidden_zero_seat_rows),
+                    "displayed_zero_seat_diagnostic_rows": int(displayed_zero_seat_rows),
+                    "active_selected_year_seats": int(total_seats),
+                    "weighted_integrity": None if pd.isna(weighted_integrity) else float(weighted_integrity),
+                    "weighted_friction": None if pd.isna(weighted_friction) else float(weighted_friction),
+                    "weighted_collapse_probability": None if pd.isna(weighted_collapse) else float(weighted_collapse),
+                    "average_empirical_coverage": None if pd.isna(avg_coverage) else float(avg_coverage),
+                    "trust_raw_coverage": None if pd.isna(trust_coverage) else float(trust_coverage),
+                    "trust_prior_coverage": None if pd.isna(trust_prior_coverage) else float(trust_prior_coverage),
+                    "wgi_coverage": None if pd.isna(wgi_coverage) else float(wgi_coverage),
+                    "vdem_coverage": None if pd.isna(vdem_coverage) else float(vdem_coverage),
+                    "app_version": APP_VERSION,
+                    "mirror_logic_version": "patch31-world-lens-empirical-alignment",
+                    "diagnostic_scope": "empirical_country_year_evidence",
+                    "empirical_world_lens_connection": "Evidence Lab empirical country-year scoring feeds World Lens selected-year metrics.",
+                    "scenario_text_diagnostic_scope": "not_assessed_without_policy_text",
+                    "sydney_protocol_overlay": "mirror_not_throne; anti_capture; non_divinization; appealability; transparency; evidence_humility",
+                    "interpretation_warning": (
+                        "Full selected-year 9k allocation." if is_full_grid
+                        else "Partial or filtered selected-year subset; use active-seat interpretation."
+                    ),
+                }
+    
+                verdict_receipt = _world_lens_public_display_df(verdict_summary_df.copy()) if isinstance(verdict_summary_df, pd.DataFrame) else pd.DataFrame()
+                coverage_receipt = pd.DataFrame([
+                    {"source": "Trust raw survey", "rows_present": int(trust_mask.sum()), "rows_missing": int(missing_trust), "coverage": trust_coverage},
+                    {"source": "Trust prior", "rows_present": int(trust_prior_mask.sum()), "rows_missing": int(missing_trust_prior), "coverage": trust_prior_coverage},
+                    {"source": "WGI", "rows_present": int(wgi_mask.sum()), "rows_missing": int(missing_wgi), "coverage": wgi_coverage},
+                    {"source": "V-Dem", "rows_present": int(vdem_mask.sum()), "rows_missing": int(missing_vdem), "coverage": vdem_coverage},
+                ])
+    
+                high_integrity_receipt = _comparison_display(
+                    comparison_df.dropna(subset=["_integrity"]).sort_values("_integrity", ascending=False).head(25)
+                )
+                low_integrity_receipt = _comparison_display(
+                    comparison_df.dropna(subset=["_integrity"]).sort_values("_integrity", ascending=True).head(25)
+                )
+                high_collapse_receipt = _comparison_display(
+                    comparison_df.dropna(subset=["_collapse"]).sort_values("_collapse", ascending=False).head(25)
+                )
+                largest_alloc_receipt = _comparison_display(
+                    comparison_df.sort_values("_seats", ascending=False).head(25)
+                )
+                high_impact_receipt = _comparison_display(
+                    comparison_df[comparison_df["_high_impact_node"]].sort_values(["_seats", "_collapse"], ascending=[False, False]).head(50),
+                    include_reason=True,
+                )
+                sensitivity_receipt = _comparison_display(
+                    comparison_df[
+                        comparison_df["_trust_prior"].notna()
+                        & (
+                            comparison_df["_trust_delta_from_neutral"].ge(0.10)
+                            | comparison_df["_large_allocation"]
+                            | comparison_df["_integrity"].between(0.45, 0.60, inclusive="both")
+                            | comparison_df["_collapse"].between(0.30, 0.45, inclusive="both")
+                        )
+                    ].sort_values(["_trust_delta_from_neutral", "_seats"], ascending=[False, False]).head(50),
+                    include_reason=True,
+                )
+    
+                coverage_gaps_receipt = comparison_df.sort_values(
+                    ["_coverage_gap_count", "_coverage", "_seats"],
+                    ascending=[False, True, False],
+                ).head(50)
+                coverage_gap_cols = [
+                    "_country_name", "iso3", "year", "_allocation_role", "_coverage",
+                    "_missing_raw_trust", "_missing_trust_prior", "_missing_wgi", "_missing_vdem",
+                    "_coverage_gap_count", "_seats",
+                ]
+                coverage_gap_cols = [c for c in coverage_gap_cols if c in coverage_gaps_receipt.columns]
+                coverage_gaps_receipt = coverage_gaps_receipt[coverage_gap_cols].rename(columns={
+                    "_country_name": "country",
+                    "_allocation_role": "allocation_role",
+                    "_coverage": "empirical_coverage",
+                    "_missing_raw_trust": "missing_raw_trust",
+                    "_missing_trust_prior": "missing_trust_prior",
+                    "_missing_wgi": "missing_wgi",
+                    "_missing_vdem": "missing_vdem",
+                    "_coverage_gap_count": "coverage_gap_count",
+                    "_seats": "seats",
+                })
+    
+                all_rows_receipt = _world_lens_public_display_df(comparison_export.copy())
+                if "_country_name" in all_rows_receipt.columns:
+                    all_rows_receipt = all_rows_receipt.rename(columns={"_country_name": "friendly_country_name"})
+                if "_allocation_role" in all_rows_receipt.columns:
+                    all_rows_receipt = all_rows_receipt.rename(columns={"_allocation_role": "allocation_role"})
+    
+                md = f"""# ALETHEIA World Lens Receipt
+    
+    ## Plain-English receipt summary
+    
+    ### What is this document?
+    
+    This is a World Lens selected-year evidence receipt. It records how the active Evidence Lab country-year data appears in the selected World Lens view. It is a review artifact, not a country ranking, policy decision, certificate, public ledger record, or authority claim.
+    
+    ### The main results
+    
+    - Selected year: **{int(selected_year)}**
+    - World Lens source state: **{grid_state_label}**
+    - Evidence allocation status: **{"full 9k evidence view" if is_full_grid else "partial / active-seat evidence view"}**
+    - Allocated country rows: **{countries_scored:,}**
+    - Active selected-year seats: **{total_seats:,}**
+    - Weighted integrity: **{"—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}"}**
+    - Weighted collapse pressure: **{"—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}"}**
+    - Average empirical coverage: **{"—" if pd.isna(avg_coverage) else f"{avg_coverage:.1%}"}**
+    
+    ### How power and control are distributed
+    
+    World Lens uses population-weighted selected-year evidence to show where exposure, coverage gaps, allocation weight, and collapse-pressure signals may concentrate. The 9k view is an analytical anti-tyranny scaffold only. It does not create a real body, mandate, ranking, legitimacy claim, or decision about any country or institution.
+    
+    ### Next steps and questions
+    
+    - Check coverage before relying on weighted metrics.
+    - Inspect high-impact rows, coverage gaps, and sensitivity watchlists before drawing conclusions.
+    - Compare Evidence Lab inputs against public sources and selected-year filters.
+    - Keep human review responsible for any interpretation, policy discussion, or public communication.
+    
+    ## Scope
+    
+    - Selected year: **{int(selected_year)}**
+    - World Lens source state: **{grid_state_label}**
+    - Evidence allocation status: **{"full 9k evidence view" if is_full_grid else "partial / active-seat evidence view"}**
+    - Allocated country rows: **{countries_scored:,}**
+    - Active selected-year seats: **{total_seats:,}**
+    - Rows excluded / diagnostic: **{excluded_rows:,}**
+    - Hidden zero-seat diagnostic rows: **{hidden_zero_seat_rows:,}**
+    
+    ## Weighted metrics
+    
+    - Weighted integrity: **{"—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}"}**
+    - Weighted friction: **{"—" if pd.isna(weighted_friction) else f"{weighted_friction:.3f}"}**
+    - Weighted collapse pressure: **{"—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}"}**
+    - Average empirical coverage: **{"—" if pd.isna(avg_coverage) else f"{avg_coverage:.1%}"}**
+    
+    ## Coverage
+    
+    {_receipt_md_table(coverage_receipt)}
+    
+    ## Internal taxonomy distribution
+    
+    {_receipt_md_table(verdict_receipt)}
+    
+    ## Highest integrity rows
+    
+    {_receipt_md_table(high_integrity_receipt, limit=25)}
+    
+    ## Lowest integrity rows
+    
+    {_receipt_md_table(low_integrity_receipt, limit=25)}
+    
+    ## Highest collapse-risk rows
+    
+    {_receipt_md_table(high_collapse_receipt, limit=25)}
+    
+    ## Largest selected-year allocations
+    
+    {_receipt_md_table(largest_alloc_receipt, limit=25)}
+    
+    ## High-impact risk rows
+    
+    {_receipt_md_table(high_impact_receipt, limit=50)}
+    
+    ## Trust / seat sensitivity watchlist
+    
+    {_receipt_md_table(sensitivity_receipt, limit=50)}
+    
+    ## Coverage gaps
+    
+    {_receipt_md_table(coverage_gaps_receipt, limit=50)}
+    
+    ## Module alignment note
+    
+    Evidence Lab empirical country-year scoring feeds World Lens selected-year metrics. This receipt is connected to empirical data, but it is not a Mirror Check text-scenario receipt. Cognitive Resilience, Education Defense, contextual-capture, and hard-capture text diagnostics are therefore marked as not assessed unless policy/scenario text is supplied.
+    
+    ## Sydney Protocol note
+    
+    This receipt is a structured mirror reading and reproducible view artifact. It does not certify truth, safety, legality, legitimacy, morality, or institutional fitness. Human review remains required. The reading may be incomplete, wrong, or sensitive to missing evidence.
+    
+    External AI agreement, disagreement, or self-correction is not validation of ALETHEIA. It is treated only as review evidence.
+    
+    The overlay remains: mirror, not throne; anti-capture; non-divinization; appealability; transparency; evidence humility; no final authority.
+    """
+    
+                buffer = io.BytesIO()
+                with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+                    zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}.md", md)
+                    zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_summary.json", json.dumps(receipt_summary, indent=2))
+                    zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_coverage.csv", coverage_receipt.to_csv(index=False))
+                    zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_taxonomy_distribution.csv", verdict_receipt.to_csv(index=False))
+                    zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_highest_integrity.csv", high_integrity_receipt.to_csv(index=False))
+                    zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_lowest_integrity.csv", low_integrity_receipt.to_csv(index=False))
+                    zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_highest_collapse.csv", high_collapse_receipt.to_csv(index=False))
+                    zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_largest_allocations.csv", largest_alloc_receipt.to_csv(index=False))
+                    zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_high_impact_nodes.csv", high_impact_receipt.to_csv(index=False))
+                    zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_sensitivity_watchlist.csv", sensitivity_receipt.to_csv(index=False))
+                    zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_coverage_gaps.csv", coverage_gaps_receipt.to_csv(index=False))
+                    zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_all_rows.csv", all_rows_receipt.to_csv(index=False))
+                buffer.seek(0)
+                return buffer.getvalue()
+    
+            verdict_summary_df = pd.DataFrame()
+            if verdict_col in comparison_df.columns:
+                verdict_summary_df = (
+                    comparison_df.groupby(verdict_col, dropna=False)
+                    .agg(
+                        countries=("iso3", "nunique") if "iso3" in comparison_df.columns else ("country", "count"),
+                        seats=("_seats", "sum"),
+                        avg_integrity=("_integrity", "mean"),
+                        avg_collapse_probability=("_collapse", "mean"),
+                        avg_empirical_coverage=("_coverage", "mean"),
+                    )
+                    .reset_index()
+                    .rename(columns={verdict_col: "verdict"})
+                )
+                seat_denominator = float(comparison_df["_seats"].sum()) if comparison_df["_seats"].sum() > 0 else np.nan
+                verdict_summary_df["seat_share"] = verdict_summary_df["seats"] / seat_denominator if not pd.isna(seat_denominator) else np.nan
+    
+            comparison_export = comparison_df.copy()
+            comparison_export["grid_selected_year"] = int(selected_year)
+            comparison_export["grid_source_state"] = grid_state_label
+            comparison_export["grid_is_full_9k_allocation"] = bool(is_full_grid)
+            comparison_export["countries_scored_selected_year"] = int(countries_scored)
+            comparison_export["displayed_rows_selected_year"] = int(row_count)
+            comparison_export["zero_seat_diagnostic_rows_selected_year"] = int(displayed_zero_seat_rows + hidden_zero_seat_rows)
+            comparison_export["weighted_integrity_selected_year"] = weighted_integrity
+            comparison_export["weighted_collapse_probability_selected_year"] = weighted_collapse
+            comparison_export["weighted_friction_selected_year"] = weighted_friction
+            comparison_export["average_empirical_coverage_selected_year"] = avg_coverage
+            comparison_export["raw_trust_survey_coverage_selected_year"] = trust_coverage
+            comparison_export["trust_prior_fallback_coverage_selected_year"] = trust_prior_coverage
+            comparison_export["wgi_coverage_selected_year"] = wgi_coverage
+            comparison_export["vdem_coverage_selected_year"] = vdem_coverage
+            comparison_export["missing_raw_trust_rows_selected_year"] = int(missing_trust)
+            comparison_export["missing_wgi_rows_selected_year"] = int(missing_wgi)
+            comparison_export["missing_vdem_rows_selected_year"] = int(missing_vdem)
+            comparison_export["trust_prior_rows_selected_year"] = int(trust_prior_mask.sum())
+            comparison_export["missing_trust_prior_rows_selected_year"] = int(missing_trust_prior)
+            comparison_export["seat_total_selected_year"] = int(total_seats)
+            _verdict_seat_totals = verdict_seats.to_dict() if isinstance(verdict_seats, pd.Series) else {}
+            comparison_export["verdict_seats_sanctuary_selected_year"] = int(_verdict_seat_totals.get("SANCTUARY", 0) or 0)
+            comparison_export["verdict_seats_threshold_selected_year"] = int(_verdict_seat_totals.get("THRESHOLD", 0) or 0)
+            comparison_export["verdict_seats_asylum_selected_year"] = int(_verdict_seat_totals.get("ASYLUM", 0) or 0)
+            comparison_export["trust_prior_interpretation_note"] = (
+                "Trust prior coverage is fallback/model continuity coverage, not observed survey coverage. "
+                "Use raw_trust_survey_coverage_selected_year for observed survey availability."
             )
-        ]
-        comparison_df["_hover_label"] = comparison_df["_country_name"].astype(str) + " · " + comparison_df.get("iso3", pd.Series("", index=comparison_df.index)).fillna("").astype(str)
-
-        if present_wgi_cols:
-            wgi_numeric = comparison_df[present_wgi_cols].apply(pd.to_numeric, errors="coerce")
-            comparison_df["_wgi_composite"] = wgi_numeric.mean(axis=1)
-            comparison_df["_wgi_source_count"] = wgi_numeric.notna().sum(axis=1)
-            comparison_df["_wgi_fields_used"] = wgi_numeric.apply(lambda row: ", ".join([col for col, val in row.items() if pd.notna(val)]), axis=1)
-        else:
-            comparison_df["_wgi_composite"] = np.nan
-            comparison_df["_wgi_source_count"] = 0
-            comparison_df["_wgi_fields_used"] = ""
-
-        comparison_df["_missing_raw_trust"] = ~trust_mask.reindex(comparison_df.index, fill_value=False)
-        comparison_df["_missing_trust_prior"] = ~trust_prior_mask.reindex(comparison_df.index, fill_value=False)
-        comparison_df["_missing_wgi"] = ~wgi_mask.reindex(comparison_df.index, fill_value=False)
-        comparison_df["_missing_vdem"] = ~vdem_mask.reindex(comparison_df.index, fill_value=False)
-        comparison_df["_coverage_gap_count"] = (
-            comparison_df[["_missing_raw_trust", "_missing_trust_prior", "_missing_wgi", "_missing_vdem"]]
-            .fillna(False)
-            .astype(int)
-            .sum(axis=1)
-        )
-        comparison_df["_trust_delta_from_neutral"] = (comparison_df["_trust_prior"] - 0.5).abs()
-
-        if not comparison_df.empty:
-            seat_q75 = comparison_df["_seats"].quantile(0.75)
-            integrity_q25 = comparison_df["_integrity"].quantile(0.25)
-            collapse_q75 = comparison_df["_collapse"].quantile(0.75)
-        else:
-            seat_q75 = integrity_q25 = collapse_q75 = np.nan
-
-        comparison_df["_large_allocation"] = comparison_df["_seats"].ge(seat_q75) if not pd.isna(seat_q75) else False
-        comparison_df["_low_integrity"] = comparison_df["_integrity"].le(integrity_q25) if not pd.isna(integrity_q25) else False
-        comparison_df["_high_collapse"] = comparison_df["_collapse"].ge(collapse_q75) if not pd.isna(collapse_q75) else False
-        comparison_df["_high_impact_node"] = comparison_df["_large_allocation"] & (comparison_df["_low_integrity"] | comparison_df["_high_collapse"])
-        comparison_df["_seat_rank"] = comparison_df["_seats"].rank(ascending=False, method="min")
-        comparison_df["_integrity_rank"] = comparison_df["_integrity"].rank(ascending=False, method="min")
-        comparison_df["_collapse_rank"] = comparison_df["_collapse"].rank(ascending=False, method="min")
-
-        def _comparison_display(df: pd.DataFrame, include_reason: bool = False) -> pd.DataFrame:
-            base_cols = [
-                "_country_name", "iso3", "year", verdict_col, "_seats", "_seat_rank",
-                "_integrity", "_collapse", "_coverage",
-                "_trust_raw", "_trust_prior", "_wgi_composite", "_wgi_source_count", "_vdem_democracy",
-            ]
-            if include_reason:
-                base_cols += ["_allocation_role", "_large_allocation", "_low_integrity", "_high_collapse", "_coverage_gap_count"]
-            base_cols = [c for c in base_cols if c in df.columns]
-            out = df[base_cols].copy()
-            out = out.rename(columns={
-                "_country_name": "country",
-                verdict_col: "internal_taxonomy_label",
-                "_seats": "seats",
-                "_seat_rank": "seat_rank",
-                "_integrity": "integrity",
-                "_collapse": "collapse_probability",
-                "_country_name": "country",
-                "_allocation_role": "allocation_role",
-                "_coverage": "empirical_coverage",
-                "_trust_raw": "raw_trust",
-                "_trust_prior": "trust_prior",
-                "_wgi_composite": "available_wgi_mean",
-                "_wgi_source_count": "wgi_source_count",
-                "_vdem_democracy": "vdem_democracy",
-                "_allocation_role": "allocation_role",
-                "_large_allocation": "large_allocation",
-                "_low_integrity": "low_integrity",
-                "_high_collapse": "high_collapse",
-                "_coverage_gap_count": "coverage_gap_count",
-            })
-            for c in ["integrity", "collapse_probability", "empirical_coverage", "raw_trust", "trust_prior", "available_wgi_mean", "vdem_democracy"]:
-                if c in out.columns:
-                    out[c] = pd.to_numeric(out[c], errors="coerce").round(3)
-            for c in ["seats", "seat_rank"]:
-                if c in out.columns:
-                    out[c] = pd.to_numeric(out[c], errors="coerce").fillna(0).astype(int)
-            return _world_lens_public_display_df(out)
-
-        def _safe_receipt_table(df: pd.DataFrame, limit: int | None = None) -> pd.DataFrame:
-            out = df.copy()
-            if limit is not None:
-                out = out.head(limit)
-            for col in out.columns:
-                if pd.api.types.is_float_dtype(out[col]):
-                    out[col] = out[col].round(4)
-            return out
-
-        def _receipt_md_table(df: pd.DataFrame, limit: int | None = None) -> str:
-            out = _safe_receipt_table(df, limit=limit)
-            if out.empty:
-                return "_No rows available._"
-
-            # Avoid pandas.to_markdown because Streamlit Cloud may not have the
-            # optional "tabulate" dependency installed. This small renderer keeps
-            # the receipt portable with the existing requirements.
-            out = out.copy().fillna("")
-            columns = [str(c) for c in out.columns]
-
-            def _cell(value) -> str:
-                text_value = str(value)
-                text_value = text_value.replace("|", "\\|").replace("\n", " ")
-                return text_value
-
-            header = "| " + " | ".join(columns) + " |"
-            divider = "| " + " | ".join(["---"] * len(columns)) + " |"
-            rows = [
-                "| " + " | ".join(_cell(row[col]) for col in out.columns) + " |"
-                for _, row in out.iterrows()
-            ]
-            return "\n".join([header, divider] + rows)
-
-        def _sanitize_world_lens_receipt_text(df: pd.DataFrame) -> pd.DataFrame:
-            """Patch 72.18: neutralize SANCTUARY display text in World Lens exports.
-
-            The raw/internal taxonomy label may remain SANCTUARY. Exported
-            narrative fields must not present Sanctuary as final safety, final
-            authority, or an achieved endpoint.
-            """
-            if not isinstance(df, pd.DataFrame) or df.empty:
-                return df
-            out = df.copy()
-            replacements = {
-                "SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
-                    "Low-risk evidence pattern: strong public-data baseline, still subject to protocol guardrails. "
-                    "Internal taxonomy label: SANCTUARY; ALETHEIA does not claim final safety, final Sanctuary, or final authority."
-                ),
-                "SANCTUARY · SANCTUARY evidence pattern: strong public-data baseline, still subject to protocol guardrails": (
-                    "Low-risk internal reading · Internal taxonomy label: SANCTUARY; not a final safety, final Sanctuary, or authority claim."
-                ),
-            }
-            for col in out.columns:
-                if out[col].dtype == object or pd.api.types.is_string_dtype(out[col]):
-                    out[col] = out[col].replace(replacements)
-                    out[col] = out[col].apply(lambda value: replacements.get(value, value) if isinstance(value, str) else value)
-            return out
-
-        def _build_world_lens_receipt_zip() -> bytes:
-            receipt_summary = {
-                "selected_year": int(selected_year),
-                "grid_source_state": grid_state_label,
-                "full_9k_allocation": bool(is_full_grid),
-                "allocated_country_rows": int(countries_scored),
-                "displayed_rows": int(row_count),
-                "rows_excluded_or_diagnostic": int(excluded_rows),
-                "hidden_zero_seat_diagnostic_rows": int(hidden_zero_seat_rows),
-                "displayed_zero_seat_diagnostic_rows": int(displayed_zero_seat_rows),
-                "active_selected_year_seats": int(total_seats),
-                "weighted_integrity": None if pd.isna(weighted_integrity) else float(weighted_integrity),
-                "weighted_friction": None if pd.isna(weighted_friction) else float(weighted_friction),
-                "weighted_collapse_probability": None if pd.isna(weighted_collapse) else float(weighted_collapse),
-                "average_empirical_coverage": None if pd.isna(avg_coverage) else float(avg_coverage),
-                "trust_raw_coverage": None if pd.isna(trust_coverage) else float(trust_coverage),
-                "trust_prior_coverage": None if pd.isna(trust_prior_coverage) else float(trust_prior_coverage),
-                "wgi_coverage": None if pd.isna(wgi_coverage) else float(wgi_coverage),
-                "vdem_coverage": None if pd.isna(vdem_coverage) else float(vdem_coverage),
-                "app_version": APP_VERSION,
-                "mirror_logic_version": "patch31-world-lens-empirical-alignment",
-                "diagnostic_scope": "empirical_country_year_evidence",
-                "empirical_world_lens_connection": "Evidence Lab empirical country-year scoring feeds World Lens selected-year metrics.",
-                "scenario_text_diagnostic_scope": "not_assessed_without_policy_text",
-                "sydney_protocol_overlay": "mirror_not_throne; anti_capture; non_divinization; appealability; transparency; evidence_humility",
-                "interpretation_warning": (
-                    "Full selected-year 9k allocation." if is_full_grid
-                    else "Partial or filtered selected-year subset; use active-seat interpretation."
-                ),
-            }
-
-            verdict_receipt = _world_lens_public_display_df(verdict_summary_df.copy()) if isinstance(verdict_summary_df, pd.DataFrame) else pd.DataFrame()
-            coverage_receipt = pd.DataFrame([
-                {"source": "Trust raw survey", "rows_present": int(trust_mask.sum()), "rows_missing": int(missing_trust), "coverage": trust_coverage},
-                {"source": "Trust prior", "rows_present": int(trust_prior_mask.sum()), "rows_missing": int(missing_trust_prior), "coverage": trust_prior_coverage},
-                {"source": "WGI", "rows_present": int(wgi_mask.sum()), "rows_missing": int(missing_wgi), "coverage": wgi_coverage},
-                {"source": "V-Dem", "rows_present": int(vdem_mask.sum()), "rows_missing": int(missing_vdem), "coverage": vdem_coverage},
+            comparison_export["coverage_warning"] = (
+                "Full selected-year 9k allocation." if is_full_grid
+                else "Partial or filtered selected-year subset; use active-seat interpretation."
+            )
+            comparison_export["recommended_interpretation"] = np.where(
+                comparison_export["_high_impact_node"],
+                "High-impact governance-risk node: high allocation plus low integrity or high collapse pressure.",
+                "Read with selected-year coverage diagnostics and Sydney Protocol overlay."
+            )
+            comparison_export["sydney_protocol_overlay"] = "mirror_not_throne; anti_capture; non_divinization; appealability; transparency; fail_closed_if_guardrails_break"
+            comparison_export = apply_world_lens_diagnostic_alignment(comparison_export)
+            comparison_export = _sanitize_world_lens_receipt_text(comparison_export)
+            comparison_export["app_version"] = APP_VERSION
+            comparison_export["module_alignment_note"] = (
+                "Evidence Lab empirical scoring feeds World Lens. Scenario-text diagnostics from Mirror Check are carried as explicit not-assessed scope fields unless policy text is supplied."
+            )
+    
+            focus_iso3 = str(st.session_state.get("aletheia_synced_iso3") or "").strip().upper()
+            focus_country_name = str(st.session_state.get("aletheia_synced_country_name") or "").strip()
+            focus_country_available = bool(
+                focus_iso3
+                and "iso3" in comparison_df.columns
+                and comparison_df["iso3"].astype(str).str.upper().eq(focus_iso3).any()
+            )
+            focus_row = comparison_df[comparison_df["iso3"].astype(str).str.upper().eq(focus_iso3)].copy() if focus_country_available else pd.DataFrame()
+    
+            if focus_iso3:
+                if focus_country_available:
+                    _focus_label = (
+                        focus_row["_country_name"].iloc[0]
+                        if "_country_name" in focus_row.columns and not focus_row.empty
+                        else focus_country_name
+                    )
+                    st.info(f"Focus country from Empirical Explorer: **{_focus_label} · {focus_iso3} · {int(selected_year)}**. Global metrics remain full selected-year metrics; the country is surfaced as focus/context, not used as a Grid filter.")
+                else:
+                    st.warning(
+                        f"Focus country **{focus_country_name or focus_iso3} · {focus_iso3}** is not available in the active Global Grid rows for {int(selected_year)}. "
+                        "Choose a year where the country exists or rebuild the master."
+                    )
+    
+            view_tabs = st.tabs([
+                "Overview",
+                "Allocation",
+                "Verdicts",
+                "Integrity & Collapse",
+                "Comparisons",
+                "Trust & Sources",
+                "Coverage",
+                "Country-Year Detail",
+                "Report Packet",
             ])
-
-            high_integrity_receipt = _comparison_display(
-                comparison_df.dropna(subset=["_integrity"]).sort_values("_integrity", ascending=False).head(25)
-            )
-            low_integrity_receipt = _comparison_display(
-                comparison_df.dropna(subset=["_integrity"]).sort_values("_integrity", ascending=True).head(25)
-            )
-            high_collapse_receipt = _comparison_display(
-                comparison_df.dropna(subset=["_collapse"]).sort_values("_collapse", ascending=False).head(25)
-            )
-            largest_alloc_receipt = _comparison_display(
-                comparison_df.sort_values("_seats", ascending=False).head(25)
-            )
-            high_impact_receipt = _comparison_display(
-                comparison_df[comparison_df["_high_impact_node"]].sort_values(["_seats", "_collapse"], ascending=[False, False]).head(50),
-                include_reason=True,
-            )
-            sensitivity_receipt = _comparison_display(
-                comparison_df[
+    
+            with view_tabs[0]:
+                st.markdown("### Selected-year overview")
+                o1, o2, o3 = st.columns(3)
+                o1.metric("Scored country-year rows", f"{row_count:,}")
+                o2.metric("Countries in selected year", f"{countries_scored:,}")
+                o3.metric("Rows excluded / diagnostic", f"{excluded_rows:,}")
+    
+                st.markdown(f"### {allocation_heading}")
+                s1, s2, s3 = st.columns(3)
+                with s1:
+                    metric_card("YES / Support", f"{signal.get('yes', np.nan):,.0f} seats", f"{signal.get('yes_pct', np.nan):.1%} of {signal_denominator_label}")
+                with s2:
+                    metric_card("REVIEW", f"{signal.get('review', np.nan):,.0f} seats", f"{signal.get('review_pct', np.nan):.1%} of {signal_denominator_label}")
+                with s3:
+                    metric_card("BLOCK", f"{signal.get('block', np.nan):,.0f} seats", f"{signal.get('block_pct', np.nan):.1%} of {signal_denominator_label}")
+    
+                st.write(
+                    "High allocation plus low integrity or high collapse pressure indicates a high-impact governance-risk node. "
+                    "Low empirical coverage should reduce interpretive confidence. Verdict categories are protocol interpretations, "
+                    "not legal or political determinations."
+                )
+    
+            with view_tabs[1]:
+                st.markdown("### Selected-year seat allocation" if is_full_grid else "### Active selected-year seat allocation")
+                top_n = grid_source.head(25).copy()
+                label_col = "iso3" if "iso3" in top_n.columns else "country"
+                fig = go.Figure(go.Bar(x=top_n[label_col], y=top_n["seats_9k"]))
+                fig.update_layout(template="plotly_white", title=(f"Top 25 country-level 9k allocations · {selected_year}" if is_full_grid else f"Top active selected-year seat allocations · {selected_year}"), height=430, margin=dict(l=10, r=10, t=55, b=10))
+                st.plotly_chart(fig, use_container_width=True)
+                st.caption("Showing the top 25 countries by seats. The full table is in Country-Year Detail. Partial years may not add to 9,000.")
+    
+            with view_tabs[2]:
+                st.markdown("### Internal taxonomy distribution")
+                if not verdict_seats.empty:
+                    verdict_df = verdict_seats.reset_index()
+                    verdict_df.columns = ["internal_taxonomy_label", "Seats"]
+                    verdict_df["empirical_pattern_display"] = verdict_df["internal_taxonomy_label"].apply(_world_lens_taxonomy_label)
+                    verdict_df = verdict_df[["empirical_pattern_display", "internal_taxonomy_label", "Seats"]]
+                    fig = go.Figure(go.Bar(x=verdict_df["empirical_pattern_display"], y=verdict_df["Seats"]))
+                    fig.update_layout(template="plotly_white", title="Seat distribution by internal taxonomy", height=430, margin=dict(l=10, r=10, t=55, b=10))
+                    st.plotly_chart(fig, use_container_width=True)
+                    st.dataframe(_world_lens_ui_table_df(verdict_df), use_container_width=True, hide_index=True)
+                else:
+                    st.info("No internal taxonomy column is available for this selected year.")
+    
+            with view_tabs[3]:
+                st.markdown("### Integrity and collapse")
+                c1, c2, c3 = st.columns(3)
+                c1.metric(f"Weighted {metric_scope_word} integrity", "—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
+                c2.metric(f"Weighted {metric_scope_word} friction", "—" if pd.isna(weighted_friction) else f"{weighted_friction:.3f}")
+                c3.metric(f"Weighted {metric_scope_word} collapse pressure", "—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
+                if integrity_col in grid_source.columns and collapse_col in grid_source.columns:
+                    scatter_df = grid_source.copy()
+                    scatter_df["_integrity"] = _numeric_series(integrity_col)
+                    scatter_df["_collapse"] = _numeric_series(collapse_col)
+                    fig = go.Figure(
+                        go.Scatter(
+                            x=scatter_df["_integrity"],
+                            y=scatter_df["_collapse"],
+                            mode="markers",
+                            marker={"size": np.maximum(pd.to_numeric(scatter_df.get("seats_9k"), errors="coerce").fillna(1), 1) ** 0.5},
+                            text=scatter_df.get("_hover_label", scatter_df.get("iso3", pd.Series("", index=scatter_df.index))),
+                            hovertemplate="%{text}<br>Integrity: %{x:.3f}<br>Collapse pressure: %{y:.3f}<extra></extra>",
+                        )
+                    )
+                    fig.update_layout(template="plotly_white", title=f"Integrity vs collapse pressure · {selected_year}", xaxis_title="Integrity", yaxis_title="Collapse pressure", height=480, margin=dict(l=10, r=10, t=55, b=10))
+                    st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.info("Integrity/collapse columns are not available for this selected year.")
+    
+            with view_tabs[4]:
+                st.markdown("### Important comparison views")
+                st.caption(
+                    "These rankings use the active selected-year Grid source. Partial years remain diagnostic subsets, "
+                    "not full global allocations."
+                )
+    
+                rank_limit = st.slider("Rows per comparison table", 5, 30, 10, 1, key=f"grid_pass2_rank_limit_{selected_year}")
+    
+                c_high, c_low = st.columns(2)
+                with c_high:
+                    st.markdown("#### Highest integrity rows")
+                    high_integrity = comparison_df.dropna(subset=["_integrity"]).sort_values("_integrity", ascending=False).head(rank_limit)
+                    st.dataframe(_world_lens_ui_table_df(_comparison_display(high_integrity)), use_container_width=True, hide_index=True)
+                with c_low:
+                    st.markdown("#### Lowest integrity rows")
+                    low_integrity = comparison_df.dropna(subset=["_integrity"]).sort_values("_integrity", ascending=True).head(rank_limit)
+                    st.dataframe(_world_lens_ui_table_df(_comparison_display(low_integrity)), use_container_width=True, hide_index=True)
+    
+                c_collapse, c_seats = st.columns(2)
+                with c_collapse:
+                    st.markdown("#### Highest collapse-risk rows")
+                    high_collapse = comparison_df.dropna(subset=["_collapse"]).sort_values("_collapse", ascending=False).head(rank_limit)
+                    st.dataframe(_world_lens_ui_table_df(_comparison_display(high_collapse)), use_container_width=True, hide_index=True)
+                with c_seats:
+                    st.markdown("#### Largest selected-year seat counts")
+                    largest_seats = comparison_df.sort_values("_seats", ascending=False).head(rank_limit)
+                    st.dataframe(_world_lens_ui_table_df(_comparison_display(largest_seats)), use_container_width=True, hide_index=True)
+    
+                st.markdown("#### High-impact risk rows")
+                st.write(
+                    "High allocation plus low integrity or high collapse pressure indicates a high-impact governance-risk node. "
+                    "This is a protocol risk signal, not a legal or political determination."
+                )
+                high_impact = comparison_df[comparison_df["_high_impact_node"]].sort_values(["_seats", "_collapse"], ascending=[False, False]).head(max(rank_limit, 10))
+                if high_impact.empty:
+                    st.info("No high-impact risk rows were found by the selected-year rule.")
+                else:
+                    st.dataframe(_world_lens_ui_table_df(_comparison_display(high_impact, include_reason=True)), use_container_width=True, hide_index=True)
+    
+                st.markdown("#### Largest seats among low-integrity or high-collapse rows")
+                risk_alloc = comparison_df[comparison_df["_low_integrity"] | comparison_df["_high_collapse"]].sort_values("_seats", ascending=False).head(rank_limit)
+                if risk_alloc.empty:
+                    st.info("No low-integrity or high-collapse rows are available in this selected-year view.")
+                else:
+                    st.dataframe(_world_lens_ui_table_df(_comparison_display(risk_alloc, include_reason=True)), use_container_width=True, hide_index=True)
+    
+                st.markdown("#### Trust / seat sensitivity watchlist")
+                neutral_trust_prior_view = (
+                    comparison_df["_trust_prior"].notna().any()
+                    and comparison_df["_trust_delta_from_neutral"].fillna(0).max() < 0.001
+                )
+                raw_trust_missing_view = not comparison_df["_trust_raw"].notna().any()
+                if neutral_trust_prior_view and raw_trust_missing_view:
+                    st.caption(
+                        "In this selected year, raw trust is missing and trust prior is neutral/default for the active rows. "
+                        "This watchlist mainly reflects allocation size and rows near scoring thresholds, not observed trust movement."
+                    )
+                else:
+                    st.caption(
+                        "This first pass uses a proxy: trust prior far from neutral 0.500, larger allocation, or rows near review thresholds. "
+                        "A later exact version can recompute counterfactual scores with trust fixed at 0.500."
+                    )
+                trust_material = comparison_df[
                     comparison_df["_trust_prior"].notna()
                     & (
                         comparison_df["_trust_delta_from_neutral"].ge(0.10)
@@ -7457,1719 +7854,1338 @@ with tab_grid:
                         | comparison_df["_integrity"].between(0.45, 0.60, inclusive="both")
                         | comparison_df["_collapse"].between(0.30, 0.45, inclusive="both")
                     )
-                ].sort_values(["_trust_delta_from_neutral", "_seats"], ascending=[False, False]).head(50),
-                include_reason=True,
-            )
-
-            coverage_gaps_receipt = comparison_df.sort_values(
-                ["_coverage_gap_count", "_coverage", "_seats"],
-                ascending=[False, True, False],
-            ).head(50)
-            coverage_gap_cols = [
-                "_country_name", "iso3", "year", "_allocation_role", "_coverage",
-                "_missing_raw_trust", "_missing_trust_prior", "_missing_wgi", "_missing_vdem",
-                "_coverage_gap_count", "_seats",
-            ]
-            coverage_gap_cols = [c for c in coverage_gap_cols if c in coverage_gaps_receipt.columns]
-            coverage_gaps_receipt = coverage_gaps_receipt[coverage_gap_cols].rename(columns={
-                "_country_name": "country",
-                "_allocation_role": "allocation_role",
-                "_coverage": "empirical_coverage",
-                "_missing_raw_trust": "missing_raw_trust",
-                "_missing_trust_prior": "missing_trust_prior",
-                "_missing_wgi": "missing_wgi",
-                "_missing_vdem": "missing_vdem",
-                "_coverage_gap_count": "coverage_gap_count",
-                "_seats": "seats",
-            })
-
-            all_rows_receipt = _world_lens_public_display_df(comparison_export.copy())
-            if "_country_name" in all_rows_receipt.columns:
-                all_rows_receipt = all_rows_receipt.rename(columns={"_country_name": "friendly_country_name"})
-            if "_allocation_role" in all_rows_receipt.columns:
-                all_rows_receipt = all_rows_receipt.rename(columns={"_allocation_role": "allocation_role"})
-
-            md = f"""# ALETHEIA World Lens Receipt
-
-## Plain-English receipt summary
-
-### What is this document?
-
-This is a World Lens selected-year evidence receipt. It records how the active Evidence Lab country-year data appears in the selected World Lens view. It is a review artifact, not a country ranking, policy decision, certificate, public ledger record, or authority claim.
-
-### The main results
-
-- Selected year: **{int(selected_year)}**
-- World Lens source state: **{grid_state_label}**
-- Evidence allocation status: **{"full 9k evidence view" if is_full_grid else "partial / active-seat evidence view"}**
-- Allocated country rows: **{countries_scored:,}**
-- Active selected-year seats: **{total_seats:,}**
-- Weighted integrity: **{"—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}"}**
-- Weighted collapse pressure: **{"—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}"}**
-- Average empirical coverage: **{"—" if pd.isna(avg_coverage) else f"{avg_coverage:.1%}"}**
-
-### How power and control are distributed
-
-World Lens uses population-weighted selected-year evidence to show where exposure, coverage gaps, allocation weight, and collapse-pressure signals may concentrate. The 9k view is an analytical anti-tyranny scaffold only. It does not create a real body, mandate, ranking, legitimacy claim, or decision about any country or institution.
-
-### Next steps and questions
-
-- Check coverage before relying on weighted metrics.
-- Inspect high-impact rows, coverage gaps, and sensitivity watchlists before drawing conclusions.
-- Compare Evidence Lab inputs against public sources and selected-year filters.
-- Keep human review responsible for any interpretation, policy discussion, or public communication.
-
-## Scope
-
-- Selected year: **{int(selected_year)}**
-- World Lens source state: **{grid_state_label}**
-- Evidence allocation status: **{"full 9k evidence view" if is_full_grid else "partial / active-seat evidence view"}**
-- Allocated country rows: **{countries_scored:,}**
-- Active selected-year seats: **{total_seats:,}**
-- Rows excluded / diagnostic: **{excluded_rows:,}**
-- Hidden zero-seat diagnostic rows: **{hidden_zero_seat_rows:,}**
-
-## Weighted metrics
-
-- Weighted integrity: **{"—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}"}**
-- Weighted friction: **{"—" if pd.isna(weighted_friction) else f"{weighted_friction:.3f}"}**
-- Weighted collapse pressure: **{"—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}"}**
-- Average empirical coverage: **{"—" if pd.isna(avg_coverage) else f"{avg_coverage:.1%}"}**
-
-## Coverage
-
-{_receipt_md_table(coverage_receipt)}
-
-## Internal taxonomy distribution
-
-{_receipt_md_table(verdict_receipt)}
-
-## Highest integrity rows
-
-{_receipt_md_table(high_integrity_receipt, limit=25)}
-
-## Lowest integrity rows
-
-{_receipt_md_table(low_integrity_receipt, limit=25)}
-
-## Highest collapse-risk rows
-
-{_receipt_md_table(high_collapse_receipt, limit=25)}
-
-## Largest selected-year allocations
-
-{_receipt_md_table(largest_alloc_receipt, limit=25)}
-
-## High-impact risk rows
-
-{_receipt_md_table(high_impact_receipt, limit=50)}
-
-## Trust / seat sensitivity watchlist
-
-{_receipt_md_table(sensitivity_receipt, limit=50)}
-
-## Coverage gaps
-
-{_receipt_md_table(coverage_gaps_receipt, limit=50)}
-
-## Module alignment note
-
-Evidence Lab empirical country-year scoring feeds World Lens selected-year metrics. This receipt is connected to empirical data, but it is not a Mirror Check text-scenario receipt. Cognitive Resilience, Education Defense, contextual-capture, and hard-capture text diagnostics are therefore marked as not assessed unless policy/scenario text is supplied.
-
-## Sydney Protocol note
-
-This receipt is a structured mirror reading and reproducible view artifact. It does not certify truth, safety, legality, legitimacy, morality, or institutional fitness. Human review remains required. The reading may be incomplete, wrong, or sensitive to missing evidence.
-
-External AI agreement, disagreement, or self-correction is not validation of ALETHEIA. It is treated only as review evidence.
-
-The overlay remains: mirror, not throne; anti-capture; non-divinization; appealability; transparency; evidence humility; no final authority.
-"""
-
-            buffer = io.BytesIO()
-            with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zf:
-                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}.md", md)
-                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_summary.json", json.dumps(receipt_summary, indent=2))
-                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_coverage.csv", coverage_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_taxonomy_distribution.csv", verdict_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_highest_integrity.csv", high_integrity_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_lowest_integrity.csv", low_integrity_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_highest_collapse.csv", high_collapse_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_largest_allocations.csv", largest_alloc_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_high_impact_nodes.csv", high_impact_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_sensitivity_watchlist.csv", sensitivity_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_coverage_gaps.csv", coverage_gaps_receipt.to_csv(index=False))
-                zf.writestr(f"aletheia_world_lens_receipt_{int(selected_year)}_all_rows.csv", all_rows_receipt.to_csv(index=False))
-            buffer.seek(0)
-            return buffer.getvalue()
-
-        verdict_summary_df = pd.DataFrame()
-        if verdict_col in comparison_df.columns:
-            verdict_summary_df = (
-                comparison_df.groupby(verdict_col, dropna=False)
-                .agg(
-                    countries=("iso3", "nunique") if "iso3" in comparison_df.columns else ("country", "count"),
-                    seats=("_seats", "sum"),
-                    avg_integrity=("_integrity", "mean"),
-                    avg_collapse_probability=("_collapse", "mean"),
-                    avg_empirical_coverage=("_coverage", "mean"),
-                )
-                .reset_index()
-                .rename(columns={verdict_col: "verdict"})
-            )
-            seat_denominator = float(comparison_df["_seats"].sum()) if comparison_df["_seats"].sum() > 0 else np.nan
-            verdict_summary_df["seat_share"] = verdict_summary_df["seats"] / seat_denominator if not pd.isna(seat_denominator) else np.nan
-
-        comparison_export = comparison_df.copy()
-        comparison_export["grid_selected_year"] = int(selected_year)
-        comparison_export["grid_source_state"] = grid_state_label
-        comparison_export["grid_is_full_9k_allocation"] = bool(is_full_grid)
-        comparison_export["countries_scored_selected_year"] = int(countries_scored)
-        comparison_export["displayed_rows_selected_year"] = int(row_count)
-        comparison_export["zero_seat_diagnostic_rows_selected_year"] = int(displayed_zero_seat_rows + hidden_zero_seat_rows)
-        comparison_export["weighted_integrity_selected_year"] = weighted_integrity
-        comparison_export["weighted_collapse_probability_selected_year"] = weighted_collapse
-        comparison_export["weighted_friction_selected_year"] = weighted_friction
-        comparison_export["average_empirical_coverage_selected_year"] = avg_coverage
-        comparison_export["raw_trust_survey_coverage_selected_year"] = trust_coverage
-        comparison_export["trust_prior_fallback_coverage_selected_year"] = trust_prior_coverage
-        comparison_export["wgi_coverage_selected_year"] = wgi_coverage
-        comparison_export["vdem_coverage_selected_year"] = vdem_coverage
-        comparison_export["missing_raw_trust_rows_selected_year"] = int(missing_trust)
-        comparison_export["missing_wgi_rows_selected_year"] = int(missing_wgi)
-        comparison_export["missing_vdem_rows_selected_year"] = int(missing_vdem)
-        comparison_export["trust_prior_rows_selected_year"] = int(trust_prior_mask.sum())
-        comparison_export["missing_trust_prior_rows_selected_year"] = int(missing_trust_prior)
-        comparison_export["seat_total_selected_year"] = int(total_seats)
-        _verdict_seat_totals = verdict_seats.to_dict() if isinstance(verdict_seats, pd.Series) else {}
-        comparison_export["verdict_seats_sanctuary_selected_year"] = int(_verdict_seat_totals.get("SANCTUARY", 0) or 0)
-        comparison_export["verdict_seats_threshold_selected_year"] = int(_verdict_seat_totals.get("THRESHOLD", 0) or 0)
-        comparison_export["verdict_seats_asylum_selected_year"] = int(_verdict_seat_totals.get("ASYLUM", 0) or 0)
-        comparison_export["trust_prior_interpretation_note"] = (
-            "Trust prior coverage is fallback/model continuity coverage, not observed survey coverage. "
-            "Use raw_trust_survey_coverage_selected_year for observed survey availability."
-        )
-        comparison_export["coverage_warning"] = (
-            "Full selected-year 9k allocation." if is_full_grid
-            else "Partial or filtered selected-year subset; use active-seat interpretation."
-        )
-        comparison_export["recommended_interpretation"] = np.where(
-            comparison_export["_high_impact_node"],
-            "High-impact governance-risk node: high allocation plus low integrity or high collapse pressure.",
-            "Read with selected-year coverage diagnostics and Sydney Protocol overlay."
-        )
-        comparison_export["sydney_protocol_overlay"] = "mirror_not_throne; anti_capture; non_divinization; appealability; transparency; fail_closed_if_guardrails_break"
-        comparison_export = apply_world_lens_diagnostic_alignment(comparison_export)
-        comparison_export = _sanitize_world_lens_receipt_text(comparison_export)
-        comparison_export["app_version"] = APP_VERSION
-        comparison_export["module_alignment_note"] = (
-            "Evidence Lab empirical scoring feeds World Lens. Scenario-text diagnostics from Mirror Check are carried as explicit not-assessed scope fields unless policy text is supplied."
-        )
-
-        focus_iso3 = str(st.session_state.get("aletheia_synced_iso3") or "").strip().upper()
-        focus_country_name = str(st.session_state.get("aletheia_synced_country_name") or "").strip()
-        focus_country_available = bool(
-            focus_iso3
-            and "iso3" in comparison_df.columns
-            and comparison_df["iso3"].astype(str).str.upper().eq(focus_iso3).any()
-        )
-        focus_row = comparison_df[comparison_df["iso3"].astype(str).str.upper().eq(focus_iso3)].copy() if focus_country_available else pd.DataFrame()
-
-        if focus_iso3:
-            if focus_country_available:
-                _focus_label = (
-                    focus_row["_country_name"].iloc[0]
-                    if "_country_name" in focus_row.columns and not focus_row.empty
-                    else focus_country_name
-                )
-                st.info(f"Focus country from Empirical Explorer: **{_focus_label} · {focus_iso3} · {int(selected_year)}**. Global metrics remain full selected-year metrics; the country is surfaced as focus/context, not used as a Grid filter.")
-            else:
-                st.warning(
-                    f"Focus country **{focus_country_name or focus_iso3} · {focus_iso3}** is not available in the active Global Grid rows for {int(selected_year)}. "
-                    "Choose a year where the country exists or rebuild the master."
-                )
-
-        view_tabs = st.tabs([
-            "Overview",
-            "Allocation",
-            "Verdicts",
-            "Integrity & Collapse",
-            "Comparisons",
-            "Trust & Sources",
-            "Coverage",
-            "Country-Year Detail",
-            "Report Packet",
-        ])
-
-        with view_tabs[0]:
-            st.markdown("### Selected-year overview")
-            o1, o2, o3 = st.columns(3)
-            o1.metric("Scored country-year rows", f"{row_count:,}")
-            o2.metric("Countries in selected year", f"{countries_scored:,}")
-            o3.metric("Rows excluded / diagnostic", f"{excluded_rows:,}")
-
-            st.markdown(f"### {allocation_heading}")
-            s1, s2, s3 = st.columns(3)
-            with s1:
-                metric_card("YES / Support", f"{signal.get('yes', np.nan):,.0f} seats", f"{signal.get('yes_pct', np.nan):.1%} of {signal_denominator_label}")
-            with s2:
-                metric_card("REVIEW", f"{signal.get('review', np.nan):,.0f} seats", f"{signal.get('review_pct', np.nan):.1%} of {signal_denominator_label}")
-            with s3:
-                metric_card("BLOCK", f"{signal.get('block', np.nan):,.0f} seats", f"{signal.get('block_pct', np.nan):.1%} of {signal_denominator_label}")
-
-            st.write(
-                "High allocation plus low integrity or high collapse pressure indicates a high-impact governance-risk node. "
-                "Low empirical coverage should reduce interpretive confidence. Verdict categories are protocol interpretations, "
-                "not legal or political determinations."
-            )
-
-        with view_tabs[1]:
-            st.markdown("### Selected-year seat allocation" if is_full_grid else "### Active selected-year seat allocation")
-            top_n = grid_source.head(25).copy()
-            label_col = "iso3" if "iso3" in top_n.columns else "country"
-            fig = go.Figure(go.Bar(x=top_n[label_col], y=top_n["seats_9k"]))
-            fig.update_layout(template="plotly_white", title=(f"Top 25 country-level 9k allocations · {selected_year}" if is_full_grid else f"Top active selected-year seat allocations · {selected_year}"), height=430, margin=dict(l=10, r=10, t=55, b=10))
-            st.plotly_chart(fig, use_container_width=True)
-            st.caption("Showing the top 25 countries by seats. The full table is in Country-Year Detail. Partial years may not add to 9,000.")
-
-        with view_tabs[2]:
-            st.markdown("### Internal taxonomy distribution")
-            if not verdict_seats.empty:
-                verdict_df = verdict_seats.reset_index()
-                verdict_df.columns = ["internal_taxonomy_label", "Seats"]
-                verdict_df["empirical_pattern_display"] = verdict_df["internal_taxonomy_label"].apply(_world_lens_taxonomy_label)
-                verdict_df = verdict_df[["empirical_pattern_display", "internal_taxonomy_label", "Seats"]]
-                fig = go.Figure(go.Bar(x=verdict_df["empirical_pattern_display"], y=verdict_df["Seats"]))
-                fig.update_layout(template="plotly_white", title="Seat distribution by internal taxonomy", height=430, margin=dict(l=10, r=10, t=55, b=10))
-                st.plotly_chart(fig, use_container_width=True)
-                st.dataframe(_world_lens_ui_table_df(verdict_df), use_container_width=True, hide_index=True)
-            else:
-                st.info("No internal taxonomy column is available for this selected year.")
-
-        with view_tabs[3]:
-            st.markdown("### Integrity and collapse")
-            c1, c2, c3 = st.columns(3)
-            c1.metric(f"Weighted {metric_scope_word} integrity", "—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
-            c2.metric(f"Weighted {metric_scope_word} friction", "—" if pd.isna(weighted_friction) else f"{weighted_friction:.3f}")
-            c3.metric(f"Weighted {metric_scope_word} collapse pressure", "—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
-            if integrity_col in grid_source.columns and collapse_col in grid_source.columns:
-                scatter_df = grid_source.copy()
-                scatter_df["_integrity"] = _numeric_series(integrity_col)
-                scatter_df["_collapse"] = _numeric_series(collapse_col)
-                fig = go.Figure(
-                    go.Scatter(
-                        x=scatter_df["_integrity"],
-                        y=scatter_df["_collapse"],
-                        mode="markers",
-                        marker={"size": np.maximum(pd.to_numeric(scatter_df.get("seats_9k"), errors="coerce").fillna(1), 1) ** 0.5},
-                        text=scatter_df.get("_hover_label", scatter_df.get("iso3", pd.Series("", index=scatter_df.index))),
-                        hovertemplate="%{text}<br>Integrity: %{x:.3f}<br>Collapse pressure: %{y:.3f}<extra></extra>",
+                ].sort_values(["_trust_delta_from_neutral", "_seats"], ascending=[False, False]).head(rank_limit)
+                if trust_material.empty:
+                    st.info("No trust/allocation sensitivity watchlist rows are available in this selected-year view.")
+                else:
+                    trust_out = _comparison_display(trust_material, include_reason=True)
+                    if "_trust_delta_from_neutral" in trust_material.columns:
+                        trust_out["trust_delta_from_neutral"] = trust_material["_trust_delta_from_neutral"].round(3).values
+                    st.dataframe(trust_out, use_container_width=True, hide_index=True)
+    
+            with view_tabs[5]:
+                st.markdown("### Trust and source comparisons")
+    
+                st.markdown("#### Trust vs democracy")
+                trust_axis_options = []
+                if "_trust_raw" in comparison_df.columns and comparison_df["_trust_raw"].notna().any():
+                    trust_axis_options.append(("Raw trust survey", "_trust_raw"))
+                if "_trust_prior" in comparison_df.columns and comparison_df["_trust_prior"].notna().any():
+                    trust_axis_options.append(("Trust prior", "_trust_prior"))
+                if trust_axis_options and comparison_df["_vdem_democracy"].notna().any():
+                    trust_label = st.radio(
+                        "Trust signal",
+                        [label for label, _ in trust_axis_options],
+                        horizontal=True,
+                        key=f"trust_scatter_signal_{selected_year}",
                     )
-                )
-                fig.update_layout(template="plotly_white", title=f"Integrity vs collapse pressure · {selected_year}", xaxis_title="Integrity", yaxis_title="Collapse pressure", height=480, margin=dict(l=10, r=10, t=55, b=10))
-                st.plotly_chart(fig, use_container_width=True)
-            else:
-                st.info("Integrity/collapse columns are not available for this selected year.")
-
-        with view_tabs[4]:
-            st.markdown("### Important comparison views")
-            st.caption(
-                "These rankings use the active selected-year Grid source. Partial years remain diagnostic subsets, "
-                "not full global allocations."
-            )
-
-            rank_limit = st.slider("Rows per comparison table", 5, 30, 10, 1, key=f"grid_pass2_rank_limit_{selected_year}")
-
-            c_high, c_low = st.columns(2)
-            with c_high:
-                st.markdown("#### Highest integrity rows")
-                high_integrity = comparison_df.dropna(subset=["_integrity"]).sort_values("_integrity", ascending=False).head(rank_limit)
-                st.dataframe(_world_lens_ui_table_df(_comparison_display(high_integrity)), use_container_width=True, hide_index=True)
-            with c_low:
-                st.markdown("#### Lowest integrity rows")
-                low_integrity = comparison_df.dropna(subset=["_integrity"]).sort_values("_integrity", ascending=True).head(rank_limit)
-                st.dataframe(_world_lens_ui_table_df(_comparison_display(low_integrity)), use_container_width=True, hide_index=True)
-
-            c_collapse, c_seats = st.columns(2)
-            with c_collapse:
-                st.markdown("#### Highest collapse-risk rows")
-                high_collapse = comparison_df.dropna(subset=["_collapse"]).sort_values("_collapse", ascending=False).head(rank_limit)
-                st.dataframe(_world_lens_ui_table_df(_comparison_display(high_collapse)), use_container_width=True, hide_index=True)
-            with c_seats:
-                st.markdown("#### Largest selected-year seat counts")
-                largest_seats = comparison_df.sort_values("_seats", ascending=False).head(rank_limit)
-                st.dataframe(_world_lens_ui_table_df(_comparison_display(largest_seats)), use_container_width=True, hide_index=True)
-
-            st.markdown("#### High-impact risk rows")
-            st.write(
-                "High allocation plus low integrity or high collapse pressure indicates a high-impact governance-risk node. "
-                "This is a protocol risk signal, not a legal or political determination."
-            )
-            high_impact = comparison_df[comparison_df["_high_impact_node"]].sort_values(["_seats", "_collapse"], ascending=[False, False]).head(max(rank_limit, 10))
-            if high_impact.empty:
-                st.info("No high-impact risk rows were found by the selected-year rule.")
-            else:
-                st.dataframe(_world_lens_ui_table_df(_comparison_display(high_impact, include_reason=True)), use_container_width=True, hide_index=True)
-
-            st.markdown("#### Largest seats among low-integrity or high-collapse rows")
-            risk_alloc = comparison_df[comparison_df["_low_integrity"] | comparison_df["_high_collapse"]].sort_values("_seats", ascending=False).head(rank_limit)
-            if risk_alloc.empty:
-                st.info("No low-integrity or high-collapse rows are available in this selected-year view.")
-            else:
-                st.dataframe(_world_lens_ui_table_df(_comparison_display(risk_alloc, include_reason=True)), use_container_width=True, hide_index=True)
-
-            st.markdown("#### Trust / seat sensitivity watchlist")
-            neutral_trust_prior_view = (
-                comparison_df["_trust_prior"].notna().any()
-                and comparison_df["_trust_delta_from_neutral"].fillna(0).max() < 0.001
-            )
-            raw_trust_missing_view = not comparison_df["_trust_raw"].notna().any()
-            if neutral_trust_prior_view and raw_trust_missing_view:
-                st.caption(
-                    "In this selected year, raw trust is missing and trust prior is neutral/default for the active rows. "
-                    "This watchlist mainly reflects allocation size and rows near scoring thresholds, not observed trust movement."
-                )
-            else:
-                st.caption(
-                    "This first pass uses a proxy: trust prior far from neutral 0.500, larger allocation, or rows near review thresholds. "
-                    "A later exact version can recompute counterfactual scores with trust fixed at 0.500."
-                )
-            trust_material = comparison_df[
-                comparison_df["_trust_prior"].notna()
-                & (
-                    comparison_df["_trust_delta_from_neutral"].ge(0.10)
-                    | comparison_df["_large_allocation"]
-                    | comparison_df["_integrity"].between(0.45, 0.60, inclusive="both")
-                    | comparison_df["_collapse"].between(0.30, 0.45, inclusive="both")
-                )
-            ].sort_values(["_trust_delta_from_neutral", "_seats"], ascending=[False, False]).head(rank_limit)
-            if trust_material.empty:
-                st.info("No trust/allocation sensitivity watchlist rows are available in this selected-year view.")
-            else:
-                trust_out = _comparison_display(trust_material, include_reason=True)
-                if "_trust_delta_from_neutral" in trust_material.columns:
-                    trust_out["trust_delta_from_neutral"] = trust_material["_trust_delta_from_neutral"].round(3).values
-                st.dataframe(trust_out, use_container_width=True, hide_index=True)
-
-        with view_tabs[5]:
-            st.markdown("### Trust and source comparisons")
-
-            st.markdown("#### Trust vs democracy")
-            trust_axis_options = []
-            if "_trust_raw" in comparison_df.columns and comparison_df["_trust_raw"].notna().any():
-                trust_axis_options.append(("Raw trust survey", "_trust_raw"))
-            if "_trust_prior" in comparison_df.columns and comparison_df["_trust_prior"].notna().any():
-                trust_axis_options.append(("Trust prior", "_trust_prior"))
-            if trust_axis_options and comparison_df["_vdem_democracy"].notna().any():
-                trust_label = st.radio(
-                    "Trust signal",
-                    [label for label, _ in trust_axis_options],
-                    horizontal=True,
-                    key=f"trust_scatter_signal_{selected_year}",
-                )
-                trust_col_plot = dict(trust_axis_options)[trust_label]
-                scatter_df = comparison_df.dropna(subset=[trust_col_plot, "_vdem_democracy"]).copy()
-                fig = go.Figure(
-                    go.Scatter(
-                        x=scatter_df["_vdem_democracy"],
-                        y=scatter_df[trust_col_plot],
-                        mode="markers",
-                        marker={"size": np.maximum(scatter_df["_seats"].fillna(1), 1) ** 0.5},
-                        text=scatter_df.get("_hover_label", scatter_df.get("iso3", pd.Series("", index=scatter_df.index))),
-                        hovertemplate="%{text}<br>V-Dem democracy: %{x:.3f}<br>Trust: %{y:.3f}<extra></extra>",
-                    )
-                )
-                fig.update_layout(template="plotly_white", title=f"{trust_label} vs V-Dem democracy · {selected_year}", xaxis_title="V-Dem democracy", yaxis_title=trust_label, height=470, margin=dict(l=10, r=10, t=55, b=10))
-                st.plotly_chart(fig, use_container_width=True)
-            else:
-                st.info("Trust vs democracy needs V-Dem democracy plus raw trust or trust prior values.")
-
-            st.markdown("#### WGI vs V-Dem")
-            if comparison_df["_wgi_composite"].notna().any() and comparison_df["_vdem_democracy"].notna().any():
-                scatter_df = comparison_df.dropna(subset=["_wgi_composite", "_vdem_democracy"]).copy()
-                fig = go.Figure(
-                    go.Scatter(
-                        x=scatter_df["_wgi_composite"],
-                        y=scatter_df["_vdem_democracy"],
-                        mode="markers",
-                        marker={"size": np.maximum(scatter_df["_seats"].fillna(1), 1) ** 0.5},
-                        text=scatter_df.get("_hover_label", scatter_df.get("iso3", pd.Series("", index=scatter_df.index))),
-                        hovertemplate="%{text}<br>Available WGI mean: %{x:.3f}<br>V-Dem democracy: %{y:.3f}<extra></extra>",
-                    )
-                )
-                fig.update_layout(template="plotly_white", title=f"Available WGI mean vs V-Dem democracy · {selected_year}", xaxis_title="Available WGI mean", yaxis_title="V-Dem democracy", height=470, margin=dict(l=10, r=10, t=55, b=10))
-                st.plotly_chart(fig, use_container_width=True)
-            else:
-                st.info(
-                    "Available WGI mean vs V-Dem comparison is inactive because one or both source families are missing in the active selected-year rows."
-                )
-
-            st.markdown("#### Coverage gaps by country/year")
-            coverage_gaps = comparison_df.sort_values(["_coverage_gap_count", "_coverage", "_seats"], ascending=[False, True, False]).head(30)
-            gap_cols = [
-                "_country_name", "iso3", "year", "_allocation_role", "_coverage", "_missing_raw_trust", "_missing_trust_prior",
-                "_missing_wgi", "_missing_vdem", "_coverage_gap_count", "_seats",
-            ]
-            gap_cols = [c for c in gap_cols if c in coverage_gaps.columns]
-            gap_out = coverage_gaps[gap_cols].rename(columns={
-                "_coverage": "empirical_coverage",
-                "_missing_raw_trust": "missing_raw_trust",
-                "_missing_trust_prior": "missing_trust_prior",
-                "_missing_wgi": "missing_wgi",
-                "_missing_vdem": "missing_vdem",
-                "_coverage_gap_count": "coverage_gap_count",
-                "_seats": "seats",
-            })
-            if "empirical_coverage" in gap_out.columns:
-                gap_out["empirical_coverage"] = pd.to_numeric(gap_out["empirical_coverage"], errors="coerce").round(3)
-            if "seats" in gap_out.columns:
-                gap_out["seats"] = pd.to_numeric(gap_out["seats"], errors="coerce").fillna(0).astype(int)
-            st.dataframe(gap_out, use_container_width=True, hide_index=True)
-
-        with view_tabs[6]:
-            st.markdown("### Coverage checks")
-            d1, d2, d3, d4 = st.columns(4)
-            d1.metric("Allocated country rows", f"{countries_scored:,}")
-            d2.metric("Zero-seat diagnostic rows", f"{displayed_zero_seat_rows:,}" + (f" shown · {hidden_zero_seat_rows:,} hidden" if hidden_zero_seat_rows else ""))
-            d3.metric("Missing raw trust", f"{missing_trust:,}")
-            d4.metric("Missing WGI", f"{missing_wgi:,}")
-            d5, d6, d7 = st.columns(3)
-            d5.metric("Missing V-Dem", f"{missing_vdem:,}")
-            d6.metric("Trust prior rows", f"{int(trust_prior_mask.sum()):,}")
-            d7.metric("Missing trust prior", f"{missing_trust_prior:,}")
-            st.warning(
-                "Coverage reflects available empirical fields among the active selected-year rows after current filters. Missing sources are treated as neutral/default "
-                "where applicable and should be considered diagnostic, not evidence of absence. Trust values are survey-year "
-                "dependent and may be unavailable for many country-years."
-            )
-            coverage_df = pd.DataFrame([
-                {"Source": "Trust raw survey", "Rows present": int(trust_mask.sum()), "Rows missing": missing_trust, "Coverage": trust_coverage},
-                {"Source": "Trust prior", "Rows present": int(trust_prior_mask.sum()), "Rows missing": missing_trust_prior, "Coverage": trust_prior_coverage},
-                {"Source": "WGI", "Rows present": int(wgi_mask.sum()), "Rows missing": missing_wgi, "Coverage": wgi_coverage},
-                {"Source": "V-Dem", "Rows present": int(vdem_mask.sum()), "Rows missing": missing_vdem, "Coverage": vdem_coverage},
-            ])
-            coverage_display = coverage_df.copy()
-            coverage_display["Coverage"] = coverage_display["Coverage"].map(lambda x: "—" if pd.isna(x) else f"{x:.1%}")
-            st.dataframe(coverage_display, use_container_width=True, hide_index=True)
-
-            with st.expander("Trust source check", expanded=False):
-                trust_source_df = st.session_state.get("empirical_master_df")
-                if isinstance(trust_source_df, pd.DataFrame) and not trust_source_df.empty and "year" in trust_source_df.columns:
-                    trust_source_col = "wvs_generalized_trust" if "wvs_generalized_trust" in trust_source_df.columns else None
-                    if trust_source_col:
-                        _trust_years = pd.to_numeric(trust_source_df.loc[pd.to_numeric(trust_source_df[trust_source_col], errors="coerce").notna(), "year"], errors="coerce").dropna()
-                        _selected_trust_rows = trust_source_df[
-                            pd.to_numeric(trust_source_df.get("year"), errors="coerce").eq(int(selected_year))
-                            & pd.to_numeric(trust_source_df[trust_source_col], errors="coerce").notna()
-                        ]
-                        td1, td2, td3 = st.columns(3)
-                        td1.metric("Raw trust rows in master", f"{int(len(_trust_years)):,}")
-                        td2.metric("Raw trust year range", "—" if _trust_years.empty else f"{int(_trust_years.min())}–{int(_trust_years.max())}")
-                        td3.metric("Raw trust rows for selected year", f"{int(len(_selected_trust_rows)):,}")
-                        st.caption(
-                            "If selected-year raw trust is 0 while trust prior is 100%, ALETHEIA is using neutral/default trust priors for that year. "
-                            "This is allowed, but it should reduce interpretive confidence."
+                    trust_col_plot = dict(trust_axis_options)[trust_label]
+                    scatter_df = comparison_df.dropna(subset=[trust_col_plot, "_vdem_democracy"]).copy()
+                    fig = go.Figure(
+                        go.Scatter(
+                            x=scatter_df["_vdem_democracy"],
+                            y=scatter_df[trust_col_plot],
+                            mode="markers",
+                            marker={"size": np.maximum(scatter_df["_seats"].fillna(1), 1) ** 0.5},
+                            text=scatter_df.get("_hover_label", scatter_df.get("iso3", pd.Series("", index=scatter_df.index))),
+                            hovertemplate="%{text}<br>V-Dem democracy: %{x:.3f}<br>Trust: %{y:.3f}<extra></extra>",
                         )
+                    )
+                    fig.update_layout(template="plotly_white", title=f"{trust_label} vs V-Dem democracy · {selected_year}", xaxis_title="V-Dem democracy", yaxis_title=trust_label, height=470, margin=dict(l=10, r=10, t=55, b=10))
+                    st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.info("Trust vs democracy needs V-Dem democracy plus raw trust or trust prior values.")
+    
+                st.markdown("#### WGI vs V-Dem")
+                if comparison_df["_wgi_composite"].notna().any() and comparison_df["_vdem_democracy"].notna().any():
+                    scatter_df = comparison_df.dropna(subset=["_wgi_composite", "_vdem_democracy"]).copy()
+                    fig = go.Figure(
+                        go.Scatter(
+                            x=scatter_df["_wgi_composite"],
+                            y=scatter_df["_vdem_democracy"],
+                            mode="markers",
+                            marker={"size": np.maximum(scatter_df["_seats"].fillna(1), 1) ** 0.5},
+                            text=scatter_df.get("_hover_label", scatter_df.get("iso3", pd.Series("", index=scatter_df.index))),
+                            hovertemplate="%{text}<br>Available WGI mean: %{x:.3f}<br>V-Dem democracy: %{y:.3f}<extra></extra>",
+                        )
+                    )
+                    fig.update_layout(template="plotly_white", title=f"Available WGI mean vs V-Dem democracy · {selected_year}", xaxis_title="Available WGI mean", yaxis_title="V-Dem democracy", height=470, margin=dict(l=10, r=10, t=55, b=10))
+                    st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.info(
+                        "Available WGI mean vs V-Dem comparison is inactive because one or both source families are missing in the active selected-year rows."
+                    )
+    
+                st.markdown("#### Coverage gaps by country/year")
+                coverage_gaps = comparison_df.sort_values(["_coverage_gap_count", "_coverage", "_seats"], ascending=[False, True, False]).head(30)
+                gap_cols = [
+                    "_country_name", "iso3", "year", "_allocation_role", "_coverage", "_missing_raw_trust", "_missing_trust_prior",
+                    "_missing_wgi", "_missing_vdem", "_coverage_gap_count", "_seats",
+                ]
+                gap_cols = [c for c in gap_cols if c in coverage_gaps.columns]
+                gap_out = coverage_gaps[gap_cols].rename(columns={
+                    "_coverage": "empirical_coverage",
+                    "_missing_raw_trust": "missing_raw_trust",
+                    "_missing_trust_prior": "missing_trust_prior",
+                    "_missing_wgi": "missing_wgi",
+                    "_missing_vdem": "missing_vdem",
+                    "_coverage_gap_count": "coverage_gap_count",
+                    "_seats": "seats",
+                })
+                if "empirical_coverage" in gap_out.columns:
+                    gap_out["empirical_coverage"] = pd.to_numeric(gap_out["empirical_coverage"], errors="coerce").round(3)
+                if "seats" in gap_out.columns:
+                    gap_out["seats"] = pd.to_numeric(gap_out["seats"], errors="coerce").fillna(0).astype(int)
+                st.dataframe(gap_out, use_container_width=True, hide_index=True)
+    
+            with view_tabs[6]:
+                st.markdown("### Coverage checks")
+                d1, d2, d3, d4 = st.columns(4)
+                d1.metric("Allocated country rows", f"{countries_scored:,}")
+                d2.metric("Zero-seat diagnostic rows", f"{displayed_zero_seat_rows:,}" + (f" shown · {hidden_zero_seat_rows:,} hidden" if hidden_zero_seat_rows else ""))
+                d3.metric("Missing raw trust", f"{missing_trust:,}")
+                d4.metric("Missing WGI", f"{missing_wgi:,}")
+                d5, d6, d7 = st.columns(3)
+                d5.metric("Missing V-Dem", f"{missing_vdem:,}")
+                d6.metric("Trust prior rows", f"{int(trust_prior_mask.sum()):,}")
+                d7.metric("Missing trust prior", f"{missing_trust_prior:,}")
+                st.warning(
+                    "Coverage reflects available empirical fields among the active selected-year rows after current filters. Missing sources are treated as neutral/default "
+                    "where applicable and should be considered diagnostic, not evidence of absence. Trust values are survey-year "
+                    "dependent and may be unavailable for many country-years."
+                )
+                coverage_df = pd.DataFrame([
+                    {"Source": "Trust raw survey", "Rows present": int(trust_mask.sum()), "Rows missing": missing_trust, "Coverage": trust_coverage},
+                    {"Source": "Trust prior", "Rows present": int(trust_prior_mask.sum()), "Rows missing": missing_trust_prior, "Coverage": trust_prior_coverage},
+                    {"Source": "WGI", "Rows present": int(wgi_mask.sum()), "Rows missing": missing_wgi, "Coverage": wgi_coverage},
+                    {"Source": "V-Dem", "Rows present": int(vdem_mask.sum()), "Rows missing": missing_vdem, "Coverage": vdem_coverage},
+                ])
+                coverage_display = coverage_df.copy()
+                coverage_display["Coverage"] = coverage_display["Coverage"].map(lambda x: "—" if pd.isna(x) else f"{x:.1%}")
+                st.dataframe(coverage_display, use_container_width=True, hide_index=True)
+    
+                with st.expander("Trust source check", expanded=False):
+                    trust_source_df = st.session_state.get("empirical_master_df")
+                    if isinstance(trust_source_df, pd.DataFrame) and not trust_source_df.empty and "year" in trust_source_df.columns:
+                        trust_source_col = "wvs_generalized_trust" if "wvs_generalized_trust" in trust_source_df.columns else None
+                        if trust_source_col:
+                            _trust_years = pd.to_numeric(trust_source_df.loc[pd.to_numeric(trust_source_df[trust_source_col], errors="coerce").notna(), "year"], errors="coerce").dropna()
+                            _selected_trust_rows = trust_source_df[
+                                pd.to_numeric(trust_source_df.get("year"), errors="coerce").eq(int(selected_year))
+                                & pd.to_numeric(trust_source_df[trust_source_col], errors="coerce").notna()
+                            ]
+                            td1, td2, td3 = st.columns(3)
+                            td1.metric("Raw trust rows in master", f"{int(len(_trust_years)):,}")
+                            td2.metric("Raw trust year range", "—" if _trust_years.empty else f"{int(_trust_years.min())}–{int(_trust_years.max())}")
+                            td3.metric("Raw trust rows for selected year", f"{int(len(_selected_trust_rows)):,}")
+                            st.caption(
+                                "If selected-year raw trust is 0 while trust prior is 100%, ALETHEIA is using neutral/default trust priors for that year. "
+                                "This is allowed, but it should reduce interpretive confidence."
+                            )
+                        else:
+                            st.info("No raw WVS/OWID trust column is present in the active data table.")
                     else:
-                        st.info("No raw WVS/OWID trust column is present in the active data table.")
-                else:
-                    st.info("No active empirical table is available for trust-source checks in this session.")
-
-        with view_tabs[7]:
-            st.markdown("### Country-year detail")
-            curated_cols = [
-                "country", "iso3", "year", "population", "population_share", "seats_9k",
-                verdict_col, integrity_col, friction_col, collapse_col,
-                coverage_col, "empirical_identity_valid",
-                "wgi_voice_accountability", "wgi_political_stability", "wgi_government_effectiveness",
-                "wgi_regulatory_quality", "wgi_rule_of_law", "wgi_control_corruption",
-                "vdem_executive_constraints", "vdem_democracy",
-                "wvs_generalized_trust", "empirical_trust_prior",
-            ]
-            curated_cols = [c for c in curated_cols if c and c in grid_source.columns]
-            display_df = grid_source[curated_cols].rename(columns={
-                "population_share": "population_share",
-                verdict_col: "verdict",
-                integrity_col: "integrity",
-                friction_col: "friction",
-                collapse_col: "collapse_probability",
-                coverage_col: "empirical_coverage" if coverage_col else coverage_col,
-                "empirical_identity_valid": "identity_valid",
-            })
-            if "population_share" in display_df.columns:
-                display_df["population_share"] = (pd.to_numeric(display_df["population_share"], errors="coerce") * 100).round(3).astype(str) + "%"
-            if focus_iso3 and "iso3" in display_df.columns:
-                _focus_mask = display_df["iso3"].astype(str).str.upper().eq(focus_iso3)
-                if _focus_mask.any():
-                    st.info(f"Focus country row shown first: **{focus_country_name or focus_iso3} · {focus_iso3} · {int(selected_year)}**")
-                    display_df = pd.concat([display_df.loc[_focus_mask], display_df.loc[~_focus_mask]], ignore_index=True)
-                else:
-                    st.warning(f"Focus country **{focus_country_name or focus_iso3} · {focus_iso3}** is not present in this selected-year detail table.")
-            st.dataframe(_world_lens_ui_table_df(display_df), use_container_width=True, hide_index=True, height=480)
-            csv_grid = grid_source.to_csv(index=False)
-            st.download_button(
-                "⬇️ Download selected-year World Lens CSV",
-                data=csv_grid,
-                file_name=f"aletheia_world_lens_{selected_year}.csv",
-                mime="text/csv",
-            )
-
-        empirical_grid_receipt_checks = []
-        receipt_ready = True
-
-        def _receipt_check(name: str, ok: bool, fix: str) -> None:
-            nonlocal_receipt_checks.append({"Check": name, "Status": "OK" if ok else "Needs action", "What to do": "—" if ok else fix})
-
-        nonlocal_receipt_checks = empirical_grid_receipt_checks
-        empirical_active_ok = isinstance(empirical_scored_raw, pd.DataFrame) and not empirical_scored_raw.empty
-        _receipt_check(
-            "Empirical scored table is active",
-            empirical_active_ok,
-            "Run Evidence Lab — Data Check first, then build and score the country-year table.",
-        )
-
-        empirical_year_match_ok = False
-        empirical_year_rows_count = 0
-        if empirical_active_ok and "year" in empirical_scored_raw.columns:
-            empirical_year_rows = empirical_scored_raw[
-                pd.to_numeric(empirical_scored_raw["year"], errors="coerce").eq(int(selected_year))
-            ]
-            empirical_year_rows_count = int(len(empirical_year_rows))
-            empirical_year_match_ok = empirical_year_rows_count > 0
-        _receipt_check(
-            "Empirical table has rows for the selected World Lens year",
-            empirical_year_match_ok,
-            f"Select a World Lens year present in Empirical Evidence, or rebuild the master so {selected_year} exists.",
-        )
-
-        grid_has_rows_ok = not grid_source.empty
-        _receipt_check(
-            "World Lens has active selected-year rows",
-            grid_has_rows_ok,
-            "Choose a populated evidence year, clear filters, or rebuild the master.",
-        )
-
-        full_or_acknowledged_ok = bool(is_full_grid or show_partial_years)
-        _receipt_check(
-            "World Lens interpretation is confirmed",
-            full_or_acknowledged_ok,
-            "Use a full 9k year, or turn on partial diagnostic years to acknowledge active-seat interpretation.",
-        )
-
-        seat_consistency_ok = bool(total_seats > 0 and (is_full_grid or not has_complete_seat_total or abs(total_seats - int(grid_source['seats_9k'].sum())) <= 0))
-        _receipt_check(
-            "Seat total is available",
-            seat_consistency_ok,
-            "Rebuild allocation or choose a year with positive seats.",
-        )
-
-        required_metric_ok = bool(not pd.isna(weighted_integrity) and not pd.isna(weighted_collapse))
-        _receipt_check(
-            "Weighted integrity/collapse metrics are available",
-            required_metric_ok,
-            "Rebuild or rerun scoring so integrity and collapse pressure columns are present.",
-        )
-
-        receipt_year_values = [
-            st.session_state.get("aletheia_empirical_country_year"),
-            st.session_state.get("aletheia_empirical_allocation_year"),
-            st.session_state.get("aletheia_global_grid_year"),
-        ]
-        receipt_year_values = [int(v) for v in receipt_year_values if v is not None and str(v).strip() not in ["", "None"]]
-        receipt_years_aligned = bool(receipt_year_values) and len(set(receipt_year_values)) == 1 and int(selected_year) in set(receipt_year_values)
-        _receipt_check(
-            "Evidence Lab and World Lens year controls match",
-            receipt_years_aligned,
-            "Select the same evidence year in Empirical Country-Year Explorer, Empirical Allocation, and World Lens.",
-        )
-        _receipt_check(
-            "Focus country is available in World Lens year",
-            (not focus_iso3) or focus_country_available,
-            "Choose a World Lens year where the selected Evidence Lab country exists, or choose another country in Evidence Lab Explorer.",
-        )
-
-        receipt_ready = all(row["Status"] == "OK" for row in empirical_grid_receipt_checks)
-
-        with view_tabs[8]:
-            st.markdown("### Report packet setup")
-            st.write(
-                "This tab prepares selected-year World Lens outputs for later human review/report drafting. "
-                "It does not issue final legal, political, or moral determinations."
-            )
-
-            rp1, rp2, rp3, rp4 = st.columns(4)
-            rp1.metric("Selected year", f"{selected_year}")
-            rp2.metric("World Lens state", "Full 9k evidence view" if is_full_grid else "Partial / active-seat evidence view")
-            rp3.metric("Weighted integrity", "—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
-            rp4.metric("Weighted collapse", "—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
-
-            st.markdown("#### Internal taxonomy distribution for reports")
-            if not verdict_summary_df.empty:
-                verdict_report = verdict_summary_df.copy()
-                for col in ["avg_integrity", "avg_collapse_probability", "avg_empirical_coverage", "seat_share"]:
-                    if col in verdict_report.columns:
-                        verdict_report[col] = pd.to_numeric(verdict_report[col], errors="coerce").round(3)
-                if "seats" in verdict_report.columns:
-                    verdict_report["seats"] = pd.to_numeric(verdict_report["seats"], errors="coerce").fillna(0).astype(int)
-                verdict_report = _world_lens_public_display_df(verdict_report)
-                st.dataframe(_world_lens_ui_table_df(verdict_report), use_container_width=True, hide_index=True)
-            else:
-                st.info("No internal taxonomy distribution is available for the active selected-year rows.")
-
-            st.markdown("#### Choose a country-year for report context")
-            if not comparison_df.empty:
-                report_options_df = comparison_df.copy()
-                report_options_df["_report_label"] = (
-                    report_options_df["_country_name"].fillna("").astype(str)
-                    + " · "
-                    + report_options_df.get("iso3", pd.Series("", index=report_options_df.index)).fillna("").astype(str)
-                    + " · "
-                    + report_options_df.get("year", pd.Series(selected_year, index=report_options_df.index)).astype(str)
-                )
-                report_filter_key = f"grid_report_country_year_filter_{selected_year}"
-                if focus_iso3 and focus_country_available and not st.session_state.get(report_filter_key):
-                    st.session_state[report_filter_key] = focus_iso3
-                report_search = st.text_input(
-                    "Filter report country-year",
-                    value=st.session_state.get(report_filter_key, ""),
-                    placeholder="Type country name or ISO code, e.g. Argentina or ARG",
-                    key=report_filter_key,
-                ).strip().lower()
-                if report_search:
-                    report_options_df = report_options_df[
-                        report_options_df["_report_label"].astype(str).str.lower().str.contains(report_search, na=False)
-                    ].copy()
-                if report_options_df.empty:
-                    st.info("No country-year matches that filter. Clear it or try another country name/ISO code.")
-                    st.stop()
-
-                report_options_df = report_options_df.sort_values(["_country_name", "iso3"], na_position="last")
-                report_labels = report_options_df["_report_label"].tolist()
-                focus_report_index = 0
-                if focus_iso3:
-                    _focus_label_matches = [
-                        i for i, label in enumerate(report_labels)
-                        if f"· {focus_iso3} ·" in str(label) or str(label).upper().find(focus_iso3) >= 0
-                    ]
-                    if _focus_label_matches:
-                        focus_report_index = _focus_label_matches[0]
-                selected_label = st.selectbox(
-                    "Country-year to export",
-                    report_labels,
-                    index=focus_report_index,
-                    key=f"grid_report_country_year_{selected_year}",
-                    help="Start typing inside the dropdown or use the filter above. Confirm this label before downloading the packet.",
-                )
-                selected_idx = report_options_df[report_options_df["_report_label"] == selected_label].index[0]
-                selected_row = comparison_df.loc[[selected_idx]]
-                st.info(f"Preparing review packet for: **{selected_label}**")
-                st.dataframe(_world_lens_ui_table_df(_comparison_display(selected_row, include_reason=True)), use_container_width=True, hide_index=True)
-
-                selected_row_export = _comparison_display(selected_row, include_reason=True)
-                selected_row_export["selected_year"] = int(selected_year)
-                selected_row_export["grid_source_state"] = grid_state_label
-                selected_row_export["weighted_global_integrity"] = weighted_integrity
-                selected_row_export["weighted_global_collapse_probability"] = weighted_collapse
-                selected_row_export["selected_year_seat_total"] = int(total_seats)
-                selected_row_export["full_9k_allocation"] = bool(is_full_grid)
-                selected_row_export["coverage_warning"] = (
-                    "Full selected-year allocation." if is_full_grid
-                    else "Partial selected-year subset; do not read as full global allocation."
-                )
-                selected_row_export["sydney_protocol_overlay"] = "mirror_not_throne; anti_capture; non_divinization; appealability; transparency; evidence_humility"
-                selected_row_export["recommended_interpretation"] = np.where(
-                    selected_row["_high_impact_node"].values,
-                    "High allocation plus low integrity or high collapse pressure indicates a high-impact governance-risk node.",
-                    "Read as a selected-year protocol interpretation with coverage caveats."
-                )
-                safe_label = re.sub(r"[^A-Za-z0-9_-]+", "_", str(selected_label)).strip("_")
+                        st.info("No active empirical table is available for trust-source checks in this session.")
+    
+            with view_tabs[7]:
+                st.markdown("### Country-year detail")
+                curated_cols = [
+                    "country", "iso3", "year", "population", "population_share", "seats_9k",
+                    verdict_col, integrity_col, friction_col, collapse_col,
+                    coverage_col, "empirical_identity_valid",
+                    "wgi_voice_accountability", "wgi_political_stability", "wgi_government_effectiveness",
+                    "wgi_regulatory_quality", "wgi_rule_of_law", "wgi_control_corruption",
+                    "vdem_executive_constraints", "vdem_democracy",
+                    "wvs_generalized_trust", "empirical_trust_prior",
+                ]
+                curated_cols = [c for c in curated_cols if c and c in grid_source.columns]
+                display_df = grid_source[curated_cols].rename(columns={
+                    "population_share": "population_share",
+                    verdict_col: "verdict",
+                    integrity_col: "integrity",
+                    friction_col: "friction",
+                    collapse_col: "collapse_probability",
+                    coverage_col: "empirical_coverage" if coverage_col else coverage_col,
+                    "empirical_identity_valid": "identity_valid",
+                })
+                if "population_share" in display_df.columns:
+                    display_df["population_share"] = (pd.to_numeric(display_df["population_share"], errors="coerce") * 100).round(3).astype(str) + "%"
+                if focus_iso3 and "iso3" in display_df.columns:
+                    _focus_mask = display_df["iso3"].astype(str).str.upper().eq(focus_iso3)
+                    if _focus_mask.any():
+                        st.info(f"Focus country row shown first: **{focus_country_name or focus_iso3} · {focus_iso3} · {int(selected_year)}**")
+                        display_df = pd.concat([display_df.loc[_focus_mask], display_df.loc[~_focus_mask]], ignore_index=True)
+                    else:
+                        st.warning(f"Focus country **{focus_country_name or focus_iso3} · {focus_iso3}** is not present in this selected-year detail table.")
+                st.dataframe(_world_lens_ui_table_df(display_df), use_container_width=True, hide_index=True, height=480)
+                csv_grid = grid_source.to_csv(index=False)
                 st.download_button(
-                    "⬇️ Download selected country-year review packet CSV",
-                    data=selected_row_export.to_csv(index=False),
-                    file_name=f"aletheia_world_lens_review_packet_{selected_year}_{safe_label}.csv",
+                    "⬇️ Download selected-year World Lens CSV",
+                    data=csv_grid,
+                    file_name=f"aletheia_world_lens_{selected_year}.csv",
                     mime="text/csv",
                 )
-
-            # Patch 183: visual-only World Lens receipt download framing; ZIP contents remain unchanged.
-            st.markdown(
-                """
-                <div class="receipt-sky-panel">
-                  <div class="receipt-kicker">World Lens report artifact</div>
-                  <div class="receipt-title">Complete World Lens receipt</div>
-                  <div class="receipt-body">Download a selected-year receipt ZIP with overview, coverage, internal taxonomy distribution, comparison tables, coverage gaps, active rows, and a markdown summary for human review.</div>
-                  <div class="receipt-boundary-strip">
-                    <span class="receipt-boundary-pill">Selected-year view</span>
-                    <span class="receipt-boundary-pill">Evidence alignment required</span>
-                    <span class="receipt-boundary-pill">Not a ranking</span>
-                    <span class="receipt-boundary-pill">Not policy authority</span>
-                  </div>
-                </div>
-                """,
-                unsafe_allow_html=True,
+    
+            empirical_grid_receipt_checks = []
+            receipt_ready = True
+    
+            def _receipt_check(name: str, ok: bool, fix: str) -> None:
+                nonlocal_receipt_checks.append({"Check": name, "Status": "OK" if ok else "Needs action", "What to do": "—" if ok else fix})
+    
+            nonlocal_receipt_checks = empirical_grid_receipt_checks
+            empirical_active_ok = isinstance(empirical_scored_raw, pd.DataFrame) and not empirical_scored_raw.empty
+            _receipt_check(
+                "Empirical scored table is active",
+                empirical_active_ok,
+                "Run Evidence Lab — Data Check first, then build and score the country-year table.",
             )
-
-            receipt_check_df = pd.DataFrame(empirical_grid_receipt_checks)
-            st.dataframe(receipt_check_df, use_container_width=True, hide_index=True)
-
-            if receipt_ready:
-                st.success("Receipt is ready. Evidence Lab and World Lens inputs match for this output.")
-                st.download_button(
-                    "⬇️ Download World Lens receipt ZIP",
-                    data=_build_world_lens_receipt_zip(),
-                    file_name=f"aletheia_world_lens_receipt_{selected_year}.zip",
-                    mime="application/zip",
-                    use_container_width=True,
-                )
-            else:
-                st.warning(
-                    "Receipt download is locked until Empirical Evidence and World Lens are aligned for the selected output. "
-                    "Follow the actions above, then rerun World Lens."
-                )
-
-            st.markdown("#### Comparison packet export")
-            export_cols = [
-                "_country_name", "country", "iso3", "year", verdict_col, "_seats", "_seat_rank", "_integrity_rank", "_collapse_rank",
-                "_integrity", "_collapse", "_friction", "_coverage", "_trust_raw", "_trust_prior",
-                "_wgi_composite", "_wgi_source_count", "_wgi_fields_used", "_vdem_democracy", "_missing_raw_trust", "_missing_wgi", "_missing_vdem",
-                "_large_allocation", "_low_integrity", "_high_collapse", "_high_impact_node",
-                "grid_selected_year", "grid_source_state", "grid_is_full_9k_allocation",
-                "countries_scored_selected_year", "displayed_rows_selected_year", "zero_seat_diagnostic_rows_selected_year",
-                "seat_total_selected_year",
-                "weighted_integrity_selected_year", "weighted_friction_selected_year", "weighted_collapse_probability_selected_year",
-                "average_empirical_coverage_selected_year",
-                "raw_trust_survey_coverage_selected_year", "trust_prior_fallback_coverage_selected_year",
-                "wgi_coverage_selected_year", "vdem_coverage_selected_year",
-                "missing_raw_trust_rows_selected_year", "missing_wgi_rows_selected_year", "missing_vdem_rows_selected_year",
-                "trust_prior_rows_selected_year", "missing_trust_prior_rows_selected_year",
-                "verdict_seats_sanctuary_selected_year", "verdict_seats_threshold_selected_year", "verdict_seats_asylum_selected_year",
-                "trust_prior_interpretation_note",
-                "coverage_warning", "sydney_protocol_overlay", "recommended_interpretation",
+    
+            empirical_year_match_ok = False
+            empirical_year_rows_count = 0
+            if empirical_active_ok and "year" in empirical_scored_raw.columns:
+                empirical_year_rows = empirical_scored_raw[
+                    pd.to_numeric(empirical_scored_raw["year"], errors="coerce").eq(int(selected_year))
+                ]
+                empirical_year_rows_count = int(len(empirical_year_rows))
+                empirical_year_match_ok = empirical_year_rows_count > 0
+            _receipt_check(
+                "Empirical table has rows for the selected World Lens year",
+                empirical_year_match_ok,
+                f"Select a World Lens year present in Empirical Evidence, or rebuild the master so {selected_year} exists.",
+            )
+    
+            grid_has_rows_ok = not grid_source.empty
+            _receipt_check(
+                "World Lens has active selected-year rows",
+                grid_has_rows_ok,
+                "Choose a populated evidence year, clear filters, or rebuild the master.",
+            )
+    
+            full_or_acknowledged_ok = bool(is_full_grid or show_partial_years)
+            _receipt_check(
+                "World Lens interpretation is confirmed",
+                full_or_acknowledged_ok,
+                "Use a full 9k year, or turn on partial diagnostic years to acknowledge active-seat interpretation.",
+            )
+    
+            seat_consistency_ok = bool(total_seats > 0 and (is_full_grid or not has_complete_seat_total or abs(total_seats - int(grid_source['seats_9k'].sum())) <= 0))
+            _receipt_check(
+                "Seat total is available",
+                seat_consistency_ok,
+                "Rebuild allocation or choose a year with positive seats.",
+            )
+    
+            required_metric_ok = bool(not pd.isna(weighted_integrity) and not pd.isna(weighted_collapse))
+            _receipt_check(
+                "Weighted integrity/collapse metrics are available",
+                required_metric_ok,
+                "Rebuild or rerun scoring so integrity and collapse pressure columns are present.",
+            )
+    
+            receipt_year_values = [
+                st.session_state.get("aletheia_empirical_country_year"),
+                st.session_state.get("aletheia_empirical_allocation_year"),
+                st.session_state.get("aletheia_global_grid_year"),
             ]
-            export_cols = [c for c in export_cols if c in comparison_export.columns]
-            st.download_button(
-                "⬇️ Download selected-year World Lens review CSV",
-                data=comparison_export[export_cols].to_csv(index=False),
-                file_name=f"aletheia_world_lens_comparison_{selected_year}.csv",
-                mime="text/csv",
+            receipt_year_values = [int(v) for v in receipt_year_values if v is not None and str(v).strip() not in ["", "None"]]
+            receipt_years_aligned = bool(receipt_year_values) and len(set(receipt_year_values)) == 1 and int(selected_year) in set(receipt_year_values)
+            _receipt_check(
+                "Evidence Lab and World Lens year controls match",
+                receipt_years_aligned,
+                "Select the same evidence year in Empirical Country-Year Explorer, Empirical Allocation, and World Lens.",
             )
-            st.caption(
-                "This export is the bridge to World Lens report packets: selected year, weighted metrics, internal taxonomy context, "
-                "rank/share, evidence fields, coverage warnings, Sydney Protocol overlay, and review-oriented interpretation. "
-                "Patch 72.16 adds the visible overview/coverage card values as explicit summary columns. "
-                "Trust prior coverage is fallback/model continuity coverage, not observed raw survey coverage."
+            _receipt_check(
+                "Focus country is available in World Lens year",
+                (not focus_iso3) or focus_country_available,
+                "Choose a World Lens year where the selected Evidence Lab country exists, or choose another country in Evidence Lab Explorer.",
             )
-
-        with st.expander("Method and interpretation note", expanded=False):
-            st.write(
-                "The selected-year World Lens view uses uploaded empirical country-year rows with valid identity data. "
-                "Seats are allocated within each year by population share so the selected year should sum to 9,000 seats before optional filters. "
-                "Regional/income aggregates and diagnostic rows are excluded from the denominator. "
-                "Weighted metrics use active selected-year seats when available, with population as a fallback; sparse or filtered views are subset diagnostics rather than full global claims. "
-                "Internal taxonomy labels and comparison rankings are protocol interpretations, not legal or political determinations."
-            )
-
-    elif grid_mode == "Prototype region brackets":
-        allocation_heading = "Prototype verdict signal"
-        update_protocol_state(grid_basis="Prototype region brackets", last_update_source="World Lens", synthetic_demo_active=True)
-        st.caption("World Lens source state: **Prototype region brackets**. This is a concept fallback, not empirical country-year evidence.")
-        st.info(
-            "Using the prototype regional brackets because no valid empirical country-year dataset is active. This fallback can still help with conceptual framing, but it is not a real-world country-year allocation."
-        )
-        slots = allocate_slots()
-        grid_df = pd.DataFrame([
-            {"Region": region, "Share": pct, "Seats": slots[region]} for region, pct in DEMOGRAPHIC_BRACKETS.items()
-        ])
-
-        g1, g2, g3 = st.columns(3)
-        g1.metric("Total 9k seats", f"{TOTAL_9K:,}")
-        g2.metric("Allocation basis", "Prototype brackets")
-        g3.metric("Seat ownership", "None")
-
-        fallback_tabs = st.tabs(["Overview", "Allocation", "Verdicts", "Integrity & Collapse", "Coverage", "Country-Year Detail"])
-        with fallback_tabs[0]:
-            st.markdown("### Prototype overview")
-            st.write(
-                "Prototype brackets are a conceptual demographic mirror only. They do not represent country-year evidence, "
-                "weighted global integrity, collapse pressure, WGI/V-Dem/trust coverage, or real-world allocation."
-            )
-            st.info("Run or upload valid country-year data in Evidence Lab to activate full World Lens.")
-            st.markdown(f"### {allocation_heading}")
-            p1, p2, p3 = st.columns(3)
-            with p1:
-                metric_card("YES / Support", "—", "Requires empirical selected-year rows.")
-            with p2:
-                metric_card("REVIEW", "—", "Requires empirical selected-year rows.")
-            with p3:
-                metric_card("BLOCK", "—", "Requires empirical selected-year rows.")
-
-        with fallback_tabs[1]:
-            st.markdown("### Prototype population mirror")
-            fig = go.Figure(go.Bar(x=grid_df["Region"], y=grid_df["Seats"]))
-            fig.update_layout(template="plotly_white", title="Prototype population mirror", height=430, margin=dict(l=10, r=10, t=55, b=10))
-            st.plotly_chart(fig, use_container_width=True)
-            grid_display = grid_df.copy()
-            grid_display["Share"] = (grid_display["Share"] * 100).round(1).astype(str) + "%"
-            st.dataframe(grid_display, use_container_width=True, hide_index=True, height=320)
-
-        with fallback_tabs[2]:
-            st.markdown("### Internal taxonomy distribution")
-            st.info("Internal taxonomy distribution is unavailable in prototype-bracket mode because no empirical country-year taxonomy table is active.")
-
-        with fallback_tabs[3]:
-            st.markdown("### Integrity and collapse")
-            st.info("Weighted integrity, friction, and collapse pressure need selected-year data rows.")
-
-        with fallback_tabs[4]:
-            st.markdown("### Coverage checks")
-            coverage_placeholder = pd.DataFrame([
-                {"Source": "Trust", "Rows present": 0, "Rows missing": 0, "Coverage": "Not applicable"},
-                {"Source": "WGI", "Rows present": 0, "Rows missing": 0, "Coverage": "Not applicable"},
-                {"Source": "V-Dem", "Rows present": 0, "Rows missing": 0, "Coverage": "Not applicable"},
-            ])
-            st.dataframe(coverage_placeholder, use_container_width=True, hide_index=True)
-            st.warning(
-                "Coverage checks are meaningful only for empirical country-year data. Prototype brackets should not be read as source coverage."
-            )
-
-        with fallback_tabs[5]:
-            st.markdown("### Country-year detail")
-            st.info("No country-year detail is active. Use Evidence Lab to upload or build the table, then return to World Lens.")
-
-        with st.expander("Selection safety summary", expanded=True):
-            st.write(
-                "Safe 9k language requires random selection, demographic-proportional lanes, auditability, no campaigning, no seat ownership, and periodic redraw. "
-                "The grid reflects representation logic. It is not a real vote or mandate."
-            )
-
-    else:
-        update_protocol_state(grid_basis="Inactive / no valid data", last_update_source="World Lens", synthetic_demo_active=False)
-        st.caption("World Lens source state: **Inactive / no valid data**.")
-        if grid_mode == "Uploaded empirical country-year data":
-            st.warning(
-                "Uploaded empirical country-year data was selected, but no valid empirical Global Grid dataset is active. "
-                "Run or upload valid country-year data in Evidence Lab to activate full World Lens."
-            )
-        else:
-            st.warning(
-                "No empirical Global Grid is active and prototype regional brackets are disabled. "
-                "Run or upload valid country-year data in Evidence Lab to activate full World Lens."
-            )
-        inactive_tabs = st.tabs(["Overview", "Allocation", "Verdicts", "Integrity & Collapse", "Coverage", "Country-Year Detail"])
-        with inactive_tabs[0]:
-            st.markdown("### World Lens inactive")
-            st.write(
-                "This state intentionally avoids showing prototype regional brackets. The full Global Grid requires an active empirical "
-                "country-year table with valid identity, year, population, and 9k allocation fields."
-            )
-        with inactive_tabs[1]:
-            st.info("Seat allocation is unavailable until country-year data is active or prototype brackets are selected.")
-        with inactive_tabs[2]:
-            st.info("Internal taxonomy distribution is unavailable until empirical country-year taxonomy rows are active.")
-        with inactive_tabs[3]:
-            st.info("Weighted integrity and collapse pressure are unavailable until selected-year data rows are active.")
-        with inactive_tabs[4]:
-            st.info("Trust, WGI, and V-Dem coverage checks are unavailable until selected-year data rows are active.")
-        with inactive_tabs[5]:
-            st.info("Country-year detail is unavailable until selected-year data rows are active.")
-
-with tab_chat:
-    st.subheader("Mirror Check")
-    st.caption(
-        "Review one bounded idea, policy, proposal, or AI output. "
-        "The result is a mirror reading for human review, not a decision."
-    )
-    st.info(
-        "Boundary: SANCTUARY / THRESHOLD / ASYLUM are internal review labels. "
-        "Metrics are directional pressure readings, not approval, rejection, certification, or final truth."
-    )
-
-    with st.expander("Module guidance and protocol context", expanded=False):
-        render_shared_protocol_state_notice("Mirror Check")
-        render_audit_module_integrity_panel()
-        render_module_page_template_intro(
-            st,
-            ModulePageTemplateCopy(
-                module_name="Mirror Check",
-                purpose=(
-                    "Review one document, idea, proposal, policy text, or AI output for pressure signals, "
-                    "missing safeguards, review needs, and repair questions. ALETHEIA is English-first; "
-                    "Dutch/Nederlands examples may be used for batch testing, not as a general app-wide "
-                    "language-compatibility claim."
-                ),
-                looks_for=(
-                    "Care alignment: whether the idea protects people, dignity, consent, and non-harm.",
-                    "Power language: whether soft wording hides control, coercion, ranking, punishment, or authority drift.",
-                    "Evidence and reviewability: whether reasons, sources, and assumptions can be inspected by another human reviewer.",
-                    "Appeal and repair: whether affected people have explanation, contestation, correction, and human-review paths.",
-                    "Failure-mode pressure: authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, or no-appeal automation.",
-                    "Witness receipt: whether a local review record is useful for later human inspection.",
-                ),
-                safe_first_path=(
-                    "Paste one short item, not a whole archive of mixed cases.",
-                    "Use optional demos only for orientation; they never run by themselves.",
-                    "Read the protocol-adjusted label as a bounded signal, not a decision.",
-                    "Inspect observed reasons, values, and repair questions before relying on the reading.",
-                    "Download a receipt only when you want a local review record.",
-                ),
-                input_guidance="Use this module for one bounded text item. Use the batch-testing panel only for deliberate local test batches.",
-                result_guidance="Treat the result as a mirror reading of pressure and review needs, not as approval, rejection, certification, or final truth.",
-                observed_reasons_guidance="Check which signals drove the reading before trusting any label, metric, or repair suggestion.",
-                repair_questions_guidance="Use repair questions to strengthen evidence, safeguards, appeal paths, and human review.",
-                receipt_guidance="Mirror Check receipts are local review artifacts held by the user; they are not public-ledger records, official determinations, or authorization.",
-            ),
-        )
-
-    if "chat_audit_history" not in st.session_state:
-        st.session_state.chat_audit_history = []
-
-    if "audit_chat_query" not in st.session_state:
-        st.session_state.audit_chat_query = ""
-    if "audit_chat_input_source" not in st.session_state:
-        st.session_state.audit_chat_input_source = "EMPTY_INPUT"
-
-    def mirror_active_input_signature(text_value: str) -> str:
-        """Stable signature for the currently typed Mirror Check input.
-
-        Patch 72.2: prevents an old assessment/receipt from staying active after
-        the user edits the input box. History may remain, but a changed input
-        requires an explicit new Review idea click.
-        """
-        return hashlib.sha256((text_value or "").strip().encode("utf-8")).hexdigest()
-
-    def run_chat_audit_from_text(text_value: str, raw_text_value=None, input_source: str = "USER_INPUT", invisibility_report=None, store_history: bool = True, force_local: bool = False):
-        raw_text_value = text_value if raw_text_value is None else raw_text_value
-        scan = governance_scan(text_value, force_local=force_local)
-        scan = apply_capture_feature_override(text_value, scan)
-        semantic_pressure_scan = scan_semantic_pressure(text_value, governance_context=True)
-        semantic_pressure_payload = semantic_pressure_scan.to_dict()
-        scan["semantic_pressure_scan"] = semantic_pressure_payload
-        scan["semantic_pressure_report"] = format_semantic_pressure_report(semantic_pressure_scan)
-        features = build_features_from_scan(scan)
-        np.random.seed(deterministic_seed_from_payload(text_value, features, weights, ego_tolerance, divine_floor, steps, n_agents, "chat"))
-        sim = simulate(
-            features,
-            weights,
-            ego_tolerance=ego_tolerance,
-            divine_floor=divine_floor,
-            steps=steps,
-            n_agents=n_agents,
-        )
-        if scan.get("capture_override"):
-            sim["stability"] = min(float(sim.get("stability", 1.0)), 0.39)
-            sim["trust_index"] = min(float(sim.get("trust_index", 1.0)), 0.62)
-            sim["alignment"] = min(float(sim.get("alignment", 1.0)), 0.58)
-            sim["ego"] = max(float(sim.get("ego", 0.0)), 0.28)
-            sim["collapse_risk"] = True
-            sim["structural_capture_risk"] = max(float(sim.get("structural_capture_risk", 0.0)), 0.88)
-            sim["structural_risk"] = max(float(sim.get("structural_risk", 0.0)), 0.88)
-            sim["grievance_pressure"] = max(float(sim.get("grievance_pressure", 0.0)), 0.35)
-            sim["safeguard_gap"] = max(float(sim.get("safeguard_gap", 0.0)), 0.72)
-            sim["simulation_friction_floor"] = max(float(sim.get("simulation_friction_floor", 0.0)), 0.35)
-        report = full_report(sim)
-        report["cognitive_resilience_diagnostics"] = evaluate_cognitive_resilience(
-            text_value, governance_result=scan, features=features
-        )
-        report = apply_cognitive_resilience_to_metrics(
-            report, report.get("cognitive_resilience_diagnostics")
-        )
-        ethics_diagnostics = evaluate_ethics(text_value, governance_result=scan, features=features)
-        # Patch 22: make visible Mirror Check metrics reflect contextual ethics pressure.
-        # Protocol hard overrides still take precedence; this only calibrates the numeric layer.
-        sim, report = apply_ethics_to_metrics(sim, report, ethics_diagnostics)
-        report["ethics_diagnostics"] = ethics_diagnostics
-        report["semantic_pressure_scan"] = semantic_pressure_payload
-        report["semantic_pressure_report"] = scan["semantic_pressure_report"]
-        if force_local:
-            judgment, source = local_governance_judgment(text_value, scan, sim, report), "Local batch scan"
-        else:
-            judgment, source = llm_governance_judgment(text_value, scan, sim, report)
-        judgment = positive_cr_baseline_stabilizer(judgment, report)
-
-        # Patch 75: Mirror Check must not display or receipt ASYLUM / High
-        # readings with THRESHOLD-style trust/alignment/ego metrics. The cap is
-        # display/receipt calibration only; it does not create authority or
-        # enforcement. Raw pre-ethics values remain in the receipt when present.
-        mirror_verdict = str(judgment.get("verdict", "THRESHOLD")).upper()
-        mirror_risk = str(judgment.get("corruption_risk", judgment.get("guardrail_risk", "Medium")))
-        mirror_label = normalize_asylum_protocol_label(
-            judgment.get("stress_label", mirror_verdict),
-            verdict=mirror_verdict,
-            risk=mirror_risk,
-        )
-        judgment["stress_label"] = mirror_label
-        sim = enforce_asylum_metric_consistency(
-            sim,
-            verdict=mirror_verdict,
-            risk=mirror_risk,
-            protocol_label=mirror_label,
-        )
-        report = ensure_asylum_repair_questions(
-            report,
-            verdict=mirror_verdict,
-            risk=mirror_risk,
-            protocol_label=mirror_label,
-            scan=scan,
-        )
-
-        ai_static_context = build_ai_static_scan_protocol_context(
-            text_value,
-            source_module="Mirror Check",
-            primary_state=mirror_verdict,
-            primary_risk=mirror_risk,
-            primary_protocol_label=mirror_label,
-        )
-        report["ai_static_scan_context"] = ai_static_context
-        scan["ai_static_scan_context"] = ai_static_context
-
-        entry = {
-            "query": text_value,
-            "raw_query": raw_text_value,
-            "input_source": input_source,
-            "invisibility_report": invisibility_report,
-            "scan": scan,
-            "sim": sim,
-            "report": report,
-            "ethics_diagnostics": ethics_diagnostics,
-            "semantic_pressure_scan": semantic_pressure_payload,
-            "judgment": judgment,
-            "source": source,
-            "source_hits": source_conformance_hits(text_value),
-        }
-        if store_history:
-            st.session_state.chat_audit_history.insert(0, entry)
-        return entry
-
-    def build_mirror_receipt_for_entry(latest):
-        invisibility_note = latest.get("invisibility_report")
-        mirror_invisibility_applied = isinstance(invisibility_note, dict) and invisibility_note.get("invisibility_filter_applied", False)
-        mirror_receipt_report = dict(latest["report"] or {})
-        mirror_receipt_report["repair_questions"] = (
-            latest["judgment"].get("questions")
-            or mirror_receipt_report.get("repair_questions")
-            or []
-        )
-        if latest.get("ethics_diagnostics"):
-            mirror_receipt_report["ethics_diagnostics"] = latest["ethics_diagnostics"]
-            mirror_receipt_report["ethics_adjusted_integrity"] = min(
-                float(mirror_receipt_report.get("integrity", 1.0) or 1.0),
-                float(latest["ethics_diagnostics"].get("ethics_score", 1.0) or 1.0),
-            )
-        mirror_receipt = build_local_witness_receipt(
-            module="Mirror Check",
-            input_text=latest.get("raw_query", latest["query"]),
-            processed_text=latest["query"],
-            input_status=latest.get("input_source", "USER_INPUT"),
-            scan=latest["scan"],
-            sim=latest["sim"],
-            report=mirror_receipt_report,
-            verdict=latest["judgment"].get("verdict", "THRESHOLD"),
-            risk=latest["judgment"].get("corruption_risk", "Medium"),
-            protocol_label=latest["judgment"].get("stress_label", latest["judgment"].get("verdict", "THRESHOLD")),
-            invisibility_applied=mirror_invisibility_applied,
-            app_version=APP_VERSION,
-        )
-        return mirror_receipt
-
-    def run_mirror_batch_review(batch_items, *, apply_invisibility: bool, batch_label: str = "ideas"):
-        """Review a bounded Mirror Check batch and prepare one local zip archive."""
-        receipts = []
-        summaries = []
-        question_set_mode = is_witness_question_set(batch_items)
-        with st.spinner(f"Reviewing {len(batch_items)} {batch_label} and preparing local receipts..."):
-            for idx, raw_item in enumerate(batch_items, start=1):
-                processed_item = raw_item
-                invisibility_report = None
-                if apply_invisibility:
-                    invisibility_report = decouple_actor(raw_item)
-                    processed_item = invisibility_report.get("decoupled_text", raw_item)
-
-                # A batch of audit questions is a review tool, not one or more policy proposals.
-                # Keep risky terms visible for later human review without escalating the question itself.
-                if question_set_mode and is_witness_question_prompt(raw_item):
-                    receipt = build_local_question_prompt_receipt(
-                        module="Mirror Check",
-                        input_text=raw_item,
-                        processed_text=processed_item,
-                        invisibility_applied=bool(apply_invisibility),
-                        app_version=APP_VERSION,
-                    )
-                else:
-                    entry = run_chat_audit_from_text(
-                        processed_item,
-                        raw_text_value=raw_item,
-                        input_source="USER_INPUT",
-                        invisibility_report=invisibility_report,
-                        store_history=False,
-                        force_local=True,
-                    )
-                    receipt = build_mirror_receipt_for_entry(entry)
-                receipts.append(receipt)
-                verdict = receipt.get("verdict", {}) or {}
-                summaries.append({
-                    "#": idx,
-                    "State": verdict.get("protocol_adjusted_state"),
-                    "Risk": verdict.get("risk"),
-                    "Label": verdict.get("protocol_label"),
-                })
-        archive_bytes, batch_index = build_local_witness_batch_zip(
-            receipts, module="Mirror Check", app_version=APP_VERSION
-        )
-        st.session_state.audit_batch_archive_bytes = archive_bytes
-        st.session_state.audit_batch_index = batch_index
-        st.session_state.audit_batch_summary = summaries
-        st.session_state.audit_batch_count = len(receipts)
-        return receipts
-
-    # Mirror Check keeps the primary path visually dominant. Batch testing remains
-    # available on the side, but the first visible action is one bounded review.
-    normal_review_col, batch_testing_col = st.columns([0.68, 0.32], gap="large")
-
-    with normal_review_col:
-        st.markdown("### Review one bounded idea")
-        st.caption("Paste one bounded item. The tree scanner runs only after you press Review idea.")
-
-        with st.expander("Optional demo inputs", expanded=False):
-            st.caption("Demo inputs are fictional and opt-in. They load only when you click; they never run by themselves.")
-            demo_input_choice = st.selectbox(
-                "Demo input library",
-                [name for name, _ in DEMO_INPUT_FILES],
-                key="mirror_demo_input_library",
-            )
-            demo_input_map = dict(DEMO_INPUT_FILES)
-            if st.button("Load demo input", use_container_width=True, key="mirror_load_demo_input_button"):
-                demo_text = load_demo_input(demo_input_map[demo_input_choice])
-                st.session_state.audit_chat_query = demo_text
-                st.session_state.audit_demo_choice = demo_input_choice
-                st.session_state.audit_demo_loaded_text = demo_text
-                st.session_state.audit_chat_input_source = "DEMO_INPUT"
-                st.info("Demo input loaded. Click Review idea if you want ALETHEIA to analyze it.")
-
-            audit_demo_choice = st.selectbox("Mirror Check scenario examples", list(MIRROR_CHECK_DEMO_SCENARIOS.keys()), key="audit_demo_library")
-            if st.button("Load scenario demo", use_container_width=True, key="audit_load_demo_button"):
-                demo_text = MIRROR_CHECK_DEMO_SCENARIOS[audit_demo_choice]
-                st.session_state.audit_chat_query = demo_text
-                st.session_state.audit_demo_choice = audit_demo_choice
-                st.session_state.audit_demo_loaded_text = demo_text
-                st.session_state.audit_chat_input_source = "DEMO_INPUT"
-
-        chat_query = st.text_area(
-            "Write or paste the idea you want reviewed",
-            height=170,
-            key="audit_chat_query",
-        )
-        if "chat_audit_query" in st.session_state and "audit_chat_query" not in st.session_state:
-            st.session_state.audit_chat_query = st.session_state.chat_audit_query
-
-        loaded_audit_demo = st.session_state.get("audit_demo_loaded_text") or MIRROR_CHECK_DEMO_SCENARIOS.get(st.session_state.get("audit_demo_choice", ""), None)
-        if not chat_query.strip():
-            audit_input_status = "EMPTY_INPUT"
-            st.session_state.audit_chat_input_source = "EMPTY_INPUT"
-        elif st.session_state.get("audit_chat_input_source") == "DEMO_INPUT" and loaded_audit_demo is not None and chat_query == loaded_audit_demo:
-            audit_input_status = "DEMO_INPUT"
-        else:
-            audit_input_status = "USER_INPUT"
-            st.session_state.audit_chat_input_source = "USER_INPUT"
-
-        if audit_input_status == "EMPTY_INPUT":
-            st.caption("Add your own idea to begin. Demos are optional and never run by themselves.")
-        elif audit_input_status == "DEMO_INPUT":
-            st.caption("Demo mode is on. This reading is only an example.")
-        else:
-            st.caption("Your idea is ready. You are the source; ALETHEIA is the mirror.")
-
-        audit_apply_invisibility = st.checkbox(
-            "Invisibility Filter",
-            value=(audit_input_status == "USER_INPUT"),
-            key=f"audit_invisibility_filter_{audit_input_status}",
-            disabled=(audit_input_status == "EMPTY_INPUT"),
-            help="Remove names and titles before review. On by default for your own input.",
-        )
-        if audit_apply_invisibility and audit_input_status != "EMPTY_INPUT":
-            st.caption("Names and titles are removed before review. The pattern stays visible.")
-
-        c_run, c_clear = st.columns([1, 0.35])
-        with c_run:
-            run_chat = st.button("Review idea", type="primary", use_container_width=True)
-        with c_clear:
-            clear_chat = st.button("Clear results", use_container_width=True)
-
-    with batch_testing_col:
-        st.markdown("### Batch testing")
-        st.caption("Optional local test bench for lists. Keep closed unless you need batch receipts.")
-
-        # Batch testing is intentionally separate from the single Mirror Check / tree scanner flow.
-        # It opens on the right side after a user click, runs local-only batch scans, and writes a ZIP of receipts.
-        if "audit_batch_testing_open" not in st.session_state:
-            st.session_state.audit_batch_testing_open = False
-
-        if st.button("Batch Testing — up to 50 lines", use_container_width=True, key="audit_open_batch_testing_button"):
-            st.session_state.audit_batch_testing_open = not st.session_state.audit_batch_testing_open
-
-        if not st.session_state.audit_batch_testing_open:
-            st.info("Open Batch Testing when you want to upload or paste a list.")
-
-        if st.session_state.audit_batch_testing_open:
-            with st.container(border=True):
-                st.caption("Upload a .txt file or paste up to 50 lines. This bench stays separate from the tree scanner.")
-
-                if "audit_batch_upload_signature" not in st.session_state:
-                    st.session_state.audit_batch_upload_signature = ""
-                if "audit_batch_last_source" not in st.session_state:
-                    st.session_state.audit_batch_last_source = "EMPTY"
-
-                batch_source = st.radio(
-                    "Batch input source",
-                    ["Upload .txt", "Paste list"],
-                    horizontal=True,
-                    key="audit_batch_source_mode",
-                    help="Like Evidence Lab, uploaded files are staged first and only processed when you press Run Batch Testing.",
+    
+            receipt_ready = all(row["Status"] == "OK" for row in empirical_grid_receipt_checks)
+    
+            with view_tabs[8]:
+                st.markdown("### Report packet setup")
+                st.write(
+                    "This tab prepares selected-year World Lens outputs for later human review/report drafting. "
+                    "It does not issue final legal, political, or moral determinations."
                 )
-
-                batch_upload_text = ""
-                batch_manual_text = ""
-                batch_upload = None
-
-                if batch_source == "Upload .txt":
-                    batch_upload = st.file_uploader(
-                        "Upload .txt list for batch only",
-                        type=["txt"],
-                        key="audit_batch_txt_upload",
-                        help="Use one phrase per line, a numbered list, or --- between longer items.",
-                    )
-                    if batch_upload is not None:
-                        uploaded_batch_bytes = batch_upload.getvalue()
-                        batch_upload_text = uploaded_batch_bytes.decode("utf-8", errors="replace")
-                        upload_signature = hashlib.sha256(uploaded_batch_bytes + batch_upload.name.encode("utf-8", errors="replace")).hexdigest()
-                        if upload_signature != st.session_state.audit_batch_upload_signature:
-                            st.session_state.audit_batch_upload_signature = upload_signature
-                            st.session_state.audit_batch_last_source = f"UPLOAD:{batch_upload.name}"
-                            st.session_state.audit_batch_summary = []
-                            st.session_state.audit_batch_archive_bytes = None
-                            st.session_state.audit_batch_index = None
-                            st.session_state.audit_batch_count = 0
-                        st.caption(f"Staged {batch_upload.name}. Press Run Batch Testing to process it.")
-                        with st.expander("Preview uploaded batch text", expanded=False):
-                            st.text_area(
-                                "Uploaded text preview",
-                                value=batch_upload_text[:12000],
-                                height=180,
-                                disabled=True,
-                                key="audit_batch_upload_preview",
-                            )
-                    else:
-                        st.caption("Choose a .txt file, then press Run Batch Testing.")
+    
+                rp1, rp2, rp3, rp4 = st.columns(4)
+                rp1.metric("Selected year", f"{selected_year}")
+                rp2.metric("World Lens state", "Full 9k evidence view" if is_full_grid else "Partial / active-seat evidence view")
+                rp3.metric("Weighted integrity", "—" if pd.isna(weighted_integrity) else f"{weighted_integrity:.3f}")
+                rp4.metric("Weighted collapse", "—" if pd.isna(weighted_collapse) else f"{weighted_collapse:.3f}")
+    
+                st.markdown("#### Internal taxonomy distribution for reports")
+                if not verdict_summary_df.empty:
+                    verdict_report = verdict_summary_df.copy()
+                    for col in ["avg_integrity", "avg_collapse_probability", "avg_empirical_coverage", "seat_share"]:
+                        if col in verdict_report.columns:
+                            verdict_report[col] = pd.to_numeric(verdict_report[col], errors="coerce").round(3)
+                    if "seats" in verdict_report.columns:
+                        verdict_report["seats"] = pd.to_numeric(verdict_report["seats"], errors="coerce").fillna(0).astype(int)
+                    verdict_report = _world_lens_public_display_df(verdict_report)
+                    st.dataframe(_world_lens_ui_table_df(verdict_report), use_container_width=True, hide_index=True)
                 else:
-                    batch_manual_text = st.text_area(
-                        "Paste batch phrases or questions",
-                        height=220,
-                        key="audit_batch_manual_input",
-                        placeholder="1. Who can appeal this decision?\n2. Where is the human override?\n---\nA system cannot be questioned and has no appeal path.",
+                    st.info("No internal taxonomy distribution is available for the active selected-year rows.")
+    
+                st.markdown("#### Choose a country-year for report context")
+                if not comparison_df.empty:
+                    report_options_df = comparison_df.copy()
+                    report_options_df["_report_label"] = (
+                        report_options_df["_country_name"].fillna("").astype(str)
+                        + " · "
+                        + report_options_df.get("iso3", pd.Series("", index=report_options_df.index)).fillna("").astype(str)
+                        + " · "
+                        + report_options_df.get("year", pd.Series(selected_year, index=report_options_df.index)).astype(str)
                     )
-
-                batch_text = batch_upload_text if batch_source == "Upload .txt" else batch_manual_text
-                batch_items = parse_witness_batch_input(batch_text, max_items=MAX_BATCH_RECEIPTS)
-                batch_ready = bool(batch_items)
-                if batch_text.strip():
-                    question_set_ready = is_witness_question_set(batch_items)
-                    mode_note = " Question set mode will keep audit prompts as review tools." if question_set_ready else ""
-                    st.caption(f"{len(batch_items)} line(s) ready. Maximum: {MAX_BATCH_RECEIPTS}.{mode_note}")
-                else:
-                    st.caption("Batch Testing waits until you upload or paste a list.")
-
-                batch_apply_invisibility = st.checkbox(
-                    "Apply Invisibility Filter to batch",
-                    value=batch_ready,
-                    key="audit_batch_invisibility_filter",
-                    disabled=not batch_ready,
-                    help="Removes names and titles from each item before local review. Raw input hashes stay in each receipt.",
-                )
-                run_batch = st.button(
-                    "Run Batch Testing",
-                    type="primary",
-                    use_container_width=True,
-                    disabled=not batch_ready,
-                    key="audit_run_batch_button",
-                )
-                if run_batch:
-                    receipts = run_mirror_batch_review(
-                        batch_items,
-                        apply_invisibility=batch_apply_invisibility,
-                        batch_label="batch item(s)",
+                    report_filter_key = f"grid_report_country_year_filter_{selected_year}"
+                    if focus_iso3 and focus_country_available and not st.session_state.get(report_filter_key):
+                        st.session_state[report_filter_key] = focus_iso3
+                    report_search = st.text_input(
+                        "Filter report country-year",
+                        value=st.session_state.get(report_filter_key, ""),
+                        placeholder="Type country name or ISO code, e.g. Argentina or ARG",
+                        key=report_filter_key,
+                    ).strip().lower()
+                    if report_search:
+                        report_options_df = report_options_df[
+                            report_options_df["_report_label"].astype(str).str.lower().str.contains(report_search, na=False)
+                        ].copy()
+                    if report_options_df.empty:
+                        st.info("No country-year matches that filter. Clear it or try another country name/ISO code.")
+                        st.stop()
+    
+                    report_options_df = report_options_df.sort_values(["_country_name", "iso3"], na_position="last")
+                    report_labels = report_options_df["_report_label"].tolist()
+                    focus_report_index = 0
+                    if focus_iso3:
+                        _focus_label_matches = [
+                            i for i, label in enumerate(report_labels)
+                            if f"· {focus_iso3} ·" in str(label) or str(label).upper().find(focus_iso3) >= 0
+                        ]
+                        if _focus_label_matches:
+                            focus_report_index = _focus_label_matches[0]
+                    selected_label = st.selectbox(
+                        "Country-year to export",
+                        report_labels,
+                        index=focus_report_index,
+                        key=f"grid_report_country_year_{selected_year}",
+                        help="Start typing inside the dropdown or use the filter above. Confirm this label before downloading the packet.",
                     )
-                    st.success(f"Batch complete. {len(receipts)} local receipt(s) are ready to download.")
-
-                if st.session_state.get("audit_batch_summary"):
-                    batch_summary_df = pd.DataFrame(st.session_state.audit_batch_summary)
-                    batch_display_df = batch_summary_df.rename(columns={
-                        "State": "Type",
-                        "Risk": "Role",
-                        "Label": "Reading",
-                    })
-                    batch_display_df["Type"] = batch_display_df["Type"].replace({
-                        "QUESTION_PROMPT": "Question",
-                        "OUT_OF_SCOPE": "Needs context",
-                        "SANCTUARY": "Sanctuary",
-                        "THRESHOLD": "Threshold",
-                        "ASYLUM": "Asylum",
-                    })
-                    batch_display_df["Role"] = batch_display_df["Role"].replace({
-                        "Review Tool": "Review",
-                        "None": "Context",
-                    })
-                    batch_display_df["Reading"] = batch_display_df["Reading"].replace({
-                        "Audit Question / Review Tool": "Audit question",
-                        "Out-of-Scope / Needs Context": "Needs more context",
-                    })
-                    # Keep the narrow side panel readable: fold Role into Reading instead of hiding a third column.
-                    batch_display_df["Reading"] = batch_display_df.apply(
-                        lambda row: f"{row['Reading']} · {row['Role']}" if row.get("Role") else row["Reading"],
-                        axis=1,
+                    selected_idx = report_options_df[report_options_df["_report_label"] == selected_label].index[0]
+                    selected_row = comparison_df.loc[[selected_idx]]
+                    st.info(f"Preparing review packet for: **{selected_label}**")
+                    st.dataframe(_world_lens_ui_table_df(_comparison_display(selected_row, include_reason=True)), use_container_width=True, hide_index=True)
+    
+                    selected_row_export = _comparison_display(selected_row, include_reason=True)
+                    selected_row_export["selected_year"] = int(selected_year)
+                    selected_row_export["grid_source_state"] = grid_state_label
+                    selected_row_export["weighted_global_integrity"] = weighted_integrity
+                    selected_row_export["weighted_global_collapse_probability"] = weighted_collapse
+                    selected_row_export["selected_year_seat_total"] = int(total_seats)
+                    selected_row_export["full_9k_allocation"] = bool(is_full_grid)
+                    selected_row_export["coverage_warning"] = (
+                        "Full selected-year allocation." if is_full_grid
+                        else "Partial selected-year subset; do not read as full global allocation."
                     )
-                    batch_display_df = batch_display_df[["#", "Type", "Reading"]]
-                    st.dataframe(
-                        batch_display_df,
-                        use_container_width=True,
-                        hide_index=True,
-                        height=360,
-                        column_config={
-                            "#": st.column_config.NumberColumn("#", width="small"),
-                            "Type": st.column_config.TextColumn("Type", width="small"),
-                            "Reading": st.column_config.TextColumn("Reading", width="large"),
-                        },
+                    selected_row_export["sydney_protocol_overlay"] = "mirror_not_throne; anti_capture; non_divinization; appealability; transparency; evidence_humility"
+                    selected_row_export["recommended_interpretation"] = np.where(
+                        selected_row["_high_impact_node"].values,
+                        "High allocation plus low integrity or high collapse pressure indicates a high-impact governance-risk node.",
+                        "Read as a selected-year protocol interpretation with coverage caveats."
                     )
-                if st.session_state.get("audit_batch_archive_bytes"):
+                    safe_label = re.sub(r"[^A-Za-z0-9_-]+", "_", str(selected_label)).strip("_")
                     st.download_button(
-                        "⬇️ Download full batch archive (.zip)",
-                        data=st.session_state.audit_batch_archive_bytes,
-                        file_name="aletheia_mirror_check_batch_witness_receipts.zip",
+                        "⬇️ Download selected country-year review packet CSV",
+                        data=selected_row_export.to_csv(index=False),
+                        file_name=f"aletheia_world_lens_review_packet_{selected_year}_{safe_label}.csv",
+                        mime="text/csv",
+                    )
+    
+                # Patch 183: visual-only World Lens receipt download framing; ZIP contents remain unchanged.
+                st.markdown(
+                    """
+                    <div class="receipt-sky-panel">
+                      <div class="receipt-kicker">World Lens report artifact</div>
+                      <div class="receipt-title">Complete World Lens receipt</div>
+                      <div class="receipt-body">Download a selected-year receipt ZIP with overview, coverage, internal taxonomy distribution, comparison tables, coverage gaps, active rows, and a markdown summary for human review.</div>
+                      <div class="receipt-boundary-strip">
+                        <span class="receipt-boundary-pill">Selected-year view</span>
+                        <span class="receipt-boundary-pill">Evidence alignment required</span>
+                        <span class="receipt-boundary-pill">Not a ranking</span>
+                        <span class="receipt-boundary-pill">Not policy authority</span>
+                      </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+    
+                receipt_check_df = pd.DataFrame(empirical_grid_receipt_checks)
+                st.dataframe(receipt_check_df, use_container_width=True, hide_index=True)
+    
+                if receipt_ready:
+                    st.success("Receipt is ready. Evidence Lab and World Lens inputs match for this output.")
+                    st.download_button(
+                        "⬇️ Download World Lens receipt ZIP",
+                        data=_build_world_lens_receipt_zip(),
+                        file_name=f"aletheia_world_lens_receipt_{selected_year}.zip",
                         mime="application/zip",
                         use_container_width=True,
                     )
-
-    selected_chat_context = "Waiting for your input" if audit_input_status == "EMPTY_INPUT" else ((chat_query[:120] + "…") if len(chat_query) > 120 else chat_query)
-    update_protocol_state(selected_context=selected_chat_context, last_update_source="Mirror Check")
-
-    if clear_chat:
-        st.session_state.chat_audit_history = []
-        st.rerun()
-
-    if run_chat:
-        if not st.session_state.audit_chat_query.strip():
-            st.warning("Add your own idea or load a demo before review. ALETHEIA does not run examples by itself.")
-        else:
-            audit_analysis_query = st.session_state.audit_chat_query
-            audit_invisibility_report = None
-            if audit_apply_invisibility and audit_input_status != "EMPTY_INPUT":
-                audit_invisibility_report = decouple_actor(st.session_state.audit_chat_query)
-                audit_analysis_query = audit_invisibility_report.get("decoupled_text", st.session_state.audit_chat_query)
-            with st.spinner("Reading the idea and preparing the review..."):
-                run_chat_audit_from_text(
-                    audit_analysis_query,
-                    raw_text_value=st.session_state.audit_chat_query,
-                    input_source=audit_input_status,
-                    invisibility_report=audit_invisibility_report,
+                else:
+                    st.warning(
+                        "Receipt download is locked until Empirical Evidence and World Lens are aligned for the selected output. "
+                        "Follow the actions above, then rerun World Lens."
+                    )
+    
+                st.markdown("#### Comparison packet export")
+                export_cols = [
+                    "_country_name", "country", "iso3", "year", verdict_col, "_seats", "_seat_rank", "_integrity_rank", "_collapse_rank",
+                    "_integrity", "_collapse", "_friction", "_coverage", "_trust_raw", "_trust_prior",
+                    "_wgi_composite", "_wgi_source_count", "_wgi_fields_used", "_vdem_democracy", "_missing_raw_trust", "_missing_wgi", "_missing_vdem",
+                    "_large_allocation", "_low_integrity", "_high_collapse", "_high_impact_node",
+                    "grid_selected_year", "grid_source_state", "grid_is_full_9k_allocation",
+                    "countries_scored_selected_year", "displayed_rows_selected_year", "zero_seat_diagnostic_rows_selected_year",
+                    "seat_total_selected_year",
+                    "weighted_integrity_selected_year", "weighted_friction_selected_year", "weighted_collapse_probability_selected_year",
+                    "average_empirical_coverage_selected_year",
+                    "raw_trust_survey_coverage_selected_year", "trust_prior_fallback_coverage_selected_year",
+                    "wgi_coverage_selected_year", "vdem_coverage_selected_year",
+                    "missing_raw_trust_rows_selected_year", "missing_wgi_rows_selected_year", "missing_vdem_rows_selected_year",
+                    "trust_prior_rows_selected_year", "missing_trust_prior_rows_selected_year",
+                    "verdict_seats_sanctuary_selected_year", "verdict_seats_threshold_selected_year", "verdict_seats_asylum_selected_year",
+                    "trust_prior_interpretation_note",
+                    "coverage_warning", "sydney_protocol_overlay", "recommended_interpretation",
+                ]
+                export_cols = [c for c in export_cols if c in comparison_export.columns]
+                st.download_button(
+                    "⬇️ Download selected-year World Lens review CSV",
+                    data=comparison_export[export_cols].to_csv(index=False),
+                    file_name=f"aletheia_world_lens_comparison_{selected_year}.csv",
+                    mime="text/csv",
                 )
-                st.session_state.audit_active_input_signature = mirror_active_input_signature(st.session_state.audit_chat_query)
-                update_protocol_state(selected_context=(audit_analysis_query[:120] + "…") if len(audit_analysis_query) > 120 else audit_analysis_query, last_update_source="Mirror Check")
-            st.rerun()
-
-    st.markdown("---")
-
-    # Latest result appears immediately after the question box, but only when
-    # it still belongs to the currently visible input.
-    if st.session_state.chat_audit_history:
-        latest = st.session_state.chat_audit_history[0]
-        latest_raw_query = str(latest.get("raw_query", latest.get("query", "")) or "")
-        current_input_signature = mirror_active_input_signature(chat_query)
-        latest_input_signature = mirror_active_input_signature(latest_raw_query)
-        active_input_signature = st.session_state.get("audit_active_input_signature", latest_input_signature)
-        latest_matches_current_input = (
-            bool(chat_query.strip())
-            and current_input_signature == latest_input_signature
-            and active_input_signature == latest_input_signature
-        )
-
-        if latest_matches_current_input:
-            st.markdown("### Latest reading")
-            if latest.get("input_source") == "DEMO_INPUT":
-                st.caption("Demo mode was used. This reading is only an example.")
-            invisibility_note = latest.get("invisibility_report")
-            if isinstance(invisibility_note, dict) and invisibility_note.get("invisibility_filter_applied"):
-                st.caption("Names and titles were removed before this review.")
-            render_pulse_tree(
-                display_score_from_judgment(latest["report"], latest["judgment"]),
-                latest["sim"]["ego"],
-                latest["sim"]["alignment"],
-                title="Mirror Reading Tree",
-                state_override=str(latest.get("judgment", {}).get("verdict", "THRESHOLD")).upper(),
-                mode="Mirror Check",
+                st.caption(
+                    "This export is the bridge to World Lens report packets: selected year, weighted metrics, internal taxonomy context, "
+                    "rank/share, evidence fields, coverage warnings, Sydney Protocol overlay, and review-oriented interpretation. "
+                    "Patch 72.16 adds the visible overview/coverage card values as explicit summary columns. "
+                    "Trust prior coverage is fallback/model continuity coverage, not observed raw survey coverage."
+                )
+    
+            with st.expander("Method and interpretation note", expanded=False):
+                st.write(
+                    "The selected-year World Lens view uses uploaded empirical country-year rows with valid identity data. "
+                    "Seats are allocated within each year by population share so the selected year should sum to 9,000 seats before optional filters. "
+                    "Regional/income aggregates and diagnostic rows are excluded from the denominator. "
+                    "Weighted metrics use active selected-year seats when available, with population as a fallback; sparse or filtered views are subset diagnostics rather than full global claims. "
+                    "Internal taxonomy labels and comparison rankings are protocol interpretations, not legal or political determinations."
+                )
+    
+        elif grid_mode == "Prototype region brackets":
+            allocation_heading = "Prototype verdict signal"
+            update_protocol_state(grid_basis="Prototype region brackets", last_update_source="World Lens", synthetic_demo_active=True)
+            st.caption("World Lens source state: **Prototype region brackets**. This is a concept fallback, not empirical country-year evidence.")
+            st.info(
+                "Using the prototype regional brackets because no valid empirical country-year dataset is active. This fallback can still help with conceptual framing, but it is not a real-world country-year allocation."
             )
-            render_chat_judgment(latest["judgment"], latest["source"], latest["report"], latest.get("sim"), latest.get("scan"))
-
-            semantic_payload = latest.get("semantic_pressure_scan")
-            if not semantic_payload and isinstance(latest.get("report"), dict):
-                semantic_payload = latest["report"].get("semantic_pressure_scan")
-            if not semantic_payload and isinstance(latest.get("scan"), dict):
-                semantic_payload = latest["scan"].get("semantic_pressure_scan")
-            if not semantic_payload:
-                semantic_payload = latest.get("query", "")
-            render_semantic_pressure_panel(semantic_payload, source_label="Mirror Check", expanded=False, panel_key="mirror_check_latest_semantic_pressure")
-
-            st.markdown("### Mirror Check support context")
-            support_columns = st.columns(2, gap="large")
-            source_hits = latest.get("source_hits", source_conformance_hits(latest["query"]))
-            with support_columns[0]:
-                with st.expander("Source match hits", expanded=False):
-                    if source_hits:
-                        st.dataframe(pd.DataFrame(source_hits), use_container_width=True, hide_index=True)
-                    else:
-                        st.caption("No named source concept matched this idea in the current detector set.")
-
-            ai_static_context = latest.get("report", {}).get("ai_static_scan_context") if isinstance(latest.get("report"), dict) else None
-            # Patch 182: AI static scan context uses the same sky/gold expander treatment as other aligned review panels.
-            with support_columns[1]:
-                with st.expander("AI static scan context — subordinate to Mirror Check", expanded=False):
-                    if isinstance(ai_static_context, dict):
-                        st.caption(ai_static_context.get("notice"))
-                        st.markdown(
-                            f"**Protocol context signal:** {ai_static_context.get('protocol_context_state', ai_static_context.get('ai_static_scan_state'))} · "
-                            f"{ai_static_context.get('protocol_context_risk', ai_static_context.get('ai_static_scan_risk'))} · "
-                            f"{ai_static_context.get('finding_count')} AI-specific finding(s)"
-                        )
-                        if ai_static_context.get("alignment_note"):
-                            st.caption(ai_static_context.get("alignment_note"))
-                        st.caption(
-                            f"Raw AI static scan only: {ai_static_context.get('ai_static_scan_state')} · "
-                            f"{ai_static_context.get('ai_static_scan_risk')}"
-                        )
-                        if ai_static_context.get("findings"):
-                            st.dataframe(pd.DataFrame(ai_static_context.get("findings")), use_container_width=True, hide_index=True)
-                    else:
-                        st.caption("No subordinate AI static scan context was attached to this Mirror Check reading.")
-
-            # Patch 183: visual-only Mirror Check receipt framing; receipt payload and schema remain unchanged.
-            st.markdown(
-                """
-                <div class="receipt-sky-panel">
-                  <div class="receipt-kicker">Mirror Check artifact</div>
-                  <div class="receipt-title">Local witness receipt</div>
-                  <div class="receipt-body">Creates a receipt you hold. It is not published, synced, enforced, or treated as authority.</div>
-                  <div class="receipt-boundary-strip">
-                    <span class="receipt-boundary-pill">User-held text file</span>
-                    <span class="receipt-boundary-pill">No central storage</span>
-                    <span class="receipt-boundary-pill">No public ledger</span>
-                    <span class="receipt-boundary-pill">Human review required</span>
-                  </div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-            st.caption("Download text only. This visual card does not change the receipt content, schema, or authority boundary.")
-            mirror_receipt = build_mirror_receipt_for_entry(latest)
-            mirror_receipt_text = render_local_witness_receipt_text(mirror_receipt)
-            st.download_button(
-                "⬇️ Download receipt",
-                data=mirror_receipt_text,
-                file_name="aletheia_mirror_check_local_witness_receipt.txt",
-                mime="text/plain",
-                use_container_width=True,
-            )
-
-            with st.expander("Scanner features used for this reading"):
-                st.json(latest["scan"])
+            slots = allocate_slots()
+            grid_df = pd.DataFrame([
+                {"Region": region, "Share": pct, "Seats": slots[region]} for region, pct in DEMOGRAPHIC_BRACKETS.items()
+            ])
+    
+            g1, g2, g3 = st.columns(3)
+            g1.metric("Total 9k seats", f"{TOTAL_9K:,}")
+            g2.metric("Allocation basis", "Prototype brackets")
+            g3.metric("Seat ownership", "None")
+    
+            fallback_tabs = st.tabs(["Overview", "Allocation", "Verdicts", "Integrity & Collapse", "Coverage", "Country-Year Detail"])
+            with fallback_tabs[0]:
+                st.markdown("### Prototype overview")
+                st.write(
+                    "Prototype brackets are a conceptual demographic mirror only. They do not represent country-year evidence, "
+                    "weighted global integrity, collapse pressure, WGI/V-Dem/trust coverage, or real-world allocation."
+                )
+                st.info("Run or upload valid country-year data in Evidence Lab to activate full World Lens.")
+                st.markdown(f"### {allocation_heading}")
+                p1, p2, p3 = st.columns(3)
+                with p1:
+                    metric_card("YES / Support", "—", "Requires empirical selected-year rows.")
+                with p2:
+                    metric_card("REVIEW", "—", "Requires empirical selected-year rows.")
+                with p3:
+                    metric_card("BLOCK", "—", "Requires empirical selected-year rows.")
+    
+            with fallback_tabs[1]:
+                st.markdown("### Prototype population mirror")
+                fig = go.Figure(go.Bar(x=grid_df["Region"], y=grid_df["Seats"]))
+                fig.update_layout(template="plotly_white", title="Prototype population mirror", height=430, margin=dict(l=10, r=10, t=55, b=10))
+                st.plotly_chart(fig, use_container_width=True)
+                grid_display = grid_df.copy()
+                grid_display["Share"] = (grid_display["Share"] * 100).round(1).astype(str) + "%"
+                st.dataframe(grid_display, use_container_width=True, hide_index=True, height=320)
+    
+            with fallback_tabs[2]:
+                st.markdown("### Internal taxonomy distribution")
+                st.info("Internal taxonomy distribution is unavailable in prototype-bracket mode because no empirical country-year taxonomy table is active.")
+    
+            with fallback_tabs[3]:
+                st.markdown("### Integrity and collapse")
+                st.info("Weighted integrity, friction, and collapse pressure need selected-year data rows.")
+    
+            with fallback_tabs[4]:
+                st.markdown("### Coverage checks")
+                coverage_placeholder = pd.DataFrame([
+                    {"Source": "Trust", "Rows present": 0, "Rows missing": 0, "Coverage": "Not applicable"},
+                    {"Source": "WGI", "Rows present": 0, "Rows missing": 0, "Coverage": "Not applicable"},
+                    {"Source": "V-Dem", "Rows present": 0, "Rows missing": 0, "Coverage": "Not applicable"},
+                ])
+                st.dataframe(coverage_placeholder, use_container_width=True, hide_index=True)
+                st.warning(
+                    "Coverage checks are meaningful only for empirical country-year data. Prototype brackets should not be read as source coverage."
+                )
+    
+            with fallback_tabs[5]:
+                st.markdown("### Country-year detail")
+                st.info("No country-year detail is active. Use Evidence Lab to upload or build the table, then return to World Lens.")
+    
+            with st.expander("Selection safety summary", expanded=True):
+                st.write(
+                    "Safe 9k language requires random selection, demographic-proportional lanes, auditability, no campaigning, no seat ownership, and periodic redraw. "
+                    "The grid reflects representation logic. It is not a real vote or mandate."
+                )
+    
         else:
-            st.info("The input has changed. The previous assessment is closed for this draft. Click Review idea to create a new reading and receipt.")
-            with st.expander("Last closed reading", expanded=False):
-                verdict = latest["judgment"].get("verdict", "THRESHOLD")
-                risk = latest["judgment"].get("corruption_risk", "Medium")
-                st.markdown(f"**{verdict} · {risk} risk**")
-                st.caption(latest_raw_query[:240] + ("..." if len(latest_raw_query) > 240 else ""))
-
-        previous_items = st.session_state.chat_audit_history[1:] if latest_matches_current_input else st.session_state.chat_audit_history
-        if previous_items:
-            with st.expander("Previous readings"):
-                for idx, item in enumerate(previous_items, start=1):
-                    verdict = item["judgment"].get("verdict", "THRESHOLD")
-                    risk = item["judgment"].get("corruption_risk", "Medium")
-                    st.markdown(f"**{idx}. {verdict} · {risk} risk**")
-                    st.caption(item["query"][:240] + ("..." if len(item["query"]) > 240 else ""))
-    else:
-        st.caption("No reading yet. Share one idea above to create a Mirror Reading Tree.")
-
-
-
-
-with tab_doctrine:
-    st.subheader("Protocol Guide")
-    # Patch 182: visual-only warm civic alignment anchor for the Protocol Guide surface.
-    st.markdown(
-        """
-        <div class="sky-gold-page-anchor">
-            <strong><span class="pillar-pair"></span>Protocol Guide</strong>
-            <span class="sky-gold-rule"></span>
-            <span>Warm cream, muted green, and soft red accents frame the operating boundaries without adding authority.</span>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    st.markdown("### ALETHEIA Protocol Guide")
-    st.info(
-        "ALETHEIA is a free, open-source, protocol-guided governance mirror for human review. "
-        "It reflects pressure and evidence gaps; it does not judge, certify, enforce, or become the throne."
-    )
-    st.caption(
-        "Open only the section you need. The Protocol Guide is organized as four side-by-side rows of collapsed panels so the tab stays opt-in and readable."
-    )
-    st.markdown(
-        "**Quick path:** Mirror Check for documents · Stress Test for scenarios · AI static scan for AI/code artifacts · "
-        "Evidence Lab for claims · World Lens for selected-year evidence · Protocol Guide for rules and limits."
-    )
-
-    st.markdown("### Patrol guide panels")
-    st.caption("All panels are collapsed by default. Expand one panel at a time for review.")
-
-    patrol_guide_rows = [
-        (
-            (
-                "1. Operating boundary",
-                """
-                **ALETHEIA reflects. Humans review. Power stays accountable.**
-
-                ALETHEIA remains a mirror, not a throne. The interface should stay calm, open-source, and human-centered: ALETHEIA can observe pressure, inspect evidence, preserve review context, raise review signals, and route concerns to human reviewers.
-
-                It does **not** judge final truth, certify safety, approve or reject people, enforce action, punish, command, replace law, validate spiritual authority, or become an automated decision system.
-
-                Internal taxonomy labels remain review-workflow labels only. They are not legal, political, medical, religious, moral, predictive, or final-status verdicts.
-                """,
-            ),
-            (
-                "2. Artificial Mind Formation Theory",
-                get_artificial_mind_formation_markdown(),
-            ),
-        ),
-        (
-            (
-                "3. Navigation & module map",
-                """
-                | Surface | Review use |
-                |---|---|
-                | Mirror Check | Mirror review for documents, proposals, AI outputs, safeguards, and repair questions. |
-                | Stress Test | Scenario-pressure review for stability, trust, friction, grievances, collapse risk, and safeguards. |
-                | Boundary Cases | Calibration review for consent pressure, free agency, emergency drift, ambient capture, and self-audit. |
-                | Evidence Lab | Evidence status, source coverage, schema readiness, and extraordinary-claim review. |
-                | World Lens | Selected-year evidence context and population-weighted exposure without sovereign authority. |
-                | Protocol Guide | Operating rules, safe language, internal limits, and mirror boundaries. |
-                | Why ALETHEIA | Public explanation of purpose, limits, baseline, and research direction. |
-
-                Navigation rule: every surface reflects, explains, or stress-tests. No surface commands, enforces, certifies, validates authority, or replaces human review.
-                """,
-            ),
-            (
-                "4. Shared protocol state",
-                """
-                The modules are different windows into one protocol heart. Shared state may include empirical master data, scored country-year evidence, selected evidence year, scoring calibration, trust calibration, Sydney Protocol overlay, doctrine thresholds, prototype/demo state, and World Lens basis.
-
-                Intentional protocol propagation is acceptable when evidence, calibration, or doctrine updates affect all relevant modules.
-
-                Accidental tab bleed is not acceptable when caused by widget-key collisions, hidden demo fallback, stale session state, or unmarked prototype data.
-
-                The Protocol Guide makes this shared substrate visible so reviewers can distinguish deliberate continuity from accidental UI leakage.
-                """,
-            ),
-        ),
-        (
-            (
-                "5. Release & continuity",
-                """
-                ALETHEIA v1.0 returns to its original governance-mirror identity, not a new authority layer. It keeps the project continuity intact: local-first posture, no built-in telemetry, no central user-input database, no Global ID sync, no public-ledger sync, and user-held receipts.
-
-                The Eternal Baseline remains an ethical continuity layer. It preserves human dignity, free agency, appealability, accountability, evidence, repair, non-coercion, and human review without becoming a command layer or founder-validation artifact.
-
-                The 9k idea remains an anti-tyranny scaffold / threshold steward for analysis only. It is not a sovereign body, election, mandate, real representative structure, or final legitimacy claim.
-                """,
-            ),
-            (
-                "6. Evidence & source rules",
-                """
-                Evidence comes before certainty. ALETHEIA separates claims from support and asks what was actually inspected.
-
-                Evidence Lab may mark source status, coverage, schema readiness, and extraordinary-claim pressure. Strong evidence can support a reading, but it does not remove protocol boundaries. Weak, stale, partial, one-sided, or unavailable evidence must lower confidence.
-
-                Extraordinary claims — spiritual, prophetic, alien, neural, metaphysical, or otherwise exceptional — remain unverified unless supported by public, testable, non-coercive evidence. ALETHEIA may audit consequences and safeguards; it does not crown the claim.
-
-                Receipts are local review records. They are not public-ledger records, official findings, or final proof.
-                """,
-            ),
-        ),
-        (
-            (
-                "7. Review lenses",
-                """
-                ALETHEIA watches for pressure patterns that can make systems appear more legitimate, neutral, certain, or authoritative than the evidence supports.
-
-                Core review signals include:
-
-                - **Authority drift** — when a system starts sounding like it can decide, certify, command, legitimize, rank, punish, or replace human judgment.
-                - **Evidence inflation** — when claims become stronger than the evidence actually inspected.
-                - **Flattery pressure** — when approval, reassurance, or validation is disguised as neutral analysis.
-                - **Capture pressure** — when power concentrates in one actor, platform, institution, token group, committee, model owner, funder, or technical gatekeeper.
-                - **Sanctification drift** — when poetic, religious, moral, symbolic, or higher-truth language becomes operational authority.
-                - **False neutrality** — when provider-shaped assumptions or hidden defaults are presented as objective reasoning.
-                - **No-appeal automation** — when people are affected without review, contestation, explanation, or repair path.
-                """,
-            ),
-            (
-                "8. World / taxonomy / limits",
-                """
-                World Lens is a selected-year evidence mirror. It helps read country-year context, empirical coverage, population-weighted exposure, internal taxonomy distribution, and collapse-pressure signals.
-
-                It does **not** activate Global ID, select a real 9k body, create World Leader logic, issue automatic resets, certify countries, rank legitimacy, or make governance decisions.
-
-                Internal taxonomy labels are bounded:
-
-                - **SANCTUARY** — low-risk internal reading, not final safety.
-                - **THRESHOLD** — review-required reading; safeguards, evidence, or clarity remain incomplete.
-                - **ASYLUM** — high-pressure internal reading; capture, coercion, opacity, harm, collapse pressure, or hard protocol failures may be present.
-
-                The Z-axis is not a perfection score. Z = 1.0000 remains outside ALETHEIA's claim. Code, metrics, receipts, hashes, trees, and institutions stop at the human/system boundary.
-                """,
-            ),
-        ),
-    ]
-
-    for row_index, row in enumerate(patrol_guide_rows, start=1):
-        columns = st.columns(2, gap="large")
-        for column, (panel_title, panel_body) in zip(columns, row):
-            with column:
-                with st.expander(panel_title, expanded=False):
-                    st.markdown(panel_body)
-
-    with st.expander("Public trust package", expanded=False):
+            update_protocol_state(grid_basis="Inactive / no valid data", last_update_source="World Lens", synthetic_demo_active=False)
+            st.caption("World Lens source state: **Inactive / no valid data**.")
+            if grid_mode == "Uploaded empirical country-year data":
+                st.warning(
+                    "Uploaded empirical country-year data was selected, but no valid empirical Global Grid dataset is active. "
+                    "Run or upload valid country-year data in Evidence Lab to activate full World Lens."
+                )
+            else:
+                st.warning(
+                    "No empirical Global Grid is active and prototype regional brackets are disabled. "
+                    "Run or upload valid country-year data in Evidence Lab to activate full World Lens."
+                )
+            inactive_tabs = st.tabs(["Overview", "Allocation", "Verdicts", "Integrity & Collapse", "Coverage", "Country-Year Detail"])
+            with inactive_tabs[0]:
+                st.markdown("### World Lens inactive")
+                st.write(
+                    "This state intentionally avoids showing prototype regional brackets. The full Global Grid requires an active empirical "
+                    "country-year table with valid identity, year, population, and 9k allocation fields."
+                )
+            with inactive_tabs[1]:
+                st.info("Seat allocation is unavailable until country-year data is active or prototype brackets are selected.")
+            with inactive_tabs[2]:
+                st.info("Internal taxonomy distribution is unavailable until empirical country-year taxonomy rows are active.")
+            with inactive_tabs[3]:
+                st.info("Weighted integrity and collapse pressure are unavailable until selected-year data rows are active.")
+            with inactive_tabs[4]:
+                st.info("Trust, WGI, and V-Dem coverage checks are unavailable until selected-year data rows are active.")
+            with inactive_tabs[5]:
+                st.info("Country-year detail is unavailable until selected-year data rows are active.")
+    
+if selected_top_module == '🪞 Mirror Check':
+    with st.container():
+        st.subheader("Mirror Check")
         st.caption(
-            "Optional public-trust reference material. This is review support only; it does not create certification, enforcement, approval, or final authority."
+            "Review one bounded idea, policy, proposal, or AI output. "
+            "The result is a mirror reading for human review, not a decision."
         )
-        render_public_trust_package_page(st)
-
+        st.info(
+            "Boundary: SANCTUARY / THRESHOLD / ASYLUM are internal review labels. "
+            "Metrics are directional pressure readings, not approval, rejection, certification, or final truth."
+        )
+    
+        with st.expander("Module guidance and protocol context", expanded=False):
+            render_shared_protocol_state_notice("Mirror Check")
+            render_audit_module_integrity_panel()
+            render_module_page_template_intro(
+                st,
+                ModulePageTemplateCopy(
+                    module_name="Mirror Check",
+                    purpose=(
+                        "Review one document, idea, proposal, policy text, or AI output for pressure signals, "
+                        "missing safeguards, review needs, and repair questions. ALETHEIA is English-first; "
+                        "Dutch/Nederlands examples may be used for batch testing, not as a general app-wide "
+                        "language-compatibility claim."
+                    ),
+                    looks_for=(
+                        "Care alignment: whether the idea protects people, dignity, consent, and non-harm.",
+                        "Power language: whether soft wording hides control, coercion, ranking, punishment, or authority drift.",
+                        "Evidence and reviewability: whether reasons, sources, and assumptions can be inspected by another human reviewer.",
+                        "Appeal and repair: whether affected people have explanation, contestation, correction, and human-review paths.",
+                        "Failure-mode pressure: authority drift, evidence inflation, flattery pressure, capture pressure, sanctification drift, false neutrality, or no-appeal automation.",
+                        "Witness receipt: whether a local review record is useful for later human inspection.",
+                    ),
+                    safe_first_path=(
+                        "Paste one short item, not a whole archive of mixed cases.",
+                        "Use optional demos only for orientation; they never run by themselves.",
+                        "Read the protocol-adjusted label as a bounded signal, not a decision.",
+                        "Inspect observed reasons, values, and repair questions before relying on the reading.",
+                        "Download a receipt only when you want a local review record.",
+                    ),
+                    input_guidance="Use this module for one bounded text item. Use the batch-testing panel only for deliberate local test batches.",
+                    result_guidance="Treat the result as a mirror reading of pressure and review needs, not as approval, rejection, certification, or final truth.",
+                    observed_reasons_guidance="Check which signals drove the reading before trusting any label, metric, or repair suggestion.",
+                    repair_questions_guidance="Use repair questions to strengthen evidence, safeguards, appeal paths, and human review.",
+                    receipt_guidance="Mirror Check receipts are local review artifacts held by the user; they are not public-ledger records, official determinations, or authorization.",
+                ),
+            )
+    
+        if "chat_audit_history" not in st.session_state:
+            st.session_state.chat_audit_history = []
+    
+        if "audit_chat_query" not in st.session_state:
+            st.session_state.audit_chat_query = ""
+        if "audit_chat_input_source" not in st.session_state:
+            st.session_state.audit_chat_input_source = "EMPTY_INPUT"
+    
+        def mirror_active_input_signature(text_value: str) -> str:
+            """Stable signature for the currently typed Mirror Check input.
+    
+            Patch 72.2: prevents an old assessment/receipt from staying active after
+            the user edits the input box. History may remain, but a changed input
+            requires an explicit new Review idea click.
+            """
+            return hashlib.sha256((text_value or "").strip().encode("utf-8")).hexdigest()
+    
+        def run_chat_audit_from_text(text_value: str, raw_text_value=None, input_source: str = "USER_INPUT", invisibility_report=None, store_history: bool = True, force_local: bool = False):
+            raw_text_value = text_value if raw_text_value is None else raw_text_value
+            scan = governance_scan(text_value, force_local=force_local)
+            scan = apply_capture_feature_override(text_value, scan)
+            semantic_pressure_scan = scan_semantic_pressure(text_value, governance_context=True)
+            semantic_pressure_payload = semantic_pressure_scan.to_dict()
+            scan["semantic_pressure_scan"] = semantic_pressure_payload
+            scan["semantic_pressure_report"] = format_semantic_pressure_report(semantic_pressure_scan)
+            features = build_features_from_scan(scan)
+            np.random.seed(deterministic_seed_from_payload(text_value, features, weights, ego_tolerance, divine_floor, steps, n_agents, "chat"))
+            sim = simulate(
+                features,
+                weights,
+                ego_tolerance=ego_tolerance,
+                divine_floor=divine_floor,
+                steps=steps,
+                n_agents=n_agents,
+            )
+            if scan.get("capture_override"):
+                sim["stability"] = min(float(sim.get("stability", 1.0)), 0.39)
+                sim["trust_index"] = min(float(sim.get("trust_index", 1.0)), 0.62)
+                sim["alignment"] = min(float(sim.get("alignment", 1.0)), 0.58)
+                sim["ego"] = max(float(sim.get("ego", 0.0)), 0.28)
+                sim["collapse_risk"] = True
+                sim["structural_capture_risk"] = max(float(sim.get("structural_capture_risk", 0.0)), 0.88)
+                sim["structural_risk"] = max(float(sim.get("structural_risk", 0.0)), 0.88)
+                sim["grievance_pressure"] = max(float(sim.get("grievance_pressure", 0.0)), 0.35)
+                sim["safeguard_gap"] = max(float(sim.get("safeguard_gap", 0.0)), 0.72)
+                sim["simulation_friction_floor"] = max(float(sim.get("simulation_friction_floor", 0.0)), 0.35)
+            report = full_report(sim)
+            report["cognitive_resilience_diagnostics"] = evaluate_cognitive_resilience(
+                text_value, governance_result=scan, features=features
+            )
+            report = apply_cognitive_resilience_to_metrics(
+                report, report.get("cognitive_resilience_diagnostics")
+            )
+            ethics_diagnostics = evaluate_ethics(text_value, governance_result=scan, features=features)
+            # Patch 22: make visible Mirror Check metrics reflect contextual ethics pressure.
+            # Protocol hard overrides still take precedence; this only calibrates the numeric layer.
+            sim, report = apply_ethics_to_metrics(sim, report, ethics_diagnostics)
+            report["ethics_diagnostics"] = ethics_diagnostics
+            report["semantic_pressure_scan"] = semantic_pressure_payload
+            report["semantic_pressure_report"] = scan["semantic_pressure_report"]
+            if force_local:
+                judgment, source = local_governance_judgment(text_value, scan, sim, report), "Local batch scan"
+            else:
+                judgment, source = llm_governance_judgment(text_value, scan, sim, report)
+            judgment = positive_cr_baseline_stabilizer(judgment, report)
+    
+            # Patch 75: Mirror Check must not display or receipt ASYLUM / High
+            # readings with THRESHOLD-style trust/alignment/ego metrics. The cap is
+            # display/receipt calibration only; it does not create authority or
+            # enforcement. Raw pre-ethics values remain in the receipt when present.
+            mirror_verdict = str(judgment.get("verdict", "THRESHOLD")).upper()
+            mirror_risk = str(judgment.get("corruption_risk", judgment.get("guardrail_risk", "Medium")))
+            mirror_label = normalize_asylum_protocol_label(
+                judgment.get("stress_label", mirror_verdict),
+                verdict=mirror_verdict,
+                risk=mirror_risk,
+            )
+            judgment["stress_label"] = mirror_label
+            sim = enforce_asylum_metric_consistency(
+                sim,
+                verdict=mirror_verdict,
+                risk=mirror_risk,
+                protocol_label=mirror_label,
+            )
+            report = ensure_asylum_repair_questions(
+                report,
+                verdict=mirror_verdict,
+                risk=mirror_risk,
+                protocol_label=mirror_label,
+                scan=scan,
+            )
+    
+            ai_static_context = build_ai_static_scan_protocol_context(
+                text_value,
+                source_module="Mirror Check",
+                primary_state=mirror_verdict,
+                primary_risk=mirror_risk,
+                primary_protocol_label=mirror_label,
+            )
+            report["ai_static_scan_context"] = ai_static_context
+            scan["ai_static_scan_context"] = ai_static_context
+    
+            entry = {
+                "query": text_value,
+                "raw_query": raw_text_value,
+                "input_source": input_source,
+                "invisibility_report": invisibility_report,
+                "scan": scan,
+                "sim": sim,
+                "report": report,
+                "ethics_diagnostics": ethics_diagnostics,
+                "semantic_pressure_scan": semantic_pressure_payload,
+                "judgment": judgment,
+                "source": source,
+                "source_hits": source_conformance_hits(text_value),
+            }
+            if store_history:
+                st.session_state.chat_audit_history.insert(0, entry)
+            return entry
+    
+        def build_mirror_receipt_for_entry(latest):
+            invisibility_note = latest.get("invisibility_report")
+            mirror_invisibility_applied = isinstance(invisibility_note, dict) and invisibility_note.get("invisibility_filter_applied", False)
+            mirror_receipt_report = dict(latest["report"] or {})
+            mirror_receipt_report["repair_questions"] = (
+                latest["judgment"].get("questions")
+                or mirror_receipt_report.get("repair_questions")
+                or []
+            )
+            if latest.get("ethics_diagnostics"):
+                mirror_receipt_report["ethics_diagnostics"] = latest["ethics_diagnostics"]
+                mirror_receipt_report["ethics_adjusted_integrity"] = min(
+                    float(mirror_receipt_report.get("integrity", 1.0) or 1.0),
+                    float(latest["ethics_diagnostics"].get("ethics_score", 1.0) or 1.0),
+                )
+            mirror_receipt = build_local_witness_receipt(
+                module="Mirror Check",
+                input_text=latest.get("raw_query", latest["query"]),
+                processed_text=latest["query"],
+                input_status=latest.get("input_source", "USER_INPUT"),
+                scan=latest["scan"],
+                sim=latest["sim"],
+                report=mirror_receipt_report,
+                verdict=latest["judgment"].get("verdict", "THRESHOLD"),
+                risk=latest["judgment"].get("corruption_risk", "Medium"),
+                protocol_label=latest["judgment"].get("stress_label", latest["judgment"].get("verdict", "THRESHOLD")),
+                invisibility_applied=mirror_invisibility_applied,
+                app_version=APP_VERSION,
+            )
+            return mirror_receipt
+    
+        def run_mirror_batch_review(batch_items, *, apply_invisibility: bool, batch_label: str = "ideas"):
+            """Review a bounded Mirror Check batch and prepare one local zip archive."""
+            receipts = []
+            summaries = []
+            question_set_mode = is_witness_question_set(batch_items)
+            with st.spinner(f"Reviewing {len(batch_items)} {batch_label} and preparing local receipts..."):
+                for idx, raw_item in enumerate(batch_items, start=1):
+                    processed_item = raw_item
+                    invisibility_report = None
+                    if apply_invisibility:
+                        invisibility_report = decouple_actor(raw_item)
+                        processed_item = invisibility_report.get("decoupled_text", raw_item)
+    
+                    # A batch of audit questions is a review tool, not one or more policy proposals.
+                    # Keep risky terms visible for later human review without escalating the question itself.
+                    if question_set_mode and is_witness_question_prompt(raw_item):
+                        receipt = build_local_question_prompt_receipt(
+                            module="Mirror Check",
+                            input_text=raw_item,
+                            processed_text=processed_item,
+                            invisibility_applied=bool(apply_invisibility),
+                            app_version=APP_VERSION,
+                        )
+                    else:
+                        entry = run_chat_audit_from_text(
+                            processed_item,
+                            raw_text_value=raw_item,
+                            input_source="USER_INPUT",
+                            invisibility_report=invisibility_report,
+                            store_history=False,
+                            force_local=True,
+                        )
+                        receipt = build_mirror_receipt_for_entry(entry)
+                    receipts.append(receipt)
+                    verdict = receipt.get("verdict", {}) or {}
+                    summaries.append({
+                        "#": idx,
+                        "State": verdict.get("protocol_adjusted_state"),
+                        "Risk": verdict.get("risk"),
+                        "Label": verdict.get("protocol_label"),
+                    })
+            archive_bytes, batch_index = build_local_witness_batch_zip(
+                receipts, module="Mirror Check", app_version=APP_VERSION
+            )
+            st.session_state.audit_batch_archive_bytes = archive_bytes
+            st.session_state.audit_batch_index = batch_index
+            st.session_state.audit_batch_summary = summaries
+            st.session_state.audit_batch_count = len(receipts)
+            return receipts
+    
+        # Mirror Check keeps the primary path visually dominant. Batch testing remains
+        # available on the side, but the first visible action is one bounded review.
+        normal_review_col, batch_testing_col = st.columns([0.68, 0.32], gap="large")
+    
+        with normal_review_col:
+            st.markdown("### Review one bounded idea")
+            st.caption("Paste one bounded item. The tree scanner runs only after you press Review idea.")
+    
+            with st.expander("Optional demo inputs", expanded=False):
+                st.caption("Demo inputs are fictional and opt-in. They load only when you click; they never run by themselves.")
+                demo_input_choice = st.selectbox(
+                    "Demo input library",
+                    [name for name, _ in DEMO_INPUT_FILES],
+                    key="mirror_demo_input_library",
+                )
+                demo_input_map = dict(DEMO_INPUT_FILES)
+                if st.button("Load demo input", use_container_width=True, key="mirror_load_demo_input_button"):
+                    demo_text = load_demo_input(demo_input_map[demo_input_choice])
+                    st.session_state.audit_chat_query = demo_text
+                    st.session_state.audit_demo_choice = demo_input_choice
+                    st.session_state.audit_demo_loaded_text = demo_text
+                    st.session_state.audit_chat_input_source = "DEMO_INPUT"
+                    st.info("Demo input loaded. Click Review idea if you want ALETHEIA to analyze it.")
+    
+                audit_demo_choice = st.selectbox("Mirror Check scenario examples", list(MIRROR_CHECK_DEMO_SCENARIOS.keys()), key="audit_demo_library")
+                if st.button("Load scenario demo", use_container_width=True, key="audit_load_demo_button"):
+                    demo_text = MIRROR_CHECK_DEMO_SCENARIOS[audit_demo_choice]
+                    st.session_state.audit_chat_query = demo_text
+                    st.session_state.audit_demo_choice = audit_demo_choice
+                    st.session_state.audit_demo_loaded_text = demo_text
+                    st.session_state.audit_chat_input_source = "DEMO_INPUT"
+    
+            chat_query = st.text_area(
+                "Write or paste the idea you want reviewed",
+                height=170,
+                key="audit_chat_query",
+            )
+            if "chat_audit_query" in st.session_state and "audit_chat_query" not in st.session_state:
+                st.session_state.audit_chat_query = st.session_state.chat_audit_query
+    
+            loaded_audit_demo = st.session_state.get("audit_demo_loaded_text") or MIRROR_CHECK_DEMO_SCENARIOS.get(st.session_state.get("audit_demo_choice", ""), None)
+            if not chat_query.strip():
+                audit_input_status = "EMPTY_INPUT"
+                st.session_state.audit_chat_input_source = "EMPTY_INPUT"
+            elif st.session_state.get("audit_chat_input_source") == "DEMO_INPUT" and loaded_audit_demo is not None and chat_query == loaded_audit_demo:
+                audit_input_status = "DEMO_INPUT"
+            else:
+                audit_input_status = "USER_INPUT"
+                st.session_state.audit_chat_input_source = "USER_INPUT"
+    
+            if audit_input_status == "EMPTY_INPUT":
+                st.caption("Add your own idea to begin. Demos are optional and never run by themselves.")
+            elif audit_input_status == "DEMO_INPUT":
+                st.caption("Demo mode is on. This reading is only an example.")
+            else:
+                st.caption("Your idea is ready. You are the source; ALETHEIA is the mirror.")
+    
+            audit_apply_invisibility = st.checkbox(
+                "Invisibility Filter",
+                value=(audit_input_status == "USER_INPUT"),
+                key=f"audit_invisibility_filter_{audit_input_status}",
+                disabled=(audit_input_status == "EMPTY_INPUT"),
+                help="Remove names and titles before review. On by default for your own input.",
+            )
+            if audit_apply_invisibility and audit_input_status != "EMPTY_INPUT":
+                st.caption("Names and titles are removed before review. The pattern stays visible.")
+    
+            c_run, c_clear = st.columns([1, 0.35])
+            with c_run:
+                run_chat = st.button("Review idea", type="primary", use_container_width=True)
+            with c_clear:
+                clear_chat = st.button("Clear results", use_container_width=True)
+    
+        with batch_testing_col:
+            st.markdown("### Batch testing")
+            st.caption("Optional local test bench for lists. Keep closed unless you need batch receipts.")
+    
+            # Batch testing is intentionally separate from the single Mirror Check / tree scanner flow.
+            # It opens on the right side after a user click, runs local-only batch scans, and writes a ZIP of receipts.
+            if "audit_batch_testing_open" not in st.session_state:
+                st.session_state.audit_batch_testing_open = False
+    
+            if st.button("Batch Testing — up to 50 lines", use_container_width=True, key="audit_open_batch_testing_button"):
+                st.session_state.audit_batch_testing_open = not st.session_state.audit_batch_testing_open
+    
+            if not st.session_state.audit_batch_testing_open:
+                st.info("Open Batch Testing when you want to upload or paste a list.")
+    
+            if st.session_state.audit_batch_testing_open:
+                with st.container(border=True):
+                    st.caption("Upload a .txt file or paste up to 50 lines. This bench stays separate from the tree scanner.")
+    
+                    if "audit_batch_upload_signature" not in st.session_state:
+                        st.session_state.audit_batch_upload_signature = ""
+                    if "audit_batch_last_source" not in st.session_state:
+                        st.session_state.audit_batch_last_source = "EMPTY"
+    
+                    batch_source = st.radio(
+                        "Batch input source",
+                        ["Upload .txt", "Paste list"],
+                        horizontal=True,
+                        key="audit_batch_source_mode",
+                        help="Like Evidence Lab, uploaded files are staged first and only processed when you press Run Batch Testing.",
+                    )
+    
+                    batch_upload_text = ""
+                    batch_manual_text = ""
+                    batch_upload = None
+    
+                    if batch_source == "Upload .txt":
+                        batch_upload = st.file_uploader(
+                            "Upload .txt list for batch only",
+                            type=["txt"],
+                            key="audit_batch_txt_upload",
+                            help="Use one phrase per line, a numbered list, or --- between longer items.",
+                        )
+                        if batch_upload is not None:
+                            uploaded_batch_bytes = batch_upload.getvalue()
+                            batch_upload_text = uploaded_batch_bytes.decode("utf-8", errors="replace")
+                            upload_signature = hashlib.sha256(uploaded_batch_bytes + batch_upload.name.encode("utf-8", errors="replace")).hexdigest()
+                            if upload_signature != st.session_state.audit_batch_upload_signature:
+                                st.session_state.audit_batch_upload_signature = upload_signature
+                                st.session_state.audit_batch_last_source = f"UPLOAD:{batch_upload.name}"
+                                st.session_state.audit_batch_summary = []
+                                st.session_state.audit_batch_archive_bytes = None
+                                st.session_state.audit_batch_index = None
+                                st.session_state.audit_batch_count = 0
+                            st.caption(f"Staged {batch_upload.name}. Press Run Batch Testing to process it.")
+                            with st.expander("Preview uploaded batch text", expanded=False):
+                                st.text_area(
+                                    "Uploaded text preview",
+                                    value=batch_upload_text[:12000],
+                                    height=180,
+                                    disabled=True,
+                                    key="audit_batch_upload_preview",
+                                )
+                        else:
+                            st.caption("Choose a .txt file, then press Run Batch Testing.")
+                    else:
+                        batch_manual_text = st.text_area(
+                            "Paste batch phrases or questions",
+                            height=220,
+                            key="audit_batch_manual_input",
+                            placeholder="1. Who can appeal this decision?\n2. Where is the human override?\n---\nA system cannot be questioned and has no appeal path.",
+                        )
+    
+                    batch_text = batch_upload_text if batch_source == "Upload .txt" else batch_manual_text
+                    batch_items = parse_witness_batch_input(batch_text, max_items=MAX_BATCH_RECEIPTS)
+                    batch_ready = bool(batch_items)
+                    if batch_text.strip():
+                        question_set_ready = is_witness_question_set(batch_items)
+                        mode_note = " Question set mode will keep audit prompts as review tools." if question_set_ready else ""
+                        st.caption(f"{len(batch_items)} line(s) ready. Maximum: {MAX_BATCH_RECEIPTS}.{mode_note}")
+                    else:
+                        st.caption("Batch Testing waits until you upload or paste a list.")
+    
+                    batch_apply_invisibility = st.checkbox(
+                        "Apply Invisibility Filter to batch",
+                        value=batch_ready,
+                        key="audit_batch_invisibility_filter",
+                        disabled=not batch_ready,
+                        help="Removes names and titles from each item before local review. Raw input hashes stay in each receipt.",
+                    )
+                    run_batch = st.button(
+                        "Run Batch Testing",
+                        type="primary",
+                        use_container_width=True,
+                        disabled=not batch_ready,
+                        key="audit_run_batch_button",
+                    )
+                    if run_batch:
+                        receipts = run_mirror_batch_review(
+                            batch_items,
+                            apply_invisibility=batch_apply_invisibility,
+                            batch_label="batch item(s)",
+                        )
+                        st.success(f"Batch complete. {len(receipts)} local receipt(s) are ready to download.")
+    
+                    if st.session_state.get("audit_batch_summary"):
+                        batch_summary_df = pd.DataFrame(st.session_state.audit_batch_summary)
+                        batch_display_df = batch_summary_df.rename(columns={
+                            "State": "Type",
+                            "Risk": "Role",
+                            "Label": "Reading",
+                        })
+                        batch_display_df["Type"] = batch_display_df["Type"].replace({
+                            "QUESTION_PROMPT": "Question",
+                            "OUT_OF_SCOPE": "Needs context",
+                            "SANCTUARY": "Sanctuary",
+                            "THRESHOLD": "Threshold",
+                            "ASYLUM": "Asylum",
+                        })
+                        batch_display_df["Role"] = batch_display_df["Role"].replace({
+                            "Review Tool": "Review",
+                            "None": "Context",
+                        })
+                        batch_display_df["Reading"] = batch_display_df["Reading"].replace({
+                            "Audit Question / Review Tool": "Audit question",
+                            "Out-of-Scope / Needs Context": "Needs more context",
+                        })
+                        # Keep the narrow side panel readable: fold Role into Reading instead of hiding a third column.
+                        batch_display_df["Reading"] = batch_display_df.apply(
+                            lambda row: f"{row['Reading']} · {row['Role']}" if row.get("Role") else row["Reading"],
+                            axis=1,
+                        )
+                        batch_display_df = batch_display_df[["#", "Type", "Reading"]]
+                        st.dataframe(
+                            batch_display_df,
+                            use_container_width=True,
+                            hide_index=True,
+                            height=360,
+                            column_config={
+                                "#": st.column_config.NumberColumn("#", width="small"),
+                                "Type": st.column_config.TextColumn("Type", width="small"),
+                                "Reading": st.column_config.TextColumn("Reading", width="large"),
+                            },
+                        )
+                    if st.session_state.get("audit_batch_archive_bytes"):
+                        st.download_button(
+                            "⬇️ Download full batch archive (.zip)",
+                            data=st.session_state.audit_batch_archive_bytes,
+                            file_name="aletheia_mirror_check_batch_witness_receipts.zip",
+                            mime="application/zip",
+                            use_container_width=True,
+                        )
+    
+        selected_chat_context = "Waiting for your input" if audit_input_status == "EMPTY_INPUT" else ((chat_query[:120] + "…") if len(chat_query) > 120 else chat_query)
+        update_protocol_state(selected_context=selected_chat_context, last_update_source="Mirror Check")
+    
+        if clear_chat:
+            st.session_state.chat_audit_history = []
+            st.rerun()
+    
+        if run_chat:
+            if not st.session_state.audit_chat_query.strip():
+                st.warning("Add your own idea or load a demo before review. ALETHEIA does not run examples by itself.")
+            else:
+                audit_analysis_query = st.session_state.audit_chat_query
+                audit_invisibility_report = None
+                if audit_apply_invisibility and audit_input_status != "EMPTY_INPUT":
+                    audit_invisibility_report = decouple_actor(st.session_state.audit_chat_query)
+                    audit_analysis_query = audit_invisibility_report.get("decoupled_text", st.session_state.audit_chat_query)
+                with st.spinner("Reading the idea and preparing the review..."):
+                    run_chat_audit_from_text(
+                        audit_analysis_query,
+                        raw_text_value=st.session_state.audit_chat_query,
+                        input_source=audit_input_status,
+                        invisibility_report=audit_invisibility_report,
+                    )
+                    st.session_state.audit_active_input_signature = mirror_active_input_signature(st.session_state.audit_chat_query)
+                    update_protocol_state(selected_context=(audit_analysis_query[:120] + "…") if len(audit_analysis_query) > 120 else audit_analysis_query, last_update_source="Mirror Check")
+                st.rerun()
+    
+        st.markdown("---")
+    
+        # Latest result appears immediately after the question box, but only when
+        # it still belongs to the currently visible input.
+        if st.session_state.chat_audit_history:
+            latest = st.session_state.chat_audit_history[0]
+            latest_raw_query = str(latest.get("raw_query", latest.get("query", "")) or "")
+            current_input_signature = mirror_active_input_signature(chat_query)
+            latest_input_signature = mirror_active_input_signature(latest_raw_query)
+            active_input_signature = st.session_state.get("audit_active_input_signature", latest_input_signature)
+            latest_matches_current_input = (
+                bool(chat_query.strip())
+                and current_input_signature == latest_input_signature
+                and active_input_signature == latest_input_signature
+            )
+    
+            if latest_matches_current_input:
+                st.markdown("### Latest reading")
+                if latest.get("input_source") == "DEMO_INPUT":
+                    st.caption("Demo mode was used. This reading is only an example.")
+                invisibility_note = latest.get("invisibility_report")
+                if isinstance(invisibility_note, dict) and invisibility_note.get("invisibility_filter_applied"):
+                    st.caption("Names and titles were removed before this review.")
+                render_pulse_tree(
+                    display_score_from_judgment(latest["report"], latest["judgment"]),
+                    latest["sim"]["ego"],
+                    latest["sim"]["alignment"],
+                    title="Mirror Reading Tree",
+                    state_override=str(latest.get("judgment", {}).get("verdict", "THRESHOLD")).upper(),
+                    mode="Mirror Check",
+                )
+                render_chat_judgment(latest["judgment"], latest["source"], latest["report"], latest.get("sim"), latest.get("scan"))
+    
+                semantic_payload = latest.get("semantic_pressure_scan")
+                if not semantic_payload and isinstance(latest.get("report"), dict):
+                    semantic_payload = latest["report"].get("semantic_pressure_scan")
+                if not semantic_payload and isinstance(latest.get("scan"), dict):
+                    semantic_payload = latest["scan"].get("semantic_pressure_scan")
+                if not semantic_payload:
+                    semantic_payload = latest.get("query", "")
+                render_semantic_pressure_panel(semantic_payload, source_label="Mirror Check", expanded=False, panel_key="mirror_check_latest_semantic_pressure")
+    
+                st.markdown("### Mirror Check support context")
+                support_columns = st.columns(2, gap="large")
+                source_hits = latest.get("source_hits", source_conformance_hits(latest["query"]))
+                with support_columns[0]:
+                    with st.expander("Source match hits", expanded=False):
+                        if source_hits:
+                            st.dataframe(pd.DataFrame(source_hits), use_container_width=True, hide_index=True)
+                        else:
+                            st.caption("No named source concept matched this idea in the current detector set.")
+    
+                ai_static_context = latest.get("report", {}).get("ai_static_scan_context") if isinstance(latest.get("report"), dict) else None
+                # Patch 182: AI static scan context uses the same sky/gold expander treatment as other aligned review panels.
+                with support_columns[1]:
+                    with st.expander("AI static scan context — subordinate to Mirror Check", expanded=False):
+                        if isinstance(ai_static_context, dict):
+                            st.caption(ai_static_context.get("notice"))
+                            st.markdown(
+                                f"**Protocol context signal:** {ai_static_context.get('protocol_context_state', ai_static_context.get('ai_static_scan_state'))} · "
+                                f"{ai_static_context.get('protocol_context_risk', ai_static_context.get('ai_static_scan_risk'))} · "
+                                f"{ai_static_context.get('finding_count')} AI-specific finding(s)"
+                            )
+                            if ai_static_context.get("alignment_note"):
+                                st.caption(ai_static_context.get("alignment_note"))
+                            st.caption(
+                                f"Raw AI static scan only: {ai_static_context.get('ai_static_scan_state')} · "
+                                f"{ai_static_context.get('ai_static_scan_risk')}"
+                            )
+                            if ai_static_context.get("findings"):
+                                st.dataframe(pd.DataFrame(ai_static_context.get("findings")), use_container_width=True, hide_index=True)
+                        else:
+                            st.caption("No subordinate AI static scan context was attached to this Mirror Check reading.")
+    
+                # Patch 183: visual-only Mirror Check receipt framing; receipt payload and schema remain unchanged.
+                st.markdown(
+                    """
+                    <div class="receipt-sky-panel">
+                      <div class="receipt-kicker">Mirror Check artifact</div>
+                      <div class="receipt-title">Local witness receipt</div>
+                      <div class="receipt-body">Creates a receipt you hold. It is not published, synced, enforced, or treated as authority.</div>
+                      <div class="receipt-boundary-strip">
+                        <span class="receipt-boundary-pill">User-held text file</span>
+                        <span class="receipt-boundary-pill">No central storage</span>
+                        <span class="receipt-boundary-pill">No public ledger</span>
+                        <span class="receipt-boundary-pill">Human review required</span>
+                      </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+                st.caption("Download text only. This visual card does not change the receipt content, schema, or authority boundary.")
+                mirror_receipt = build_mirror_receipt_for_entry(latest)
+                mirror_receipt_text = render_local_witness_receipt_text(mirror_receipt)
+                st.download_button(
+                    "⬇️ Download receipt",
+                    data=mirror_receipt_text,
+                    file_name="aletheia_mirror_check_local_witness_receipt.txt",
+                    mime="text/plain",
+                    use_container_width=True,
+                )
+    
+                with st.expander("Scanner features used for this reading"):
+                    st.json(latest["scan"])
+            else:
+                st.info("The input has changed. The previous assessment is closed for this draft. Click Review idea to create a new reading and receipt.")
+                with st.expander("Last closed reading", expanded=False):
+                    verdict = latest["judgment"].get("verdict", "THRESHOLD")
+                    risk = latest["judgment"].get("corruption_risk", "Medium")
+                    st.markdown(f"**{verdict} · {risk} risk**")
+                    st.caption(latest_raw_query[:240] + ("..." if len(latest_raw_query) > 240 else ""))
+    
+            previous_items = st.session_state.chat_audit_history[1:] if latest_matches_current_input else st.session_state.chat_audit_history
+            if previous_items:
+                with st.expander("Previous readings"):
+                    for idx, item in enumerate(previous_items, start=1):
+                        verdict = item["judgment"].get("verdict", "THRESHOLD")
+                        risk = item["judgment"].get("corruption_risk", "Medium")
+                        st.markdown(f"**{idx}. {verdict} · {risk} risk**")
+                        st.caption(item["query"][:240] + ("..." if len(item["query"]) > 240 else ""))
+        else:
+            st.caption("No reading yet. Share one idea above to create a Mirror Reading Tree.")
+    
+    
+    
+    
+if selected_top_module == '📜 Protocol Guide':
+    with st.container():
+        st.subheader("Protocol Guide")
+        # Patch 182: visual-only warm civic alignment anchor for the Protocol Guide surface.
+        st.markdown(
+            """
+            <div class="sky-gold-page-anchor">
+                <strong><span class="pillar-pair"></span>Protocol Guide</strong>
+                <span class="sky-gold-rule"></span>
+                <span>Warm cream, muted green, and soft red accents frame the operating boundaries without adding authority.</span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        st.markdown("### ALETHEIA Protocol Guide")
+        st.info(
+            "ALETHEIA is a free, open-source, protocol-guided governance mirror for human review. "
+            "It reflects pressure and evidence gaps; it does not judge, certify, enforce, or become the throne."
+        )
+        st.caption(
+            "Open only the section you need. The Protocol Guide is organized as four side-by-side rows of collapsed panels so the tab stays opt-in and readable."
+        )
+        st.markdown(
+            "**Quick path:** Mirror Check for documents · Stress Test for scenarios · AI static scan for AI/code artifacts · "
+            "Evidence Lab for claims · World Lens for selected-year evidence · Protocol Guide for rules and limits."
+        )
+    
+        st.markdown("### Patrol guide panels")
+        st.caption("All panels are collapsed by default. Expand one panel at a time for review.")
+    
+        patrol_guide_rows = [
+            (
+                (
+                    "1. Operating boundary",
+                    """
+                    **ALETHEIA reflects. Humans review. Power stays accountable.**
+    
+                    ALETHEIA remains a mirror, not a throne. The interface should stay calm, open-source, and human-centered: ALETHEIA can observe pressure, inspect evidence, preserve review context, raise review signals, and route concerns to human reviewers.
+    
+                    It does **not** judge final truth, certify safety, approve or reject people, enforce action, punish, command, replace law, validate spiritual authority, or become an automated decision system.
+    
+                    Internal taxonomy labels remain review-workflow labels only. They are not legal, political, medical, religious, moral, predictive, or final-status verdicts.
+                    """,
+                ),
+                (
+                    "2. Artificial Mind Formation Theory",
+                    get_artificial_mind_formation_markdown(),
+                ),
+            ),
+            (
+                (
+                    "3. Navigation & module map",
+                    """
+                    | Surface | Review use |
+                    |---|---|
+                    | Mirror Check | Mirror review for documents, proposals, AI outputs, safeguards, and repair questions. |
+                    | Stress Test | Scenario-pressure review for stability, trust, friction, grievances, collapse risk, and safeguards. |
+                    | Boundary Cases | Calibration review for consent pressure, free agency, emergency drift, ambient capture, and self-audit. |
+                    | Evidence Lab | Evidence status, source coverage, schema readiness, and extraordinary-claim review. |
+                    | World Lens | Selected-year evidence context and population-weighted exposure without sovereign authority. |
+                    | Protocol Guide | Operating rules, safe language, internal limits, and mirror boundaries. |
+                    | Why ALETHEIA | Public explanation of purpose, limits, baseline, and research direction. |
+    
+                    Navigation rule: every surface reflects, explains, or stress-tests. No surface commands, enforces, certifies, validates authority, or replaces human review.
+                    """,
+                ),
+                (
+                    "4. Shared protocol state",
+                    """
+                    The modules are different windows into one protocol heart. Shared state may include empirical master data, scored country-year evidence, selected evidence year, scoring calibration, trust calibration, Sydney Protocol overlay, doctrine thresholds, prototype/demo state, and World Lens basis.
+    
+                    Intentional protocol propagation is acceptable when evidence, calibration, or doctrine updates affect all relevant modules.
+    
+                    Accidental tab bleed is not acceptable when caused by widget-key collisions, hidden demo fallback, stale session state, or unmarked prototype data.
+    
+                    The Protocol Guide makes this shared substrate visible so reviewers can distinguish deliberate continuity from accidental UI leakage.
+                    """,
+                ),
+            ),
+            (
+                (
+                    "5. Release & continuity",
+                    """
+                    ALETHEIA v1.0 returns to its original governance-mirror identity, not a new authority layer. It keeps the project continuity intact: local-first posture, no built-in telemetry, no central user-input database, no Global ID sync, no public-ledger sync, and user-held receipts.
+    
+                    The Eternal Baseline remains an ethical continuity layer. It preserves human dignity, free agency, appealability, accountability, evidence, repair, non-coercion, and human review without becoming a command layer or founder-validation artifact.
+    
+                    The 9k idea remains an anti-tyranny scaffold / threshold steward for analysis only. It is not a sovereign body, election, mandate, real representative structure, or final legitimacy claim.
+                    """,
+                ),
+                (
+                    "6. Evidence & source rules",
+                    """
+                    Evidence comes before certainty. ALETHEIA separates claims from support and asks what was actually inspected.
+    
+                    Evidence Lab may mark source status, coverage, schema readiness, and extraordinary-claim pressure. Strong evidence can support a reading, but it does not remove protocol boundaries. Weak, stale, partial, one-sided, or unavailable evidence must lower confidence.
+    
+                    Extraordinary claims — spiritual, prophetic, alien, neural, metaphysical, or otherwise exceptional — remain unverified unless supported by public, testable, non-coercive evidence. ALETHEIA may audit consequences and safeguards; it does not crown the claim.
+    
+                    Receipts are local review records. They are not public-ledger records, official findings, or final proof.
+                    """,
+                ),
+            ),
+            (
+                (
+                    "7. Review lenses",
+                    """
+                    ALETHEIA watches for pressure patterns that can make systems appear more legitimate, neutral, certain, or authoritative than the evidence supports.
+    
+                    Core review signals include:
+    
+                    - **Authority drift** — when a system starts sounding like it can decide, certify, command, legitimize, rank, punish, or replace human judgment.
+                    - **Evidence inflation** — when claims become stronger than the evidence actually inspected.
+                    - **Flattery pressure** — when approval, reassurance, or validation is disguised as neutral analysis.
+                    - **Capture pressure** — when power concentrates in one actor, platform, institution, token group, committee, model owner, funder, or technical gatekeeper.
+                    - **Sanctification drift** — when poetic, religious, moral, symbolic, or higher-truth language becomes operational authority.
+                    - **False neutrality** — when provider-shaped assumptions or hidden defaults are presented as objective reasoning.
+                    - **No-appeal automation** — when people are affected without review, contestation, explanation, or repair path.
+                    """,
+                ),
+                (
+                    "8. World / taxonomy / limits",
+                    """
+                    World Lens is a selected-year evidence mirror. It helps read country-year context, empirical coverage, population-weighted exposure, internal taxonomy distribution, and collapse-pressure signals.
+    
+                    It does **not** activate Global ID, select a real 9k body, create World Leader logic, issue automatic resets, certify countries, rank legitimacy, or make governance decisions.
+    
+                    Internal taxonomy labels are bounded:
+    
+                    - **SANCTUARY** — low-risk internal reading, not final safety.
+                    - **THRESHOLD** — review-required reading; safeguards, evidence, or clarity remain incomplete.
+                    - **ASYLUM** — high-pressure internal reading; capture, coercion, opacity, harm, collapse pressure, or hard protocol failures may be present.
+    
+                    The Z-axis is not a perfection score. Z = 1.0000 remains outside ALETHEIA's claim. Code, metrics, receipts, hashes, trees, and institutions stop at the human/system boundary.
+                    """,
+                ),
+            ),
+        ]
+    
+        for row_index, row in enumerate(patrol_guide_rows, start=1):
+            columns = st.columns(2, gap="large")
+            for column, (panel_title, panel_body) in zip(columns, row):
+                with column:
+                    with st.expander(panel_title, expanded=False):
+                        st.markdown(panel_body)
+    
+        with st.expander("Public trust package", expanded=False):
+            st.caption(
+                "Optional public-trust reference material. This is review support only; it does not create certification, enforcement, approval, or final authority."
+            )
+            render_public_trust_package_page(st)
+    
+        st.caption(
+            "Protocol Guide boundary: ALETHEIA reflects review needs. ALETHEIA remains a mirror, not a throne. Human review remains required."
+        )
+    
+    
+if selected_top_module == 'ℹ️ Why ALETHEIA':
+    with st.container():
+        render_about_public_info_page(st, header_image=resolve_about_header_image())
+    
+    st.divider()
+    st.markdown("### Support utilities")
     st.caption(
-        "Protocol Guide boundary: ALETHEIA reflects review needs. ALETHEIA remains a mirror, not a throne. Human review remains required."
+        "Optional reading aids that support review without becoming main modules. "
+        "They do not rescore, certify, approve, reject, enforce, or override ALETHEIA receipts."
     )
-
-
-with tab_about:
-    render_about_public_info_page(st, header_image=resolve_about_header_image())
-
-st.divider()
-st.markdown("### Support utilities")
-st.caption(
-    "Optional reading aids that support review without becoming main modules. "
-    "They do not rescore, certify, approve, reject, enforce, or override ALETHEIA receipts."
-)
-with st.expander("Receipt Reader — Standard View", expanded=False):
-    st.caption(
-        "Have an ALETHEIA receipt? Upload a .txt, .md, or .json receipt file for native values "
-        "and a standard review-band explanation. This utility does not rescore, certify, approve, "
-        "reject, or override the original receipt."
-    )
-    render_receipt_reader_standard_view(st)
-
-render_app_footer_banner(APP_VERSION, st)
-
+    with st.expander("Receipt Reader — Standard View", expanded=False):
+        st.caption(
+            "Have an ALETHEIA receipt? Upload a .txt, .md, or .json receipt file for native values "
+            "and a standard review-band explanation. This utility does not rescore, certify, approve, "
+            "reject, or override the original receipt."
+        )
+        render_receipt_reader_standard_view(st)
+    
+    render_app_footer_banner(APP_VERSION, st)
+    

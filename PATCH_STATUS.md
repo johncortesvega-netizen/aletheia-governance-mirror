@@ -1,28 +1,18 @@
 # ALETHEIA Patch Status
 
-Latest patch: Patch 223 — Modularization Stage 1 Missing Imports Hotfix
+## Current Patch
+Patch 226 — Navigation Containment Refactor
 
-Status: READY
+## Status
+Ready for local validation.
 
-Summary:
-- Fixes missing `re` and `hashlib` imports in the extracted semantic pressure component.
-- Resolves module crashes when rendering semantic panel keys after Stage 1 modularization.
-- Runtime behavior unchanged.
+## Summary
+Top-level navigation no longer uses Streamlit tabs. It uses a single active-module selector and renders only the selected module body. This prevents inactive modules from leaking into one long page after reruns.
 
-Validation:
-- `python -m py_compile ui/components/semantic_pressure_panel.py` passed.
+## Boundary
+No changes to scanner logic, scoring, MEI7 gate, Z-axis, receipts, Evidence Lab calculations, World Lens math, semantic pressure logic, tests, telemetry, or authority behavior.
 
-Boundary:
-- No scoring, scanner, MEI7 gate, Z-axis, Evidence Lab, World Lens, receipt, telemetry, or authority-behavior changes.
-
-## Patch 224 — Modularization Stage 1 Clean Import Repair
-Status: READY
-Type: hotfix / modularization repair
-
-Summary:
-- Replaces `ui/components/semantic_pressure_panel.py` with a clean file that explicitly imports `re` and `hashlib`.
-- Excludes `__pycache__` from the patch package.
-- Adds cache cleanup instructions to prevent stale local bytecode confusion.
-
-Boundary:
-- No runtime scoring, semantic scanner, MEI7, Z-axis, Evidence Lab, World Lens, receipt, telemetry, or authority behavior changes.
+## Validation
+- `python -m py_compile app.py`
+- `python -m pytest`
+- `python -m streamlit run app.py`
