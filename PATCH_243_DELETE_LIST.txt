@@ -1,0 +1,4 @@
+Patch 243 deletes no files.
+
+Do not delete `app.py`; only replace it with the patched version.
+Do not delete existing `ui/pages` files.

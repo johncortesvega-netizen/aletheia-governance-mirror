@@ -1,0 +1,16 @@
+PATCH 243 — App Modularization Stage 11: Evidence Lab Page
+
+Changed files:
+- app.py
+- ui/pages/evidence_lab.py
+- docs/app_modularization_stage11_evidence_lab_page.md
+- PATCH_STATUS.md
+- PATCH_243_MANIFEST.txt
+- PATCH_243_RECOVERY_NOTE.md
+- PATCH_243_DELETE_LIST.txt
+
+Purpose:
+Move Evidence Lab page rendering out of the monolithic app.py while preserving existing behavior through a temporary runtime namespace bridge.
+
+Runtime/governance impact:
+None. This is a structural extraction only.

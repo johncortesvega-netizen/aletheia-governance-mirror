@@ -156,3 +156,10 @@ Type: page extraction / behavior-preserving modularization
 - Uses the same temporary runtime namespace bridge pattern as Stage 9 to avoid changing scenario scoring, batch behavior, receipts, semantic diagnostics, or UI state keys.
 - `app.py` now delegates Stress Test rendering to `render_stress_test_page(globals())`.
 - No scanner, scoring, MEI7, Z-axis, Evidence Lab, World Lens, receipt schema, telemetry, or authority-boundary behavior changed.
+
+## Patch 243 — App Modularization Stage 11: Evidence Lab Page
+Status: ready
+
+- Extracts the Evidence Lab page from `app.py` into `ui/pages/evidence_lab.py`.
+- Keeps behavior stable through a temporary runtime namespace bridge.
+- Does not change scoring, scanner logic, Evidence Lab calculations, World Lens data, receipts, MEI7, Z-axis, telemetry, or authority boundaries.
