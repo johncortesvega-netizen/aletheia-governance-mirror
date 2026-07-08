@@ -96,3 +96,18 @@ Status: READY
 - Extracted shared protocol-state notice rendering into `ui/components/module_headers.py`.
 - Kept protocol-state computation in `app.py` to avoid behavior changes.
 - Added module reference helper for later page extraction.
+
+## Patch 235 — Receipt Reader Navigation Restore
+Status: ready
+
+Restores Receipt Reader as a top-level single-module navigation item. Receipt Reader remains read-only and does not rescore or certify receipts.
+
+## Patch 236 — App Modularization Stage 7: Protocol Guide Page
+
+Status: ready.
+
+- Extracted Protocol Guide rendering from `app.py` into `ui/pages/protocol_guide.py`.
+- Added `ui/pages/__init__.py`.
+- Added documentation for Stage 7 modularization.
+- No scoring, scanner, MEI7, Z-axis, Evidence Lab, World Lens, Stress Test, receipt, telemetry, or authority behavior changes.
+

@@ -1,0 +1,18 @@
+PATCH 236 — App Modularization Stage 7: Protocol Guide Page
+
+Changed files:
+- app.py
+- ui/pages/__init__.py
+- ui/pages/protocol_guide.py
+- docs/app_modularization_stage7_protocol_guide_page.md
+- PATCH_STATUS.md
+- PATCH_236_MANIFEST.txt
+- PATCH_236_RECOVERY_NOTE.md
+- PATCH_236_DELETE_LIST.txt
+
+Purpose:
+- Extract the Protocol Guide surface from app.py into ui/pages/protocol_guide.py.
+- Keep behavior unchanged while reducing app.py size.
+
+Runtime/governance impact:
+- None.
