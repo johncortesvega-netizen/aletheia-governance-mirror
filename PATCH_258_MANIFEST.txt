@@ -1,0 +1,18 @@
+Patch 258 — Behavior Regression Review
+
+Changed files:
+- tests/active/test_behavior_regression_review.py
+- tests/README.md
+- docs/behavior_regression_review_patch_258.md
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_258_MANIFEST.txt
+- PATCH_258_RECOVERY_NOTE.md
+- PATCH_258_DELETE_LIST.txt
+
+Runtime impact:
+- None.
+
+Validation target:
+- python -m py_compile tests\active\test_behavior_regression_review.py
+- python -m pytest

@@ -1,0 +1,10 @@
+Patch 258 delete list
+
+No runtime files should be deleted.
+
+Added files that can be removed when reverting this patch:
+- tests/active/test_behavior_regression_review.py
+- docs/behavior_regression_review_patch_258.md
+- PATCH_258_MANIFEST.txt
+- PATCH_258_RECOVERY_NOTE.md
+- PATCH_258_DELETE_LIST.txt
