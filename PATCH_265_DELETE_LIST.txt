@@ -1,0 +1,8 @@
+Delete these files to revert Patch 265 additions:
+- ui/state.py
+- docs/state_extraction_patch_265.md
+- docs/state_extraction_patch_265_summary.md
+- tests/active/test_patch_265_state_extraction.py
+- PATCH_265_MANIFEST.txt
+- PATCH_265_RECOVERY_NOTE.md
+- PATCH_265_DELETE_LIST.txt

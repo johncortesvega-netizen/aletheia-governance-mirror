@@ -1,0 +1,5 @@
+# Patch 264 delete list
+
+No obsolete runtime files are deleted by Patch 264.
+
+Patch 264 is prep-only and intentionally does not create ui/state.py.

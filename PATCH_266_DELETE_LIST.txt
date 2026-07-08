@@ -1,0 +1,8 @@
+Patch 266 adds these files if rollback is needed:
+
+docs/config_extraction_inventory_patch_266.md
+docs/config_extraction_inventory_patch_266_summary.md
+tests/active/test_patch_266_config_extraction_inventory.py
+PATCH_266_MANIFEST.txt
+PATCH_266_RECOVERY_NOTE.md
+PATCH_266_DELETE_LIST.txt

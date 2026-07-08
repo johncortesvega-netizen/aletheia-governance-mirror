@@ -1,0 +1,19 @@
+Patch 264 — State Extraction Prep
+
+Added:
+- docs/state_extraction_prep_patch_264.md
+- docs/state_extraction_prep_patch_264_summary.md
+- tests/active/test_patch_264_state_extraction_prep.py
+- PATCH_264_MANIFEST.txt
+- PATCH_264_RECOVERY_NOTE.md
+- PATCH_264_DELETE_LIST.txt
+
+Updated:
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+
+Runtime files intentionally unchanged.
+
+Validation:
+- python -m pytest tests/active -q
+- python -m pytest -q

@@ -1,6 +1,102 @@
+# Patch 266 — Config Extraction Inventory
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 266 is a prep-only inventory patch for future config/static-data extraction. It adds docs and active tests that classify safe static candidates versus behavior-sensitive constants. No runtime constants are moved and no `ui/config.py`, `ui/constants.py`, `ui/examples.py`, or `ui/labels.py` module is created yet.
+
+Added:
+
+- `docs/config_extraction_inventory_patch_266.md`
+- `docs/config_extraction_inventory_patch_266_summary.md`
+- `tests/active/test_patch_266_config_extraction_inventory.py`
+- `PATCH_266_MANIFEST.txt`
+- `PATCH_266_RECOVERY_NOTE.md`
+- `PATCH_266_DELETE_LIST.txt`
+
+Boundary:
+
+- Safe-first future candidates: `APP_VERSION`, `SUPPORTED_INPUT_LANGUAGE_NOTE`, `APP_UX_POLISH_SUMMARY`, `DEMO_INPUT_FILES`, and possibly demo scenario maps with exact-content tests.
+- Out of scope for Patch 267: `TOTAL_9K`, `DEMOGRAPHIC_BRACKETS`, `WORLD_BANK_AGGREGATE_ISO3`, `REVIEW_BAND_LABELS`, `MISSING_SAFEGUARD_NEGATION_PATTERNS`, `MIN_FULL_GRID_COUNTRIES`, scoring/taxonomy/Z-axis thresholds, allocation logic, and receipt semantics.
+
+Tests expected:
+
+```bash
+python -m pytest tests/active -q
+python -m pytest -q
+```
+
+---
+
 # ALETHEIA Patch Notes
 
 ## Current patch
+
+### Patch 264 — State Extraction Prep
+
+Patch 264 prepares the future state extraction without moving runtime code. It maps the current Streamlit `st.session_state` ownership surface and records key names, owners, lifecycles, and extraction risk.
+
+Added:
+
+- `docs/state_extraction_prep_patch_264.md`
+- `docs/state_extraction_prep_patch_264_summary.md`
+- `tests/active/test_patch_264_state_extraction_prep.py`
+- `PATCH_264_MANIFEST.txt`
+- `PATCH_264_RECOVERY_NOTE.md`
+- `PATCH_264_DELETE_LIST.txt`
+
+Preserved:
+
+- no `ui/state.py` yet;
+- no runtime state movement;
+- no state key renames;
+- no default/lifecycle changes;
+- router key `aletheia_active_module` remains owned by `ui/main.py`;
+- sidebar defaults/reset behavior remains in `app.py`;
+- Evidence Lab, World Lens, Mirror Check, Stress Test, Unit Preview, and Sydney Protocol self-check state remain in current owners.
+
+Next patch guidance:
+
+- Patch 265 may create `ui/state.py`;
+- first extraction should be narrow, preferably sidebar defaults/reset helpers;
+- do not move Evidence/World Lens sync state, dataframe caches, batch state, Unit Preview, router selection, or Sydney Protocol self-check caching without separate focused tests.
+
+
+### Patch 265 — State Extraction
+
+Patch 265 performs the first narrow runtime state extraction prepared by Patch 264. It creates `ui/state.py` and moves only the sidebar review-lens normalization/reset defaults out of `app.py`.
+
+Added:
+
+- `ui/state.py`
+- `docs/state_extraction_patch_265.md`
+- `docs/state_extraction_patch_265_summary.md`
+- `tests/active/test_patch_265_state_extraction.py`
+- `PATCH_265_MANIFEST.txt`
+- `PATCH_265_RECOVERY_NOTE.md`
+- `PATCH_265_DELETE_LIST.txt`
+
+Updated:
+
+- `app.py` delegates the legacy sidebar profile normalization to `normalize_sidebar_lens_state(st.session_state)`.
+- `app.py` delegates the Reset lens state mutation to `reset_sidebar_lens_state(st.session_state)`.
+- Patch 264 tests now recognize `ui/state.py` as the canonical owner of the moved sidebar reset defaults.
+- `PATCH_STATUS.md` records Patch 265 as current.
+
+Preserved:
+
+- exact sidebar widget keys;
+- exact sidebar default values;
+- legacy `Default` → `Starting preset` normalization;
+- controlled-router ownership in `ui/main.py`;
+- app.py as Streamlit entrypoint.
+
+Not changed:
+
+- no router/session key rename;
+- no Unit Preview or Sydney Protocol self-check state movement;
+- no shared `protocol_state` extraction;
+- no Evidence Lab/World Lens/Mirror Check/Stress Test state movement;
+- no scanner/scoring/taxonomy/Z-axis/receipt behavior changes.
 
 ### Patch 263 — Controlled Router Extraction
 

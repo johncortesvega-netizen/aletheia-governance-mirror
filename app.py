@@ -31,6 +31,7 @@ from ui.privacy_audit_panel import render_privacy_boundary_audit_panel
 from ui.receipt_reader import render_receipt_reader_standard_view
 from ui.module_page_template import ModulePageTemplateCopy, render_module_page_template_intro
 from ui.main import render_controlled_router
+from ui.state import normalize_sidebar_lens_state, reset_sidebar_lens_state
 from ui.input_clarity import (
     render_language_calibration_caveat,
     render_direct_csv_read_failed,
@@ -2720,15 +2721,10 @@ with st.sidebar:
     }
     preset_options = [preset_labels.get(key, key.replace("_", " ").title()) for key in WEIGHT_PRESETS.keys()]
 
-    if st.session_state.get("sidebar_weight_profile") == "Default":
-        st.session_state["sidebar_weight_profile"] = "Starting preset"
+    normalize_sidebar_lens_state(st.session_state)
 
     if st.button("Reset lens", use_container_width=True, key="sidebar_reset_tuning"):
-        st.session_state["sidebar_weight_profile"] = "Starting preset"
-        st.session_state["sidebar_steps"] = 40
-        st.session_state["sidebar_agent_voices"] = 6
-        st.session_state["sidebar_capture_sensitivity"] = 0.55
-        st.session_state["sidebar_alignment_floor"] = 0.45
+        reset_sidebar_lens_state(st.session_state)
 
     render_sidebar_review_lens_intro(st)
     preset_display = st.selectbox(
