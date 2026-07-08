@@ -15,6 +15,7 @@ import pandas as pd
 import streamlit as st
 
 from core.semantic_pressure_scanner import (
+    format_semantic_pressure_report,
     pressure_code_rows,
     reviewability_guidance_rows,
     scan_semantic_pressure,
