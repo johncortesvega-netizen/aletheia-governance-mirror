@@ -67,6 +67,7 @@ from ui.components.semantic_pressure_panel import (
 from ui.components.metric_cards import metric_card, soft_card
 from ui.components.review_cards import render_repair_question_cards, render_recommendation_cards, render_soft_card_grid
 from ui.components.tree_visuals import render_pulse_tree
+from ui.components.receipt_blocks import render_receipt_sky_panel
 
 from core.world_lens import (
     country_available_years,
@@ -4721,21 +4722,11 @@ if selected_top_module == '🚀 Stress Test':
             # Patch 203: keep receipt download opt-in so Stress Test does not become one
             # long continuous result page. The receipt payload and schema are unchanged.
             with st.expander("Download local witness receipt", expanded=False):
-                st.markdown(
-                    """
-                    <div class="receipt-sky-panel">
-                      <div class="receipt-kicker">User-held review artifact</div>
-                      <div class="receipt-title">Local witness receipt</div>
-                      <div class="receipt-body">Creates a receipt you hold. It is not published, synced, enforced, or treated as authority.</div>
-                      <div class="receipt-boundary-strip">
-                        <span class="receipt-boundary-pill">Local only</span>
-                        <span class="receipt-boundary-pill">No public ledger</span>
-                        <span class="receipt-boundary-pill">No Global ID sync</span>
-                        <span class="receipt-boundary-pill">Human review required</span>
-                      </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
+                render_receipt_sky_panel(
+                    kicker="User-held review artifact",
+                    title="Local witness receipt",
+                    body="Creates a receipt you hold. It is not published, synced, enforced, or treated as authority.",
+                    pills=["Local only", "No public ledger", "No Global ID sync", "Human review required"],
                 )
                 st.caption("Download text only. This visual card does not change the receipt content, schema, or authority boundary.")
                 raw_query_for_receipt = st.session_state.get("last_query_raw", display_query)
@@ -5226,21 +5217,12 @@ if selected_top_module == '🧭 Boundary Cases':
     
         with st.expander("Receipt example — local witness format", expanded=False):
             # Patch 183: visual-only example framing for receipt documentation.
-            st.markdown(
-                """
-                <div class="receipt-sky-panel">
-                  <div class="receipt-kicker">Receipt example</div>
-                  <div class="receipt-title">Local Witness Receipt v2</div>
-                  <div class="receipt-body">Records a user-held fingerprint of an ALETHEIA review: input, processed input, report fingerprint, app/rubric/prompt versions, active modules, and authority boundary.</div>
-                  <div class="receipt-boundary-strip">
-                    <span class="receipt-boundary-pill receipt-hash-pill">SHA-256 fingerprints</span>
-                    <span class="receipt-boundary-pill">Stored locally</span>
-                    <span class="receipt-boundary-pill">No central storage</span>
-                    <span class="receipt-boundary-pill">No authority claim</span>
-                  </div>
-                </div>
-                """,
-                unsafe_allow_html=True,
+            render_receipt_sky_panel(
+                kicker="Receipt example",
+                title="Local Witness Receipt v2",
+                body="Records a user-held fingerprint of an ALETHEIA review: input, processed input, report fingerprint, app/rubric/prompt versions, active modules, and authority boundary.",
+                pills=["SHA-256 fingerprints", "Stored locally", "No central storage", "No authority claim"],
+                hash_pills=["SHA-256 fingerprints"],
             )
             st.caption("Example styling only. The receipt remains a review artifact; it does not publish, sync, enforce, or create authority.")
             receipt_example = {

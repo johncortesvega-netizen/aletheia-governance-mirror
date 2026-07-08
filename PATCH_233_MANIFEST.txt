@@ -1,0 +1,13 @@
+Patch 233 — App Modularization Stage 5: Receipt Blocks
+
+Changed files:
+- app.py
+- ui/components/receipt_blocks.py
+- docs/app_modularization_stage5_receipt_blocks.md
+- PATCH_STATUS.md
+- PATCH_233_MANIFEST.txt
+- PATCH_233_RECOVERY_NOTE.md
+- PATCH_233_DELETE_LIST.txt
+
+Purpose:
+Centralize repeated local receipt visual panels into a shared UI component without changing receipt payloads or authority boundaries.

@@ -84,3 +84,9 @@ Status: READY
 - `app.py` now imports `render_pulse_tree` from the component module.
 - No governance logic, scoring, MEI7 gate, Z-axis, receipts, Evidence Lab math, or World Lens math changed.
 
+
+
+## Patch 233 — App Modularization Stage 5: Receipt Blocks
+- Extracted shared receipt visual panel rendering into `ui/components/receipt_blocks.py`.
+- Reused helper in Stress Test receipt download and Protocol Guide receipt example.
+- Visual-only; no receipt schema or scoring changes.
