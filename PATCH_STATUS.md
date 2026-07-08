@@ -76,3 +76,11 @@ Status: READY
 - Extracted shared review-card rendering helpers into `ui/components/review_cards.py`.
 - Stress Test result explanation and repair/recommendation cards now use shared component helpers.
 - Presentation-only modularization; no scanner, scoring, MEI7, Z-axis, World Lens, Evidence Lab, receipt, telemetry, or authority behavior changed.
+
+## Patch 232 — App Modularization Stage 4: Tree Visuals
+Status: READY
+
+- Extracted Mirror/Stress tree visual renderer into `ui/components/tree_visuals.py`.
+- `app.py` now imports `render_pulse_tree` from the component module.
+- No governance logic, scoring, MEI7 gate, Z-axis, receipts, Evidence Lab math, or World Lens math changed.
+

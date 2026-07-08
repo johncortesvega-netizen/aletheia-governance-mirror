@@ -1,0 +1,24 @@
+PATCH 232 — APP MODULARIZATION STAGE 4: TREE VISUALS
+
+Changed files:
+- app.py
+- ui/components/tree_visuals.py
+- docs/app_modularization_stage4_tree_visuals.md
+- PATCH_STATUS.md
+- PATCH_232_MANIFEST.txt
+- PATCH_232_RECOVERY_NOTE.md
+- PATCH_232_DELETE_LIST.txt
+
+Summary:
+- Extracted the shared Mirror/Stress tree visual renderer from app.py.
+- Added ui/components/tree_visuals.py.
+- app.py now imports render_pulse_tree from the component module.
+
+Boundary:
+- No scanner logic changed.
+- No scoring changed.
+- No MEI7 gate changed.
+- No Z-axis mapping changed.
+- No Evidence Lab or World Lens calculation changed.
+- No receipt schema changed.
+- No telemetry/storage behavior changed.
