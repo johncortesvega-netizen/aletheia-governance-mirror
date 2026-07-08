@@ -1,11 +1,25 @@
-# ALETHEIA Patch Archive
+# Patch Archive
 
-This folder preserves the human-readable patch trail while keeping the repository root clean.
+This directory preserves ALETHEIA patch artifacts without keeping every patch file in the repository root.
 
-## Layout
+## Structure
 
-- `manifests/` — patch manifests
-- `recovery_notes/` — patch recovery notes
-- `delete_lists/` — patch delete lists
+- `manifests/` — patch manifests (`PATCH_N_MANIFEST.txt`)
+- `recovery_notes/` — recovery notes (`PATCH_N_RECOVERY_NOTE.md`)
+- `delete_lists/` — delete lists (`PATCH_N_DELETE_LIST.txt`)
+- `other_patch_artifacts/` — older or non-standard patch records if retained
 
-Root-level patch artifacts from older patches may be moved here during repository hygiene passes. This is relocation, not deletion of the audit trail.
+## Current archive inventory
+
+- Manifests archived: 287
+- Recovery notes archived: 325
+- Delete lists archived: 72
+
+## Root policy
+
+The repository root should only keep the current patch status and current patch artifacts.
+Older patch records belong here so the patch chain remains inspectable without cluttering the working root.
+
+## Boundary
+
+The archive is documentation/history only. It is not runtime code, not a release gate, and not an authority layer.

@@ -1,0 +1,23 @@
+PATCH 255 — PATCH NOTES FINAL CLEANUP
+
+Changed / added files:
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_255_MANIFEST.txt
+- PATCH_255_RECOVERY_NOTE.md
+- PATCH_255_DELETE_LIST.txt
+- docs/patch_notes_final_cleanup_patch_255.md
+- docs/patch_archive/README.md
+- docs/patch_archive/manifests/PATCH_245_MANIFEST.txt through PATCH_254_MANIFEST.txt
+- docs/patch_archive/recovery_notes/PATCH_245_RECOVERY_NOTE.md through PATCH_254_RECOVERY_NOTE.md
+- docs/patch_archive/delete_lists/PATCH_245_DELETE_LIST.txt through PATCH_254_DELETE_LIST.txt
+
+Purpose:
+- Final cleanup of patch notes after modularization and bridge-removal patches.
+- Preserve patch history while keeping repository root clean.
+
+Runtime impact:
+- None.
+
+Boundary:
+- No scanner, scoring, MEI7, Z-axis, receipt, Evidence Lab, World Lens, navigation, telemetry, or storage changes.

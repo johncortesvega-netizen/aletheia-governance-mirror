@@ -1,0 +1,11 @@
+PATCH 255 DELETE LIST
+
+No runtime files are deleted.
+
+Repository hygiene removals from distributed zip:
+- .git/
+- __pycache__/
+- .pytest_cache/
+- *.pyc
+
+Root-level patch artifacts from patches 245–254 are moved to docs/patch_archive/, not deleted.

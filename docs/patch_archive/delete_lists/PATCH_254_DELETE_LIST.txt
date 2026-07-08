@@ -1,0 +1,1 @@
+Patch 254 does not require deleting files.

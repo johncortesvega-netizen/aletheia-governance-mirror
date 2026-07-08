@@ -1,0 +1,29 @@
+PATCH 254 — Modularization Final Audit
+
+Changed files:
+- docs/modularization_final_audit_v1.md
+- docs/modularization_post_bridge_cleanup_roadmap_v1.md
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_254_MANIFEST.txt
+- PATCH_254_RECOVERY_NOTE.md
+- PATCH_254_DELETE_LIST.txt
+
+Purpose:
+- Close the first major modularization round with a written audit.
+- Record extracted components/pages.
+- Record current dependency-map boundaries.
+- Document remaining cleanup targets and post-bridge roadmap.
+
+No runtime/governance changes:
+- No app.py changes.
+- No scanner changes.
+- No scoring changes.
+- No MEI7 gate changes.
+- No Z-axis changes.
+- No Stress Test metric changes.
+- No Evidence Lab calculation changes.
+- No World Lens math changes.
+- No 9k allocation changes.
+- No receipt schema changes.
+- No telemetry/storage changes.
