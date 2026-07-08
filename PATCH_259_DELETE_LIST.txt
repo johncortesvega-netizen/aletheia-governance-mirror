@@ -1,0 +1,3 @@
+Patch 259 delete list
+
+No files are deleted by Patch 259.

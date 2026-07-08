@@ -2,24 +2,22 @@
 
 ## Current patch
 
-### Patch 258 — Behavior Regression Review
+### Patch 259 — App Shell Inventory / Thin Entrypoint Plan
 
-Patch 258 adds a narrow active behavior-regression review suite for current
-semantic-pressure behavior after the legacy-test quarantine and modularization
-path repair work.
+Patch 259 documents what still lives in `app.py` after the modularization and
+bridge-removal sequence.
 
-It adds `tests/active/test_behavior_regression_review.py`, covering:
+It adds:
 
-- opaque hidden-power claims;
-- emergency authority with weak safeguards;
-- claim/mechanism gaps;
-- identity-gated public-benefit access;
-- concrete safeguard language.
+- `docs/app_shell_inventory_patch_259.md`
+- `docs/thin_entrypoint_refactor_plan_patch_259.md`
 
-The goal is not to bulk-accept or bulk-delete the remaining legacy behavior
-bucket. The goal is to protect the current release behavior that matters for the
-public mirror boundary while leaving stale historical calibration tests for
-separate manual review.
+The patch defines the safe next direction:
+
+1. extract shell helpers first;
+2. move routing to `ui/main.py` later;
+3. extract shared session state only after routing is stable;
+4. delay native Streamlit multipage until the controlled single-app shell is thin.
 
 No runtime behavior changed.
 
@@ -39,9 +37,11 @@ No runtime behavior changed.
 - Patch 256 — Legacy Test Quarantine / Import-Break Cleanup
 - Patch 257 — Modularization Test Path Repair
 - Patch 258 — Behavior Regression Review
+- Patch 259 — App Shell Inventory / Thin Entrypoint Plan
 
 ## Runtime boundary
 
-Patch 258 is active-test and documentation hygiene only. It does not change
+Patch 259 is documentation and refactor planning only. It does not change
 governance logic, scanner behavior, scoring, receipts, World Lens math, Evidence
-Lab calculations, telemetry, storage, or the mirror-not-throne boundary.
+Lab calculations, telemetry, storage, navigation behavior, or the
+mirror-not-throne boundary.

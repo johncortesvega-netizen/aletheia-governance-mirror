@@ -1,0 +1,18 @@
+Patch 259 — App Shell Inventory / Thin Entrypoint Plan
+
+Changed files:
+- docs/app_shell_inventory_patch_259.md
+- docs/thin_entrypoint_refactor_plan_patch_259.md
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_259_MANIFEST.txt
+- PATCH_259_RECOVERY_NOTE.md
+- PATCH_259_DELETE_LIST.txt
+
+Runtime impact:
+- None.
+
+Purpose:
+- Documents what still lives in app.py after modularization and bridge removal.
+- Defines the safe next extraction sequence toward a thin entrypoint.
+- Recommends preserving the current controlled single-app navigation before considering native Streamlit multipage.
