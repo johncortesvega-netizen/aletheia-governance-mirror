@@ -26,3 +26,9 @@ No runtime logic changed. No scoring, scanner, MEI7, Z-axis, receipt, World Lens
 This patch removes the broad namespace bridge from the Mirror Check page by replacing the direct `globals()` page bridge with an explicit dependency map. This makes the Mirror Check page boundary inspectable while preserving current behavior.
 
 No governance, scanner, scoring, receipt, Evidence Lab, World Lens, or telemetry behavior is changed.
+
+## Patch 248 — Stress Test Bridge Inventory / Prep
+
+Patch 248 documents the remaining Stress Test `globals()` bridge before runtime bridge removal. It records the active dependency surface of `ui/pages/stress_test.py` and provides a draft dependency-map approach for Patch 249.
+
+This patch is documentation-only. It changes no runtime logic, scoring, scanner behavior, Stress Test metrics, receipts, Evidence Lab calculations, World Lens math, telemetry, or authority-boundary behavior.

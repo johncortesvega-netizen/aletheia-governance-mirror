@@ -1,0 +1,4 @@
+Patch 248 delete list:
+- None.
+
+This is a documentation-only bridge inventory patch.

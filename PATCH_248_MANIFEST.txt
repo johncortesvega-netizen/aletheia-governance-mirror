@@ -1,0 +1,25 @@
+Patch 248 — Stress Test Bridge Inventory / Prep
+
+Changed files:
+- docs/stress_test_bridge_inventory_v1.md
+- docs/stress_test_dependency_map_v1.md
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_248_MANIFEST.txt
+- PATCH_248_RECOVERY_NOTE.md
+- PATCH_248_DELETE_LIST.txt
+
+Purpose:
+- Document the remaining Stress Test globals() namespace bridge.
+- Record the current dependency surface before runtime bridge removal.
+- Provide a draft dependency-map approach for Patch 249.
+
+Runtime changes:
+- None.
+
+Boundary:
+- No app.py changes.
+- No scanner/scoring/MEI7/Z-axis changes.
+- No Stress Test metric/math changes.
+- No receipt schema or batch behavior changes.
+- No Evidence Lab or World Lens behavior changes.
