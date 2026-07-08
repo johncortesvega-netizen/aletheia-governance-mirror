@@ -1,0 +1,19 @@
+PATCH 252 — World Lens Bridge Inventory / Prep
+
+Changed files:
+- docs/world_lens_bridge_inventory_v1.md
+- docs/world_lens_dependency_map_v1.md
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_252_MANIFEST.txt
+- PATCH_252_RECOVERY_NOTE.md
+- PATCH_252_DELETE_LIST.txt
+
+Purpose:
+Prepare the last major bridge-removal step by documenting the dependencies World Lens still receives through the broad namespace bridge.
+
+Runtime impact:
+None. Documentation-only patch.
+
+Next expected patch:
+Patch 253 — World Lens Bridge Removal.

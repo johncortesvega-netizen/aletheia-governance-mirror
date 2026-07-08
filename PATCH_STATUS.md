@@ -1,13 +1,15 @@
 # PATCH STATUS
 
-Current patch: 251 — Evidence Lab Bridge Removal Import Hotfix
+Current patch: 252 — World Lens Bridge Inventory / Prep
 
 Status: ready
 
 Summary:
-- Fixes missing hashlib import in the extracted Evidence Lab page after Patch 250.
-- Evidence Lab active-input signature hashing now has an explicit local dependency.
-- Import-only hotfix; no runtime governance/scoring behavior changed.
+- Documents the final major `globals()` bridge remaining after Mirror Check, Stress Test, and Evidence Lab bridge removals.
+- Defines dependency groups for World Lens before bridge removal.
+- Provides a draft dependency-map shape for Patch 253.
+- No runtime files changed.
 
 Validation:
-- python -m py_compile app.py ui/pages/evidence_lab.py
+- Documentation-only patch.
+- No Python runtime validation required beyond existing app checks.
