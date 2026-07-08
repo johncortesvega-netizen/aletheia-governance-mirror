@@ -1,0 +1,15 @@
+PATCH 235 — Receipt Reader Navigation Restore
+
+Changed files:
+- app.py
+- docs/navigation_receipt_reader_restore_v1.md
+- PATCH_STATUS.md
+- PATCH_235_MANIFEST.txt
+- PATCH_235_RECOVERY_NOTE.md
+- PATCH_235_DELETE_LIST.txt
+
+Purpose:
+- Restore Receipt Reader as a first-class top-level module after the single-module navigation refactor.
+- Keep Receipt Reader read-only and non-scoring.
+
+No runtime logic changes to scoring, scanner, MEI7, Z-axis, Evidence Lab, World Lens, receipts, telemetry, or storage.

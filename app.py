@@ -68,6 +68,7 @@ from ui.components.metric_cards import metric_card, soft_card
 from ui.components.review_cards import render_repair_question_cards, render_recommendation_cards, render_soft_card_grid
 from ui.components.tree_visuals import render_pulse_tree
 from ui.components.receipt_blocks import render_receipt_sky_panel
+from ui.components.module_headers import render_shared_protocol_state_notice_panel
 
 from core.world_lens import (
     country_available_years,
@@ -4010,27 +4011,7 @@ def update_protocol_state(**updates) -> dict:
 
 def render_shared_protocol_state_notice(current_mode: str, *, expanded: bool = False):
     state = update_protocol_state(current_mode=current_mode)
-    st.info(
-        "**Shared Protocol State** — Mirror Check, Stress Test, Boundary Cases, Evidence Lab, and World Lens are different windows into the same protocol heart. "
-        "Changes to empirical evidence, scoring calibration, the Sydney Protocol overlay, doctrine thresholds, or the selected evidence year may echo across modes. "
-        "That is intentional shared-state behavior, not an error. Scenario-only controls stay local unless you explicitly apply them to the shared protocol state."
-    )
-    with st.expander("Shared state details", expanded=expanded):
-        rows = [
-            ("Current mode", state.get("current_mode", current_mode)),
-            ("Empirical master active", "Yes" if state.get("empirical_master_active") else "No"),
-            ("Scored evidence active", "Yes" if state.get("scored_evidence_active") else "No"),
-            ("Trust calibration active", "Yes" if state.get("trust_calibration_active") else "No"),
-            ("WGI active", "Yes" if state.get("wgi_active") else "No"),
-            ("V-Dem active", "Yes" if state.get("vdem_active") else "No"),
-            ("Demo data active", "Yes" if state.get("synthetic_demo_active") else "No"),
-            ("Sydney Protocol overlay active", "Yes" if state.get("sydney_protocol_overlay_active") else "No"),
-            ("Selected evidence year", state.get("selected_evidence_year", "—")),
-            ("Selected case / scenario", state.get("selected_context", "—")),
-            ("Evidence basis", state.get("grid_basis", "—")),
-            ("Last protocol update source", state.get("last_update_source", "—")),
-        ]
-        st.dataframe(pd.DataFrame(rows, columns=["State field", "Value"]), use_container_width=True, hide_index=True)
+    render_shared_protocol_state_notice_panel(current_mode=current_mode, state=state, expanded=expanded)
 
 
 def render_audit_module_integrity_panel(*, expanded: bool = False):

@@ -1,0 +1,13 @@
+Patch 234 — App Modularization Stage 6: Module Headers
+
+Changed files:
+- app.py
+- ui/components/module_headers.py
+- docs/app_modularization_stage6_module_headers.md
+- PATCH_STATUS.md
+- PATCH_234_MANIFEST.txt
+- PATCH_234_RECOVERY_NOTE.md
+- PATCH_234_DELETE_LIST.txt
+
+Purpose:
+Extract shared module/header notice rendering from app.py while preserving protocol-state computation in app.py.

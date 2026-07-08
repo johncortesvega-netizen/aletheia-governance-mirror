@@ -90,3 +90,9 @@ Status: READY
 - Extracted shared receipt visual panel rendering into `ui/components/receipt_blocks.py`.
 - Reused helper in Stress Test receipt download and Protocol Guide receipt example.
 - Visual-only; no receipt schema or scoring changes.
+
+
+## Patch 234 — App Modularization Stage 6: Module Headers
+- Extracted shared protocol-state notice rendering into `ui/components/module_headers.py`.
+- Kept protocol-state computation in `app.py` to avoid behavior changes.
+- Added module reference helper for later page extraction.
