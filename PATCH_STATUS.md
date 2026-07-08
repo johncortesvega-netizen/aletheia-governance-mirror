@@ -4583,3 +4583,29 @@ Changed files:
 - PATCH_219_DELETE_LIST.txt
 
 Boundary: documentation/test-governance only. No runtime behavior, scoring, semantic scanner logic, MEI7 gate, Z-axis behavior, Stress Test metrics, Evidence Lab calculations, World Lens math, receipt schema, external calls, telemetry, storage, certification, enforcement, or authority behavior changed.
+
+## Patch 221 — App Modularization Stage 1: Semantic Pressure Components
+Status: READY FOR LOCAL REVIEW
+
+Patch 221 begins the modularization plan by extracting the shared Semantic Pressure UI helpers from `app.py` into `ui/components/semantic_pressure_panel.py`. The moved functions cover the shared semantic panel, pressure-code card rendering, Stress Test semantic trigger rows, Evidence Lab semantic implication rows, World Lens semantic flag rows, and semantic scan selection helpers.
+
+Changed files:
+- app.py
+- ui/components/__init__.py
+- ui/components/semantic_pressure_panel.py
+- docs/app_modularization_stage1_semantic_components.md
+- PATCH_STATUS.md
+- PATCH_221_MANIFEST.txt
+- PATCH_221_RECOVERY_NOTE.md
+- PATCH_221_DELETE_LIST.txt
+
+Boundary: UI/component extraction only. No runtime scoring, scanner behavior, MEI7 gate, Z-axis behavior, Stress Test metrics, Evidence Lab calculations, World Lens math, receipt schema, external calls, telemetry, storage, certification, enforcement, or authority behavior changed.
+
+Validation:
+
+```bat
+python -m py_compile app.py ui\components\semantic_pressure_panel.py
+python -m pytest
+```
+
+Expected active-suite result: 5 passed.

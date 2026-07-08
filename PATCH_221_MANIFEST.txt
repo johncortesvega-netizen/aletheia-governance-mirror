@@ -1,0 +1,35 @@
+PATCH 221 — App Modularization Stage 1: Semantic Pressure Components
+
+Status: READY FOR LOCAL REVIEW
+
+Changed files:
+- app.py
+- ui/components/__init__.py
+- ui/components/semantic_pressure_panel.py
+- docs/app_modularization_stage1_semantic_components.md
+- PATCH_STATUS.md
+- PATCH_221_MANIFEST.txt
+- PATCH_221_RECOVERY_NOTE.md
+- PATCH_221_DELETE_LIST.txt
+
+Purpose:
+- Begin modularizing the monolithic app.py without changing runtime behavior.
+- Extract the shared Semantic Pressure UI panel and related Stress Test, Evidence Lab, and World Lens semantic helper functions into ui/components/semantic_pressure_panel.py.
+
+Boundary:
+- No scanner behavior changed.
+- No scoring changed.
+- No MEI7 ethics gate changed.
+- No Z-axis behavior changed.
+- No Stress Test metrics changed.
+- No Evidence Lab calculation changed.
+- No World Lens math changed.
+- No receipt schema changed.
+- No telemetry, storage, external call, certification, enforcement, or authority behavior changed.
+
+Validation:
+- python -m py_compile app.py ui\components\semantic_pressure_panel.py
+- python -m pytest
+
+Expected active-suite result:
+- 5 passed
