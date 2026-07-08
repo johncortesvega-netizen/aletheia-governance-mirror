@@ -1,0 +1,15 @@
+PATCH 240 — Receipt Reader Placement Rebase After Stage 9
+
+Changed files:
+- app.py
+- docs/receipt_reader_why_aletheia_rebase_v1.md
+- PATCH_STATUS.md
+- PATCH_240_MANIFEST.txt
+- PATCH_240_RECOVERY_NOTE.md
+- PATCH_240_DELETE_LIST.txt
+
+Purpose:
+Re-assert that Receipt Reader is located only under Why ALETHEIA → Support utilities → Receipt Reader — Standard View after Stage 9 modularization.
+
+Runtime scope:
+Copy/navigation clarification only. No receipt parsing, scoring, scanner, MEI7, Z-axis, World Lens, Evidence Lab, Stress Test, or authority-boundary behavior changes.

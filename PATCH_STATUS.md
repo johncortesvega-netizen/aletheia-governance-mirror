@@ -134,3 +134,8 @@ Boundary:
 ## Patch 239 — App Modularization Stage 9: Mirror Check Page
 
 Status: READY. Extracts Mirror Check page body into `ui/pages/mirror_check.py` using a behavior-preserving runtime namespace bridge. No scoring, scanner, receipt, MEI7, Z-axis, World Lens, Evidence Lab, telemetry, or authority-boundary behavior changed.
+
+
+## Patch 240 — Receipt Reader Placement Rebase After Stage 9
+
+Receipt Reader placement copy re-applied after Stage 9. Current intended location: Why ALETHEIA → Support utilities → Receipt Reader — Standard View. Documentation-only/navigation-copy clarification; no runtime governance behavior changes.

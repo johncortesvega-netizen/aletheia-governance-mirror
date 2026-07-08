@@ -369,7 +369,7 @@ APP_NAVIGATION_MAP = [
     ("World Lens", "Read selected-year country evidence, coverage, and allocation context without Global ID, real 9k body, or sovereign authority."),
     ("Boundary Cases", "Reference difficult edge cases such as consent pressure, free agency, ambient capture, and self-audit."),
     ("Protocol Guide", "Read the v1.0 operating guide, safe-language rules, module boundaries, and ALETHEIA mirror boundaries."),
-    ("Why ALETHEIA", "Understand ALETHEIA as a free, open-source governance mirror for human review."),
+    ("Why ALETHEIA", "Understand ALETHEIA as a free, open-source governance mirror for human review; includes Support utilities and the read-only Receipt Reader."),
 ]
 
 APP_UX_POLISH_SUMMARY = [
@@ -7685,7 +7685,7 @@ if selected_top_module == 'ℹ️ Why ALETHEIA':
         render_about_public_info_page(st, header_image=resolve_about_header_image())
     
     st.divider()
-    st.markdown("### Support utilities")
+    st.markdown("### Support utilities — includes Receipt Reader")
     st.info(
         "Receipt Reader is located here: Why ALETHEIA → Support utilities → Receipt Reader — Standard View. "
         "It is intentionally kept as a support utility, not a main decision module."
