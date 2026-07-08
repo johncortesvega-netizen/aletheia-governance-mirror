@@ -34,7 +34,7 @@ def render_boundary_cases_page(*, update_protocol_state, render_shared_protocol_
                     "Repair paths: whether the case needs alternatives, appeal, independent review, cooling-off periods, or stronger evidence.",
                 ),
                 safe_first_path=(
-                    "Start with one edge case and read it as a calibration reference, not as a command to act.",
+                    "Start with one edge case and read it as a calibration reference, not as an instruction to act.",
                     "Separate actor failure from policy failure, implementation failure, and data failure before drawing conclusions.",
                     "Treat allowed actions as review options only; do not use this module as enforcement authority.",
                     "Use the guardrail and forbidden-action language to preserve human agency, consent, appeal, and reversibility.",
@@ -528,6 +528,6 @@ def render_boundary_cases_page(*, update_protocol_state, render_shared_protocol_
         Next steps and questions
         Check the fingerprints, review the values, inspect evidence gaps, and ask whether any real-world decision still needs appeal, correction, source review, or independent human oversight.
 
-        Disclaimer: This receipt is a structured mirror reading for human review. It does not certify truth, safety, legality, legitimacy, morality, institutional fitness, extraordinary claims, or policy commands. It is not public ledger proof or a replacement for human judgment. Human review remains required; the reading may be incomplete, wrong, or sensitive to missing evidence.""",
+        Disclaimer: This receipt is a structured mirror reading for human review. It does not certify truth, safety, legality, legitimacy, morality, institutional fitness, extraordinary claims, or policy authority. It is not public-ledger proof or a replacement for human judgment. Human review remains required; the reading may be incomplete, wrong, or sensitive to missing evidence.""",
                 language="text",
             )

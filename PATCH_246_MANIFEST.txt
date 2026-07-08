@@ -1,0 +1,25 @@
+PATCH 246 — APP-WIDE COPY CLEANUP PASS
+
+Changed files:
+- app.py
+- ui/pages/protocol_guide.py
+- ui/pages/stress_test.py
+- ui/pages/mirror_check.py
+- ui/pages/evidence_lab.py
+- ui/pages/boundary_cases.py
+- ui/components/module_headers.py
+- ui/components/semantic_pressure_panel.py
+- docs/app_copy_cleanup_patch_246.md
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_246_MANIFEST.txt
+- PATCH_246_RECOVERY_NOTE.md
+- PATCH_246_DELETE_LIST.txt
+
+Summary:
+- Conservative copy-editing pass after modularization.
+- Removes stale/rebrand wording and tightens authority-boundary language.
+- Keeps ALETHEIA's mirror-not-throne concept intact.
+
+Boundary:
+- No runtime, scoring, scanner, receipt, World Lens, Evidence Lab, MEI7, Z-axis, telemetry, storage, or routing logic changes.

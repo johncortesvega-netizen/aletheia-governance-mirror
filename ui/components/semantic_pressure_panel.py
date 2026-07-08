@@ -474,7 +474,7 @@ def semantic_evidence_implication_rows(scan) -> list[dict]:
     if "grip_near_access" in categories:
         rows.append({
             "Semantic finding": "Grip language near access/basic-service terms",
-            "Evidence implication": "Requires proof that conditionality is bounded, proportionate, reviewable, and non-punitive.",
+            "Evidence implication": "Requires evidence that conditionality is bounded, proportionate, reviewable, and non-punitive.",
             "Human review question": "What evidence shows access conditions do not become hidden coercion?",
         })
     modal_count = int(_semantic_payload_value(scan, "modal_pressure_count", 0) or 0)
@@ -483,7 +483,7 @@ def semantic_evidence_implication_rows(scan) -> list[dict]:
         rows.append({
             "Semantic finding": "Mandatory/permanent language exceeds reversibility language",
             "Evidence implication": "Requires evidence of sunset clauses, appeal windows, reversal procedures, and exception handling.",
-            "Human review question": "Where is the proof that enforcement can be reversed or corrected?",
+            "Human review question": "What evidence shows that enforcement can be reversed or corrected?",
         })
     if mechanism_count >= 2 and not rows:
         rows.append({

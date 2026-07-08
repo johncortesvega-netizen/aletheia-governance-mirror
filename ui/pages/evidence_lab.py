@@ -43,7 +43,7 @@ def render_evidence_lab_page(runtime_namespace: dict[str, object]) -> None:
                 "Evidence status example",
                 list(evidence_examples.keys()),
                 key="evidence_status_example_selector",
-                help="Template-level calibration only. Evidence status is a review signal, not a final truth verdict.",
+                help="Template-level calibration only. Evidence status is a review signal, not a final truth claim.",
             )
             st.code(
                 f"""Evidence Lab Review

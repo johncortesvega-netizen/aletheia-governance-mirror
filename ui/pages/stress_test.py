@@ -38,14 +38,14 @@ def render_stress_test_page(runtime_namespace: dict[str, object]) -> None:
                         "Write one scenario as a governance pattern, not as a personal accusation.",
                         "Use fictional roles or the Invisibility Filter when names and titles may bias the reading.",
                         "Use Scan my idea for text-derived features; use Manual test only when you deliberately want sliders to shape the run.",
-                        "Read the result as a stress reading, not as proof that a person, group, or institution is good or bad.",
+                        "Read the result as a stress reading, not as proof that a person, group, or institution is safe, unsafe, trustworthy, or untrustworthy.",
                         "Inspect repair questions before relying on the internal taxonomy label or metrics.",
                     ),
                     input_guidance="Start with your own scenario, load a demo on purpose, or use Manual test. ALETHEIA does not read examples by default. You lead.",
-                    result_guidance="Treat Stress Test output as a scenario-pressure reading, not as prediction, accusation, certification, or final internal label.",
+                    result_guidance="Treat Stress Test output as a scenario-pressure reading, not as prediction, accusation, certification, or final judgment.",
                     observed_reasons_guidance="Check the visible stress signals, feature values, tree, and protocol notes before interpreting the reading.",
                     repair_questions_guidance="Use repair questions to add safeguards, appeal paths, review limits, transparency, and exit/correction options.",
-                    receipt_guidance="Stress Test receipts are local review artifacts for a scenario run; they are not public-ledger records or official decisions.",
+                    receipt_guidance="Stress Test receipts are local review artifacts for a scenario run; they are not public-ledger records, official findings, or decisions.",
                 ),
             )
 

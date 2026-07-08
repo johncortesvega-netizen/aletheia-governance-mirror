@@ -19,7 +19,7 @@ def render_shared_protocol_state_notice_panel(
     receipts, evidence data, or session-state values.
     """
     st.info(
-        "**Shared Protocol State** — Mirror Check, Stress Test, Boundary Cases, Evidence Lab, and World Lens are different windows into the same protocol heart. "
+        "**Shared Protocol State** — Mirror Check, Stress Test, Boundary Cases, Evidence Lab, and World Lens are different windows into the same protocol core. "
         "Changes to empirical evidence, scoring calibration, the Sydney Protocol overlay, doctrine thresholds, or the selected evidence year may echo across modes. "
         "That is intentional shared-state behavior, not an error. Scenario-only controls stay local unless you explicitly apply them to the shared protocol state."
     )
@@ -44,7 +44,7 @@ def render_shared_protocol_state_notice_panel(
 def render_module_reference_points(points: Sequence[str], *, title: str = "Module reference points") -> None:
     """Render compact review bullets for module intro/guide sections.
 
-    UI-only helper for later page extraction.
+    UI-only helper for extracted pages.
     """
     clean_points = [str(point).strip() for point in points if str(point).strip()]
     if not clean_points:

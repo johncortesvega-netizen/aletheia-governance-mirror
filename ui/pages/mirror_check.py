@@ -21,7 +21,7 @@ def render_mirror_check_page(runtime: dict) -> None:
         )
         st.info(
             "Boundary: SANCTUARY / THRESHOLD / ASYLUM are internal review labels. "
-            "Metrics are directional pressure readings, not approval, rejection, certification, or final truth."
+            "Metrics are directional pressure readings, not approval, rejection, certification, or truth measurement."
         )
 
         with st.expander("Module guidance and protocol context", expanded=False):
@@ -53,10 +53,10 @@ def render_mirror_check_page(runtime: dict) -> None:
                         "Download a receipt only when you want a local review record.",
                     ),
                     input_guidance="Use this module for one bounded text item. Use the batch-testing panel only for deliberate local test batches.",
-                    result_guidance="Treat the result as a mirror reading of pressure and review needs, not as approval, rejection, certification, or final truth.",
+                    result_guidance="Treat the result as a mirror reading of pressure and review needs, not as approval, rejection, certification, or truth measurement.",
                     observed_reasons_guidance="Check which signals drove the reading before trusting any label, metric, or repair suggestion.",
                     repair_questions_guidance="Use repair questions to strengthen evidence, safeguards, appeal paths, and human review.",
-                    receipt_guidance="Mirror Check receipts are local review artifacts held by the user; they are not public-ledger records, official determinations, or authorization.",
+                    receipt_guidance="Mirror Check receipts are local review artifacts held by the user; they are not public-ledger records, official findings, or authorization.",
                 ),
             )
 

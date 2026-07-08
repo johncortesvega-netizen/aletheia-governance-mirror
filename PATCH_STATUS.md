@@ -1,51 +1,48 @@
-# ALETHEIA Patch Status
+# PATCH STATUS
 
-## Current Patch
-Patch 245 — Repository Hygiene / Patch Archive Consolidation
+## Current patch
 
-## Status
-Ready for local validation.
+**Patch 246 — App-wide Copy Cleanup Pass**
 
-## Summary
-The repository has been cleaned after the modularization round. Active runtime files remain in place, while old root-level patch artifacts have been moved into `docs/patch_archive/`. The distributable package excludes `.git/`, bytecode caches, and local pytest caches.
+Status: ready for local validation.
 
-## Current Architecture Snapshot
-Shared UI components now live under `ui/components/`:
-- `semantic_pressure_panel.py`
-- `metric_cards.py`
-- `review_cards.py`
-- `tree_visuals.py`
-- `receipt_blocks.py`
-- `module_headers.py`
+Summary: conservative UI-copy cleanup after modularization. Removes stale wording, tightens Receipt Reader placement language, replaces authority-sounding or misleading phrases, and keeps the ALETHEIA mirror-not-throne concept intact.
 
-Extracted pages now live under `ui/pages/`:
-- `protocol_guide.py`
-- `boundary_cases.py`
-- `mirror_check.py`
-- `stress_test.py`
-- `evidence_lab.py`
-- `world_lens.py`
+Changed surfaces:
+- App navigation/support-utility copy
+- Protocol Guide copy
+- Mirror Check guidance copy
+- Stress Test guidance copy
+- Evidence Lab help copy
+- Boundary Cases receipt disclaimer copy
+- Shared protocol-state copy
+- Semantic pressure evidence-language copy
 
-The extracted high-dependency pages still use a temporary runtime namespace bridge where needed. That is intentional and should be treated as the next cleanup target, not as a behavior change.
+Boundary: no scanner logic, scoring, MEI7 gate, Z-axis logic, Stress Test metrics, Evidence Lab calculations, World Lens math, receipt schema, telemetry, storage behavior, routing behavior, or authority-boundary behavior changed.
 
-## Boundary
-No scanner logic, scoring, MEI7 gate behavior, Z-axis mapping, Stress Test math, Evidence Lab calculations, World Lens math, receipt schema, telemetry, storage, certification, enforcement, or authority behavior changed.
+## Prior modularization state
 
-## Validation
-Recommended local checks:
+Extracted components:
+- `ui/components/semantic_pressure_panel.py`
+- `ui/components/metric_cards.py`
+- `ui/components/review_cards.py`
+- `ui/components/tree_visuals.py`
+- `ui/components/receipt_blocks.py`
+- `ui/components/module_headers.py`
 
-```bat
-python -m py_compile app.py ui\components\*.py ui\pages\*.py
-python -m pytest
-python -m streamlit run app.py
-```
+Extracted pages:
+- `ui/pages/protocol_guide.py`
+- `ui/pages/boundary_cases.py`
+- `ui/pages/mirror_check.py`
+- `ui/pages/stress_test.py`
+- `ui/pages/evidence_lab.py`
+- `ui/pages/world_lens.py`
 
-Manual smoke check:
-- Mirror Check opens and runs.
-- Stress Test opens and runs.
-- Evidence Lab opens and runs.
-- World Lens opens and all internal tabs render.
-- Boundary Cases opens.
-- Protocol Guide opens.
-- Receipt Reader is clearly indicated under Why ALETHEIA → Support utilities.
-- Only one top-level module body renders at a time.
+Remaining bridge calls:
+- `render_mirror_check_page(globals())`
+- `render_stress_test_page(globals())`
+- `render_evidence_lab_page(globals())`
+- `render_world_lens_page(globals())`
+
+Next recommended patch:
+- Patch 247 — Copy QA Checklist / User-facing Text Review Matrix, or continue with explicit dependency injection planning.

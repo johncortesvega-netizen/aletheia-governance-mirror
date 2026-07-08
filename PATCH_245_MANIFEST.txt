@@ -1,37 +1,22 @@
-# PATCH 245 MANIFEST — Repository Hygiene / Patch Archive Consolidation
+Patch 245 — Modularization Bridge Inventory
 
-## Status
-READY
+Changed files:
+- docs/modularization_bridge_inventory_v1.md
+- docs/namespace_bridge_removal_plan_v1.md
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_245_MANIFEST.txt
+- PATCH_245_RECOVERY_NOTE.md
+- PATCH_245_DELETE_LIST.txt
 
-## Type
-Repository hygiene / documentation cleanup / patch archive consolidation
+Purpose:
+- Document remaining runtime namespace bridge calls after modularization Stage 12.
+- Identify which pages still use globals().
+- Record dependency groups that must later be explicitly injected/imported.
+- Define a safe bridge-removal sequence without changing runtime behavior.
 
-## Purpose
-Clean the repository package after modularization Stages 1–12 so the active root is easier to review, while preserving the patch receipt chain under `docs/patch_archive/`.
+Runtime impact:
+- None. Documentation-only patch.
 
-## Changes
-- Removed packaged `.git/` history, Python bytecode caches, and local pytest caches from the distributable zip.
-- Moved older root-level patch artifacts into `docs/patch_archive/`:
-  - manifests → `docs/patch_archive/manifests/`
-  - recovery notes → `docs/patch_archive/recovery_notes/`
-  - delete lists → `docs/patch_archive/delete_lists/`
-- Left only the current cleanup patch artifacts at repository root.
-- Refreshed `PATCH_STATUS.md` and `PATCH_NOTES.md` to reflect the current modularized state through Patch 245.
-- Added `docs/repository_hygiene_patch_245.md` as a reviewer-facing note.
-
-## Boundary
-No runtime code, scanner logic, scoring, MEI7 gate behavior, Z-axis mapping, Stress Test math, Evidence Lab calculations, World Lens math, receipt schema, telemetry, storage, certification, enforcement, or authority behavior was changed.
-
-## Validation
-- `python -m py_compile app.py ui/components/*.py ui/pages/*.py`
-- `python -m pytest`
-- zip integrity check
-
-## Files changed or added
-- `PATCH_STATUS.md`
-- `PATCH_NOTES.md`
-- `PATCH_245_MANIFEST.txt`
-- `PATCH_245_RECOVERY_NOTE.md`
-- `PATCH_245_DELETE_LIST.txt`
-- `docs/repository_hygiene_patch_245.md`
-- `docs/patch_archive/*` organization
+Boundary impact:
+- No scanner, scoring, MEI7, Z-axis, Evidence Lab, World Lens, receipt, telemetry, or authority behavior changes.

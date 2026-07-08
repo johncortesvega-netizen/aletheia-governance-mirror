@@ -1,0 +1,6 @@
+Patch 246 does not require deleting runtime files.
+
+Optional cleanup only:
+- __pycache__/
+- .pytest_cache/
+- *.pyc

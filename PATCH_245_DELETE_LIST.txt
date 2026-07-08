@@ -1,17 +1,5 @@
-# PATCH 245 DELETE LIST — Repository Hygiene / Patch Archive Consolidation
+Patch 245 delete list:
 
-Runtime deletes: none.
+None.
 
-Package hygiene exclusions from distributable zip:
-- `.git/`
-- `.pytest_cache/`
-- `__pycache__/`
-- `*.pyc`
-- duplicate README update scratch files, if present
-
-Root relocation, not deletion:
-- older `PATCH_###_MANIFEST.txt`
-- older `PATCH_###_RECOVERY_NOTE.md`
-- older `PATCH_###_DELETE_LIST.txt`
-
-These older patch artifacts are archived under `docs/patch_archive/`.
+This patch adds documentation only. No files are deleted.

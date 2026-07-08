@@ -28,20 +28,20 @@ def render_protocol_guide_page() -> None:
         st.markdown("### ALETHEIA Protocol Guide")
         st.info(
             "ALETHEIA is a free, open-source, protocol-guided governance mirror for human review. "
-            "It reflects pressure and evidence gaps; it does not judge, certify, enforce, or become the throne."
+            "It reflects pressure and evidence gaps; it does not determine truth, certify, enforce, or become the throne."
         )
         st.caption(
-            "Open only the section you need. The Protocol Guide is organized as four side-by-side rows of collapsed panels so the tab stays opt-in and readable."
+            "Open only the section you need. The Protocol Guide uses collapsed panels so the page stays opt-in and readable."
         )
         st.markdown(
-            "**Quick path:** Mirror Check for documents · Stress Test for scenarios · AI static scan for AI/code artifacts · "
+            "**Quick path:** Mirror Check for documents and AI outputs · Stress Test for scenarios · "
             "Evidence Lab for claims · World Lens for selected-year evidence · Protocol Guide for rules and limits."
         )
 
-        st.markdown("### Patrol guide panels")
+        st.markdown("### Protocol guide panels")
         st.caption("All panels are collapsed by default. Expand one panel at a time for review.")
 
-        patrol_guide_rows = [
+        protocol_guide_rows = [
             (
                 (
                     "1. Operating boundary",
@@ -50,7 +50,7 @@ def render_protocol_guide_page() -> None:
 
                     ALETHEIA remains a mirror, not a throne. The interface should stay calm, open-source, and human-centered: ALETHEIA can observe pressure, inspect evidence, preserve review context, raise review signals, and route concerns to human reviewers.
 
-                    It does **not** judge final truth, certify safety, approve or reject people, enforce action, punish, command, replace law, validate spiritual authority, or become an automated decision system.
+                    It does **not** determine final truth, certify safety, approve or reject people, enforce action, punish, command, replace law, validate spiritual authority, or become an automated decision system.
 
                     Internal taxonomy labels remain review-workflow labels only. They are not legal, political, medical, religious, moral, predictive, or final-status verdicts.
                     """,
@@ -74,7 +74,7 @@ def render_protocol_guide_page() -> None:
                     | Protocol Guide | Operating rules, safe language, internal limits, and mirror boundaries. |
                     | Why ALETHEIA | Public explanation of purpose, limits, baseline, and research direction. |
 
-                    Navigation rule: every surface reflects, explains, or stress-tests. No surface commands, enforces, certifies, validates authority, or replaces human review.
+                    Navigation rule: every surface reflects, explains, or stress-tests. No surface issues commands, enforces outcomes, certifies authority, validates authority, or replaces human review.
                     """,
                 ),
                 (
@@ -96,7 +96,7 @@ def render_protocol_guide_page() -> None:
                     """
                     ALETHEIA v1.0 returns to its original governance-mirror identity, not a new authority layer. It keeps the project continuity intact: local-first posture, no built-in telemetry, no central user-input database, no Global ID sync, no public-ledger sync, and user-held receipts.
 
-                    The Eternal Baseline remains an ethical continuity layer. It preserves human dignity, free agency, appealability, accountability, evidence, repair, non-coercion, and human review without becoming a command layer or founder-validation artifact.
+                    The Eternal Baseline remains an ethical continuity layer. It preserves human dignity, free agency, appealability, accountability, evidence, repair, non-coercion, and human review without becoming an authority layer or founder-validation artifact.
 
                     The 9k idea remains an anti-tyranny scaffold / threshold steward for analysis only. It is not a sovereign body, election, mandate, real representative structure, or final legitimacy claim.
                     """,
@@ -150,7 +150,7 @@ def render_protocol_guide_page() -> None:
             ),
         ]
 
-        for row in patrol_guide_rows:
+        for row in protocol_guide_rows:
             columns = st.columns(2, gap="large")
             for column, (panel_title, panel_body) in zip(columns, row):
                 with column:

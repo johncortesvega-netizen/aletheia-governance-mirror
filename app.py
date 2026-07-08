@@ -336,14 +336,14 @@ VISUAL_SOURCE_FILES = [
         "path": PROJECT_ROOT / "assets" / "visual_cards" / "sovereign_master_blueprint.jpg",
         "kind": "image",
         "caption": "Reference visual card.",
-        "summary": "Roadmap-style sanctuary blueprint with household and macro-structure panels.",
+        "summary": "Roadmap-style boundary blueprint with household and macro-structure panels.",
     },
     {
-        "title": "The Sydney Protocol: Command Dossier",
+        "title": "The Sydney Protocol: Reference Dossier",
         "path": PROJECT_ROOT / "assets" / "visual_cards" / "sydney_protocol_command_dossier.jpg",
         "kind": "image",
         "caption": "Reference visual card.",
-        "summary": "Command-dossier visual summarizing foundation, 9,000 randoms, global grid, and core functions.",
+        "summary": "Reference visual summarizing foundation, 9,000 randoms, global grid, and core functions.",
     },
     {
         "title": "The Sydney Protocol: Architect's Checklist",
@@ -382,7 +382,7 @@ APP_UX_POLISH_SUMMARY = [
     "Use World Lens when you need selected-year country evidence and allocation context.",
     "Use Boundary Cases as a reference layer when the ethical edge case is unclear.",
     "Use Protocol Guide when you need the operating rules and mirror boundaries.",
-    "Receipt Reader lives under Why ALETHEIA → Support utilities as a read-only receipt utility.",
+    "Receipt Reader: Why ALETHEIA → Support utilities → Receipt Reader — Standard View.",
 ]
 
 DEMO_INPUT_FILES = [
@@ -3215,7 +3215,7 @@ def sanitize_public_message(message: str) -> str:
 def local_governance_judgment(query: str, scan: dict, sim: dict, report: dict) -> dict:
     """
     Local fallback for the chat audit when no OpenAI key is configured.
-    Protocol Integrity v2: the final internal label is produced by the central
+    Protocol Integrity v2: the internal review label is produced by the central
     Sydney Protocol + MEI7 ethics aggregator, not by raw simulation alone.
     """
     integrity = float(report.get("integrity", 0.5))
@@ -4080,7 +4080,7 @@ selected_top_module = st.radio(
     label_visibility="collapsed",
     key="aletheia_active_module",
 )
-st.caption("Receipt Reader is available under Why ALETHEIA → Support utilities → Receipt Reader — Standard View.")
+st.caption("Receipt Reader: Why ALETHEIA → Support utilities → Receipt Reader — Standard View.")
 
 if selected_top_module == '🚀 Stress Test':
     render_stress_test_page(globals())
@@ -4109,13 +4109,13 @@ if selected_top_module == 'ℹ️ Why ALETHEIA':
         render_about_public_info_page(st, header_image=resolve_about_header_image())
     
     st.divider()
-    st.markdown("### Support utilities — includes Receipt Reader")
+    st.markdown("### Support utilities")
     st.info(
-        "Receipt Reader is located here: Why ALETHEIA → Support utilities → Receipt Reader — Standard View. "
-        "It is intentionally kept as a support utility, not a main decision module."
+        "This section contains Receipt Reader — Standard View. "
+        "It is intentionally kept as a read-only support utility, not a scoring surface or primary review module."
     )
     st.caption(
-        "Optional reading aids that support review without becoming main modules. "
+        "Optional reading aids that support review without becoming primary modules. "
         "They do not rescore, certify, approve, reject, enforce, or override ALETHEIA receipts."
     )
     with st.expander("Receipt Reader — Standard View", expanded=False):
