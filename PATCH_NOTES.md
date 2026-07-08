@@ -1,12 +1,19 @@
-# PATCH NOTES
+# Patch Notes
 
-## Patch 249 — Stress Test Bridge Removal
+## Patch 251 — Evidence Lab Bridge Removal Import Hotfix
 
-- Removed broad `globals()` handoff from Stress Test page call.
-- Added explicit Stress Test dependency inventory in code.
-- Added documentation for the bridge-removal step.
-- No scoring, scanner, MEI7, Z-axis, receipt, Evidence Lab, World Lens, telemetry, or authority-boundary behavior changed.
+Patch 251 fixes a missing import introduced by the Evidence Lab bridge-removal refactor. The extracted page uses `hashlib.sha256()` to build an active-input signature but did not import `hashlib` locally.
 
-# Patch 250 — Evidence Lab Bridge Removal
+Changed:
+- `ui/pages/evidence_lab.py` now imports `hashlib` explicitly.
 
-Patch 250 replaces the broad Evidence Lab `globals()` bridge with an explicit dependency map. This keeps the page functional while making its dependency surface reviewable for later cleanup. Runtime logic is unchanged.
+Not changed:
+- scanner logic
+- scoring
+- MEI7 gate
+- Z-axis
+- Evidence Lab calculations
+- World Lens math
+- receipts
+- telemetry/storage
+- authority-boundary behavior

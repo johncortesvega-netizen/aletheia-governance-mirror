@@ -5,6 +5,8 @@ from __future__ import annotations
 # app globals() namespace. This keeps behavior stable while making the
 # page boundary inspectable for later dependency cleanup.
 
+import hashlib
+
 from collections.abc import Mapping
 from typing import Any
 

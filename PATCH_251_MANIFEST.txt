@@ -1,0 +1,19 @@
+PATCH 251 — Evidence Lab Bridge Removal Import Hotfix
+
+Changed files:
+- ui/pages/evidence_lab.py
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_251_MANIFEST.txt
+- PATCH_251_RECOVERY_NOTE.md
+- PATCH_251_DELETE_LIST.txt
+
+Purpose:
+Fixes a post-Patch-250 Evidence Lab runtime error where the extracted page used hashlib.sha256() inside its local active-input signature helper but did not import hashlib after the page was moved out of app.py.
+
+Runtime impact:
+- Import-only hotfix.
+- No scoring, scanner, MEI7, Z-axis, Evidence Lab calculations, World Lens math, receipts, telemetry, or authority-boundary behavior changed.
+
+Validation:
+- python -m py_compile app.py ui/pages/evidence_lab.py
