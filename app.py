@@ -72,7 +72,7 @@ from ui.pages.boundary_cases import render_boundary_cases_page
 from ui.pages.mirror_check import mirror_check_dependency_map, render_mirror_check_page
 from ui.pages.stress_test import render_stress_test_page, stress_test_dependency_map
 from ui.pages.evidence_lab import evidence_lab_dependency_map, render_evidence_lab_page
-from ui.pages.world_lens import render_world_lens_page
+from ui.pages.world_lens import render_world_lens_page, world_lens_dependency_map
 
 from core.world_lens import (
     country_available_years,
@@ -4096,7 +4096,7 @@ if selected_top_module == '📊 Evidence Lab':
     render_evidence_lab_page(evidence_lab_dependency_map(globals()))
 
 if selected_top_module == '🌐 World Lens':
-    render_world_lens_page(globals())
+    render_world_lens_page(world_lens_dependency_map(globals()))
 
 if selected_top_module == '🪞 Mirror Check':
     render_mirror_check_page(mirror_check_dependency_map(globals()))

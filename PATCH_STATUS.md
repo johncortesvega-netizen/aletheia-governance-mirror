@@ -1,15 +1,13 @@
 # PATCH STATUS
 
-Current patch: 252 — World Lens Bridge Inventory / Prep
+Latest patch: **253 — World Lens Bridge Removal**
 
-Status: ready
+Status: Ready for local application and review.
 
 Summary:
-- Documents the final major `globals()` bridge remaining after Mirror Check, Stress Test, and Evidence Lab bridge removals.
-- Defines dependency groups for World Lens before bridge removal.
-- Provides a draft dependency-map shape for Patch 253.
-- No runtime files changed.
+- World Lens no longer receives the full app `globals()` namespace directly.
+- `ui/pages/world_lens.py` declares an explicit `WORLD_LENS_DEPENDENCIES` list.
+- `app.py` calls `render_world_lens_page(world_lens_dependency_map(globals()))`.
 
-Validation:
-- Documentation-only patch.
-- No Python runtime validation required beyond existing app checks.
+Boundary:
+- No governance/scoring/MEI7/Z-axis/receipt/math behavior changed.

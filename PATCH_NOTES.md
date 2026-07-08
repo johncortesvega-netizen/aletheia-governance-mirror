@@ -1,29 +1,7 @@
-# Patch Notes
+# PATCH NOTES
 
-## Patch 252 — World Lens Bridge Inventory / Prep
+## Patch 253 — World Lens Bridge Removal
 
-Patch 252 prepares the final major modularization bridge removal by documenting the current World Lens dependency surface.
+World Lens was the final large page still using a broad `globals()` bridge. This patch replaces that handoff with an explicit dependency map so later cleanup can remove injected helpers one by one.
 
-Added:
-- `docs/world_lens_bridge_inventory_v1.md`
-- `docs/world_lens_dependency_map_v1.md`
-
-Purpose:
-- Identify which dependencies World Lens still receives through the broad runtime namespace bridge.
-- Document Evidence Lab state-sharing requirements.
-- Preserve World Lens / 9k boundary language before making runtime changes.
-- Define acceptance criteria for Patch 253.
-
-Not changed:
-- `app.py`
-- `ui/pages/world_lens.py`
-- scanner logic
-- scoring
-- MEI7 gate
-- Z-axis
-- Evidence Lab calculations
-- World Lens math
-- 9k allocation behavior
-- receipts
-- telemetry/storage
-- authority-boundary behavior
+This is a modularization boundary cleanup only. It does not change World Lens output, Evidence Lab state sharing, 9k allocation, report packets, semantic pressure, scoring, or receipt behavior.

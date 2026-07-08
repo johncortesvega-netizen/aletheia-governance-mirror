@@ -1,0 +1,26 @@
+PATCH 253 — World Lens Bridge Removal
+
+Changed files:
+- app.py
+- ui/pages/world_lens.py
+- docs/modularization_stage253_world_lens_bridge_removal.md
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_253_MANIFEST.txt
+- PATCH_253_RECOVERY_NOTE.md
+- PATCH_253_DELETE_LIST.txt
+
+Purpose:
+- Replace the broad World Lens globals() handoff with an explicit dependency map.
+- Preserve current behavior while making the last large page boundary inspectable.
+
+No runtime/governance changes:
+- No scanner changes.
+- No scoring changes.
+- No MEI7 gate changes.
+- No Z-axis changes.
+- No Evidence Lab calculation changes.
+- No World Lens math changes.
+- No 9k allocation behavior changes.
+- No receipt schema changes.
+- No telemetry/storage changes.
