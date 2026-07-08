@@ -1,0 +1,2 @@
+Patch 247 delete list:
+- No files should be deleted.

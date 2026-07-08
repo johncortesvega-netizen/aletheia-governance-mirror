@@ -46,3 +46,11 @@ Remaining bridge calls:
 
 Next recommended patch:
 - Patch 247 — Copy QA Checklist / User-facing Text Review Matrix, or continue with explicit dependency injection planning.
+
+## Patch 247 — Mirror Check Bridge Removal
+Status: READY
+
+- Mirror Check no longer receives the full app globals() namespace directly.
+- app.py now passes a declared Mirror Check dependency map.
+- Remaining bridge pages: Stress Test, Evidence Lab, World Lens.
+- Runtime/scoring/governance behavior unchanged.

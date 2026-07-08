@@ -1,0 +1,22 @@
+PATCH 247 — MIRROR CHECK BRIDGE REMOVAL
+
+Changed files:
+- app.py
+- ui/pages/mirror_check.py
+- docs/modularization_stage247_mirror_check_bridge_removal.md
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_247_MANIFEST.txt
+- PATCH_247_RECOVERY_NOTE.md
+- PATCH_247_DELETE_LIST.txt
+
+Summary:
+- Replaces the broad Mirror Check globals() bridge with an explicit dependency map.
+- app.py passes only the declared Mirror Check dependencies.
+- ui/pages/mirror_check.py fails loudly if a required dependency is missing.
+
+No behavior changes:
+- No scanner/scoring/MEI7/Z-axis changes.
+- No receipt schema changes.
+- No Evidence Lab or World Lens math changes.
+- No telemetry/storage changes.

@@ -1,18 +1,136 @@
 from __future__ import annotations
 
-# Patch 239: Mirror Check page extraction.
-# This module receives the current app runtime namespace from app.py so the first
-# page split can stay behavior-preserving. Later stages may replace this shim
-# with explicit imports after the remaining app globals are consolidated.
+# Patch 247: Mirror Check bridge removal.
+# The page now receives an explicit dependency mapping from app.py instead of
+# importing or installing the entire app globals() namespace. This keeps the
+# current behavior stable while making the page boundary inspectable.
+
+from collections.abc import Mapping
+from typing import Any
 
 
-def render_mirror_check_page(runtime: dict) -> None:
-    """Render the Mirror Check page using the existing app runtime dependencies.
+MIRROR_CHECK_DEPENDENCIES = (
+    "APP_VERSION",
+    "DEMO_INPUT_FILES",
+    "MAX_BATCH_RECEIPTS",
+    "MIRROR_CHECK_DEMO_SCENARIOS",
+    "ModulePageTemplateCopy",
+    "apply_capture_feature_override",
+    "apply_cognitive_resilience_to_metrics",
+    "apply_ethics_to_metrics",
+    "build_ai_static_scan_protocol_context",
+    "build_features_from_scan",
+    "build_local_question_prompt_receipt",
+    "build_local_witness_batch_zip",
+    "build_local_witness_receipt",
+    "decouple_actor",
+    "deterministic_seed_from_payload",
+    "display_score_from_judgment",
+    "divine_floor",
+    "ego_tolerance",
+    "enforce_asylum_metric_consistency",
+    "ensure_asylum_repair_questions",
+    "evaluate_cognitive_resilience",
+    "evaluate_ethics",
+    "format_semantic_pressure_report",
+    "full_report",
+    "governance_scan",
+    "hashlib",
+    "is_witness_question_prompt",
+    "is_witness_question_set",
+    "llm_governance_judgment",
+    "load_demo_input",
+    "local_governance_judgment",
+    "n_agents",
+    "normalize_asylum_protocol_label",
+    "np",
+    "parse_witness_batch_input",
+    "pd",
+    "positive_cr_baseline_stabilizer",
+    "render_audit_module_integrity_panel",
+    "render_chat_judgment",
+    "render_local_witness_receipt_text",
+    "render_module_page_template_intro",
+    "render_pulse_tree",
+    "render_semantic_pressure_panel",
+    "render_shared_protocol_state_notice",
+    "scan_semantic_pressure",
+    "simulate",
+    "source_conformance_hits",
+    "st",
+    "steps",
+    "update_protocol_state",
+    "weights",
+)
 
-    Stage 9 intentionally moves the page body out of app.py without changing
-    scoring, scanner behavior, session-state keys, receipt behavior, or UI copy.
+
+def mirror_check_dependency_map(runtime: Mapping[str, Any]) -> dict[str, Any]:
+    """Return only the dependencies Mirror Check currently needs.
+
+    This helper lets app.py pass an explicit page boundary instead of the entire
+    globals() namespace. Missing dependencies fail loudly during startup/testing.
     """
-    globals().update(runtime)
+    missing = [name for name in MIRROR_CHECK_DEPENDENCIES if name not in runtime]
+    if missing:
+        raise RuntimeError(
+            "Mirror Check page dependency map is incomplete: " + ", ".join(missing)
+        )
+    return {name: runtime[name] for name in MIRROR_CHECK_DEPENDENCIES}
+
+
+def render_mirror_check_page(deps: Mapping[str, Any]) -> None:
+    """Render the Mirror Check page using explicit injected dependencies."""
+    APP_VERSION = deps["APP_VERSION"]
+    DEMO_INPUT_FILES = deps["DEMO_INPUT_FILES"]
+    MAX_BATCH_RECEIPTS = deps["MAX_BATCH_RECEIPTS"]
+    MIRROR_CHECK_DEMO_SCENARIOS = deps["MIRROR_CHECK_DEMO_SCENARIOS"]
+    ModulePageTemplateCopy = deps["ModulePageTemplateCopy"]
+    apply_capture_feature_override = deps["apply_capture_feature_override"]
+    apply_cognitive_resilience_to_metrics = deps["apply_cognitive_resilience_to_metrics"]
+    apply_ethics_to_metrics = deps["apply_ethics_to_metrics"]
+    build_ai_static_scan_protocol_context = deps["build_ai_static_scan_protocol_context"]
+    build_features_from_scan = deps["build_features_from_scan"]
+    build_local_question_prompt_receipt = deps["build_local_question_prompt_receipt"]
+    build_local_witness_batch_zip = deps["build_local_witness_batch_zip"]
+    build_local_witness_receipt = deps["build_local_witness_receipt"]
+    decouple_actor = deps["decouple_actor"]
+    deterministic_seed_from_payload = deps["deterministic_seed_from_payload"]
+    display_score_from_judgment = deps["display_score_from_judgment"]
+    divine_floor = deps["divine_floor"]
+    ego_tolerance = deps["ego_tolerance"]
+    enforce_asylum_metric_consistency = deps["enforce_asylum_metric_consistency"]
+    ensure_asylum_repair_questions = deps["ensure_asylum_repair_questions"]
+    evaluate_cognitive_resilience = deps["evaluate_cognitive_resilience"]
+    evaluate_ethics = deps["evaluate_ethics"]
+    format_semantic_pressure_report = deps["format_semantic_pressure_report"]
+    full_report = deps["full_report"]
+    governance_scan = deps["governance_scan"]
+    hashlib = deps["hashlib"]
+    is_witness_question_prompt = deps["is_witness_question_prompt"]
+    is_witness_question_set = deps["is_witness_question_set"]
+    llm_governance_judgment = deps["llm_governance_judgment"]
+    load_demo_input = deps["load_demo_input"]
+    local_governance_judgment = deps["local_governance_judgment"]
+    n_agents = deps["n_agents"]
+    normalize_asylum_protocol_label = deps["normalize_asylum_protocol_label"]
+    np = deps["np"]
+    parse_witness_batch_input = deps["parse_witness_batch_input"]
+    pd = deps["pd"]
+    positive_cr_baseline_stabilizer = deps["positive_cr_baseline_stabilizer"]
+    render_audit_module_integrity_panel = deps["render_audit_module_integrity_panel"]
+    render_chat_judgment = deps["render_chat_judgment"]
+    render_local_witness_receipt_text = deps["render_local_witness_receipt_text"]
+    render_module_page_template_intro = deps["render_module_page_template_intro"]
+    render_pulse_tree = deps["render_pulse_tree"]
+    render_semantic_pressure_panel = deps["render_semantic_pressure_panel"]
+    render_shared_protocol_state_notice = deps["render_shared_protocol_state_notice"]
+    scan_semantic_pressure = deps["scan_semantic_pressure"]
+    simulate = deps["simulate"]
+    source_conformance_hits = deps["source_conformance_hits"]
+    st = deps["st"]
+    steps = deps["steps"]
+    update_protocol_state = deps["update_protocol_state"]
+    weights = deps["weights"]
     with st.container():
         st.subheader("Mirror Check")
         st.caption(

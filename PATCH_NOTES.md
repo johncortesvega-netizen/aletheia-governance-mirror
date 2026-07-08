@@ -20,3 +20,9 @@ No runtime logic changed. No scoring, scanner, MEI7, Z-axis, receipt, World Lens
 
 - `python -m py_compile app.py ui/pages/*.py ui/components/*.py`
 - `python -m pytest`
+
+## Patch 247 — Mirror Check Bridge Removal
+
+This patch removes the broad namespace bridge from the Mirror Check page by replacing the direct `globals()` page bridge with an explicit dependency map. This makes the Mirror Check page boundary inspectable while preserving current behavior.
+
+No governance, scanner, scoring, receipt, Evidence Lab, World Lens, or telemetry behavior is changed.

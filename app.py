@@ -69,7 +69,7 @@ from ui.components.receipt_blocks import render_receipt_sky_panel
 from ui.components.module_headers import render_shared_protocol_state_notice_panel
 from ui.pages.protocol_guide import render_protocol_guide_page
 from ui.pages.boundary_cases import render_boundary_cases_page
-from ui.pages.mirror_check import render_mirror_check_page
+from ui.pages.mirror_check import mirror_check_dependency_map, render_mirror_check_page
 from ui.pages.stress_test import render_stress_test_page
 from ui.pages.evidence_lab import render_evidence_lab_page
 from ui.pages.world_lens import render_world_lens_page
@@ -4099,7 +4099,7 @@ if selected_top_module == '🌐 World Lens':
     render_world_lens_page(globals())
 
 if selected_top_module == '🪞 Mirror Check':
-    render_mirror_check_page(globals())
+    render_mirror_check_page(mirror_check_dependency_map(globals()))
 if selected_top_module == '📜 Protocol Guide':
     render_protocol_guide_page()
 
