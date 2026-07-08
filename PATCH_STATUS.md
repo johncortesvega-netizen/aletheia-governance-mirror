@@ -16,3 +16,15 @@ No changes to scanner logic, scoring, MEI7 gate, Z-axis, receipts, Evidence Lab 
 - `python -m py_compile app.py`
 - `python -m pytest`
 - `python -m streamlit run app.py`
+
+## Patch 227 — App Modularization Stage 2: Metric Cards
+Status: READY
+Type: modularization / UI helper extraction
+
+Summary:
+- Moved shared `metric_card` and `soft_card` presentation helpers from `app.py` to `ui/components/metric_cards.py`.
+- Updated `app.py` to import these helpers from the new component module.
+- Added Stage 2 modularization documentation.
+
+Boundary:
+- No scoring, scanner logic, MEI7 gate behavior, Z-axis mapping, Stress Test math, Evidence Lab calculations, World Lens math, receipts, telemetry, storage, or authority behavior changed.

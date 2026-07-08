@@ -64,6 +64,7 @@ from ui.components.semantic_pressure_panel import (
     semantic_stress_trigger_rows,
     semantic_world_lens_flag_rows,
 )
+from ui.components.metric_cards import metric_card, soft_card
 
 from core.world_lens import (
     country_available_years,
@@ -1811,30 +1812,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
-def metric_card(label: str, value: str, helper: str = ""):
-    st.markdown(
-        f"""
-        <div class="metric-card">
-            <div class="metric-label">{label}</div>
-            <div class="metric-value">{value}</div>
-            <div class="metric-help">{helper}</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-def soft_card(title: str, body: str):
-    st.markdown(
-        f"""
-        <div class="soft-card">
-            <strong style="color:#d4b88a;">{title}</strong><br>
-            <span style="color:#e8e0d0;">{body}</span>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
 
 
 def classify_verdict(integrity: float) -> tuple[str, str]:

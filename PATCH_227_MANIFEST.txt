@@ -1,0 +1,21 @@
+PATCH 227 — App Modularization Stage 2: Metric Cards
+
+Changed files:
+- app.py
+- ui/components/__init__.py
+- ui/components/metric_cards.py
+- docs/app_modularization_stage2_metric_cards.md
+- PATCH_STATUS.md
+- PATCH_227_MANIFEST.txt
+- PATCH_227_RECOVERY_NOTE.md
+- PATCH_227_DELETE_LIST.txt
+
+Purpose:
+- Continue safe modularization by extracting shared metric/status card UI helpers from app.py.
+
+Runtime boundary:
+- No governance scoring or protocol behavior changes.
+- No semantic scanner changes.
+- No MEI7 gate or Z-axis changes.
+- No Evidence Lab or World Lens calculation changes.
+- No receipt schema or storage changes.
