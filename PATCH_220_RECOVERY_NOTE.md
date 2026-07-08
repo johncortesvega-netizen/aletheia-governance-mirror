@@ -1,36 +1,22 @@
-# Patch 220 — Streamlit Tab Inactive-Panel Guard
+# Patch 220 Recovery Note — App Modularization Plan Only
 
-## Why this patch exists
-After several interactions, Streamlit tabs could intermittently render inactive panels as visible, making Evidence Lab / World Lens / other module content appear as one long continuous page inside a single selected tab.
+Patch 220 is documentation-only. It does not refactor the app and does not touch `app.py`.
 
-Patch 202 intentionally removed broad tab-mapping CSS because it could create its own tab-containment failures. Patch 220 keeps the safer approach but adds support for Streamlit/BaseWeb inactive-panel attributes beyond the literal `hidden` attribute.
+## If something looks wrong
 
-## What changed
-`app.py` CSS now hides tab panels that Streamlit itself marks as inactive via:
+Revert these files only:
 
-- `hidden`
-- `aria-hidden="true"`
-- `data-state="inactive"`
+- `README.md`
+- `docs/app_modularization_plan_v1.md`
+- `PATCH_STATUS.md`
+- `PATCH_220_MANIFEST.txt`
+- `PATCH_220_RECOVERY_NOTE.md`
+- `PATCH_220_DELETE_LIST.txt`
 
-The patch does **not** use:
+## Expected behavior
 
-- `:has()`
-- `nth-of-type`
-- fixed tab-order assumptions
-- manual active-tab selection logic
+No runtime behavior should change. The app should behave exactly as before this patch.
 
-## What did not change
-No runtime logic changed:
+## Boundary
 
-- no scanner changes
-- no scoring changes
-- no MEI7 gate changes
-- no Z-axis changes
-- no Evidence Lab math changes
-- no World Lens math changes
-- no receipt changes
-- no pytest config changes
-- no telemetry/storage changes
-
-## Recovery
-If tab rendering worsens, revert only the Patch 220 CSS block in `app.py` back to the Patch 202 native-hidden-panel rule.
+This patch is a roadmap, not an implementation. If a future patch changes page rendering, tab behavior, scoring, scanner categories, receipts, or World Lens/Evidence Lab calculations, that future patch must be named as an implementation patch and tested separately.

@@ -1,19 +1,34 @@
-PATCH 220 — Streamlit Tab Inactive-Panel Guard
+PATCH 220 — App Modularization Plan Only
+
+Purpose:
+- Record a future modularization roadmap for the large Streamlit `app.py`.
+- Define which surfaces should later move into `ui/pages/`.
+- Define which reusable UI blocks should later move into `ui/components/`.
+- Define which deterministic logic must remain in `core/`.
+- Provide a no-behavior-change migration order.
 
 Changed files:
-- app.py
+- README.md
+- docs/app_modularization_plan_v1.md
 - PATCH_STATUS.md
 - PATCH_220_MANIFEST.txt
 - PATCH_220_RECOVERY_NOTE.md
 - PATCH_220_DELETE_LIST.txt
 
-Purpose:
-- Fix intermittent UI spillover where Evidence Lab / World Lens / other module content can appear as one long page inside a single tab after repeated Streamlit interactions.
-- Restore native tab containment without reintroducing fragile :has() or nth-of-type CSS rules.
+No runtime changes:
+- app.py unchanged
+- scanner unchanged
+- scoring unchanged
+- MEI7 gate unchanged
+- Z-axis unchanged
+- Stress Test unchanged
+- Evidence Lab unchanged
+- World Lens unchanged
+- receipts unchanged
+- pytest configuration unchanged
+- telemetry/storage/authority behavior unchanged
 
-Runtime impact:
-- CSS-only UI containment guard.
-- No scoring, scanner, MEI7 gate, Z-axis, Stress Test metrics, Evidence Lab calculations, World Lens math, receipts, telemetry, pytest configuration, or authority behavior changed.
-
-Validation:
-- python -m py_compile app.py
+Recommended review:
+- Read docs/app_modularization_plan_v1.md.
+- Confirm no app.py changes are included.
+- Use this as the plan for later refactor patches.

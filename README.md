@@ -588,3 +588,26 @@ python -m pytest
 Interpretation: active release-gate tests are the default check; legacy tests remain explicit inventory until triaged.
 
 Boundary preserved: documentation and test-governance notes only. No runtime behavior, scoring, semantic scanner logic, MEI7 gate, Z-axis behavior, Stress Test metrics, Evidence Lab calculations, World Lens math, receipt schema, external calls, telemetry, storage, certification, enforcement, or authority behavior changed.
+
+
+---
+
+## App modularization roadmap
+
+ALETHEIA is currently a release-candidate prototype with a large Streamlit orchestrator. The project will not treat that as a conceptual weakness, but it is a maintainability issue.
+
+The next refactor phase should be planning-led and behavior-preserving:
+
+- move page-level flows from `app.py` into `ui/pages/`;
+- move repeated rendering blocks into `ui/components/`;
+- keep scanner, witness, empirical, protocol, and scoring logic in `core/`;
+- keep `app.py` as a thin entrypoint;
+- verify every extraction against the active regression suite.
+
+The detailed plan is in:
+
+```text
+docs/app_modularization_plan_v1.md
+```
+
+This roadmap is documentation-only. It does not change runtime behavior, scoring, scanner logic, receipts, World Lens math, Evidence Lab calculations, or the mirror boundary.

@@ -1,3 +1,36 @@
+## Patch 220 — App Modularization Plan Only
+
+Date: 2026-07-08
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 220 records the future modularization plan for the large Streamlit `app.py` without performing the refactor. It maps which app surfaces should later move into `ui/pages/`, which repeated visual/rendering helpers should move into `ui/components/`, which deterministic logic should remain in `core/`, and how to migrate in small no-behavior-change phases.
+
+Changed files:
+- `README.md`
+- `docs/app_modularization_plan_v1.md`
+- `PATCH_STATUS.md`
+- `PATCH_220_MANIFEST.txt`
+- `PATCH_220_RECOVERY_NOTE.md`
+- `PATCH_220_DELETE_LIST.txt`
+
+Boundary notes:
+- Documentation only.
+- No `app.py` runtime changes.
+- No Streamlit tab/CSS changes.
+- No scanner, scoring, MEI7 gate, Z-axis, Stress Test, Evidence Lab, World Lens, receipts, pytest configuration, telemetry, storage, certification, enforcement, or final-truth behavior changed.
+
+Validation target:
+
+```bat
+python -m pytest
+```
+
+Manual review target:
+- Confirm this patch is a plan only.
+- Confirm it does not include `app.py`.
+- Confirm the roadmap keeps core logic separate from UI rendering.
+
 ## Patch 215 — README / Public Positioning Upgrade
 
 Date: 2026-07-07
@@ -4550,9 +4583,3 @@ Changed files:
 - PATCH_219_DELETE_LIST.txt
 
 Boundary: documentation/test-governance only. No runtime behavior, scoring, semantic scanner logic, MEI7 gate, Z-axis behavior, Stress Test metrics, Evidence Lab calculations, World Lens math, receipt schema, external calls, telemetry, storage, certification, enforcement, or authority behavior changed.
-
-## Patch 220 — Streamlit Tab Inactive-Panel Guard
-Status: READY
-Type: CSS-only UI containment hotfix
-Scope: app.py tab panel visibility guard
-Notes: Adds inactive-panel hiding for aria-hidden/data-state tab panel markers without :has(), nth-of-type, or manual tab routing. Intended to prevent Evidence Lab/World Lens/module content from spilling into one long page after repeated Streamlit interactions.
