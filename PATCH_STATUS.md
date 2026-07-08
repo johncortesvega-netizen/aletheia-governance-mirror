@@ -129,3 +129,8 @@ Boundary:
 - Extracted Boundary Cases rendering from `app.py` into `ui/pages/boundary_cases.py`.
 - Kept Boundary Cases as reference/calibration surface; no scoring or governance logic changed.
 - Added `docs/app_modularization_stage8_boundary_cases_page.md`.
+
+
+## Patch 239 — App Modularization Stage 9: Mirror Check Page
+
+Status: READY. Extracts Mirror Check page body into `ui/pages/mirror_check.py` using a behavior-preserving runtime namespace bridge. No scoring, scanner, receipt, MEI7, Z-axis, World Lens, Evidence Lab, telemetry, or authority-boundary behavior changed.

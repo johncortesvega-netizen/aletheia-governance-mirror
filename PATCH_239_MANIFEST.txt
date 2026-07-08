@@ -1,0 +1,18 @@
+PATCH 239 — APP MODULARIZATION STAGE 9: MIRROR CHECK PAGE
+
+Changed files:
+- app.py
+- ui/pages/mirror_check.py
+- docs/app_modularization_stage9_mirror_check_page.md
+- PATCH_STATUS.md
+
+Purpose:
+Move the Mirror Check page body out of app.py while preserving behavior.
+
+Runtime boundary:
+No scanner, scoring, MEI7, Z-axis, Stress Test, Evidence Lab, World Lens, receipt, telemetry, storage, or authority behavior changed.
+
+Validation:
+- python -m py_compile app.py ui\pages\mirror_check.py
+- python -m pytest
+- python -m streamlit run app.py
