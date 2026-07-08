@@ -1,0 +1,18 @@
+PATCH 228 — Metric Card Layout Stabilization
+
+Changed files:
+- app.py
+- ui/components/metric_cards.py
+- docs/app_modularization_stage2_metric_card_layout_stabilization.md
+- PATCH_STATUS.md
+- PATCH_228_MANIFEST.txt
+- PATCH_228_RECOVERY_NOTE.md
+- PATCH_228_DELETE_LIST.txt
+
+Purpose:
+- Stabilize layout of modularized metric_card and soft_card helpers after Patch 227.
+- Prevent narrow card collapse and awkward wrapping in Stress Test, Mirror Check, and shared metric/status card contexts.
+
+Boundary:
+- UI layout only.
+- No scanner, scoring, MEI7, Z-axis, World Lens math, Evidence Lab math, receipts, semantic logic, telemetry, or authority behavior changed.

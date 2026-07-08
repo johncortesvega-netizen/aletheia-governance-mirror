@@ -1,0 +1,2 @@
+Patch 228 delete list:
+- No files should be deleted.

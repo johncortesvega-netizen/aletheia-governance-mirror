@@ -13,15 +13,16 @@ def _clean(value: object) -> str:
 def metric_card(label: str, value: str, helper: str = "") -> None:
     """Render the shared ALETHEIA metric card used across modules.
 
-    This is a UI helper only. It does not calculate or alter any metric value.
-    Callers must pass already-computed display values.
+    Presentation-only helper. It must not calculate, rescore, classify, or alter
+    metric values. The full-width wrapper keeps cards stable inside Streamlit
+    columns after modularization.
     """
     st.markdown(
         f"""
-        <div class="metric-card">
-            <div class="metric-label">{_clean(label)}</div>
-            <div class="metric-value">{_clean(value)}</div>
-            <div class="metric-help">{_clean(helper)}</div>
+        <div class="metric-card aletheia-metric-card">
+            <div class="metric-label aletheia-metric-label">{_clean(label)}</div>
+            <div class="metric-value aletheia-metric-value">{_clean(value)}</div>
+            <div class="metric-help aletheia-metric-help">{_clean(helper)}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -31,13 +32,14 @@ def metric_card(label: str, value: str, helper: str = "") -> None:
 def soft_card(title: str, body: str) -> None:
     """Render the shared soft explanatory card used in result summaries.
 
-    This is a presentation helper only. It does not decide, score, or classify.
+    Presentation-only helper. Long result text is deliberately wrapped inside
+    the parent column/container instead of forcing narrow overflow.
     """
     st.markdown(
         f"""
-        <div class="soft-card">
-            <strong style="color:#d4b88a;">{_clean(title)}</strong><br>
-            <span style="color:#e8e0d0;">{_clean(body)}</span>
+        <div class="soft-card aletheia-soft-card">
+            <div class="aletheia-soft-title">{_clean(title)}</div>
+            <div class="aletheia-soft-body">{_clean(body)}</div>
         </div>
         """,
         unsafe_allow_html=True,

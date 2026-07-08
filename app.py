@@ -828,6 +828,58 @@ st.markdown(
         box-shadow: 0 6px 18px rgba(149,122,136,0.08);
     }
 
+
+
+    /* Patch 228: modularized card helpers should behave like stable block-level Streamlit cards. */
+    .aletheia-metric-card,
+    .aletheia-soft-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        overflow-wrap: break-word !important;
+        word-break: normal !important;
+        white-space: normal !important;
+    }
+
+    .aletheia-metric-label,
+    .aletheia-metric-help,
+    .aletheia-soft-title,
+    .aletheia-soft-body {
+        max-width: 100% !important;
+        overflow-wrap: break-word !important;
+        word-break: normal !important;
+        white-space: normal !important;
+    }
+
+    .aletheia-metric-value {
+        max-width: 100% !important;
+        overflow-wrap: anywhere !important;
+        word-break: normal !important;
+        white-space: normal !important;
+        font-size: clamp(1.15rem, 2.2vw, 1.65rem) !important;
+        line-height: 1.12 !important;
+    }
+
+    .aletheia-soft-title {
+        color: var(--aletheia-green, #234f31) !important;
+        font-weight: 800 !important;
+        margin-bottom: 0.35rem !important;
+    }
+
+    .aletheia-soft-body {
+        color: var(--text, #17324d) !important;
+        line-height: 1.45 !important;
+    }
+
+    [data-testid="column"] .metric-card,
+    [data-testid="column"] .soft-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
     .stTabs [data-baseweb="tab-list"] { gap: 0.45rem; }
     .stTabs [data-baseweb="tab"] {
         background: rgba(255,255,255,0.80);
