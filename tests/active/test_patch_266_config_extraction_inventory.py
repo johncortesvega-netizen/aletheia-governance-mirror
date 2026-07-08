@@ -68,15 +68,13 @@ def test_patch_266_classifies_safe_and_risky_config_surfaces():
     assert "Not safe for Patch 267" in doc
 
 
-def test_patch_266_does_not_create_config_modules_yet():
-    forbidden_modules = [
-        "ui/config.py",
-        "ui/constants.py",
-        "ui/examples.py",
-        "ui/labels.py",
-    ]
-    for relative_path in forbidden_modules:
-        assert not (ROOT / relative_path).exists(), f"Patch 266 should not create {relative_path}"
+def test_patch_266_recorded_no_runtime_move_at_inventory_time():
+    """Patch 266 remains a historical inventory doc even after Patch 267."""
+    doc = read("docs/config_extraction_inventory_patch_266.md")
+
+    assert "does **not** create `ui/config.py`" in doc
+    assert "does **not** move runtime constants out of `app.py`" in doc
+    assert "Patch 267 may extract only clearly static UI/demo surfaces" in doc
 
 
 def test_behavior_sensitive_constants_still_live_in_app_py_after_patch_266():

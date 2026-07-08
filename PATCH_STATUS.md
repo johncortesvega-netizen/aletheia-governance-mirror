@@ -1,21 +1,25 @@
 ## Current patch
 
-Patch 266 — Config Extraction Inventory
+Patch 268 — Native Multipage Decision
 
 ## Status: READY FOR LOCAL REVIEW
 
-Patch 266 maps app-level constants/static-data surfaces before any config extraction. It is a prep-only patch: no runtime constants are moved, no config modules are created, and scoring/taxonomy/allocation/receipt behavior remains untouched.
+Patch 268 records the native multipage decision after the controlled router, state-prep/state-extraction, and safe config extraction sequence.
 
-It adds active tests that protect the Patch 266 boundary:
+Decision: keep the current controlled router for now.
 
-- config extraction inventory exists;
-- `ui/config.py`, `ui/constants.py`, `ui/examples.py`, and `ui/labels.py` are not created yet;
-- behavior-sensitive constants still live in `app.py`;
-- Patch 267 has a narrow safe-first boundary.
+Runtime behavior: no intended behavior change. No Streamlit native multipage migration is performed.
 
-## Runtime behavior
+## Preserved
 
-No runtime behavior changes.
+- `app.py` still imports and calls `render_controlled_router(...)` from `ui/main.py`.
+- `ui/main.py` remains the canonical top-level router owner.
+- no root `pages/` directory is added.
+- navigation labels/order/default behavior are unchanged.
+- `key="aletheia_active_module"` is unchanged.
+- Receipt Reader remains under `Why ALETHEIA → Support utilities`.
+- no scoring/taxonomy/Z-axis/receipt behavior changes.
+- no state lifecycle changes.
 
 ## Active suite
 
@@ -28,7 +32,7 @@ python -m pytest -q
 
 ## Next patch boundary
 
-Patch 267 may perform a narrow safe config extraction. It should prefer static UI/demo surfaces first and must not move `TOTAL_9K`, demographic allocation data, World Bank aggregate filtering, review-band labels, missing-safeguard patterns, World Lens minimum grid thresholds, scoring/taxonomy/Z-axis logic, allocation logic, or receipt semantics.
+Patch 269 should not start native multipage migration unless a separate migration prep patch first proves that the migration reduces complexity, preserves protocol framing, and protects session-state lifecycle with focused tests.
 
 ## Patch history
 
@@ -44,3 +48,4 @@ Patch 267 may perform a narrow safe config extraction. It should prefer static U
 - Patch 264 — State Extraction Prep
 - Patch 265 — State Extraction
 - Patch 266 — Config Extraction Inventory
+- Patch 267 — Safe Config Extraction

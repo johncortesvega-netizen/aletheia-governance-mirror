@@ -32,6 +32,8 @@ from ui.receipt_reader import render_receipt_reader_standard_view
 from ui.module_page_template import ModulePageTemplateCopy, render_module_page_template_intro
 from ui.main import render_controlled_router
 from ui.state import normalize_sidebar_lens_state, reset_sidebar_lens_state
+from ui.config import APP_VERSION, SUPPORTED_INPUT_LANGUAGE_NOTE
+from ui.examples import APP_UX_POLISH_SUMMARY, DEMO_INPUT_FILES
 from ui.input_clarity import (
     render_language_calibration_caveat,
     render_direct_csv_read_failed,
@@ -306,8 +308,6 @@ def enforce_missing_safeguard_threshold_route(
     )
 
 
-APP_VERSION = "v1.0-original-governance-mirror-p6"
-SUPPORTED_INPUT_LANGUAGE_NOTE = "Language scope: ALETHEIA is English-first. Dutch/Nederlands examples may be used for batch testing, but this is not a general app-wide language-compatibility claim. Human review remains required."
 PROJECT_ROOT = Path(__file__).resolve().parent
 ABOUT_HEADER_IMAGE = PROJECT_ROOT / "assets" / "about_header.png"
 MASCOT_LOGO_IMAGE = PROJECT_ROOT / "assets" / "aletheia_robot_laurel_logo.png"
@@ -376,23 +376,6 @@ APP_NAVIGATION_MAP = [
     ("Protocol Guide", "Read the v1.0 operating guide, safe-language rules, module boundaries, and ALETHEIA mirror boundaries."),
     ("Why ALETHEIA", "Understand ALETHEIA as a free, open-source governance mirror for human review; includes Support utilities and the read-only Receipt Reader."),
 ]
-
-APP_UX_POLISH_SUMMARY = [
-    "Start with Mirror Check when you have a document.",
-    "Use Stress Test when you have a scenario.",
-    "Use Evidence Lab when a claim needs source-quality review.",
-    "Use World Lens when you need selected-year country evidence and allocation context.",
-    "Use Boundary Cases as a reference layer when the ethical edge case is unclear.",
-    "Use Protocol Guide when you need the operating rules and mirror boundaries.",
-    "Receipt Reader: Why ALETHEIA → Support utilities → Receipt Reader — Standard View.",
-]
-
-DEMO_INPUT_FILES = [
-    ("Sample AI policy", "examples/demo_inputs/sample_ai_policy.txt"),
-    ("Sample DAO governance charter", "examples/demo_inputs/sample_dao_governance.txt"),
-    ("Sample public policy scenario", "examples/demo_inputs/sample_public_policy.txt"),
-]
-
 
 def load_demo_input(relative_path: str) -> str:
     """Load a bundled demo input without running analysis automatically."""

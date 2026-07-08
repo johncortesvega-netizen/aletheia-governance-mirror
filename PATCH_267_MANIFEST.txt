@@ -1,0 +1,19 @@
+Patch 267 — Safe Config Extraction
+
+Edited/added files:
+- app.py
+- ui/config.py
+- ui/examples.py
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_267_MANIFEST.txt
+- PATCH_267_RECOVERY_NOTE.md
+- PATCH_267_DELETE_LIST.txt
+- docs/config_extraction_patch_267.md
+- docs/config_extraction_patch_267_summary.md
+- tests/active/test_patch_266_config_extraction_inventory.py
+- tests/active/test_patch_267_safe_config_extraction.py
+
+Scope:
+- Move only low-risk static UI/demo values out of app.py.
+- Preserve behavior-sensitive constants and runtime logic in their current owners.

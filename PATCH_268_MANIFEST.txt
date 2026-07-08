@@ -1,0 +1,18 @@
+Patch 268 — Native Multipage Decision
+
+Edited/added files:
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_268_MANIFEST.txt
+- PATCH_268_RECOVERY_NOTE.md
+- PATCH_268_DELETE_LIST.txt
+- docs/native_multipage_decision_patch_268.md
+- docs/native_multipage_decision_patch_268_summary.md
+- tests/active/test_patch_268_native_multipage_decision.py
+
+Runtime files changed: none.
+
+Intent:
+- Document the decision to keep the current controlled router for now.
+- Explicitly defer Streamlit native multipage migration.
+- Preserve current navigation behavior and Receipt Reader placement.

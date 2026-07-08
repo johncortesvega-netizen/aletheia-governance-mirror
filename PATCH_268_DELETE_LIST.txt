@@ -1,0 +1,8 @@
+Files to delete when reverting Patch 268:
+
+docs/native_multipage_decision_patch_268.md
+docs/native_multipage_decision_patch_268_summary.md
+tests/active/test_patch_268_native_multipage_decision.py
+PATCH_268_MANIFEST.txt
+PATCH_268_RECOVERY_NOTE.md
+PATCH_268_DELETE_LIST.txt

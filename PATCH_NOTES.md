@@ -1,3 +1,83 @@
+# Patch 268 — Native Multipage Decision
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 268 is a decision-only patch. It documents the decision to keep the current controlled router for now and defer Streamlit native multipage migration.
+
+Added:
+
+- `docs/native_multipage_decision_patch_268.md`
+- `docs/native_multipage_decision_patch_268_summary.md`
+- `tests/active/test_patch_268_native_multipage_decision.py`
+- `PATCH_268_MANIFEST.txt`
+- `PATCH_268_RECOVERY_NOTE.md`
+- `PATCH_268_DELETE_LIST.txt`
+
+Preserved:
+
+- no runtime file changes;
+- No root `pages/` directory is added.;
+- `ui/main.py` remains the controlled router owner;
+- `app.py` still delegates to `render_controlled_router(...)`;
+- navigation labels/order/default behavior remain unchanged;
+- Receipt Reader remains under `Why ALETHEIA → Support utilities`;
+- no scoring, taxonomy, Z-axis, receipt, state, Evidence Lab, World Lens, Mirror Check, or Stress Test behavior changes.
+
+Decision:
+
+- Keep controlled router for now.
+- Reconsider native multipage or hybrid only after a separate prep patch proves lower complexity, preserved framing, and protected state lifecycle.
+
+Tests expected:
+
+```bash
+python -m pytest tests/active -q
+python -m pytest -q
+```
+
+---
+
+# Patch 267 — Safe Config Extraction
+
+Status: READY FOR LOCAL REVIEW
+
+Patch 267 performs the first narrow config/static-data extraction prepared by Patch 266. It adds canonical static owners for low-risk UI/demo values and updates `app.py` to import them without changing runtime behavior.
+
+Added:
+
+- `ui/config.py`
+- `ui/examples.py`
+- `docs/config_extraction_patch_267.md`
+- `docs/config_extraction_patch_267_summary.md`
+- `tests/active/test_patch_267_safe_config_extraction.py`
+- `PATCH_267_MANIFEST.txt`
+- `PATCH_267_RECOVERY_NOTE.md`
+- `PATCH_267_DELETE_LIST.txt`
+
+Updated:
+
+- `app.py` now imports `APP_VERSION` and `SUPPORTED_INPUT_LANGUAGE_NOTE` from `ui.config`.
+- `app.py` now imports `APP_UX_POLISH_SUMMARY` and `DEMO_INPUT_FILES` from `ui.examples`.
+- Patch 266 active test was adjusted so it remains a historical inventory contract after Patch 267 creates the config/example modules.
+
+Preserved:
+
+- no scoring/taxonomy/Z-axis movement;
+- no allocation constant movement;
+- no receipt-semantics movement;
+- no navigation-label movement;
+- no demo-scenario movement;
+- `load_demo_input()` behavior remains in `app.py`.
+
+Tests expected:
+
+```bash
+python -m pytest tests/active -q
+python -m pytest -q
+```
+
+---
+
 # Patch 266 — Config Extraction Inventory
 
 Status: READY FOR LOCAL REVIEW
