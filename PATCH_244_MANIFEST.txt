@@ -1,0 +1,18 @@
+PATCH 244 — APP MODULARIZATION STAGE 12: WORLD LENS PAGE
+
+Changed files:
+- app.py
+- ui/pages/world_lens.py
+- docs/app_modularization_stage12_world_lens_page.md
+- PATCH_STATUS.md
+- PATCH_244_MANIFEST.txt
+- PATCH_244_RECOVERY_NOTE.md
+- PATCH_244_DELETE_LIST.txt
+
+Purpose:
+Extract World Lens page rendering from app.py into ui/pages/world_lens.py while preserving behavior through a transitional runtime namespace bridge.
+
+Validation:
+- python -m py_compile app.py ui\pages\world_lens.py
+- python -m pytest
+- python -m streamlit run app.py

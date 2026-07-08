@@ -1,0 +1,5 @@
+Patch 244 delete list:
+
+No files should be deleted.
+
+Do not delete existing World Lens data, Evidence Lab files, receipts, or prior page/component modules.

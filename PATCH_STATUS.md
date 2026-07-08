@@ -163,3 +163,12 @@ Status: ready
 - Extracts the Evidence Lab page from `app.py` into `ui/pages/evidence_lab.py`.
 - Keeps behavior stable through a temporary runtime namespace bridge.
 - Does not change scoring, scanner logic, Evidence Lab calculations, World Lens data, receipts, MEI7, Z-axis, telemetry, or authority boundaries.
+
+
+## Patch 244 — App Modularization Stage 12: World Lens Page
+
+Status: ready for local validation.
+
+Summary: extracted the World Lens page into `ui/pages/world_lens.py` using a transitional runtime namespace bridge. This reduces `app.py` size while preserving existing World Lens behavior, internal tabs, Evidence Lab integration, selected-year allocation, and report packet behavior.
+
+Boundary: no scanner, scoring, MEI7, Z-axis, Evidence Lab calculation, World Lens math, receipt schema, 9k allocation rule, telemetry, or authority-boundary behavior changed.
