@@ -2,24 +2,22 @@
 
 ## Current patch
 
-### Patch 259 — App Shell Inventory / Thin Entrypoint Plan
+### Patch 260 — App Shell Helper Extraction
 
-Patch 259 documents what still lives in `app.py` after the modularization and
-bridge-removal sequence.
+Patch 260 is the first implementation step after the Patch 259 app-shell
+inventory.
 
-It adds:
+It moves the global Streamlit page setup and large CSS theme block out of
+`app.py` and into `ui/app_shell.py`:
 
-- `docs/app_shell_inventory_patch_259.md`
-- `docs/thin_entrypoint_refactor_plan_patch_259.md`
+- `ALETHEIA_GLOBAL_CSS`
+- `apply_app_page_config_and_theme(st)`
 
-The patch defines the safe next direction:
+`app.py` now calls the helper instead of carrying the full inline setup block.
 
-1. extract shell helpers first;
-2. move routing to `ui/main.py` later;
-3. extract shared session state only after routing is stable;
-4. delay native Streamlit multipage until the controlled single-app shell is thin.
-
-No runtime behavior changed.
+This is a shell extraction only. It does not alter scanner behavior, scoring,
+MEI7, Z-axis, receipts, Evidence Lab calculations, World Lens math, navigation,
+telemetry/storage, or authority-boundary behavior.
 
 ## Recent architecture and cleanup sequence
 
@@ -38,10 +36,4 @@ No runtime behavior changed.
 - Patch 257 — Modularization Test Path Repair
 - Patch 258 — Behavior Regression Review
 - Patch 259 — App Shell Inventory / Thin Entrypoint Plan
-
-## Runtime boundary
-
-Patch 259 is documentation and refactor planning only. It does not change
-governance logic, scanner behavior, scoring, receipts, World Lens math, Evidence
-Lab calculations, telemetry, storage, navigation behavior, or the
-mirror-not-throne boundary.
+- Patch 260 — App Shell Helper Extraction

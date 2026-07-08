@@ -1,0 +1,3 @@
+Patch 260 delete list:
+
+No files should be deleted.
