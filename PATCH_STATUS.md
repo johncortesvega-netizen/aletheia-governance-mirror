@@ -69,3 +69,10 @@ Status: READY
 Type: presentation hotfix after Stage 2 modularization
 Files: app.py; ui/components/metric_cards.py; docs/app_modularization_stage2_protocol_metric_html_fix.md
 Boundary: no scoring, scanner, MEI7, Z-axis, Stress Test math, Evidence Lab math, World Lens math, receipt, telemetry, or authority behavior changes.
+
+## Patch 231 — App Modularization Stage 3: Review Cards
+Status: READY
+
+- Extracted shared review-card rendering helpers into `ui/components/review_cards.py`.
+- Stress Test result explanation and repair/recommendation cards now use shared component helpers.
+- Presentation-only modularization; no scanner, scoring, MEI7, Z-axis, World Lens, Evidence Lab, receipt, telemetry, or authority behavior changed.

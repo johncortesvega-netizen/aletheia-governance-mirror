@@ -1,0 +1,23 @@
+PATCH 231 — App Modularization Stage 3: Review Cards
+
+Files changed:
+- app.py
+- ui/components/review_cards.py
+- docs/app_modularization_stage3_review_cards.md
+- PATCH_STATUS.md
+- PATCH_231_MANIFEST.txt
+- PATCH_231_RECOVERY_NOTE.md
+- PATCH_231_DELETE_LIST.txt
+
+Purpose:
+- Extract shared review-card rendering helpers from app.py.
+- Keep Stress Test result explanation and repair/recommendation card presentation reusable.
+
+No runtime/governance behavior changed:
+- No scanner logic changes.
+- No scoring changes.
+- No MEI7 gate changes.
+- No Z-axis changes.
+- No Stress Test math changes.
+- No Evidence Lab or World Lens math changes.
+- No receipt schema changes.

@@ -65,6 +65,7 @@ from ui.components.semantic_pressure_panel import (
     semantic_world_lens_flag_rows,
 )
 from ui.components.metric_cards import metric_card, soft_card
+from ui.components.review_cards import render_repair_question_cards, render_recommendation_cards, render_soft_card_grid
 
 from core.world_lens import (
     country_available_years,
@@ -4872,26 +4873,40 @@ if selected_top_module == '🚀 Stress Test':
                     st.dataframe(pd.DataFrame(sim.get("agent_profiles", [])), use_container_width=True, hide_index=True)
     
             st.markdown("### Why this result?")
-            reason_cols = st.columns(3)
-            with reason_cols[0]:
-                soft_card("What ALETHEIA saw", f"Source: {last_input_mode}. Power concentration {scan['power_concentration']:.0%}, transparency {scan['decision_transparency']:.0%}, regulation {scan['regulatory_presence']:.0%}.")
-            with reason_cols[1]:
-                soft_card("Pattern over time", f"Trust {sim['trust_index']:.0%}, alignment {sim['alignment']:.0%}, ego {sim['ego']:.0%}.")
-            with reason_cols[2]:
-                soft_card("Risk picture", f"Review zone: {review_band_label}. {review_band_summary} Collapse risk: {'yes' if sim.get('collapse_risk') else 'no'}. Trust friction: {report['trust_friction']:.3f}. Grievance pressure: {sim.get('grievance_pressure', 0):.2f}. Safeguard gap: {sim.get('safeguard_gap', 0):.2f}.")
+            render_soft_card_grid(
+                [
+                    (
+                        "What ALETHEIA saw",
+                        f"Source: {last_input_mode}. Power concentration {scan['power_concentration']:.0%}, transparency {scan['decision_transparency']:.0%}, regulation {scan['regulatory_presence']:.0%}.",
+                    ),
+                    (
+                        "Pattern over time",
+                        f"Trust {sim['trust_index']:.0%}, alignment {sim['alignment']:.0%}, ego {sim['ego']:.0%}.",
+                    ),
+                    (
+                        "Risk picture",
+                        f"Review zone: {review_band_label}. {review_band_summary} Collapse risk: {'yes' if sim.get('collapse_risk') else 'no'}. Trust friction: {report['trust_friction']:.3f}. Grievance pressure: {sim.get('grievance_pressure', 0):.2f}. Safeguard gap: {sim.get('safeguard_gap', 0):.2f}.",
+                    ),
+                ],
+                columns=3,
+            )
     
             st.markdown("### Repair questions")
             st.caption("ALETHEIA asks questions here. It gives no orders and no final judgment.")
             repair_questions = report.get("repair_questions") or []
             if repair_questions:
-                for idx, question in enumerate(repair_questions[:5], start=1):
-                    soft_card(f"REVIEW · Question {idx}", silent_operator_question(question, context="this repair path"))
+                render_repair_question_cards(
+                    repair_questions,
+                    transform=silent_operator_question,
+                    context="this repair path",
+                    limit=5,
+                )
             else:
-                for rec in report["recommendations"][:5]:
-                    priority = str(rec.get("priority", "review")).upper()
-                    target = rec.get("target", "System")
-                    action = rec.get("action", "Review")
-                    soft_card(f"{priority} · {target} · {action}", silent_operator_question(rec, context=str(target)))
+                render_recommendation_cards(
+                    report.get("recommendations") or [],
+                    transform=silent_operator_question,
+                    limit=5,
+                )
     
             if last_input_mode == "Scan my idea":
                 stored_stress_semantic_scan = st.session_state.get("last_stress_semantic_scan")
