@@ -1,0 +1,20 @@
+PATCH 224 — Modularization Stage 1 Clean Import Repair
+
+Purpose:
+- Repair the Stage 1 semantic component extraction when the local app still reports NameError: name 're' is not defined.
+- Ship a clean replacement for ui/components/semantic_pressure_panel.py with explicit imports for re and hashlib.
+- Exclude __pycache__ from the patch package so stale compiled files are not copied around.
+
+Changed files:
+- ui/components/semantic_pressure_panel.py
+- PATCH_STATUS.md
+- PATCH_224_MANIFEST.txt
+- PATCH_224_RECOVERY_NOTE.md
+- PATCH_224_DELETE_LIST.txt
+
+No runtime scoring or routing changes:
+- No scanner logic changes.
+- No MEI7/Z-axis changes.
+- No Evidence Lab/World Lens math changes.
+- No receipt/schema changes.
+- No telemetry/storage changes.

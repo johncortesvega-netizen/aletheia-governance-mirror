@@ -1,0 +1,7 @@
+Delete if present after copying the patch:
+
+__pycache__/
+ui/__pycache__/
+ui/components/__pycache__/
+
+Do not delete source files.

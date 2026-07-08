@@ -1,0 +1,24 @@
+PATCH 223 — Modularization Stage 1 Missing Imports Hotfix
+
+Changed files:
+- ui/components/semantic_pressure_panel.py
+- PATCH_STATUS.md
+- PATCH_223_MANIFEST.txt
+- PATCH_223_RECOVERY_NOTE.md
+- PATCH_223_DELETE_LIST.txt
+
+Purpose:
+Fixes a Stage 1 modularization import-time/runtime crash where the extracted semantic pressure component used hashlib.sha1(...) and re.sub(...) after extraction but did not import hashlib or re in the new component module.
+
+Behavioral scope:
+- No scanner logic changes.
+- No scoring changes.
+- No MEI7 gate changes.
+- No Z-axis changes.
+- No Evidence Lab math changes.
+- No World Lens math changes.
+- No receipt schema changes.
+- No telemetry/storage changes.
+
+Validation:
+- python -m py_compile ui/components/semantic_pressure_panel.py
