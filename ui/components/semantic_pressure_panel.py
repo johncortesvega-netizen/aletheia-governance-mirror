@@ -306,8 +306,6 @@ def render_semantic_pressure_panel(
                     st.code(report_text, language="text")
 
 
-render_sydney_protocol_self_check_gate()
-
 def _semantic_review_strength(scan) -> tuple[int, float, int]:
     """Return a sortable strength tuple for choosing between raw and filtered semantic scans.
 

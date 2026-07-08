@@ -4609,3 +4609,17 @@ python -m pytest
 ```
 
 Expected active-suite result: 5 passed.
+
+## Patch 222 — Modularization Stage 1 Import Hotfix
+Status: READY
+Date: 2026-07-08
+
+Fixes a Stage 1 modularization extraction artifact in `ui/components/semantic_pressure_panel.py`.
+A leftover top-level call to `render_sydney_protocol_self_check_gate()` executed during module import, but that function remains in `app.py` and is not part of the semantic component. The call has been removed.
+
+Scope:
+- Runtime bugfix only for import/startup.
+- No scoring, scanner, routing, MEI7, Z-axis, Evidence Lab, World Lens, receipts, telemetry, or authority behavior changes.
+
+Validation:
+- `python -m py_compile ui/components/semantic_pressure_panel.py`

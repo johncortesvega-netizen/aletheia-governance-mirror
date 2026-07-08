@@ -1,0 +1,21 @@
+PATCH 222 — Modularization Stage 1 Import Hotfix
+
+Changed files:
+- ui/components/semantic_pressure_panel.py
+- PATCH_STATUS.md
+- PATCH_222_MANIFEST.txt
+- PATCH_222_RECOVERY_NOTE.md
+- PATCH_222_DELETE_LIST.txt
+
+Purpose:
+Remove a stray module-level call to `render_sydney_protocol_self_check_gate()` from the extracted semantic pressure component.
+
+Problem fixed:
+After Patch 221 Stage 1, Streamlit failed at startup with:
+NameError: name 'render_sydney_protocol_self_check_gate' is not defined
+
+Reason:
+The function remains in `app.py`, but a leftover call was accidentally copied into `ui/components/semantic_pressure_panel.py` at module level. That call executed during import.
+
+Boundary:
+No runtime logic, scoring logic, semantic scanner behavior, MEI7 gate, Z-axis logic, Evidence Lab calculations, World Lens math, receipt schema, telemetry, or authority behavior changed.
