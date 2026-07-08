@@ -4831,7 +4831,7 @@ if selected_top_module == '🚀 Stress Test':
                 result_helper += f"<br>Review zone: {review_band_label}"
     
             with c1:
-                metric_card("Protocol reading", result_display, result_helper)
+                metric_card("Protocol reading", result_display, result_helper, value_is_html=True, helper_is_html=True)
             with c2:
                 metric_card("Integrity", f"{report['integrity']:.3f}", "Current reading. Raw values stay in the local receipt.")
             with c3:

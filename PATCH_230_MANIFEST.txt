@@ -1,0 +1,17 @@
+PATCH 230 — Protocol Metric HTML Rendering Fix
+
+Changed files:
+- app.py
+- ui/components/metric_cards.py
+- docs/app_modularization_stage2_protocol_metric_html_fix.md
+- PATCH_STATUS.md
+- PATCH_230_MANIFEST.txt
+- PATCH_230_RECOVERY_NOTE.md
+- PATCH_230_DELETE_LIST.txt
+
+Intent:
+- Fix visible raw HTML in the Stress Test protocol-reading metric card after Stage 2 modularization.
+- Keep shared metric cards escaped by default.
+- Allow trusted internal HTML only by explicit opt-in.
+
+No governance/runtime logic changes.

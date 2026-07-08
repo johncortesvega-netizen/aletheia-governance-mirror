@@ -10,19 +10,25 @@ def _clean(value: object) -> str:
     return html.escape("" if value is None else str(value))
 
 
-def metric_card(label: str, value: str, helper: str = "") -> None:
+def metric_card(label: str, value: str, helper: str = "", *, value_is_html: bool = False, helper_is_html: bool = False) -> None:
     """Render the shared ALETHEIA metric card used across modules.
 
     Presentation-only helper. It must not calculate, rescore, classify, or alter
     metric values. The full-width wrapper keeps cards stable inside Streamlit
     columns after modularization.
+
+    Most callers pass plain text and are escaped. A few legacy cards already
+    build sanitized internal HTML snippets for emphasis; those callers must opt
+    in explicitly with value_is_html/helper_is_html.
     """
+    value_html = str(value) if value_is_html else _clean(value)
+    helper_html = str(helper) if helper_is_html else _clean(helper)
     st.markdown(
         f"""
         <div class="metric-card aletheia-metric-card">
             <div class="metric-label aletheia-metric-label">{_clean(label)}</div>
-            <div class="metric-value aletheia-metric-value">{_clean(value)}</div>
-            <div class="metric-help aletheia-metric-help">{_clean(helper)}</div>
+            <div class="metric-value aletheia-metric-value">{value_html}</div>
+            <div class="metric-help aletheia-metric-help">{helper_html}</div>
         </div>
         """,
         unsafe_allow_html=True,

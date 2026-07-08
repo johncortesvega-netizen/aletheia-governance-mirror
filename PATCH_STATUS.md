@@ -63,3 +63,9 @@ Validation:
 - `python -m pytest`
 - Manual check: Mirror Check → Threshold direction review values remain readable.
 
+
+## Patch 230 — Protocol Metric HTML Rendering Fix
+Status: READY
+Type: presentation hotfix after Stage 2 modularization
+Files: app.py; ui/components/metric_cards.py; docs/app_modularization_stage2_protocol_metric_html_fix.md
+Boundary: no scoring, scanner, MEI7, Z-axis, Stress Test math, Evidence Lab math, World Lens math, receipt, telemetry, or authority behavior changes.
