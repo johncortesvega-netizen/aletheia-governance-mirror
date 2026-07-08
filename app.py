@@ -70,7 +70,7 @@ from ui.components.module_headers import render_shared_protocol_state_notice_pan
 from ui.pages.protocol_guide import render_protocol_guide_page
 from ui.pages.boundary_cases import render_boundary_cases_page
 from ui.pages.mirror_check import mirror_check_dependency_map, render_mirror_check_page
-from ui.pages.stress_test import render_stress_test_page
+from ui.pages.stress_test import render_stress_test_page, stress_test_dependency_map
 from ui.pages.evidence_lab import render_evidence_lab_page
 from ui.pages.world_lens import render_world_lens_page
 
@@ -4083,7 +4083,7 @@ selected_top_module = st.radio(
 st.caption("Receipt Reader: Why ALETHEIA → Support utilities → Receipt Reader — Standard View.")
 
 if selected_top_module == '🚀 Stress Test':
-    render_stress_test_page(globals())
+    render_stress_test_page(stress_test_dependency_map(globals()))
 
 if selected_top_module == '🧭 Boundary Cases':
     render_boundary_cases_page(

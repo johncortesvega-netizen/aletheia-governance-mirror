@@ -1,0 +1,16 @@
+PATCH 249 — Stress Test Bridge Removal
+
+Changed files:
+- app.py
+- ui/pages/stress_test.py
+- docs/modularization_stage249_stress_test_bridge_removal.md
+- PATCH_STATUS.md
+- PATCH_NOTES.md
+- PATCH_249_MANIFEST.txt
+- PATCH_249_RECOVERY_NOTE.md
+- PATCH_249_DELETE_LIST.txt
+
+Summary:
+- Replaces render_stress_test_page(globals()) with render_stress_test_page(stress_test_dependency_map(globals())).
+- Adds an explicit dependency list for Stress Test.
+- Keeps Stress Test behavior unchanged while removing the broad runtime namespace handoff.

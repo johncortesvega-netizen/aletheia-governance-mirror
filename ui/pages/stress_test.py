@@ -1,13 +1,141 @@
 from __future__ import annotations
 
+# Patch 249: Stress Test bridge removal.
+# The page now receives an explicit dependency mapping instead of the entire
+# app globals() namespace. This keeps the page behavior stable while making
+# the dependency surface inspectable for later cleanup.
 
-def render_stress_test_page(runtime_namespace: dict[str, object]) -> None:
-    """Render the Stress Test page using the current app runtime namespace.
+from collections.abc import Mapping
+from typing import Any
 
-    Stage 10 keeps behavior unchanged by using a temporary namespace bridge.
-    Later stages can replace this bridge with explicit imports/dependencies.
+
+STRESS_TEST_DEPENDENCIES = (
+    "APP_VERSION",
+    "MAX_BATCH_RECEIPTS",
+    "ModulePageTemplateCopy",
+    "STRESS_TEST_DEMO_SCENARIOS",
+    "_protocol_humility_note",
+    "_protocol_metric_display",
+    "_protocol_taxonomy_ui_table_df",
+    "action_chart",
+    "apply_guardrail_verdict",
+    "build_ai_static_scan_protocol_context",
+    "build_features_from_scan",
+    "build_local_question_prompt_receipt",
+    "build_local_witness_batch_zip",
+    "build_local_witness_receipt",
+    "choose_stress_semantic_scan",
+    "choose_strongest_semantic_scan",
+    "classify_verdict",
+    "decouple_actor",
+    "display_score_from_judgment",
+    "divine_floor",
+    "ego_tolerance",
+    "enforce_asylum_metric_consistency",
+    "enforce_missing_safeguard_threshold_route",
+    "ensure_asylum_repair_questions",
+    "ensure_threshold_repair_questions",
+    "hashlib",
+    "html",
+    "is_witness_question_prompt",
+    "is_witness_question_set",
+    "metric_card",
+    "n_agents",
+    "normalize_asylum_protocol_label",
+    "parse_witness_batch_input",
+    "pd",
+    "plot_trace",
+    "render_local_witness_receipt_text",
+    "render_module_page_template_intro",
+    "render_pulse_tree",
+    "render_receipt_sky_panel",
+    "render_recommendation_cards",
+    "render_repair_question_cards",
+    "render_semantic_stress_triggers",
+    "render_shared_protocol_state_notice",
+    "render_soft_card_grid",
+    "render_stress_test_scan_intro",
+    "review_band_for_state",
+    "run_audit",
+    "silent_operator_question",
+    "st",
+    "steps",
+    "stress_label_for_phrase",
+    "update_protocol_state",
+    "weights",
+)
+
+
+def stress_test_dependency_map(runtime: Mapping[str, Any]) -> dict[str, Any]:
+    """Return only the dependencies Stress Test currently needs.
+
+    Missing dependencies fail loudly during startup/testing. This is a safe
+    intermediate step before later patches replace injected helpers with direct
+    imports where appropriate.
     """
-    globals().update(runtime_namespace)
+    missing = [name for name in STRESS_TEST_DEPENDENCIES if name not in runtime]
+    if missing:
+        raise RuntimeError(
+            "Stress Test page dependency map is incomplete: " + ", ".join(missing)
+        )
+    return {name: runtime[name] for name in STRESS_TEST_DEPENDENCIES}
+
+
+def render_stress_test_page(deps: Mapping[str, Any]) -> None:
+    """Render the Stress Test page using explicit injected dependencies."""
+    APP_VERSION = deps["APP_VERSION"]
+    MAX_BATCH_RECEIPTS = deps["MAX_BATCH_RECEIPTS"]
+    ModulePageTemplateCopy = deps["ModulePageTemplateCopy"]
+    STRESS_TEST_DEMO_SCENARIOS = deps["STRESS_TEST_DEMO_SCENARIOS"]
+    _protocol_humility_note = deps["_protocol_humility_note"]
+    _protocol_metric_display = deps["_protocol_metric_display"]
+    _protocol_taxonomy_ui_table_df = deps["_protocol_taxonomy_ui_table_df"]
+    action_chart = deps["action_chart"]
+    apply_guardrail_verdict = deps["apply_guardrail_verdict"]
+    build_ai_static_scan_protocol_context = deps["build_ai_static_scan_protocol_context"]
+    build_features_from_scan = deps["build_features_from_scan"]
+    build_local_question_prompt_receipt = deps["build_local_question_prompt_receipt"]
+    build_local_witness_batch_zip = deps["build_local_witness_batch_zip"]
+    build_local_witness_receipt = deps["build_local_witness_receipt"]
+    choose_stress_semantic_scan = deps["choose_stress_semantic_scan"]
+    choose_strongest_semantic_scan = deps["choose_strongest_semantic_scan"]
+    classify_verdict = deps["classify_verdict"]
+    decouple_actor = deps["decouple_actor"]
+    display_score_from_judgment = deps["display_score_from_judgment"]
+    divine_floor = deps["divine_floor"]
+    ego_tolerance = deps["ego_tolerance"]
+    enforce_asylum_metric_consistency = deps["enforce_asylum_metric_consistency"]
+    enforce_missing_safeguard_threshold_route = deps["enforce_missing_safeguard_threshold_route"]
+    ensure_asylum_repair_questions = deps["ensure_asylum_repair_questions"]
+    ensure_threshold_repair_questions = deps["ensure_threshold_repair_questions"]
+    hashlib = deps["hashlib"]
+    html = deps["html"]
+    is_witness_question_prompt = deps["is_witness_question_prompt"]
+    is_witness_question_set = deps["is_witness_question_set"]
+    metric_card = deps["metric_card"]
+    n_agents = deps["n_agents"]
+    normalize_asylum_protocol_label = deps["normalize_asylum_protocol_label"]
+    parse_witness_batch_input = deps["parse_witness_batch_input"]
+    pd = deps["pd"]
+    plot_trace = deps["plot_trace"]
+    render_local_witness_receipt_text = deps["render_local_witness_receipt_text"]
+    render_module_page_template_intro = deps["render_module_page_template_intro"]
+    render_pulse_tree = deps["render_pulse_tree"]
+    render_receipt_sky_panel = deps["render_receipt_sky_panel"]
+    render_recommendation_cards = deps["render_recommendation_cards"]
+    render_repair_question_cards = deps["render_repair_question_cards"]
+    render_semantic_stress_triggers = deps["render_semantic_stress_triggers"]
+    render_shared_protocol_state_notice = deps["render_shared_protocol_state_notice"]
+    render_soft_card_grid = deps["render_soft_card_grid"]
+    render_stress_test_scan_intro = deps["render_stress_test_scan_intro"]
+    review_band_for_state = deps["review_band_for_state"]
+    run_audit = deps["run_audit"]
+    silent_operator_question = deps["silent_operator_question"]
+    st = deps["st"]
+    steps = deps["steps"]
+    stress_label_for_phrase = deps["stress_label_for_phrase"]
+    update_protocol_state = deps["update_protocol_state"]
+    weights = deps["weights"]
     with st.container():
         st.subheader("Stress Test")
         render_shared_protocol_state_notice("Stress Test", expanded=False)

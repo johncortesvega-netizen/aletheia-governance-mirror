@@ -1,0 +1,2 @@
+Patch 249 delete list:
+- No files should be deleted.
